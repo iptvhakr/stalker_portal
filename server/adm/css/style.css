@@ -10,6 +10,7 @@ body {
   min-width:1200px;
  
 }
+
 a { 
 color: #155DCA;
 text-decoration: none;
@@ -873,6 +874,10 @@ td.beauty-hover {
 .table-hover > tbody > tr:hover > td.beauty-hover:hover {
   background-color: #FFF5D2 !important;
 }
+.table-hover > tbody > tr > td:last-child  > .col-xs-3{float:right;margin-right:10px;width:20px;}
+
+.action-menu {width:20px !important;}
+.ddd {float:right;margin-right:10px;width:20px;}
 .table-hover > tbody > tr > td:first-child  {border-left:1px solid #FFF;}
 .table-hover > tbody > tr:hover > td:first-child {border-left:1px solid #FFCD1C;}
 .DTTT.btn-group {
@@ -974,6 +979,7 @@ td.beauty-hover {
 .lobtn { background-color: #FFCD1C; color: #000; }
 .pull-right .btn {margin-left:15px !important;}
 .pull-left .btn {margin-left:15px !important;}
+
 .btn .btn-success{
   border-width: 1px;
   border-style: solid;
@@ -2812,6 +2818,15 @@ div.google-visualization-tooltip span{
     padding: 0px 0px;
 	
 }
+
+
+#iptv_list > .row:first-of-type > .col-lg-12
+{ 
+  position: relative;
+  min-height: 1px;
+  padding-right: 12px;
+  padding-left: 4px !important;
+}
 .row2 .row3 {
   margin-right: -15px;
   margin-left: -15px;
@@ -2825,9 +2840,14 @@ border-bottom:1px solid #E3E3E3;padding-left:6px !important; padding-right:5px;}
 padding-left:6px !important; padding-right:5px;}
 
 
+
 #iptv_list > .row:first-of-type
 {border-top:1px solid #E3E3E3;
 border-bottom:1px solid #E3E3E3;padding-left:6px !important; padding-right:5px;}
+
+#iptv_list > .row_no_padding:first-of-type
+{padding:0 !important; border-bottom:1px solid #FFF;}
+
 #iptv_list .no-padding {margin-top:4px !important;}
 #iptv_list .dropdown-toggle, #iptv_list .dropdown-menu a,
 #iptv_list_move .dropdown-toggle, #iptv_list_move .dropdown-menu a{
@@ -2845,7 +2865,7 @@ border-bottom:1px solid #E3E3E3;padding-left:6px !important; padding-right:5px;}
 }
 .filter .dropdown-menu {max-height:360px;}
 .tfilter {min-width:80px; margin-top:10px !important;}
-#iptv_list .filter  {position: relative;    float: left;
+#iptv_list .filter  {position: relative;    float: left; margin-right:5px;
 	display:block;}
 #iptv_list .filter a  {border-radius:5px; margin-right:0px;   border: 1px solid #fff !important; max-width: 300px; min-width:90px;  margin-top:5px; margin-bottom:5px; padding-bottom:4px;
 position: relative;
@@ -2896,10 +2916,10 @@ color:#FFCD1C; background-color:#000 !important;}
 }
 
 
-
-.btn-success {
+.btn-default{height:32px; padding-bottom:15px !important;}
+.DTTT_button_print, .btn-success {
 color:#FFCD1C; background-color:#000 !important; height:32px; padding-bottom:15px !important;}
-#ajax-content{min-height:450px;}
+#ajax-content{min-height:600px;}
 #iptv_list label {margin-top:5px;}
 #iptv_list input[type=text] { height:30px;}
 #iptv_list .btn-default {
@@ -2964,7 +2984,7 @@ color:#000; background-color:#FFF !important; border:1px solid #000; margin-top:
     border-radius: 12px 0 0 12px;
 }
 
-#iptv_list .btn-success, #iptv_list_move .btn-success {
+#iptv_list .btn-success, #iptv_list_move .btn-success, #iptv_list_move .DTTT_button_print, {
     background-color: #0F9C16;
 }
 
@@ -2995,6 +3015,10 @@ color:#747474;
 	}
 .dataTables_filter {position: absolute; 
     top: 0px; right:74px; 
+z-index:320;
+    }
+	.DDDP  {position: absolute; 
+    top: 0px; right:344px; 
 z-index:320;
     }
 
@@ -3388,7 +3412,7 @@ width: 40px;
 	
 
 }
-#datatable-1 a.dropdown-toggle {display:none;}
+#datatable-1 a.dropdown-toggle {display:none; float:right;}
 #datatable-1 tr:hover a.dropdown-toggle,#datatable-1 td:hover a.dropdown-toggle {
     display:    block; 
 }
@@ -3627,7 +3651,7 @@ table.dataTable tbody th, table.dataTable tbody td {padding:5px 0px 5px 12px !im
 table.dataTable thead th,
 table.dataTable thead td {
   padding: 4px 1px 4px 12px !important;
-  border-bottom: 1px solid #E3E3E3 !important;
+  border-bottom: 1px solid #FFF !important;
 }
 table.dataTable tfoot th,
 table.dataTable tfoot td {
@@ -3754,4 +3778,5 @@ li[data-filter='operations']{
 
 #cover_container > a:last-of-type span{
     vertical-align: middle;
-}
+}	
+

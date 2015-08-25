@@ -27,7 +27,7 @@
                                         <!-- Start: list_row -->
                                         {% for item in app.allAudioLanguages %}
                                             <tr data-languagesid="{{ item.id }}">
-                                                <td><a href="#">{{ item.name }}</a></td>
+                                                <td><a  href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-audio-languages" data-languagesid="{{ item.id }}" id="edit_audio_languages_{{ item.id }}">{{ item.name }}</a></td>
                                                 <td>
                                                     <div class="col-xs-3 col-sm-8">
                                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">

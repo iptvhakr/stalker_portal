@@ -905,10 +905,11 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
             Mysql::getInstance()->update('users',
                 array(
-                    'mac'        => $this->mac,
-                    'name'       => substr($this->mac, 12, 16),
-                    'device_id'  => $device_id,
-                    'device_id2' => $device_id2
+                    'mac'          => $this->mac,
+                    'name'         => substr($this->mac, 12, 16),
+                    'device_id'    => $device_id,
+                    'device_id2'   => $device_id2,
+                    'access_token' => $this->access_token
                 ),
                 array(
                     'login' => $login

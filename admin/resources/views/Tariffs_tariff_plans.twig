@@ -11,15 +11,13 @@
         </div>
 
         <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="">
                 <div class="box">
                     {% if attribute(app, 'dropdownAttribute') is defined %}
                     {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
                     {% endif %}
                     <div class="box-content">
                         <div class="box-content no-padding">
-                            <div class="row">
-                                <div class="">
                                     <div class="dataTables_processing"></div>
                                     <table class="table  table-hover table-datatable" id="datatable-1">
                                         <thead>
@@ -63,8 +61,6 @@
                                             <!-- End: list_row -->
                                         </tbody>
                                     </table>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>

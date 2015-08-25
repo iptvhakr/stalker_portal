@@ -5,7 +5,7 @@
 
 {% block content %}
     <div id="iptv_list">
-        <div class="row2">
+        <div class="row row_no_padding">
             {% if attribute(app, 'allData') is defined %}
                 {% for row in app['allData'] %}
                     <div class="col-xs-4 col-sm-4 "><h4>{{ row['title'] }}</h4>
