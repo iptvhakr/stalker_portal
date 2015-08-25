@@ -27,7 +27,7 @@
                                         <!-- Start: list_row -->
                                         {% for item in app.allAudioGenres %}
                                             <tr data-genresid="{{ item.id }}">
-                                                <td><a href="#">{{ item.name }}</a></td>
+                                                <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-audio-genres" data-genresid="{{ item.id }}" id="edit_audio_genres_{{ item.id }}">{{ item.name }}</a></td>
                                                 <td>
                                                     <div class="col-xs-3 col-sm-8">
                                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">

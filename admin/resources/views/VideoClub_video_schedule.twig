@@ -33,7 +33,7 @@
                                         <!-- Start: list_row -->
                                         {% for item in app.allTasks %}
                                             <tr data-videoid="{{ item.video_id }}">
-                                                <td data-filter="task_added">{{ item.task_added|date('Y-m-d') }}</td>
+                                                <td data-filter="task_added">{{ item.task_added|date('M d, Y') }}</td>
                                                 <td data-filter="name"><a href="video-club/edit-video?id={{ item.video_id }}" data-fieldname="name">{{ item.name }}</a></td>
                                                 <td data-filter="o_name">{{ item.o_name }}</td>
                                                 <td data-filter="time">{{ item.time }}</td>
@@ -94,7 +94,8 @@
                 "aoColumnDefs": [
                     { "searchable": false },
                     { "targets": [ 3 ], "visible": false},
-                    { "targets": [ -1 , 6], "orderable": false}
+                    { "targets": [ -1 , 6], "orderable": false},
+					 { "width": "16px", "targets": [ -1] }
                 ]
             }).prev('.dataTables_processing').hide('');
         }
@@ -194,13 +195,28 @@
 
         function setEnableDatePicker(obj) {
             $('#modalbox').find('.modal-header-name span').text("{{ 'Schedule switch on'|trans }}");
-            $('#modalbox').find('.devoops-modal-inner')
-                    .append("<input type='hidden' name='link_id' value='" + obj.data('videoid') + "'>")
-                    .append("<input type='text' class='datepicker col-sm-12' data-date-format='dd-mm-yy' name='video_on_date' value='"+ obj.data('curr_on_date') +"'>");
-            $('#modalbox').find('.devoops-modal-bottom')
-                    .append('<button class="btn btn-default col-sm-4 pull-left" type="reset" id="reset_enable_date">{{ 'Cancel'|trans }}</button>')
-                    .append('<button class="btn btn-success col-sm-4 pull-right" type="submit" id="apply_enable_date">{{ 'Switch on'|trans }}</button>');
-            $('#modalbox').find('.devoops-modal').width(350);
+			 $('#modalbox').find('.devoops-modal-inner').html('\n\
+                <div class="box-content">\n\
+                    <form class="form-horizontal" role="form">\n\
+                        <div class="form-group">\n\
+                            <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Schedule switch on'|trans }}</label>\n\
+                            <div class="col-xs-10 col-sm-8">\n\
+                                <span class="col-xs-8 col-sm-8">\n\
+                                   <input type="hidden" name="link_id" value="' + obj.data('videoid') + '">\n\
+                                   <input type="text" class="form-control own_fields datepicker col-sm-12" data-date-format="dd-mm-yy" value="'+ obj.data('curr_on_date') +'" name="video_on_date">\n\
+                                    <div class="bg-danger"></div>\n\
+                                </span>\n\
+                            </div>\n\
+                        </div>\n\
+                    </form>\n\
+                </div>');
+           
+           $('#modalbox').find('.devoops-modal-bottom').html('<div class="pull-right no-padding">&nbsp;</div>\n\
+                        <div class="pull-right no-padding">\n\
+                            <button type="submit" id="apply_enable_date" class="btn btn-success  pull-right">{{ 'Publish'|trans }}</button>\n\
+                            <button type="reset" id="reset_enable_date" class="btn btn-default pull-right" >{{ 'Cancel'|trans }}</button>\n\
+                        </div>');
+           
             $(".datepicker").datepicker({
                 language: 'ru',
                 dateFormat: 'dd-mm-yy',

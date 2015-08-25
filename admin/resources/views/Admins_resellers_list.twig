@@ -98,7 +98,7 @@
                 </div>
             </div>
             <form class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/resellers-save">
-                <div class="devoops-modal-inner" style="height: 220px;">
+                <div class="devoops-modal-inner">
                     <div class="box">
                         <div class="box-content">
                             <!-- singer -->
@@ -115,7 +115,7 @@
                                 <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Maximum number of users'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-10">
-                                        <input type="text" required="required" name="max_users" data-validation=required class='form-control own_fields'>
+                                        <input type="text" required="required" name="max_users" class='form-control own_fields'>
                                     </div>
                                     <span class="help-inline col-xs-10 col-sm-10">
                                         <span class="txt-default">{{ 'Maximum number of users for current reseller. Set \'0\' for unlimited number of users.'|trans }}</span>
@@ -130,8 +130,8 @@
                         <div class="box-content">
                             <div class="row">
                                 <div class="col-xs-10 col-sm-6 pull-right">
-                                    <button type="submit" class="btn btn-success col-sm-5 pull-right">{{ 'Save'|trans }}</button>
-                                    <button type="reset" class="btn btn-default col-sm-5 pull-left" id="form_reset"> {{ 'Cancel'|trans }} </button>
+                                      <button type="submit" class="btn btn-success col-sm-5 pull-right">{{ 'Save'|trans }}</button>
+                                    <button type="reset" class="btn btn-default col-sm-5 pull-left" > {{ 'Cancel'|trans }} </button>
                                 </div>
                             </div>
                         </div>
@@ -257,8 +257,11 @@
                 });
 
                 $(document).on('click', "#modalbox_ad button[type='submit'], #modalbox button[type='submit']", function (e) {
+				
+				
                     var _this = $(this);
-
+$.validate({
+                        onSuccess: function () {
                     e.stopPropagation();
                     e.preventDefault();
                     var sendData = new Object();
@@ -272,7 +275,8 @@
                     JSshowModalBox();
                     ajaxPostSend(action, sendData, false, false);
                     return false;
-
+  }
+                    });
                 });
 
                 $("#add_reseller").on("click", function (e) {
@@ -297,7 +301,7 @@
                             <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Reseller name'|trans }}</label>\n\
                             <div class="col-xs-10 col-sm-8">\n\
                                 <span class="col-xs-12 col-sm-12">\n\
-                                    <input type="hidden" class="own_fields" name="source_id" value="'+ $(this).data('id') + '">\n\
+                                    <input type="hidden" class="own_fields" data-validation=required  name="source_id" value="'+ $(this).data('id') + '">\n\
                                     <select class="own_fields" name="target_id" id="target_reseller">\n\
                     {% if attribute(app, 'allData') is defined %}
                         {% for row in app.allData %}
@@ -313,7 +317,7 @@
                     $('#modalbox').find('.devoops-modal-bottom').html('<div class="pull-right no-padding">&nbsp;</div>\n\
                         <div class="pull-right no-padding">\n\
                             <button type="submit" class="btn btn-success pull-right">{{ 'Move'|trans }}</button>\n\
-                            <button type="reset" class="btn btn-default pull-right" >{{ 'Cancel'|trans }}</button>\n\
+                            <button type="reset" id="form_reset" class="btn btn-default pull-right" >{{ 'Cancel'|trans }}</button>\n\
                         </div>');
 
                     $("#target_reseller").select2("destroy");
