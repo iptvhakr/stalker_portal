@@ -71,6 +71,7 @@ class RESTApiTvChannelRecord extends RESTApiController
         }
 
         if ($end_time){
+            sleep(1); // give some time to dumpstream to startup
             $recorder = new \StreamRecorder();
             $recorder->stopDeferred($rec_id, ceil(($end_time - $now_time)/60));
         }

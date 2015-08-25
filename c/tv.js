@@ -410,6 +410,7 @@
                     this.del_quick_go_ch();
                 }else if (stb.profile['play_in_preview_only_by_ok']){
                     this.hide(true);
+                    main_menu.show();
                 }
             }).bind(key.BACK, this);
             

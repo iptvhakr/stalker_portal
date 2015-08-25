@@ -8,27 +8,28 @@ var MediaPlayer = new CPage();
 
 // получение переменных среды
 var environment = (function () {
-	var varList = ["lang_audiotracks", "audio_initial_volume", "graphicres",
-			"subtitles_on", "lang_subtitles", "language", "subtitles_on"],
+	var varList = ['lang_audiotracks', 'audio_initial_volume', 'graphicres',
+			'subtitles_on', 'lang_subtitles', 'language', 'subtitles_on', 'hdmi_event_delay'],
 		query = '{"varList":["' + varList.join('","') + '"]}', environment, prevPlayerVolume;
 	try {
 		environment = JSON.parse(gSTB.GetEnv(query)).result;
-		if ( !environment.lang_audiotracks ) environment.lang_audiotracks = DEFAULT_AUDIO_LANG_1_IDX;
-		if ( environment.subtitles_on == "true" ) {
-			if ( !environment.lang_subtitles ) environment.lang_subtitles = DEFAULT_SUBTITLE_LANG_1_IDX;
+		if ( !environment.lang_audiotracks ) {environment.lang_audiotracks = 1;}  // DEFAULT_AUDIO_LANG_1_IDX = 1,
+		if ( environment.subtitles_on === 'true' ) {
+			if ( !environment.lang_subtitles ) {environment.lang_subtitles = 0;}   // DEFAULT_SUBTITLE_LANG_1_IDX = 0,
 		} else {
 			environment.lang_subtitles = -1;
 		}
-		environment.subtitles_on = environment.subtitles_on == "true";
+		environment.subtitles_on = environment.subtitles_on === 'true';
 		prevPlayerVolume = gSTB.GetVolume();
 		if ( prevPlayerVolume >= 0 && prevPlayerVolume <= 100 ) {
 			volume.currVol = prevPlayerVolume;
 		} else if ( environment.audio_initial_volume && environment.audio_initial_volume >= 0 && environment.audio_initial_volume <= 100 ) {
-			volume.currVol = environment.audio_initial_volume
+			volume.currVol = environment.audio_initial_volume;
 		}
 	} catch ( e ) {
 		echo(e, "Environment load");
 	}
+	environment.hdmi_event_delay = Number(environment.hdmi_event_delay);
 	return environment;
 })();
 
@@ -451,20 +452,20 @@ MediaPlayer.EventHandler = function(e){
 			this.setPosTime("9");
             break;
         case KEYS.F2:
-            if (this.list.length > 1) {
-                if (this.playListShow && this.infoFlag) {
+			if ( this.list.length > 1 ) {
+				if ( this.playListShow && this.infoFlag ) {
 					this.playListShow = false;
 					this.handle.querySelector('#playerHideplist').innerHTML = lang.playerBtnF2sh;
 					this.$PlayerList.style.display = "none";
-                } else {
+				} else {
 					this.playListShow = true;
 					this.handle.querySelector('#playerHideplist').innerHTML = lang.playerBtnF2hd;
 					this.showInfo(true);
 					this.$PlayerList.style.display = "block";
 					this.PlayList.Refresh();
 					this.PlayList.SetPosition(this.PlayList.Current(), true, true);
-                }
-            }
+				}
+			}
             break;
         default : 
             e.preventDefault();
@@ -794,12 +795,47 @@ MediaPlayer.event = function ( e, info ) {
 		case 7:   // Detected information about video content.
 		case 8:   // Error occurred while loading external subtitles.
 		case 9:   // STB EVENT TRACKS INFO UPDATED
-		case 32:  // connect HDMI device
-		case 33:  // disconnect HDMI device
+		case 32: // connect HDMI device
+			clearTimeout(standBy.standByOnTimer);
+			clearTimeout(standBy.standByOffTimer);
+			if ( gSTB.GetStandByStatus() && environment.hdmi_event_delay ) {
+				standBy.standByOffTimer = setTimeout(function () {
+					standBy.toggleMode();
+				}, environment.hdmi_event_delay * 1000);
+			}
+			break;
+		case 33: // disconnect HDMI device
+			clearTimeout(standBy.standByOnTimer);
+			clearTimeout(standBy.standByOffTimer);
+			if ( !gSTB.GetStandByStatus() && environment.hdmi_event_delay ) {
+				standBy.standByOnTimer = setTimeout(function () {
+					standBy.toggleMode();
+				}, environment.hdmi_event_delay * 1000);
+			}
+			break;
 		case 35:
 		case 34:
 			break;
 	}
+};
+
+var standBy = {
+	toggleMode  : function () {
+		this.status = !this.status;
+		if ( this.status ) {
+			if ( currCPage === MediaPlayer ) { MediaPlayer.playPause(); } // pause video
+			gSTB.SetLedIndicatorMode(1);
+			gSTB.StandBy(true);
+		} else {
+			gSTB.SetLedIndicatorMode(2);
+			gSTB.StandBy(false);
+			if ( currCPage === MediaPlayer ) { MediaPlayer.playPause(); } // resume video
+			if ( currCPage === MainPage && MainPage.newsList.isActive ) { MainPage.typeList.Activate(true); } // activate main page
+		}
+	},
+	status      : false,
+	standByOnTimer: 0,
+	standByOffTimer: 0
 };
 
 MediaPlayer.aspect = function () {

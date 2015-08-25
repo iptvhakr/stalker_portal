@@ -258,7 +258,13 @@ CScrollList.prototype.SetPosition = function ( item, makeFocused, manageFocus ) 
 		if ( manageFocus === undefined ) { manageFocus = this.manageFocus; }
 		this.Focused(item || this.FindOne(), true, manageFocus);
 	}
-	if ( this.activeItem !== null ) {
+	if ( this.activeItem !== null) {
+		if ( !this.itemHeight || !this.itemsPerPage ) {
+			// check if there is page items amount available, calculate otherwise
+			if ( this.itemsPerPage === 0 && this.handleInner.firstChild !== null ) {this.itemsPerPage = Math.round(this.handleInner.offsetHeight / this.handleInner.firstChild.offsetHeight);}
+			// check if there is page items amount available, calculate otherwise
+			if ( this.itemHeight === 0 && this.handleInner.firstChild !== null ) {this.itemHeight = this.handleInner.firstChild.offsetHeight;}
+		}
 		index = this.activeItem.offsetTop / this.itemHeight;
 		page = Math.floor(index / this.itemsPerPage);
 		// different methods to scroll
@@ -568,9 +574,9 @@ CScrollList.prototype.Next = function ( filter, reverse, nskip ) {
  */
 CScrollList.prototype.EventHandler = function ( event, filter ) {
 	// check if there is page items amount available, calculate otherwise
-	if ( this.itemsPerPage === 0 && this.handleInner.firstChild !== null ) this.itemsPerPage = Math.round(this.handleInner.offsetHeight / this.handleInner.firstChild.offsetHeight);
+	if ( this.itemsPerPage === 0 && this.handleInner.firstChild !== null ) {this.itemsPerPage = Math.round(this.handleInner.offsetHeight / this.handleInner.firstChild.offsetHeight);}
 	// check if there is page items amount available, calculate otherwise
-	if ( this.itemHeight === 0 && this.handleInner.firstChild !== null ) this.itemHeight = this.handleInner.firstChild.offsetHeight;
+	if ( this.itemHeight === 0 && this.handleInner.firstChild !== null ) {this.itemHeight = this.handleInner.firstChild.offsetHeight;}
 	//echo(this.handleInner.offsetHeight, 'this.handleInner.offsetHeight');
 	//echo(this.itemsPerPage, 'this.itemsPerPage');
 	//echo(this.itemHeight, 'this.itemHeight');
@@ -620,9 +626,9 @@ CScrollList.prototype.EventHandler = function ( event, filter ) {
 			} else if ( this.scrollMode === 2 ) {
 				// shift by pages (quick and low resources)
 				if ( event.code === KEYS.UP ) {
-					if ( this.activeItem.offsetTop === this.handleInner.scrollTop ) this.handleInner.scrollTop = this.handleInner.scrollTop - this.itemsPerPage * this.itemHeight;
+					if ( this.activeItem.offsetTop === this.handleInner.scrollTop ) {this.handleInner.scrollTop = this.handleInner.scrollTop - this.itemsPerPage * this.itemHeight;}
 				} else {
-					if ( this.activeItem.offsetTop - this.handleInner.scrollTop === (this.itemsPerPage-1) * this.itemHeight ) this.handleInner.scrollTop = this.handleInner.scrollTop + this.itemsPerPage * this.itemHeight;
+					if ( this.activeItem.offsetTop - this.handleInner.scrollTop === (this.itemsPerPage-1) * this.itemHeight ) {this.handleInner.scrollTop = this.handleInner.scrollTop + this.itemsPerPage * this.itemHeight;}
 				}
 			}
 			echo(this.handleInner.scrollTop, 'this.handleInner.scrollTop');

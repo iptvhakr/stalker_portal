@@ -37,12 +37,6 @@ function CModal ( parent ) {
 
 	this.focusList = [];
 	this.focusPos = 0;
-
-	/**
-	 * default icon images path
-	 * @type {String}
-	 */
-	//this.imgPath = '/home/web/public/img/' + screen.width;
 }
 
 // extending
@@ -58,9 +52,9 @@ CModal.prototype.Init = function ( body ) {
 	// parent call init with placeholder
 	CPage.prototype.Init.call(this,
 		element('div', {className: 'cmodal-main'},
-			element('div', {className:'cmodal-cell'},
+			element('div', {className: 'cmodal-cell'},
 				body
-	)));
+			)));
 	// get the node to append to
 	(this.parent && this.parent.handle && this.parent.handle.nodeName ? this.parent.handle : document.body).appendChild(this.handle);
 };
@@ -100,16 +94,16 @@ CModal.prototype.Show = function ( visible, manageFocus ) {
 CModal.prototype.FocusPrev = function ( event, manageVK ) {
 	if ( this.focusList.length > 0 ) {
 		// cycling the index
-		if ( --this.focusPos < 0 ) this.focusPos = this.focusList.length-1;
+		if ( --this.focusPos < 0 ) {this.focusPos = this.focusList.length - 1;}
 		// get the next html element in the list
 		var el = this.focusList[this.focusPos];
-		if ( manageVK !== false ) gSTB.HideVirtualKeyboard();
+		if ( manageVK !== false ) {gSTB.HideVirtualKeyboard();}
 		// set focus
 		el.focus();
 		// skip looping select options elements
 		if ( el.nodeName !== 'SELECT' ) {
 			event.preventDefault();
-			if ( manageVK !== false ) gSTB.ShowVirtualKeyboard();
+			if ( manageVK !== false ) {gSTB.ShowVirtualKeyboard();}
 		}
 	}
 };
@@ -121,16 +115,16 @@ CModal.prototype.FocusPrev = function ( event, manageVK ) {
 CModal.prototype.FocusNext = function ( event, manageVK ) {
 	if ( this.focusList.length > 0 ) {
 		// cycling the index
-		if ( ++this.focusPos >= this.focusList.length ) this.focusPos = 0;
+		if ( ++this.focusPos >= this.focusList.length ) {this.focusPos = 0;}
 		// get the next html element in the list
 		var el = this.focusList[this.focusPos];
-		if ( manageVK !== false ) gSTB.HideVirtualKeyboard();
+		if ( manageVK !== false ) {gSTB.HideVirtualKeyboard();}
 		// set focus
 		el.focus();
 		// skip looping select options elements
 		if ( event && el.nodeName !== 'SELECT' ) {
 			event.preventDefault();
-			if ( manageVK !== false ) gSTB.ShowVirtualKeyboard();
+			if ( manageVK !== false ) {gSTB.ShowVirtualKeyboard();}
 		}
 	}
 };
@@ -160,19 +154,19 @@ function CModalBox ( parent ) {
 	 * html element for window title
 	 * @type {Node}
 	 */
-	this.header = element('div', {className:'cmodal-header'});
+	this.header = element('div', {className: 'cmodal-header'});
 
 	/**
 	 * html element for window main content
 	 * @type {Node}
 	 */
-	this.content = element('div', {className:'cmodal-content'});
+	this.content = element('div', {className: 'cmodal-content'});
 
 	/**
 	 * html element for window bottom panel
 	 * @type {Node}
 	 */
-	this.footer = element('div', {className:'cmodal-footer'});
+	this.footer = element('div', {className: 'cmodal-footer'});
 }
 
 // extending
@@ -198,7 +192,7 @@ CModalBox.prototype.SetData = function ( place, data ) {
 		place.innerHTML = data;
 	}
 	// make sure it visible
-	if ( data && data.nodeName ) data.style.display = 'block';
+	if ( data && data.nodeName ) {data.style.display = 'block';}
 	// show if there is some data
 	place.style.display = data ? 'block' : 'none';
 	return place;
@@ -210,7 +204,7 @@ CModalBox.prototype.SetData = function ( place, data ) {
  * @param {Node|Array|String} [data] some data to set
  * @return {Node} updated placeholder
  */
-CModalBox.prototype.SetHeader  = function ( data ) { return this.SetData(this.header, data); };
+CModalBox.prototype.SetHeader = function ( data ) { return this.SetData(this.header, data); };
 
 
 /**
@@ -226,21 +220,21 @@ CModalBox.prototype.SetContent = function ( data ) { return this.SetData(this.co
  * @param {Node|Array|String} [data] some data to set
  * @return {Node} updated placeholder
  */
-CModalBox.prototype.SetFooter  = function ( data ) { return this.SetData(this.footer, data); };
+CModalBox.prototype.SetFooter = function ( data ) { return this.SetData(this.footer, data); };
 
 
 /**
  * Prepare html and all placeholders
  */
-CModalBox.prototype.Init = function ( ) {
+CModalBox.prototype.Init = function () {
 	// parent call init with placeholder
 	CModal.prototype.Init.call(this,
-		element('div', {className:'cmodal-body'}, [
-			this.header,
-			this.content,
-			this.footer
-		]
-	));
+		element('div', {className: 'cmodal-body'}, [
+				this.header,
+				this.content,
+				this.footer
+			]
+		));
 };
 
 
@@ -278,7 +272,7 @@ function CModalHint ( parent, data, time ) {
 		this.SetFooter();
 
 		// free resources on hide
-		this.onHide = function(){
+		this.onHide = function () {
 			self.Free();
 		};
 
@@ -288,7 +282,7 @@ function CModalHint ( parent, data, time ) {
 
 		if ( time ) {
 			// hide in some time
-			this.timer = setTimeout(function(){
+			this.timer = setTimeout(function () {
 				self.Show(false);
 			}, time || 5000);
 		}
@@ -332,7 +326,7 @@ function CModalAlert ( parent, title, data, btnExitTitle, btnExitClick ) {
 
 		this.bpanel = new CButtonPanel();
 		this.bpanel.Init(CMODAL_IMG_PATH);
-		this.bpanel.Add(KEYS.EXIT, 'ico_exit.png', btnExitTitle || "", function(){
+		this.bpanel.Add(KEYS.EXIT, useNewIcons ? 'new/exit2.png' : 'ico_exit.png', btnExitTitle || "", function () {
 			if ( btnExitClick instanceof Function ) btnExitClick.call(self);
 			// hide and destroy
 			self.Show(false);
@@ -344,19 +338,16 @@ function CModalAlert ( parent, title, data, btnExitTitle, btnExitClick ) {
 		this.SetFooter(this.bpanel.handle);
 
 		// free resources on hide
-		this.onHide = function(){
+		this.onHide = function () {
 			elclear(self.bpanel.handle);
 			delete self.bpanel;
-			//self.Dispatch(false);
 			self.Free();
 		};
 
 		// forward events to button panel
 		this.EventHandler = function ( e ) {
-			if ( !eventPrepare(e, true, 'CModalAlert') ) return;
-
+			if ( !eventPrepare(e, true, 'CModalAlert') ) {return;}
 			self.bpanel.EventHandler(e);
-			//e.preventDefault();
 		};
 
 		// build and display
@@ -366,7 +357,6 @@ function CModalAlert ( parent, title, data, btnExitTitle, btnExitClick ) {
 }
 
 // extending
-//extend(CModalAlert, CModalBox);
 CModalAlert.prototype = Object.create(CModalBox.prototype);
 CModalAlert.prototype.constructor = CModalAlert;
 
@@ -401,7 +391,7 @@ function CModalConfirm ( parent, title, data, btnExitTitle, btnExitClick, btnF2T
 	var self = this;
 
 	// additional button
-	this.bpanel.Add(KEYS.OK, 'ico_ok.png', btnF2Title, function(){
+	this.bpanel.Add(KEYS.OK, 'ico_ok.png', btnF2Title, function () {
 		// hide and destroy
 		self.Show(false);
 
@@ -418,259 +408,9 @@ function CModalConfirm ( parent, title, data, btnExitTitle, btnExitClick, btnF2T
 CModalConfirm.prototype = Object.create(CModalAlert.prototype);
 CModalConfirm.prototype.constructor = CModalConfirm;
 
-///////////////////////////////////////////////////////////////////////////////
-
-
-/**
- * Show modal message box with single button Exit
- * @param {CPage|CBase} [parent] object owner (document.body if not set)
- * @param {String} title modal message box caption
- * @param {String} lblUser modal message box text for user name label
- * @param {String} lblPass modal message box text for user pass label
- * @param {String} btnExitTitle exit button caption
- * @param {Function} btnExitClick callback on exit button click
- * @param {String} btnF2Title f2 button caption
- * @param {Function} btnF2Click callback on f2 button click
- * @class CModalConfirm
- * @constructor
- */
-function CModalAuth ( parent, title, lblUser, lblPass, btnExitTitle, btnExitClick, btnF2Title, btnF2Click ) {
-	// for limited scopes
-	var self = this;
-
-	var html = element('table', {className:'main maxw'}, [
-		element('tr', {}, [
-			element('td', {className:'name'}, lblUser),
-			element('td', {className:'data'}, this.user = element('input', {type:'text'}))
-		]),
-		element('tr', {}, [
-			element('td', {className:'name'}, lblPass),
-			element('td', {className:'data'}, this.pass = element('input', {type:'text'}))
-		])
-	]);
-
-	this.user.onkeydown = this.pass.onkeydown = function ( event ) {
-		// get real key code or exit
-		if ( !eventPrepare(event, false, 'CModalAuth') ) return;
-		echo('onkeydown');
-		//echo(event.code);
-		switch ( event.code ) {
-			case KEYS.CHANNEL_NEXT: // channel+
-			case KEYS.CHANNEL_PREV: // channel-
-				event.preventDefault(); // to suppress tabbing
-				break;
-			case KEYS.UP: // up
-				self.FocusPrev(event);
-				break;
-			case KEYS.DOWN: // down
-				self.FocusNext(event);
-				break;
-			case KEYS.OK: // enter
-				if ( self.focusPos === 0 ) self.FocusNext(event); else btnF2.data.onclick();
-				break;
-			default:
-				// forward events to button panel
-				//this.bpanel.EventHandler(event);
-		}
-	};
-
-	this.onShow = function(){
-		setTimeout(function(){
-			self.user.focus();
-			gSTB.ShowVirtualKeyboard();
-			//self.FocusPrev();
-		}, 5);
-	};
-
-	// parent constructor
-	CModalAlert.call(this, parent, title, html, btnExitTitle, btnExitClick);
-
-	this.focusList.push(this.user);
-	this.focusList.push(this.pass);
-
-	/**
-	 * The component inner name
-	 * @type {String}
-	 */
-	this.name = "CModalAuth";
-
-	// additional button
-	var btnF2 = this.bpanel.Add(KEYS.F2, 'ico_f2.png', btnF2Title, function(){
-		if ( btnF2Click instanceof Function ) {
-			gSTB.HideVirtualKeyboard();
-			if ( btnF2Click.call(self, self.user.value, self.pass.value) ) {
-				self.Show(false);
-			}
-		}
-	});
-}
-
-// extending
-//extend(CModalAuth, CModalAlert);
-CModalAuth.prototype = Object.create(CModalAlert.prototype);
-CModalAuth.prototype.constructor = CModalAuth;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-
-function CModalFileSelect ( parent, options ) {
-	// parent constructor
-	CModalBox.call(this, parent);
-
-	/*this.content.className = this.content.className + ' cmodal-pls';
-
-	this.name = "CModalFileSelect";
-	this.utf8 = true;
-
-	// for limited scopes
-	var self = this;
-	// callback on F-button click
-	var func = function ( code ) {
-		setTimeout(function(){
-			var data = self.parent.FileList.Current().data;
-			data.code = code;
-			data.utf8 = self.utf8;
-			self.parent.FileList.Open(data);
-		},5);
-		self.Show(false);
-	};
-
-	this.bpanelMain = new CButtonPanel();
-	this.bpanelMain.Init(CMODAL_IMG_PATH);
-	this.bpanelMain.Add(KEYS.F1, 'ico_f1.png', LANG_MEDIA_PLS_OPEN_F1, func);
-	this.bpanelMain.Add(KEYS.F2, 'ico_f2.png', LANG_MEDIA_PLS_OPEN_F2, func);
-	this.bpanelMain.Add(KEYS.F3, 'ico_f3.png', LANG_MEDIA_PLS_OPEN_F3, func);
-
-	this.bpanelBottom = new CButtonPanel();
-	this.bpanelBottom.Init(CMODAL_IMG_PATH);
-	this.bpanelBottom.Add(KEYS.EXIT, 'ico_exit.png', lang.cancel, function(){
-		// hide and destroy
-		self.Show(false);
-	});
-
-	// filling
-	this.SetHeader(LANG_MEDIA_PLS_OPEN_NAME);
-	this.SetContent([
-		element('div', {className:'block'}, [this.swdiv = element('a', {className:'switch on', onclick:function(){
-			self.Switch();
-		}}), LANG_MEDIA_PLS_OPEN_UTF8]),
-		this.bpanelMain.handle
-	]);
-	this.SetFooter(this.bpanelBottom.handle);
-
-	// free resources on hide
-	this.onHide = function(){
-		elclear(self.bpanelMain.handle);
-		elclear(self.bpanelBottom.handle);
-		delete self.bpanelMain;
-		delete self.bpanelBottom;
-		//self.Dispatch(false);
-		self.Free();
-	};
-
-	// invert flag
-	this.Switch = function(){
-		this.utf8 = !this.utf8;
-		this.swdiv.className = this.utf8 ? 'switch on' : 'switch';
-	};
-
-	// forward events to button panel
-	this.EventHandler = function ( e ) {
-		if ( e.code === KEYS.OK ) this.Switch();
-
-		if ( self.bpanelMain ) self.bpanelMain.EventHandler(e);
-		if ( self.bpanelBottom ) self.bpanelBottom.EventHandler(e);
-	};
-
-	// build and display
-	this.Init();
-	this.Show(true);*/
-}
-
-// extending
-//extend(CModalFileSelect, CModalBox);
-CModalFileSelect.prototype = Object.create(CModalBox.prototype);
-CModalFileSelect.prototype.constructor = CModalFileSelect;
-
-///////////////////////////////////////////////////////////////////////////////
-
-
-function CModalCreateGroup( parent, label, text, data,toDelete) {
-	// parent constructor
-	CModalBox.call(this, parent);
-
-	/**
-	 * The component inner name
-	 * @type {String}
-	 */
-	this.name = "CModalCreateGroup";
-
-	// for limited scopes
-	var self = this;
-
-	var html = element('table', {className:'main maxw'}, [
-		element('tr', {}, [
-			element('td', {className:'name'}, text)
-		]),
-		element('tr', {}, [
-			element('td', {className:'data'}, this.local = element('input', {className:'wide',type : "text"}))
-		])
-	]);
-
-	this.bpanel = new CButtonPanel();
-	this.bpanel.Init(CMODAL_IMG_PATH);
-	this.bpanel.Add(KEYS.EXIT, 'ico_exit.png', lang.cancel, function(){
-		// hide and destroy
-		self.Show(false);
-	});
-	this.bpanel.Add(KEYS.F2, 'ico_f2.png', LANG_MEDIA_SAVE_FAVORITES_CONFIRM_OK, function(){
-		if(self.local.value !== ""){
-		self.Show(false);
-                    self.parent.TVList.createGroup(self.local.value,data, toDelete);
-                };
-	});
-
-	// filling
-	this.SetHeader(label);
-	this.SetContent(html);
-	this.SetFooter(this.bpanel.handle);
-
-	this.onShow = function(){
-		self.local.focus();
-	};
-
-	// free resources on hide
-	this.onHide = function(){
-		elclear(self.bpanel.handle);
-		delete self.bpanel;
-		self.Free();
-	};
-
-	// forward events to button panel
-	this.EventHandler = function ( event ) {
-		if ( !eventPrepare(event, true, 'CModalAlert') ) return;
-
-		switch ( event.code ) {
-			case KEYS.CHANNEL_NEXT: // channel+
-			case KEYS.CHANNEL_PREV: // channel-
-				event.preventDefault(); // to suppress tabbing
-				break;
-			default:
-				// forward events to button panel
-				self.bpanel.EventHandler(event);
-		}
-	};
-
-	// build and display
-	this.Init();
-	this.Show(true);
-}
-
-// extending
-//extend(CModalCreateGroup, CModalBox);
-CModalCreateGroup.prototype = Object.create(CModalBox.prototype);
-CModalCreateGroup.prototype.constructor = CModalCreateGroup;
-////////////////////////////////////////////////////////////////////
 
 /**
  * Show dialog bow for a PVR record edit
@@ -729,8 +469,8 @@ function CModalSelectLang ( parent, label, text, data ) {
 	echo(currentData, 'data JSON.parse(LoadUserData("ex.ua.data.json"))');
 
 	// set current lang as default
-	for (var i = 0; i < languages.length; i++) {
-		echo('languages[i].langVal === currentData.contentLang/currentData.interfaceLang=>'+languages[i].langVal + ' === ' + currentData.contentLang + ' / ' + currentData.interfaceLang );
+	for ( var i = 0; i < languages.length; i++ ) {
+		echo('languages[i].langVal === currentData.contentLang/currentData.interfaceLang=>' + languages[i].langVal + ' === ' + currentData.contentLang + ' / ' + currentData.interfaceLang);
 		if ( languages[i].langVal === currentData.contentLang ) { this.$contentLang.SetIndex(i); }
 		if ( languages[i].langVal === currentData.interfaceLang ) { this.$interfaceLang.SetIndex(i); }
 	}
@@ -744,7 +484,7 @@ function CModalSelectLang ( parent, label, text, data ) {
 	this.FocusNext = function ( event, manageVK ) {
 		if ( this.focusList.length > 0 ) {
 			// cycling the index
-			if ( ++this.focusPos >= this.focusList.length ) this.focusPos = 0;
+			if ( ++this.focusPos >= this.focusList.length ) {this.focusPos = 0;}
 			// get the next html element in the list
 			var el = this.focusList[this.focusPos][0];
 			// set focus
@@ -755,7 +495,7 @@ function CModalSelectLang ( parent, label, text, data ) {
 	this.FocusPrev = function ( event, manageVK ) {
 		if ( this.focusList.length > 0 ) {
 			// cycling the index
-			if ( --this.focusPos < 0 ) this.focusPos = this.focusList.length - 1;
+			if ( --this.focusPos < 0 ) {this.focusPos = this.focusList.length - 1;}
 			// get the next html element in the list
 			var el = this.focusList[this.focusPos][0];
 			// set focus
@@ -767,7 +507,7 @@ function CModalSelectLang ( parent, label, text, data ) {
 	this.saveNewLang = function () {
 		echo('saveNewLang');
 		var dataForSaving = {
-			contentLang: self.$contentLang.GetSelected().langVal,
+			contentLang  : self.$contentLang.GetSelected().langVal,
 			interfaceLang: self.$interfaceLang.GetSelected().langVal
 		};
 		gSTB.SaveUserData('ex.ua.data.json', JSON.stringify(dataForSaving));
@@ -777,7 +517,7 @@ function CModalSelectLang ( parent, label, text, data ) {
 
 	this.bpanel = new CButtonPanel();
 	this.bpanel.Init(CMODAL_IMG_PATH);
-	this.bpanel.Add(KEYS.EXIT, 'ico_exit.png', lang.cancel, function () {
+	this.bpanel.Add(KEYS.EXIT, useNewIcons ? 'new/exit2.png' : 'ico_exit.png', lang.cancel, function () {
 		self.Show(false);
 	});
 	this.bpanel.Add(KEYS.OK, 'ico_ok.png', lang.apply, function () {
@@ -803,7 +543,7 @@ function CModalSelectLang ( parent, label, text, data ) {
 	// forward events to button panel
 	this.EventHandler = function ( event ) {
 		echo('modal eventhandler');
-		if ( !eventPrepare(event, true, 'CModalAlert') ) return;
+		if ( !eventPrepare(event, true, 'CModalAlert') ) {return;}
 		switch ( event.code ) {
 			case KEYS.CHANNEL_NEXT: // channel+
 			case KEYS.CHANNEL_PREV: // channel-

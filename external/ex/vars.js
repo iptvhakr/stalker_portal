@@ -1,6 +1,6 @@
-var version,
+
 // Типы узлов
-	TYPE_NONE = 0,
+var TYPE_NONE = 0,
 	ROOT_VIDEO = 1,
 	ROOT_AUDIO = 2,
 	ROOT_IMAGE = 3,
@@ -30,9 +30,6 @@ var version,
 		{label: 'Українська', id: 2, langVal: 'uk'}
 	],
 	deviceProxy = '',
-	DEFAULT_AUDIO_LANG_1_IDX = 1,
-	DEFAULT_SUBTITLE_LANG_1_IDX = 0,
-	standby,
 	currCPage,
 	exURL = 'http://www.ex.ua',
 	type_focus_timer = 0,
@@ -43,6 +40,7 @@ var version,
 	pauseData = {curTime: 0, fileLength: 0, paused: false, audioTrack: 0}, // use it to restore player position after disconnection from server
 	MAX_READABLE_IMAGE_WEIGHT = 500000,  // file size in bytes
 	oldSystemType = true,
+	useNewIcons = false,
 	typeInfo,
 	mainPageMenu,
 	volume = {currVol: 50, step: 5, muted: false, timerId: null, timeout: 2000};
