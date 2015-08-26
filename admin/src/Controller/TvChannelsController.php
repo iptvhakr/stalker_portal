@@ -767,7 +767,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $error = $this->setlocalization('Failed');
         $check = $this->db->getTvGenresList(array(
             'select'=>array('*'),
-            'where' => array('title' => $this->postData['title']),
+            'where' => array(' BINARY title' => $this->postData['title']),
             'order' => array('title' => 'ASC'),
             'like' => array()
         ));
@@ -815,7 +815,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $error = $this->setlocalization('Name already used');
         if ($this->db->getTvGenresList(array(
             'select'=>array('*'),
-            'where' => array('title' => $this->postData['title']),
+            'where' => array(' BINARY title' => $this->postData['title']),
             'order' => array('title' => 'ASC'),
             'like' => array()
         ))) {
