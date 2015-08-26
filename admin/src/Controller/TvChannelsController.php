@@ -891,7 +891,6 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         if (empty($this->channeLinks)) {
             $this->channeLinks = (!empty($this->oneChannel['cmd']) ? array($this->oneChannel['cmd']) : array(''));
         }
-
         $this->streamServers = $this->db->getAllStreamServer();
         while (list($key, $row) = each($this->channeLinks)) {
             foreach ($this->broadcasting_keys as $b_key => $value) {
@@ -1065,9 +1064,8 @@ class TvChannelsController extends \Controller\BaseStalkerController {
     private function dataPrepare(&$data) {
 
         while (list($key, $row) = each($data)) {
-
             if (is_array($row)) {
-                $this->dataPrepare($row);
+                $this->dataPrepare($data[$key]);
 //                $data[$key] = $row;
             } elseif ($row == 'on') {
                 $data[$key] = 1;
@@ -1082,7 +1080,6 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $links = array();
 
         foreach ($urls as $key => $value) {
-
             if (empty($value)) {
                 continue;
             }
@@ -1128,7 +1125,12 @@ class TvChannelsController extends \Controller\BaseStalkerController {
 
             if ($form->isValid()) {
                 $this->dataPrepare($data);
-
+                if (empty($data['cmd'])) {
+                    $error_local['cmd'] = $this->setlocalization('Requires at least one link of broadcast');
+                    $this->app['error_local'] = $error_local;
+                    return FALSE;
+                }
+                
                 if (!$is_repeating_name && !$is_repeating_number) {
                     $ch_id = $this->db->$operation($data);
                 } else {
@@ -1152,7 +1154,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                         $this->db->updateLogoName($ch_id, "$ch_id.$ext");
                     }
                 }
-
+               
                 $this->setDBLincs($ch_id, $data);
                 $this->createTasks($ch_id, $data);
                 $this->setAllowedStoragesForChannel($ch_id, $data);
