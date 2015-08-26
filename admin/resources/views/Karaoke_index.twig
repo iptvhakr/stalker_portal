@@ -35,7 +35,9 @@
                                         <td>{{ item.added|date('M d, Y') }}</td>
                                         <td>{{ item.protocol }}</td>
                                         <td>
-                                            {% if item.rtsp_url|length > 0 %}{% elseif not(item.protocol == 'custom') %}
+                                            {% if item.rtsp_url|length > 0 %}
+                                                {{ item.rtsp_url }}
+                                            {% elseif not(item.protocol == 'custom') %}
                                                 <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/check-karaoke-source' data-karaokeid='{{ item.id }}'>{{ 'in storage'|trans }}</a>
                                             {% endif %}
                                         </td>

@@ -118,7 +118,7 @@
                 "columns": [
                     {% if attribute(app, 'dropdownAttribute') is defined%}
                     {% for item in app.dropdownAttribute %}
-                    {"data": "{{ item.name }}"},
+                    {"data": "{{ item.name }}"}{% if not loop.last %},{% endif %}
                     {% endfor %}
                     {% endif %}
                 ],
