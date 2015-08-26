@@ -171,6 +171,9 @@
         var manageChannel = function (obj) {
             $("#modalbox").data('complete', 1);
             $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Done'|trans }}!</span>');
+            setTimeout(function(){
+                window.location.href = "{{ app.request.baseUrl }}/{{ app.controller_alias }}";
+            },1000);
         };
         
         var manageChannelError = function(data){
