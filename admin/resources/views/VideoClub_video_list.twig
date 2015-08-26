@@ -13,7 +13,6 @@
             </div>
         </div>
         <div class="row">
-            {% if app['allVideo'] %}
                 <div class="box">
                     {% if attribute(app, 'dropdownAttribute') is defined %}
                         {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
@@ -26,6 +25,7 @@
                                     {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
                                 {% endif %}
                                 <tbody>
+                            {% if attribute(app, 'allVideo') %}
                                 <!-- Start: list_row -->
                                 {% for item in app.allVideo %}
                                     <tr data-videoid="{{ item.id }}">
@@ -98,12 +98,12 @@
                                     </tr>
                                 {% endfor %}
                                 <!-- End: list_row -->
+                            {% endif %}
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-            {% endif %}
         </div>
     </div>
             

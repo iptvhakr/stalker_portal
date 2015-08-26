@@ -453,7 +453,7 @@ $(document).ready(function () {
     if (tableHeight > height) {
         height = tableHeight;
     }
-    $('.attribute_set').each(function(){
+    $('.attribute_set, [data-tvfilter]').each(function(){
         var newHeight = $(this).position().top + $(this).children('a').height() + $(this).children('ul').height();
         if (newHeight > height) {
             height = newHeight;
@@ -766,7 +766,7 @@ $(document).ready(function () {
         if (window.location.search == '') {
             window.location.href = hrefM + '?' + filter_str;
         } else {
-            var filterRegExp = new RegExp('filters.+?' + filterName + '[^=]*=[^&|^$]*', 'ig');
+            var filterRegExp = new RegExp('filters\\[' + filterName + '[^=]*=[^&|^$]*', 'ig');
             if (filterRegExp.test(hrefM)) {
                 window.location.href = hrefM.replace(filterRegExp, filter_str);
             } else {

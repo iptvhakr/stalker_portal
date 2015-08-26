@@ -795,6 +795,9 @@
                         $(this).closest('.open').removeClass('open');
                     } else {
                         $('div.filter[data-tvfilter="' + $(this).val() + '"]').remove();
+                        var hrefM = window.location.href;
+                        var filterRegExp = new RegExp('\\&?filters\\[' + $(this).val() + '[^=]*=[^&|^$]*', 'ig');
+                        window.location.href = hrefM.replace(filterRegExp, '').replace('?&', '?').replace('&&', '&');
                     }
                 });
 
