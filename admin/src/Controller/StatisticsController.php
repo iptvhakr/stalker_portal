@@ -415,6 +415,7 @@ class StatisticsController extends \Controller\BaseStalkerController {
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         
         while (list($num, $row) = each($response["data"])){
+            $row['title'] = $this->mb_ucfirst($row['title']);
             if ($func_alias == 'Genre'){
                 if ($row['total_movies'] == 0){
                     $response["data"][$num]['ratio'] = 0;

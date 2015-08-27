@@ -487,4 +487,22 @@ class BaseStalkerController {
         }
         return $return;
     }
+
+    protected function mb_ucfirst($str) {
+        $fc = mb_strtoupper(mb_substr($str, 0, 1, 'UTF-8'), 'UTF-8');
+        return $fc.mb_substr($str, 1, NULL, 'UTF-8');
+    }
+
+    protected function getUCArray($array = array(), $field = ''){
+        reset($array);
+        while(list($key, $row) = each($array)){
+            if (!empty($field)) {
+                $row[$field] = $this->mb_ucfirst($row[$field]);
+            } else {
+                $row = $this->mb_ucfirst($row);
+            }
+            $array[$key] = $row;
+        }
+        return $array;
+    }
 }

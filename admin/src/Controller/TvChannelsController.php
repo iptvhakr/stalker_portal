@@ -85,6 +85,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             reset($allChannels);
             while (list($num, $row) = each($allChannels)) {
                 $allChannels[$num]['logo'] = $this->getLogoUriById(FALSE, $row, 120);
+                $allChannels[$num]['genres_name'] = $this->mb_ucfirst($allChannels[$num]['genres_name']);
                 if ($monitoring_status = $this->getMonitoringStatus($row)) {
                     $allChannels[$num]['monitoring_status'] = $monitoring_status;
                 } else {
@@ -93,8 +94,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             }
         }
         $this->app['allChannels'] = $allChannels;
-        $getAllGenres = $this->db->getAllGenres();
-        $this->app['allGenres'] = $this->setLocalization($getAllGenres, 'title');
+        $this->app['allGenres'] = $this->getAllGenres();
 
         $attribute = $this->getIptvListDropdownAttribute();
         $this->checkDropdownAttribute($attribute);
@@ -137,8 +137,8 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
-        $getAllGenres = $this->db->getAllGenres();
-        $this->app['allGenres'] = $this->setLocalization($getAllGenres, 'title');
+
+        $this->app['allGenres'] = $this->getAllGenres();
         $this->app['streamServers'] = $this->db->getAllStreamServer();
         $this->app['channelEdit'] = FALSE;
         $form = $this->buildForm();
@@ -161,8 +161,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
 
         $id = ($this->method == 'POST' && !empty($this->postData['form']['id'])) ? $this->postData['form']['id'] : $this->data['id'];
 
-        $getAllGenres = $this->db->getAllGenres();
-        $this->app['allGenres'] = $this->setLocalization($getAllGenres, 'title');
+        $this->app['allGenres'] = $this->getAllGenres();
         $this->app['channelEdit'] = TRUE;
         $this->oneChannel = $this->db->getChannelById($id);
         $this->oneChannel = array_merge($this->oneChannel, $this->getStorages($id));
@@ -1658,5 +1657,13 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             $return .= '</span>';
         }
         return $return;
+    }
+
+    private function getAllGenres(){
+        $getAllGenres = $this->db->getAllGenres();
+        foreach($this->setLocalization($getAllGenres, 'title') as $key=>$row){
+            $getAllGenres[$key]['title'] = $this->mb_ucfirst($row['title']);
+        }
+        return $getAllGenres;
     }
 }

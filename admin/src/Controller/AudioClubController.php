@@ -39,7 +39,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
         }
         
         $allGenre = $this->db->getAllFromTable('audio_genres');
-        $allGenre = $this->setLocalization($allGenre, 'name');
+        $allGenre = $this->getUCArray($this->setLocalization($allGenre, 'name'), 'name');
         $this->app['allAudioGenres'] = $allGenre;
         $this->app['allAudioYears'] = $this->db->getAllFromTable('audio_years');
 
@@ -1187,7 +1187,8 @@ class AudioClubController extends \Controller\BaseStalkerController {
     private function getAlbumsGenreNames(&$data) {
         reset($data);
         while(list($key, $row) = each($data)){
-            $data[$key]['ganre_name'] = implode(', ', $this->setLocalization($this->db->getGenreForAlbum($row['id'], 'name')));
+            $tmp = $this->setLocalization($this->db->getGenreForAlbum($row['id'], 'name'));
+            $data[$key]['ganre_name'] = !empty($tmp) && is_array($tmp) ? implode(', ', $tmp) : '';
         }
     }
     
@@ -1215,6 +1216,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
         $tmp = $this->db->getAudioGenresList($query_param);
         $all_genres = array('0'=>'');
         if (!empty($tmp)) {
+            $tmp = $this->getUCArray($tmp, 'name');
             $all_genres += array_combine($this->getFieldFromArray($tmp, 'id'), $this->getFieldFromArray($tmp, 'name'));
         }
         

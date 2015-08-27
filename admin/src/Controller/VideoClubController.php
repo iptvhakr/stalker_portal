@@ -436,16 +436,16 @@ class VideoClubController extends \Controller\BaseStalkerController {
                 $response['data'][$key]['RowOrder'] = "dTRow_" . $row['id'];
                 $response['data'][$key]['cat_genre'] = array();
                 if (!empty($row['cat_genre_id_1'])) {
-                    $response['data'][$key]['cat_genre'][] = $cat_genres[$row['cat_genre_id_1']];
+                    $response['data'][$key]['cat_genre'][] = $this->mb_ucfirst($cat_genres[$row['cat_genre_id_1']]);
                 }
                 if (!empty($row['cat_genre_id_2'])) {
-                    $response['data'][$key]['cat_genre'][] = $cat_genres[$row['cat_genre_id_2']];
+                    $response['data'][$key]['cat_genre'][] = $this->mb_ucfirst($cat_genres[$row['cat_genre_id_2']]);
                 }
                 if (!empty($row['cat_genre_id_3'])) {
-                    $response['data'][$key]['cat_genre'][] = $cat_genres[$row['cat_genre_id_3']];
+                    $response['data'][$key]['cat_genre'][] = $this->mb_ucfirst($cat_genres[$row['cat_genre_id_3']]);
                 }
                 if (!empty($row['cat_genre_id_4'])) {
-                    $response['data'][$key]['cat_genre'][] = $cat_genres[$row['cat_genre_id_4']];
+                    $response['data'][$key]['cat_genre'][] = $this->mb_ucfirst($cat_genres[$row['cat_genre_id_4']]);
                 }
                 $response['data'][$key]['cat_genre'] = implode(', ', $response['data'][$key]['cat_genre']);
                 $response['data'][$key]['added'] = (int) strtotime($response['data'][$key]['added']) * ($this->isAjax? 1000 : 1);
@@ -1291,8 +1291,8 @@ class VideoClubController extends \Controller\BaseStalkerController {
 
         $add = (array_key_exists('edit', $this->postData) && (strtolower((string)$this->postData['edit']) == 'false' || $this->postData['edit'] === FALSE));
 
-        if ($this->db->getCategoriesGenres(array('where' => array('category_name' => $this->postData['category_name']))) ||
-            ($add ? $this->db->getCategoriesGenres(array('where' => array('category_alias' => $this->transliterate($this->postData['category_name'])))): 0)) {
+        if ($this->db->getCategoriesGenres(array('where' => array(' BINARY category_name' => $this->postData['category_name']))) ||
+            ($add ? $this->db->getCategoriesGenres(array('where' => array(' BINARY category_alias' => $this->transliterate($this->postData['category_name'])))): 0)) {
             $data['chk_rezult'] = $this->setlocalization('Name already used');
         } else {
             $data['chk_rezult'] = $this->setlocalization('Name is available');
@@ -1825,13 +1825,13 @@ class VideoClubController extends \Controller\BaseStalkerController {
 
     private function prepareFormVideoCategories(){
         $videoGenres = $this->db->getVideoGenres();
-        $this->app['videoGenres'] = $this->setLocalization($videoGenres, 'title');
+        $this->app['videoGenres'] = $this->getUCArray($this->setLocalization($videoGenres, 'title'), 'title');
         
         $catGenres = $this->db->getCategoriesGenres();
-        $this->app['catGenres'] = $this->setLocalization($catGenres, 'category_name');
+        $this->app['catGenres'] = $this->getUCArray($this->setLocalization($catGenres, 'category_name'), 'category_name');
         
         $videoCategories = $this->db->getVideoCategories();
-        $this->app['videoCategories'] = $this->setLocalization($videoCategories, 'title');
+        $this->app['videoCategories'] = $this->getUCArray($this->setLocalization($videoCategories, 'title'), 'title');
         
         $this->app['videoEdit'] = FALSE;
         
@@ -2064,6 +2064,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         $all_genre_list = $this->setLocalization($all_genre_list, 'title');
         $return_list = array();
         foreach($all_genre_list as $row){
+            $row["title"] = $this->mb_ucfirst($row["title"]);
             if (array_key_exists($row['title'], $return_list)) {
                 $return_list["$row[title]"]['id'] .= ",$row[id]";
             } else {
