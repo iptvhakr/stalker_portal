@@ -1225,6 +1225,15 @@ class AudioClubController extends \Controller\BaseStalkerController {
         if (!empty($tmp)) {
             $all_years += array_combine($this->getFieldFromArray($tmp, 'id'), $this->getFieldFromArray($tmp, 'name'));
         }
+
+        if (!empty($this->app['locale']) && substr($this->app['locale'], 0, 2) == 'ru') {
+            $query_param['select'][] = '`name` as `name`';
+            $query_param['order']['name'] = 'ASC';
+        } else {
+            $query_param['select'][] = '`name_en` as `name`';
+            $query_param['order']['name_en'] = 'ASC';
+        }
+
         $tmp = $this->db->getAudioCountryList($query_param);
         $all_countries = array('0'=>'');
         if (!empty($tmp)) {
