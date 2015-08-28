@@ -11,13 +11,15 @@ class Event extends HTTPPush
     private $param = array(
         'user_list' => array(),
         'event'     => '',
+        'header'     => '',
         'priority'  => 0,
         'msg'       => '',
         'need_confirm'    => 0,
         'reboot_after_ok' => 0,
         'eventtime' => 0,
         'auto_hide_timeout' => 0,
-        'param1'    => ''
+        'param1'    => '',
+        'post_function' => ''
     );
     
     private $pattern;
@@ -149,12 +151,30 @@ class Event extends HTTPPush
     }
 
     /**
+     * Set event header
+     *
+     * @param string $header
+     */
+    protected function setHeader($header = ''){
+        $this->param['header'] = $header;
+    }
+
+    /**
      * Set event param1
      *
      * @param string $param1
      */
     protected function setParam1($param1){
         $this->param['param1'] = $param1;
+    }
+
+    /**
+     * Set event post_function
+     *
+     * @param string $post_function
+     */
+    protected function setPostFunction($post_function){
+        $this->param['post_function'] = $post_function;
     }
 
     /**
@@ -256,6 +276,7 @@ class Event extends HTTPPush
                 $data[] = array(
                     'uid'               => $uid,
                     'event'             => $this->param['event'],
+                    'header'             => $this->param['header'],
                     'addtime'           => 'NOW()',
                     'eventtime'         => $this->param['eventtime'],
                     'need_confirm'      => $this->param['need_confirm'],
@@ -263,7 +284,8 @@ class Event extends HTTPPush
                     'msg'               => $this->param['msg'],
                     'priority'          => $this->param['priority'],
                     'auto_hide_timeout' => $this->param['auto_hide_timeout'],
-                    'param1'            => $this->param['param1']
+                    'param1'            => $this->param['param1'],
+                    'post_function'     => $this->param['post_function']
                 );
 
                 if ($this->param['event'] == 'cut_off'){

@@ -13,10 +13,11 @@ class SysEvent extends Event
      *
      * @param string $msg
      */
-    public function sendMsg($msg){
+    public function sendMsg($msg, $header = ''){
         $this->setEvent('send_msg');
         $this->setNeedConfirm(1);
         $this->setMsg($msg);
+        $this->setHeader($header);
         $this->send();
     }
 
@@ -26,11 +27,12 @@ class SysEvent extends Event
      * @param string $msg
      * @param string $video_url
      */
-    public function sendMsgWithVideo($msg, $video_url){
+    public function sendMsgWithVideo($msg, $video_url, $header = ''){
         $this->setEvent('send_msg_with_video');
         $this->setNeedConfirm(1);
         $this->setMsg($msg);
         $this->setParam1($video_url);
+        $this->setHeader($header);
         $this->send();
     }
     
@@ -39,10 +41,11 @@ class SysEvent extends Event
      *
      * @param string $msg
      */
-    public function sendMsgAndReboot($msg){
+    public function sendMsgAndReboot($msg, $header = ''){
         $this->setEvent('send_msg');
         $this->setNeedConfirm(1);
         $this->setMsg($msg);
+        $this->setHeader($header);
         $this->setRebootAfterOk(1);
         $this->send();
     }
@@ -182,6 +185,17 @@ class SysEvent extends Event
     public function sendUpdateImage(){
         $this->setEvent('update_image');
         $this->send();
+    }
+
+    /**
+     * Set post function parameters
+     *
+     * @param string $post_func post function name
+     * @param string $param1 post function parameter, e.g. video URL
+     */
+    public function setPostFunctionParam($post_func, $param1){
+        $this->setPostFunction($post_func);
+        $this->setParam1($param1);
     }
 }
 

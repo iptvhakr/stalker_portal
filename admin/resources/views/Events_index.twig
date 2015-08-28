@@ -3,7 +3,7 @@
 {% set title = 'events' %}
 {% set title = ('Events'|trans ~ ': ' ~ 'list of events '|trans ~ (attribute(app, 'currentUser') is defined ? "user"|trans ~ " - " ~ app.currentUser.name ~ "(" ~ app.currentUser.mac ~ ")": '')) | trans %}
 
-{% block content %} 
+{% block content %}
     <div id="iptv_list">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -258,7 +258,7 @@
         }
 
         function TestTable1() {
-            $.getScript('plugins/datatables/fnReloadAjax.js');            
+            $.getScript('plugins/datatables/fnReloadAjax.js');
             $('#datatable-1').on('xhr.dt', function (e, settings, json) {
                 if (typeof (json.data) == 'object' && json.data.length >0) {
                     var date;
@@ -291,7 +291,7 @@
                         if (video_id = RegExp.exec(window.location.href)) {
                             d.video_id = video_id[1];
                         }
-                        var params = $.parseParams(window.location.href.split('?')[1] || ''); //window.location.href.split('?')[1] || '' 
+                        var params = $.parseParams(window.location.href.split('?')[1] || ''); //window.location.href.split('?')[1] || ''
                         for (var i in params) {
                             d[i] = params[i];
                         }
@@ -397,9 +397,9 @@
                     });
 
                     $(document).on('click', "#modalbox_ad button[type='submit']", function (e) {
-					
+
 								  $.validate({
-  onSuccess : function() {     
+  onSuccess : function() {
                         e.stopPropagation();
                         e.preventDefault();
                         var formData = $("#modalbox_ad form").serialize();
@@ -414,7 +414,7 @@
                         ajaxPostSend("{{app.request.baseUrl}}/{{app.controller_alias}}/clean-events", {uid: $(this).data('uid')});
                         return false;
                     });
-                    
+
                 });
             }
             document.addEventListener("DOMContentLoaded", yelp, false);
@@ -433,7 +433,7 @@
                 });
                 return false;
             }
-            
+
             var addEvent = function(data){
                 alert(data.msg);
                 $('#datatable-1').dataTable().fnReloadAjax();

@@ -72,8 +72,12 @@ class BaseStalkerController {
         if ($this->db !== FALSE && !empty($uid)) {
             $this->app['userTaskMsgs'] = $this->db->getCountUnreadedMsgsByUid($uid);
         }
+
+        $this->app['user_id'] = $uid;
+
         $this->app['reseller'] = $this->admin->getResellerID();
         $this->db->setReseller($this->app['reseller']);
+        $this->db->setAdmin($this->app['user_id'], $this->app['userlogin']);
 
         $this->saveFiles = $app['saveFiles'];
         $this->setSideBarMenu();
@@ -482,5 +486,23 @@ class BaseStalkerController {
             $return = (int) ($parent_access > 0);
         }
         return $return;
+    }
+
+    protected function mb_ucfirst($str) {
+        $fc = mb_strtoupper(mb_substr($str, 0, 1, 'UTF-8'), 'UTF-8');
+        return $fc.mb_substr($str, 1, NULL, 'UTF-8');
+    }
+
+    protected function getUCArray($array = array(), $field = ''){
+        reset($array);
+        while(list($key, $row) = each($array)){
+            if (!empty($field)) {
+                $row[$field] = $this->mb_ucfirst($row[$field]);
+            } else {
+                $row = $this->mb_ucfirst($row);
+            }
+            $array[$key] = $row;
+        }
+        return $array;
     }
 }

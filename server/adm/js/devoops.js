@@ -29,8 +29,11 @@
         } else {
            $('.dropdown-toggle').parent('div').removeClass('dropup');
         }
-    });
-*/
+    });*/
+
+$(document).on("click", "div.dropdown-menu *", function(e){
+    e.stopPropagation();
+});
 
 $('#attribute_set').removeClass('dropup');
 $('#status').removeClass('dropup');
@@ -446,7 +449,18 @@ $(document).ready(function () {
         }
     });
     var height = window.innerHeight - 49;
-    $('#main').css('min-height', height)
+    var tableHeight = $("#datatable-1").length ? ($('#datatable-1 tr').length > 50 ? 50 : $('#datatable-1 tr').length) * 50 + $('#datatable-1').position().top + 200: 0;
+    if (tableHeight > height) {
+        height = tableHeight;
+    }
+    $('.attribute_set, [data-tvfilter]').each(function(){
+        var newHeight = $(this).position().top + $(this).children('a').height() + $(this).children('ul').height();
+        if (newHeight > height) {
+            height = newHeight;
+        }
+        $('#main-wrapper').height(height);
+    });
+    $('#main').css({minHeight: height})
             .on('click', '.expand-link', function (e) {
                 var body = $('body');
                 e.preventDefault();
@@ -645,7 +659,6 @@ $(document).ready(function () {
         $(this).closest('.box').children('.box-header').find("input[type='checkbox']").prop("checked", ($(this).find("input[type='text']").val().trim() !== ''));
         return false;
     });
-	
     $(document).on('show hide', "#add_channel_safety", function (e) {
         e.stopPropagation();
         e.preventDefault();
@@ -744,16 +757,16 @@ $(document).ready(function () {
         return false;
     });
 
-    $(document).on('click', 'div[data-tvfilter] ul a', function (e) {
+    $(document).on('click', 'div[data-tvfilter] ul a, div[data-tvfilter] .dropdown-menu button', function (e) {
         e.stopPropagation();
         e.preventDefault();
         var hrefM = window.location.href;
         var filterName = $(this).closest('div[data-tvfilter]').data('tvfilter');
-        var filter_str = 'filters[' + filterName + ']=' + $(this).data('filter');
+        var filter_str = 'filters[' + filterName + ']=' + ((this.tagName == "A") ? $(this).data('filter'): $(this).prev('input').val() );
         if (window.location.search == '') {
             window.location.href = hrefM + '?' + filter_str;
         } else {
-            var filterRegExp = new RegExp('filters.+?' + filterName + '[^=]*=[^&|^$]*', 'ig');
+            var filterRegExp = new RegExp('filters\\[' + filterName + '[^=]*=[^&|^$]*', 'ig');
             if (filterRegExp.test(hrefM)) {
                 window.location.href = hrefM.replace(filterRegExp, filter_str);
             } else {

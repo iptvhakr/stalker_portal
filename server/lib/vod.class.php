@@ -991,7 +991,10 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
 
         return implode(', ', array_map(function($item)
         {
-            return _($item);
+            $item = _($item);
+            $fc = mb_strtoupper(mb_substr($item, 0, 1, 'UTF-8'), 'UTF-8');
+            $item = $fc.mb_substr($item, 1, NULL, 'UTF-8');
+            return $item;
         }, $this->db->from('cat_genre')->in('id', array($item['cat_genre_id_1'], $item['cat_genre_id_2'], $item['cat_genre_id_3'], $item['cat_genre_id_4']))->get()->all('title')));
     }
 

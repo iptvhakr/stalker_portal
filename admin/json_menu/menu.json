@@ -180,16 +180,21 @@
                 "icon": ""
             },
             "2": {
+                "name": _("Filters"),
+                "alias": "users-filter-list",
+                "icon": ""
+            },
+            "3": {
                 "name": _("User groups"),
                 "alias": "users-consoles-groups",
                 "icon": ""
             },
-            "3": {
+            "4": {
                 "name": _("Logs"),
                 "alias": "users-consoles-logs",
                 "icon": ""
             },
-            "4": {
+            "5": {
                 "name": _("Report"),
                 "alias": "users-consoles-report",
                 "icon": ""
@@ -200,8 +205,18 @@
         "name": _("Events"),
         "alias": "events",
         "icon": "fa fa-calendar",
-        "icon2": "pull-right",
+        "icon2": "pull-right fa fa-chevron-left",
         "action": {
+            "1": {
+                "name": _("Users events"),
+                "alias": "events",
+                "icon": ""
+            },
+            "2": {
+                "name": _("Templates of messages"),
+                "alias": "message-templates",
+                "icon": ""
+            }
         }
     },
     "10": {

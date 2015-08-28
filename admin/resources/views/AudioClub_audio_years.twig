@@ -87,7 +87,7 @@
                                                     </div>";
                         var name = json.data[i].name;
 
-                        json.data[i].name = '<a href="#" >' + name + '</a>';
+                        json.data[i].name = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-audio-years" data-yearsid="' + id + '" id="edit_audio_years_' + id + '">' + name + '</a>';
                     }
                 }
             }).dataTable({

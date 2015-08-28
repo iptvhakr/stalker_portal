@@ -14,13 +14,12 @@
     </style>
     <div id="iptv_list">
         <div class="row row_no_padding">
-                <div class="box">
-                    <div class="box-content">
-                        <div class="box-content no-padding">
-                        
-                                <div class="" id="table_container">
-                                    <div class="dataTables_processing"></div>
-                           <table class="table dataTable table-hover table-datatable" id="datatable-1">
+            <div class="box">
+                <div class="box-content">
+                    <div class="box-content no-padding">
+                        <div class="" id="table_container">
+                            <div class="dataTables_processing"></div>
+                            <table class="table dataTable table-hover table-datatable" id="datatable-1">
                                 <thead>
                                     <tr>
                                         <th data-filter="rank">#</th>
@@ -30,24 +29,25 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% if attribute(app, 'consoleReport') is defined %}
-                                        <!-- Start: list_row -->
-                                        {% for item in app.consoleReport %}
-                                            <tr data-userid="{{ item.id }}">
-                                                <td>{{ item.rank }}</td>
-                                                <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-users?id={{ item.id }}" >{{ item.mac }}</a></td>
-                                                <td data-filter="status">{% if item.status %}<span class="">{{ 'on'|trans }}</span>{% else %}<span class="">{{ 'off'|trans }}</span>{% endif %}</td>
-                                                <td>{{ item.last_change_status|date('M d, Y H:i') }}</td>
-                                            </tr>
-                                        {% endfor %}
-                                    {% endif %}
-                                    <!-- End: list_row -->
+                                {% if attribute(app, 'consoleReport') is defined %}
+                                    <!-- Start: list_row -->
+                                    {% for item in app.consoleReport %}
+                                        <tr data-userid="{{ item.id }}">
+                                            <td>{{ item.rank }}</td>
+                                            <td>
+                                                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-users?id={{ item.id }}">{{ item.mac }}</a>
+                                            </td>
+                                            <td data-filter="status">{% if item.status %}<span class="">{{ 'on'|trans }}</span>{% else %}<span class="">{{ 'off'|trans }}</span>{% endif %}</td>
+                                            <td>{{ item.last_change_status|date('M d, Y H:i') }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                {% endif %}
+                                <!-- End: list_row -->
                                 </tbody>
                             </table>
-                                </div>
-                            
                         </div>
                     </div>
+                </div>
             </div>
         </div>
     </div>
@@ -104,7 +104,6 @@
                 "bPaginate": true,
                 "bInfo": true,
                 "aoColumnDefs": [
-                    { className: "", "targets": [ -1 ] },
                     {"searchable": false, "targets": [0]},
                     {"sortable": false, "targets": [0]},
                     { "width": "10mm", "targets": 0 },

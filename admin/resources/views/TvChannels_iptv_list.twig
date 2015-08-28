@@ -19,7 +19,6 @@
 
         <div class="row">
             <div class="">
-                {% if app['allChannels'] %}
                     <div class="box">
                         {% if attribute(app, 'dropdownAttribute') is defined %}
                         {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
@@ -43,6 +42,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                    {% if attribute(app, 'allChannels') is defined %}
                                         <!-- Start: list_row -->
                                         {% for item in app.allChannels %}
                                             <tr>
@@ -94,12 +94,12 @@
                                             </tr>
                                         {% endfor %}
                                         <!-- End: list_row -->
+                                    {% endif %}
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
-                {% endif %}
             </div>
         </div>
     </div>
@@ -209,11 +209,14 @@
         function yelp() {
             $(document).ready(function () {
 			
-
 			var size_tr = $("tr").length;
-			if (size_tr > 20 && size_tr < 55 ) {$('.dropdown-toggle').parent('div').slice(-3).addClass('dropup'); }
-		    else if ( size_tr >=4) {$('.dropdown-toggle').parent('div').slice(-4).addClass('dropup'); }
-			else if ( size_tr <=4) {$('.dropdown-toggle').parent('div').slice(-4).addClass('dropup'); }
+			if (size_tr > 20 && size_tr < 55 ) {
+                $('.dropdown-toggle').parent('div').slice(-3).addClass('dropup');
+            } else if ( size_tr >=4) {
+                $('.dropdown-toggle').parent('div').slice(-4).addClass('dropup');
+            } /*else if ( size_tr <=4) {
+                $('.dropdown-toggle').parent('div').slice(-4).addClass('dropup');
+            }*/
 			
                 LoadDataTablesScripts(TestTable1);
                 LoadSelect2Script(DemoSelect2);

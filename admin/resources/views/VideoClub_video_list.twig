@@ -13,94 +13,97 @@
             </div>
         </div>
         <div class="row">
-                {% if app['allVideo'] %}
-                    <div class="box">
-                        {% if attribute(app, 'dropdownAttribute') is defined %}
+                <div class="box">
+                    {% if attribute(app, 'dropdownAttribute') is defined %}
                         {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
-                        {% endif %}
-                        <div class="box-content">
-                            <div class="box-content no-padding">
-                                <div class="dataTables_processing"></div>
-                                 <table class="table dataTable table-hover table-datatable"  id="datatable-1">
-                                     {% if attribute(app, 'dropdownAttribute') is defined %}
-                                         {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
-                                     {% endif %}
-                                    <tbody>
-                                        <!-- Start: list_row -->
-                                        {% for item in app.allVideo %}
-                                            <tr data-videoid="{{ item.id }}">
-                                                <td>{{ item.id }}</td>
-                                                <td><a href="video-club/video-info" class="main_ajax" data-videoid="{{ item.id }}">{{ item.path }}</a></td>
-                                                <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-video?id={{ item.id }}" data-fieldname="name">{{ item.name }}</a></td>
-                                                <td>{{ item.o_name }}</td>
-                                                <td data-filter="time">{{ item.time }}</td>
-                                                <td data-filter="time">{{ item.cat_genre }}</td>
-                                                <td data-filter="series">{{ item.series }}</td>
-                                                <td data-filter="year">{{ item.year }}</td>
-                                                <td data-filter="added">{{ item.added|date('M d, Y') }}</td>
-                                                <td data-filter="tasks">
-                                                    {% if item['tasks']|length > 0 and item['tasks'] != '0' %}
-                                                        {% for task_item in item['tasks'] %}
-                                                            <a class="{% if task_item.ended or task_item.rejected %} line-through {% if task_item.rejected%} txt-warning {% elseif task_item.ended%}{% endif %}{% elseif task_item.expired%}txt-danger{% endif %}" href="{{ app.request.baseUrl }}/tasks/task-detail-video?id={{ task_item['id'] }}">№{{ task_item['id'] }} {% if not(task_item.ended or task_item.rejected) and task_item['end_time'] %}({{ 'ending'|trans }} {{ task_item['end_time']|date('d-m-Y') }}){% endif %}</a>{% if not(loop|last) %}, {% endif %}
-                                                        {% endfor %}
-                                                    {% else %}
-                                                        {{ 'No tasks'|trans }}
-                                                    {% endif%}
-                                                </td>
-                                                <td data-filter="count">{{ item.count }}</td>
-                                                <td data-filter="counter">{{ item.counter }}</td>
-                                                <td data-filter="complaints">
-                                                    {% if item.video_counter or item.sound_counter%}
-                                                        {% if item.video_counter %}{{ 'video'|trans }} - {{ item.video_counter }} {% endif %}
-                                                        {% if item.sound_counter%}{{ 'sound'|trans }} - {{ item.sound_counter }}{% endif %}
-                                                    {% else %}
-                                                        0
-                                                    {% endif %}
-                                                </td>
-                                                <td data-filter="status">{% if item.accessed %}<span class="">{{ 'Published'|trans }}</span>{% elseif attribute(item, 'task_id') is defined and item.task_id %}<span class="">{{ 'Scheduled'|trans }} {% if not(item.task_date_on == 0) %}({{ 'on'|trans }} {{ item.task_date_on|date("d-m-Y") }}){% endif %}</span>{% else %}{{ 'Unpublished'|trans }}{% endif %}</td>
-                                                <td data-filter="operations" class="action-menu">
-                                                    <div class="col-xs-3 col-sm-8">
-                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
-                                                            <i class="pull-right fa fa-cog"></i>
+                    {% endif %}
+                    <div class="box-content">
+                        <div class="box-content no-padding">
+                            <div class="dataTables_processing"></div>
+                            <table class="table dataTable table-hover table-datatable" id="datatable-1">
+                                {% if attribute(app, 'dropdownAttribute') is defined %}
+                                    {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                                {% endif %}
+                                <tbody>
+                            {% if attribute(app, 'allVideo') %}
+                                <!-- Start: list_row -->
+                                {% for item in app.allVideo %}
+                                    <tr data-videoid="{{ item.id }}">
+                                        <td>{{ item.id }}</td>
+                                        <td><a href="video-club/video-info" class="main_ajax" data-videoid="{{ item.id }}">{{ item.path }}</a></td>
+                                        <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-video?id={{ item.id }}" data-fieldname="name">{{ item.name }}</a></td>
+                                        <td>{{ item.o_name }}</td>
+                                        <td data-filter="time">{{ item.time }}</td>
+                                        <td data-filter="time">{{ item.cat_genre }}</td>
+                                        <td data-filter="series">{{ item.series }}</td>
+                                        <td data-filter="year">{{ item.year }}</td>
+                                        <td data-filter="added">{{ item.added|date('M d, Y') }}</td>
+                                        <td data-filter="tasks">
+                                            {% if item['tasks']|length > 0 and item['tasks'] != '0' %}
+                                                {% for task_item in item['tasks'] %}
+                                                <a class="{% if task_item.ended or task_item.rejected %} line-through {% if task_item.rejected %} txt-warning {% elseif task_item.ended %}{% endif %}{% elseif task_item.expired %}txt-danger{% endif %}" href="{{ app.request.baseUrl }}/tasks/task-detail-video?id={{ task_item['id'] }}"> №{{ task_item['id'] }} {% if not(task_item.ended or task_item.rejected) and task_item['end_time'] %}({{ 'ending'|trans }} {{ task_item['end_time']|date('d-m-Y') }}){% endif %}</a>{% if not(loop|last) %}, {% endif %}
+                                                {% endfor %}
+                                            {% else %}
+                                                {{ 'No tasks'|trans }}
+                                            {% endif %}
+                                        </td>
+                                        <td data-filter="count">{{ item.count }}</td>
+                                        <td data-filter="counter">{{ item.counter }}</td>
+                                        <td data-filter="complaints">
+                                            {% if item.video_counter or item.sound_counter %}
+                                                {% if item.video_counter %}{{ 'video'|trans }} - {{ item.video_counter }} {% endif %}
+                                                {% if item.sound_counter %}{{ 'sound'|trans }} - {{ item.sound_counter }}{% endif %}
+                                            {% else %}
+                                                0
+                                            {% endif %}
+                                        </td>
+                                        <td data-filter="status">
+                                            {% if item.accessed %}<span class="">{{ 'Published'|trans }}</span>{% elseif attribute(item, 'task_id') is defined and item.task_id %}
+                                            <span class="">{{ 'Scheduled'|trans }} {% if not(item.task_date_on == 0) %}({{ 'on'|trans }} {{ item.task_date_on|date("d-m-Y") }}){% endif %}</span>{% else %}{{ 'Unpublished'|trans }}{% endif %}
+                                        </td>
+                                        <td data-filter="operations" class="action-menu">
+                                            <div class="col-xs-3 col-sm-8">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                    <i class="pull-right fa fa-cog"></i>
+                                                </a>
+                                                <ul class="dropdown-menu pull-right">
+                                                    <li>
+                                                        <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-video?id={{ item.id }}">
+                                                            <span>{{ 'Edit'|trans }}</span>
                                                         </a>
-                                                        <ul class="dropdown-menu pull-right">
-                                                            <li>
-                                                                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-video?id={{ item.id }}">
-                                                                    <span>{{ 'Edit'|trans }}</span>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/{% if item.accessed %}disable{% else %}enable{% endif %}-video" data-videoid="{{ item.id }}">
-                                                                    <span>{% if item.accessed %}{{ 'Unpublish'|trans }}{% else %}{{ 'Publish'|trans }}{% endif %}</span>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/create-tasks" data-videoid="{{ item.id }}">
-                                                                    <span>{{ 'Create task'|trans }}</span>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/video-logs?video_id={{ item.id }}">
-                                                                    <span>{{ 'Activity log'|trans }}</span>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-video" data-videoid="{{ item.id }}">
-                                                                    <span>{{ 'Remove'|trans }}</span>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        {% endfor %}
-                                        <!-- End: list_row -->
-                                    </tbody>
-                                </table>
-                            </div>
+                                                    </li>
+                                                    <li>
+                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/{% if item.accessed %}disable{% else %}enable{% endif %}-video" data-videoid="{{ item.id }}">
+                                                            <span>{% if item.accessed %}{{ 'Unpublish'|trans }}{% else %}{{ 'Publish'|trans }}{% endif %}</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/create-tasks" data-videoid="{{ item.id }}">
+                                                            <span>{{ 'Create task'|trans }}</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/video-logs?video_id={{ item.id }}">
+                                                            <span>{{ 'Activity log'|trans }}</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-video" data-videoid="{{ item.id }}">
+                                                            <span>{{ 'Remove'|trans }}</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                <!-- End: list_row -->
+                            {% endif %}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                {% endif %}
+                </div>
         </div>
     </div>
             
@@ -127,7 +130,6 @@
                                     <span class="txt-default">{{ 'Video title'|trans }}</span>
                                 </span>
                             </div>
-							
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label col-sm-offset-1">{{ 'To'|trans }}</label>

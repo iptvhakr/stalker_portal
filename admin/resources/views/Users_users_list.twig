@@ -1,4 +1,5 @@
 {% extends 'layout.twig' %}
+{% import '/macro/iptw_macro2.twig' as main_macros %}
 {% import '/macro/iptw_macro.twig' as main_macro %}
 {% set title = ('Users'|trans ~ ': ' ~ 'list of users'|trans) | trans %}
 
@@ -6,23 +7,25 @@
     <div id="iptv_list">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                {{ main_macro.get_filter('status_id', 'Status'|trans, 'id', 'title', app['allStatus'], 6, 8) }}
-                {{ main_macro.get_filter('state_id', 'State'|trans, 'id', 'title', app['allState'], 6, 8) }}
-               
-                    <div class="col-xs-12 col-sm-6 filter no-padding" data-tvfilter="time_period">
-                        <span class="col-sm-1 tfilter">
-                            {{ 'Inactive'|trans }}
-                        </span>
-                        <div class="col-xs-3 col-sm-3 filter no-padding leftbordercircle" data-tvfilter="time_period">
-                            <input class="col-xs-12 col-sm-12 filter" placeholder="{{ 'from'|trans }}" type="text" id="datepicker_from" name="interval_from" value="{{ app['filters']['interval_from'] }}">
-                        </div>
-                        <div class="col-xs-3 col-sm-3 filter no-padding" data-tvfilter="time_period">
-                            <input class="col-xs-12 col-sm-12 filter" placeholder="{{ 'to'|trans }}" type="text" id="datepicker_to" name="interval_to" value="{{ app['filters']['interval_to'] }}">
-                        </div>
-                  
-                    </div>
+                {% if attribute(app, 'filters_set') is defined %}
+                    {% for filter in app.filters_set %}
+                        {% if filter.values_set|length != 0 %}
+                        {{ main_macro.get_filter(filter.text_id, filter.title, 'value', 'title', filter.values_set, 6, 8) }}
+                        {% elseif filter.type == 'STRING' %}
+                            {{ main_macro.get_filter_string_input(filter.text_id, filter.title, 'value', 'title', filter.values_set, 6, 8) }}
+                        {% elseif filter.type == 'DATETIME' %}
+                            {{ main_macro.get_filter_datetime_input(filter.text_id, filter.title, 'value', 'title', filter.values_set, 6, 8) }}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                <div class="col-sm-2 col-xs-2">
+                {% if attribute(app, 'filters_template') is defined %}
+                    {{ main_macros.get_dropdown_attribute(app['filters_template'], 'filter_param', 'Add parametr'|trans, 6, 1, 'true') }}
+                {% endif %}
+                </div>
                 <a id="add_button" href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-users" class="btn btn-success pull-right" {% if not app.resellerUserLimit %}style="display: none;"{% endif %}>{{ 'Add user'|trans }}</a>
                 <span id="limit_message" class="btn btn-default pull-right" {% if app.resellerUserLimit %}style="display: none;"{% endif %}>{{ 'Limit of number of the users has been reached'|trans }}</span>
+                <a id="form_filter_button" href="{{app.request.baseUrl}}/{{app.controller_alias}}/save-filter" class="btn btn-success green pull-right" data-filter_set_id="{% if attribute(app, 'filter_set') is defined %}{{ app.filter_set.id }}{% endif %}">{{ 'Save filter'|trans }}</a>
             </div>
         </div>
 
@@ -48,11 +51,12 @@
                                         <td>{{ item.login }}</td>
                                         <td>{{ item.ls }}</td>
                                         <td>{{ item.fname }}</td>
+                                        <td>{% if item.created > 0 %}{{ item.created|date('M d, Y H:i') }}{% else %}---{% endif %}</td>
                                         <td>
-                                            {% if app.hide_media_info and not item.status %}
-                                                --
-                                            {% else %}
+                                            {% if attribute(app.mediaTypeName, item.now_playing_type) is defined and not app.hide_media_info and item.status %}
                                                 {{ app.mediaTypeName[item.now_playing_type] }}
+                                            {% else %}
+                                                --
                                             {% endif %}
                                         </td>
                                         <td>
@@ -236,7 +240,6 @@
                                         <select class="populate placeholder" name="event" id="s2_event">
                                             <option value=""></option>
                                             <option value="send_msg">{{ 'Sending a message'|trans }}</option>
-                                            <option value="send_msg_with_video">{{ 'Sending a message with video'|trans }}</option>
                                             <option value="reboot">{{ 'Reboot'|trans }}</option>
                                             <option value="reload_portal">{{ 'Restart the portal'|trans }}</option>
                                             <option value="update_channels">{{ 'Update channel list'|trans }}</option>
@@ -263,7 +266,7 @@
                             <div class="form-group" data-event-type="send_msg">
                                 <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Restart'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
-                                    <div class=" col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-6">
                                         <div class="checkbox">
                                             <label>
                                                 <input type="checkbox" value="1" name="need_reboot">
@@ -279,7 +282,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label col-sm-offset-1">TTL</label>
                                 <div class="col-xs-10 col-sm-8">
-                                    <div class=" col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-6">
                                         <input class="form-control" type="text" title="" value="" name="ttl">
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
@@ -287,30 +290,84 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="form-group"  data-event-type="send_msg;send_msg_with_video">
-                                <label class="col-sm-3 control-label col-sm-offset-1">MSG</label>
+                            <div class="form-group" data-event-type="send_msg">
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Message header'|trans }}</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-12">
+                                        <input class="form-control" type="text" title="" value="" name="header" id="msg_header">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" data-event-type="send_msg">
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Message text'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-12">
                                         <textarea class="form-control" rows="4" title="" value="" name="msg" id="msg_textarea"></textarea>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group"  data-event-type="send_msg;send_msg_with_video">
+                            <div class="form-group" data-event-type="send_msg">
                                 <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Message templates'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
-                                    <div class=" col-xs-10 col-sm-8">
-                                        <a href="#" id="msg_pattern">{{ 'Outdated testing'|trans }}</a>
+                                    <div class=" col-xs-10 col-sm-6">
+                                        <select class="populate placeholder" data-validation=required name="" id="s2_msg_pattern">
+                                            <option value="0" data-filter-descriprion=""></option>
+                                            {% if attribute(app,'messagesTemplates') is defined and app['messagesTemplates']|length > 0 %}
+                                                {% for item in app['messagesTemplates'] %}
+                                                    <option value="{{ item['id'] }}" data-template-header="{{ item['header'] }}">{{ item['title'] }}</option>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </select>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group"  data-event-type="send_msg_with_video">
-                                <label class="col-sm-3 control-label col-sm-offset-1">VIDEO URL</label>
+                            <div class="form-group" data-event-type="send_msg" id="add_post_function_container">
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Add post-function'|trans }}</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-6">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value="1" name="add_post_function" id="add_post_function">
+                                                <i class="fa fa-square-o small"></i>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" data-event-type="post_function_type" id="post_function_type">
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Post-function'|trans }}</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-6">
+                                        <select class="populate placeholder" data-validation=required name="post_function" id="s2_post_function">
+                                            <option value="send_msg_with_video">{{ 'Send message whith video'|trans }}</option>
+                                            {#<option value="run_application">{{ 'Run application'|trans }}</option>#}
+                                        </select>
+                                    </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">{{ 'The function to be executed when pressing the "OK" button'|trans }}</span>
+                                </span>
+                                </div>
+                            </div>
+                            <div class="form-group" data-event-type="post_function_video_url" id="send_msg_with_video">
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'VIDEO URL'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-12">
-                                        <input class="form-control" type="text" title="" value="" name="video_url">
+                                        <input class="form-control" type="text" title="" value="" name="param1">
                                     </div>
                                 </div>
                             </div>
+                            {#<div class="form-group" data-event-type="post_function_run_application" id="run_application">
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Application'|trans }}</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-6">
+                                        <select class="populate placeholder" data-validation=required name="param1" id="s2_applications">
+                                            <option value="youtube">{{ 'YouTube'|trans }}</option>
+                                            <option value="itv">{{ 'TV'|trans }}</option>
+                                            <option value="radio">{{ 'Radio'|trans }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>#}
                         </form>
                     </div>
                 </div>
@@ -387,7 +444,7 @@
                         } else {
                             drop=""
                         }
-                        json.data[i].now_playing_type = mediaTypeName[json.data[i].now_playing_type];
+                        json.data[i].now_playing_type = (typeof (mediaTypeName[json.data[i].now_playing_type]) != 'undefined' ? mediaTypeName[json.data[i].now_playing_type]: '--');
                         json.data[i].operations = "<div class='col-xs-3 col-sm-8 "+drop+"'>\n\
                                                         <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
@@ -460,6 +517,13 @@
                             json.data[i]['expire_billing_date'] = '{{ 'Unlimited'|trans }}';
                         }
                         {% endif %}
+                        date = json.data[i]['created'];
+                        if (date > 0) {
+                            date = new Date(date * 1000);
+                            json.data[i]['created'] = date.toLocaleFormat("%b %d, %Y");
+                        } else {
+                            json.data[i]['created'] = '---';
+                        }
                         var mac = json.data[i].mac;
                         json.data[i].mac = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-users?id='+ id +'" >'+ mac +'</a>';
                         {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
@@ -504,7 +568,7 @@
                 "bInfo": true,
                 "aoColumnDefs": [
                     { className: "action-menu", "targets": [ -1 ] },
-                    {"searchable": false, "targets": [6, 7, 8, 9, -3, -2, -1]},
+                    {"searchable": false, "targets": [6, 7, 8, 9, 10, -3, -2, -1]},
                     {"sortable": false, "targets": [-1]},
                     {className: "data-filter-status", "targets": [-{% if attribute(app, 'reseller') is defined and not app['reseller'] %}3{% else %}2{% endif %} ]},
                     { "width": "16px", "targets": [ -1 ] }
@@ -540,6 +604,9 @@
                         $('#datatable-1').DataTable().ajax.reload();
                     }
                 });
+
+                $('#filter_param').css({left: "10px", top: "2px"});
+                $('#filter_param').parent().css({minHeight: '42px'});
 
                 $(document).on('click', "a.main_ajax", function (e) {
                     e.stopPropagation();
@@ -593,10 +660,11 @@
                     checkFields($(this), e);
                 });
 
-                $(document).on('click', "#msg_pattern", function (e) {
+                $(document).on('change', "#s2_msg_pattern", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
-                    $('#msg_textarea').text($.trim($('#msg_textarea_pattern').text()));
+                    $('#msg_textarea').text($.trim($('#msg_textarea_pattern_'+$(this).val()).text()));
+                    $('#msg_header').val($(this).find('option:selected').data('template-header'));
                     return false;
                 });
 
@@ -690,7 +758,9 @@
                     var form_fields = _this.closest("#modalbox").find('form').find(".own_fields:not(:disabled)");
                     form_fields.each(function () {
                         if ($(this).val()) {
-                            sendData[this.name] = $(this).val();
+                            if (this.type.toUpperCase() != 'CHECKBOX' || this.checked) {
+                                sendData[this.name] = $(this).val();
+                            }
                         }
                     });
                     var action = _this.closest("#modalbox").find('form').attr('action');
@@ -717,6 +787,119 @@
                     var formData = $("#modalbox_ad form").serialize();
                     ajaxPostSend("{{app.request.baseUrl}}/events/add-event", formData);
                     return false;
+                });
+
+                $(document).on('change', "#filter_param li:not(:first-child) input[type='checkbox']", function (e) {
+                    if (this.checked) {
+                        ajaxPostSend("{{app.request.baseUrl}}/{{app.controller_alias}}/get-filter", {text_id: $(this).val()});
+                        $(this).closest('.open').removeClass('open');
+                    } else {
+                        $('div.filter[data-tvfilter="' + $(this).val() + '"]').remove();
+                        var hrefM = window.location.href;
+                        hrefM += window.location.search == '' ? '?': '';
+                        var filterRegExp = new RegExp('\\&?filters\\[' + $(this).val() + '[^=]*=[^&|^$]*', 'ig');
+                        if (filterRegExp.test(hrefM)) {
+                            window.location.href = hrefM.replace(filterRegExp, '&filters['+$(this).val()+']=without').replace('?&', '?').replace('&&', '&');
+                        } else {
+                            window.location.href = (hrefM + '&filters['+$(this).val()+']=without').replace('?&', '?').replace('&&', '&');
+                        }
+                    }
+                });
+
+                $('.datepicker[id^="filter_string"]').datepicker({
+                            language    : 'ru',
+                            dateFormat  : 'dd-mm-yy',
+                            firstDay    : 1,
+                            dayNamesMin : dayNamesMin,
+                            monthNames  : monthNames
+                        }
+                );
+
+                $(document).on("click", "#form_filter_button", function(e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $('#modalbox').find('.modal-header-name span').text("{{ 'Save filter'|trans }}");
+                    var filter_set = {
+                        id: {% if attribute(app, 'filter_set') is defined %}{{ app.filter_set.id }}{% else %}$(this).data('filter_set_id') || 0{% endif %},
+                        admin_id : {% if attribute(app, 'user_id') is defined %}{{ app.user_id }}{% else %}0{% endif %},
+                        title: "{% if attribute(app, 'filter_set') is defined %}{{ app.filter_set.title }}{% endif %}",
+                        for_all: {% if attribute(app, 'filter_set') is defined and app.filter_set.for_all %}true{% else %}false{% endif %},
+                        description: "{% if attribute(app, 'filter_set') is defined %}{{ app.filter_set.description }}{% endif %}",
+                        filter_set: {}
+                    };
+
+                    $("div[data-tvfilter]").each(function(){
+                        filter_set.filter_set[$.trim($(this).data('tvfilter'))] = $.trim($(this).data('filterval')) || '';
+                    });
+
+                    filter_set.filter_set = encodeURIComponent(JSON.stringify(filter_set.filter_set));
+
+                    var formHtml = '\n\
+                    <div class="box-content">\n\
+                        <form class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/save-filter">\n\
+                            <div class="form-group">\n\
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Filter name'|trans }}</label>\n\
+                                <div class="col-xs-10 col-sm-8">\n\
+                                    <span class="col-xs-12 col-sm-12">\n\
+                                        <input type="hidden" class="own_fields" name="filter_set[id]" value="'+ filter_set.id + '">\n\
+                                        <input type="hidden" class="own_fields" name="filter_set[admin_id]" value="'+ filter_set.admin_id + '">\n\
+                                        <input type="hidden" class="own_fields" name="filter_set[filter_set]" value=\''+ filter_set.filter_set + '\'>\n\
+                                        <input type="text" class="own_fields form-control" name="filter_set[title]" value="'+ filter_set.title + '">\n\
+                                    </span>\n\
+                                </div>\n\
+                            </div>\n\
+                            <div class="form-group">\n\
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'For all'|trans }}</label>\n\
+                                <div class="col-xs-10 col-sm-8">\n\
+                                    <span class="col-xs-12 col-sm-12">\n\
+                                        <div class="checkbox">\n\
+                                            <label>\n\
+                                                <input type="checkbox" class="own_fields" name="filter_set[for_all]" ' + (filter_set.for_all ? 'checked="checked"' : '') + '">\n\
+                                                <i class="fa fa-square-o small"></i>\n\
+                                            </label>\n\
+                                        </div>\n\
+                                    </span>\n\
+                                </div>\n\
+                            </div>\n\
+                            <div class="form-group">\n\
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Description'|trans }}</label>\n\
+                                <div class="col-xs-10 col-sm-8">\n\
+                                    <span class="col-xs-12 col-sm-12">\n\
+                                        <textarea class="own_fields form-control" name="filter_set[description]">'+filter_set.description+'</textarea>\n\
+                                    </span>\n\
+                                </div>\n\
+                            </div>\n\
+                        </form>\n\
+                    </div>';
+                    $('#modalbox').find('.devoops-modal-inner').html(formHtml);
+                    $('#modalbox').find('.devoops-modal-bottom').html('<div class="pull-right no-padding">&nbsp;</div>\n\
+                        <div class="pull-right no-padding">\n\
+                            <button type="submit" class="btn btn-success pull-right">{{ 'Save'|trans }}</button>\n\
+                            <button type="reset" class="btn btn-default pull-right" >{{ 'Cancel'|trans }}</button>\n\
+                        </div>');
+                    $('#modalbox').show();
+                    return false;
+                });
+
+                $(document).on('hide', "#add_post_function_container", function(e){
+                    $("[data-event-type^='post_function']").hide().find('select, input').attr('disabled', 'disabled');
+                });
+
+                $(document).on('change show', "#add_post_function, #add_post_function_container", function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    if ($("#add_post_function").is(':checked')) {
+                        $("#post_function_type").show().find('select').removeAttr('disabled');
+                    } else {
+                        $("#post_function_type").hide().find('select').attr('disabled', 'disabled');
+                        $("[data-event-type^='post_function']").hide().find('select, input').attr('disabled', 'disabled');
+                    }
+                    return false;
+                });
+
+                $(document).on('change show', "#s2_post_function, #post_function_type", function(e){
+                    $("[data-event-type^='post_function']").filter("[data-event-type!='post_function_type']").hide().find('select, input').attr('disabled', 'disabled');
+                    $("#" + $("#s2_post_function").val()).show().find('select, input').removeAttr('disabled');
                 });
 
                 LoadDataTablesScripts(TestTable1);
@@ -817,8 +1000,77 @@
         };
         {% endif %}
 
+        var addFilter = function(data){
+            var last_filter_block = $('div[data-tvfilter]:last');
+
+            if (last_filter_block.length) {
+                last_filter_block.after('<div class="br filter" data-tvfilter="'+ data.filter.text_id +'" data-filterval="">');
+            } else {
+                $("#filter_param").parent().before('<div class="br filter" data-tvfilter="'+ data.filter.text_id +'" data-filterval="">');
+            }
+            if (data.filter.values_set && data.filter.values_set.length > 0) {
+                createFilterList(data.filter);
+            } else if (data.filter.type == 'STRING'){
+                createFilterText(data.filter)
+            } else if (data.filter.type == 'DATETIME'){
+                createFilterDate(data.filter)
+            }
+        };
+
+        var saveFilterData = function(data){
+            if (data.return_id) {
+                $("#form_filter_button").data('filter_set_id', data.return_id);
+            }
+            JSSuccessModalBox(data);
+        };
+
+        var saveFilterDataError = function(data){
+            JSErrorModalBox(data);
+        };
+
+        function createFilterList(filter_data){
+            var filter_bloc = $('div[data-tvfilter="'+ filter_data.text_id +'"]');
+            filter_bloc.append('<a data-toggle="dropdown" class="dropdown-toggle" href="#"><span class="no-padding">' + filter_data.title + ':</span><span>' + '{{ 'All'|trans }}' + '</span><i class="fa fa-caret-down"></i></a>')
+                    .append('<ul class="dropdown-menu pull-left"></ul>');
+            var list = filter_bloc.find('ul');
+            list.append('<li><a data-filter="0" href="#"><span>' + '{{ 'All'|trans }}' + '</span></a></li>');
+            for (var i in filter_data.values_set) {
+                list.append('<li><a data-filter="' + filter_data.values_set[i].value + '" href="#"><span>' + filter_data.values_set[i].title + '</span></a></li>');
+            }
+        }
+
+        function createFilterText(filter_data){
+            var filter_bloc = $('div[data-tvfilter="'+ filter_data.text_id +'"]');
+            filter_bloc.append('<a data-toggle="dropdown" class="dropdown-toggle" href="#"><span class="no-padding">' + filter_data.title + ':</span><span></span><i class="fa fa-caret-down"></i></a>');
+            filter_bloc.append('<div class="dropdown-menu">' +
+            '<input type="text" class="filter_string" value="" id="filter_string_'+ filter_data.text_id +'" name="'+ filter_data.text_id +'">' +
+            '<button type="button" class="btn btn-success filter_string"><i class="fa fa-check"></i></button>' +
+            '</div>');
+        }
+
+        function createFilterDate(filter_data){
+            var filter_bloc = $('div[data-tvfilter="'+ filter_data.text_id +'"]');
+            filter_bloc.append('<a data-toggle="dropdown" class="dropdown-toggle" href="#"><span class="no-padding">' + filter_data.title + ':</span><span></span><i class="fa fa-caret-down"></i></a>');
+            filter_bloc.append('<div class="dropdown-menu">' +
+            '<input type="text" class="datepicker filter_string" data-date-format="dd-mm-yy" name="'+ filter_data.text_id +'" id="filter_string_'+ filter_data.text_id +'" value="">' +
+            '<button type="button" class="btn btn-success filter_string"><i class="fa fa-check"></i></button>' +
+            '</div>');
+            $('#filter_string_'+ filter_data.text_id).datepicker({
+                        language    : 'ru',
+                        dateFormat  : 'dd-mm-yy',
+                        firstDay    : 1,
+                        dayNamesMin : dayNamesMin,
+                        monthNames  : monthNames
+                    }
+            );
+        }
+
     </script>
-    <script type="text/template" id="msg_textarea_pattern">
-        {{ 'Dear Subscriber! Term free testing of our service is ended. We ask you to go to Customer Care.'|trans }}
-    </script>
+    {% if attribute(app, 'messagesTemplates') is defined and app.messagesTemplates|length> 0%}
+        {% for item in app.messagesTemplates %}
+            <script type="text/template" id="msg_textarea_pattern_{{ item.id }}">
+                {{ item.body }}
+            </script>
+        {% endfor %}
+    {% endif %}
 {% endblock %}

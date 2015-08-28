@@ -97,6 +97,66 @@ class EventsModel extends \Model\BaseStalkerModel {
         }
     }
 
+    public function getTotalRowsMsgTemplates($where = array(), $like = array()) {
+        $params = array(
+            'where' => $where
+        );
+        if (!empty($like)) {
+            $params['like'] = $like;
+        }
+        return $this->getMsgTemplates($params, TRUE);
+    }
+
+    public function getMsgTemplates($param, $counter = FALSE) {
+
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from("messages_templates as M_T")
+            ->join("administrators as A", "M_T.author", "A.id", "LEFT");
+        if (!empty($param['where'])) {
+            $this->mysqlInstance->where($param['where']);
+        }
+        if (!empty($where)) {
+            $this->mysqlInstance->where($where, ' OR ');
+        }
+        if (!empty($param['like'])) {
+            $this->mysqlInstance->like($param['like'], ' OR ');
+        }
+        if (!empty($param['order'])) {
+            $this->mysqlInstance->orderby($param['order']);
+        }
+        if (!empty($param['limit']['limit'])) {
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
+        }
+
+        return ($counter) ? $this->mysqlInstance->count()->get()->counter() : $this->mysqlInstance->get()->all();
+    }
+
+    public function insertMsgTemplate($params){
+        return $this->mysqlInstance->insert('messages_templates', $params)->insert_id();
+    }
+
+    public function updateMsgTemplate($params, $id){
+        $where = array('id'=>$id);
+        if (!empty($this->admin_login) && $this->admin_login != 'admin') {
+            $where['author'] = $this->admin_id;
+        }
+        return $this->mysqlInstance->update('messages_templates', $params, $where)->total_rows();
+    }
+
+    public function deleteMsgTemplate($id) {
+        $where = array('id'=>$id);
+        if (!empty($this->admin_login) && $this->admin_login != 'admin') {
+            $where['author'] = $this->admin_id;
+        }
+        return $this->mysqlInstance->delete('messages_templates', $where)->total_rows();
+    }
+
+    public function getFilterSet($params){
+        return $this->mysqlInstance->from('filter_set')->where($params)->get()->all();
+    }
+
 //    
 //    public function searchOneEventsParam($param = array()){
 //        reset($param);
