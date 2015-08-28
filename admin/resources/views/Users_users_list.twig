@@ -796,8 +796,13 @@
                     } else {
                         $('div.filter[data-tvfilter="' + $(this).val() + '"]').remove();
                         var hrefM = window.location.href;
+                        hrefM += window.location.search == '' ? '?': '';
                         var filterRegExp = new RegExp('\\&?filters\\[' + $(this).val() + '[^=]*=[^&|^$]*', 'ig');
-                        window.location.href = hrefM.replace(filterRegExp, '').replace('?&', '?').replace('&&', '&');
+                        if (filterRegExp.test(hrefM)) {
+                            window.location.href = hrefM.replace(filterRegExp, '&filters['+$(this).val()+']=without').replace('?&', '?').replace('&&', '&');
+                        } else {
+                            window.location.href = (hrefM + '&filters['+$(this).val()+']=without').replace('?&', '?').replace('&&', '&');
+                        }
                     }
                 });
 

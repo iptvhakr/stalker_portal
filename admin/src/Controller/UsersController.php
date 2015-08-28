@@ -123,20 +123,27 @@ class UsersController extends \Controller\BaseStalkerController {
         }
 
         if (empty($users_filter)) {
-            $users_filter = array('state' => 0, 'status' => 0);
+            $users_filter['state'] = 0;
         }
 
         $filter_set = \Filters::getInstance();
         $filter_set->setResellerID($this->app['reseller']);
         $filter_set->initData('users', 'id');
         $self = $this;
-        $filters = array_map(function($row) use ($users_filter, $self){
-            $row['title']= $self->setLocalization($row['title']);
-            if (array_key_exists($row['text_id'], $users_filter)) {
-                $row['value'] = $users_filter[$row['text_id']];
-            }
-            return $row;
-        }, $filter_set->getFilters(array_keys($users_filter)));
+
+        $users_filter = array_filter($users_filter, function($val){ return $val !== 'without'; });
+
+        if (!empty($users_filter)) {
+            $filters = array_map(function($row) use ($users_filter, $self){
+                $row['title']= $self->setLocalization($row['title']);
+                if (array_key_exists($row['text_id'], $users_filter)) {
+                    $row['value'] = $users_filter[$row['text_id']];
+                }
+                return $row;
+            }, $filter_set->getFilters(array_keys($users_filter)));
+        } else {
+            $filters = array();
+        }
 
         if (!empty($this->app['filters'])) {
             $this->app['filters'] = array_merge($this->app['filters'], $users_filter);
@@ -505,6 +512,8 @@ class UsersController extends \Controller\BaseStalkerController {
                     }
                 }
             }
+
+            $app_filter = array_filter($app_filter, function($val){ return $val != 'without';});
 
             $all_filters = $filter_set->getFilters();
             $filters_with_cond = array_filter(array_map(function($row) use ($app_filter) {
@@ -1404,24 +1413,24 @@ class UsersController extends \Controller\BaseStalkerController {
         }
         $now_timestamp = time() - $this->watchdog;
         $now_time = date("Y-m-d H:i:s", $now_timestamp);
-        if (array_key_exists('filters', $this->data)) {
-            if (array_key_exists('status', $this->data['filters']) && $this->data['filters']['status'] != 0) {
+        if (array_key_exists('filters', $this->data) && is_array($this->data['filters'])) {
+            if (array_key_exists('status', $this->data['filters']) && $this->data['filters']['status'] != 0 && $this->data['filters']['status'] != 'without') {
                 $return['status'] = $this->data['filters']['status'] - 1;
             }
-            if (array_key_exists('state', $this->data['filters']) && $this->data['filters']['state'] != 0) {
+            if (array_key_exists('state', $this->data['filters']) && $this->data['filters']['state'] != 0  && $this->data['filters']['state'] != 'without') {
                 $return['keep_alive' . ((int)$this->data['filters']['state'] - 1 ? "<" : ">")] = "$now_time";
             }
-            if (array_key_exists('interval_from', $this->data['filters']) && $this->data['filters']['interval_from']!= 0) {
+            if (array_key_exists('interval_from', $this->data['filters']) && $this->data['filters']['interval_from']!= 0 && $this->data['filters']['interval_from'] != 'without') {
                 $date = \DateTime::createFromFormat('d/m/Y', $this->data['filters']['interval_from']);
                 $return['UNIX_TIMESTAMP(last_active)>='] = $date->getTimestamp();
             }
-            if (array_key_exists('interval_to', $this->data['filters']) && $this->data['filters']['interval_to']!= 0) {
+            if (array_key_exists('interval_to', $this->data['filters']) && $this->data['filters']['interval_to']!= 0 && $this->data['filters']['interval_to'] != 'without') {
                 $date = \DateTime::createFromFormat('d/m/Y', $this->data['filters']['interval_to']);
                 $return['UNIX_TIMESTAMP(last_active)<='] = $date->getTimestamp();
             }
 
-            $this->data['filters']['interval_from'] = (empty($this->data['filters']['interval_from']) ? '' : $this->data['filters']['interval_from']);
-            $this->data['filters']['interval_to'] = (empty($this->data['filters']['interval_to']) ? '' : $this->data['filters']['interval_to']);
+            $this->data['filters']['interval_from'] = (empty($this->data['filters']['interval_from'] || $this->data['filters']['interval_from'] == 'without') ? '' : $this->data['filters']['interval_from']);
+            $this->data['filters']['interval_to'] = (empty($this->data['filters']['interval_to'] || $this->data['filters']['interval_to'] == 'without') ? '' : $this->data['filters']['interval_to']);
 
             if (!empty($this->app['filters'])) {
                 $this->app['filters'] = array_merge($this->app['filters'], $this->data['filters']);
