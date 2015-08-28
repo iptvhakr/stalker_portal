@@ -352,6 +352,7 @@ class StatisticsModel extends \Model\BaseStalkerModel {
         $this->mysqlInstance->from("`played_itv`")
                         ->join('itv', 'itv.id', 'played_itv.itv_id', 'LEFT')
                         ->where($param['where'])
+                        ->where(array(' itv.id IS NOT ' => NULL))
                         ->like($param['like'], 'OR')
                         ->groupby('itv_id');
         if (!empty($param['order'])) {
@@ -366,7 +367,7 @@ class StatisticsModel extends \Model\BaseStalkerModel {
             $result = $this->mysqlInstance->get()->all();
             return count($result);
         }
-        
+
         return $this->mysqlInstance->get()->all();
     }
     
