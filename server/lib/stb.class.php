@@ -577,6 +577,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                 'version'       => @$_REQUEST['ver'],
                 'hd'            => @$_REQUEST['hd'],
                 'stb_type'      => $model,
+                'video_out'     => isset($_REQUEST['video_out']) ? $_REQUEST['video_out'] : '',
                 'serial_number' => isset($_REQUEST['sn']) ? $_REQUEST['sn'] : '',
                 'num_banks'     => isset($_REQUEST['num_banks']) ? (int) $_REQUEST['num_banks'] : 0,
                 'image_version' => isset($_REQUEST['image_version']) ? $_REQUEST['image_version'] : '',

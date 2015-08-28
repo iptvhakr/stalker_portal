@@ -233,21 +233,6 @@ a:hover{
 <?
 $id = intval(@$_GET['id']);
 
-function get_video_out($video_out, $id){
-    if ($video_out == 'rca'){
-        $change_link = 'video_out=svideo';
-        $change_v_out = 'S-video';
-        $now_v_out = 'RCA';
-    }else{
-        $change_link = 'video_out=rca';
-        $change_v_out = 'RCA';
-        $now_v_out = 'S-video';
-    }
-    $link = '<a href="#" onclick="if(confirm(\''._('Change the video output on the').' '.$change_v_out.'?\')){document.location=\'profile.php?'.$change_link.'&id='.$id.'\'}">'.$now_v_out.'</a>';
-    
-    return $link;
-}
-
 function get_cost_sub_channels(){
 
     $sub_ch = get_sub_channels();
@@ -357,7 +342,7 @@ if (empty($packages)){
             </tr>
             <tr>
                 <td>v/out:</td>
-                <td><b><?echo get_video_out($video_out, $id)?></b></td>
+                <td><b><?echo strtoupper($video_out)?></b></td>
             </tr>
             <tr>
                 <td>pass:</td>
