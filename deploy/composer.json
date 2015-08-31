@@ -18,7 +18,7 @@
         "symfony/security": "~2.3",
         "symfony/serializer": "~2.3",
         "symfony/translation": "~2.3",
-        "symfony/validator": "~2.3",
+        "symfony/validator": "~2.7",
         "symfony/monolog-bridge": "~2.3",
         "symfony/twig-bridge": "~2.3",
         "doctrine/dbal": ">=2.2.0,<2.4.0-dev",

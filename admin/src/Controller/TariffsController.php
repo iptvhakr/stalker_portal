@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response as Response;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
-use Symfony\Component\Validator\Context\ExecutionContext;
 use Symfony\Component\Form\FormError;
 
 class TariffsController extends \Controller\BaseStalkerController {
@@ -359,6 +358,10 @@ class TariffsController extends \Controller\BaseStalkerController {
         $func = 'get_' . $this->postData['type'] . '_services';
         ob_start();
         $data['services'] = $this->$func();
+        reset($data['services']);
+        while(list($key, $row) = each($data['services'])){
+            settype($data['services'][$key]['id'], 'string');
+        }
         ob_end_clean();
 
         $error = '';
@@ -613,6 +616,8 @@ class TariffsController extends \Controller\BaseStalkerController {
             if (empty($data['service_type'])) {
                 $data['service_type'] = 'periodic';
             }
+            $data['services_json'] = json_encode(array_keys($services));
+            $data['disabled_services_json'] = json_encode(array_keys($disabled_services));
         }
 
         $disabled_services["0"] = '';
@@ -621,21 +626,11 @@ class TariffsController extends \Controller\BaseStalkerController {
         $allPackageTypes = array_combine($this->getFieldFromArray($this->allPackageTypes, 'id'), $this->getFieldFromArray($this->allPackageTypes, 'title'));
         $allServiceTypes = array_combine($this->getFieldFromArray($this->allServiceTypes, 'id'), $this->getFieldFromArray($this->allServiceTypes, 'title'));
 
-        $self = $this;
-        $self_pack_id = (!empty($data["id"])? $data["id"]: '');
         $form = $builder->createBuilder('form', $data, array('csrf_protection' => false))
                 ->add('id', 'hidden')
                 ->add('external_id', 'text', array(
                         'constraints' => array(
-                            new Assert\NotBlank(),
-                            new Assert\Callback(array(
-                                "methods"   =>  array(function ($external_id, ExecutionContext $context) use ($self, $self_pack_id) {
-                                    $finded = $self->db->getTariffsList(array('where' => array('external_id' => $external_id, "id<>"=>$self_pack_id)));
-                                    if (!empty($finded)) {
-                                        $context->addViolation($self->setLocalization('ID already used'));
-                                    }
-                                }),
-                            ))
+                            new Assert\NotBlank()
                         ),
                         'required' => TRUE
                     ))
@@ -687,10 +682,13 @@ class TariffsController extends \Controller\BaseStalkerController {
             if (empty($data['service_type'])) {
                 $data['service_type'] = 'periodic';
             }
-            if ($edit && (!empty($package_external_id) && $package_external_id[0]['external_id'] != $data['external_id'])) {
+
+            if ($edit && (!empty($package_external_id) && $package_external_id[0]['id'] != $data['id']) ||
+                !$edit && !empty($package_external_id)) {
                 $form->get('external_id')->addError(new FormError($this->setLocalization('ID already used')));
                 return FALSE;
             }
+
             if ($form->isValid()) {
                 $param[] = array_intersect_key($data, array_flip($this->getFieldFromArray($this->db->getTableFields('services_package'), 'Field')));
                 if ($edit && !empty($data['id'])) {
