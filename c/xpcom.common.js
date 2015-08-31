@@ -843,7 +843,7 @@ function common_xpcom(){
                 'sn'               : this.serial_number,
                 'stb_type'         : this.type,
                 'image_version'    : this.image_version,
-                'video_out'        : (gSTB.GetHDMIConnectionState ? (gSTB.GetHDMIConnectionState() == 0 && window.innerHeight <= 576 ? "rca" : "hdmi") : ""),
+                'video_out'        : (stb.GetHDMIConnectionState ? (stb.GetHDMIConnectionState() == 0 && window.innerHeight <= 576 ? "rca" : "hdmi") : ""),
                 'device_id'        : stb.GetUID ? stb.GetUID() : '',
                 'device_id2'       : stb.GetUID ? (stb.GetUID(this.access_token) == stb.GetUID(this.access_token, this.access_token) ? '' : stb.GetUID('device_id', this.access_token)) : '',
                 'signature'        : stb.GetUID ? stb.GetUID(this.access_token) : '',
