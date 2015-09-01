@@ -770,3 +770,4 @@ _('Adding and editing the templates of messages');
 _('Removing the templates of messages');
 _('Send msg with video');
 _('Run application');
+_('Requires at least one link of broadcast');

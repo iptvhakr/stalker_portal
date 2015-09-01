@@ -350,7 +350,7 @@ class UsersController extends \Controller\BaseStalkerController {
         $form = $this->buildUserForm($this->user, TRUE);
 
         if ($this->saveUsersData($form, TRUE)) {
-            return $this->app->redirect('edit-users?id='.$id);
+            return $this->app->redirect('users-list');
         }
         $this->app['form'] = $form->createView();
         $this->app['userEdit'] = TRUE;
@@ -1633,6 +1633,12 @@ class UsersController extends \Controller\BaseStalkerController {
                 unset($data['version']);
 
                 $result = call_user_func_array(array($this->db, $action), array($data, $data['id']));
+                $id = ($action == 'updateUserById' && !empty($data['id']) ? $data['id'] : $result);
+
+                if (array_key_exists('password', $data) && !empty($id)) {
+                    $password = md5(md5($data['password']).$id);
+                    $this->db->updateUserById(array('password' => $password), $id);
+                }
 
                 if (!empty($this->postData['tariff_plan_packages'])) {
                     $this->changeUserPlanPackages($id, $this->postData['tariff_plan_packages']);

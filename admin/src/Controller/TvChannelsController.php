@@ -955,7 +955,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                 ->add('id', 'hidden')
                 ->add('number', 'text', array(
                     'constraints' => array(
-                        new Assert\Range(array('min' => 0, 'max' => 999)),
+                        new Assert\Range(array('min' => 0, 'max' => 9999)),
                         new Assert\NotBlank()
                     ),
                     'data' => $def_number

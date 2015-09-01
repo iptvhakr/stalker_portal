@@ -166,6 +166,8 @@
                                         </div>
                                     </div>
                                 </fieldset>
+                                {{ form_widget(app['form'].disabled_services_json, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_widget(app['form'].services_json, {'attr': {'class': 'form-control'}}) }}
                             </div>
                         </div>    
                     </div>
@@ -259,9 +261,9 @@
                         $('#form_service_type').removeAttr('disabled').closest('.form-group').show();
                     }
                     
-                    if ($(this).data('currtype') == type) {
+                    /*if ($(this).data('currtype') == type) {
                         return;
-                    }
+                    }*/
                     
                     $(this).data('currtype', type);
                     
@@ -311,8 +313,17 @@
         var updateService = function (data){
             if (typeof (data.services) !== 'undefined') {
                 $('#form_disabled_services').empty();
+                var disabled_services_json = $("#form_disabled_services_json").val() ? JSON.parse($("#form_disabled_services_json").val()) : new Array();
+                for (var key in disabled_services_json) {
+                    disabled_services_json[key] = parseInt(disabled_services_json[key], 10);
+                }
                 $.each(data.services, function(index, item){
-                    $('#form_disabled_services').append('<option class="new" value='+item.id+'>'+ item.name +'</option>');
+                    var id = parseInt(item.id, 10);
+                    if (disabled_services_json.indexOf(id) !== -1 || !$("#form_disabled_services_json").val()) {
+                        $('#form_disabled_services').append('<option class="new" value='+item.id+'>'+ item.name +'</option>');
+                    } else {
+                        $('#form_services').append('<option class="new" value='+item.id+'>'+ item.name +'</option>');
+                    }
                 })
             }
 
