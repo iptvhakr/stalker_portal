@@ -7,12 +7,19 @@ class GitHub
     private $branch = 'master';
 
     /**
-     * @param string $owner
-     * @param string $repository
+     * @param string $repository_url
+     * @throws GitHubException
      */
-    public function __construct($owner, $repository){
-        $this->owner      = $owner;
-        $this->repository = $repository;
+    public function __construct($repository_url){
+
+        preg_match('/\/\/github.com\/([^\/]+)\/([^\/]+)/', $repository_url, $match);
+
+        if (count($match) != 3){
+            throw new GitHubException("Wrong repository url");
+        }
+
+        $this->owner      = $match[1];
+        $this->repository = $match[2];
     }
 
     /**
