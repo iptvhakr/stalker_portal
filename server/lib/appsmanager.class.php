@@ -11,7 +11,17 @@ class AppsManager
 
             $repo = new GitHub($app['url']);
 
-            $app['info'] = $repo->getFileContent('package.json');
+            $info = $repo->getFileContent('package.json');
+
+            $repo['name']              = isset($info['name']) ? $info['name'] : '';
+            $repo['alias']             = AppsManager::safeFilename($info['name']);
+            $repo['available_version'] = isset($info['version']) ? $info['version'] : '';
+            $repo['description']       = isset($info['version']) ? $info['description'] : '';
+
+            $repo['installed'] = is_dir(realpath(PROJECT_PATH.'/../../'
+                .Config::getSafe('apps_path', 'stalker_apps/')
+                .$repo['alias']
+                .'/'.$repo['current_version']));
 
             return $app;
         }, $db_apps);
@@ -55,7 +65,7 @@ class AppsManager
 
         $archive = new PharData($tmp_file);
 
-        $path = realpath(PROJECT_PATH.'/../../stalker_apps/'.self::safeFilename($app['name']).'/'.$latest_release['name']);
+        $path = realpath(PROJECT_PATH.'/../../'.Config::getSafe('apps_path', 'stalker_apps/').self::safeFilename($app['name']).'/'.$latest_release['name']);
 
         umask(0);
         mkdir($path, 0755, true);
@@ -90,7 +100,7 @@ class AppsManager
 
         $archive = new PharData($tmp_file);
 
-        $path = realpath(PROJECT_PATH.'/../../stalker_apps/'.self::safeFilename($app['name']).'/'.$version);
+        $path = realpath(PROJECT_PATH.'/../../'.Config::getSafe('apps_path', 'stalker_apps/').self::safeFilename($app['name']).'/'.$version);
 
         umask(0);
         mkdir($path, 0755, true);
