@@ -22,6 +22,14 @@ class GitHub
         $this->repository = $match[2];
     }
 
+    public function getOwner(){
+        return $this->owner;
+    }
+
+    public function getRepository(){
+        return $this->repository;
+    }
+
     /**
      * @param $filename string
      * @return string

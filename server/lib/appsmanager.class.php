@@ -3,22 +3,108 @@
 class AppsManager
 {
 
-    public function __construct(){
+    public function getList(){
 
-    }
+        $db_apps = Mysql::getInstance()->from('apps')->orderby('id')->get()->all();
 
-    public function getAppsList(){
+        $apps = array_map(function($app){
 
-        //$db_apps = Mysql::getInstance()->from('apps')->orderby('id')->get()->all();
+            $repo = new GitHub($app['url']);
 
+            $app['info'] = $repo->getFileContent('package.json');
+
+            return $app;
+        }, $db_apps);
+
+        return $apps;
     }
 
     public function getAppInfo($app_id){
 
+        $app = Mysql::getInstance()->from('apps')->where(array('id' => $app_id))->get()->first();
+
+        if (empty($app)){
+            return false;
+        }
+
+        $repo = new GitHub($app['url']);
+
+        return $repo->getFileContent('package.json');
     }
 
     public function installApp($app_id){
 
+        $app = Mysql::getInstance()->from('apps')->where(array('id' => $app_id))->get()->first();
+
+        if (empty($app)){
+            return false;
+        }
+
+        $repo = new GitHub($app['url']);
+        $versions = $repo->getReleases(1);
+
+        if (count($versions) == 0){
+            return false;
+        }
+
+        $latest_release = $versions[0];
+
+        $tmp_file = tempnam('/tmp', 'app');
+
+        file_put_contents($tmp_file, fopen($latest_release['tarball_url'], 'r'));
+
+        $archive = new PharData($tmp_file);
+
+        $path = realpath(PROJECT_PATH.'/../../stalker_apps/'.self::safeFilename($app['name']).'/'.$latest_release['name']);
+
+        umask(0);
+        mkdir($path, 0755, true);
+
+        $result = $archive->extractTo($path);
+
+        unlink($tmp_file);
+
+        return $result;
+    }
+
+    public function updateApp($app_id, $version = null, $tarball_url = null){
+
+        $app = Mysql::getInstance()->from('apps')->where(array('id' => $app_id))->get()->first();
+
+        if (empty($app)){
+            return false;
+        }
+
+        if ($version === null){
+            return $this->installApp($app_id);
+        }
+
+        $tmp_file = tempnam('/tmp', 'app');
+
+        if ($tarball_url === null){
+            $repo = new GitHub($app['url']);
+            $tarball_url = 'https://api.github.com/repos/'.$repo->getOwner().'/'.$repo->getRepository().'/tarball/'.$version;
+        }
+
+        file_put_contents($tmp_file, fopen($tarball_url, 'r'));
+
+        $archive = new PharData($tmp_file);
+
+        $path = realpath(PROJECT_PATH.'/../../stalker_apps/'.self::safeFilename($app['name']).'/'.$version);
+
+        umask(0);
+        mkdir($path, 0755, true);
+
+        $result = $archive->extractTo($path);
+
+        unlink($tmp_file);
+
+        return $result;
+    }
+
+    public static function safeFilename($filename){
+        $except = array('\\', '/', ':', '*', '?', '"', '<', '>', '|');
+        return strtolower(str_replace($except, '', $filename));
     }
 
 

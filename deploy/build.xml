@@ -197,6 +197,9 @@
 
         <exec command="mkdir ${project_path}/admin" level="info"/>
         <exec command="mkdir ${project_path}/deploy/composer" level="info"/>
+        <exec command="mkdir ${project_path}/../stalker_apps" level="info"/>
+        <chmod file="${project_path}/../stalker_apps" mode="0777" />
+
         <exec command="php ${project_path}/deploy/composer/composer.phar install" level="info" outputProperty="install.error.msg" returnProperty="install.error.code"/>
 
         <if>
