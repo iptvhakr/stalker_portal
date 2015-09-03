@@ -7,7 +7,7 @@ CREATE TABLE `apps` (
   `status` TINYINT NOT NULL DEFAULT 0, /* 0 - off, 1 - on */
   `added` timestamp DEFAULT 0,
   `updated` timestamp DEFAULT 0,
-  UNIQUE INDEX `alias` (`alias`),
+  UNIQUE INDEX `url` (`url`),
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8;
 

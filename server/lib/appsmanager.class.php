@@ -16,7 +16,7 @@ class AppsManager
             $repo['name']              = isset($info['name']) ? $info['name'] : '';
             $repo['alias']             = AppsManager::safeFilename($info['name']);
             $repo['available_version'] = isset($info['version']) ? $info['version'] : '';
-            $repo['description']       = isset($info['version']) ? $info['description'] : '';
+            $repo['description']       = isset($info['description']) ? $info['description'] : '';
 
             $repo['installed'] = is_dir(realpath(PROJECT_PATH.'/../../'
                 .Config::getSafe('apps_path', 'stalker_apps/')
