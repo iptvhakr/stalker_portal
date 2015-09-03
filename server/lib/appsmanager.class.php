@@ -1,5 +1,7 @@
 <?php
 
+require "../common.php";
+
 class AppsManager
 {
 
@@ -38,7 +40,39 @@ class AppsManager
 
         $repo = new GitHub($app['url']);
 
-        return $repo->getFileContent('package.json');
+        $info = $repo->getFileContent('package.json');
+
+        $app['name']              = isset($info['name']) ? $info['name'] : '';
+        $app['alias']             = AppsManager::safeFilename($info['name']);
+        $app['available_version'] = isset($info['version']) ? $info['version'] : '';
+        $app['description']       = isset($info['description']) ? $info['description'] : '';
+
+        $app['installed'] = is_dir(realpath(PROJECT_PATH.'/../../'
+            .Config::getSafe('apps_path', 'stalker_apps/')
+            .$app['alias']
+            .'/'.$app['current_version']));
+
+        $releases = $repo->getReleases(50);
+
+        if (is_array($releases)){
+            $releases = array_map(function($release) use ($app){
+                return array(
+                    'version'     => $release['tag_name'],
+                    'name'        => $release['name'],
+                    'published'   => $release['published_at'],
+                    'description' => $release['body'],
+                    'installed'   => is_dir(realpath(PROJECT_PATH.'/../../'
+                        .Config::getSafe('apps_path', 'stalker_apps/')
+                        .$app['alias']
+                        .'/'.$release['tag_name'])),
+                    'current'     => $release['tag_name'] == $app['current_version']
+                );
+            }, $releases);
+        }
+
+        $app['versions'] = $releases;
+
+        return $app;
     }
 
     public function installApp($app_id){
@@ -149,3 +183,7 @@ class AppsManager
         return rmdir($dir);
     }
 }
+
+
+$apps = new AppsManager();
+var_dump($apps->getList(1));

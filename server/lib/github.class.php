@@ -97,10 +97,15 @@ class GitHub
 
         $json_result = $this->execute($url);
 
-        $result = json_decode($json_result, true);
+        if (is_string($json_result)) {
 
-        if ($result === null){
-            throw new GitHubUnknownFormat("Result cannot be decoded. Result: ".$json_result);
+            $result = json_decode($json_result, true);
+
+            if ($result === null) {
+                throw new GitHubUnknownFormat("Result cannot be decoded. Result: " . $json_result);
+            }
+        }else{
+            $result = $json_result;
         }
 
         return $result;
@@ -118,6 +123,7 @@ class GitHub
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST,  'GET');
+        curl_setopt($ch, CURLOPT_USERAGENT, 'stalker_portal');
         $response = curl_exec($ch);
 
         if ($response === false){
