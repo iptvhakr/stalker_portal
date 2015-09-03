@@ -1,7 +1,5 @@
 <?php
 
-require "../common.php";
-
 class AppsManager
 {
 
@@ -183,7 +181,3 @@ class AppsManager
         return rmdir($dir);
     }
 }
-
-
-$apps = new AppsManager();
-var_dump($apps->getList(1));
