@@ -74,6 +74,10 @@ class AppsManager
 
         unlink($tmp_file);
 
+        if ($result){
+            Mysql::getInstance()->update('apps', array('current_version' => $latest_release['name']), array('id' => $app_id));
+        }
+
         return $result;
     }
 
@@ -109,6 +113,10 @@ class AppsManager
 
         unlink($tmp_file);
 
+        if ($result){
+            Mysql::getInstance()->update('apps', array('current_version' => $version), array('id' => $app_id));
+        }
+
         return $result;
     }
 
@@ -116,6 +124,5 @@ class AppsManager
         $except = array('\\', '/', ':', '*', '?', '"', '<', '>', '|');
         return strtolower(str_replace($except, '', $filename));
     }
-
-
 }
+

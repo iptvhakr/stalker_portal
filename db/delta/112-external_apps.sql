@@ -2,7 +2,6 @@
 
 CREATE TABLE `apps` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `alias` varchar(64) NOT NULL DEFAULT '',
   `url` varchar(128) NOT NULL DEFAULT '',
   `current_version` varchar(16) NOT NULL DEFAULT '',
   `status` TINYINT NOT NULL DEFAULT 0, /* 0 - off, 1 - on */
