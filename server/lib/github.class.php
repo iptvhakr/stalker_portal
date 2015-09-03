@@ -130,16 +130,16 @@ class GitHub
 
         $http_code = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
+        $result = json_decode($response, true);
+
+        if ($result !== null){
+            $message = !empty($result['message']) ? $result['message'] : $response;
+            $response = $result;
+        }else{
+            $message = $response;
+        }
+
         if ($http_code != 200 && $http_code > 400){
-
-            $result = json_decode($response, true);
-
-            if ($result !== null){
-                $message = !empty($result['message']) ? $result['message'] : $response;
-            }else{
-                $message = $response;
-            }
-
             throw new GitHubError($message, $http_code);
         }
 

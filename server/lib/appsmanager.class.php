@@ -12,16 +12,15 @@ class AppsManager
             $repo = new GitHub($app['url']);
 
             $info = $repo->getFileContent('package.json');
+            $app['name']              = isset($info['name']) ? $info['name'] : '';
+            $app['alias']             = AppsManager::safeFilename($info['name']);
+            $app['available_version'] = isset($info['version']) ? $info['version'] : '';
+            $app['description']       = isset($info['description']) ? $info['description'] : '';
 
-            $repo['name']              = isset($info['name']) ? $info['name'] : '';
-            $repo['alias']             = AppsManager::safeFilename($info['name']);
-            $repo['available_version'] = isset($info['version']) ? $info['version'] : '';
-            $repo['description']       = isset($info['description']) ? $info['description'] : '';
-
-            $repo['installed'] = is_dir(realpath(PROJECT_PATH.'/../../'
+            $app['installed'] = is_dir(realpath(PROJECT_PATH.'/../../'
                 .Config::getSafe('apps_path', 'stalker_apps/')
-                .$repo['alias']
-                .'/'.$repo['current_version']));
+                .$app['alias']
+                .'/'.$app['current_version']));
 
             return $app;
         }, $db_apps);
@@ -120,9 +119,33 @@ class AppsManager
         return $result;
     }
 
+    public function deleteApp($app_id, $version = null){
+
+        $app = Mysql::getInstance()->from('apps')->where(array('id' => $app_id))->get()->first();
+
+        if ($version === null){
+            $version = $app['current_version'];
+        }
+
+        $path = realpath(PROJECT_PATH.'/../../'.Config::getSafe('apps_path', 'stalker_apps/').self::safeFilename($app['name']).'/'.$version);
+
+        if (is_dir($path)){
+            self::delTree($path);
+        }
+
+        return false;
+    }
+
     public static function safeFilename($filename){
         $except = array('\\', '/', ':', '*', '?', '"', '<', '>', '|');
         return strtolower(str_replace($except, '', $filename));
     }
-}
 
+    private static function delTree($dir) {
+        $files = array_diff(scandir($dir), array('.','..'));
+        foreach ($files as $file) {
+            (is_dir("$dir/$file")) ? self::delTree("$dir/$file") : unlink("$dir/$file");
+        }
+        return rmdir($dir);
+    }
+}
