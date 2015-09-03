@@ -45,6 +45,14 @@ class AppsManager
         $app['available_version'] = isset($info['version']) ? $info['version'] : '';
         $app['description']       = isset($info['description']) ? $info['description'] : '';
 
+        $option_values = json_decode($app['options'], true);
+
+        if (empty($option_values)){
+            $option_values = array();
+        }
+
+        unset($app['options']);
+
         $app['installed'] = is_dir(realpath(PROJECT_PATH.'/../../'
             .Config::getSafe('apps_path', 'stalker_apps/')
             .$app['alias']
@@ -53,7 +61,19 @@ class AppsManager
         $releases = $repo->getReleases(50);
 
         if (is_array($releases)){
-            $releases = array_map(function($release) use ($app){
+            $releases = array_map(function($release) use ($app, $option_values){
+
+                $repo = new GitHub($app['url']);
+                $repo->setRelease($release['tag_name']);
+                $info = $repo->getFileContent('package.json');
+
+                $option_list = isset($info['options']) ? $info['options'] : array();
+
+                $option_list = array_map(function($option) use ($option_values){
+                    $option['value'] = isset($option_values[$option['name']]) ? $option_values[$option['name']] : null;
+                    return $option;
+                }, $option_list);
+
                 return array(
                     'version'     => $release['tag_name'],
                     'name'        => $release['name'],
@@ -63,7 +83,8 @@ class AppsManager
                         .Config::getSafe('apps_path', 'stalker_apps/')
                         .$app['alias']
                         .'/'.$release['tag_name'])),
-                    'current'     => $release['tag_name'] == $app['current_version']
+                    'current'     => $release['tag_name'] == $app['current_version'],
+                    'options'     => $option_list
                 );
             }, $releases);
         }
