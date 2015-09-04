@@ -271,6 +271,21 @@ function common_xpcom(){
 
         connection_problem.init();
         authentication_problem.init();
+
+        window.addEventListener('message', function(event){
+            _debug('message event');
+
+            if (window.self !== window.top && event.data == 'show' && stb.cur_single_module){
+                _debug('stb.cur_single_module', stb.cur_single_module);
+
+                if (module[stb.cur_single_module]._show){
+                    module[stb.cur_single_module]._show();
+                }else if (module[stb.cur_single_module].show){
+                    module[stb.cur_single_module].show();
+                }
+            }
+
+        }, false);
     };
 
     this.init_auth_dialog = function(){
@@ -385,9 +400,9 @@ function common_xpcom(){
                     loader.add(this.all_modules);
                 }
 
-                if (typeof(stbWebWindow) != 'undefined'){
+                if (window.self !== window.top){
                     // notify parent to show this window
-                    stbWebWindow.messageSend(1, 'app:ready');
+                    parent && parent.postMessage('show', '*');
                 }
             },
 
