@@ -245,9 +245,9 @@ a {text-decoration: none;}
 	#pageMediaPlayer .player_footer .ffwd {height:35px; width:44px; margin-right:16px; float:left; background:url(img/720/ico_next.png) no-repeat;}
 	#pageMediaPlayer .player_footer .time_cur {color:#fd3; height:40px; padding:0 16px; border-radius:6px; font-size:32px; float:right;}
 	#pageMediaPlayer .player_footer .time_total {color:#fff; font-size:32px; float:right;}
-	#pageMediaPlayer .player_footer .slash {color:#fff; font-size:24px; line-height:36px; margin:0 8px 0 -10px; float:right;}
-	#pageMediaPlayer .player_footer .input {color:#000000; background:#fd3;}
-	#pageMediaPlayer .player_footer .name {font-size:28px; color:#fff; line-height:36px; width:700px; float:left; overflow:hidden; text-overflow: ellipsis; white-space:nowrap;}
+	#pageMediaPlayer .player_footer .slash { color:#fff; font-size:24px; line-height:36px; margin:0 8px 0 -10px; float:right; }
+	#pageMediaPlayer .player_footer .input { color:#000000; background:#fd3; }
+	#pageMediaPlayer .player_footer .name { font-size:28px; color:#fff; line-height:36px; width:700px; float:left; overflow:hidden; text-overflow: ellipsis; white-space:nowrap;}
 
 #pageMediaPlayer .cright { position:absolute; bottom:120px; left:0; height:40px; margin-left:50px;}
 	#pageMediaPlayer .cright .box {height:20px; margin-right:10px; padding: 10px; float:left; background:url(img/720/player_menu_bg.png);}
@@ -260,11 +260,12 @@ a {text-decoration: none;}
 #pageMediaPlayer .frame .next {height:38px; margin:14px 0 0 20px; float:left; padding-left:60px; font-size:20px; color:#fff; line-height:20px; background:url(img/720/ico_pgDown.png) left bottom no-repeat;}
 #pageMediaPlayer .frame .cslist-main { height:364px; width:640px; margin-top: 10px; overflow-x:hidden; overflow-y:scroll;}
 	#pageMediaPlayer .frame .cslist-main a { width:610px; padding:0px 5px; line-height: 52px;}
-		#pageMediaPlayer .frame .cslist-main a.focused        { background-image: url('img/720/tv_item_focus.png');}		
-			#pageMediaPlayer .frame .cslist-main a .data {height:52px; width:560px; float:left;line-height:52px; text-indent:10px;text-align: left;padding-left:0px; font-size:32px; white-space:nowrap; text-overflow:ellipsis; overflow:hidden; }
-			#pageMediaPlayer .frame .cslist-main a .star {height:52px; width:1px; float:left;}
-                        #pageMediaPlayer .frame .cslist-main a.stared .data {background: none; background-image:none;}
+		#pageMediaPlayer .frame .cslist-main a.focused { background-image: url('img/720/tv_item_focus.png'); }
+			#pageMediaPlayer .frame .cslist-main a .data { height:52px; width:560px; float:left;line-height:52px; text-indent:10px;text-align: left;padding-left:0px; font-size:32px; white-space:nowrap; text-overflow:ellipsis; overflow:hidden; }
+			#pageMediaPlayer .frame .cslist-main a .star { height:52px; width:1px; float:left; }
+                        #pageMediaPlayer .frame .cslist-main a.stared .data { background: none; background-image:none; }
 
-.page#pageMediaPlayer .cmodal-main .cmodal-menu { font-size:28px; float:right; margin-top: -2px;}
+.page#pageMediaPlayer .cmodal-main .cmodal-menu { font-size:28px; float:right; margin-top: -2px; }
 	.page#pageMediaPlayer .cmodal-main .cmodal-menu .cgmenu-main { font-size:28px; padding:25px 35px; clear:both; background-color:#202224 }
-#pageMediaPlayer .mediaHeaderIco{height: 30px; margin-left: 140px; margin-top: 140px; position: absolute;  display:none;}
+#pageMediaPlayer .mediaHeaderIco{ height: 30px; margin-left: 140px; margin-top: 140px; position: absolute;  display:none; }
+.cmodal-main.cModalHint > .cmodal-cell > .cmodal-body { text-align:center; }

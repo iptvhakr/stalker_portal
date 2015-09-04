@@ -1,4 +1,4 @@
-﻿/**
+﻿﻿/**
  * Set of base functionality tools
  * @author DarkPark
  */
@@ -86,21 +86,6 @@ function elclear ( obj ) {
 		while ( obj.hasChildNodes() ) obj.removeChild(obj.firstChild);
 	}
 	return obj;
-}
-
-
-/**
- * Loads the given stylesheet file dynamically
- * head injection method is used
- * @param {String} src file to be loaded
- * @param {Function} [onload] optional handler
- */
-function loadStyle ( src, onload ) {
-	// make style link
-	document.head.appendChild(element('link', {rel:'stylesheet', type:'text/css', href:src}));
-	//elchild(document.head, element('link', {rel:'stylesheet', type:'text/css', href:src}));
-	// run callback if given with dumb image
-	if ( onload ) element('img', {onerror:function(){onload();}, src:'***'});
 }
 
 
@@ -277,3 +262,55 @@ var Events = {
 		}
 	}
 };
+
+/**
+ * get the list of all storages (external usb and internal hdd)
+ */
+function getStorageInfo () {
+	var snList = {};  // set of all serial numbers with amount of partitions on each
+
+	// get mount points
+	var info = JSON.parse(gSTB.GetStorageInfo('{}'));
+	// valid non-empty data
+	if ( Array.isArray(info.result) && info.errMsg === '' && info.result.length > 0 ) {
+		info.result.forEach(function ( item ) {
+			// SD card-reader support
+			item.mediaType = item.sn === '000022272228' ? 3 : item.mediaType;
+
+			item.label = item.label.trim();
+			if ( snList[item.sn] ) {
+				snList[item.sn]++;
+			} else {
+				snList[item.sn] = 1;
+			}
+		});
+		info.result.forEach(function ( item ) {
+			if ( !item.label ) {
+				item.label = item.vendor + ' ' + item.model.replace(/\//, '');
+				if ( snList[item.sn] > 1 ) {
+					item.label += ' #' + item.partitionNum;
+				}
+			}
+		});
+		// sort by mount path
+		info.result.sort(function ( a, b ) {
+			return a.mountPath < b.mountPath ? -1 : 1;
+		});
+		// final list of all combined data
+		window.STORAGE_INFO = info.result;
+	} else {
+		// reset if error
+		window.STORAGE_INFO = [];
+	}
+
+	// get hdd data
+	try {
+		window.HDD_INFO = JSON.parse(gSTB.RDir('get_hdd_info') || '[]');
+	} catch ( e ) {
+		echo(e, 'get_hdd_info');
+		window.HDD_INFO = [];
+	}
+
+	echo(STORAGE_INFO, 'STORAGE_INFO');
+	echo(HDD_INFO, 'HDD_INFO');
+}

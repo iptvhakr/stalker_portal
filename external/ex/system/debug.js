@@ -11,13 +11,13 @@
  * @param {String} [title] optional string for additional info
  */
 var echo = function ( data, title ) {
-	if ( EMULATION ) { console.log(title ? title : 'log:', data); }
-	// console colors
-	var red   = '\033[31m',
+	var red   = '\033[31m', // console colors
 		bold  = '\033[1m',
 		cyan  = '\033[36m',
 		green = '\033[32m',
 		reset = '\033[0m';
+
+	if ( EMULATION ) { console.log(title ? title : 'log:', data); }
 	// info of the var type
 	var type = Object.prototype.toString.call(data).match(/\s([a-z|A-Z]+)/)[1];
 	// add custom colors (red for errors)
@@ -45,8 +45,9 @@ var echo = function ( data, title ) {
  */
 function reloadStyles () {
 	var time = +new Date();
+
 	// get through all css links
-	Array.prototype.slice.call(document.head.getElementsByTagName('link')).forEach(function(tag){
+	Array.prototype.slice.call(document.head.getElementsByTagName('link')).forEach(function ( tag ) {
 		// get base name, modify and apply
 		tag.href = tag.href.split('?_')[0] + '?_=' + time;
 	});
@@ -58,26 +59,20 @@ function reloadStyles () {
  * @param {Array} [filter] Array of strings with parts of the urls scripts which should be exclude from reload
  */
 function reloadAllScripts ( filter ) {
-	var scripts = document.head.getElementsByTagName('script'),
+	var scripts  = document.head.getElementsByTagName('script'),
 		filtered = false,
-		script = null,
-		src = '';
+		script   = null,
+		src      = '';
+
 	for ( var i = 0; i < scripts.length; i++ ) {
 		script = scripts[i];
 		filtered = false;
 		src = undefined;
 		if ( script.type === 'text/javascript' && script.attributes.src !== undefined ) {
-//            if (filter !== undefined && Array.isArray(filter)){
-//                filter.forEach(function(f){
-//                    if (script.src.indexOf(f) !== -1) filtered = true;
-//                })
-//            }
 			if ( !filtered ) {
 				src = script.src;
 				script.parentNode.removeChild(script);
-				if ( src.indexOf('?_') !== -1 ) {
-					src = src.substr(0, src.indexOf('?_'));
-				}
+				if ( src.indexOf('?_') !== -1 ) { src = src.substr(0, src.indexOf('?_')); }
 				loadScript(src);
 			}
 		}
@@ -90,8 +85,9 @@ function reloadAllScripts ( filter ) {
  * @param {String} src Part of the script url
  */
 function reloadScripts ( src ) {
-	var scripts = document.head.getElementsByTagName('script'),
+	var scripts   = document.head.getElementsByTagName('script'),
 		curr_time = (new Date()).getTime();
+
 	for ( var i = 0, script = null, src = ''; i < scripts.length; i++ ) {
 		script = scripts[i];
 		if ( script.type === 'text/javascript' && script.src.indexOf(src) !== -1 ) {
@@ -117,15 +113,15 @@ function reloadPage () {
  * @param {String} image full url of image
  * @param {Number} [opacity=0.5] opacity level of impose image
  */
-function imposeImageToScreen(image, opacity){
+function imposeImageToScreen ( image, opacity ) {
 	// prepare image
 	imposeImageToScreen.image = element('div');
-	imposeImageToScreen.image.style.width      = WINDOW_WIDTH + 'px';
-	imposeImageToScreen.image.style.height     = WINDOW_HEIGHT + 'px';
-	imposeImageToScreen.image.style.position   = 'absolute';
+	imposeImageToScreen.image.style.width = WINDOW_WIDTH + 'px';
+	imposeImageToScreen.image.style.height = WINDOW_HEIGHT + 'px';
+	imposeImageToScreen.image.style.position = 'absolute';
 	imposeImageToScreen.image.style.background = 'url("' + image + '") no-repeat';
-	imposeImageToScreen.image.style.opacity    = opacity || 1;
-	imposeImageToScreen.image.style.zIndex     = 1000;
+	imposeImageToScreen.image.style.opacity = opacity || 1;
+	imposeImageToScreen.image.style.zIndex = 1000;
 	// add to DOM
 	document.body.appendChild(imposeImageToScreen.image);
 }
@@ -140,46 +136,56 @@ function focusTracker () {
 
 	if ( focusTracker.state ) {
 		// start
-		console.log('focus tracking: started');
+		echo('focus tracking: started');
 		// backup
-		focusTracker.focus  = Element.prototype.focus;
-		focusTracker.blur   = Element.prototype.blur;
+		focusTracker.focus = Element.prototype.focus;
+		focusTracker.blur = Element.prototype.blur;
 		focusTracker.select = HTMLInputElement.prototype.select;
 		// rewrite
-		Element.prototype.focus = function(){
-			console.log('focus', this);
+		Element.prototype.focus = function () {
+			echo('focus', this);
 			// invoke the old native one
 			focusTracker.focus.call(this);
 		};
-		Element.prototype.blur = function(){
-			console.log('blur', this);
+		Element.prototype.blur = function () {
+			echo('blur', this);
 			// invoke the old native one
 			focusTracker.blur.call(this);
 		};
-		HTMLInputElement.prototype.select = function(){
-			console.log('select', this);
+		HTMLInputElement.prototype.select = function () {
+			echo('select', this);
 			// invoke the old native one
 			focusTracker.select.call(this);
 		};
 	} else {
 		// stop
-		console.log('focus tracking: stopped');
-		//clearInterval(focusTracker.timer);
+		echo('focus tracking: stopped');
 		// restore
 		Element.prototype.focus = focusTracker.focus;
-		Element.prototype.blur  = focusTracker.blur;
+		Element.prototype.blur = focusTracker.blur;
 		HTMLInputElement.prototype.select = focusTracker.select;
 	}
 }
 
+var storage = {
+	get: function ( name ) {
+		var value = stbStorage.getItem(name);
+
+		return value ? JSON.parse(value) : null;
+	},
+	set: function ( name, value ) {
+		stbStorage.setItem(name, JSON.stringify(value));
+	}
+};
 
 /**
  * Set shortcuts for some debug tools
  * Numpad 1 - reload page ignore caching
  * Numpad 2 - reload styles
  * Numpad 3 - reload all scripts on page
+ * Numpad 8 - turn on spy js
  */
-(function(){
+(function () {
 	window.addEventListener('keydown', function ( event ) {
 		//eventPrepare(event, false, '123');
 		switch ( event.code ) {
@@ -209,6 +215,30 @@ function focusTracker () {
 			case 103: // numpad 7
 				// toggle tracking
 				focusTracker();
+				break;
+			case 104: // numpad 8
+				// TO CLEAR WEINRE SPAM SET DEBUG_NAME EMPTY
+				// SpyJS enable/disable
+				if ( !storage.get('spyjs.active') ) {
+					// try to "ping" proxy server
+					ajax('get',
+						document.location.protocol + '//' + location.hostname + ':3546',
+						function () {
+							// proxy seems ready
+							storage.set('spyjs.active', true);
+							echo('SpyJS: enable', 'red');
+							echo('SpyJS: set proxy to ' + location.hostname + ':' + 3546);
+
+							gSTB.SetWebProxy(location.hostname, 3546, '', '', '');
+							location.reload();
+						}
+					);
+				} else {
+					storage.set('spyjs.active', false);
+					gSTB.ResetWebProxy();
+					echo('SpyJS: disable', 'red');
+					location.reload();
+				}
 				break;
 			case 220: // Print Screen
 				echo('\n\n\n<html><head>\n' + document.head.innerHTML + '\n</head>\n<body>\n' + document.body.innerHTML + '\n</body>\n</html>\n');

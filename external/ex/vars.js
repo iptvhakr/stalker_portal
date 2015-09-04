@@ -211,7 +211,9 @@ content.ru.mainPageMenu = {
 		{type: ROOT_VIDEO, title: 'Проповеди', url: 'sermon', rss: '371146', newsCache: []},
 		{type: ROOT_VIDEO, title: 'Рекламные ролики', url: 'commercial', rss: '371152', newsCache: []},
 		{type: ROOT_VIDEO, title: 'Для мобильных устройств', url: 'mobile', rss: '607160', newsCache: []},
-		{type: ROOT_VIDEO, title: 'Артисты', url: 'artist', rss: '7513588', newsCache: []}
+		{type: ROOT_VIDEO, title: 'Артисты', url: 'artist', rss: '7513588', newsCache: []},
+		{type: MEDIA_FOLDER, title: '3D', url: 'http://www.ex.ua/73427589?r=23775', rss: '73427589', newsCache: []},
+		{type: MEDIA_FOLDER, title: 'UHDTV (4K)', url: 'http://www.ex.ua/78103603?r=23775', rss: '78103603', newsCache: []}
 	],
 	audio : [
 		{type: ROOT_AUDIO, title: 'Музыка', url: '3', rss: '3', newsCache: []},
