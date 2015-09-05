@@ -256,9 +256,13 @@
                     }
 
                     $('#form_service_type').attr('disabled', 'disabled').closest('.form-group').hide();
-                    
+                    $('#form_rent_duration').attr('disabled', 'disabled').closest('.form-group').hide();
+                    $('#form_price').attr('disabled', 'disabled').closest('.form-group').hide();
+
                     if (type == 'video'){
                         $('#form_service_type').removeAttr('disabled').closest('.form-group').show();
+                        $('#form_rent_duration').removeAttr('disabled').closest('.form-group').show();
+                        $('#form_price').removeAttr('disabled').closest('.form-group').show();
                     }
                     
                     /*if ($(this).data('currtype') == type) {
