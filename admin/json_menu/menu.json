@@ -202,6 +202,14 @@
         }
     },
     "9": {
+        "name": _("Applications"),
+        "alias": "application-catalog",
+        "icon": "fa fa-rocket",
+        "icon2": "pull-right",
+        "action": {
+        }
+    },
+    "10": {
         "name": _("Events"),
         "alias": "events",
         "icon": "fa fa-calendar",
@@ -219,7 +227,7 @@
             }
         }
     },
-    "10": {
+    "11": {
         "name": _("Administrators"),
         "alias": "admins",
         "icon": "fa fa-user-secret",
@@ -242,7 +250,7 @@
             }
         }
     },
-    "11": {
+    "12": {
         "name": _("Tasks"),
         "alias": "tasks",
         "icon": "fa fa-check",
@@ -260,7 +268,7 @@
             }
         }
     },
-    "12": {
+    "13": {
         "name": _("Information portal"),
         "alias": "infoportal",
         "icon": "fa fa-info",
@@ -278,7 +286,7 @@
             }
         }
     },
-    "13": {
+    "14": {
         "name": _("Statistics"),
         "alias": "statistics",
         "icon": "fa fa-pie-chart",
@@ -326,7 +334,7 @@
             }
         }
     },
-    "14": {
+    "15": {
         "name": _("Storage"),
         "alias": "storages",
         "icon": "fa fa-archive",
@@ -349,7 +357,7 @@
             }
         }
     },
-    "15": {
+    "16": {
         "name": _("Streaming servers"),
         "alias": "broadcast-servers",
         "icon": "fa fa-server",
@@ -367,7 +375,7 @@
             }
         }
     },
-    "16": {
+    "17": {
         "name": _("Settings"),
         "alias": "settings",
         "icon": "fa fa-cogs",
