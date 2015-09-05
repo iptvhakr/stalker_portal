@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-05 11:38+0300\n"
-"PO-Revision-Date: 2015-09-05 11:38+0300\n"
+"POT-Creation-Date: 2015-09-05 12:06+0300\n"
+"PO-Revision-Date: 2015-09-05 12:06+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -9502,6 +9502,9 @@ msgstr "Категория контента, к которому этот пак
 #: ../../../../admin/json_menu/menu.json:9
 msgid "Dashboard"
 msgstr "Главная"
+
+msgid "Duration of rent"
+msgstr "Длительность аренды"
 
 msgid "Full package"
 msgstr "Полный пакет"
