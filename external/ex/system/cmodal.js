@@ -261,7 +261,7 @@ function CModalHint ( parent, data, time ) {
 		 * The component inner name
 		 * @type {String}
 		 */
-		this.name = "CModalHint";
+		this.name = 'CModalHint';
 
 		// for limited scopes
 		var self = this;
@@ -278,6 +278,7 @@ function CModalHint ( parent, data, time ) {
 
 		// build and display
 		this.Init();
+		this.handle.className = this.handle.className + ' cModalHint';
 		this.Show(true);
 
 		if ( time ) {
@@ -413,9 +414,9 @@ CModalConfirm.prototype.constructor = CModalConfirm;
 
 
 /**
- * Show dialog bow for a PVR record edit
+ * Show dialog bow for a lang change
  * @param {CPage|CBase} [parent] object owner (document.body if not set)
- * @param {Object} data current PVR record data
+ * @param {Object} data current data
  * @param {String} label modal message box text
  * @param {String} text modal message box text
  * @class CModalBox
@@ -511,7 +512,6 @@ function CModalSelectLang ( parent, label, text, data ) {
 			interfaceLang: self.$interfaceLang.GetSelected().langVal
 		};
 		gSTB.SaveUserData('ex.ua.data.json', JSON.stringify(dataForSaving));
-		//self.Show(false);
 		window.location.reload();
 	};
 
@@ -580,3 +580,142 @@ function CModalSelectLang ( parent, label, text, data ) {
 // extending
 CModalSelectLang.prototype = Object.create(CModalBox.prototype);
 CModalSelectLang.prototype.constructor = CModalSelectLang;
+
+///////////////////////////////////////////////////////////////////////////////
+
+
+/**
+ * Show dialog bow for download add
+ * @param {CPage|CBase} [parent] object owner (document.body if not set)
+ * @param {Object} data current data
+ * @class CModalBox
+ * @constructor
+ */
+function CModalAddDownload ( parent, data ) {
+	var self               = this, // for limited scopes
+		prepareSize        = function ( size ) {
+			if ( size > (1024 * 1024 * 1024) ) {return (Math.floor(size / 1024 / 1024 / 1024 * 100) / 100) + ' ' + ('GB');}
+			if ( size > (1024 * 1024) ) {return (Math.floor(size / 1024 / 1024 * 100) / 100) + ' ' + ('MB');}
+			if ( size > (1024) ) {return (Math.floor(size / 1024 * 100) / 100) + ' ' + ('KB');}
+
+			return size + ' ' + ('B');
+		},
+		refreshStorageInfo = function () {
+			var usb, i;
+
+			getStorageInfo();
+			for ( i = 0; i < STORAGE_INFO.length; i++ ) {
+				usb = STORAGE_INFO[i];
+				if ( usb.isReadOnly === 0 ) {
+					usb.freeSizeStr = prepareSize(usb.freeSize);
+					usb.sizeStr = prepareSize(usb.size);
+					usb.id = i;
+					usb.sizeIndicator = lang.freeSpace + ' ' + usb.freeSizeStr + lang.of + usb.sizeStr;
+					allStorages.push(usb);
+				}
+			}
+		},
+		allStorages        = [],
+		html;
+
+	// parent constructor
+	CModalBox.call(this, parent);
+
+	/**
+	 * The component inner name
+	 * @type {String}
+	 */
+	this.name = 'CModalAddDownload';
+
+	refreshStorageInfo();
+	allStorages = allStorages.length > 0 ? allStorages : [{id: -1, label: lang.noStorage}];
+	this.$deviceSelect = new CSelectBox(this, {
+		data     : allStorages,
+		nameField: 'label',
+		style    : 'cselect-box-wider',
+		events   : {
+			onChange: function () {
+				self.$sizeIndicator.innerText = this.GetSelected().sizeIndicator;
+			}
+		}
+	});
+
+	html = element('table', {className: 'main maxw'}, [
+		element('tr', {}, [
+			element('td', {className: 'name'}, lang.downloadIn),
+			element('td', {className: 'data'}, this.$deviceSelect.parentNode)
+		]),
+		element('tr', {}, [
+			element('td', {className: 'name'}),
+			this.$sizeIndicator = element('td', {className: 'data'}, self.$deviceSelect.GetSelected().sizeIndicator || lang.freeSpace + ' 0')
+		])
+	]);
+
+	this.saveNewLang = function () {
+		var error = false;
+
+		data.forEach(function ( item ) {
+			var status = stbDownloadManager.AddJob(item.data.url, self.$deviceSelect.GetSelected().mountPath + '/' + item.data.name);
+			echo('add new record');
+			echo('url:   ' + item.data.url);
+			echo('path:  ' + self.$deviceSelect.GetSelected().mountPath);
+			echo('status:' + status);
+			if ( !status ) { error = true; }
+		});
+		self.Show(false);
+		new CModalHint(currCPage, error ? lang.mediaDefaultError : lang.added, 3000);
+	};
+
+	this.bpanel = new CButtonPanel();
+	this.bpanel.Init(CMODAL_IMG_PATH);
+	this.bpanel.Add(KEYS.EXIT, useNewIcons ? 'new/exit2.png' : 'ico_exit.png', lang.cancel, function () { self.Show(false); });
+	this.bpanel.Add(KEYS.OK, 'ico_ok.png', lang.download, function () { self.saveNewLang(); });
+
+	// filling
+	this.SetHeader(lang.download + ' ' + data.length + ' ' + lang.files);
+	this.SetContent(html);
+	this.SetFooter(this.bpanel.handle);
+
+	this.onShow = function () { self.$deviceSelect.focus(); };
+
+	// free resources on hide
+	this.onHide = function () {
+		elclear(self.bpanel.handle);
+		delete self.bpanel;
+		self.Free();
+	};
+
+	// forward events to button panel
+	this.EventHandler = function ( event ) {
+		echo('modal eventhandler');
+		if ( !eventPrepare(event, true, 'CModalAlert') ) {return;}
+		switch ( event.code ) {
+			case KEYS.CHANNEL_NEXT: // channel+
+			case KEYS.CHANNEL_PREV: // channel-
+				event.preventDefault(); // to suppress tabbing
+				break;
+			case KEYS.UP:
+			case KEYS.DOWN:
+				break;
+			case KEYS.LEFT:
+			case KEYS.RIGHT:
+				this.$deviceSelect.EventHandler(event);
+				break;
+			case KEYS.VOLUME_DOWN:
+			case KEYS.VOLUME_UP:
+				event.preventDefault();
+				break;
+			default:
+				// forward events to button panel
+				self.bpanel.EventHandler(event);
+		}
+	};
+
+	// build and display
+	this.Init();
+	this.Show(true);
+}
+
+// extending
+CModalAddDownload.prototype = Object.create(CModalBox.prototype);
+CModalAddDownload.prototype.constructor = CModalAddDownload;

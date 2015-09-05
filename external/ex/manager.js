@@ -10,11 +10,13 @@ CSListManager.init = function ( handleInner, parentPage ) {
 	 * @type {Node}
 	 */
 	CSListManager.handleInner = handleInner;
+
 	/**
 	 * current active CScrollList
 	 * @type {Node}
 	 */
 	CSListManager.current = null;
+
 	/**
 	 * массив с CScrollList
 	 * @type {Array}
@@ -22,29 +24,35 @@ CSListManager.init = function ( handleInner, parentPage ) {
 	CSListManager.src = [];
 
 	this.playable = [MEDIA_TYPE_VIDEO, MEDIA_TYPE_AUDIO, MEDIA_TYPE_IMAGE];
+
 	/**
 	 * Флаг отображающий состояние видимости компонента поиска
 	 * @type {Boolean}
 	 */
 	CSListManager.SearchBarVisibility = true;
+
 	/**
 	 * обьект CPage с которым работает CSListManager
 	 * @type {Object}
 	 */
 	CSListManager.parent = parentPage;
+
 	/**
 	 * current working mode
 	 * @type {Number}
 	 */
 	this.mode = NORMAL_MODE;
+
 	/**
 	 * current media object opened
 	 * @type {Object}
 	 */
 	this.parentData = null;
+
 	this.LEVEL_CHANGE_NONE = 0;
 	this.LEVEL_CHANGE_UP = -1;
 	this.LEVEL_CHANGE_DOWN = 1;
+
 	/**
 	 * list of action mapped to the media types
 	 * @type {[Function]}
@@ -74,9 +82,7 @@ CSListManager.init = function ( handleInner, parentPage ) {
 };
 
 
-CSListManager.Current = function () {
-	return CSListManager.src[CSListManager.src.length - 1];
-};
+CSListManager.Current = function () { return CSListManager.src[CSListManager.src.length - 1]; };
 
 
 /**
@@ -84,31 +90,30 @@ CSListManager.Current = function () {
  * @param {Object} data media item inner data
  */
 CSListManager.Open = function ( data ) {
+	var levelChange;
+
 	echo(data, 'CSListManager.Open :: data');
 	// форсированная прорисовка инфо в фоне при открытиии плеера
-	if ( (data.type == MEDIA_TYPE_VIDEO || data.type == MEDIA_TYPE_AUDIO || data.type == MEDIA_TYPE_IMAGE) && cat_focus_timer ) {
+	if ( (data.type === MEDIA_TYPE_VIDEO || data.type === MEDIA_TYPE_AUDIO || data.type === MEDIA_TYPE_IMAGE) && cat_focus_timer ) {
 		clearTimeout(cat_focus_timer);
-		// show info in preview block
-		ListPage.Preview.info(CSListManager.Current().Current().data);
+		ListPage.Preview.info(CSListManager.Current().Current().data); // show info in preview block
 	}
 	if ( data.type !== MEDIA_TYPE_VIDEO && data.type !== MEDIA_TYPE_AUDIO && data.type !== MEDIA_TYPE_IMAGE ) {
 		elclear(ListPage.Preview.body);
 	}
-	var levelChange = this.Build(data);
+	levelChange = this.Build(data);
 	this.parentData = data;
-
 	// level not changed
-	if ( levelChange == this.LEVEL_CHANGE_NONE ) {
+	if ( levelChange === this.LEVEL_CHANGE_NONE ) {
 		echo('LEVEL_CHANGE_NONE');
 		// изменяем запись в хлебных крошках
-		if ( data.type != TYPE_NONE && data.type != MEDIA_TYPE_VIDEO && data.type != MEDIA_TYPE_AUDIO && data.type != MEDIA_TYPE_IMAGE ) {
+		if ( data.type !== TYPE_NONE && data.type !== MEDIA_TYPE_VIDEO && data.type !== MEDIA_TYPE_AUDIO && data.type !== MEDIA_TYPE_IMAGE ) {
 			ListPage.breadCrumb.Pop();
 			ListPage.breadCrumb.Push('/', typeInfo[data.type].icon, data.title);
 		}
 	}
-
 	// level changed
-	if ( levelChange == this.LEVEL_CHANGE_DOWN ) {
+	if ( levelChange === this.LEVEL_CHANGE_DOWN ) {
 		echo('LEVEL_CHANGE_DOWN');
 		// прячем предыдущий лист
 		if ( CSListManager.src.length > 1 ) {
@@ -116,41 +121,37 @@ CSListManager.Open = function ( data ) {
 			CSListManager.src[CSListManager.src.length - 2].Show(false);
 		}
 		// добавляем запись в хлебные крошки
-		if ( data.type != TYPE_NONE && data.type != MEDIA_TYPE_VIDEO && data.type != MEDIA_TYPE_AUDIO && data.type != MEDIA_TYPE_IMAGE ) {
+		if ( data.type !== TYPE_NONE && data.type !== MEDIA_TYPE_VIDEO && data.type !== MEDIA_TYPE_AUDIO && data.type !== MEDIA_TYPE_IMAGE ) {
 			ListPage.breadCrumb.Push('/', typeInfo[data.type].icon, data.title);
 		}
 		// скрываем поиск
-		if ( this.SearchBarVisibility == true ) {
-			if ( (this.mode == LSEARCH_MODE && this.src.length > 2) || (this.mode == NORMAL_MODE && this.src.length > 1) ) {
+		if ( this.SearchBarVisibility === true ) {
+			if ( (this.mode === LSEARCH_MODE && this.src.length > 2) || (this.mode === NORMAL_MODE && this.src.length > 1) ) {
 				echo('search hide');
 				this.parent.SearchBar.Show(false, false);
 				this.SearchBarVisibility = false;
 			}
 		}
 	}
-
 	// level changed
-	if ( levelChange == this.LEVEL_CHANGE_UP ) {
+	if ( levelChange === this.LEVEL_CHANGE_UP ) {
 		echo('LEVEL_CHANGE_UP');
 		CSListManager.parent.breadCrumb.Pop();
 		// поднимаемся вверх, текущим становится предыдущий лист, - обновляем текущий тип
-		if ( CSListManager.src.length > 0 ) {
-			CSListManager.parentData = CSListManager.Current().handleInner.data;
-		}
-		if ( CSListManager.src.length == 1 ) {
+		if ( CSListManager.src.length > 0 ) { CSListManager.parentData = CSListManager.Current().handleInner.data; }
+		if ( CSListManager.src.length === 1 ) {
 			CSListManager.mode = NORMAL_MODE;
 			CSListManager.Current().Current().focus();
 		}
 		// показываем поиск
-		if ( this.SearchBarVisibility == false ) {
-			if ( (this.mode == LSEARCH_MODE && this.src.length < 3) || (this.mode == NORMAL_MODE && this.src.length < 2) ) {
+		if ( this.SearchBarVisibility === false ) {
+			if ( (this.mode === LSEARCH_MODE && this.src.length < 3) || (this.mode === NORMAL_MODE && this.src.length < 2) ) {
 				echo('search show');
 				this.parent.SearchBar.Show(true, false);
 				this.SearchBarVisibility = true;
 			}
 		}
-
-		if ( CSListManager.src.length == 0 ) {
+		if ( CSListManager.src.length === 0 ) {
 			// выход на предыдущую страницу
 			this.parent.SearchBar.Show(true, false);
 			CSListManager.trash.Clear();
@@ -169,8 +170,9 @@ CSListManager.Open = function ( data ) {
  * @return {Number} hierarchy change flag: 0 - no change, 1 - go level deeper, -1 - go level up
  */
 CSListManager.Build = function ( data ) {
-	echo(data, 'CSListManager.Build:: data');
 	var levelChange = this.LEVEL_CHANGE_NONE;
+
+	echo(data, 'CSListManager.Build:: data');
 	// get item associated open action and execute
 	if ( data && data.type && this.action_open[data.type] instanceof Function ) {
 		levelChange = this.action_open[data.type].call(this, data);
@@ -186,6 +188,7 @@ CSListManager.Build = function ( data ) {
 CSListManager.openBack = function ( data ) {
 	echo(data, 'openBack');
 	CSListManager.parent.BPanel.Hidden(CSListManager.parent.BPanel.btnF3, true);
+	CSListManager.parent.BPanel.Hidden(CSListManager.parent.BPanel.btnF1, true);
 	CSListManager.parent.BPanel.Hidden(CSListManager.parent.BPanel.btnOnINFO, true);
 	CSListManager.parent.BPanel.Hidden(CSListManager.parent.BPanel.btnOffINFO, true);
 	// старый CSList
@@ -212,21 +215,21 @@ CSListManager.openTypeNone = function ( data ) {
 
 CSListManager.openRoot = function ( data ) {
 	echo('openRoot type=' + data.type);
-	// перестраиваем URL под текущий тип данных
-	data.url = typeInfo[data.type].urlStart + data.url + typeInfo[data.type].urlEnd;
-	// создаем лист
-	CSListManager.AddCSList(data);
+	data.url = typeInfo[data.type].urlStart + data.url + typeInfo[data.type].urlEnd;	// перестраиваем URL под текущий тип данных
+	CSListManager.AddCSList(data);	// создаем лист
 	// навешиваем действие при наведении фокуса
 	CSListManager.Current().onFocus = function ( current_item ) {
+		var curr_list_length, cur_list_handleInner, doc;
+
 		echo(current_item, 'CSListManager.Current().onFocus');
 		// обычное поведение правого меню при просмотре списка папок
 		CSListManager.parent.onFocusAction(current_item, '');
 		// навешиваем на onFocus слежение за текущей позицией чтобы знать когда дойдем до предпоследнего экрана и послать запрос на дополнение
-		var curr_list_length = CSListManager.Current().handleInner.childNodes.length;
-		var cur_list_handleInner = CSListManager.Current().handleInner;
+		curr_list_length = CSListManager.Current().handleInner.childNodes.length;
+		cur_list_handleInner = CSListManager.Current().handleInner;
 		echo('current_item.data.iid =' + current_item.data.iid + ' curr_list_length=' + curr_list_length);
-		if ( current_item.data.iid != curr_list_length - 2 && current_item.data.iid > curr_list_length - CSListManager.parent.ItemsPerPage / 2 && cur_list_handleInner.page_length >= cur_list_handleInner.page_index ) {
-			var doc = CSListManager.Current().handleInner;
+		if ( current_item.data.iid !== curr_list_length - 2 && current_item.data.iid > curr_list_length - CSListManager.parent.ItemsPerPage / 2 && cur_list_handleInner.page_length >= cur_list_handleInner.page_index ) {
+			doc = CSListManager.Current().handleInner;
 			// подгрузка следующей порции при достижении предпоследнего листа
 			echo('iid_scroll=100%=>ajax=' + doc.data.url + '&p=' + doc.page_index + '&per=' + ListPage.ItemsPerPage);
 			ajax('GET', doc.data.url + '&p=' + doc.page_index + '&per=' + CSListManager.parent.ItemsPerPage, htmlListParser, {});
@@ -234,13 +237,14 @@ CSListManager.openRoot = function ( data ) {
 	};
 	// навешиваем на csroll слежение за текущей позицией чтобы знать когда дойдем до текущего края и послать запрос на дополнение
 	CSListManager.Current().handleInner.onscroll = function () {
-		echo('on scroll ');
-		var doc = CSListManager.Current().handleInner,
-			scrollPosition = doc.scrollTop,
-			pageSize = (doc.scrollHeight - doc.clientHeight),
+		var doc                = CSListManager.Current().handleInner,
+			scrollPosition     = doc.scrollTop,
+			pageSize           = (doc.scrollHeight - doc.clientHeight),
 			percentageScrolled = Math.floor((scrollPosition / pageSize) * 100);
+
+		echo('on scroll ');
 		// подгрузка следующей порции при достижении скроллингом скролла в 100%
-		if ( percentageScrolled == 100 && doc.page_length >= doc.page_index ) {
+		if ( percentageScrolled === 100 && doc.page_length >= doc.page_index ) {
 			echo('scroll=100%=>ajax=' + doc.data.url + '&p=' + doc.page_index + '&per=' + CSListManager.parent.ItemsPerPage);
 			ajax('GET', doc.data.url + '&p=' + doc.page_index + '&per=' + CSListManager.parent.ItemsPerPage, htmlListParser, {});
 		}
@@ -248,6 +252,7 @@ CSListManager.openRoot = function ( data ) {
 	// источник взятия данных - сохраняется на предыдущей странице перед началом работы данной страницы
 	echo('first request is=' + data.url + '&p=0&per=' + this.parent.ItemsPerPage);
 	ajax('GET', data.url + '&p=0&per=' + this.parent.ItemsPerPage, htmlListParser, {});
+
 	return this.LEVEL_CHANGE_DOWN;
 };
 
@@ -258,15 +263,17 @@ CSListManager.openGSearchRoot = function ( data ) {
 	CSListManager.AddCSList(data);
 	// навешиваем действие при наведении фокуса
 	CSListManager.Current().onFocus = function ( current_item ) {
+		var curr_list_length, cur_list_handleInner, doc;
+
 		echo(current_item, 'CSListManager.Current().onFocus');
 		// обычное поведение правого меню при просмотре списка папок
 		CSListManager.parent.onFocusAction(current_item, '');
 		// навешиваем на onFocus слежение за текущей позицией чтобы знать когда дойдем до предпоследнего экрана и послать запрос на дополнение
-		var curr_list_length = CSListManager.Current().handleInner.childNodes.length;
-		var cur_list_handleInner = CSListManager.Current().handleInner;
+		curr_list_length = CSListManager.Current().handleInner.childNodes.length;
+		cur_list_handleInner = CSListManager.Current().handleInner;
 		echo('current_item.data.iid =' + current_item.data.iid + ' curr_list_length=' + curr_list_length);
-		if ( current_item.data.iid != curr_list_length - 2 && current_item.data.iid > curr_list_length - CSListManager.parent.ItemsPerPage / 2 && cur_list_handleInner.page_length >= cur_list_handleInner.page_index ) {
-			var doc = CSListManager.Current().handleInner;
+		if ( current_item.data.iid !== curr_list_length - 2 && current_item.data.iid > curr_list_length - CSListManager.parent.ItemsPerPage / 2 && cur_list_handleInner.page_length >= cur_list_handleInner.page_index ) {
+			doc = CSListManager.Current().handleInner;
 			echo('iid_scroll=100%=>ajax=' + doc.data.url + '&p=' + doc.page_index + '&per=20');
 			ajax('GET', doc.data.url + '&p=' + doc.page_index + '&per=' + CSListManager.parent.ItemsPerPage, htmlSearchParser, {});
 		}
@@ -274,13 +281,14 @@ CSListManager.openGSearchRoot = function ( data ) {
 
 	// навешиваем на csroll слежение за текущей позицией чтобы знать когда дойдем до текущего края и послать запрос на дополнение
 	CSListManager.Current().handleInner.onscroll = function () {
-		echo('on scroll ');
-		var doc = CSListManager.Current().handleInner,
-			scrollPosition = doc.scrollTop,
-			pageSize = (doc.scrollHeight - doc.clientHeight),
+		var doc                = CSListManager.Current().handleInner,
+			scrollPosition     = doc.scrollTop,
+			pageSize           = (doc.scrollHeight - doc.clientHeight),
 			percentageScrolled = Math.floor((scrollPosition / pageSize) * 100);
+
+		echo('on scroll ');
 		// подгрузка следующей порции при достижении скроллингом скролла в 100%
-		if ( percentageScrolled == 100 && doc.page_length >= doc.page_index ) {
+		if ( percentageScrolled === 100 && doc.page_length >= doc.page_index ) {
 			echo('scroll=100%=>ajax=' + doc.data.url + '&p=' + doc.page_index + '&per=' + CSListManager.parent.ItemsPerPage);
 			ajax('GET', doc.data.url + '&p=' + doc.page_index + '&per=' + CSListManager.parent.ItemsPerPage, htmlSearchParser, {});
 		}
@@ -315,13 +323,15 @@ CSListManager.openGSearchFolder = function ( data ) {
 	CSListManager.AddCSList(data);
 	// навешиваем действие при наведении фокуса
 	CSListManager.Current().onFocus = function ( current, previous ) {
+		var curr_list_length, cur_list_handleInner;
+
 		// обычное поведение правого меню при просмотре списка папок
 		this.parent.onFocusAction(current, previous);
 		// навешиваем на onFocus слежение за текущей позицией чтобы знать когда дойдем до предпоследнего экрана и послать запрос на дополнение
-		var curr_list_length = CSListManager.Current().handleInner.childNodes.length;
-		var cur_list_handleInner = CSListManager.Current().handleInner;
+		curr_list_length = CSListManager.Current().handleInner.childNodes.length;
+		cur_list_handleInner = CSListManager.Current().handleInner;
 		echo('current.data.iid =' + current.data.iid + ' curr_list_length=' + curr_list_length);
-		if ( current.data.iid != curr_list_length - 2 && current.data.iid > curr_list_length - CSListManager.parent.ItemsPerPage / 2 && cur_list_handleInner.page_length >= cur_list_handleInner.page_index ) {
+		if ( current.data.iid !== curr_list_length - 2 && current.data.iid > curr_list_length - CSListManager.parent.ItemsPerPage / 2 && cur_list_handleInner.page_length >= cur_list_handleInner.page_index ) {
 			var doc = CSListManager.Current().handleInner;
 			// подгрузка следующей порции при достижении предпоследнего листа
 			echo('iid_scroll=100%=>ajax=' + doc.data.url + '?p=' + doc.page_index + '&per=' + ListPage.ItemsPerPage);
@@ -330,13 +340,14 @@ CSListManager.openGSearchFolder = function ( data ) {
 	};
 	// навешиваем на csroll слежение за текущей позицией чтобы знать когда дойдем до текущего края и послать запрос на дополнение
 	CSListManager.Current().handleInner.onscroll = function () {
-		echo('on scroll ');
-		var doc = CSListManager.Current().handleInner,
-			scrollPosition = doc.scrollTop,
-			pageSize = (doc.scrollHeight - doc.clientHeight),
+		var doc                = CSListManager.Current().handleInner,
+			scrollPosition     = doc.scrollTop,
+			pageSize           = (doc.scrollHeight - doc.clientHeight),
 			percentageScrolled = Math.floor((scrollPosition / pageSize) * 100);
+
+		echo('on scroll ');
 		// подгрузка следующей порции при достижении скроллингом скролла в 100%
-		if ( percentageScrolled == 100 && doc.page_length >= doc.page_index ) {
+		if ( percentageScrolled === 100 && doc.page_length >= doc.page_index ) {
 			echo('scroll=100%=>ajax=' + doc.data.url + '&p=' + doc.page_index + '&per=' + CSListManager.parent.ItemsPerPage);
 			ajax('GET', doc.data.url + '&p=' + doc.page_index + '&per=' + CSListManager.parent.ItemsPerPage, htmlListParser, {});
 		}
@@ -344,16 +355,16 @@ CSListManager.openGSearchFolder = function ( data ) {
 	// источник взятия данных - сохраняется на предыдущей странице перед началом работы данной страницы
 	echo('first request is=' + data.url + '?p=0&per=' + this.parent.ItemsPerPage);
 	ajax('GET', data.url + '?p=0&per=' + this.parent.ItemsPerPage, htmlListParser, {});
+
 	return this.LEVEL_CHANGE_DOWN;
 };
 
 
 CSListManager.openMediaObject = function ( data ) {
 	echo(data, 'openMediaObject');
-	// создаем лист
-	CSListManager.AddCSList(data);
+	CSListManager.AddCSList(data);	// создаем лист
 	// скрываем поиск
-	if ( CSListManager.SearchBarVisibility == true ) {
+	if ( CSListManager.SearchBarVisibility === true ) {
 		echo('search hide');
 		this.parent.SearchBar.Show(false, false);
 		CSListManager.SearchBarVisibility = false;
@@ -367,9 +378,8 @@ CSListManager.openMediaObject = function ( data ) {
 	echo('AJAX START=' + data.url);
 	ajax('GET', data.url, htmlObjectParser, {});
 	// окно ожидания загрузки
-	setTimeout(function () {
-		CSListManager.parent.messageHint = new CModalHint(CSListManager.parent, 'Loading...'/*, false, true*/);
-	}, 1);
+	setTimeout(function () { CSListManager.parent.messageHint = new CModalHint(CSListManager.parent, 'Loading...'); }, 1);
+
 	return this.LEVEL_CHANGE_DOWN;
 };
 
@@ -380,14 +390,16 @@ CSListManager.openMediaFolder = function ( data ) {
 	CSListManager.AddCSList(data);
 	// навешиваем действие при наведении фокуса
 	CSListManager.Current().onFocus = function ( current, previous ) {
+		var curr_list_length, cur_list_handleInner, doc;
+
 		// обычное поведение правого меню при просмотре списка папок
 		this.parent.onFocusAction(current, previous);
 		// навешиваем на onFocus слежение за текущей позицией чтобы знать когда дойдем до предпоследнего экрана и послать запрос на дополнение
-		var curr_list_length = CSListManager.Current().handleInner.childNodes.length;
-		var cur_list_handleInner = CSListManager.Current().handleInner;
+		curr_list_length = CSListManager.Current().handleInner.childNodes.length;
+		cur_list_handleInner = CSListManager.Current().handleInner;
 		echo('current.data.iid =' + current.data.iid + ' curr_list_length=' + curr_list_length);
-		if ( current.data.iid != curr_list_length - 2 && current.data.iid > curr_list_length - CSListManager.parent.ItemsPerPage / 2 && cur_list_handleInner.page_length >= cur_list_handleInner.page_index ) {
-			var doc = CSListManager.Current().handleInner;
+		if ( current.data.iid !== curr_list_length - 2 && current.data.iid > curr_list_length - CSListManager.parent.ItemsPerPage / 2 && cur_list_handleInner.page_length >= cur_list_handleInner.page_index ) {
+			doc = CSListManager.Current().handleInner;
 			// подгрузка следующей порции при достижении предпоследнего листа
 			echo('iid_scroll=100%=>ajax=' + doc.data.url + '&p=' + doc.page_index + '&per=' + ListPage.ItemsPerPage);
 			ajax('GET', doc.data.url + '&p=' + doc.page_index + '&per=' + CSListManager.parent.ItemsPerPage, htmlListParser, {});
@@ -395,13 +407,14 @@ CSListManager.openMediaFolder = function ( data ) {
 	};
 	// навешиваем на csroll слежение за текущей позицией чтобы знать когда дойдем до текущего края и послать запрос на дополнение
 	CSListManager.Current().handleInner.onscroll = function () {
-		echo('on scroll ');
-		var doc = CSListManager.Current().handleInner,
-			scrollPosition = doc.scrollTop,
-			pageSize = (doc.scrollHeight - doc.clientHeight),
+		var doc                = CSListManager.Current().handleInner,
+			scrollPosition     = doc.scrollTop,
+			pageSize           = (doc.scrollHeight - doc.clientHeight),
 			percentageScrolled = Math.floor((scrollPosition / pageSize) * 100);
+
+		echo('on scroll ');
 		// подгрузка следующей порции при достижении скроллингом скролла в 100%
-		if ( percentageScrolled == 100 && doc.page_length >= doc.page_index ) {
+		if ( percentageScrolled === 100 && doc.page_length >= doc.page_index ) {
 			echo('scroll=100%=>ajax=' + doc.data.url + '&p=' + doc.page_index + '&per=' + CSListManager.parent.ItemsPerPage);
 			ajax('GET', doc.data.url + '&p=' + doc.page_index + '&per=' + CSListManager.parent.ItemsPerPage, htmlListParser, {});
 		}
@@ -409,16 +422,16 @@ CSListManager.openMediaFolder = function ( data ) {
 	// источник взятия данных - сохраняется на предыдущей странице перед началом работы данной страницы
 	echo('first request is=' + data.url + '&p=0&per=' + this.parent.ItemsPerPage);
 	ajax('GET', data.url + '&p=0&per=' + this.parent.ItemsPerPage, htmlListParser, {});
+
 	return this.LEVEL_CHANGE_DOWN;
 };
 
 
 CSListManager.openRadioObject = function ( data ) {
 	echo(data, 'openRadioObject');
-	// создаем лист
-	CSListManager.AddCSList(data);
+	CSListManager.AddCSList(data);	// создаем лист
 	// скрываем поиск
-	if ( this.SearchBarVisibility == true ) {
+	if ( this.SearchBarVisibility === true ) {
 		echo('search hide');
 		this.parent.SearchBar.Show(false, false);
 		this.SearchBarVisibility = false;
@@ -432,9 +445,7 @@ CSListManager.openRadioObject = function ( data ) {
 	echo('AJAX START=' + data.url);
 	ajax('GET', data.url, htmlRadioParser, {});
 	// окно ожидания загрузки
-	setTimeout(function () {
-		CSListManager.parent.messageHint = new CModalHint(CSListManager.parent, 'Loading...');
-	}, 1);
+	setTimeout(function () { CSListManager.parent.messageHint = new CModalHint(CSListManager.parent, 'Loading...'); }, 1);
 
 	return this.LEVEL_CHANGE_DOWN;
 };
@@ -442,8 +453,7 @@ CSListManager.openRadioObject = function ( data ) {
 
 CSListManager.openActorsFolder = function ( data ) {
 	echo(data, 'openActorsFolder');
-	// создаем лист
-	CSListManager.AddCSList(data);
+	CSListManager.AddCSList(data);	// создаем лист
 	// навешиваем действие при наведении фокуса
 	CSListManager.Current().onFocus = function ( current, previous ) {
 		// обычное поведение правого меню при просмотре списка папок
@@ -475,22 +485,20 @@ CSListManager.openUnknownType = function ( data ) {
  * @return {Number} hierarchy change flag: 0 - no change, 1 - go level deeper, -1 - go level up
  */
 CSListManager.openFile = function ( data ) {
-	echo(data, 'openFile');
-	var list = [];
+	var list = [],
+		items;
 
+	echo(data, 'openFile');
 	// playing video (showing a picture) or not
 	if ( MediaPlayer.playNow || MediaPlayer.obj !== null ) {
 		MediaPlayer.changeScreenMode(true);
 		MediaPlayer.Show(true, this.parent);
-		// autohide info panel
-//		MediaPlayer.showInfo(true);
-//		MediaPlayer.timer.showInfo = window.setTimeout(function(){MediaPlayer.showInfo(false);},3000);
 		// stay here
 		return this.LEVEL_CHANGE_NONE;
 	}
 
 	// get all marked items
-	var items = CSListManager.Current().Find({marked: true});
+	items = CSListManager.Current().Find({marked: true});
 	echo('FIND marked items?');
 	// no marked so take all available
 	if ( items.length === 0 ) {
@@ -507,9 +515,9 @@ CSListManager.openFile = function ( data ) {
 			list.push(item.data);
 		}
 	});
-	// fullscreen
 	// send to player and start
 	MediaPlayer.preparePlayer(list, ListPage, true, true, true);
+
 	// stay here
 	return this.LEVEL_CHANGE_NONE;
 };
@@ -520,9 +528,9 @@ CSListManager.openFile = function ( data ) {
  * @param {Object} data данные о уровне
  */
 CSListManager.AddCSList = function ( data ) {
+	var slist = new CScrollList(CSListManager.parent);	// создаем лист
+
 	echo('creating CSList');
-	// создаем лист
-	var slist = new CScrollList(CSListManager.parent);
 	slist.Init(element('div', {
 		className  : 'cslist-main',
 		data       : data,

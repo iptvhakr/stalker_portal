@@ -271,3 +271,4 @@ a {text-decoration: none;}
 	#pageMediaPlayer .cmodal-main .cmodal-menu .cgmenu-main { background:url(img/1080/player_menu_bg.png); }
 #pageMediaPlayer .cmodal-main { background:none; }
 #pageMediaPlayer .mediaHeaderIco{height: 45px; margin-left: 210px; margin-top: 210px; position: absolute;  display:none;}
+.cmodal-main.cModalHint > .cmodal-cell > .cmodal-body { text-align:center; }

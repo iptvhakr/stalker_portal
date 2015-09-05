@@ -690,11 +690,11 @@
             (function(){
 
                 if (single_module.indexOf(this.layer_name) != -1){
-                    if (windowId !== 1) {
+                    if (window.self !== window.top) {
                         stb.player.stop();
                         // minimize
                         this.hide();
-                        stbWindowMgr.windowHide(windowId);
+                        parent.postMessage('hide', '*');
                     } else if (window.referrer){
                         window.location = window.referrer;
                     }

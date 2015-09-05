@@ -271,3 +271,4 @@ a {text-decoration: none;}
 .page#pageMediaPlayer .cmodal-main .cmodal-menu .cgmenu-main { font-size:28px; padding:25px 35px; clear:both; background-color:#202224; height: 242px; }
                 
 #pageMediaPlayer .mediaHeaderIco{height: 30px; margin-left: 70px; margin-top: 100px; position: absolute;  display:none;}
+.cmodal-main.cModalHint > .cmodal-cell > .cmodal-body { text-align:center; }
