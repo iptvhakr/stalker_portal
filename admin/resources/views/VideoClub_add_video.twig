@@ -499,7 +499,7 @@
                    $.ajax({
                         url: 'video-club/check-name',
                         type: 'POST',
-                        data: {name: _this.val(), year: $.trim($('#form_year').val())},
+                        data: {name: _this.val(), year: $.trim($('#form_year').val()), 'id<>': $("#form_id").val()},
                         success: function (data) {
                             if (data.success) {
                                 _this.next('div').append('<i class="txt-success fa fa-check"></i> ' + data.chk_rezult).css('visibility', 'visible');

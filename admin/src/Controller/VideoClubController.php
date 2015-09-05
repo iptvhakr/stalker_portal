@@ -124,7 +124,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         $this->prepareOneVideo();
         $form = $this->buildForm($this->oneVideo);
         
-        if ($this->saveVideoData($form)) {
+        if ($this->saveVideoData($form, TRUE)) {
             return $this->app->redirect('video-list');
         }
 
@@ -1724,7 +1724,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         return $return_opt;
     }
     
-    private function saveVideoData(&$form) {
+    private function saveVideoData(&$form, $edit = FALSE) {
         if (!empty($this->method) && $this->method == 'POST') {
             $form->handleRequest($this->request);
             $data = $form->getData();
@@ -1734,7 +1734,8 @@ class VideoClubController extends \Controller\BaseStalkerController {
                     $is_repeating_name = $this->db->checkName($data);
                     $operation = 'insertVideo';
                 } elseif (isset($this->oneVideo)) {
-                    $is_repeating_name = !((empty($this->oneVideo['name']) || $this->oneVideo['name'] != $data['name']) xor ( (bool) $this->db->checkName($data)));
+                    $check_name = (bool) $this->db->checkName(array('id<>'=>$data['id'], 'name' => $data['name']));
+                    $is_repeating_name = empty($this->oneVideo['name']) || $check_name;
                     $operation = 'updateVideo';
                 }
                 if (!$is_repeating_name) {
