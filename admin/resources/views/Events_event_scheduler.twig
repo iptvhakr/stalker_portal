@@ -1,0 +1,243 @@
+{% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
+{% set title = 'events' %}
+{% set title = ('Events'|trans ~ ': ' ~ 'list of events '|trans ~ (attribute(app, 'currentUser') is defined ? "user"|trans ~ " - " ~ app.currentUser.name ~ "(" ~ app.currentUser.mac ~ ")": '')) | trans %}
+
+{% block content %} 
+    <div id="iptv_list">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                {{ main_macro.get_filter('event', 'Event'|trans, 'id', 'title', app['allEvent']) }}
+                {{ main_macro.get_filter('sended', 'Delivery status'|trans, 'id', 'title', app['sendedStatus'], 5, 9) }}
+                {{ main_macro.get_filter('ended', 'Receipt status'|trans, 'id', 'title', app['receivingStatus'], 5, 9) }}
+
+                <a id="add_events" href="#" class="btn btn-success pull-right">{{ 'Create new event'|trans }}</a>
+
+                {% if attribute(app, 'currentUser') is defined %}
+                    <a id="clean_events" href="#" class="btn btn-danger pull-right" data-uid="{{ app.currentUser.uid }}">{{ 'Clean'|trans }}</a>
+                {% else %}
+                    <a id="clean_events" href="#" class="btn btn-danger pull-right" data-uid="all">{{ 'Clean all'|trans }}</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="box">
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                    {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
+                {% endif %}
+                <div class="box-content">
+                    <div class="box-content no-padding">
+                        <div class="dataTables_processing"></div>
+                        <table class="table  table-hover table-datatable" id="datatable-1">
+                            {% if attribute(app, 'dropdownAttribute') is defined %}
+                                {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                            {% endif %}
+                            <tbody>
+                            {% if attribute(app, 'eventList') is defined %}
+                                <!-- Start: list_row -->
+                                {% for item in app.eventList %}
+                                    <tr>
+                                        <td>{{ item.events_id }}</td>
+                                        <td>{{ item.addtime|date('M d, Y H:i') }}</td>
+                                        <td>{{ item.eventtime|date('M d, Y H:i') }}</td>
+                                        <td>
+                                            <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/{{ app.controller_alias }}?uid={{ item.uid }}">{{ item.mac }}</a>
+                                        </td>
+                                        <td>{{ item.event }}</td>
+                                        <td>
+                                            <div class="event_message">{{ item.msg }}</div>
+                                        </td>
+                                        <td>{{ item.post_function }}</td>
+                                        <td>{{ item.param1 }}</td>
+                                        <td>{% if item.sended != '0' %}<span class="">{{ 'Delivered'|trans }}</span>{% else %}<span class="">{{ 'Not delivered'|trans }}</span>{% endif %}</td>
+                                        <td>{% if item.ended != '0' %}<span class="">{{ 'Received'|trans }}</span>{% else %}<span class="">{{ 'Not received'|trans }}</span>{% endif %}</td>
+                                    </tr>
+                                {% endfor %}
+                                <!-- End: list_row -->
+                            {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include "basic_templates/events_menu.twig" %}
+
+    <script type="text/javascript" defer>
+
+        function TestTable1() {
+            $.getScript('plugins/datatables/fnReloadAjax.js');            
+            $('#datatable-1').on('xhr.dt', function (e, settings, json) {
+                if (typeof (json.data) == 'object' && json.data.length >0) {
+                    var date;
+                    for (var i in json.data) {
+                        var uid = json.data[i].uid;
+                        var mac = json.data[i].mac;
+                        json.data[i].mac = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/{{ app.controller_alias }}?uid=' + uid + '" >' + mac + '</a>';
+                        json.data[i].msg = '<div class="event_message">' + json.data[i].msg + '</div>';
+                        json.data[i].sended = json.data[i].sended != '0' ? '<span class="">{{ 'Delivered'|trans }}</span>' : '<span class="">{{ 'Not delivered'|trans }}</span>';
+                        json.data[i].ended = json.data[i].ended != '0' ? '<span class="">{{ 'Received'|trans }}</span>' : '<span class="">{{ 'Not received'|trans }}</span>';
+                        date = json.data[i]['addtime'];
+                        if (date > 0) {
+                            date = new Date(date * 1000);
+                            json.data[i]['addtime'] = date.toLocaleFormat("%b %d, %Y %H:%M");
+                        }
+                        date = json.data[i]['eventtime'];
+                        if (date > 0) {
+                            date = new Date(date * 1000);
+                            json.data[i]['eventtime'] = date.toLocaleFormat("%b %d, %Y %H:%M");
+                        }
+                    }
+                }
+            }).dataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/events-list-json",
+                    "data": function (d) {
+                        var RegExp = /video_id=(\d+)/;
+                        if (video_id = RegExp.exec(window.location.href)) {
+                            d.video_id = video_id[1];
+                        }
+                        var params = $.parseParams(window.location.href.split('?')[1] || ''); //window.location.href.split('?')[1] || '' 
+                        for (var i in params) {
+                            d[i] = params[i];
+                        }
+
+                        $('input[id^="filter_"]').each(function () {
+                            d['filters[' + $(this).attr("id").replace("filter_", "") + ']'] = $(this).val();
+                        });
+                    }
+                },
+                "deferLoading": [{{ app.recordsFiltered }}, {{ app.totalRecords }}],
+                "language": {
+                    "url": "{{ app.datatable_lang_file }}"
+                },
+                "columns": [
+                    {% if attribute(app, 'dropdownAttribute') is defined%}
+                    {% for item in app.dropdownAttribute %}
+                    {"data": "{{ item.name }}"}{% if not loop.last %},{% endif %}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "bFilter": true,
+                "bPaginate": true,
+                "bInfo": true,
+                "aoColumnDefs": [
+                    { className: "action-menu", "targets": [ -1 ] },
+                    {"searchable": false, "targets": [0, -1]},
+                    {"width": '20%', "targets": [-3]}
+                ]
+            }).prev('.dataTables_processing').hide('');
+            $('#datatable-1').DataTable().order( [ 0, 'desc' ] ).draw();
+        }
+
+        function yelp() {
+            $(document).ready(function () {
+                LoadDataTablesScripts(TestTable1);
+
+                var uploader = $("#bootstrapped-fine-uploader").fineUploader({
+                    element: $('#bootstrapped-fine-uploader'),
+                    autoUpload: true,
+                    debug: true,
+                    multiple: false,
+                    text: {
+                        formatProgress: "{percent}% из {total_size}",
+                        failUpload: "Сбой при загрузке",
+                        waitingForResponse: "Обработка...",
+                        paused: "Пауза"
+                    },
+                    request: {
+                        endpoint: '{{ app.request.baseUrl }}/{{ app.controller_alias }}/upload-list-addresses'
+                    },
+                    {#validation: {
+                        allowedExtensions: ['jpeg', 'jpg', 'gif', 'png'],
+                        sizeLimit: 1048576 // 1Mb
+                    },#}
+                    template: 'qq-template-bootstrap',
+                    classes: {
+                        success: 'alert alert-success',
+                        fail: 'alert alert-error'
+                    }
+
+                }).on('complete', function (event, id, name, response) {
+                    if (response.success) {
+                        $('#file_name').val(response.fname);
+                        if ($.isFunction(window[response.action]) && !response.error) {
+                            window[response.action](response);
+                        }
+                    } else if (response.error) {
+                        alert(response.error);
+                    } else {
+                        alert("{{ 'Some server error'|trans }}");
+                    }
+                        return false;
+                    });
+                    $("#bootstrapped-fine-uploader").on('click', ".qq-upload-cancel", function (e) {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        return false;
+                    });
+
+                    eventsMenuHandlers();
+
+                    $(document).on('click', '#add_events', function (e) {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        $("#modalbox_ad").show().find('input, select, textarea').removeAttr('disabled');
+                        checkFields('#s2_user_list_type', e);
+                        checkFields('#s2_event', e);
+                        return false;
+                    });
+
+                    $(document).on('click', "#clean_events", function (e) {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        ajaxPostSend("{{app.request.baseUrl}}/{{app.controller_alias}}/clean-events", {uid: $(this).data('uid')});
+                        return false;
+                    });
+                    
+                });
+            }
+            document.addEventListener("DOMContentLoaded", yelp, false);
+
+            var cleanEvents = function(data){
+                alert(data.msg);
+                $('#datatable-1').dataTable().fnReloadAjax();
+            };
+            var cleanEventsError = function(data){
+                alert(data.error);
+                $('#datatable-1').dataTable().fnReloadAjax();
+            };
+    </script>
+
+    <script type="text/template" id="qq-template-bootstrap">
+        <div class="qq-uploader-selector qq-uploader span12">
+            <div class="qq-upload-drop-area-selector qq-upload-drop-area span12" qq-hide-dropzone>
+                <!--<span>Drop files here to upload</span>-->
+            </div>
+            <div class="qq-upload-button-selector qq-upload-button btn btn-success"
+                 style="width: auto; margin: 0 auto; float: none; display: block;">
+                <div><i class="icon-upload icon-white"></i>{{ 'File'|trans }}</div>
+            </div>
+        <span class="qq-drop-processing-selector qq-drop-processing">
+        <!--<span>Processing dropped files...</span>-->
+        <span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
+        </span>
+            <ul class="qq-upload-list-selector qq-upload-list" style="margin-top: 10px; text-align: center;">
+                <li>
+                    <div class="qq-progress-bar-container-selector">
+                        <div class="qq-progress-bar-selector qq-progress-bar"></div>
+                    </div>
+                    <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
+                    <span class="qq-upload-file-selector qq-upload-file"></span>
+                    <span class="qq-upload-size-selector qq-upload-size"></span>
+                    <!--<a class="qq-upload-cancel-selector qq-upload-cancel" href="#"> {{ 'Delete'|trans }} </a>-->
+                    <span class="qq-upload-status-text-selector qq-upload-status-text"></span>
+                </li>
+            </ul>
+        </div>
+    </script>
+{% endblock %}

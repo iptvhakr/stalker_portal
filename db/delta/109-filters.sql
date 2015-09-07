@@ -44,6 +44,7 @@ CREATE TABLE `messages_templates` (
   `title`   VARCHAR(255) NOT NULL,
   `header`  VARCHAR(255) NOT NULL,
   `body`    TEXT         NULL,
+  `id`      INT(11)      NOT NULL,
   `created` DATETIME     NOT NULL,
   `edited`  TIMESTAMP    NOT NULL,
   PRIMARY KEY (`id`)
@@ -65,6 +66,8 @@ VALUES    ('users',             'users-filters-list',             0, 'List of fi
           ('events',            'remove-template',                1, 'Removing the templates of messages');
 
 ALTER TABLE `events` ADD COLUMN `header` VARCHAR(128) NULL AFTER `event`;
+
+ALTER TABLE `messages_templates` ADD COLUMN `author` INT(11);
 
 --//@ UNDO
 

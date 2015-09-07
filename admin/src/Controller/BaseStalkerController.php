@@ -471,7 +471,7 @@ class BaseStalkerController {
 
     protected function getParentActionAccess(){
         $return = FALSE;
-        if ($this->isAjax && preg_match("/-json$/", $this->app['action_alias'])) {
+        if ($this->app['userlogin'] !== 'admin' && $this->isAjax && preg_match("/-json$/", $this->app['action_alias'])) {
             $action_alias = preg_replace(array('/-composition/i', '/-datatable\d/i'), '', $this->app['action_alias'], 1);
             $parent_1 = str_replace('-json', '', $action_alias);
             $parent_2 = str_replace('-list-json', '', $action_alias);
