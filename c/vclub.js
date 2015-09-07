@@ -695,6 +695,11 @@
                         // minimize
                         this.hide();
                         parent.postMessage('hide', '*');
+                    } else if (typeof(stbWebWindow) != 'undefined' && windowId !== 1) {
+                        stb.player.stop();
+                        // minimize
+                        this.hide();
+                        stbWindowMgr.windowHide(windowId);
                     } else if (window.referrer){
                         window.location = window.referrer;
                     }

@@ -404,6 +404,11 @@ function common_xpcom(){
                     // notify parent to show this window
                     parent && parent.postMessage('show', '*');
                 }
+
+                if (typeof(stbWebWindow) != 'undefined' && windowId != 1){
+                    // notify parent to show this window
+                    stbWebWindow.messageSend(1, 'app:ready');
+                }
             },
 
             this
@@ -834,8 +839,12 @@ function common_xpcom(){
 
                 _debug('this.access_token', this.access_token);
 
-                if (typeof(stbWebWindow) != 'undefined'){
+                if (typeof(stbWebWindow) != 'undefined' && windowId != 1){
                     stbWebWindow.messageSend(1, 'stalker:access_token', this.access_token);
+                }
+
+                if (window.self !== window.top) {
+                    parent.postMessage('access_token:'+this.access_token, '*');
                 }
 
                 this.get_user_profile();
