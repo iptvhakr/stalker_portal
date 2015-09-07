@@ -97,6 +97,7 @@
                 "bFilter": true,
                 "bPaginate": true,
                 "bInfo": true,
+				"columnDefs": [     ], 
 				"fnDrawCallback": function() {  
 					var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
 					var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);

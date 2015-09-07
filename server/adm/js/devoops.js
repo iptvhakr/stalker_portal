@@ -35,6 +35,21 @@ $(document).on("click", "div.dropdown-menu *", function(e){
     e.stopPropagation();
 });
 
+$("#modalbox").on("show", function () {
+    $("body").addClass("modal-open");
+}).on("hidden", function () {
+    $("body").removeClass("modal-open")
+});
+$('#modalbox_ad').appendTo("#wrapper");
+$('#modalbox').appendTo("#wrapper");
+
+$("#ui-datepicker-div").css("z-index:5050;")
+
+$("#modalbox_ad").on("show", function () {
+    $("body").addClass("modal-open");
+}).on("hide", function () {
+    $("body").removeClass("modal-open")
+});
 $('#attribute_set').removeClass('dropup');
 $('#status').removeClass('dropup');
 $('.filter').removeClass('dropup'); 
@@ -460,7 +475,7 @@ $(document).ready(function () {
         }
         $('#main-wrapper').height(height);
     });
-    $('#main').css({minHeight: height})
+    $('#wrapper').css({minHeight: height})
             .on('click', '.expand-link', function (e) {
                 var body = $('body');
                 e.preventDefault();
