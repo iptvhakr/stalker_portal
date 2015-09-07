@@ -78,7 +78,6 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         if ($this->method == 'GET' && !empty($this->data['filters'])) {
             $filter = $this->getIPTVfilters();
         }
-
         $allChannels = $this->db->getAllChannels($filter);
         $allChannels = $this->setLocalization($allChannels, 'genres_name');
         if (is_array($allChannels)) {
@@ -86,7 +85,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             while (list($num, $row) = each($allChannels)) {
                 $allChannels[$num]['logo'] = $this->getLogoUriById(FALSE, $row, 120);
                 $allChannels[$num]['genres_name'] = $this->mb_ucfirst($allChannels[$num]['genres_name']);
-                if ($monitoring_status = $this->getMonitoringStatus($row)) {
+                if (($monitoring_status = $this->getMonitoringStatus($row)) !== FALSE) {
                     $allChannels[$num]['monitoring_status'] = $monitoring_status;
                 } else {
                     unset($allChannels[$num]);
@@ -1301,7 +1300,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                 $filters[] = "enable_monitoring='0'";
             } else {
                 $filters[] = "enable_monitoring='1'";
-                $filters[] = "monitoring_status='" . (int) ($this->data['filters']['monitoring_status'] != 2) . "'";
+                /*$filters[] = "monitoring_status='" . (int) ($this->data['filters']['monitoring_status'] != 2) . "'";*/
             }
         }
 
@@ -1623,7 +1622,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
 
     private function getMonitoringStatus($row) {
         $return = '';
-        if (!$row['enable_monitoring']) {
+        if (!((int)$row['enable_monitoring'])) {
             $return .= $this->setlocalization('monitoring off');
         } else {
             $diff = time() - strtotime($row['monitoring_status_updated']);
@@ -1635,11 +1634,13 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                 $return .= $this->setlocalization('{{minute}} minutes ago', '', 0, array('{{minute}}' => round($diff / 60)));
             }
             $return .= '<br><span style="color: ';
-            if ($row['monitoring_status'] == 1) {
 
-                $disabled_link = $this->db->getChanelDisabledLink($row['id']);
+            $disabled_link = $this->db->getChanelDisabledLink($row['id']);
+            $status = $this->getFieldFromArray($disabled_link, 'status');
+            $total_status = array_sum($status);
 
-                if (!empty($disabled_link)) {
+            if ($total_status != 0) {
+                if ($total_status != count($status)) {
                     if (!empty($this->data['filters']) && array_key_exists('monitoring_status', $this->data['filters']) && ((int) $this->data['filters']['monitoring_status']) != 0 && ((int) $this->data['filters']['monitoring_status']) != 4) {
                         return FALSE;
                     }
@@ -1650,8 +1651,10 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                     }
                     $return .= 'green;">' . $this->setLocalization('no errors');
                 }
-
             } else {
+                if (!empty($this->data['filters']) && array_key_exists('monitoring_status', $this->data['filters']) && ((int) $this->data['filters']['monitoring_status']) != 0 && ((int) $this->data['filters']['monitoring_status']) != 2) {
+                    return FALSE;
+                }
                 $return .= 'red;">' . $this->setLocalization('errors occurred');
             }
             $return .= '</span>';

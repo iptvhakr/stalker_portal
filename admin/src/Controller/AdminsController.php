@@ -517,7 +517,7 @@ class AdminsController extends \Controller\BaseStalkerController {
             $query_param['limit']['limit'] = FALSE;
         }
 
-        if (empty($param['id'])) {
+        if (empty($param['id']) && empty($query_param['like'])) {
             $response["data"][] = array(
                 "id" => "-",
                 "name" => $this->setLocalization("Empty"),
@@ -787,8 +787,8 @@ class AdminsController extends \Controller\BaseStalkerController {
         return array(
             "id" => "R.`id` as `id`",
             "name" => "R.`name` as `name`",
-            "created" => "R.`created` as `created`",
-            "modified" => "R.`modified` as `modified`",
+            "created" => "CAST(R.`created` as CHAR) as `created`",
+            "modified" => "CAST(R.`modified` as CHAR) as `modified`",
             "admins_count" => "(select count(*) from administrators as A where A.reseller_id = R.id) as admins_count",
             "users_count" => "(select count(*) from users as U where U.reseller_id = R.id) as users_count",
             "max_users" => "R.`max_users` as `max_users`"

@@ -356,7 +356,13 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
         return $this->mysqlInstance->delete('tv_genre', $param)->total_rows();
     }
 
-    public function getChanelDisabledLink($id){
-        return $this->mysqlInstance->from('ch_links')->where(array('ch_id' => $id, 'enable_monitoring' => 1,'status' => 0, ))->get()->all();
+    public function getChanelDisabledLink($id, $disabled = FALSE){
+        $where = array(
+            'ch_id' => $id,
+            'enable_monitoring' => 1);
+        if ($disabled) {
+            $where['status'] = 0;
+        }
+        return $this->mysqlInstance->from('ch_links')->where($where)->get()->all();
     }
 }
