@@ -44,7 +44,7 @@ CREATE TABLE `messages_templates` (
   `title`   VARCHAR(255) NOT NULL,
   `header`  VARCHAR(255) NOT NULL,
   `body`    TEXT         NULL,
-  `id`      INT(11)      NOT NULL,
+  `author`  INT(11)      NOT NULL,
   `created` DATETIME     NOT NULL,
   `edited`  TIMESTAMP    NOT NULL,
   PRIMARY KEY (`id`)
