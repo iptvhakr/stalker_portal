@@ -163,7 +163,7 @@
             <then>
                 <echo msg="DbDeployTask failed reason: ${dbdeploy_output}"/>
                 <exec
-                        command="${progs.mysql} -P${mysql_port} --protocol=TCP -h${mysql_host} -u${mysql_user} -p${mysql_pass} ${db_name} &lt; ${build.dbdeploy.undofile}"
+                        command="${progs.mysql} -P${mysql_port} ${protocol_str} -h${mysql_host} -u${mysql_user} -p${mysql_pass} ${db_name} &lt; ${build.dbdeploy.undofile}"
                         dir="${build.dir}"
                         checkreturn="true"/>
                 <fail message="DbDeployTask failed."/>
