@@ -10,7 +10,7 @@ CREATE TABLE `filters` (
   PRIMARY KEY (`id`)
 )  DEFAULT CHARSET = utf8;
 
-INSERT INTO `filters`
+INSERT INTO `filters`(`title`, `description`, `method`, `type`, `values_set`)
 VALUES
   ('Users status', 'Users status', 'getUsersByStatus', 'VALUES_SET', 'getUsersStatusSet'),
   ('Users state', 'Users state', 'getUsersByState', 'VALUES_SET', 'getUsersStateSet'),
