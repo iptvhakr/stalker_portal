@@ -1,0 +1,414 @@
+{% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
+{% set title = ('Events'|trans ~ ': ' ~ 'list of filters of users'|trans) | trans %}
+
+{% block content %}
+    <div id="iptv_list">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <a id="add_apps" href="#" class="btn btn-success pull-right">{{ 'Add application'|trans }}</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="box">
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                    {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
+                {% endif %}
+                <div class="box-content">
+                    <div class="box-content no-padding">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12">
+                                <div class="dataTables_processing"></div>
+                                <table class="table  table-hover table-datatable" id="datatable-1">
+                                    {% if attribute(app, 'dropdownAttribute') is defined %}
+                                        {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                                    {% endif %}
+                                    <tbody>
+                                    {#                                    {% if attribute(app, 'allData') is defined %}
+                                                                            <!-- Start: list_row -->
+                                                                            {% for item in app.allData %}
+                                                                                <tr>
+                                                                                    <td>{{ item.id }}</td>
+                                                                                    <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-detail?id={{ item.id }}">{{ item.name }}</a></td>
+                                                                                    <td>{{ item.publisher }}</td>
+                                                                                    <td>{{ item.url }}</td>
+                                                                                    <td>
+                                                                                        {% if attribute(item, 'installed') is defined and item.installed %}
+                                                                                            {{ item.current_version }}
+                                                                                            {% if attribute(item, 'available_update') is defined and item.available_update %}
+                                                                                                &nbsp;&nbsp;&nbsp;<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-detail?id={{ item.id }}">{{ 'Update'|trans }}</a>
+                                                                                            {% endif %}
+                                                                                        {% else %}
+                                                                                            <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-detail?id={{ item.id }}">{{ 'Install'|trans }}</a>
+                                                                                        {% endif %}
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        {% if attribute(item, 'installed') is defined and item.installed %}
+                                                                                            {% if attribute(item, 'status') is defined and item.status %}{{ 'Enabled'|trans }}{% else %}{{ 'Disabled'|trans }}{% endif %}</td>
+                                                                                        {% else %}
+                                                                                            {{ 'Not installed'|trans }}
+                                                                                        {% endif %}
+                                                                                    <td>
+                                                                                        <div class="col-xs-3 col-sm-8">
+                                                                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                                                                <i class="pull-right fa fa-cog"></i>
+                                                                                            </a>
+                                                                                            <ul class="dropdown-menu pull-right">
+                                                                                                <li>
+                                                                                                    <a class="main_ajax" {% if not(attribute(item, 'installed') is defined) or not(item.installed) %}disabled="disabled"{% endif %} href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-toggle-state" data-id="{{ item.id }}" data-status="{{ item.status }}">
+                                                                                                        <span>{% if attribute(item, 'status') is defined and item.status %}{{ 'Disable'|trans }}{% else %}{{ 'Enable'|trans }}{% endif %}</span>
+                                                                                                    </a>
+                                                                                                </li>
+                                                                                                <li>
+                                                                                                    <a class="main_ajax" {% if attribute(item, 'status') is defined and item.status %}disabled="disabled"{% endif %} href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-delete" data-id="{{ item.id }}">
+                                                                                                        <span> {{ 'Delete'|trans }} </span>
+                                                                                                    </a>
+                                                                                                </li>
+                                                                                            </ul>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            {% endfor %}
+                                                                            <!-- End: list_row -->
+                                                                        {% endif %}#}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" defer="defer">
+
+        function TestTable1() {
+            $('#datatable-1').on('xhr.dt', function (e, settings, json) {
+                if (typeof (json.data) == 'object') {
+                    for (var i in json.data) {
+                        var item = json.data[i];
+                        var id = json.data[i].id;
+                        var drop;
+                        if (json.data.length > 1 && i !== json.data.length && i == json.data.length - 1) {
+                            drop = "dropup";
+                        } else if (json.data.length > 2 && i !== json.data.length && i == json.data.length - 2) {
+                            drop = "dropup";
+                        } else {
+                            drop = ""
+                        }
+
+                        json.data[i].name = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-detail?id=' + id + '">' + json.data[i].name + '</a>';
+                        var status = item.status;
+                        if (item.installed) {
+                            item.current_version += ' ' + (item.available_update ? '&nbsp;&nbsp;&nbsp;<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-detail?id=' + id + '">{{ 'Update'|trans }}</a>' : '');
+                            item.status = item.status ? "{{ 'Enabled'|trans }}" : "{{ 'Disabled'|trans }}";
+                        } else {
+                            item.current_version = ' ' + '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-detail?id=' + id + '">{{ 'Install'|trans }}</a>';
+                            item.status = "{{ 'Not installed'|trans }}";
+                        }
+
+                        json.data[i].operations = "<div class='col-xs-3 col-sm-8 " + drop + "'>\n\
+                                                        <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                                            <i class='pull-right fa fa-cog'></i>\n\
+                                                        </a>\n\
+                                                        <ul class='dropdown-menu pull-right'>\n\
+                                                            <li>\n\
+                                                                <a class='main_ajax' " + (!item.installed ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-toggle-state' data-id='" + id + "' data-status='" + status + "'>\n\
+                                                                    <span> " + (!status ? "{{ 'Enable'|trans }}" : "{{ 'Disable'|trans }}") + " </span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                            <li>\n\
+                                                                <a class='main_ajax' " + (status ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-delete' data-id='" + id + "'>\n\
+                                                                    <span> {{ 'Delete'|trans }} </span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                        </ul>\n\
+                                                    </div>";
+                    }
+                }
+            }).dataTable({
+                "processing": true,
+                "serverSide": false,
+                "ajax": {
+                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-list-json",
+                    "data": function (d) {
+                        var params = $.parseParams(window.location.href.split('?')[1] || ''); //window.location.href.split('?')[1] || ''
+                        for (var i in params) {
+                            d[i] = params[i];
+                        }
+                    }
+                },
+                "deferLoading": [{{ app.recordsFiltered }}, {{ app.totalRecords }}],
+                "language": {
+                    "url": "{{ app.datatable_lang_file }}"
+                },
+                "columns": [
+                    {% if attribute(app, 'dropdownAttribute') is defined%}
+                    {% for item in app.dropdownAttribute %}
+                    {"data": "{{ item.name }}"}{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "bFilter": true,
+                "bPaginate": true,
+                "fnDrawCallback": function () {
+                    var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
+                    var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
+                    if (pageCount > 1) {
+                        $("#datatable-1_paginate").css("display", "block");
+                    } else {
+                        $("#datatable-1_paginate").css("display", "none");
+                    }
+                },
+                "bInfo": true,
+                "columnDefs": [
+                    {className: "action-menu", "targets": [-1]},
+                    {"searchable": false, "targets": [-1, -2, -3, -4]},
+                    {"sortable": false, "targets": [-1]}
+                ]
+            }).prev('.dataTables_processing').hide('');
+            $("#attribute_set input[type='checkbox']").each(function (index) {
+                $("#datatable-1").dataTable().fnSetColumnVis(index - 1, $(this).prop('checked'));
+            });
+        }
+
+        function yelp() {
+            $(document).ready(function () {
+                $(document).on('click', "a.main_ajax[disabled!='disabled']", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $("#modalbox").data('complete', 0);
+                    showModalBox();
+                    var sendData = $(this).data();
+                    ajaxPostSend($(this).attr('href'), sendData, false, false, true);
+                    $(this).closest('div.open').removeClass('open');
+                    return false;
+                });
+
+                $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function (e) {
+                    if (e.currentTarget != e.target) {
+                        return;
+                    }
+                    e.stopPropagation();
+                    e.preventDefault();
+                    if ($("#modalbox").data('complete') && $("#modalbox").data('complete') == 1) {
+                        closeModalBox();
+                    } else {
+                        for (i = 0; i < 3; i++) {
+                            $('#modalbox > div').fadeTo('slow', 0.5).fadeTo('slow', 1.0);
+                        }
+                    }
+                    return false;
+                });
+
+                $(document).on("click", "#add_apps", function (e) {
+                    if (e.currentTarget != e.target) {
+                        return;
+                    }
+                    e.stopPropagation();
+                    e.preventDefault();
+
+                    buildGetForm();
+
+                    $('#modalbox').show();
+
+                    return false;
+                });
+
+                $(document).on('click', "#modalbox button[type='submit']", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var sendData = new Object();
+                    var form_fields = $("#modalbox").find('form').find(".own_fields:not(:disabled)");
+                    form_fields.each(function () {
+                        if ($(this).val()) {
+                            if (this.type.toUpperCase() != 'CHECKBOX' || this.checked) {
+                                sendData[this.name] = $(this).val();
+                            }
+                        }
+                    });
+                    var action = $("#modalbox").find('form').attr('action');
+                    JSshowModalBox();
+                    ajaxPostSend(action, sendData, false, false);
+                    return false;
+                });
+
+                $(document).on('click', "#modalbox button[type='reset']", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    JScloseModalBox();
+                    return false;
+                });
+
+                $(document).on('click', '#add_apps_back', function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var url = $('#apps_url').val();
+                    JScloseModalBox();
+                    buildGetForm();
+                    $('#apps_url').val(url);
+                    return false;
+                });
+
+                LoadDataTablesScripts(TestTable1);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", yelp, false);
+
+        var manageList = function (obj) {
+            $('#datatable-1').DataTable().ajax.reload();
+            $("#modalbox").data('complete', 1);
+            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Finish'|trans }}!</span>');
+        };
+
+        function closeModalBox() {
+            $("#modalbox").hide();
+            $('#modalbox').find('.modal-header-name span').empty();
+            $('#modalbox').find('.devoops-modal-inner').empty();
+            $('#modalbox').find('.devoops-modal-bottom').empty();
+        }
+
+        function showModalBox() {
+            $('#modalbox').find('.modal-header-name span').text('{{ 'Wait'|trans }}...');
+            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Request is being processed'|trans }}...</span>');
+            $("#modalbox").show();
+        }
+
+        var manageListError = function (obj) {
+            JSErrorModalBox(obj);
+        };
+
+        var errAction = function () {
+            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Failed'|trans }}!</span>');
+            $("#modalbox").data('complete', 1);
+        };
+
+        var buildSaveFormError = function(obj){
+            JSErrorModalBox(obj);
+        };
+
+
+        function buildGetForm() {
+            $("#modalbox").hide();
+            $("#modalbox").data('complete', 1);
+            $('#modalbox').find('.modal-header-name span').text('{{ 'Add application (Step 1)'|trans }}');
+            $('#modalbox').find('.devoops-modal-inner').html($("#modal_get_form_body").text());
+            $('#modalbox').find('.devoops-modal-bottom').html($("#modal_get_form_buttons").text());
+            $('#modalbox').show();
+        }
+
+        function buildSaveForm(data) {
+            $("#modalbox").hide();
+            $("#modalbox").data('complete', 1);
+            $('#modalbox').find('.modal-header-name span').text('{{ 'Add application (Step 2)'|trans }}');
+            $('#modalbox').find('.devoops-modal-inner').html($("#modal_save_form_body").text());
+            $('#modalbox').find('.devoops-modal-bottom').html($("#modal_save_form_buttons").text());
+            fillModalForm(data.data);
+            $('#modalbox').show();
+        }
+
+
+        var fillModalForm = function (data) {
+            if (data.repository && data.repository.url) {
+                var regExp = new RegExp('\\.git$', 'gi');
+                $('#apps_url').val(data.repository.url.replace(regExp, ''));
+            }
+            if (data.name) {
+                $('#apps_name').val(data.name).next('span').text(data.name);
+            }
+            if (data.version) {
+                $('#apps_version').val(data.version).next('span').text(data.version);
+            }
+            if (data.options) {
+                $('#apps_options').val(JSON.stringify(data.options));
+            }
+            if (data.description) {
+                $('#apps_description').text(data.description);
+            }
+        }
+
+    </script>
+
+    <script type="text/template" id="modal_get_form_body">
+        <div class="box-content">
+            <form class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-get-data-from-repo">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label col-sm-offset-1">{{ 'URL'|trans }}</label>
+                    <div class="col-xs-10 col-sm-8">
+                        <span class="col-xs-12 col-sm-12">
+                            <input type="text" class="own_fields form-control" name="apps[url]" value="" id="apps_url">
+                        </span>
+                        <span class="help-inline col-xs-12 col-sm-12">
+                            <span class="small txt-default">{{ 'Enter a reference to the application repository'|trans }}</span>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </script>
+
+    <script type="text/template" id="modal_get_form_buttons">
+        <div class="pull-right no-padding">&nbsp;</div>
+        <div class="pull-right no-padding">
+            <button type="submit" class="btn btn-success pull-right">{{ 'Next'|trans }}</button>
+            <button type="reset" class="btn btn-default pull-right">{{ 'Cancel'|trans }}</button>
+        </div>
+    </script>
+
+    <script type="text/template" id="modal_save_form_body">
+        <div class="box-content">
+            <form class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-add">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label col-sm-offset-1">{{ 'URL'|trans }}</label>
+                    <div class="col-xs-10 col-sm-8">
+                        <span class="col-xs-12 col-sm-12">
+                            <input type="text" class="own_fields form-control" name="apps[url]" id="apps_url" value="" readonly="readonly">
+                        </span>
+                        <span class="help-inline col-xs-12 col-sm-12">
+                            <span class="small txt-default">{{ 'Enter a reference to the application repository'|trans }}</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Name'|trans }}</label>
+                    <div class="col-xs-10 col-sm-8">
+                        <span class="col-xs-12 col-sm-12">
+                            <input type="hidden" class="own_fields form-control" name="apps[name]" id="apps_name" value="" readonly="readonly" disabled="disabled">
+                            <span class="txt-default"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Version'|trans }}</label>
+                    <div class="col-xs-10 col-sm-8">
+                        <span class="col-xs-12 col-sm-12">
+                            <input type="hidden" class="own_fields form-control" name="apps[options]" id="apps_options" value="" readonly="readonly">
+                            <input type="hidden" class="own_fields form-control" name="apps[current_version]" value="" id="apps_version" readonly="readonly">
+                            <span class="txt-default"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label col-sm-offset-1">{{ 'About'|trans }}</label>
+                    <div class="col-xs-10 col-sm-8">
+                        <span class="col-xs-12 col-sm-12">
+                            <textarea class="own_fields form-control" name="apps[description]" id="apps_description" readonly="readonly" rows="10" disabled="disabled"></textarea>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </script>
+
+    <script type="text/template" id="modal_save_form_buttons">
+        <div class="pull-left no-padding">
+            <button type="reset" class="btn btn-default pull-left">{{ 'Cancel'|trans }}</button>
+        </div>
+        <div class="pull-right no-padding">
+            <button type="submit" class="btn btn-success pull-right">{{ 'Save'|trans }}</button>
+            <button type="button" id="add_apps_back" class="btn btn-success pull-right">{{ 'Back'|trans }}</button>
+        </div>
+    </script>
+{% endblock %}

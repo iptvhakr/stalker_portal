@@ -948,7 +948,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         if (!empty($data['name'])){
             $def_name = $data['name'];
         } else {
-           $def_name = "$def_name $def_number";
+           $def_name = "";//"$def_name $def_number";
         }
 
         $form = $builder->createBuilder('form', $data)

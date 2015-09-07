@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-28 11:53+0300\n"
-"PO-Revision-Date: 2015-08-28 11:56+0300\n"
+"POT-Creation-Date: 2015-09-05 12:06+0300\n"
+"PO-Revision-Date: 2015-09-05 12:06+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -144,6 +144,8 @@ msgstr "ТВ архив был успешно перезапущен."
 #: ../../../../admin/src/Controller/BroadcastServersController.php:267
 #: ../../../../admin/src/Controller/BroadcastServersController.php:287
 #: ../../../../admin/src/Controller/BroadcastServersController.php:328
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:112
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:135
 #: ../../../../admin/src/Controller/AudioClubController.php:280
 #: ../../../../admin/src/Controller/AudioClubController.php:348
 #: ../../../../admin/src/Controller/AudioClubController.php:372
@@ -211,10 +213,10 @@ msgstr "ТВ архив был успешно перезапущен."
 #: ../../../../admin/src/Controller/InfoportalController.php:256
 #: ../../../../admin/src/Controller/InfoportalController.php:276
 #: ../../../../admin/src/Controller/InfoportalController.php:308
-#: ../../../../admin/src/Controller/TariffsController.php:330
-#: ../../../../admin/src/Controller/TariffsController.php:350
-#: ../../../../admin/src/Controller/TariffsController.php:373
-#: ../../../../admin/src/Controller/TariffsController.php:463
+#: ../../../../admin/src/Controller/TariffsController.php:329
+#: ../../../../admin/src/Controller/TariffsController.php:349
+#: ../../../../admin/src/Controller/TariffsController.php:376
+#: ../../../../admin/src/Controller/TariffsController.php:466
 #: ../../../../admin/src/Controller/AdminsController.php:199
 #: ../../../../admin/src/Controller/AdminsController.php:222
 #: ../../../../admin/src/Controller/AdminsController.php:260
@@ -233,7 +235,8 @@ msgstr "Страница не найдена"
 #: ../../../../admin/src/Controller/TvChannelsController.php:1346
 #: ../../../../admin/src/Controller/EventsController.php:641
 #: ../../../../admin/src/Controller/EventsController.php:667
-#: ../../../../admin/src/Controller/UsersController.php:1756
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:163
+#: ../../../../admin/src/Controller/UsersController.php:1762
 msgid "ID"
 msgstr "ID"
 
@@ -266,7 +269,7 @@ msgstr "Логотип"
 #: ../../../../admin/src/Controller/VideoClubController.php:2081
 #: ../../../../admin/src/Controller/VideoClubController.php:2089
 #: ../../../../admin/src/Controller/AudioClubController.php:1353
-#: ../../../../admin/src/Controller/UsersController.php:1758
+#: ../../../../admin/src/Controller/UsersController.php:1764
 #: ../../../administrator/tariffs.php:311
 #: ../../../administrator/tariffs.php:342
 #: ../../../administrator/audio_album.php:423
@@ -311,6 +314,7 @@ msgid "Archive"
 msgstr "Архив"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1352
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:166
 #: ../../../administrator/add_itv.php:1072
 #: ../../../administrator/audio_track.php:246
 #: ../../../administrator/audio_track.php:316
@@ -325,7 +329,7 @@ msgid "Monitoring status"
 msgstr "Статус мониторинга"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1354
-#: ../../../../admin/src/Controller/UsersController.php:1729
+#: ../../../../admin/src/Controller/UsersController.php:1735
 #: ../../../administrator/events.php:494 ../../../administrator/tasks.php:132
 #: ../../../administrator/add_video.php:828
 msgid "Status"
@@ -333,9 +337,10 @@ msgstr "Статус"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1355
 #: ../../../../admin/src/Controller/EventsController.php:646
-#: ../../../../admin/src/Controller/UsersController.php:1737
-#: ../../../../admin/src/Controller/UsersController.php:1750
-#: ../../../../admin/src/Controller/UsersController.php:1762
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:169
+#: ../../../../admin/src/Controller/UsersController.php:1743
+#: ../../../../admin/src/Controller/UsersController.php:1756
+#: ../../../../admin/src/Controller/UsersController.php:1768
 msgid "Operations"
 msgstr "Действия"
 
@@ -402,13 +407,13 @@ msgid "Error"
 msgstr "ошибка"
 
 #: ../../../../admin/src/Controller/EventsController.php:643
-#: ../../../../admin/src/Controller/UsersController.php:1757
+#: ../../../../admin/src/Controller/UsersController.php:1763
 #: ../../../administrator/add_karaoke.php:813
 msgid "Author"
 msgstr "Автор"
 
 #: ../../../../admin/src/Controller/EventsController.php:644
-#: ../../../../admin/src/Controller/UsersController.php:1724
+#: ../../../../admin/src/Controller/UsersController.php:1730
 #: ../../../tools/misctranslations.php:493
 msgid "Created"
 msgstr "Создано"
@@ -577,6 +582,57 @@ msgstr "Удалено"
 msgid "Category"
 msgstr "Категория"
 
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:149
+msgid ""
+"Perhaps the application is already installed. You can update it if the new "
+"version is available or uninstall and install again"
+msgstr ""
+"Возможно, приложение уже установлено. Вы можете обновить его, если доступна "
+"новая версия или удалить и установить снова"
+
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:152
+msgid "URL of application is not defined"
+msgstr "URL приложения не определен"
+
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:164
+#: ../../../../admin/src/Controller/UsersController.php:1729
+#: ../../../../admin/src/Controller/UsersController.php:1750
+#: ../../../administrator/playlists.php:129
+#: ../../../administrator/playlists.php:153
+#: ../../../administrator/audio_year.php:183
+#: ../../../administrator/audio_performer.php:183
+#: ../../../administrator/add_itv.php:1071
+#: ../../../administrator/add_itv.php:1493
+#: ../../../administrator/audio_track.php:245
+#: ../../../administrator/admin_groups.php:215
+#: ../../../administrator/admin_groups.php:238
+#: ../../../administrator/profile.php:533
+#: ../../../administrator/audio_genre.php:183
+#: ../../../administrator/stream_zones.php:257
+#: ../../../administrator/stream_zones.php:285
+#: ../../../administrator/stbgroups.php:154
+#: ../../../administrator/storages.php:242
+#: ../../../administrator/storages.php:288
+#: ../../../administrator/add_moderator_mac.php:169
+#: ../../../administrator/add_moderator_mac.php:241
+#: ../../../administrator/add_karaoke.php:775
+#: ../../../administrator/stream_servers.php:168
+#: ../../../administrator/stream_servers.php:209
+#: ../../../administrator/vclub_schedule.php:113
+#: ../../../administrator/add_radio.php:168
+#: ../../../administrator/add_radio.php:249 ../../../lang/stb.php:553
+msgid "Name"
+msgstr "Имя"
+
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:167
+msgid "Current version"
+msgstr "Текущая версия"
+
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:168
+#: ../../../../admin/src/Controller/UsersController.php:1734
+msgid "State"
+msgstr "Состояние"
+
 #: ../../../../admin/src/Controller/AudioClubController.php:84
 #: ../../../../admin/src/Controller/AudioClubController.php:124
 #: ../../../lib/audioclub.class.php:15 ../../../lang/stb.php:547
@@ -603,7 +659,7 @@ msgstr "караоке"
 
 #: ../../../../admin/src/Controller/TasksController.php:195
 #: ../../../../admin/src/Controller/TasksController.php:261
-#: ../../../../admin/json_menu/menu.json:252
+#: ../../../../admin/json_menu/menu.json:260
 msgid "Tasks list"
 msgstr "Список заданий"
 
@@ -692,7 +748,7 @@ msgstr "Не найден реселлер для перемещения"
 msgid "Nothing to do"
 msgstr "Нечего сохранять"
 
-#: ../../../../admin/src/Controller/UsersController.php:1721
+#: ../../../../admin/src/Controller/UsersController.php:1727
 #: ../../../administrator/profile.php:394 ../../../administrator/user.php:138
 #: ../../../administrator/administrators.php:164
 #: ../../../administrator/administrators.php:191
@@ -701,115 +757,81 @@ msgstr "Нечего сохранять"
 msgid "Login"
 msgstr "Логин"
 
-#: ../../../../admin/src/Controller/UsersController.php:1722
+#: ../../../../admin/src/Controller/UsersController.php:1728
 msgid "Account"
 msgstr "Лицевой счет"
 
-#: ../../../../admin/src/Controller/UsersController.php:1723
-#: ../../../../admin/src/Controller/UsersController.php:1744
-#: ../../../administrator/playlists.php:129
-#: ../../../administrator/playlists.php:153
-#: ../../../administrator/audio_year.php:183
-#: ../../../administrator/audio_performer.php:183
-#: ../../../administrator/add_itv.php:1071
-#: ../../../administrator/add_itv.php:1493
-#: ../../../administrator/audio_track.php:245
-#: ../../../administrator/admin_groups.php:215
-#: ../../../administrator/admin_groups.php:238
-#: ../../../administrator/profile.php:533
-#: ../../../administrator/audio_genre.php:183
-#: ../../../administrator/stream_zones.php:257
-#: ../../../administrator/stream_zones.php:285
-#: ../../../administrator/stbgroups.php:154
-#: ../../../administrator/storages.php:242
-#: ../../../administrator/storages.php:288
-#: ../../../administrator/add_moderator_mac.php:169
-#: ../../../administrator/add_moderator_mac.php:241
-#: ../../../administrator/add_karaoke.php:775
-#: ../../../administrator/stream_servers.php:168
-#: ../../../administrator/stream_servers.php:209
-#: ../../../administrator/vclub_schedule.php:113
-#: ../../../administrator/add_radio.php:168
-#: ../../../administrator/add_radio.php:249 ../../../lang/stb.php:553
-msgid "Name"
-msgstr "Имя"
-
-#: ../../../../admin/src/Controller/UsersController.php:1725
+#: ../../../../admin/src/Controller/UsersController.php:1731
 #: ../../../administrator/claims_log.php:174
 #: ../../../administrator/users.php:580 ../../../lang/stb.php:396
 #: ../../../lang/stb.php:500
 msgid "Type"
 msgstr "Тип"
 
-#: ../../../../admin/src/Controller/UsersController.php:1726
+#: ../../../../admin/src/Controller/UsersController.php:1732
 #: ../../../administrator/msg.php:145
 #: ../../../administrator/claims_log.php:175
 #: ../../../administrator/users.php:581 ../../../administrator/msgs.php:116
 msgid "Media"
 msgstr "Медиа"
 
-#: ../../../../admin/src/Controller/UsersController.php:1727
+#: ../../../../admin/src/Controller/UsersController.php:1733
 msgid "Last modified"
 msgstr "Последнее изменение"
 
-#: ../../../../admin/src/Controller/UsersController.php:1728
-msgid "State"
-msgstr "Состояние"
-
-#: ../../../../admin/src/Controller/UsersController.php:1732
-#: ../../../../admin/src/Controller/UsersController.php:1748
+#: ../../../../admin/src/Controller/UsersController.php:1738
+#: ../../../../admin/src/Controller/UsersController.php:1754
 msgid "Reseller"
 msgstr "Реселлер"
 
-#: ../../../../admin/src/Controller/UsersController.php:1735
+#: ../../../../admin/src/Controller/UsersController.php:1741
 #: ../../../administrator/profile.php:427
 msgid "Expire billing date"
 msgstr "Действительно до"
 
-#: ../../../../admin/src/Controller/UsersController.php:1745
+#: ../../../../admin/src/Controller/UsersController.php:1751
 msgid "Quantity of users"
 msgstr "Количество пользователей"
 
-#: ../../../../admin/src/Controller/UsersController.php:1759
+#: ../../../../admin/src/Controller/UsersController.php:1765
 msgid "Filter conditions"
 msgstr "Условия фильтра"
 
-#: ../../../../admin/src/Controller/UsersController.php:1760
+#: ../../../../admin/src/Controller/UsersController.php:1766
 msgid "Visibility"
 msgstr "Видимость"
 
-#: ../../../../admin/src/Controller/UsersController.php:1761
+#: ../../../../admin/src/Controller/UsersController.php:1767
 #: ../../../lang/stb.php:385
 msgid "Favorites"
 msgstr "Избранное"
 
-#: ../../../../admin/src/Controller/TariffsController.php:95
-#: ../../../../admin/src/Controller/TariffsController.php:145
+#: ../../../../admin/src/Controller/TariffsController.php:94
+#: ../../../../admin/src/Controller/TariffsController.php:144
 #: ../../../../admin/json_menu/menu.json:155
 msgid "Service packages"
 msgstr "Пакеты услуг"
 
-#: ../../../../admin/src/Controller/TariffsController.php:96
+#: ../../../../admin/src/Controller/TariffsController.php:95
 msgid "Add package"
 msgstr "Добавить пакет"
 
-#: ../../../../admin/src/Controller/TariffsController.php:146
+#: ../../../../admin/src/Controller/TariffsController.php:145
 msgid "Edit package"
 msgstr "Редактировать пакет"
 
-#: ../../../../admin/src/Controller/TariffsController.php:181
-#: ../../../../admin/src/Controller/TariffsController.php:223
+#: ../../../../admin/src/Controller/TariffsController.php:180
+#: ../../../../admin/src/Controller/TariffsController.php:222
 #: ../../../../admin/json_menu/menu.json:160
 msgid "Tariff plans"
 msgstr "Тарифные планы"
 
-#: ../../../../admin/src/Controller/TariffsController.php:635
-#: ../../../../admin/src/Controller/TariffsController.php:691
+#: ../../../../admin/src/Controller/TariffsController.php:688
 msgid "ID already used"
 msgstr "ID уже используется"
 
 #: ../../../../admin/src/Controller/AdminsController.php:108
-#: ../../../../admin/json_menu/menu.json:234
+#: ../../../../admin/json_menu/menu.json:242
 msgid "Groups"
 msgstr "Группы"
 
@@ -1674,14 +1696,14 @@ msgstr "Сообщения"
 #: ../../../tools/misctranslations.php:388 ../../../administrator/tasks.php:59
 #: ../../../administrator/tasks.php:65
 #: ../../../../admin/json_menu/menu.json:15
-#: ../../../../admin/json_menu/menu.json:246
+#: ../../../../admin/json_menu/menu.json:254
 msgid "Tasks"
 msgstr "Задания"
 
 #: ../../../tools/misctranslations.php:264
 #: ../../../tools/misctranslations.php:324
 #: ../../../administrator/index.php:477
-#: ../../../../admin/json_menu/menu.json:371
+#: ../../../../admin/json_menu/menu.json:379
 msgid "Settings"
 msgstr "Настройки"
 
@@ -1770,7 +1792,7 @@ msgid "Info portal"
 msgstr "Инфопортал"
 
 #: ../../../tools/misctranslations.php:289
-#: ../../../../admin/json_menu/menu.json:270
+#: ../../../../admin/json_menu/menu.json:278
 msgid "Phone book"
 msgstr "Телефонный справочник"
 
@@ -1914,7 +1936,7 @@ msgid "Setting the skin"
 msgstr "Установка скина"
 
 #: ../../../tools/misctranslations.php:334
-#: ../../../../admin/json_menu/menu.json:382
+#: ../../../../admin/json_menu/menu.json:390
 msgid "Firmware update"
 msgstr "Обновление прошивки"
 
@@ -1936,7 +1958,7 @@ msgstr "Изменить состояние вкл/выкл обновление
 
 #: ../../../tools/misctranslations.php:340
 #: ../../../administrator/index.php:432
-#: ../../../../admin/json_menu/menu.json:282
+#: ../../../../admin/json_menu/menu.json:290
 msgid "Statistics"
 msgstr "Статистика"
 
@@ -1989,7 +2011,7 @@ msgid "Subscriber statistics by page + filters"
 msgstr "Абонентская статистика по-странично + фильтры"
 
 #: ../../../tools/misctranslations.php:353
-#: ../../../../admin/json_menu/menu.json:318
+#: ../../../../admin/json_menu/menu.json:326
 msgid "Inactive subscribers"
 msgstr "Неактивные абоненты"
 
@@ -2153,7 +2175,7 @@ msgstr "Отправка сообщений, изменение состояни
 
 #: ../../../tools/misctranslations.php:396 ../../../administrator/users.php:99
 #: ../../../../admin/json_menu/menu.json:198
-#: ../../../../admin/json_menu/menu.json:257
+#: ../../../../admin/json_menu/menu.json:265
 msgid "Report"
 msgstr "Отчет"
 
@@ -2663,7 +2685,7 @@ msgid "events"
 msgstr "событий"
 
 #: ../../../tools/misctranslations.php:525
-#: ../../../../admin/json_menu/menu.json:211
+#: ../../../../admin/json_menu/menu.json:219
 msgid "Users events"
 msgstr "События пользователей"
 
@@ -5018,7 +5040,7 @@ msgstr "поиск по названию"
 #: ../../../administrator/stat_moderators.php:59
 #: ../../../administrator/stat_moderators.php:65
 #: ../../../administrator/index.php:460
-#: ../../../../admin/json_menu/menu.json:308
+#: ../../../../admin/json_menu/menu.json:316
 msgid "Moderators statistics"
 msgstr "Статистика Модераторов"
 
@@ -5133,7 +5155,7 @@ msgstr "Отсутствует файл со списком"
 
 #: ../../../administrator/events.php:239 ../../../administrator/events.php:245
 #: ../../../administrator/profile.php:310 ../../../administrator/index.php:146
-#: ../../../../admin/json_menu/menu.json:205
+#: ../../../../admin/json_menu/menu.json:213
 msgid "Events"
 msgstr "События"
 
@@ -5673,7 +5695,7 @@ msgstr "Профиль пользователя"
 #: ../../../administrator/profile.php:310
 #: ../../../administrator/storages.php:223
 #: ../../../../admin/json_menu/menu.json:193
-#: ../../../../admin/json_menu/menu.json:346
+#: ../../../../admin/json_menu/menu.json:354
 msgid "Logs"
 msgstr "Логи"
 
@@ -6355,7 +6377,7 @@ msgstr "АУДИО КЛУБ"
 #: ../../../administrator/index.php:152
 #: ../../../administrator/administrators.php:98
 #: ../../../administrator/administrators.php:141
-#: ../../../../admin/json_menu/menu.json:223
+#: ../../../../admin/json_menu/menu.json:231
 msgid "Administrators"
 msgstr "Администраторы"
 
@@ -6433,7 +6455,7 @@ msgid "Users statistics for TV"
 msgstr "Абонентская статистика по ТВ"
 
 #: ../../../administrator/index.php:442
-#: ../../../../admin/json_menu/menu.json:293
+#: ../../../../admin/json_menu/menu.json:301
 msgid "TV statistics"
 msgstr "Статистика ТВ"
 
@@ -6450,7 +6472,7 @@ msgid "Users statistics for Jokes"
 msgstr "Абонентская статистика по Анекдотам"
 
 #: ../../../administrator/index.php:454
-#: ../../../../admin/json_menu/menu.json:303
+#: ../../../../admin/json_menu/menu.json:311
 msgid "TimeShift statistics"
 msgstr "Статистика TimeShift"
 
@@ -8090,7 +8112,7 @@ msgstr "ТВ каналы отсутствуют"
 msgid "You can configure DVB channels in the settings menu"
 msgstr "Вы можете настроить DVB каналы в меню настроек"
 
-#: ../../../lang/stb.php:529
+#: ../../../lang/stb.php:529 ../../../../admin/json_menu/menu.json:205
 msgid "Applications"
 msgstr "Приложения"
 
@@ -8286,7 +8308,7 @@ msgstr ""
 msgid "Reseller name"
 msgstr "Имя реселлера"
 
-#: ../../../../admin/json_menu/menu.json:239
+#: ../../../../admin/json_menu/menu.json:247
 msgid "Resellers"
 msgstr "Реселлеры"
 
@@ -8296,7 +8318,7 @@ msgstr "Ошибка сети или доступ запрещен"
 msgid "Some server error"
 msgstr "Ошибка сервера"
 
-#: ../../../../admin/json_menu/menu.json:330
+#: ../../../../admin/json_menu/menu.json:338
 msgid "Storage"
 msgstr "Хранилище"
 
@@ -8349,6 +8371,9 @@ msgstr "список тарифных планов"
 msgid "permissions for group administrators "
 msgstr "разрешения для администраторов группы"
 
+msgid "About"
+msgstr "О приложении"
+
 msgid "Access denied for this page"
 msgstr "Доступ к этой странице запрещен"
 
@@ -8356,11 +8381,14 @@ msgstr "Доступ к этой странице запрещен"
 msgid "Activity log"
 msgstr "История"
 
-msgid "Add a picture"
-msgstr "Добавить изображение"
+msgid "Add application"
+msgstr "Добавить приложение"
 
-msgid "Add administrator"
-msgstr "Добавить администратора"
+msgid "Add application (Step 1)"
+msgstr "Добавить приложение (Шаг 1)"
+
+msgid "Add application (Step 2)"
+msgstr "Добавить приложение (Шаг 2)"
 
 msgid "Add event"
 msgstr "Добавить событие"
@@ -8368,60 +8396,20 @@ msgstr "Добавить событие"
 msgid "Add genre"
 msgstr "Добавить жанр"
 
-msgid "Add link"
-msgstr "добавить ссылку"
-
 msgid "Add reseller"
 msgstr "Добавить реселлера"
-
-msgid "Add streaming link"
-msgstr "Добавить ссылку для вещания"
 
 msgid "Add to favorites"
 msgstr "Добавить в избранное"
 
-msgid "Adding administrator"
-msgstr "Добавление администратора"
-
 msgid "Adding reseller"
 msgstr "Добавление реселлера"
-
-msgid "Adress"
-msgstr "Адрес"
-
-msgid "Allow the user to record selected programs on the server repository"
-msgstr ""
-"Разрешить пользователю записывать выбранные программы в хранилище сервера"
-
-msgid "Archive servers"
-msgstr "Сервера архивов"
-
-msgid "Basic"
-msgstr "Основное"
-
-msgid "Basic channel"
-msgstr "Базовый канал"
 
 msgid "Calculate MD5 checksum"
 msgstr "Посчитать MD5 сумму"
 
 msgid "Catalogue"
 msgstr "Каталог"
-
-msgid "Channel URL"
-msgstr "URL канала"
-
-msgid "Channel logo"
-msgstr "Логотип канала"
-
-msgid "Channel name"
-msgstr "Название канала"
-
-msgid "Channel number"
-msgstr "Номер канала"
-
-msgid "Channel type"
-msgstr "Тип канала"
 
 msgid "Clean all"
 msgstr "Очистить всё"
@@ -8438,57 +8426,23 @@ msgstr "Создать новый фильтр"
 msgid "Created task"
 msgstr "Создано задание"
 
-msgid "Delete logo"
-msgstr "Удалить логотип"
-
 msgid "Delivered"
 msgstr "Отправлено"
 
 msgid "Display frequency rate"
 msgstr "Коэфициент частоты отображения"
 
-msgid "Do you really want to delete or replace this image?"
-msgstr "Вы действительно хотите удалить или заменить это изображение?"
-
-msgid "Edit streaming link"
-msgstr "Изменить ссылку для вещания"
-
-msgid "Editing administrator"
-msgstr "Редактировать администратора"
-
 msgid "Editing reseller"
 msgstr "Редактирование реселлера"
 
-msgid "Enable Temporary URL"
-msgstr "Включить временные ссылка"
-
-msgid "Enable load balancing"
-msgstr "Включить балансировку"
+msgid "Enter a reference to the application repository"
+msgstr "Укажите ссылку на репозиторий приложения"
 
 msgid "Episodes"
 msgstr "Серии"
 
-msgid "Filter"
-msgstr "Фильтр"
-
-msgid ""
-"Filter by user-agent. Ability to set the filter by the connection type "
-"(WiFi, Ethernet), by STB model (250, 275, ...), by country (UA, RU, ...). "
-"Field is case sensitive"
-msgstr ""
-"Фильтр по user-agent, возможно настроить фильтрацию по типу "
-"подключения(WiFi, Ethernet), по модели приставки(250, 275, ...), стране (UA, "
-"RU, ...). Поле регистрозависимое"
-
 msgid "Finish"
 msgstr "Готово"
-
-msgid ""
-"For activating this option, you must enable \"Enable monitoring\" in the "
-"\"Monitoring\" section"
-msgstr ""
-"Для активации этой опции, вы должны включить \"Вести мониторинг\" в разделе "
-"\"Мониторинг\""
 
 msgid "For all"
 msgstr "Всем"
@@ -8499,26 +8453,14 @@ msgstr "Запрещено для категорий"
 msgid "Format:  solution+URL. Example: ifm http://radiotest.example:10040"
 msgstr "Формат:  solution+URL. Например ffmpeg http://example_of_link"
 
-msgid "Format: solution+URL Example ffrt http://5.39.70.216/live/88.ts"
-msgstr "Формат:  solution+URL. Например ffrt http://5.39.70.216/live/88.ts"
-
 msgid "Format: solution+URL. Example: ffmpeg http://example_of_link"
 msgstr "Формат:  solution+URL. Например ffmpeg http://example_of_link"
-
-msgid "Format: solution+URL. Example: ffrt http://lpOfStream/test.js"
-msgstr "Формат:  solution+URL. Например ffrt http://lpOfStream/test.js"
 
 msgid "History of task"
 msgstr "История задания"
 
-msgid "Ignore is Tariff plan functional is used"
-msgstr "Игнорируется, если используется функционал Тарифных планов"
-
-msgid "Load balancing"
-msgstr "Балансировка нагрузки"
-
-msgid "Loading balance"
-msgstr "Балансировка загрузки"
+msgid "Install"
+msgstr "Установить"
 
 msgid "Maximum number of users"
 msgstr "Максимум пользователей"
@@ -8529,12 +8471,6 @@ msgid ""
 msgstr ""
 "Максимальное количество пользователей для текущего реселлера. Установите '0' "
 "для неограниченного количества пользователей."
-
-msgid "Measured in hours"
-msgstr "Измеряется в часах"
-
-msgid "Measured in minutes"
-msgstr "Измеряется в минутах"
 
 msgid "Message has not been read"
 msgstr "Сообщение еще не прочитанно"
@@ -8548,32 +8484,26 @@ msgstr "Переместить всех пользователей другом�
 msgid "Necessary to see"
 msgstr "Необходимо посмотреть"
 
+msgid "Next"
+msgstr "Далее"
+
 msgid "No tasks"
 msgstr "Нет заданий"
 
 msgid "Not delivered"
 msgstr "Не отправлено"
 
+msgid "Not installed"
+msgstr "Не установленно"
+
 msgid "Not received"
 msgstr "Не получено"
-
-msgid "Number in channel list must contain only numbers from 0 to 999"
-msgstr "Номер в списке каналов. Должен Содержать только цифры: 0-999"
 
 msgid "Only for"
 msgstr "Только для "
 
 msgid "Order"
 msgstr "Порядок"
-
-msgid "PVR to the USB-driver"
-msgstr "PVR на USB-носитель"
-
-msgid "Pause"
-msgstr "Пауза"
-
-msgid "Pay attention."
-msgstr "Обратите внимание."
 
 msgid ""
 "Percentage of the total length of video that user has to watch to skip "
@@ -8585,27 +8515,8 @@ msgstr ""
 msgid "Print"
 msgstr "Распечатать"
 
-msgid "Priority"
-msgstr "Приоритет"
-
-msgid "Priority for channel URL, 0 – the highest priority"
-msgstr "Приоритет для URL канала, 0 - наивысший приоритет"
-
-msgid "Processing"
-msgstr "Обработка"
-
-msgid "Protect channel from unauthorized access"
-msgstr "Функция защиты каналов от несанкционированного доступа"
-
 msgid "Received"
 msgstr "Получено"
-
-msgid ""
-"Recommended format – png, no smaller than 96*96 pixels, maximum size of the "
-"file – 1 MB."
-msgstr ""
-"Рекомендуемый формат - png, не менее 96*96 pixels, максимальный размер файла "
-"- 1Мбайт."
 
 msgid "Reject"
 msgstr "Отклонить"
@@ -8616,27 +8527,11 @@ msgstr "Удалить"
 msgid "Remove from favorites"
 msgstr "Удалить из избранного"
 
-msgid "Repeat the password"
-msgstr "Повтор пароля"
-
 msgid "STB statuses report "
 msgstr "Отчет по измененным статусам приставок "
 
 msgid "Schedule of publishing"
 msgstr "Расписание публикации"
-
-msgid "Security"
-msgstr "Безопасность"
-
-msgid "Servers which are going to be balanced"
-msgstr "Сервера вещания между которыми будет осуществляться балансировка"
-
-msgid "Sets compulsory volume level for this channel"
-msgstr "Принудительно выставляет значение громкости для данного канала"
-
-msgid "Sets the password restriction on the channel Default password 0000"
-msgstr ""
-"Устанавливает парольное ограничение на просмотр канала. По умолчанию 0000"
 
 msgid "Should be unique"
 msgstr "Должен быть уникальным"
@@ -8647,28 +8542,7 @@ msgstr "Указать категории для которых реклама �
 msgid "Stream volume adjustment"
 msgstr "Корректировка громкости потока"
 
-msgid "Streaming links"
-msgstr "Ссылки для вещания"
-
-#: ../../../../admin/json_menu/menu.json:353
-msgid "Streaming servers"
-msgstr "Сервера вещания"
-
-msgid "Switching between streaming servers depending on the load"
-msgstr ""
-"Функционал переключения между серверами вещания каналов в зависимости от "
-"нагрузки"
-
-msgid "TV archive"
-msgstr "ТВ архив"
-
-msgid "TV archive address"
-msgstr "Адрес для записи ТВ архива"
-
-msgid "TV archive length"
-msgstr "Длительность ТВ архива"
-
-#: ../../../../admin/json_menu/menu.json:298
+#: ../../../../admin/json_menu/menu.json:306
 msgid "TV archive statistics"
 msgstr "Статистика ТВ архива"
 
@@ -8681,60 +8555,14 @@ msgstr "Задание отправлено в архив"
 msgid "Task is"
 msgstr "Задание"
 
-msgid "Temporary HTTP–link"
-msgstr "Временная HTTP-ссылка"
-
-msgid "Temporary URL"
-msgstr "Временные HTTP-ссылки"
-
-msgid "Time correction for EPG"
-msgstr "Коррекция времени для EPG"
-
-msgid "TimeShift via USB devices"
-msgstr "TimeShift на USB-носитель"
-
-msgid "URL availability check"
-msgstr "Функционал проверки доступности URL"
-
-msgid "USB recordings"
-msgstr "Запись на USB-носитель"
-
-msgid "Upload failed"
-msgstr "Сбой при загрузке"
-
-msgid "User can perform TimeShift function using Flash drive, HDD or SSD."
-msgstr ""
-"Возможность пользователю осуществлять функцию TimeShift при помощи USB-"
-"носителя"
-
-msgid ""
-"User can record selected shows and programs to the Flash drive, HDD or SSD."
-msgstr ""
-"Возможность пользователю осуществлять запись выбраных программ/передач на "
-"USB-носитель."
+msgid "Update"
+msgstr "Обновить"
 
 msgid "Video title"
 msgstr "Название видео"
 
 msgid "Volume"
 msgstr "Громкость"
-
-msgid "XMLTV ID"
-msgstr "XMLTV ID"
-
-msgid ""
-"XMLTV ID of channel in EPG file. If the EPG source has the prefix state it "
-"in &lt;prefix&gt;_XMLTV ID format"
-msgstr ""
-"XMLTV ID канала в EPG-файле. Если у источника EPG есть префикс, то укажите "
-"его в формате <prefix>_XMLTV ID"
-
-msgid ""
-"You can use Latin letters, digits and symbols from the list ! @ # $ % ^ & * "
-"( ) _ - + : ; , ."
-msgstr ""
-"Можно использовать латинские буквы, цифры и символы из списка: ! @ # $ % ^ & "
-"* ( ) _ - + : ; , ."
 
 msgid "You can use letters, digits"
 msgstr "Можно использовать буквы, цифры"
@@ -8746,17 +8574,8 @@ msgstr ""
 "Можно использовать буквы, цифры и символы из списка: ! @ # $ % ^ & * ( ) _ - "
 "+ : ; , ."
 
-msgid "administrators list"
-msgstr "список администраторов"
-
-msgid "edit channel \""
-msgstr "редактировать канал \""
-
 msgid "ending"
 msgstr "окончание"
-
-msgid "from"
-msgstr "с"
 
 msgid "genre"
 msgstr "жанр"
@@ -8776,9 +8595,6 @@ msgstr "список фильтров пользователей"
 msgid "movie list"
 msgstr "список видео"
 
-msgid "nPVR servers"
-msgstr "nPVR сервера"
-
 msgid "resellers list"
 msgstr "список реселлеров"
 
@@ -8791,14 +8607,20 @@ msgstr "пользователь"
 msgid "Add STB"
 msgstr "Добавить приставку"
 
+msgid "Add a picture"
+msgstr "Добавить изображение"
+
+msgid "Add administrator"
+msgstr "Добавить администратора"
+
 msgid "Add cover"
 msgstr "Добавить обложку"
 
-msgid "Add parametr"
-msgstr "Добавить параметр"
+msgid "Add link"
+msgstr "добавить ссылку"
 
-msgid "Add post-function"
-msgstr "Добавить постфункцию"
+msgid "Add streaming link"
+msgstr "Добавить ссылку для вещания"
 
 msgid "Add tariff plan"
 msgstr "Добавить тарифный план"
@@ -8808,6 +8630,9 @@ msgstr "Добавить обновление"
 
 msgid "Add year"
 msgstr "Добавить год"
+
+msgid "Adding administrator"
+msgstr "Добавление администратора"
 
 msgid "Additional"
 msgstr "Дополнительное"
@@ -8822,6 +8647,16 @@ msgstr ""
 "Добавляет огранисение для доступа к видео (пароль установленный в пункте "
 "\"Родительский контроль\"). Пароль по умолчанию 0000"
 
+msgid "Adress"
+msgstr "Адрес"
+
+msgid "Allow the user to record selected programs on the server repository"
+msgstr ""
+"Разрешить пользователю записывать выбранные программы в хранилище сервера"
+
+msgid "Archive servers"
+msgstr "Сервера архивов"
+
 msgid "Assignee"
 msgstr "Назначено"
 
@@ -8834,10 +8669,31 @@ msgstr "Дата образа"
 msgid "Available on the serves"
 msgstr "Присутствует на серверах"
 
+msgid "Basic"
+msgstr "Основное"
+
+msgid "Basic channel"
+msgstr "Базовый канал"
+
+msgid "Channel URL"
+msgstr "URL канала"
+
+msgid "Channel logo"
+msgstr "Логотип канала"
+
+msgid "Channel name"
+msgstr "Название канала"
+
+msgid "Channel number"
+msgstr "Номер канала"
+
+msgid "Channel type"
+msgstr "Тип канала"
+
 msgid "Complaints log"
 msgstr "Лог жалоб"
 
-#: ../../../../admin/json_menu/menu.json:323
+#: ../../../../admin/json_menu/menu.json:331
 msgid "Complaints statistics"
 msgstr "Статистика жалоб"
 
@@ -8850,8 +8706,14 @@ msgstr "Тариф по умолчанию для всех новых прист
 msgid "Delete cover"
 msgstr "Удалить обложку"
 
-msgid "Details"
-msgstr "Подробнее"
+msgid "Delete logo"
+msgstr "Удалить логотип"
+
+msgid "Do you really want to delete or replace this image?"
+msgstr "Вы действительно хотите удалить или заменить это изображение?"
+
+msgid "Edit streaming link"
+msgstr "Изменить ссылку для вещания"
 
 msgid "Edit tariff plan"
 msgstr "Редактировать тарифный план"
@@ -8859,17 +8721,20 @@ msgstr "Редактировать тарифный план"
 msgid "Edit update"
 msgstr "Редактировать"
 
+msgid "Editing administrator"
+msgstr "Редактировать администратора"
+
 msgid "Editing template"
 msgstr "Редактирование шаблона сообщения"
 
-msgid "Enter MAC-address according to the format"
-msgstr "Введите MAC-адрес в соответствии с форматом"
+msgid "Enable Temporary URL"
+msgstr "Включить временные ссылка"
+
+msgid "Enable load balancing"
+msgstr "Включить балансировку"
 
 msgid "Enter the MAC-address according to the format"
 msgstr "Введите MAC-адрес в соответствии с форматом"
-
-msgid "Enter the MAC-address of the user"
-msgstr "Введите MAC-адрес пользователя"
 
 msgid ""
 "Example: ffmpeg http://anon.nasa-global.edgesuite.net/"
@@ -8884,8 +8749,17 @@ msgstr "Длительность фильма в минутах. Пример: 1
 msgid "Film rating on the Kinopoisk. Autocomplete only"
 msgstr "Рейтинг фильма на портале Кинопоиск. Только автозаполнение"
 
-msgid "Filter name"
-msgstr "Имя фильтра"
+msgid "Filter"
+msgstr "Фильтр"
+
+msgid ""
+"Filter by user-agent. Ability to set the filter by the connection type "
+"(WiFi, Ethernet), by STB model (250, 275, ...), by country (UA, RU, ...). "
+"Field is case sensitive"
+msgstr ""
+"Фильтр по user-agent, возможно настроить фильтрацию по типу "
+"подключения(WiFi, Ethernet), по модели приставки(250, 275, ...), стране (UA, "
+"RU, ...). Поле регистрозависимое"
 
 msgid ""
 "Filter the STB by set parameters. Update will be installed on STB matching "
@@ -8908,6 +8782,19 @@ msgid ""
 msgstr ""
 "Автоматически обновляет прошивку, если версия не соответствует текущей."
 
+msgid ""
+"For activating this option, you must enable \"Enable monitoring\" in the "
+"\"Monitoring\" section"
+msgstr ""
+"Для активации этой опции, вы должны включить \"Вести мониторинг\" в разделе "
+"\"Мониторинг\""
+
+msgid "Format: solution+URL Example ffrt http://5.39.70.216/live/88.ts"
+msgstr "Формат:  solution+URL. Например ffrt http://5.39.70.216/live/88.ts"
+
+msgid "Format: solution+URL. Example: ffrt http://lpOfStream/test.js"
+msgstr "Формат:  solution+URL. Например ffrt http://lpOfStream/test.js"
+
 msgid "General information"
 msgstr "Базовая информация"
 
@@ -8929,6 +8816,9 @@ msgstr ""
 "файла. Например: если ввести префикс tr_, то будет загружен файл "
 "tr_imageupdate"
 
+msgid "Ignore is Tariff plan functional is used"
+msgstr "Игнорируется, если используется функционал Тарифных планов"
+
 msgid "Image date"
 msgstr "Дата образа"
 
@@ -8941,14 +8831,11 @@ msgstr "Версия образа"
 msgid "In text format"
 msgstr "В текстовом виде"
 
-msgid "Last activity"
-msgstr "Последняя активность"
+msgid "Load balancing"
+msgstr "Балансировка нагрузки"
 
-msgid "List of MAC-addresses"
-msgstr "Список MAC-адресов"
-
-msgid "MAC-address"
-msgstr "MAC-адрес"
+msgid "Loading balance"
+msgstr "Балансировка загрузки"
 
 msgid "MPAA age restriction"
 msgstr "Возрастное ограничение по системе MPAA"
@@ -8956,14 +8843,11 @@ msgstr "Возрастное ограничение по системе MPAA"
 msgid "MPAA rating"
 msgstr "MPAA рейтинг"
 
-msgid "Message header"
-msgstr "Заголовок сообщения"
+msgid "Measured in hours"
+msgstr "Измеряется в часах"
 
-msgid "Message templates"
-msgstr "Шаблоны сообщения"
-
-msgid "Message text"
-msgstr "Текст сообщения"
+msgid "Measured in minutes"
+msgstr "Измеряется в минутах"
 
 msgid "Month"
 msgstr "Месяц"
@@ -8992,6 +8876,9 @@ msgstr ""
 "из образа. Для того чтобы система нашла нужную прошивку достаточно заполнить "
 "версию или дату образа (одно из полей). Номер образа должен быть числом."
 
+msgid "Number in channel list must contain only numbers from 0 to 999"
+msgstr "Номер в списке каналов. Должен Содержать только цифры: 0-999"
+
 msgid "Old genre"
 msgstr "Старый жанр"
 
@@ -9002,44 +8889,51 @@ msgstr ""
 "Опциональный пакет по умолчанию выключен, но может быть подключен "
 "непосредственно в профиле пользователя"
 
-msgid "Playback radio channel"
-msgstr "Воспроизвести радио канал"
+msgid "PVR to the USB-driver"
+msgstr "PVR на USB-носитель"
 
-msgid "Post-function"
-msgstr "Пост-функция"
+msgid "Pause"
+msgstr "Пауза"
+
+msgid "Pay attention."
+msgstr "Обратите внимание."
+
+msgid "Priority"
+msgstr "Приоритет"
+
+msgid "Priority for channel URL, 0 – the highest priority"
+msgstr "Приоритет для URL канала, 0 - наивысший приоритет"
+
+msgid "Processing"
+msgstr "Обработка"
+
+msgid "Protect channel from unauthorized access"
+msgstr "Функция защиты каналов от несанкционированного доступа"
 
 msgid "Quantity of the storages"
 msgstr "Количество хранилищ"
 
+msgid ""
+"Recommended format – png, no smaller than 96*96 pixels, maximum size of the "
+"file – 1 MB."
+msgstr ""
+"Рекомендуемый формат - png, не менее 96*96 pixels, максимальный размер файла "
+"- 1Мбайт."
+
 msgid "Recommended viewer age"
 msgstr "Рекомендуемый возраст зрителя"
 
-msgid "Report is formed due to done and rejected tasks"
-msgstr "Отчет формируется по закрытым и отклоненным задачам"
+msgid "Repeat the password"
+msgstr "Повтор пароля"
 
 msgid "Required version of STB API"
 msgstr "Требуемая версия STB API"
 
-msgid "Restart"
-msgstr "Перезагрузка"
-
-msgid "Restart STB by pressing the \"OK\""
-msgstr "Перезапуск приставки после нажатия кнопки \"ОК\""
-
 msgid "STB model"
 msgstr "Модель приставки"
 
-msgid "Save filter"
-msgstr "Сохранить фильтр"
-
-msgid "Select a group of users that will be sent a message"
-msgstr "Выберите группу пользователей, которым будет отправлено сообщение"
-
-msgid "Select a template for the type of STB"
-msgstr "Выберите шаблон для типа приставки"
-
-msgid "Select one of the actions"
-msgstr "Выберите одно из предложенных действий"
+msgid "Security"
+msgstr "Безопасность"
 
 msgid ""
 "Select the content delivery type (http,custom url, nfs). When using HTTP NFS "
@@ -9049,13 +8943,8 @@ msgstr ""
 "использовании вариантов HTTP и NFS не используется ссылка на контент, в этом "
 "случае контент хранится на сервере."
 
-msgid ""
-"Selecting a destination. Example one, all, on the list, on the template, the "
-"group."
-msgstr "Выбор получателя. Пример один, все по списку, по шаблону, группы."
-
-msgid "Send message whith video"
-msgstr "Отправить сообщение со ссылкой на видео"
+msgid "Servers which are going to be balanced"
+msgstr "Сервера вещания между которыми будет осуществляться балансировка"
 
 msgid "Service package"
 msgstr "Пакеты услуг"
@@ -9068,14 +8957,19 @@ msgstr ""
 msgid "Set as default"
 msgstr "По умолчанию"
 
-msgid "Set date"
-msgstr "Установить дату"
+msgid "Sets compulsory volume level for this channel"
+msgstr "Принудительно выставляет значение громкости для данного канала"
 
-msgid "Set expires billing date"
-msgstr "Установить срок действия аккаунта"
+msgid "Sets the password restriction on the channel Default password 0000"
+msgstr ""
+"Устанавливает парольное ограничение на просмотр канала. По умолчанию 0000"
 
-msgid "Single"
-msgstr "Один"
+msgid "Streaming links"
+msgstr "Ссылки для вещания"
+
+#: ../../../../admin/json_menu/menu.json:361
+msgid "Streaming servers"
+msgstr "Сервера вещания"
 
 msgid "Summary length, min"
 msgstr "Суммарная длительность, мин"
@@ -9086,6 +8980,20 @@ msgstr "Отключить"
 msgid "Switch on"
 msgstr "Включить"
 
+msgid "Switching between streaming servers depending on the load"
+msgstr ""
+"Функционал переключения между серверами вещания каналов в зависимости от "
+"нагрузки"
+
+msgid "TV archive"
+msgstr "ТВ архив"
+
+msgid "TV archive address"
+msgstr "Адрес для записи ТВ архива"
+
+msgid "TV archive length"
+msgstr "Длительность ТВ архива"
+
 msgid ""
 "Tariff title. You can use letters, digits and symbols from the list: ! @ # $ "
 "% ^ & * ( ) _ - + : ; , ."
@@ -9093,36 +9001,32 @@ msgstr ""
 "Название тарифного плана. Можно использовать буквы, цифры и символы из "
 "списка: ! @ # $ % ^ & * ( ) _ - + : ; , ."
 
-msgid "Template"
-msgstr "Шаблон"
-
 msgid "Template name"
 msgstr "Название шаблона"
 
-msgid "Term relevance of action, is measured in seconds"
-msgstr "Срок актуальности события, измеряется в секундах"
+msgid "Temporary HTTP–link"
+msgstr "Временная HTTP-ссылка"
+
+msgid "Temporary URL"
+msgstr "Временные HTTP-ссылки"
 
 msgid "Text"
 msgstr "Текст"
 
-msgid ""
-"The file must contain pre-compiled list of MAC-addresses in the txt "
-"extension or another text format"
-msgstr ""
-"Файл должен содержать предварительно скомпилированных список MAC-адресов в "
-"расширении txt или другого текстового формата"
+msgid "Time correction for EPG"
+msgstr "Коррекция времени для EPG"
 
-msgid "The function to be executed when pressing the \"OK\" button"
-msgstr "Функция которая будет выполнена по нажатию на кнопку \"ОК\""
+msgid "TimeShift via USB devices"
+msgstr "TimeShift на USB-носитель"
 
 msgid "Title on the native language. Autocomplete is available"
 msgstr "Название на языке оригинала. Есть возможность автозаполнения"
 
-msgid "Unlimited"
-msgstr "Неограниченно"
+msgid "URL availability check"
+msgstr "Функционал проверки доступности URL"
 
-msgid "Unset expires billing date"
-msgstr "Удалить срок действия аккаунта"
+msgid "USB recordings"
+msgstr "Запись на USB-носитель"
 
 msgid ""
 "Update type: http update (load the image from HTTP) or reboot DHCP (reboot "
@@ -9131,6 +9035,9 @@ msgstr ""
 "Вариант обновления: http update (загрузка образа по HTTP) или reboot dhcp "
 "(перезагруpка приставки в режим загрузки по DHCP \"boot mode - DHCP\")"
 
+msgid "Upload failed"
+msgstr "Сбой при загрузке"
+
 msgid ""
 "Used only for MAG100 compatibility with the portal. You may choose up to 4 "
 "genres."
@@ -9138,8 +9045,16 @@ msgstr ""
 "Используется только для совметсимости модели MAG100 с порталом. Можно "
 "выбрать до 4-х жанров"
 
-msgid "VIDEO URL"
-msgstr "Ссылка на видео"
+msgid "User can perform TimeShift function using Flash drive, HDD or SSD."
+msgstr ""
+"Возможность пользователю осуществлять функцию TimeShift при помощи USB-"
+"носителя"
+
+msgid ""
+"User can record selected shows and programs to the Flash drive, HDD or SSD."
+msgstr ""
+"Возможность пользователю осуществлять запись выбраных программ/передач на "
+"USB-носитель."
 
 msgid "Video quality"
 msgstr "Качество видео"
@@ -9147,29 +9062,49 @@ msgstr "Качество видео"
 msgid "Video volume adjustment"
 msgstr "Корректировка громкости видео"
 
+msgid "XMLTV ID"
+msgstr "XMLTV ID"
+
+msgid ""
+"XMLTV ID of channel in EPG file. If the EPG source has the prefix state it "
+"in &lt;prefix&gt;_XMLTV ID format"
+msgstr ""
+"XMLTV ID канала в EPG-файле. Если у источника EPG есть префикс, то укажите "
+"его в формате <prefix>_XMLTV ID"
+
 msgid "Year of the film creation Example: 2014"
 msgstr "Год создания фильма. Пример 2014"
 
 msgid "You can choose up to 4 genres"
 msgstr "Можно выбрать до 4-х жанров"
 
-msgid "and"
-msgstr "и"
+msgid ""
+"You can use Latin letters, digits and symbols from the list ! @ # $ % ^ & * "
+"( ) _ - + : ; , ."
+msgstr ""
+"Можно использовать латинские буквы, цифры и символы из списка: ! @ # $ % ^ & "
+"* ( ) _ - + : ; , ."
 
-msgid "between"
-msgstr "от"
+msgid "administrators list"
+msgstr "список администраторов"
+
+msgid "edit channel \""
+msgstr "редактировать канал \""
 
 msgid "firmware update"
 msgstr "Обновление прошивки"
 
+msgid "from"
+msgstr "с"
+
 msgid "list of STB in group "
 msgstr "список приставок в группе"
 
-msgid "list of users"
-msgstr "список пользователей"
-
 msgid "movie statistics"
 msgstr "статистика видео"
+
+msgid "nPVR servers"
+msgstr "nPVR сервера"
 
 msgid "video search"
 msgstr "поиск Видео"
@@ -9180,6 +9115,9 @@ msgstr "год"
 msgid "years list"
 msgstr "список годов"
 
+msgid "Accept"
+msgstr "Принять"
+
 msgid "Access restriction"
 msgstr "Ограничение доступа"
 
@@ -9188,6 +9126,12 @@ msgstr "Добавить альбом"
 
 msgid "Add category"
 msgstr "Добавить категорию"
+
+msgid "Add parametr"
+msgstr "Добавить параметр"
+
+msgid "Add post-function"
+msgstr "Добавить постфункцию"
 
 msgid "Add server"
 msgstr "Добавить сервер"
@@ -9216,9 +9160,6 @@ msgstr "Порт Apache"
 msgid "Assigned to"
 msgstr "Назначено"
 
-msgid "Auto-update within 59 seconds"
-msgstr "Авто-обновление через 59 секунд"
-
 msgid ""
 "Choose recipient. Example: to one, to all, on the list, on the preset, to "
 "the group"
@@ -9245,9 +9186,8 @@ msgstr "Хранение контента"
 msgid "Current"
 msgstr "Текущий"
 
-#: ../../../../admin/json_menu/menu.json:9
-msgid "Dashboard"
-msgstr "Главная"
+msgid "Details"
+msgstr "Подробнее"
 
 msgid "Edit album"
 msgstr "Редактировать альбом"
@@ -9258,11 +9198,20 @@ msgstr "Редактировать хранилище"
 msgid "Edit track"
 msgstr "Редактировать композицию"
 
+msgid "Enter MAC-address according to the format"
+msgstr "Введите MAC-адрес в соответствии с форматом"
+
+msgid "Enter the MAC-address of the user"
+msgstr "Введите MAC-адрес пользователя"
+
 msgid "Example: http://server.example:8080"
 msgstr "Например: http://server.example:8080"
 
 msgid "Fill in the required fields"
 msgstr "Заполните обязательные поля"
+
+msgid "Filter name"
+msgstr "Имя фильтра"
 
 msgid "Home directory"
 msgstr "Домашняя директория"
@@ -9274,6 +9223,13 @@ msgstr ""
 "Домашняя директория в которой будут создаваться каталоги, символьные ссылки "
 "и т.д. Пример: /home/username/slash_folder"
 
+msgid ""
+"I have read the \"Terms of use of  the catalog of applications Stalker\" and "
+"fully agrees with them"
+msgstr ""
+"Я прочитал \"Условия использования каталога приложений Stalker\" и полностью "
+"согласен с ними."
+
 msgid "IP"
 msgstr "IP"
 
@@ -9283,8 +9239,14 @@ msgstr "IP-адрес хранилища. Например : http://127.0.0.1"
 msgid "Input user MAC-address"
 msgstr "Введите MAC-адрес пользователя"
 
-msgid "Mainpage"
-msgstr "Главная"
+msgid "Last activity"
+msgstr "Последняя активность"
+
+msgid "List of MAC-addresses"
+msgstr "Список MAC-адресов"
+
+msgid "MAC-address"
+msgstr "MAC-адрес"
 
 msgid "Maximum of the users"
 msgstr "Максимум пользователей"
@@ -9302,11 +9264,17 @@ msgstr "Максимальное количество пользователей
 msgid "Maximum users"
 msgstr "Максимум пользователей"
 
+msgid "Message header"
+msgstr "Заголовок сообщения"
+
+msgid "Message templates"
+msgstr "Шаблоны сообщения"
+
+msgid "Message text"
+msgstr "Текст сообщения"
+
 msgid "Not available for the MAG100"
 msgstr "Недоступно для MAG100"
-
-msgid "Number of sessions"
-msgstr "Количество сессий"
 
 msgid "Number of the port, accessing to the Apache server"
 msgstr "Номер порта через который происходит доступ к Apache server"
@@ -9320,11 +9288,11 @@ msgstr "Один"
 msgid "Only moderators can watch the content from the storage"
 msgstr "Только модераторы могут смотреть контент с хранилища"
 
-msgid "Popularity"
-msgstr "Популярность"
+msgid "Playback radio channel"
+msgstr "Воспроизвести радио канал"
 
-msgid "Popularity of services"
-msgstr "Популярность сервисов"
+msgid "Post-function"
+msgstr "Пост-функция"
 
 msgid "Preset"
 msgstr "Шаблон"
@@ -9335,38 +9303,70 @@ msgstr "Выполнить перезапуск приставки по нажа
 msgid "Recipient"
 msgstr "Получатель"
 
+msgid "Report is formed due to done and rejected tasks"
+msgstr "Отчет формируется по закрытым и отклоненным задачам"
+
+msgid "Restart"
+msgstr "Перезагрузка"
+
+msgid "Restart STB by pressing the \"OK\""
+msgstr "Перезапуск приставки после нажатия кнопки \"ОК\""
+
+msgid "Save filter"
+msgstr "Сохранить фильтр"
+
 msgid "Select a group of users that will be delivered message"
 msgstr "Выберите группу пользователей, которым будет доставлено сообщение"
+
+msgid "Select a group of users that will be sent a message"
+msgstr "Выберите группу пользователей, которым будет отправлено сообщение"
+
+msgid "Select a template for the type of STB"
+msgstr "Выберите шаблон для типа приставки"
+
+msgid "Select one of the actions"
+msgstr "Выберите одно из предложенных действий"
 
 msgid "Select preset for STB type"
 msgstr "Выберите шаблон для типа приставки"
 
-msgid "Server name"
-msgstr "Имя сервера"
+msgid ""
+"Selecting a destination. Example one, all, on the list, on the template, the "
+"group."
+msgstr "Выбор получателя. Пример один, все по списку, по шаблону, группы."
 
-msgid "Statistisc"
-msgstr "Статистика"
+msgid "Send message whith video"
+msgstr "Отправить сообщение со ссылкой на видео"
+
+msgid "Set date"
+msgstr "Установить дату"
+
+msgid "Set expires billing date"
+msgstr "Установить срок действия аккаунта"
+
+msgid "Single"
+msgstr "Один"
 
 msgid "Storage is not available on the MAG100"
 msgstr "Хранилище недоступно на приставках MAG100"
-
-msgid "Storage name"
-msgstr "Название хранилища"
-
-msgid "Storages (measured in the number of the current session)"
-msgstr "Хранилища (измеряется в количестве текущих сессии)"
 
 msgid "Streaming area"
 msgstr "Зона вещания"
 
 msgid "Swith on"
-msgstr "Включиьт"
+msgstr "Включить"
 
 msgid "TV recording"
 msgstr "Запись ТВ"
 
 msgid "Task type"
 msgstr "Тип задания"
+
+msgid "Template"
+msgstr "Шаблон"
+
+msgid "Term relevance of action, is measured in seconds"
+msgstr "Срок актуальности события, измеряется в секундах"
 
 msgid ""
 "The emulation mode is used in case when two portals are attached to a single "
@@ -9381,17 +9381,24 @@ msgstr ""
 "образом, получается два портала с архивом, хотя фактически он пишется один "
 "раз."
 
+msgid ""
+"The file must contain pre-compiled list of MAC-addresses in the txt "
+"extension or another text format"
+msgstr ""
+"Файл должен содержать предварительно скомпилированных список MAC-адресов в "
+"расширении txt или другого текстового формата"
+
+msgid "The function to be executed when pressing the \"OK\" button"
+msgstr "Функция которая будет выполнена по нажатию на кнопку \"ОК\""
+
 msgid "Time to live, measured in seconds"
 msgstr "Срок актуальности действия, измеряется в секундах"
 
-msgid "Timeshift"
-msgstr "Timeshift"
+msgid "Unlimited"
+msgstr "Неограниченно"
 
-msgid "Total sessions"
-msgstr "Всего сессий"
-
-msgid "Tv"
-msgstr "ТВ"
+msgid "Unset expires billing date"
+msgstr "Удалить срок действия аккаунта"
 
 msgid "Update the cache"
 msgstr "Обновить кэш"
@@ -9401,14 +9408,11 @@ msgid ""
 msgstr ""
 "Обновить кэш - получить свежую информацию обо всем контенте в хранилище"
 
-msgid "User's language"
-msgstr "Язык пользователя"
-
 msgid "Username"
 msgstr "Имя пользователя"
 
-msgid "Users activity"
-msgstr "Активность пользователей"
+msgid "VIDEO URL"
+msgstr "Ссылка на видео"
 
 msgid ""
 "You can filter the STBs according to their connection type (Wi-Fi, Ethernet) "
@@ -9429,6 +9433,9 @@ msgstr ""
 "Можно использовать буквы, цифры и символы из списка: ! @ # $ % ^ & * ( ) _ - "
 "+ : ; , ."
 
+msgid "and"
+msgstr "и"
+
 msgid "appearance"
 msgstr "внешний вид"
 
@@ -9441,11 +9448,17 @@ msgstr "исполнитель"
 msgid "artists list"
 msgstr "список исполнителей"
 
+msgid "between"
+msgstr "от"
+
 msgid "categories list"
 msgstr "список категорий"
 
 msgid "countries"
 msgstr "страны"
+
+msgid "list of users"
+msgstr "список пользователей"
 
 msgid "new"
 msgstr "новый"
@@ -9474,17 +9487,24 @@ msgstr "Доступ"
 msgid "Add a channel"
 msgstr "Добавить канал"
 
-msgid "Add language"
-msgstr "Добавить язык"
-
 msgid "Adding"
 msgstr "Добавление"
 
 msgid "All fields is required"
 msgstr "Ошибка: необходимо заполнить все поля"
 
+msgid "Auto-update within 59 seconds"
+msgstr "Авто-обновление через 59 секунд"
+
 msgid "Category of content to which this package is belongs"
 msgstr "Категория контента, к которому этот пакет принадлежит"
+
+#: ../../../../admin/json_menu/menu.json:9
+msgid "Dashboard"
+msgstr "Главная"
+
+msgid "Duration of rent"
+msgstr "Длительность аренды"
 
 msgid "Full package"
 msgstr "Полный пакет"
@@ -9492,12 +9512,9 @@ msgstr "Полный пакет"
 msgid "Gives access to all content of the selected service"
 msgstr "Предоставляет полный доступ ко всему контенту выбранной услуги"
 
-#: ../../../../admin/json_menu/menu.json:264
+#: ../../../../admin/json_menu/menu.json:272
 msgid "Information portal"
 msgstr "Инфопортал"
-
-msgid "Initiator"
-msgstr "Инициатор"
 
 msgid "Length, min"
 msgstr "Длительность, мин"
@@ -9505,11 +9522,17 @@ msgstr "Длительность, мин"
 msgid "MAC address"
 msgstr "MAC-адрес"
 
+msgid "Mainpage"
+msgstr "Главная"
+
 msgid "Manage EPG"
 msgstr "Добавить EPG"
 
 msgid "No scheduled publications"
 msgstr "Нет запланированных публикаций"
+
+msgid "Number of sessions"
+msgstr "Количество сессий"
 
 msgid "Object"
 msgstr "Объект"
@@ -9520,8 +9543,11 @@ msgstr "Номер Номер службы в справочнике. Должн
 msgid "Package"
 msgstr "Пакет"
 
-msgid "Package name"
-msgstr "Название пакета"
+msgid "Popularity"
+msgstr "Популярность"
+
+msgid "Popularity of services"
+msgstr "Популярность сервисов"
 
 msgid "Price for rent services"
 msgstr "Цена за аренду услуги"
@@ -9542,15 +9568,36 @@ msgstr ""
 msgid "Schedule switch on"
 msgstr "Расписание включения"
 
+msgid "Server name"
+msgstr "Имя сервера"
+
 msgid "Show EPG"
 msgstr "Показать EPG"
 
-#: ../../../../admin/json_menu/menu.json:313
+msgid "Statistisc"
+msgstr "Статистика"
+
+msgid "Storage name"
+msgstr "Название хранилища"
+
+msgid "Storages (measured in the number of the current session)"
+msgstr "Хранилища (измеряется в количестве текущих сессии)"
+
+#: ../../../../admin/json_menu/menu.json:321
 msgid "Subscribers statistic"
 msgstr "Статистика абонентов"
 
 msgid "The duration of the specified service hours"
 msgstr "Длительность действия указанной услуги в часах"
+
+msgid "Timeshift"
+msgstr "Timeshift"
+
+msgid "Total sessions"
+msgstr "Всего сессий"
+
+msgid "Tv"
+msgstr "ТВ"
 
 msgid ""
 "Type of access to the service: regular or one-off - with the terms and the "
@@ -9561,6 +9608,12 @@ msgstr ""
 
 msgid "Unublish"
 msgstr "Не опубликовать"
+
+msgid "User's language"
+msgstr "Язык пользователя"
+
+msgid "Users activity"
+msgstr "Активность пользователей"
 
 #, php-format
 msgid "View is a playback of more than 70%% of movie length"
@@ -9583,18 +9636,6 @@ msgstr "все"
 msgid "channels list"
 msgstr "список каналов"
 
-msgid "group"
-msgstr "группа"
-
-msgid "language"
-msgstr "язык"
-
-msgid "languages list"
-msgstr "список языков"
-
-msgid "list of groups STB"
-msgstr "список групп приставок"
-
 msgid "moderators list"
 msgstr "список модераторов"
 
@@ -9609,6 +9650,9 @@ msgstr "зона вещания"
 
 msgid "Add EPG"
 msgstr "Добавить EPG"
+
+msgid "Add language"
+msgstr "Добавить язык"
 
 msgid "Default area"
 msgstr "Зона по умолчанию"
@@ -9625,18 +9669,15 @@ msgstr "Принудительно обновить EPG"
 msgid "Force update of EPG - complete EPG update for all channels"
 msgstr "Принудительно обновить EPG - полностью обновляет EPG для всех каналов."
 
-#: ../../../../admin/json_menu/menu.json:275
+#: ../../../../admin/json_menu/menu.json:283
 msgid "Humor"
 msgstr "Юмор"
 
-msgid "IPTV/OTT Set-Top Boxes"
-msgstr "IPTV/OTT приставки"
-
-msgid "Infomir News"
-msgstr "Новости Infomir"
-
 msgid "Initial state"
 msgstr "Начальное состояние"
+
+msgid "Initiator"
+msgstr "Инициатор"
 
 msgid "It will be selected as default for all new streaming servers"
 msgstr ""
@@ -9649,8 +9690,8 @@ msgstr "Языки по приоритету"
 msgid "Max count of languages 5"
 msgstr "Макс кол-во языков 5"
 
-msgid "Powered by"
-msgstr "Создано"
+msgid "Package name"
+msgstr "Название пакета"
 
 msgid ""
 "Prefix is necessary to distinguish the EPG source in case, if the following "
@@ -9658,9 +9699,6 @@ msgid ""
 msgstr ""
 "Префикс нужен для определения источника EPG в ситуации, когда данный XNLTV "
 "ID присутствует в нескольких источниках"
-
-msgid "Report a bug"
-msgstr "Сообщить об ошибке"
 
 msgid "Switch off advertising"
 msgstr "Отключить рекламу"
@@ -9681,11 +9719,35 @@ msgstr "добавить зону"
 msgid "edit area"
 msgstr "редактировать зону"
 
+msgid "group"
+msgstr "группа"
+
+msgid "language"
+msgstr "язык"
+
+msgid "languages list"
+msgstr "список языков"
+
+msgid "list of groups STB"
+msgstr "список групп приставок"
+
 msgid "list of service packages"
 msgstr "список пакетов услуг"
 
 msgid "logs"
 msgstr "логи"
+
+msgid "IPTV/OTT Set-Top Boxes"
+msgstr "IPTV/OTT приставки"
+
+msgid "Infomir News"
+msgstr "Новости Infomir"
+
+msgid "Powered by"
+msgstr "Создано"
+
+msgid "Report a bug"
+msgstr "Сообщить об ошибке"
 
 msgid "to"
 msgstr "по"
@@ -9706,35 +9768,35 @@ msgstr "Категории"
 msgid "Filters"
 msgstr "Фильтры"
 
-#: ../../../../admin/json_menu/menu.json:216
+#: ../../../../admin/json_menu/menu.json:224
 msgid "Templates of messages"
 msgstr "Шаблоны сообщений"
 
-#: ../../../../admin/json_menu/menu.json:229
+#: ../../../../admin/json_menu/menu.json:237
 msgid "Administrators list"
 msgstr "Список администраторов"
 
-#: ../../../../admin/json_menu/menu.json:288
+#: ../../../../admin/json_menu/menu.json:296
 msgid "Movie statistics"
 msgstr "Статистика видео"
 
-#: ../../../../admin/json_menu/menu.json:336
+#: ../../../../admin/json_menu/menu.json:344
 msgid "Storage list"
 msgstr "Список хранилищ"
 
-#: ../../../../admin/json_menu/menu.json:341
+#: ../../../../admin/json_menu/menu.json:349
 msgid "Video search"
 msgstr "Поиск видео"
 
-#: ../../../../admin/json_menu/menu.json:359
+#: ../../../../admin/json_menu/menu.json:367
 msgid "Servers list"
 msgstr "Список серверов"
 
-#: ../../../../admin/json_menu/menu.json:364
+#: ../../../../admin/json_menu/menu.json:372
 msgid "Streaming areas"
 msgstr "Зоны вещания"
 
-#: ../../../../admin/json_menu/menu.json:377
+#: ../../../../admin/json_menu/menu.json:385
 msgid "Appearance"
 msgstr "Внешний вид"
 

@@ -21,16 +21,9 @@
                     <div class="box-content no-padding">
                         <div class="dataTables_processing"></div>
                         <table class="table table-hover table-datatable" id="datatable-1">
-                            <thead>
-                                <tr>
-                                    <th data-filter="external_id">{{ 'External ID'|trans }}</th>
-                                    <th data-filter="name">{{ 'Package'|trans }}</th>
-                                    <th data-filter="users_count">{{ 'Users'|trans }}</th>
-                                    <th data-filter="type">{{ 'Service'|trans }}</th>
-                                    <th data-filter="all_services">{{ 'Access'|trans }}</th>
-                                    <th data-filter="operations">{{ 'Operations'|trans }}</th>
-                                </tr>
-                            </thead>
+                            {% if attribute(app, 'dropdownAttribute') is defined %}
+                                {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                            {% endif %}
                             <tbody>
                             {% if attribute(app, 'allTariffsPackages') is defined %}
                                 <!-- Start: list_row -->
@@ -127,12 +120,11 @@
                             "url": "{{ app.datatable_lang_file }}"
                         },
                 "columns": [
-                    {"data": "external_id"},
-                    {"data": "name"},
-                    {"data": "users_count"},
-                    {"data": "type"},
-                    {"data": "all_services"},
-                    {"data": "operations"}
+                    {% if attribute(app, 'dropdownAttribute') is defined%}
+                    {% for item in app.dropdownAttribute %}
+                    {"data": "{{ item.name }}"}{% if not loop.last %},{% endif %}
+                    {% endfor %}
+                    {% endif %}
                 ],
                 "bFilter": true,
                 "bPaginate": true,
@@ -144,7 +136,7 @@
                 "bInfo": true,
                 "aoColumnDefs": [
                     { className: "action-menu", "targets": [ -1 ] },
-                    {"searchable": false, "targets": [-1, 0,1, 2, 3, 4]},
+                    {"searchable": false, "targets": [-1/*, 0, 1, 2, 3, 4*/]},
                     {"sortable": false, "targets": [-1]},
 					  { "width": "16px", "targets": [ -1 ] },		
 					  { "width": "8%", "targets": [ 0 ] }	

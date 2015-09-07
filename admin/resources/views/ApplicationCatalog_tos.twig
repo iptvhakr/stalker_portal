@@ -1,0 +1,36 @@
+{% extends 'layout.twig' %}
+{% set active = 'application-catalog' %}
+{% set title = 'application-catalog' %}
+
+{% block content %}
+    <div id="iptv_list">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12">
+                {% if attribute(app, 'tos') is defined %}
+                    {{ app.tos.tos_en }}
+                {% endif %}
+            </div>
+            <div class="col-xs-12 col-sm-12">
+                <form class="form-horizontal" role="form" method="POST" action="{{app.workHost}}server/adm/{{app.controller_alias}}/accept-tos">
+                    <div class="box">
+                        <div class="box-content">
+                            <div class="form-group">
+                                <div class="checkbox pull-left">
+                                    <label>
+                                        <input type="checkbox" value="1" name="accepted" {% if not (attribute(app, 'userlogin') is defined) or app.userlogin != 'admin' %}readonly="readonly" disabled="disabled"{% endif %}>
+                                        <i class="fa fa-square-o small" style="left: 7px;"></i>
+                                    </label>
+                                    <span class="txt-default">{{ 'I have read the "Terms of use of  the catalog of applications Stalker" and fully agrees with them'|trans }}</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success" {% if not (attribute(app, 'userlogin') is defined) or app.userlogin != 'admin' %}readonly="readonly" disabled="disabled"{% endif %}>{{ 'Accept'|trans }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-xs-12 col-sm-12"><br/></div>
+        </div>
+    </div>
+{% endblock %}

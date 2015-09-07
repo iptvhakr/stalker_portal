@@ -303,6 +303,9 @@ class VideoClubModel extends \Model\BaseStalkerModel {
         if (array_key_exists('year', $params) && !empty($params['year'])) {
             $where['year'] = $params['year'];
         }
+        if (array_key_exists('id<>', $params) && !empty($params['id<>'])) {
+            $where['id<>'] = $params['id<>'];
+        }
         return $this->mysqlInstance->count()->from('video')->where($where)->get()->counter();
     }
     
