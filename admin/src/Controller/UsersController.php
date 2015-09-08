@@ -1429,8 +1429,8 @@ class UsersController extends \Controller\BaseStalkerController {
                 $return['UNIX_TIMESTAMP(last_active)<='] = $date->getTimestamp();
             }
 
-            $this->data['filters']['interval_from'] = (empty($this->data['filters']['interval_from'] || $this->data['filters']['interval_from'] == 'without') ? '' : $this->data['filters']['interval_from']);
-            $this->data['filters']['interval_to'] = (empty($this->data['filters']['interval_to'] || $this->data['filters']['interval_to'] == 'without') ? '' : $this->data['filters']['interval_to']);
+            $this->data['filters']['interval_from'] = (empty($this->data['filters']['interval_from']) || $this->data['filters']['interval_from'] == 'without') ? '' : $this->data['filters']['interval_from'];
+            $this->data['filters']['interval_to'] = (empty($this->data['filters']['interval_to']) || $this->data['filters']['interval_to'] == 'without') ? '' : $this->data['filters']['interval_to'];
 
             if (!empty($this->app['filters'])) {
                 $this->app['filters'] = array_merge($this->app['filters'], $this->data['filters']);
