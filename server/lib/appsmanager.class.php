@@ -70,10 +70,17 @@ class AppsManager
                 $option_list = isset($info['options']) ? $info['options'] : array();
 
                 $option_list = array_map(function($option) use ($option_values){
-                    $option['value'] = isset($option_values[$option['name']]) ? $option_values[$option['name']] : null;
+
+                    if (isset($option_values[$option['name']])){
+                        $option['value'] = $option_values[$option['name']];
+                    }elseif (!isset($option['value'])){
+                        $option['value'] = null;
+                    }
+
                     if (isset($option['info'])){
                         $option['desc'] = $option['info'];
                     }
+
                     return $option;
                 }, $option_list);
 
