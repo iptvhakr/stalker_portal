@@ -15,3 +15,4 @@
 5 0 * * * root cd @STALKERD_INDEX_PATH@/server/tasks/; php ./check_user_expire_date.php 1>>/var/log/stalkerd/cron.log 2>>/var/log/stalkerd/cron_error.log
 */30 * * * * root cd @STALKERD_INDEX_PATH@/server/tasks/; php ./users_activity_stat.php 1>>/var/log/stalkerd/cron.log 2>>/var/log/stalkerd/cron_error.log
 0 20 * * * root cd @STALKERD_INDEX_PATH@/server/tasks/; php ./send_user_expire_date_msg.php 1>>/var/log/stalkerd/cron.log 2>>/var/log/stalkerd/cron_error.log
+0 10 * * * www-data cd @STALKERD_INDEX_PATH@/server/tasks/; php ./update_apps.php
