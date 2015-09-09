@@ -1035,6 +1035,7 @@ function ajaxPostSend(url, sendData, alertMsg, consoleMsg, async){
         error: function (data) {
             ajaxError(data, alertMsg, consoleMsg);
         },
+        timeout: 0,
         dataType: "json",
         async: async
     });
