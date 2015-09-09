@@ -125,12 +125,22 @@ class GitHub
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST,  'GET');
         curl_setopt($ch, CURLOPT_USERAGENT, 'stalker_portal');
+        curl_setopt($ch, CURLOPT_HEADER, 1);
 
         if ($api_call){
-            // todo: use cache
+
+            $cache = Mysql::getInstance()->from('github_api_cache')->where(array('url' => $url))->get()->first();
+
+            if (!empty($cache) && $cache['etag']){
+                curl_setopt($ch, CURLOPT_HTTPHEADER, array('If-None-Match: '.$cache['etag']));
+            }
         }
 
         $response = curl_exec($ch);
+
+        list($headers, $response) = explode("\r\n\r\n", $response, 2);
+
+        $headers = $this->headersAsArray($headers);
 
         if ($response === false){
             if (curl_errno($ch) == 28){
@@ -142,14 +152,35 @@ class GitHub
 
         $http_code = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-        $result = json_decode($response, true);
+        if ($http_code == 304 && !empty($cache)){
+            $result = json_decode($cache['data'], true);
+        }else{
+            $result = json_decode($response, true);
+        }
+
 
         if ($result !== null){
             $message = !empty($result['message']) ? $result['message'] : $response;
             $response = $result;
 
             if ($api_call){
-                // todo: save in cache
+
+                if (!isset($cache)){
+                    $cache = Mysql::getInstance()->from('github_api_cache')->where(array('url' => $url))->get()->first();
+                }
+
+                $data = array(
+                    'url'  => $url,
+                    'etag' => $headers['etag'],
+                    'data' => json_encode($result),
+                    'updated' => 'NOW()'
+                );
+
+                if (empty($cache)){
+                    Mysql::getInstance()->insert('github_api_cache', $data);
+                } elseif ($cache['etag'] != $headers['etag']){
+                    Mysql::getInstance()->update('github_api_cache', $data, array('id' => $cache['id']));
+                }
             }
 
         }else{
@@ -161,6 +192,24 @@ class GitHub
         }
 
         return $response;
+    }
+
+    private function headersAsArray($header_text){
+
+        $headers = array();
+
+        foreach (explode("\r\n", $header_text) as $i => $line) {
+            if ($i === 0){
+                $headers['http_code'] = $line;
+            } else {
+                list ($key, $value) = explode(':', $line);
+
+                $headers[strtolower($key)] = trim($value);
+            }
+        }
+
+        return $headers;
+
     }
 }
 

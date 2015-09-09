@@ -1,5 +1,7 @@
 <?php
 
+require "../common.php";
+
 class AppsManager
 {
 
@@ -150,11 +152,19 @@ class AppsManager
         unlink($tmp_file);
 
         if (!empty($result)){
+
+            $update_data = array('current_version' => $latest_release['name']);
+            if (empty($app['alias'])){
+
+                $update_data['alias'] = self::safeFilename($info['name']);
+
+                if (empty($app['name'])){
+                    $update_data['name'] = $info['name'];
+                }
+            }
+
             Mysql::getInstance()->update('apps',
-                array(
-                    'current_version' => $latest_release['name'],
-                    'alias' => self::safeFilename($app['name']) // todo: name does not exist
-                ),
+                $update_data,
                 array('id' => $app_id)
             );
         }
@@ -211,6 +221,10 @@ class AppsManager
                 }
                 $info = $repo->getFileContent('package.json');
                 $update_data['alias'] = self::safeFilename($info['name']);
+
+                if (empty($app['name'])){
+                    $update_data['name'] = $info['name'];
+                }
             }
             Mysql::getInstance()->update('apps', $update_data, array('id' => $app_id));
         }
@@ -248,3 +262,6 @@ class AppsManager
         return rmdir($dir);
     }
 }
+
+$apps = new AppsManager();
+$apps->installApp(1);
