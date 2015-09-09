@@ -13,7 +13,7 @@ class AppsManager
 
             $info = $repo->getFileContent('package.json');
             $app['name']              = isset($info['name']) ? $info['name'] : '';
-            $app['alias']             = AppsManager::safeFilename($info['name']);
+            $app['alias']             = empty($info['alias']) ? AppsManager::safeFilename($info['name']) : $info['alias'];
             $app['available_version'] = isset($info['version']) ? $info['version'] : '';
             $app['description']       = isset($info['description']) ? $info['description'] : '';
 
@@ -41,7 +41,7 @@ class AppsManager
         $info = $repo->getFileContent('package.json');
 
         $app['name']              = isset($info['name']) ? $info['name'] : '';
-        $app['alias']             = AppsManager::safeFilename($info['name']);
+        $app['alias']             = empty($info['alias']) ? AppsManager::safeFilename($info['name']) : $info['alias'] ;
         $app['available_version'] = isset($info['version']) ? $info['version'] : '';
         $app['description']       = isset($info['description']) ? $info['description'] : '';
 
@@ -123,7 +123,7 @@ class AppsManager
 
         $tmp_file = tempnam('/tmp', 'app');
 
-        file_put_contents($tmp_file, fopen($latest_release['tarball_url'], 'r'));
+        file_put_contents($tmp_file, fopen($latest_release['tarball_url'], 'r', false, stream_context_create(array('http'=>array('header' => "User-Agent: stalker_portal\r\n")))));
 
         $archive = new PharData($tmp_file);
 
@@ -137,7 +137,13 @@ class AppsManager
         unlink($tmp_file);
 
         if ($result){
-            Mysql::getInstance()->update('apps', array('current_version' => $latest_release['name']), array('id' => $app_id));
+            Mysql::getInstance()->update('apps',
+                array(
+                    'current_version' => $latest_release['name'],
+                    'alias' => self::safeFilename($app['name'])
+                ),
+                array('id' => $app_id)
+            );
         }
 
         return $result;
@@ -162,7 +168,7 @@ class AppsManager
             $tarball_url = 'https://api.github.com/repos/'.$repo->getOwner().'/'.$repo->getRepository().'/tarball/'.$version;
         }
 
-        file_put_contents($tmp_file, fopen($tarball_url, 'r'));
+        file_put_contents($tmp_file, fopen($tarball_url, 'r', false, stream_context_create(array('http'=>array('header' => "User-Agent: stalker_portal\r\n")))));
 
         $archive = new PharData($tmp_file);
 
@@ -176,7 +182,11 @@ class AppsManager
         unlink($tmp_file);
 
         if ($result){
-            Mysql::getInstance()->update('apps', array('current_version' => $version), array('id' => $app_id));
+            $update_data = array('current_version' => $version);
+            if (empty($app['alias'])){
+                $update_data['alias'] = self::safeFilename($app['name']);
+            }
+            Mysql::getInstance()->update('apps', $update_data, array('id' => $app_id));
         }
 
         return $result;

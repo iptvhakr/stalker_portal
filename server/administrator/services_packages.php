@@ -122,7 +122,7 @@ if (@$_GET['edit'] && !empty($id)){
     $action_name = 'edit';
     $action_value = _('Save');
     $edit_package = Mysql::getInstance()->from('services_package')->where(array('id' => $id))->get()->first();
-    $edit_services = Mysql::getInstance()->from('service_in_package')->where(array('package_id' => $id))->get()->all('service_id');
+    $edit_services = Mysql::getInstance()->from('service_in_package')->where(array('package_id' => $id))->orderby('id')->get()->all('service_id');
 }
 
 
