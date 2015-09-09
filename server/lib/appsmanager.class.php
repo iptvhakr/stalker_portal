@@ -1,5 +1,7 @@
 <?php
 
+require "../common.php";
+
 class AppsManager
 {
 
@@ -58,7 +60,7 @@ class AppsManager
             .$app['alias']
             .'/'.$app['current_version']));
 
-        $releases = $repo->getReleases(50);
+        $releases = $repo->getReleases(50); // todo: use cache
 
         if (is_array($releases)){
             $releases = array_map(function($release) use ($app, $option_values){
@@ -114,6 +116,7 @@ class AppsManager
 
         $repo = new GitHub($app['url']);
         $versions = $repo->getReleases(1);
+        $info = $repo->getFileContent('package.json');
 
         if (count($versions) == 0){
             return false;
@@ -121,26 +124,38 @@ class AppsManager
 
         $latest_release = $versions[0];
 
-        $tmp_file = tempnam('/tmp', 'app');
+        $tmp_file = '/tmp/'.uniqid('app_').'.zip';
 
-        file_put_contents($tmp_file, fopen($latest_release['tarball_url'], 'r', false, stream_context_create(array('http'=>array('header' => "User-Agent: stalker_portal\r\n")))));
+        $zip_url = 'https://github.com/'.$repo->getOwner().'/'.$repo->getRepository().'/archive/'.$latest_release['tag_name'].'.zip';
 
-        $archive = new PharData($tmp_file);
+        file_put_contents($tmp_file, fopen($zip_url, 'r', false, stream_context_create(array('http'=>array('header' => "User-Agent: stalker_portal\r\n")))));
 
-        $path = realpath(PROJECT_PATH.'/../../'.Config::getSafe('apps_path', 'stalker_apps/').self::safeFilename($app['name']).'/'.$latest_release['name']);
+        $path = PROJECT_PATH.'/../../'.Config::getSafe('apps_path', 'stalker_apps/').self::safeFilename($info['name']);
 
         umask(0);
-        mkdir($path, 0755, true);
+        if (!is_dir($path)){
+            mkdir($path, 0755, true);
+        }
 
-        $result = $archive->extractTo($path);
+        $archive = new ZipArchive();
+
+        if ($archive->open($tmp_file) === true) {
+            $entry = $archive->getNameIndex(0);
+            $dir = substr($entry, 0, strpos($entry, '/'));
+            $result = $archive->extractTo($path);
+            $archive->close();
+            rename($path.'/'.$dir, $path.'/'.$latest_release['tag_name']);
+        }else{
+            return false;
+        }
 
         unlink($tmp_file);
 
-        if ($result){
+        if (!empty($result)){
             Mysql::getInstance()->update('apps',
                 array(
                     'current_version' => $latest_release['name'],
-                    'alias' => self::safeFilename($app['name'])
+                    'alias' => self::safeFilename($app['name']) // todo: name does not exist
                 ),
                 array('id' => $app_id)
             );
@@ -149,7 +164,7 @@ class AppsManager
         return $result;
     }
 
-    public function updateApp($app_id, $version = null, $tarball_url = null){
+    public function updateApp($app_id, $version = null){
 
         $app = Mysql::getInstance()->from('apps')->where(array('id' => $app_id))->get()->first();
 
@@ -161,30 +176,43 @@ class AppsManager
             return $this->installApp($app_id);
         }
 
-        $tmp_file = tempnam('/tmp', 'app');
+        $tmp_file = '/tmp/'.uniqid('app_').'.zip';
 
-        if ($tarball_url === null){
-            $repo = new GitHub($app['url']);
-            $tarball_url = 'https://api.github.com/repos/'.$repo->getOwner().'/'.$repo->getRepository().'/tarball/'.$version;
-        }
+        $repo = new GitHub($app['url']);
 
-        file_put_contents($tmp_file, fopen($tarball_url, 'r', false, stream_context_create(array('http'=>array('header' => "User-Agent: stalker_portal\r\n")))));
+        $zip_url = 'https://github.com/'.$repo->getOwner().'/'.$repo->getRepository().'/archive/'.$version.'.zip';
 
-        $archive = new PharData($tmp_file);
+        file_put_contents($tmp_file, fopen($zip_url, 'r', false, stream_context_create(array('http'=>array('header' => "User-Agent: stalker_portal\r\n")))));
 
-        $path = realpath(PROJECT_PATH.'/../../'.Config::getSafe('apps_path', 'stalker_apps/').self::safeFilename($app['name']).'/'.$version);
+        $path = PROJECT_PATH.'/../../'.Config::getSafe('apps_path', 'stalker_apps/').$app['alias'];
 
         umask(0);
-        mkdir($path, 0755, true);
+        if (!is_dir($path)){
+            mkdir($path, 0755, true);
+        }
 
-        $result = $archive->extractTo($path);
+        $archive = new ZipArchive();
+
+        if ($archive->open($tmp_file) === true) {
+            $entry = $archive->getNameIndex(0);
+            $dir = substr($entry, 0, strpos($entry, '/'));
+            $result = $archive->extractTo($path);
+            $archive->close();
+            rename($path.'/'.$dir, $path.'/'.$version);
+        }else{
+            return false;
+        }
 
         unlink($tmp_file);
 
         if ($result){
             $update_data = array('current_version' => $version);
             if (empty($app['alias'])){
-                $update_data['alias'] = self::safeFilename($app['name']);
+                if (!isset($repo)){
+                    $repo = new GitHub($app['url']);
+                }
+                $info = $repo->getFileContent('package.json');
+                $update_data['alias'] = self::safeFilename($info['name']);
             }
             Mysql::getInstance()->update('apps', $update_data, array('id' => $app_id));
         }
@@ -200,7 +228,7 @@ class AppsManager
             $version = $app['current_version'];
         }
 
-        $path = realpath(PROJECT_PATH.'/../../'.Config::getSafe('apps_path', 'stalker_apps/').self::safeFilename($app['name']).'/'.$version);
+        $path = realpath(PROJECT_PATH.'/../../'.Config::getSafe('apps_path', 'stalker_apps/').$app['alias'].'/'.$version);
 
         if (is_dir($path)){
             self::delTree($path);
@@ -222,3 +250,12 @@ class AppsManager
         return rmdir($dir);
     }
 }
+
+
+$apps = new AppsManager();
+//$apps->installApp(1);
+$apps->updateApp(1, 'v1.5.4');
+
+//$archive = new PharData('/tmp/app_55efe344227b4.tar.gz');
+//$archive = new PharData('/tmp/v1.5.6.tar.gz');
+//$archive->decompress();
