@@ -1,7 +1,5 @@
 <?php
 
-require "../common.php";
-
 class AppsManager
 {
 
@@ -250,12 +248,3 @@ class AppsManager
         return rmdir($dir);
     }
 }
-
-
-$apps = new AppsManager();
-//$apps->installApp(1);
-$apps->updateApp(1, 'v1.5.4');
-
-//$archive = new PharData('/tmp/app_55efe344227b4.tar.gz');
-//$archive = new PharData('/tmp/v1.5.6.tar.gz');
-//$archive->decompress();
