@@ -95,7 +95,7 @@ class GitHub
      */
     private function apiCall($url){
 
-        $json_result = $this->execute($url);
+        $json_result = $this->execute($url, true);
 
         if (is_string($json_result)) {
 
@@ -113,17 +113,23 @@ class GitHub
 
     /**
      * @param string $url
+     * @param bool $api_call
      * @return string
      * @throws GitHubConnectionFailure
      * @throws GitHubConnectionTimeout
      * @throws GitHubError
      */
-    private function execute($url){
+    private function execute($url, $api_call = false){
 
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST,  'GET');
         curl_setopt($ch, CURLOPT_USERAGENT, 'stalker_portal');
+
+        if ($api_call){
+            // todo: use cache
+        }
+
         $response = curl_exec($ch);
 
         if ($response === false){
@@ -141,6 +147,11 @@ class GitHub
         if ($result !== null){
             $message = !empty($result['message']) ? $result['message'] : $response;
             $response = $result;
+
+            if ($api_call){
+                // todo: save in cache
+            }
+
         }else{
             $message = $response;
         }

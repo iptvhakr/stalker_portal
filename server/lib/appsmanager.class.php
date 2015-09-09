@@ -58,7 +58,7 @@ class AppsManager
             .$app['alias']
             .'/'.$app['current_version']));
 
-        $releases = $repo->getReleases(50); // todo: use cache
+        $releases = $repo->getReleases(50);
 
         if (is_array($releases)){
             $releases = array_map(function($release) use ($app, $option_values){
