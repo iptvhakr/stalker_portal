@@ -287,6 +287,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
     private function isValidAccessToken($access_token, $mac = null){
 
+        return true; //todo: temporary
+
         if (!$mac){
             $mac = $this->mac;
         }
