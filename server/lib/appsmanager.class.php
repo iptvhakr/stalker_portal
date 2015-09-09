@@ -122,6 +122,10 @@ class AppsManager
 
         $latest_release = $versions[0];
 
+        if ($latest_release['tag_name'] == $app['current_version']){
+            return false;
+        }
+
         $tmp_file = '/tmp/'.uniqid('app_').'.zip';
 
         $zip_url = 'https://github.com/'.$repo->getOwner().'/'.$repo->getRepository().'/archive/'.$latest_release['tag_name'].'.zip';
@@ -245,6 +249,16 @@ class AppsManager
         }
 
         return false;
+    }
+
+    public function startAutoUpdate(){
+
+        $need_to_update = Mysql::getInstance()->from('apps')->where(array('status' => 1, 'autoupdate' => 1))->get()->all();
+
+        foreach ($need_to_update as $app){
+            $this->updateApp($app['id']);
+        }
+
     }
 
     public static function safeFilename($filename){

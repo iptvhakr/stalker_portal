@@ -163,7 +163,7 @@ class GitHub
             $message = !empty($result['message']) ? $result['message'] : $response;
             $response = $result;
 
-            if ($api_call){
+            if ($api_call && !empty($headers['etag'])){
 
                 if (!isset($cache)){
                     $cache = Mysql::getInstance()->from('github_api_cache')->where(array('url' => $url))->get()->first();
