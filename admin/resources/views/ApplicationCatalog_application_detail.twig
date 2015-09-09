@@ -47,6 +47,18 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-sm-1 control-label col-sm-offset-1">{{ 'Auto-update'|trans }}</label>
+                            <div class="col-xs-10 col-sm-10">
+                                <div class="toggle-switch toggle-switch-success">
+                                    <label>
+                                        <input type="checkbox" value="1" name="autoupdate" id="app_autoupdate" {% if app.app_info.info.autoupdate %}checked="checked"{% endif %}>
+                                        <div class="toggle-switch-inner"></div>
+                                        <div class="toggle-switch-switch"></div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-1 control-label col-sm-offset-1">{{ 'Versions'|trans }}</label>
                             <div class="col-xs-10 col-sm-10">
                                 <div class="dataTables_processing" style="z-index: 305; min-height: 200px;"></div>
@@ -257,6 +269,12 @@
                     }
                     {% if attribute(app, 'app_info') is defined and app.app_info.info|length > 0 %}
                     ajaxPostSend('{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-toggle-state', {status: $(this).is(':checked'), id: {{ app.app_info.info.id }} });
+                    {% endif %}
+                });
+
+                $(document).on('click', '#app_autoupdate', function(){
+                    {% if attribute(app, 'app_info') is defined and app.app_info.info|length > 0 %}
+                    ajaxPostSend('{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-toggle-state', {autoupdate: $(this).is(':checked'), id: {{ app.app_info.info.id }} });
                     {% endif %}
                 });
 

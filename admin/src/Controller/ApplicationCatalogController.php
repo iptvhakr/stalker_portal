@@ -344,6 +344,10 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             $postData['status'] = !empty($postData['status']) && $postData['status'] != 'false' && $postData['status'] !== FALSE? 1: 0;
         }
 
+        if (array_key_exists('autoupdate', $postData)) {
+            $postData['autoupdate'] = !empty($postData['autoupdate']) && $postData['autoupdate'] != 'false' && $postData['autoupdate'] !== FALSE? 1: 0;
+        }
+
         unset($postData['id']);
 
         if ($this->db->updateApplication($postData, $id)) {
