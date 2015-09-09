@@ -3228,7 +3228,8 @@ z-index:10;
 }
 
 #add_channel input, #add_channel select, #add_channel textarea,
-#modalbox_ad input, #modalbox_ad select, #modalbox_ad textarea{
+#modalbox_ad input, #modalbox_ad select, #modalbox_ad textarea,
+#modalbox input, #modalbox select, #modalbox textarea{
     border-radius: 5px;
     border-color: #D3D3D3;
     resize: none;

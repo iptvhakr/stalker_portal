@@ -1,12 +1,12 @@
 {% extends 'layout.twig' %}
 {% import '/macro/iptw_macro.twig' as main_macro %}
-{% set title = ('Events'|trans ~ ': ' ~ 'list of filters of users'|trans) | trans %}
+{% set title = ('Applications'|trans ~ ': ' ~ 'applications catalog'|trans) | trans %}
 
 {% block content %}
     <div id="iptv_list">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <a id="add_apps" href="#" class="btn btn-success pull-right">{{ 'Add application'|trans }}</a>
+                <a id="add_apps" href="#" class="btn btn-success pull-right">{{ 'Add application by URL'|trans }}</a>
             </div>
         </div>
         <div class="row">
@@ -100,9 +100,12 @@
 
                         json.data[i].name = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-detail?id=' + id + '">' + json.data[i].name + '</a>';
                         var status = item.status;
+                        if (!item.current_version) {
+                            item.current_version = "{{ 'Undefined'|trans }}"
+                        }
                         if (item.installed) {
-                            item.current_version += ' ' + (item.available_update ? '&nbsp;&nbsp;&nbsp;<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-detail?id=' + id + '">{{ 'Update'|trans }}</a>' : '');
-                            item.status = item.status ? "{{ 'Enabled'|trans }}" : "{{ 'Disabled'|trans }}";
+                            item.current_version += ' ' + (item.available_version != item.current_version ? '&nbsp;&nbsp;&nbsp;<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-detail?id=' + id + '">{{ 'Update'|trans }}</a>' : '');
+                            item.status = item.status == '1' ? "{{ 'Active'|trans }}" : "{{ 'Disabled'|trans }}";
                         } else {
                             item.current_version = ' ' + '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-detail?id=' + id + '">{{ 'Install'|trans }}</a>';
                             item.status = "{{ 'Not installed'|trans }}";
@@ -114,12 +117,12 @@
                                                         </a>\n\
                                                         <ul class='dropdown-menu pull-right'>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' " + (!item.installed ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-toggle-state' data-id='" + id + "' data-status='" + status + "'>\n\
-                                                                    <span> " + (!status ? "{{ 'Enable'|trans }}" : "{{ 'Disable'|trans }}") + " </span>\n\
+                                                                <a class='main_ajax' " + (!item.installed ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-toggle-state' data-id='" + id + "' data-status='" + (status == '1' ? '0': '1') + "'>\n\
+                                                                    <span> " + (status != '1' ? "{{ 'Activate'|trans }}" : "{{ 'Deactivate'|trans }}") + " </span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' " + (status ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-delete' data-id='" + id + "'>\n\
+                                                                <a class='main_ajax' " + (status == '1' ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-delete' data-id='" + id + "'>\n\
                                                                     <span> {{ 'Delete'|trans }} </span>\n\
                                                                 </a>\n\
                                                             </li>\n\
@@ -175,13 +178,16 @@
 
         function yelp() {
             $(document).ready(function () {
-                $(document).on('click', "a.main_ajax[disabled!='disabled']", function (e) {
+                $(document).on('click', "a.main_ajax", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
                     $("#modalbox").data('complete', 0);
                     showModalBox();
-                    var sendData = $(this).data();
-                    ajaxPostSend($(this).attr('href'), sendData, false, false, true);
+                    if ($(this).attr("disabled")) {
+                        JSErrorModalBox({msg: "{{ 'Action is not available'|trans }}"});
+                    } else {
+                        ajaxPostSend($(this).attr('href'), $(this).data(), false );
+                    }
                     $(this).closest('div.open').removeClass('open');
                     return false;
                 });
@@ -289,11 +295,10 @@
             JSErrorModalBox(obj);
         };
 
-
         function buildGetForm() {
             $("#modalbox").hide();
             $("#modalbox").data('complete', 1);
-            $('#modalbox').find('.modal-header-name span').text('{{ 'Add application (Step 1)'|trans }}');
+            $('#modalbox').find('.modal-header-name span').text('{{ 'Add application by URL (Step 1)'|trans }}');
             $('#modalbox').find('.devoops-modal-inner').html($("#modal_get_form_body").text());
             $('#modalbox').find('.devoops-modal-bottom').html($("#modal_get_form_buttons").text());
             $('#modalbox').show();
@@ -302,7 +307,7 @@
         function buildSaveForm(data) {
             $("#modalbox").hide();
             $("#modalbox").data('complete', 1);
-            $('#modalbox').find('.modal-header-name span').text('{{ 'Add application (Step 2)'|trans }}');
+            $('#modalbox').find('.modal-header-name span').text('{{ 'Add application by URL (Step 2)'|trans }}');
             $('#modalbox').find('.devoops-modal-inner').html($("#modal_save_form_body").text());
             $('#modalbox').find('.devoops-modal-bottom').html($("#modal_save_form_buttons").text());
             fillModalForm(data.data);
@@ -316,10 +321,10 @@
                 $('#apps_url').val(data.repository.url.replace(regExp, ''));
             }
             if (data.name) {
-                $('#apps_name').val(data.name).next('span').text(data.name);
+                $('#apps_name').val(data.name).next('h5').text(data.name);
             }
             if (data.version) {
-                $('#apps_version').val(data.version).next('span').text(data.version);
+                $('#apps_version').val(data.version).next('h5').text(data.version);
             }
             if (data.options) {
                 $('#apps_options').val(JSON.stringify(data.options));
@@ -329,13 +334,22 @@
             }
         }
 
+        var changeStatus = function(obj){
+            manageList(obj);
+        };
+
+        var changeStatusError = function(obj){
+            JSErrorModalBox(obj);
+            $('#app_status').prop('checked', !$('#app_status').is(':checked'));
+        };
+
     </script>
 
     <script type="text/template" id="modal_get_form_body">
         <div class="box-content">
             <form class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-get-data-from-repo">
                 <div class="form-group">
-                    <label class="col-sm-3 control-label col-sm-offset-1">{{ 'URL'|trans }}</label>
+                    <label class="col-sm-2 control-label col-sm-offset-1">{{ 'URL'|trans }}</label>
                     <div class="col-xs-10 col-sm-8">
                         <span class="col-xs-12 col-sm-12">
                             <input type="text" class="own_fields form-control" name="apps[url]" value="" id="apps_url">
@@ -361,7 +375,7 @@
         <div class="box-content">
             <form class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-add">
                 <div class="form-group">
-                    <label class="col-sm-3 control-label col-sm-offset-1">{{ 'URL'|trans }}</label>
+                    <label class="col-sm-2 control-label col-sm-offset-1">{{ 'URL'|trans }}</label>
                     <div class="col-xs-10 col-sm-8">
                         <span class="col-xs-12 col-sm-12">
                             <input type="text" class="own_fields form-control" name="apps[url]" id="apps_url" value="" readonly="readonly">
@@ -372,26 +386,26 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Name'|trans }}</label>
+                    <label class="col-sm-2 control-label col-sm-offset-1">{{ 'Application'|trans }}</label>
                     <div class="col-xs-10 col-sm-8">
                         <span class="col-xs-12 col-sm-12">
-                            <input type="hidden" class="own_fields form-control" name="apps[name]" id="apps_name" value="" readonly="readonly" disabled="disabled">
-                            <span class="txt-default"></span>
+                            <input type="hidden" class="own_fields form-control" name="apps[name]" id="apps_name" value="" readonly="readonly">
+                            <h5></h5>
                         </span>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Version'|trans }}</label>
+                    <label class="col-sm-2 control-label col-sm-offset-1">{{ 'Version'|trans }}</label>
                     <div class="col-xs-10 col-sm-8">
                         <span class="col-xs-12 col-sm-12">
-                            <input type="hidden" class="own_fields form-control" name="apps[options]" id="apps_options" value="" readonly="readonly">
-                            <input type="hidden" class="own_fields form-control" name="apps[current_version]" value="" id="apps_version" readonly="readonly">
-                            <span class="txt-default"></span>
+                            <input type="hidden" class="own_fields form-control" name="apps[options]" id="apps_options" value="" readonly="readonly" disabled="disabled">
+                            <input type="hidden" class="own_fields form-control" name="apps[current_version]" value="" id="apps_version" readonly="readonly" disabled="disabled">
+                            <h5></h5>
                         </span>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-3 control-label col-sm-offset-1">{{ 'About'|trans }}</label>
+                    <label class="col-sm-2 control-label col-sm-offset-1">{{ 'About app'|trans }}</label>
                     <div class="col-xs-10 col-sm-8">
                         <span class="col-xs-12 col-sm-12">
                             <textarea class="own_fields form-control" name="apps[description]" id="apps_description" readonly="readonly" rows="10" disabled="disabled"></textarea>
