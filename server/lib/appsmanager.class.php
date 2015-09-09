@@ -194,6 +194,10 @@ class AppsManager
 
         file_put_contents($tmp_file, fopen($zip_url, 'r', false, stream_context_create(array('http'=>array('header' => "User-Agent: stalker_portal\r\n")))));
 
+        if (empty($app['alias'])){
+            $app['alias'] = self::safeFilename($app['name']);
+        }
+
         $path = PROJECT_PATH.'/../../'.Config::getSafe('apps_path', 'stalker_apps/').$app['alias'];
 
         umask(0);
