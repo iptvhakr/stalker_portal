@@ -585,9 +585,9 @@ a:hover{
     });
 
     function getURLParameter(name) {
-        return decodeURI(
-            (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
-        );
+        var match = RegExp(name + '=' + '(.*?)(&|$)').exec(location.search);
+        console.log(match);
+        return decodeURI((match ||[,null])[1]);
     }
 
 </script>
