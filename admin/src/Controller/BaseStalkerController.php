@@ -405,7 +405,8 @@ class BaseStalkerController {
             if ($this->app['controller_alias'] == $controller) {
                     $this->app['breadcrumbs']->addItem($row['name'], $this->workURL . "/$controller");
                 }
-            if (!$dont_remove && !array_key_exists($controller, $this->app['controllerAccessMap']) || $this->app['controllerAccessMap'][$controller]['access'] == 0) {
+            if ((!$dont_remove && !array_key_exists($controller, $this->app['controllerAccessMap']))
+                || (array_key_exists($controller, $this->app['controllerAccessMap']) && $this->app['controllerAccessMap'][$controller]['access'] == 0)) {
                 unset($side_bar[$key]);
                 continue;
             }
@@ -415,8 +416,8 @@ class BaseStalkerController {
                 if ($this->app['controller_alias'] == $controller && $this->app['action_alias'] == $action) {
                     $this->app['breadcrumbs']->addItem($row_a['name'], $this->workURL . "/$controller/$action");
                 }
-                if (!$dont_remove && !array_key_exists($action, $this->app['controllerAccessMap'][$controller]['action'])
-                    || $this->app['controllerAccessMap'][$controller]['action'][$action]['access'] == 0) {
+                if ((!$dont_remove && !array_key_exists($action, $this->app['controllerAccessMap'][$controller]['action']))
+                    || (array_key_exists($action, $this->app['controllerAccessMap'][$controller]['action']) && $this->app['controllerAccessMap'][$controller]['action'][$action]['access'] == 0)) {
                     unset($side_bar[$key]['action'][$key_a]);
                 }
             }
