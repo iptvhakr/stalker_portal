@@ -319,10 +319,14 @@
                 $('#form_disabled_services').empty();
                 var disabled_services_json = $("#form_disabled_services_json").val() ? JSON.parse($("#form_disabled_services_json").val()) : new Array();
                 for (var key in disabled_services_json) {
-                    disabled_services_json[key] = parseInt(disabled_services_json[key], 10);
+                    if (!isNaN(parseInt(disabled_services_json[key], 10))) {
+                        disabled_services_json[key] = parseInt(disabled_services_json[key], 10);
+                    } else {
+
+                    }
                 }
                 $.each(data.services, function(index, item){
-                    var id = parseInt(item.id, 10);
+                    var id = !isNaN(parseInt(item.id, 10)) ? parseInt(item.id, 10) : item.id;
                     if (disabled_services_json.indexOf(id) !== -1 || !$("#form_disabled_services_json").val()) {
                         $('#form_disabled_services').append('<option class="new" value='+item.id+'>'+ item.name +'</option>');
                     } else {
