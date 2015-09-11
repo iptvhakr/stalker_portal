@@ -126,7 +126,7 @@
             }).rowReordering({
                 iIndexColumn: 0,
                 sURL: "{{ app.request.baseUrl }}/{{ app.controller_alias }}/tv-genres-reorder"
-            }).prev('.dataTables_processing').hide('');
+            }).closest('#iptv_list').find('.dataTables_processing').hide('');
         }
 
         function yelp() {
