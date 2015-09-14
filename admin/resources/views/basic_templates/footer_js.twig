@@ -27,6 +27,11 @@
                     }
                 }
             });
+
+            $('#datatable-1').on( 'draw.dt', function () {
+                $('#wrapper').css({minHeight: heightCalculate()});
+            } );
+
         </script>
         <script src="{{app.request.baseUrl}}/js/devoops.js"></script>
         <script src="{{app.request.baseUrl}}/plugins/multiselect_transfer/jquery.selso.js"></script>

@@ -80,14 +80,14 @@ function LoadDataTablesScripts(callback) {
                                   oSettings.oApi._fnSetCellData( oSettings, iRowIndex, iColIndex, $(this).html() );
                             } );
                         };
-                        callback();   
+                        callback();
                     });
                 });
             });
         });
     }
     if (!$.fn.dataTables) {
-        LoadDatatables();       
+        LoadDatatables();
     }
     else {
         if (callback && typeof (callback) === "function") {
@@ -463,19 +463,8 @@ $(document).ready(function () {
             e.preventDefault();
         }
     });
-    var height = window.innerHeight - 49;
-    var tableHeight = $("#datatable-1").length ? ($('#datatable-1 tr').length > 50 ? 50 : $('#datatable-1 tr').length) * 50 + $('#datatable-1').position().top + 200: 0;
-    if (tableHeight > height) {
-        height = tableHeight;
-    }
-    $('.attribute_set, [data-tvfilter]').each(function(){
-        var newHeight = $(this).position().top + $(this).children('a').height() + $(this).children('ul').height();
-        if (newHeight > height) {
-            height = newHeight;
-        }
-        $('#main-wrapper').height(height);
-    });
-    $('#wrapper').css({minHeight: height})
+
+    $('#wrapper').css({minHeight: heightCalculate()})
             .on('click', '.expand-link', function (e) {
                 var body = $('body');
                 e.preventDefault();
@@ -855,6 +844,22 @@ $(document).ready(function () {
     });
     
 });
+
+function heightCalculate(){
+    var height = window.innerHeight - 49;
+    var tableHeight = $("#datatable-1").length ? ($('#datatable-1 tr').length > 50 ? 50 : $('#datatable-1 tr').length) * 50 + $('#datatable-1').position().top + 200: 0;
+    if (tableHeight > height) {
+        height = tableHeight;
+    }
+    $('.attribute_set, [data-tvfilter]').each(function(){
+        var newHeight = $(this).position().top + $(this).children('a').height() + $(this).children('ul').height();
+        if (newHeight > height) {
+            height = newHeight;
+        }
+        $('#main-wrapper').css({minHeight: height});
+    });
+    return height;
+}
 
 function channelUrlDataGet(container){
     var dataObj = {};
