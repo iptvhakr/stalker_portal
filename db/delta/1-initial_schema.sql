@@ -77,7 +77,50 @@ CREATE TABLE IF NOT EXISTS `cat_genre`(
     KEY `category_alias` (`category_alias`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-INSERT INTO `cat_genre` VALUES (1,'ours','animation'),(2,'teach','animation'),(3,'foreign','animation'),(4,'series','animation'),(5,'action','our_film'),(6,'military','our_film'),(7,'drama','our_film'),(8,'detective','our_film'),(9,'historical','our_film'),(10,'catastrophe','our_film'),(11,'comedy','our_film'),(12,'melodrama','our_film'),(13,'musical','our_film'),(14,'adventure','our_film'),(15,'fiction','our_film'),(16,'thriller','our_film'),(17,'fantasy','our_film'),(18,'horror','our_film'),(19,'erotica','our_film'),(20,'action','world_film'),(21,'military','world_film'),(22,'drama','world_film'),(23,'detective','world_film'),(24,'historical','world_film'),(25,'catastrophe','world_film'),(26,'comedy','world_film'),(27,'melodrama','world_film'),(28,'musical','world_film'),(29,'adventure','world_film'),(30,'fiction','world_film'),(31,'thriller','world_film'),(32,'fantasy','world_film'),(33,'horror','world_film'),(34,'erotica','world_film'),(35,'biography','doc_film'),(36,'military','doc_film'),(37,'history','doc_film'),(38,'art','doc_film'),(39,'criminal','doc_film'),(40,'catastrophe','doc_film'),(41,'teach','doc_film'),(42,'travels','doc_film'),(43,'mysticism','doc_film'),(44,'technique','doc_film'),(45,'science','doc_film'),(46,'fiction','doc_film'),(47,'show','humor'),(48,'sketch-show','humor'),(49,'humourist','humor'),(50,'sport','liking'),(51,'hunting','liking'),(52,'dancing','liking'),(53,'cookery','liking'),(54,'house/country','liking'),(55,'fishing','liking'),(56,'teach','liking'),(57,'aerobics','liking'),(58,'yoga','liking'),(59,'action','owr_serial'),(60,'military','owr_serial'),(61,'drama','owr_serial'),(62,'detective','owr_serial'),(63,'historical','owr_serial'),(64,'catastrophe','owr_serial'),(65,'comedy','owr_serial'),(66,'melodrama','owr_serial'),(67,'musical','owr_serial'),(68,'adventure','owr_serial'),(69,'fiction','owr_serial'),(70,'thriller','owr_serial'),(71,'fantasy','owr_serial'),(72,'horror','owr_serial'),(73,'action','world_serial'),(74,'military','world_serial'),(75,'drama','world_serial'),(76,'detective','world_serial'),(77,'historical','world_serial'),(78,'catastrophe','world_serial'),(79,'comedy','world_serial'),(80,'melodrama','world_serial'),(81,'musical','world_serial'),(82,'adventure','world_serial'),(83,'fiction','world_serial'),(84,'thriller','world_serial'),(85,'fantasy','world_serial'),(86,'horror','world_serial'),(87,'western','world_film'),(88,'nature','doc_film'),(89,'health','doc_film'),(90,'erotica','doc_film'),(91,'children\'s','our_film'),(92,'children\'s','world_film');
+INSERT INTO `cat_genre`
+VALUES (1, 'Action', 'movies'),
+  (2, 'Adventure', 'movies'),
+  (3, 'Documentary', 'movies'),
+  (4, 'Drama', 'movies'),
+  (5, 'Comedy', 'movies'),
+  (6, 'Family', 'movies'),
+  (7, 'Musical', 'movies'),
+  (8, 'Horror', 'movies'),
+  (9, 'Action', 'tv_shows'),
+  (10, 'Adventure', 'tv_shows'),
+  (11, 'Documentary', 'tv_shows'),
+  (12, 'Drama', 'tv_shows'),
+  (13, 'Comedy', 'tv_shows'),
+  (14, 'Family', 'tv_shows'),
+  (15, 'Musical', 'tv_shows'),
+  (16, 'Horror', 'tv_shows'),
+  (17, 'Action', 'cartoons'),
+  (18, 'Adventure', 'cartoons'),
+  (19, 'Drama', 'cartoons'),
+  (20, 'Comedy', 'cartoons'),
+  (21, 'Family', 'cartoons'),
+  (22, 'Musical', 'cartoons'),
+  (23, 'Horror', 'cartoons'),
+  (24, 'Alternative Rock', 'music_videos'),
+  (25, 'Blues', 'music_videos'),
+  (26, 'Children\'s Music', 'music_videos'),
+  (27, 'Jazz', 'music_videos'),
+  (28, 'Disco', 'music_videos'),
+  (29, 'Indie', 'music_videos'),
+  (30, 'Country', 'music_videos'),
+  (31, 'Classical', 'music_videos'),
+  (32, 'Latin Music', 'music_videos'),
+  (33, 'Easy Listening', 'music_videos'),
+  (34, 'Metal', 'music_videos'),
+  (35, 'Hillbilly music', 'music_videos'),
+  (36, 'Pop', 'music_videos'),
+  (37, 'Oldies', 'music_videos'),
+  (38, 'Rock', 'music_videos'),
+  (39, 'Adult Contemporary', 'music_videos'),
+  (40, 'Soul and R&B', 'music_videos'),
+  (41, 'Themes music', 'music_videos'),
+  (42, 'Hip Hop', 'music_videos'),
+  (43, 'Electronic', 'music_videos');
 
 CREATE TABLE IF NOT EXISTS `itv`(
     `id` int NOT NULL auto_increment,
@@ -114,7 +157,10 @@ CREATE TABLE IF NOT EXISTS `tv_genre`(
     UNIQUE KEY (`title`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-INSERT INTO `tv_genre` VALUES (1,'information'),(2,'entertainments'),(3,'children\'s'),(4,'cinema'),(5,'science'),(6,'sports'),(7,'music'),(8,'business'),(9,'culture'),(10,'for adults');
+INSERT INTO `tv_genre`
+VALUES (1, 'Documentary'), (2, 'Entertainment'), (3, 'For Kids'),
+  (4, 'Movies'), (5, 'Music'), (6, 'News'),
+  (7, 'Nature'), (8, 'Sports'), (19, 'For Adults');
 
 CREATE TABLE IF NOT EXISTS `last_id`(
     `id` int NOT NULL auto_increment,
@@ -612,7 +658,11 @@ CREATE TABLE IF NOT EXISTS `media_category`(
     PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-INSERT INTO `media_category` VALUES (1,'Cartoon','animation',1),(2,'Ours cinema','our_film',2),(3,'World cinema','world_film',3),(4,'Documentary','doc_film',4),(5,'Humour','humor',5),(6,'Hobbies','liking',6),(7,'Our Serial','owr_serial',7),(8,'Foreign Serial','world_serial',8);
+INSERT INTO `media_category`
+VALUES (1, 'Movies', 'movies', 1),
+  (2, 'TV shows', 'tv_shows', 2),
+  (3, 'Cartoons', 'cartoons', 3),
+  (4, 'Music videos', 'music_videos', 4);
 
 CREATE TABLE IF NOT EXISTS `main_city_info`(
     `id` int NOT NULL auto_increment,

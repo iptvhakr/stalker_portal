@@ -63,7 +63,8 @@ INSERT INTO `audio_genres` (`name`, `modified`) VALUES
 ('Soul and R&B', NOW()),
 ('Themes music', NOW()),
 ('Hip Hop', NOW()),
-('Electronic', NOW());
+('Electronic', NOW()),
+('Audio books', NOW());
 
 CREATE TABLE `audio_genre` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -104,6 +105,16 @@ CREATE TABLE `audio_languages` (
   `modified` timestamp DEFAULT 0,
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8;
+
+INSERT INTO `audio_languages` (`name`, `modified`) VALUES
+  ('English', NOW()),
+  ('Spanish', NOW()),
+  ('German', NOW()),
+  ('Italiano', NOW()),
+  ('Russian', NOW()),
+  ('French', NOW()),
+  ('Portuguese', NOW()),
+  ('Turkish', NOW());
 
 --//@UNDO
 
