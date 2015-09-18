@@ -415,6 +415,7 @@ $words['rent_movie_price_text'] = _('The movie costs {0}');
 $words['rent_duration_text'] = _('Rent duration: {0}h');
 
 $words['Account number'] = _('Account number');
+$words['Password'] = _('Password');
 
 $words['End date'] = _('End date');
 

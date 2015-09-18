@@ -16,6 +16,17 @@ class RESTCommandStbAuth extends RESTCommand
                 array('id' => $uid)
             );
 
+            if ($request->getData('reset_device_id')){
+                Mysql::getInstance()->update('users',
+                    array(
+                        'mac'        => '',
+                        'device_id'  => '',
+                        'device_id2' => '',
+                    ),
+                    array('id' => $uid)
+                );
+            }
+
             Mysql::getInstance()
                  ->update('access_tokens',
                      array(
