@@ -96,8 +96,15 @@ class Radio extends AjaxResponse implements \Stalker\Lib\StbApi\Radio
             $delimiter = self::max_page_items;
             $this->response['data'] = array_map(function($row) use ($fav_ids, &$counter, $delimiter){
                 $row['fav'] = ((int)in_array($row['id'], $fav_ids));
-                $row['error'] = (int) $row['monitoring_status'] == 1 ? '': 'link_fault';
-                $row['open'] = (int) $row['monitoring_status'] == 1;
+
+                if ($row['enable_monitoring'] == 1){
+                    $row['error'] = (int) $row['monitoring_status'] == 1 ? '': 'link_fault';
+                    $row['open'] = (int) $row['monitoring_status'] == 1;
+                }else{
+                    $row['error'] = '';
+                    $row['open'] = 1;
+                }
+
                 $row['radio'] = TRUE;
                 $row['page'] = ceil($counter/$delimiter);
                 $counter++;
