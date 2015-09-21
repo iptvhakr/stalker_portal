@@ -37,8 +37,8 @@ $(document).on("click", "div.dropdown-menu *", function(e){
 
 $("#modalbox").on("show", function () {
     $("body").addClass("modal-open");
-}).on("hidden", function () {
-    $("body").removeClass("modal-open")
+}).on("hide", function () {
+    $("body").removeClass("modal-open");
 });
 $('#modalbox_ad').appendTo("#wrapper");
 $('#modalbox').appendTo("#wrapper");
@@ -48,7 +48,7 @@ $("#ui-datepicker-div").css("z-index:5050;")
 $("#modalbox_ad").on("show", function () {
     $("body").addClass("modal-open");
 }).on("hide", function () {
-    $("body").removeClass("modal-open")
+    $("body").removeClass("modal-open");
 });
 $('#attribute_set').removeClass('dropup');
 $('#status').removeClass('dropup');
@@ -846,7 +846,7 @@ $(document).ready(function () {
 });
 
 function heightCalculate(){
-    var height = window.innerHeight - 49;
+    var height =$("#content").height;
     var tableHeight = $("#datatable-1").length ? ($('#datatable-1 tr').length > 50 ? 50 : $('#datatable-1 tr').length) * 50 + $('#datatable-1').position().top + 200: 0;
     if (tableHeight > height) {
         height = tableHeight;
