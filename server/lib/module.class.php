@@ -5,17 +5,22 @@ class Module
     public static function getServices(){
 
         $apps = new AppsManager();
-        $external_apps = $apps->getList();
+        $external_apps = $apps->getList(true);
+
         $installed_apps = array_values(array_filter($external_apps, function($app){
-            return $app['installed'];
+            return $app['installed'] == 1 && !empty($app['alias']);
         }));
 
         $external_apps_list = array_map(function($app){
-            return $app['alias'];
+            return array(
+                'id'   => $app['alias'],
+                'name' => $app['alias'],
+                'external' => 1
+            );
         }, $installed_apps);
 
         $modules = Config::getSafe('disabled_modules', array());
-        $modules = array_merge($modules, $external_apps_list);
+
         sort($modules);
 
         $idx = array_search('ivi', $modules);
@@ -24,8 +29,12 @@ class Module
             array_splice($modules, $idx, 1);
         }
 
-        return array_map(function($module){
+        $modules = array_map(function($module){
             return array('id' => $module, 'name' => $module);
         }, $modules);
+
+        $modules = array_merge($modules, $external_apps_list);
+
+        return $modules;
     }
 }

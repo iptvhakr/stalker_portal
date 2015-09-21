@@ -12,7 +12,7 @@ $mac = Cache::getInstance()->get($_GET['key']);
 if (!$mac || $mac != $_GET['mac']){
     return false;
 }
-
+// todo: include external modules
 $all_modules = Config::get('all_modules');
 $disabled_modules = Stb::getDisabledModulesByUid((int) $_GET['uid']);
 
