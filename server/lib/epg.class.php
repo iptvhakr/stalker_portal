@@ -804,7 +804,7 @@ class Epg implements \Stalker\Lib\StbApi\Epg
         $display_channels_ids = array();
 
         for ($i=0; $i<count($user_channels); $i++){
-            if (Config::getSafe('enable_numbering_in_order', false)){
+            if (Config::getSafe('enable_numbering_in_order', false) || !empty($_REQUEST['fav'])){
                 $user_channels[$i]['number'] = (string) (($i+1)+($page-1)*10);
             }
             $display_channels_ids[] = $user_channels[$i]['id'];
@@ -814,8 +814,6 @@ class Epg implements \Stalker\Lib\StbApi\Epg
 
         $result = array();
 
-        $num = 1;
-
         foreach ($raw_epg as $id => $epg){
 
             $channel = $user_channels[array_search($id, $display_channels_ids)];
@@ -824,13 +822,11 @@ class Epg implements \Stalker\Lib\StbApi\Epg
                               'ch_id'   => $id,
                               //'name'  => Itv::getChannelNameById($id),
                               'name'    => $channel['name'],
-                              'number'  => !empty($_REQUEST['fav']) ? (string) $num : $channel['number'],
+                              'number'  => $channel['number'],
                               'ch_type' => isset($channel['type']) && $channel['type'] == 'dvb' ? 'dvb' : 'iptv',
                               'dvb_id'  => isset($channel['type']) && $channel['type'] == 'dvb' ? $channel['dvb_id'] : null,
                               'epg_container' => 1,
                               'epg'     => $epg);
-
-            $num++;
         }
 
         $time_marks = array();
