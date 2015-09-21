@@ -582,6 +582,7 @@
                         data: {data: $(this).closest('div').prev('div').find('input').val()},
                         success: function (data) {
                             $("#modalbox").hide().children().show();
+							$("body").removeClass("modal-open");
                             if (data.success) {
                                 if (data.result.hasOwnProperty('cover_big')){
                                     $('#form_cover_id').next('img').attr('src', "video-club/get-image?url="+data.result['cover_big']);
