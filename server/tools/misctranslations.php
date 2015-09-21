@@ -64,6 +64,11 @@ _('Hobbies');
 _('Our Serial');
 _('Foreign Serial');
 
+_('Movies');
+_('TV shows');
+_('Cartoons');
+_('Music videos');
+
 /**
  * genre table
  */
@@ -92,6 +97,15 @@ _('Sports');
 _('Teach');
 _('Information');
 
+_('Action');
+_('Adventure');
+_('Documentary');
+_('Drama');
+_('Comedy');
+_('Family');
+_('Musical');
+_('Horror');
+
 /**
  * tv_genre table
  */
@@ -110,6 +124,16 @@ _('religion');
 _('social');
 _("woman's");
 _('scientific-entertainment');
+
+_('Documentary');
+_('Entertainment');
+_('For Kids');
+_('Movies');
+_('Music');
+_('News');
+_('Nature');
+_('Sports');
+_('For Adults');
 
 /**
  * audio_genres table
@@ -135,6 +159,7 @@ _('Soul and R&B');
 _('Themes music');
 _('Hip Hop');
 _('Electronic');
+_('Audio books');
 
 /**
  * audio_years table
@@ -149,6 +174,19 @@ _('1970s');
 _('1980s');
 _('1990s');
 _('2000s');
+
+/**
+ * audio_languages table
+ */
+
+_('English');
+_('Spanish');
+_('German');
+_('Italiano');
+_('Russian');
+_('French');
+_('Portuguese');
+_('Turkish');
 
 /**
  * karaoke_genre table

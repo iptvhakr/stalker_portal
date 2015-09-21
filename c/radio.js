@@ -621,7 +621,7 @@
                 this.parent.load_params.fav = false;
                 this.parent.load_params.sortby = 'number';
                 stb.user.fav_radio_on = 0;
-                module.radio_widget.set_radio_widget_items_list();
+                module.radio_widget && module.radio_widget.set_radio_widget_items_list();
                 this.parent.load_params.all = 0;
             }
         },
@@ -632,7 +632,7 @@
                 this.parent.load_params.fav = false;
                 this.parent.load_params.sortby = 'name';
                 stb.user.fav_radio_on = 0;
-                module.radio_widget.set_radio_widget_items_list();
+                module.radio_widget && module.radio_widget.set_radio_widget_items_list();
                 this.parent.load_params.all = 0;
             }
         },
@@ -643,7 +643,7 @@
                 this.parent.load_params.sortby = 'fav';
                 this.parent.load_params.fav = true;
                 stb.user.fav_radio_on = 1;
-                module.radio_widget.set_radio_widget_items_list();
+                module.radio_widget && module.radio_widget.set_radio_widget_items_list();
                 this.parent.load_params.all = 0;
             }
         }

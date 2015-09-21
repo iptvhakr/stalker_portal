@@ -235,6 +235,10 @@
                 info += '<span class="label">' +get_word('Account number') + ':</span> ' + result['ls'] + '<br>';
             }
 
+            if (result['password']){
+                info += '<span class="label">' +get_word('Password') + ':</span> ' + result['password'] + '<br>';
+            }
+
             info += '<span class="label">' +get_word('MAC') + ':</span> ' + stb.mac + '<br>';
 
             if (result['tariff_plan']){

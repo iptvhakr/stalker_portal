@@ -305,20 +305,23 @@ class Openweathermap extends WeatherProvider
 
             $weather['forecast'] = array_map(function($day) use ($that, $target_timezone){
 
-                    $date = new DateTime('@'.$day['dt'], new DateTimeZone('UTC'));
+                $date = new DateTime('@'.$day['dt'], new DateTimeZone('UTC'));
+
+                if ($target_timezone){
                     $date->setTimeZone(new DateTimeZone($target_timezone));
+                }
 
-                    $day['title'] = _($that->getDayPart($date->format('G'))).' '.$date->format('j').' '._($date->format('M')).', '._($date->format('D'));
+                $day['title'] = _($that->getDayPart($date->format('G'))).' '.$date->format('j').' '._($date->format('M')).', '._($date->format('D'));
 
-                    $day['cloud_str']  = _($day['cloud_str']);
+                $day['cloud_str']  = _($day['cloud_str']);
 
-                    $day['w_rumb_str'] = str_replace('/', '', $day['w_rumb_str']);
+                $day['w_rumb_str'] = str_replace('/', '', $day['w_rumb_str']);
 
-                    $day['temperature'] = (($day['t']['min']) > 0 ? '+' : '').$day['t']['min'].'..'.(($day['t']['max']) > 0 ? '+' : '').$day['t']['max'].'&deg;';
+                $day['temperature'] = (($day['t']['min']) > 0 ? '+' : '').$day['t']['min'].'..'.(($day['t']['max']) > 0 ? '+' : '').$day['t']['max'].'&deg;';
 
-                    return $that->postParse($day);
-                },
-                $weather['forecast']);
+                return $that->postParse($day);
+            },
+            $weather['forecast']);
 
             return $weather;
         }
@@ -407,7 +410,10 @@ class Openweathermap extends WeatherProvider
             $target_timezone = Mysql::getInstance()->from('all_cities')->where(array('id' => Stb::getInstance()->openweathermap_city_id))->get()->first('timezone');
 
             $date = new DateTime('@'.$weather['dt'], new DateTimeZone('UTC'));
-            $date->setTimeZone(new DateTimeZone($target_timezone));
+
+            if ($target_timezone){
+                $date->setTimeZone(new DateTimeZone($target_timezone));
+            }
 
             $weather['date'] = $date->format('Y-m-d H:i:s');
             $weather['hour'] = $date->format('G');

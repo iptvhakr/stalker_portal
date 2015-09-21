@@ -913,7 +913,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                     'access_token' => $this->access_token
                 ),
                 array(
-                    'login' => $login
+                    'login' => $user['id']
                 )
             );
 
@@ -1439,8 +1439,20 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $template = $this->getUserPortalTheme();
 
+        /*// todo: include external modules
+        $apps = new AppsManager();
+        $external_apps = $apps->getList(true);
+
+        $installed_apps = array_values(array_filter($external_apps, function($app){
+            return $app['installed'] == 1 && !empty($app['alias']);
+        }));
+
+        $installed_apps = array_map(function($app){
+            return $app['alias'];
+        }, $installed_apps);*/
+
         $result = array(
-            'all_modules'        => Config::get('all_modules'),
+            'all_modules'        => Config::get('all_modules'), // todo: merge?
             'switchable_modules' => Config::get('disabled_modules'),
             'disabled_modules'   => $this->getDisabledModules(),
             'restricted_modules' => $this->getRestrictedModules(),
@@ -1884,6 +1896,10 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             $this->params['ls'] = $update_data['ls'] = $info['ls'];
         }
 
+        if (array_key_exists('login', $info)){
+            $this->params['login'] = $update_data['login'] = $info['login'];
+        }
+
         if (array_key_exists('status', $info)){
             $this->params['status'] = $update_data['status'] = intval(!$info['status']);
         }
@@ -2042,7 +2058,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         $auth_result = $data['results'];
 
         if ($auth_result == "true"){
-            
+
             $this->initProfile($login, $password, $device_id, $device_id2);
 
             return true;
