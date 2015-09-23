@@ -3,21 +3,25 @@
 class AppsManager
 {
 
-    public function getList(){
+    public function getList($without_fetch = false){
 
         $db_apps = Mysql::getInstance()->from('apps')->orderby('id')->get()->all();
 
-        $apps = array_map(function($app){
+        $apps = array_map(function($app) use ($without_fetch){
 
-            $repo = new GitHub($app['url']);
+            if (!$without_fetch) {
 
-            $info = $repo->getFileContent('package.json');
-            $app['name']              = isset($info['name']) ? $info['name'] : '';
-            $app['alias']             = empty($info['alias']) ? AppsManager::safeFilename($info['name']) : $info['alias'];
-            $app['available_version'] = isset($info['version']) ? $info['version'] : '';
-            $app['description']       = isset($info['description']) ? $info['description'] : '';
+                $repo = new GitHub($app['url']);
 
-            $app['installed'] = is_dir(realpath(PROJECT_PATH.'/../../'
+                $info = $repo->getFileContent('package.json');
+                $app['name'] = isset($info['name']) ? $info['name'] : '';
+                $app['alias'] = empty($info['alias']) ? AppsManager::safeFilename($info['name']) : $info['alias'];
+                $app['available_version'] = isset($info['version']) ? $info['version'] : '';
+                $app['description'] = isset($info['description']) ? $info['description'] : '';
+
+            }
+
+            $app['installed'] = !empty($app['alias']) && is_dir(realpath(PROJECT_PATH.'/../../'
                 .Config::getSafe('apps_path', 'stalker_apps/')
                 .$app['alias']
                 .'/'.$app['current_version']));

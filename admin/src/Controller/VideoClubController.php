@@ -819,7 +819,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         $error = $this->setLocalization('No data');
         
         try {
-            $data['result'] = \Kinopoisk::getRatingByName($this->postData['data']);      
+            $data['result'] = \Vclubinfo::getRatingByName($this->postData['data']);
             $error = '';
         } catch (\KinopoiskException $e) {
             $error = $e->getMessage();
@@ -846,7 +846,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         $error = $this->setLocalization('No data');
         
         try {
-            $data['result'] = \Kinopoisk::getInfoByName($this->postData['data']);      
+            $data['result'] = \Vclubinfo::getInfoByName($this->postData['data']);
             $error = '';
         } catch (\KinopoiskException $e) {
             $error = $e->getMessage();
@@ -876,7 +876,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         $error = $this->setLocalization('No data');
         
         try {
-            $data['result'] = \Kinopoisk::getInfoById($this->postData['data']);      
+            $data['result'] = \Vclubinfo::getInfoById($this->postData['data']);
             $error = '';
         } catch (\KinopoiskException $e) {
             $error = $e->getMessage();
@@ -905,7 +905,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         $data['action'] = 'getImage';
         $error = $this->setLocalization('No data');
 
-        if (strpos($this->data['url'], 'http://') === 0 && strpos($this->data['url'], 'kinopoisk.ru/')){
+        if (strpos($this->data['url'], 'http://') === 0 && (strpos($this->data['url'], 'kinopoisk.ru/') || strpos($this->data['url'], 'image.tmdb.org/'))){
             $img = file_get_contents($this->data['url']);
             if (!empty($img)) {
                 echo $img;

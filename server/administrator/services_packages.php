@@ -259,7 +259,7 @@ function get_users_count_in_tariff($tariff){
                         var options_picked = {};
                         var options_str = options.reduce(function(prev, curr){
                             if (picked_services.indexOf(curr.id) == -1){
-                                return prev + '<option value='+curr.id+'>'+curr.name+'</option>';
+                                return prev + '<option value='+curr.id+'>'+curr.name + (curr.external ? ' (external)' : '') + '</option>';
                             }else{
                                 /*$('<option value='+curr.id+'>'+curr.name+'</option>').appendTo('.services-picked');*/
                                 options_picked[curr.id] = {id: curr.id, name: curr.name};
@@ -269,7 +269,7 @@ function get_users_count_in_tariff($tariff){
 
                         $.each(picked_services, function(num, row){
                             if (options_picked.hasOwnProperty(row)) {
-                                $('<option value=' + options_picked[row].id + '>' + options_picked[row].name + '</option>').appendTo('.services-picked');
+                                $('<option value=' + options_picked[row].id + '>' + options_picked[row].name + (options_picked[row].external ? ' (external)' : '') + '</option>').appendTo('.services-picked');
                             }
                         });
 

@@ -556,11 +556,11 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
 
     public function getAllChannels(){
         
-        $result = $this->getChannels()
+        $result = $this->getChannels(true, true)
                     ->orderby('number');
                     //->get()
                     //->all();
-                    
+        $this->include_censored = false;
         $this->setResponseData($result);
         
         return $this->getResponse('prepareData');
@@ -1101,9 +1101,9 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
             }else{
                 $this->response['data'][$i]['archive'] = 0;
             }
-            
+
             if (@$_REQUEST['fav'] || $enable_numbering_in_order){
-                $this->response['data'][$i]['number'] = strval(($i+1) + (self::max_page_items * ($this->page)) + (!empty($_REQUEST['fav']) ? $excluded : 0));
+                $this->response['data'][$i]['number'] = strval(($i+1) + (self::max_page_items * ($this->page)) + ((!empty($_REQUEST['fav']) || $enable_numbering_in_order) ? $excluded : 0));
             }
             
             $this->response['data'][$i]['genres_str'] = '';
