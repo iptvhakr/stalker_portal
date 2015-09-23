@@ -224,21 +224,32 @@
             {% endautoescape %}
     {% endmacro %}
 
-    {% macro get_datepicker_double_input() %}
-        <div class="col-xs-6 col-sm-10 col-md-6 col-lg-5 filter pull-left" data-tvfilter="time_period">
-            <div class="col-sm-3 filter no-padding leftbordercircle" data-tvfilter="time_period">
+    {% macro get_datepicker_double_input(width, half) %}
+        {% if not width %}
+            {% set width = 5 %}
+        {% endif %}
+        {% if not half %}
+            {% set half = (width // 2) + 1 %}
+            {% set style = '' %}
+        {% else %}
+            {% set style = 'style="margin-right: 0px;"' %}
+        {% endif %}
+        <div class="col-xs-{{ width +1 }} col-sm-{{ width + 4 }} col-md-{{ width + 1 }} col-lg-{{ width }} filter pull-left" data-tvfilter="time_period" >
+            <div class="col-sm-{{ half }} filter no-padding leftbordercircle" data-tvfilter="time_period" {% autoescape false %}{{ style }}{% endautoescape %}>
                 <input class="col-xs-12 col-sm-12 filter" placeholder="{{ 'from'|trans }}" type="text" id="datepicker_from" name="interval_from" value="{% if attribute(app['filters'], 'interval_from') is defined %}{{ app['filters']['interval_from'] }}{% endif %}">
             </div>
-            <div class="col-sm-3 filter no-padding" data-tvfilter="time_period">
+            <div class="col-sm-{{ half }} filter no-padding" data-tvfilter="time_period" {% autoescape false %}{{ style }}{% endautoescape %}>
                 <input class="col-xs-12 col-sm-12 filter" placeholder="{{ 'to'|trans }}" type="text" id="datepicker_to" name="interval_to" value="{% if attribute(app['filters'], 'interval_to') is defined %}{{ app['filters']['interval_to'] }}{% endif %}">
             </div>
         </div>
     {% endmacro %}
 
-    {% macro get_datepicker_js_script() %}
+    {% macro get_datepicker_js_script(notDateLimit) %}
         var datePickerOpt = {
+        {% if not(notDateLimit is defined) %}
         maxDate: 0,
-        {% if attribute(app, 'minDatepickerDate') is defined %}
+        {% endif %}
+        {% if (attribute(app, 'minDatepickerDate') is defined) and not(notDateLimit is defined) %}
         minDate: new Date({{ app['minDatepickerDate'] }} * 1000),
         {% endif %}
         numberOfMonths: 1,
