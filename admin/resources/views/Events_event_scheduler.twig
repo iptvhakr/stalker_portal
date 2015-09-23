@@ -1,23 +1,17 @@
 {% extends 'layout.twig' %}
 {% import '/macro/iptw_macro.twig' as main_macro %}
-{% set title = 'events' %}
-{% set title = ('Events'|trans ~ ': ' ~ 'list of events '|trans ~ (attribute(app, 'currentUser') is defined ? "user"|trans ~ " - " ~ app.currentUser.name ~ "(" ~ app.currentUser.mac ~ ")": '')) | trans %}
+{% set title = ('Events'|trans ~ ': ' ~ 'list of scheduled events '|trans) | trans %}
 
 {% block content %} 
     <div id="iptv_list">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                {{ main_macro.get_filter('event', 'Event'|trans, 'id', 'title', app['allEvent']) }}
-                {{ main_macro.get_filter('sended', 'Delivery status'|trans, 'id', 'title', app['sendedStatus'], 5, 9) }}
-                {{ main_macro.get_filter('ended', 'Receipt status'|trans, 'id', 'title', app['receivingStatus'], 5, 9) }}
+                {{ main_macro.get_datepicker_double_input(3, 6) }}
+                {{ main_macro.get_filter('type', 'Type'|trans, 'id', 'title', app['scheduleType'], 5, 9) }}
+                {{ main_macro.get_filter('state', 'State'|trans, 'id', 'title', app['scheduleState'], 5, 9) }}
 
-                <a id="add_events" href="#" class="btn btn-success pull-right">{{ 'Create new event'|trans }}</a>
+                <a id="add_events" href="#" class="btn btn-success pull-right">{{ 'Add'|trans }}</a>
 
-                {% if attribute(app, 'currentUser') is defined %}
-                    <a id="clean_events" href="#" class="btn btn-danger pull-right" data-uid="{{ app.currentUser.uid }}">{{ 'Clean'|trans }}</a>
-                {% else %}
-                    <a id="clean_events" href="#" class="btn btn-danger pull-right" data-uid="all">{{ 'Clean all'|trans }}</a>
-                {% endif %}
             </div>
         </div>
         <div class="row">
@@ -33,24 +27,46 @@
                                 {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
                             {% endif %}
                             <tbody>
-                            {% if attribute(app, 'eventList') is defined %}
+                            {% if attribute(app, 'allData') is defined %}
                                 <!-- Start: list_row -->
-                                {% for item in app.eventList %}
+                                {% for item in app.allData %}
                                     <tr>
-                                        <td>{{ item.events_id }}</td>
-                                        <td>{{ item.addtime|date('M d, Y H:i') }}</td>
-                                        <td>{{ item.eventtime|date('M d, Y H:i') }}</td>
-                                        <td>
-                                            <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/{{ app.controller_alias }}?uid={{ item.uid }}">{{ item.mac }}</a>
-                                        </td>
-                                        <td>{{ item.event }}</td>
-                                        <td>
-                                            <div class="event_message">{{ item.msg }}</div>
-                                        </td>
+                                        <td>{{ item.id }}</td>
+                                        <td>{{ item.event_trans }}</td>
                                         <td>{{ item.post_function }}</td>
-                                        <td>{{ item.param1 }}</td>
-                                        <td>{% if item.sended != '0' %}<span class="">{{ 'Delivered'|trans }}</span>{% else %}<span class="">{{ 'Not delivered'|trans }}</span>{% endif %}</td>
-                                        <td>{% if item.ended != '0' %}<span class="">{{ 'Received'|trans }}</span>{% else %}<span class="">{{ 'Not received'|trans }}</span>{% endif %}</td>
+                                        <td><a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/event-scheduler-list-json" data-id="{{ item.id }}">{{ item.recipient }}</a></td>
+                                        <td>{% if item.periodic == '0' %}{{ 'One-time event'|trans }}{% else %}{{ 'For a period'|trans }}{% endif %}</td>
+                                        <td>{% if item.date_begin > 0 %}{{ item.date_begin|date('M d, Y H:i') }}{% endif %}</td>
+                                        <td>{% if item.date_end matches '/^\\d+$/' and item.date_end > 0 %}{{ item.date_end|date('M d, Y H:i') }}{% else %}{{ item.date_end }}{% endif %}</td>
+                                        <td>{{ item.schedule }}</td>
+
+                                        <td>{% if item.next_run matches '/^\\d+$/' %}{{ item.next_run|date('M d, Y H:i') }}{% else %}{{ item.next_run }}{% endif %}</td>
+                                        <td>{% if item.last_run matches '/^\\d+$/' %}{{ item.last_run|date('M d, Y H:i') }}{% else %}{{ item.last_run }}{% endif %}</td>
+                                        <td>{% if item.state != '0' %}{{ 'Scheduled'|trans }}{% else %}{{ 'Stopped'|trans }}{% endif %}</td>
+                                        <td>
+                                            <div class="col-xs-3 col-sm-8 ddd">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                    <i class="pull-right fa fa-cog"></i>
+                                                </a>
+                                                <ul class="dropdown-menu pull-right">
+                                                    <li>
+                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/event-scheduler-list-json" data-id="{{ item.id }}">
+                                                            <span>{{ 'Edit'|trans }}</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/scheduler-toggle-state" data-id="{{ item.id }}" data-state="{{ item.state }}">
+                                                            <span>{% if item.state != '0' %}{{ 'Stop it'|trans }}{% else %}{{ 'Start it'|trans }}{% endif %}</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/scheduler-remove" data-id="{{ item.id }}">
+                                                            <span>{{ 'Delete'|trans }}</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
                                     </tr>
                                 {% endfor %}
                                 <!-- End: list_row -->
@@ -63,7 +79,7 @@
         </div>
     </div>
 
-    {% include "basic_templates/events_menu.twig" %}
+    {% include "basic_templates/scheduler_events_menu.twig" %}
 
     <script type="text/javascript" defer>
 
@@ -73,29 +89,67 @@
                 if (typeof (json.data) == 'object' && json.data.length >0) {
                     var date;
                     for (var i in json.data) {
-                        var uid = json.data[i].uid;
-                        var mac = json.data[i].mac;
-                        json.data[i].mac = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/{{ app.controller_alias }}?uid=' + uid + '" >' + mac + '</a>';
-                        json.data[i].msg = '<div class="event_message">' + json.data[i].msg + '</div>';
-                        json.data[i].sended = json.data[i].sended != '0' ? '<span class="">{{ 'Delivered'|trans }}</span>' : '<span class="">{{ 'Not delivered'|trans }}</span>';
-                        json.data[i].ended = json.data[i].ended != '0' ? '<span class="">{{ 'Received'|trans }}</span>' : '<span class="">{{ 'Not received'|trans }}</span>';
-                        date = json.data[i]['addtime'];
-                        if (date > 0) {
+
+                        var state = json.data[i].state;
+
+                        json.data[i].recipient = '<a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/event-scheduler-list-json" data-id="' + json.data[i].id  + '">'+ json.data[i].recipient +'</a>';
+
+                        json.data[i].periodic = json.data[i].periodic == '0' ? '{{ 'One-time event'|trans }}' : '{{ 'For a period'|trans }}';
+                        json.data[i].state = json.data[i].state != '0' ? '{{ 'Scheduled'|trans }}' : '{{ 'Stopped'|trans }}';
+
+                        date = json.data[i]['date_begin'];
+                        if (!isNaN(parseInt(date, 10)) && date > 0) {
                             date = new Date(date * 1000);
-                            json.data[i]['addtime'] = date.toLocaleFormat("%b %d, %Y %H:%M");
+                            json.data[i]['date_begin'] = date.toLocaleFormat("%b %d, %Y %H:%M");
                         }
-                        date = json.data[i]['eventtime'];
-                        if (date > 0) {
+                        date = json.data[i]['date_end'];
+                        if (!isNaN(parseInt(date, 10)) && date > 0) {
                             date = new Date(date * 1000);
-                            json.data[i]['eventtime'] = date.toLocaleFormat("%b %d, %Y %H:%M");
+                            json.data[i]['date_end'] = date.toLocaleFormat("%b %d, %Y %H:%M");
                         }
+
+                        date = json.data[i]['next_run'];
+                        if (!isNaN(parseInt(date, 10)) && date > 0) {
+                            date = new Date(date * 1000);
+                            json.data[i]['next_run'] = date.toLocaleFormat("%b %d, %Y %H:%M");
+                        }
+
+                        date = json.data[i]['last_run'];
+                        if (!isNaN(parseInt(date, 10)) && date > 0) {
+                            date = new Date(date * 1000);
+                            json.data[i]['last_run'] = date.toLocaleFormat("%b %d, %Y %H:%M");
+                        }
+
+                        json.data[i].operations = '<div class="col-xs-3 col-sm-8 ddd">\n\
+                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">\n\
+                                                            <i class="pull-right fa fa-cog"></i>\n\
+                                                        </a>\n\
+                                                        <ul class="dropdown-menu pull-right">\n\
+                                                            <li>\n\
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/event-scheduler-list-json" data-id="' + json.data[i].id  + '">\n\
+                                                                    <span>{{ 'Edit'|trans }}</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                            <li>\n\
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/scheduler-toggle-state" data-id="' + json.data[i].id  + '" data-state="' + state  + '">\n\
+                                                                    <span>' + ( state != '0' ? "{{ 'Stop it'|trans }}": "{{ 'Start it'|trans }}") + '</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                            <li>\n\
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/scheduler-remove" data-id="' + json.data[i].id  + '">\n\
+                                                                    <span>{{ 'Delete'|trans }}</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                        </ul>\n\
+                                                    </div>';
+
                     }
                 }
             }).dataTable({
                 "processing": true,
                 "serverSide": true,
                 "ajax": {
-                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/events-list-json",
+                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/event-scheduler-list-json",
                     "data": function (d) {
                         var RegExp = /video_id=(\d+)/;
                         if (video_id = RegExp.exec(window.location.href)) {
@@ -106,8 +160,8 @@
                             d[i] = params[i];
                         }
 
-                        $('input[id^="filter_"]').each(function () {
-                            d['filters[' + $(this).attr("id").replace("filter_", "") + ']'] = $(this).val();
+                        $('input[id^="datepicker_"]').each(function () {
+                            d['filters[' + $(this).attr("id").replace("datepicker_", "date_") + ']'] = $(this).val();
                         });
                     }
                 },
@@ -137,107 +191,96 @@
         function yelp() {
             $(document).ready(function () {
                 LoadDataTablesScripts(TestTable1);
-
-                var uploader = $("#bootstrapped-fine-uploader").fineUploader({
-                    element: $('#bootstrapped-fine-uploader'),
-                    autoUpload: true,
-                    debug: true,
-                    multiple: false,
-                    text: {
-                        formatProgress: "{percent}% из {total_size}",
-                        failUpload: "Сбой при загрузке",
-                        waitingForResponse: "Обработка...",
-                        paused: "Пауза"
-                    },
-                    request: {
-                        endpoint: '{{ app.request.baseUrl }}/{{ app.controller_alias }}/upload-list-addresses'
-                    },
-                    {#validation: {
-                        allowedExtensions: ['jpeg', 'jpg', 'gif', 'png'],
-                        sizeLimit: 1048576 // 1Mb
-                    },#}
-                    template: 'qq-template-bootstrap',
-                    classes: {
-                        success: 'alert alert-success',
-                        fail: 'alert alert-error'
-                    }
-
-                }).on('complete', function (event, id, name, response) {
-                    if (response.success) {
-                        $('#file_name').val(response.fname);
-                        if ($.isFunction(window[response.action]) && !response.error) {
-                            window[response.action](response);
-                        }
-                    } else if (response.error) {
-                        alert(response.error);
-                    } else {
-                        alert("{{ 'Some server error'|trans }}");
-                    }
-                        return false;
-                    });
-                    $("#bootstrapped-fine-uploader").on('click', ".qq-upload-cancel", function (e) {
-                        e.stopPropagation();
-                        e.preventDefault();
-                        return false;
-                    });
-
+                    {{ main_macro.get_datepicker_js_script('notMinDate') }}
+                    datePickerOpt.onClose = function(){};
+                    $("#date_begin, #date_end").datepicker(datePickerOpt);
                     eventsMenuHandlers();
 
                     $(document).on('click', '#add_events', function (e) {
                         e.stopPropagation();
                         e.preventDefault();
+                        $("#modalbox_ad .devoops-modal-header span").text("{{ 'Add event into the schedule'|trans }}");
+                        $("#modalbox_ad form").get(0).reset();
+                        $("#modalbox_ad form input[type='hidden'][id='id']").val('');
+                        $('select[id^="s2_"]').select2("destroy");
+                        $('select[id^="s2_"]').select2({minimumResultsForSearch: -1});
                         $("#modalbox_ad").show().find('input, select, textarea').removeAttr('disabled');
                         checkFields('#s2_user_list_type', e);
                         checkFields('#s2_event', e);
+                        checkFields('#s2_schedule_type', e);
+                        checkFields('#s2_repeating_interval', e);
+                        checkFields('#date_type_day input', e);
                         return false;
                     });
 
-                    $(document).on('click', "#clean_events", function (e) {
+                    $(document).on('click', "a.main_ajax[disabled!='disabled']", function (e) {
                         e.stopPropagation();
                         e.preventDefault();
-                        ajaxPostSend("{{app.request.baseUrl}}/{{app.controller_alias}}/clean-events", {uid: $(this).data('uid')});
+                        $("#modalbox").data('complete', 0);
+                        JSshowModalBox();
+                        var sendData = $(this).data();
+                        ajaxPostSend($(this).attr('href'), sendData, false, false, true);
+                        $(this).closest('div.open').removeClass('open');
                         return false;
                     });
-                    
+
                 });
             }
             document.addEventListener("DOMContentLoaded", yelp, false);
 
-            var cleanEvents = function(data){
-                alert(data.msg);
-                $('#datatable-1').dataTable().fnReloadAjax();
-            };
-            var cleanEventsError = function(data){
-                alert(data.error);
-                $('#datatable-1').dataTable().fnReloadAjax();
-            };
+        var fillModalForm = function(data){
+            JScloseModalBox();
+            $("#modalbox_ad .devoops-modal-header span").text("{{ 'Edit event on the schedule'|trans }}");
+
+            if (data.data && data.data.length) {
+                var getData = data.data[0];
+                $("#modalbox_ad").show().find('input, select, textarea').removeAttr('disabled').each(function(){
+                    var getField = $(this).prop('name').replace('[]', '');
+                    if (getField && typeof(getData[getField]) != 'undefined') {
+                        $(this).removeAttr('disabled');
+                        var getValue = getData[getField];
+                        if ($(this).prop('tagName').toLowerCase() == 'select') {
+                            $(this).find('option').removeAttr('selected').each(function(){
+                                if ($(this).val() == getValue) {
+                                    $(this).prop('selected', true);
+                                }
+                            });
+                            $(this).select2("destroy");
+                            $(this).select2({minimumResultsForSearch: -1});
+                            if (getField == 'filter_set' || getField == 'event'){
+                                $(this).change();
+                            }
+                        } else if ($(this).prop('tagName').toLowerCase() == 'input' && ($(this).prop('type').toLowerCase()=='radio' || $(this).prop('type').toLowerCase()=='checkbox')) {
+                            $(this).prop('checked', $(this).val() == getValue || getValue.indexOf($(this).val()) !== -1);
+                        } else if ($(this).prop('tagName').toLowerCase() == 'textarea'){
+                            $(this).text(getValue);
+                        } else {
+                            if ($(this).hasClass('hasDatepicker')) {
+                                var newDate = parseInt(getValue, 10);
+                                $(this).datepicker("setDate", !isNaN(newDate) && newDate > 0 ? new Date(parseInt(getValue, 10) * 1000) : null );
+                            } else {
+                                $(this).val(getValue);
+                            }
+                        }
+                    }
+                });
+            } else {
+                $("#modalbox_ad").find('input, select, textarea').removeAttr('disabled');
+            }
+
+            checkFields('#s2_user_list_type');
+            checkFields('#s2_event');
+            checkFields('#s2_schedule_type');
+            checkFields('#s2_repeating_interval');
+            checkFields('#date_type_day input');
+            $("#modalbox_ad").show();
+            return false;
+        };
+
+        var fillModalFormError = function(data){
+            JSErrorModalBox(data);
+        }
+
     </script>
 
-    <script type="text/template" id="qq-template-bootstrap">
-        <div class="qq-uploader-selector qq-uploader span12">
-            <div class="qq-upload-drop-area-selector qq-upload-drop-area span12" qq-hide-dropzone>
-                <!--<span>Drop files here to upload</span>-->
-            </div>
-            <div class="qq-upload-button-selector qq-upload-button btn btn-success"
-                 style="width: auto; margin: 0 auto; float: none; display: block;">
-                <div><i class="icon-upload icon-white"></i>{{ 'File'|trans }}</div>
-            </div>
-        <span class="qq-drop-processing-selector qq-drop-processing">
-        <!--<span>Processing dropped files...</span>-->
-        <span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
-        </span>
-            <ul class="qq-upload-list-selector qq-upload-list" style="margin-top: 10px; text-align: center;">
-                <li>
-                    <div class="qq-progress-bar-container-selector">
-                        <div class="qq-progress-bar-selector qq-progress-bar"></div>
-                    </div>
-                    <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
-                    <span class="qq-upload-file-selector qq-upload-file"></span>
-                    <span class="qq-upload-size-selector qq-upload-size"></span>
-                    <!--<a class="qq-upload-cancel-selector qq-upload-cancel" href="#"> {{ 'Delete'|trans }} </a>-->
-                    <span class="qq-upload-status-text-selector qq-upload-status-text"></span>
-                </li>
-            </ul>
-        </div>
-    </script>
 {% endblock %}
