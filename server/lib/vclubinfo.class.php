@@ -1,6 +1,6 @@
 <?php
 
-class vclubinfo implements \Stalker\Lib\StbApi\vclubinfo {
+class Vclubinfo implements \Stalker\Lib\StbApi\vclubinfo {
 
     private static function getProvider(){
 

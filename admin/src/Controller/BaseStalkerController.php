@@ -491,7 +491,7 @@ class BaseStalkerController {
 
     protected function mb_ucfirst($str) {
         $fc = mb_strtoupper(mb_substr($str, 0, 1, 'UTF-8'), 'UTF-8');
-        return $fc.mb_substr($str, 1, NULL, 'UTF-8');
+        return $fc.mb_substr($str, 1, mb_strlen($str), 'UTF-8');
     }
 
     protected function getUCArray($array = array(), $field = ''){

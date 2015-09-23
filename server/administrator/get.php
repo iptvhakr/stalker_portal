@@ -12,11 +12,11 @@ if ($_GET['get'] == 'kinopoisk_info' || $_GET['get'] == 'kinopoisk_rating' || $_
 
     try{
         if ($_GET['get'] == 'kinopoisk_info'){
-            $response['result'] = vclubinfo::getInfoByName($_GET['oname']);
+            $response['result'] = Vclubinfo::getInfoByName($_GET['oname']);
         }else if ($_GET['get'] == 'kinopoisk_rating'){
-            $response['result'] = vclubinfo::getRatingByName($_GET['oname']);
+            $response['result'] = Vclubinfo::getRatingByName($_GET['oname']);
         }else if ($_GET['get'] == 'kinopoisk_info_by_id'){
-            $response['result'] = vclubinfo::getInfoById($_GET['kinopoisk_id']);
+            $response['result'] = Vclubinfo::getInfoById($_GET['kinopoisk_id']);
         }
     }catch (KinopoiskException $e){
         echo $e->getMessage();

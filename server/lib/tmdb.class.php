@@ -1,14 +1,14 @@
 <?php
 
-class tmdb {
+class Tmdb {
 
-    public static function getInfoById($id) {
+    public static function getInfoById($id, $type = 'movie') {
 
         $movie_info = array('kinopoisk_id' => $id);
         $tmdb_api_key = Config::get('tmdb_api_key');
         $lang = self::getLanguage();
-        $request_url = 'http://api.themoviedb.org/3/movie/' . $id . '?append_to_response=releases,credits&api_key=' . $tmdb_api_key . "&language=$lang&include_image_language=$lang";
-        $movie_url = 'https://www.themoviedb.org/movie/' . $id;
+        $request_url = 'http://api.themoviedb.org/3/'.$type.'/' . $id . '?append_to_response=releases,credits&api_key=' . $tmdb_api_key . "&language=$lang&include_image_language=$lang";
+        $movie_url = 'https://www.themoviedb.org/'.$type.'/' . $id;
         $movie_info['kinopoisk_url'] = $movie_url;
 
         $ch = curl_init();
@@ -37,21 +37,32 @@ class tmdb {
         $page = curl_exec($ch);
         $moviedata = json_decode($page, true);
 
-        if ((!array_key_exists('status_code', $moviedata) || $moviedata['status_code'] == 1) && !empty($moviedata['imdb_id'])) {
-            $imdb_request = 'http://www.omdbapi.com/?i=' . $moviedata['imdb_id'];
-            $curl_options[CURLOPT_URL] = $imdb_request;
-            curl_setopt_array($ch, $curl_options);
-            $page = curl_exec($ch);
-            curl_close($ch);
-            $imdbdata = json_decode($page, true);
+        if (!array_key_exists('status_code', $moviedata) || $moviedata['status_code'] == 1) {
 
-            $movie_info['name'] = $moviedata['title'];
+            if (!empty($moviedata['imdb_id'])) {
+                $imdb_request = 'http://www.omdbapi.com/?i=' . $moviedata['imdb_id'];
+                $curl_options[CURLOPT_URL] = $imdb_request;
+                curl_setopt_array($ch, $curl_options);
+                $page = curl_exec($ch);
+                curl_close($ch);
+                $imdbdata = json_decode($page, true);
+            }
+
+            if (isset($moviedata['title'])){
+                $movie_info['name'] = $moviedata['title'];
+            }elseif (isset($moviedata['name'])){
+                $movie_info['name'] = $moviedata['name'];
+            }
 
             if (empty($movie_info['name'])) {
                 throw new tmdbException("Movie name in '" . $movie_url . "' not found", $page);
             }
 
-            $movie_info['o_name'] = $moviedata['original_title'];
+            if (isset($moviedata['original_title'])){
+                $movie_info['o_name'] = $moviedata['original_title'];
+            }elseif (isset($moviedata['original_name'])){
+                $movie_info['o_name'] = $moviedata['original_name'];
+            }
 
             if (empty($movie_info['o_name'])) {
                 $movie_info['o_name'] = $movie_info['name'];
@@ -60,7 +71,11 @@ class tmdb {
             $movie_info['cover'] = 'http://image.tmdb.org/t/p/w154' . $moviedata['poster_path'];
             $movie_info['cover_big'] = 'http://image.tmdb.org/t/p/w342' . $moviedata['poster_path'];
 
-            $movie_info['year'] = substr($moviedata['release_date'], 0, 4);
+            if (isset($moviedata['release_date'])){
+                $movie_info['year'] = substr($moviedata['release_date'], 0, 4);
+            }elseif(isset($moviedata['last_air_date'])){
+                $movie_info['year'] = substr($moviedata['last_air_date'], 0, 4);
+            }
 
             $movie_info['duration'] = (int) $moviedata['runtime'];
 
@@ -113,8 +128,13 @@ class tmdb {
             $movie_info['rating_count_kinopoisk'] = (int) $moviedata['vote_count'];
 
             // IMDB Rating (from www.omdbapi.com)
-            $movie_info['rating_imdb'] = $imdbdata['imdbRating'];
-            $movie_info['rating_count_imdb'] = (int) str_replace(',', '', $imdbdata['imdbVotes']);
+            if (!empty($imdbdata['imdbRating'])){
+                $movie_info['rating_imdb'] = $imdbdata['imdbRating'];
+            }
+
+            if (!empty($imdbdata['imdbVotes'])){
+                $movie_info['rating_count_imdb'] = (int) str_replace(',', '', $imdbdata['imdbVotes']);
+            }
 
             //Production Countries
             $production_countries = $moviedata['production_countries'];
@@ -139,11 +159,9 @@ class tmdb {
             throw new tmdbException("Curl initialization error", curl_error($ch));
         }
 
-        $orig_name = iconv("utf-8", "windows-1251", $orig_name);
-
         $orig_name = urlencode($orig_name);
         $lang = self::getLanguage();
-        $search_url = 'http://api.themoviedb.org/3/search/movie?query=' . $orig_name . '&api_key=' . Config::get('tmdb_api_key') . "&language=$lang&include_image_language=$lang";
+        $search_url = 'http://api.themoviedb.org/3/search/multi?query=' . $orig_name . '&api_key=' . Config::get('tmdb_api_key') . "&language=$lang&include_image_language=$lang";
 
         $curl_options = array(
             CURLOPT_URL => $search_url,
@@ -177,8 +195,12 @@ class tmdb {
 
         $results = json_decode($response, true);
         if ((!array_key_exists('status_code', $results) || $results['status_code'] == 1) && !empty($results['results'])) {
-            $movie_id = $results['results'][0]['id'];
-            return self::getInfoById($movie_id);
+            foreach ($results['results'] as $result){
+                if (!empty($result['media_type']) && ($result['media_type'] == 'tv' || $result['media_type'] == 'movie')){
+                    $movie_id = $result['id'];
+                    return self::getInfoById($movie_id, $result['media_type']);
+                }
+            }
         }
         return $results;
     }
