@@ -157,6 +157,57 @@ class EventsModel extends \Model\BaseStalkerModel {
         return $this->mysqlInstance->from('filter_set')->where($params)->get()->all();
     }
 
+    public function getTotalRowsScheduleEvents($where = array(), $like = array()) {
+        $params = array(
+            'where' => $where
+        );
+        if (!empty($like)) {
+            $params['like'] = $like;
+        }
+        return $this->getScheduleEvents($params, TRUE);
+    }
+
+    public function getScheduleEvents($param, $counter = FALSE) {
+
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from("schedule_events as S_E");
+        if (!empty($param['where'])) {
+            $this->mysqlInstance->where($param['where']);
+        }
+        if (!empty($where)) {
+            $this->mysqlInstance->where($where, ' OR ');
+        }
+        if (!empty($param['like'])) {
+            $this->mysqlInstance->like($param['like'], ' OR ');
+        }
+        if (!empty($param['order'])) {
+            $this->mysqlInstance->orderby($param['order']);
+        }
+        if (!empty($param['limit']['limit'])) {
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
+        }
+
+        return ($counter) ? $this->mysqlInstance->count()->get()->counter() : $this->mysqlInstance->get()->all();
+    }
+
+    public function insertScheduleEvents($params){
+        return $this->mysqlInstance->insert('schedule_events', $params)->insert_id();
+    }
+
+    public function updateScheduleEvents($params, $id){
+        $where = array('id'=>$id);
+        return $this->mysqlInstance->update('schedule_events', $params, $where)->total_rows();
+    }
+
+    public function deleteScheduleEvents($id) {
+        $where = array('id'=>$id);
+        return $this->mysqlInstance->delete('schedule_events', $where)->total_rows();
+    }
+
+
+
 //    
 //    public function searchOneEventsParam($param = array()){
 //        reset($param);

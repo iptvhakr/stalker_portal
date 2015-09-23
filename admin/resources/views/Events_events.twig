@@ -144,10 +144,10 @@
                     debug: true,
                     multiple: false,
                     text: {
-                        formatProgress: "{percent}% из {total_size}",
-                        failUpload: "Сбой при загрузке",
-                        waitingForResponse: "Обработка...",
-                        paused: "Пауза"
+                        formatProgress: "{percent}% {{ 'from'|trans }} {total_size}",
+                        failUpload: "{{ 'Upload failed'|trans }}",
+                        waitingForResponse: "{{ 'Processing'|trans }}...",
+                        paused: "{{ 'Pause'|trans }}"
                     },
                     request: {
                         endpoint: '{{ app.request.baseUrl }}/{{ app.controller_alias }}/upload-list-addresses'
@@ -204,11 +204,11 @@
             document.addEventListener("DOMContentLoaded", yelp, false);
 
             var cleanEvents = function(data){
-                alert(data.msg);
+                JSSuccessModalBox(data);
                 $('#datatable-1').dataTable().fnReloadAjax();
             };
             var cleanEventsError = function(data){
-                alert(data.error);
+                JSErrorModalBox(data);
                 $('#datatable-1').dataTable().fnReloadAjax();
             };
     </script>

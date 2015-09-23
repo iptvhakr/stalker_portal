@@ -2675,7 +2675,7 @@ div.google-visualization-tooltip span{
 }
 .devoops-modal .col-sm-3 {padding-right: 0px !important; margin-right: -15px;}
 .devoops-modal .col-sm-2 {padding-right: 0px !important; margin-right: -15px;}
-.devoops-modal .col-sm-10,.devoops-modal .col-sm-6,.devoops-modal .col-sm-12  {padding-left: 10px !important; margin-left: 15px !important;}
+.devoops-modal .col-sm-10,.devoops-modal .col-sm-6,.devoops-modal .col-sm-12, .devoops-modal .col-sm-shifted  {padding-left: 10px !important; margin-left: 15px !important;}
 
 
 #modalbox_ad  .devoops-modal-bottom {

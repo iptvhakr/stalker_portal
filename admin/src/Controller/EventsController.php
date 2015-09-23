@@ -7,13 +7,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response as Response;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
+use \Cron as Cron;
 
 class EventsController extends \Controller\BaseStalkerController {
-    
+
     protected $formEvent = array();
     protected $hiddenEvent = array();
     protected $sendedStatus = array();
     protected $receivingStatus = array();
+    protected $scheduleType = array();
+    protected $scheduleState = array();
 
 
     public function __construct(Application $app) {
@@ -47,6 +50,48 @@ class EventsController extends \Controller\BaseStalkerController {
         $this->receivingStatus = array(
             array("id" => 1 , "title" => $this->setlocalization('Not received')),
             array("id" => 2 , "title" => $this->setlocalization('Received'))
+        );
+
+        $this->scheduleType = array(
+            array("id" => 1 , "title" => $this->setlocalization('One-time event')),
+            array("id" => 2 , "title" => $this->setlocalization('For a period'))
+        );
+
+        $this->scheduleState = array(
+            array("id" => 2 , "title" => $this->setlocalization('Scheduled')),
+            array("id" => 1 , "title" => $this->setlocalization('Stopped'))
+        );
+
+        $this->repeatingInterval = array(
+            array("id" => 1 , "title" => $this->setlocalization('Year')),
+            array("id" => 2 , "title" => $this->setlocalization('Month')),
+            array("id" => 3 , "title" => $this->setlocalization('Week')),
+            array("id" => 4 , "title" => $this->setlocalization('Day'))
+        );
+
+        $this->monthNames = array(
+            array("id" => 1 , "title" => $this->setlocalization('January')),
+            array("id" => 2 , "title" => $this->setlocalization('February')),
+            array("id" => 3 , "title" => $this->setlocalization('March')),
+            array("id" => 4 , "title" => $this->setlocalization('April')),
+            array("id" => 5 , "title" => $this->setlocalization('May')),
+            array("id" => 6 , "title" => $this->setlocalization('June')),
+            array("id" => 7 , "title" => $this->setlocalization('July')),
+            array("id" => 8 , "title" => $this->setlocalization('August')),
+            array("id" => 9 , "title" => $this->setlocalization('September')),
+            array("id" => 10 , "title" => $this->setlocalization('October')),
+            array("id" => 11 , "title" => $this->setlocalization('November')),
+            array("id" => 12 , "title" => $this->setlocalization('December'))
+        );
+
+        $this->dayNames = array(
+            array("id" => 1 , "title" => $this->setlocalization('Mon')),
+            array("id" => 2 , "title" => $this->setlocalization('Tue')),
+            array("id" => 3 , "title" => $this->setlocalization('Wed')),
+            array("id" => 4 , "title" => $this->setlocalization('Thu')),
+            array("id" => 5 , "title" => $this->setlocalization('Fri')),
+            array("id" => 6 , "title" => $this->setlocalization('Sat')),
+            array("id" => 7 , "title" => $this->setlocalization('Sun'))
         );
     }
 
@@ -95,34 +140,7 @@ class EventsController extends \Controller\BaseStalkerController {
         $this->app['recordsFiltered'] = $list['recordsFiltered'];
         $this->app['consoleGroup'] = $this->db->getConsoleGroup();
 
-        $filter_set = \Filters::getInstance();
-        $filter_set->setResellerID($this->app['reseller']);
-        $filter_set->initData('users', 'id');
-
-        $self = $this;
-
-        $this->app['allFilters'] = array_map(function($row) use ($filter_set, $self){
-            if(($filter_set_data = @unserialize($row['filter_set'])) !== FALSE){
-                $row['filter_set'] = '';
-                foreach($filter_set_data as $data_row){
-                    $filter_set_filter = $filter_set->getFilters(array($data_row[0]));
-                    $row_filter_set = $self->setLocalization($filter_set_filter[0]['title']).': ';
-                    if (!empty($filter_set_filter[0]['values_set']) && is_array($filter_set_filter[0]['values_set'])) {
-                        foreach($filter_set_filter[0]['values_set'] as $filter_row){
-                            if ($data_row[2] == $filter_row['value'] ) {
-                                $row_filter_set .= $self->setLocalization($filter_row['title']).'; ';
-                            }
-                        }
-                    } else {
-                        $row_filter_set .= $data_row[2].'; ';
-                    }
-                    $row['filter_set'] .= $row_filter_set;
-                }
-            }
-            settype($row['favorites'], 'int');
-            settype($row['for_all'], 'int');
-            return $row;
-        }, $this->db->getAllFromTable('filter_set', 'title'));
+        $this->app['allFilters'] = $this->getAllFilters();
 
         $this->app['messagesTemplates'] = $this->db->getAllFromTable('messages_templates', 'title');
 
@@ -162,8 +180,39 @@ class EventsController extends \Controller\BaseStalkerController {
 
     }
 
+    public function event_scheduler(){
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $this->app['scheduleType'] = $this->scheduleType;
+        $this->app['scheduleState'] = $this->scheduleState;
+        $this->app['consoleGroup'] = $this->db->getConsoleGroup();
+        $this->app['formEvent'] = $this->formEvent;
+        $this->app['allFilters'] = $this->getAllFilters();
+        $this->app['repeatingInterval'] = $this->repeatingInterval;
+        $this->app['monthNames'] = $this->monthNames;
+        $this->app['dayNames'] = $this->dayNames;
+        $this->app['messagesTemplates'] = $this->db->getAllFromTable('messages_templates', 'title');
+
+
+        $attribute = $this->getSchedulerDropdownAttribute();
+        $this->checkDropdownAttribute($attribute);
+        $this->app['dropdownAttribute'] = $attribute;
+
+        $list = $this->event_scheduler_list_json();
+        $this->app['allData'] = $list['data'];
+        $this->app['totalRecords'] = $list['recordsTotal'];
+        $this->app['recordsFiltered'] = $list['recordsFiltered'];
+
+        if (!empty($this->data['filters'])) {
+            $this->app['filters'] = $this->data['filters'];
+        }
+        return $this->app['twig']->render($this->getTemplateName(__METHOD__));
+    }
+
     //----------------------- ajax method --------------------------------------
-    
+
     public function events_list_json(){
         $response = array(
             'data' => array(),
@@ -191,7 +240,7 @@ class EventsController extends \Controller\BaseStalkerController {
         );
 
         $error = "";
-        
+
         $param = (!empty($this->data) ? $this->data : array());
 
         $query_param = $this->prepareDataTableParams($param, array( '_'));
@@ -210,8 +259,8 @@ class EventsController extends \Controller\BaseStalkerController {
             $query_param['select'][] = 'uid';
         }
         $this->cleanQueryParams($query_param, array_keys($filds_for_select), $filds_for_select);
-        
-        $response['recordsTotal'] = $this->db->getTotalRowsEventsList();      
+
+        $response['recordsTotal'] = $this->db->getTotalRowsEventsList();
         $response["recordsFiltered"] = $this->db->getTotalRowsEventsList($query_param['where'], $query_param['like']);
 
         if (empty($query_param['limit']['limit'])) {
@@ -223,10 +272,10 @@ class EventsController extends \Controller\BaseStalkerController {
         $response['data'] = $this->db->getEventsList($query_param);
         $allevents = $this->formEvent;
         $allevents = array_combine($this->getFieldFromArray($allevents, 'id'), $this->getFieldFromArray($allevents, 'title'));
-        
+
         $hiddenevents = $this->hiddenEvent;
         $hiddenevents = array_combine($this->getFieldFromArray($hiddenevents, 'id'), $this->getFieldFromArray($hiddenevents, 'title'));
-        
+
         $events = array_merge($allevents, $hiddenevents);
 
         $self = $this;
@@ -253,7 +302,7 @@ class EventsController extends \Controller\BaseStalkerController {
             return $response;
         }
     }
-    
+
     public function add_event(){
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['user_list_type']) || empty($this->postData['event'])) {
             $this->app->abort(404, $this->setLocalization('Page not found'));
@@ -267,20 +316,18 @@ class EventsController extends \Controller\BaseStalkerController {
         $data['action'] = 'addEvent';
         $data['msg'] = $this->setlocalization('Added') . ' ' . $this->setlocalization('for'). ' ';
         $error = $this->setlocalization('Error. Event has not been added.');
-        
+
         $_SERVER['TARGET'] = 'ADM';
-        $event = new \SysEvent();
+        $event = new \AdminPanelEvents($this->postData);
         $event->setTtl($this->postData['ttl']);
         if (!empty($this->postData['add_post_function']) && !empty($this->postData['post_function']) && !empty($this->postData['param1'])) {
             $event->setPostFunctionParam($this->postData['post_function'], $this->postData['param1']);
         }
         $get_list_func_name = 'get_userlist_' . str_replace('to_', '', $this->postData['user_list_type']);
         $set_event_func_name = 'set_event_' . str_replace('to_', '', $this->postData['event']);
-        $user_list = array_intersect($this->$get_list_func_name($event), $this->getFieldFromArray($this->db->getUser(array(), 'ALL'), 'id'));
-        $event->setUserListById($user_list);
 
-        if ($this->$set_event_func_name($event, $user_list)){
-            $data['msg'] .= count($user_list). ' ' . $this->setlocalization('users');
+        if ($event->$get_list_func_name()->cleanAndSetUsers()->$set_event_func_name()){
+            $data['msg'] .= count($event->getUserList()). ' ' . $this->setlocalization('users');
             $error = '';
         }
 
@@ -297,17 +344,17 @@ class EventsController extends \Controller\BaseStalkerController {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
-        
+
         $data = array();
         $data['action'] = 'addAddressList';
         $data['msg'] = $this->setlocalization('Added');
         $data['fname'] = '';
         $error = $this->setlocalization('Error. The file does not contain valid MAC-addresses.');
-        
+
         list($key, $tmp) = each($_FILES);
         $file_data = file_get_contents($tmp['tmp_name']);
         $list = array();
-        
+
         preg_match_all('/([0-9a-fA-F]{2}:){5}([0-9a-fA-F]{2})/', $file_data, $list);
         if (!empty($list) && !empty($list[0])) {
             $file_name = tempnam(sys_get_temp_dir(), 'MAC');
@@ -317,12 +364,12 @@ class EventsController extends \Controller\BaseStalkerController {
             $data['msg'] .= count($list[0]) . ' ' . $this->setlocalization('addresses');
             $error = '';
         }
-        
+
         $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
-    
+
     public function clean_events() {
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['uid'])) {
             $this->app->abort(404, $this->setLocalization('Page not found'));
@@ -331,13 +378,13 @@ class EventsController extends \Controller\BaseStalkerController {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
-        
+
         $data = array();
         $data['action'] = 'cleanEvents';
         $result = $this->postData['uid'] == 'all' ? $this->db->deleteAllEvents() : $this->db->deleteEventsByUID($this->postData['uid']);
         $data['msg'] = $this->setlocalization('Deleted') . ' ' . (is_numeric($result)? $result: $this->setLocalization($result)) . ' ' . $this->setlocalization('events');
         $error = '';
-        
+
         $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
@@ -465,10 +512,257 @@ class EventsController extends \Controller\BaseStalkerController {
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
 
+    public function event_scheduler_list_json(){
+
+        if ($this->isAjax) {
+            if ($no_auth = $this->checkAuth()) {
+                return $no_auth;
+            }
+        }
+        $response = array(
+            'data' => array(),
+            'recordsTotal' => 0,
+            'recordsFiltered' => 0
+        );
+
+        $error = $this->setLocalization("Error");
+        $param = (!empty($this->data) ? $this->data : array());
+
+        $query_param = $this->prepareDataTableParams($param, array('operations', '_', 'next_run', 'event_trans'));
+
+        if (!isset($query_param['where'])) {
+            $query_param['where'] = array();
+        }
+
+        $filter = $this->getEventsFilters();
+
+        $query_param['where'] = array_merge($query_param['where'], $filter);
+
+        $filds_for_select = $this->getScheduleEventsFields();
+        if (!empty($query_param['select'])) {
+            $this->cleanQueryParams($query_param, array_keys($filds_for_select), $filds_for_select);
+        } else {
+            $query_param['select'] = $filds_for_select;
+        }
+
+        if (!array_key_exists('event', $query_param['select'])) {
+            $query_param['select']['event'] = $filds_for_select['event'];
+        }
+
+        if (!array_key_exists('last_run', $query_param['select'])) {
+            $query_param['select']['last_run'] = $filds_for_select['last_run'];
+        }
+
+        if (array_key_exists('id', $this->postData)) {
+            $query_param['where'] = array('S_E.id'=>$this->postData['id']);
+            $response['action'] = 'fillModalForm';
+        }
+
+        $response['recordsTotal'] = $this->db->getTotalRowsScheduleEvents();
+        $response["recordsFiltered"] = $this->db->getTotalRowsScheduleEvents($query_param['where'], $query_param['like']);
+
+        $cronTab = new \CronExpression('* * * * *', new Cron\FieldFactory() );
+        foreach($cronTab->getMessageParts() as $key=>$val){
+            $cronTab->setMessageParts($key, $this->setLocalization($val));
+        }
+
+        $deferred = $this->setLocalization('deferred');
+        $unlimited = $this->setLocalization('unlimited');
+        $not_run = $this->setLocalization('do not yet runing');
+        $all_event = array_merge($this->formEvent, $this->hiddenEvent);
+        $all_event = array_combine($this->getFieldFromArray($all_event, 'id'), $this->getFieldFromArray($all_event, 'title'));
+        $all_recipients = array(
+            'to_all' => $this->setLocalization('All'),
+            'by_group' => $this->setLocalization('Group'),
+            'to_single' => $this->setLocalization('One'),
+            'by_filter' => $this->setLocalization('Filter')
+        );
+
+        $response['data'] = array_map(function($row) use ($cronTab, $deferred, $all_event, $all_recipients, $unlimited, $not_run){
+            $cronTab->setCurrentTime($row['last_run']);
+            $row['event_trans'] = $all_event[$row['event']];
+            $row['post_function'] = array_key_exists($row['post_function'], $all_event) ? $all_event[$row['post_function']]: $row['post_function'];
+            $row['date_begin'] = (int)strtotime($row['date_begin']);
+            if ($row['date_begin'] < 0) {
+                $row['date_begin'] = 0;
+            }
+            $row['date_end'] = (int)strtotime($row['date_end']);
+            if ($row['date_end'] <= 0) {
+                $row['date_end'] = $unlimited;
+            }
+
+            $row['last_run'] = (int)strtotime($row['last_run']);
+            if ($row['last_run'] <= 0) {
+                $row['last_run'] = $not_run;
+            }
+
+            $row['cron_str'] = $row['schedule'];
+            $cronTab->setExpression($row['schedule'])->setMessage();
+            if (!empty($row['schedule']) && (int) $row['periodic']) {
+                $row['next_run'] = $cronTab->getNextRunDate()->getTimestamp();
+                $row['schedule'] = implode(' ', $cronTab->getMessage());
+            } else {
+                $row['date_end'] = $row['next_run'] = $row['state'] ? $cronTab->getNextRunDate()->getTimestamp() : $deferred;
+                $row['schedule'] = $cronTab->getMessageParts('once');
+            }
+
+            $recipient = json_decode($row['recipient'], TRUE);
+            list($row['recipient'], $recipient) = each($recipient);
+            $row['user_list_type'] = $row['recipient'];
+            $row['recipient'] = $all_recipients[$row['recipient']];
+            if (!empty($recipient) && is_array($recipient)) {
+                $row = array_merge($row, (array)$recipient);
+            }
+            return $row;
+        }, $this->db->getScheduleEvents($query_param));
+
+        $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
+        $error = '';
+
+        if ($this->isAjax) {
+            if (!empty($response['data']) && !empty($this->postData['id'])) {
+                $response['data'][0] = array_merge($response['data'][0], array_map(function($row){
+                    return is_numeric($row) ? str_pad((string) $row, 2, '0', STR_PAD_LEFT) : $row;
+                }, \CronForm::getInstance()->setExpression($response['data'][0]['cron_str'])->getFormData()));
+
+                if (array_key_exists('interval', $response['data'][0])) {
+                    $response['data'][0]['interval'] = str_replace('0', 'repeating_interval_', $response['data'][0]['interval']);
+                }
+                $response['data'][0]['type'] = "schedule_type_" . ( (int) $response['data'][0]['periodic'] + 1);
+            }
+            $response = $this->generateAjaxResponse($response);
+            return new Response(json_encode($response), (empty($error) ? 200 : 500));
+        } else {
+            return $response;
+        }
+    }
+
+    public function save_schedule_event(){
+        if (!$this->isAjax || $this->method != 'POST') {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array();
+        $data['action'] = 'addEvent';
+        $error = $this->setlocalization($this->setlocalization('Not enough data'));
+
+        $from_db = array_flip($this->getFieldFromArray($this->db->getTableFields('schedule_events'), 'Field'));
+        $form_post = $this->postData;
+
+        $recipient_func = "getRecipientBy" . ucfirst(strtolower(str_replace(array('by_', 'to_'), '', $form_post['user_list_type'])));
+        $form_post['recipient'] = $this->$recipient_func($form_post);
+        $form_post['periodic'] = (int)str_replace('schedule_type_', '', $form_post['type']) - 1;
+        $form_post['state'] = 1;
+        $form_post['reboot_after_ok'] = (int)(!empty($form_post['need_reboot']) && (string)$form_post['need_reboot'] != 'false' && (string)$form_post['need_reboot'] != 'off' && (string)$form_post['need_reboot'] != 'false' && (string)$form_post['need_reboot'] != '0');
+
+        if (array_key_exists('month', $form_post)) {
+            $form_post['month'] = (int)$form_post['month'];
+        }
+        if (array_key_exists('every_month', $form_post)) {
+            $form_post['every_month'] = (int)$form_post['every_month'];
+        }
+        if (array_key_exists('every_day', $form_post)) {
+            $form_post['every_day'] = (int)$form_post['every_day'];
+        }
+        if (array_key_exists('every_hour', $form_post)) {
+            $form_post['every_hour'] = (int)$form_post['every_hour'];
+        }
+        if (array_key_exists('every_minute', $form_post)) {
+            $form_post['every_minute'] = (int)$form_post['every_minute'];
+        }
+        if (array_key_exists('date_begin', $form_post)) {
+            $date = \DateTime::createFromFormat('d/m/Y', $form_post['date_begin']);
+            $form_post['date_begin'] = $date ? $date->format('Y-m-d G:i:s'): 'NOW()';
+        }
+        if (array_key_exists('date_end', $form_post)) {
+            $date = \DateTime::createFromFormat('d/m/Y', $form_post['date_end']);
+            $form_post['date_end'] = $date ? $date->format('Y-m-d G:i:s') : '';
+        }
+
+        $form_post['schedule'] = \CronForm::getInstance()->setFormData($form_post)->getExpression();
+
+        $params = array();
+        $from_db = array_combine(array_keys($from_db), array_fill(0, count($from_db), NULL));
+        if (!empty($form_post['id'])) {
+            $id = $form_post['id'];
+            $operation = 'update';
+            $params[] = array_replace($from_db, array_intersect_key($form_post, $from_db));
+            $params[] = $id;
+        } else {
+            $operation = 'insert';
+            $params[] = array_replace($from_db, array_intersect_key($form_post, $from_db));
+        }
+        unset($params[0]['id']);
+
+        if (call_user_func_array(array($this->db, $operation."ScheduleEvents"), $params)) {
+            $error = '';
+        } else {
+            $data['msg'] = $error = $this->setlocalization($this->setlocalization('Nothing to do'));
+        }
+
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function scheduler_toggle_state(){
+        if (!$this->isAjax || $this->method != 'POST' || !isset($this->postData['id']) || !isset($this->postData['state'])) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array();
+        $data['action'] = 'addEvent';
+        $error = $this->setlocalization($this->setlocalization('Nothing to do'));
+
+        if ($this->db->updateScheduleEvents(array('state' => !((int)$this->postData['state'])), $this->postData['id'])){
+            $error = '';
+        }
+
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+
+    }
+
+    public function scheduler_remove(){
+        if (!$this->isAjax || $this->method != 'POST' || !isset($this->postData['id'])) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array();
+        $data['action'] = 'addEvent';
+        $error = $this->setlocalization($this->setlocalization('Not enough data'));
+
+        if ($this->db->deleteScheduleEvents($this->postData['id'])){
+            $error = '';
+        }
+
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+
+    }
+
     //------------------------ service method ----------------------------------
 
     private function getEventsFilters() {
         $return = array();
+
+        if (!array_key_exists('filters', $this->data)) {
+            $this->data['filters'] = array();
+        }
 
         if (!empty($this->data['filters']) && !empty($this->data['filters']['event'])) {
             $return['event'] = $this->data['filters']['event'];
@@ -477,163 +771,37 @@ class EventsController extends \Controller\BaseStalkerController {
         if (!empty($this->data['filters']) && !empty($this->data['filters']['sended'])) {
             $return['sended'] = (int)$this->data['filters']['sended'] - 1;
         }
-        
+
         if (!empty($this->data['filters']) && !empty($this->data['filters']['ended'])) {
             $return['ended'] = (int)$this->data['filters']['ended'] - 1;
         }
-        
+
         if (!empty($this->data['uid'])) {
             $return['uid'] = $this->data['uid'];
         }
-                
+
+        if (!empty($this->data['filters']) && !empty($this->data['filters']['date_from'])) {
+            $date = \DateTime::createFromFormat("d/m/Y", $this->data['filters']['date_from']);
+            $date->modify('midnight');
+            $this->data['filters']['interval_from'] = $return['UNIX_TIMESTAMP(`date_begin`) >='] = $date->getTimestamp();// $date->format('Y-m-d H:i:s');
+        }
+
+        if (!empty($this->data['filters']) && !empty($this->data['filters']['date_to'])) {
+            $date = \DateTime::createFromFormat("d/m/Y", $this->data['filters']['date_to']);
+            $date->modify('1 second ago tomorrow');
+            $this->data['filters']['interval_to'] = $return['UNIX_TIMESTAMP(`date_end`) <='] = $date->getTimestamp();// $date->format('Y-m-d H:i:s');
+        }
+
+        if (!empty($this->data['filters']) && !empty($this->data['filters']['type']) && (int)$this->data['filters']['type']) {
+            $return['periodic'] = (int)$this->data['filters']['type'] - 1;
+        }
+
+        if (!empty($this->data['filters']) && !empty($this->data['filters']['state']) && (int)$this->data['filters']['state']) {
+            $return['state'] = (int)$this->data['filters']['state'] - 1;
+        }
+
         $this->app['filters'] = !empty($this->data['filters']) ? $this->data['filters'] : array();
         return $return;
-    }
-    
-    private function get_userlist_all(&$event){
-        $user_list = array();
-        if ($this->postData['event'] == 'send_msg' || $this->postData['event'] == 'send_msg_with_video'){
-            $user_list = \Middleware::getAllUsersId();
-        }else{
-            $user_list = \Middleware::getOnlineUsersId();
-        }
-        return $user_list;
-    }
-    
-    private function get_userlist_by_user_list(&$event){
-        $user_list = array();
-        
-        if ($this->postData['user_list_type'] == 'by_user_list' && !empty($this->postData['file_name'])) {
-            $file_name = sys_get_temp_dir() . "/" . $this->postData['file_name'];
-            if (is_writable($file_name)) {
-                $file_data = explode(';', file_get_contents($file_name));
-                foreach ($file_data as $mac){
-                    $uid = \Middleware::getUidByMac($mac);
-                    if ($uid){
-                        $user_list[] = $uid;
-                    }
-                }
-            }
-            @unlink($file_name);
-        }
-        
-        return $user_list;
-    }
-    
-    private function get_userlist_by_group(&$event){
-        $user_list = array();
-        if (intval($this->postData['group_id']) > 0){
-            $user_list = $this->getFieldFromArray($this->db->getConsoleInGroup(array('stb_group_id' => $this->postData['group_id'])), 'id');
-        }
-        return $user_list;
-    }
-    
-    private function get_userlist_by_pattern(&$event){
-        $user_list = array();
-        if (!empty($this->postData['pattern'])) {
-            $param = array();
-            if ($this->postData['pattern'] == 'MAG100') {
-                $param['hd'] = 0;
-            } else {
-                $param['stb_type'] = $this->postData['pattern'];
-            }
-            $user_list = \Middleware::getUidsByPattern($param);
-        }
-        return $user_list;
-    }
-
-    private function get_userlist_by_filter(&$event){
-        $user_list = array();
-        if (!empty($this->postData['filter_set'])) {
-
-            $filter_set = \Filters::getInstance();
-            $filter_set->setResellerID($this->app['reseller']);
-            $filter_set->initData('users', 'id');
-
-            $curr_filter_set = $this->db->getFilterSet(array('id' => $this->postData['filter_set']));
-            if (!empty($curr_filter_set) && is_array($curr_filter_set) && count($curr_filter_set) > 0) {
-                $filter_data = @unserialize($curr_filter_set[0]['filter_set']);
-                $filter_data = array_combine($this->getFieldFromArray($filter_data, 0), array_values($filter_data));
-                $filters_with_cond = array_filter(array_map(function($row) use ($filter_data) {
-                    if (array_key_exists($row['text_id'], $filter_data)) {
-                        $value = (($row['text_id'] == 'status') || ($row['text_id'] == 'state') ? (int)($filter_data[$row['text_id']][2] - 1 > 0) : $filter_data[$row['text_id']][2]);
-                        return array($row['method'], $filter_data[$row['text_id']][1], $value);
-                    }
-                }, $filter_set->getFilters()));
-
-                $filter_set->setFilters($filters_with_cond);
-                $user_list = $filter_set->getData();
-            }
-        }
-        return $user_list;
-    }
-    
-    private function get_userlist_single(&$event){
-        $user_list = \Middleware::getUidByMac($this->postData['mac']);
-        $user_list = array($user_list);
-        return $user_list;
-    }
-    
-    private function set_event_send_msg(&$event, $user_list){
-        if (!empty($this->postData['need_reboot'])) {
-            $event->sendMsgAndReboot($this->postData['msg'], $this->postData['header']);
-        } else {
-            $event->sendMsg($this->postData['msg'], $this->postData['header']);
-        }
-        return TRUE;
-    }
-    
-    private function set_event_reboot(&$event, $user_list){
-        $event->sendReboot();
-        return TRUE;
-    }
-    
-    private function set_event_reload_portal(&$event, $user_list){
-        $event->sendReloadPortal();
-        return TRUE;
-    }
-    
-    private function set_event_update_channels(&$event, $user_list){
-        $event->sendUpdateChannels();
-        return TRUE;
-    }
-    
-    private function set_event_play_channel(&$event, $user_list){
-        $event->sendPlayChannel($this->postData['channel']);
-        return TRUE;
-    }
-
-    private function set_event_play_radio_channel(&$event, $user_list){
-        $event->sendPlayRadioChannel($this->postData['channel']);
-        return TRUE;
-    }
-    
-    private function set_event_mount_all_storages(&$event, $user_list){
-        $event->sendMountAllStorages();
-        return TRUE;
-    }
-    
-    private function set_event_cut_off(&$event, $user_list){
-    if (!is_array($user_list)){
-            $user_list = array($user_list);
-        }
-        $this->db->updateUser(array("status"=>1, "last_change_status"=>"NOW()"), "id in (".implode(",", $user_list).")");
-        $event->sendCutOff();
-        return TRUE;
-    }
-    
-    private function set_event_update_image(&$event, $user_list){
-        $event->sendUpdateImage();
-        return TRUE;
-    }
-
-    private function set_event_send_msg_with_video(&$event, $user_list){
-        if (!empty($this->postData['video_url'])){
-            $event->sendMsgWithVideo($this->postData['msg'], $this->postData['video_url'], $this->postData['header']);
-        } else {
-            return FALSE;
-        }
-        return TRUE;
     }
 
     private function getMessagesTemplatesDropdownAttribute(){
@@ -678,4 +846,93 @@ class EventsController extends \Controller\BaseStalkerController {
 
         return $attribute;
     }
+
+    private function getSchedulerDropdownAttribute(){
+
+        $attribute = array(
+            array('name'=>'id',             'title'=>$this->setLocalization('ID'),          'checked' => TRUE),
+            array('name'=>'event_trans',    'title'=>$this->setLocalization('Event'),       'checked' => TRUE),
+            array('name'=>'post_function',  'title'=>$this->setLocalization('Post-function'),'checked' => TRUE),
+            array('name'=>'recipient',      'title'=>$this->setLocalization('Recipient'),   'checked' => TRUE),
+            array('name'=>'periodic',       'title'=>$this->setLocalization('Type'),        'checked' => TRUE),
+            array('name'=>'date_begin',     'title'=>$this->setLocalization('Begin'),       'checked' => TRUE),
+            array('name'=>'date_end',       'title'=>$this->setLocalization('End'),         'checked' => TRUE),
+            array('name'=>'schedule',       'title'=>$this->setLocalization('Schedule'),    'checked' => TRUE),
+            array('name'=>'next_run',       'title'=>$this->setLocalization('Next run'),    'checked' => TRUE),
+            array('name'=>'last_run',       'title'=>$this->setLocalization('Last run'),    'checked' => TRUE),
+            array('name'=>'state',          'title'=>$this->setLocalization('State'),       'checked' => TRUE),
+            array('name'=>'operations',     'title'=>$this->setlocalization('Operations'),  'checked' => TRUE)
+        );
+
+        return $attribute;
+    }
+
+    private function getScheduleEventsFields(){
+        return array(
+            'id' => 'S_E.`id` as `id`',
+            'event' => 'S_E.event as `event`',
+            'header' => 'S_E.header as `header`',
+            'msg' => 'S_E.msg as `msg`',
+            'post_function' => 'S_E.post_function as `post_function`',
+            'recipient' => 'S_E.recipient as `recipient`',
+            'periodic' => 'S_E.periodic as `periodic`',
+            'date_begin' => 'S_E.date_begin as `date_begin`',
+            'date_end' => 'S_E.date_end as `date_end`',
+            'schedule' => 'S_E.schedule as `schedule`',
+            'state' => 'S_E.state as `state`',
+            'reboot_after_ok' => 'S_E.reboot_after_ok as `reboot_after_ok`',
+            'param1' => 'S_E.param1 as `param1`',
+            'ttl' => 'S_E.ttl as `ttl`',
+            'last_run' => 'S_E.last_run as `last_run`'
+        );
+    }
+
+    private function getAllFilters(){
+
+        $filter_set = \Filters::getInstance();
+        $filter_set->setResellerID($this->app['reseller']);
+        $filter_set->initData('users', 'id');
+
+        $self = $this;
+
+        return array_map(function($row) use ($filter_set, $self){
+            if(($filter_set_data = @unserialize($row['filter_set'])) !== FALSE){
+                $row['filter_set'] = '';
+                foreach($filter_set_data as $data_row){
+                    $filter_set_filter = $filter_set->getFilters(array($data_row[0]));
+                    $row_filter_set = $self->setLocalization($filter_set_filter[0]['title']).': ';
+                    if (!empty($filter_set_filter[0]['values_set']) && is_array($filter_set_filter[0]['values_set'])) {
+                        foreach($filter_set_filter[0]['values_set'] as $filter_row){
+                            if ($data_row[2] == $filter_row['value'] ) {
+                                $row_filter_set .= $self->setLocalization($filter_row['title']).'; ';
+                            }
+                        }
+                    } else {
+                        $row_filter_set .= $data_row[2].'; ';
+                    }
+                    $row['filter_set'] .= $row_filter_set;
+                }
+            }
+            settype($row['favorites'], 'int');
+            settype($row['for_all'], 'int');
+            return $row;
+        }, $this->db->getAllFromTable('filter_set', 'title'));
+    }
+
+    private function getRecipientByAll($data){
+        return json_encode(array($data['user_list_type'] => ''));
+    }
+
+    private function getRecipientByGroup($data){
+        return json_encode(array($data['user_list_type'] => array('group_id' => $data['group_id'])));
+    }
+
+    private function getRecipientBySingle($data){
+        return json_encode(array($data['user_list_type'] => array('mac' => $data['mac'])));
+    }
+
+    private function getRecipientByFilter($data){
+        return json_encode(array($data['user_list_type'] => array('filter_set' => $data['filter_set'])));
+    }
+
 }
