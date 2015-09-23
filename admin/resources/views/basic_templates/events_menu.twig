@@ -348,20 +348,20 @@
     }
 
     var addEvent = function (data) {
-        alert(data.msg);
+        JSSuccessModalBox(data);
         $('#datatable-1').dataTable().fnReloadAjax();
         $('#modalbox_ad').click();
     };
     var addEventError = function (data) {
-        alert(data.msg);
+        JSErrorModalBox(data);
         $('#datatable-1').dataTable().fnReloadAjax();
         $('#modalbox_ad').click();
     };
     var addAddressList = function (data) {
-        alert(data.msg);
+        JSSuccessModalBox(data);
     };
     var addAddressListError = function (data) {
-        alert(data.error);
+        JSErrorModalBox(data);
     };
 </script>
 {% if attribute(app, 'messagesTemplates') is defined and app.messagesTemplates|length> 0%}
