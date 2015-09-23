@@ -26,7 +26,8 @@
         "imagine/imagine" : "*",
         "neutron/silex-imagine-provider": "dev-master",
         "nymo/silex-twig-breadcrumb-extension":"~1.1",
-        "umpirsky/twig-gettext-extractor": "1.1.*"
+        "umpirsky/twig-gettext-extractor": "1.1.*",
+        "mtdowling/cron-expression": "1.0.*"
     },
     "autoload": {
         "psr-0": {
