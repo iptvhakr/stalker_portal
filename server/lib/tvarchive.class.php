@@ -164,7 +164,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
 
     private function createTemporaryToken($val){
 
-        $key = md5(microtime(1).uniqid());
+        $key = md5($val.microtime(1).uniqid());
 
         $cache = Cache::getInstance();
 
@@ -279,7 +279,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
                 }
 
                 $url .= '?ch_id=' . $program['ch_id']
-                    . '&token='.$this->createTemporaryToken(true)
+                    . '&token='.$this->createTemporaryToken($this->stb->id)
                     . '&start=' . $position
                     . '&duration=' . ($stop_timestamp - $start_timestamp)
                     . '&osd_title=' . urlencode($channel['name'].' — '.$program['name'])
@@ -472,7 +472,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
                 }
 
                 $res['cmd'] .= ''
-                    . '?token='.$this->createTemporaryToken(true)
+                    . '?token='.$this->createTemporaryToken($this->stb->id)
                     . ' position:' . $position
                     . ' media_len:' . (intval(date("H")) * 3600 + intval(date("i")) * 60 + intval(date("s")));
 
