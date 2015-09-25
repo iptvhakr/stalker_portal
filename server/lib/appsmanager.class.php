@@ -62,6 +62,12 @@ class AppsManager
             .$app['alias']
             .'/'.$app['current_version']));
 
+        $app['app_url'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
+            .'://'.$_SERVER['HTTP_HOST']
+            .Config::getSafe('apps_path', 'stalker_apps/')
+            .$app['alias']
+            .'/'.$app['current_version'];
+
         $releases = $repo->getReleases(50);
 
         if (is_array($releases)){
