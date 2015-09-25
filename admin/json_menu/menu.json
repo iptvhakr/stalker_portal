@@ -201,14 +201,6 @@
             }
         }
     },
-    "9": {
-        "name": _("Applications"),
-        "alias": "application-catalog",
-        "icon": "fa fa-rocket",
-        "icon2": "pull-right",
-        "action": {
-        }
-    },
     "10": {
         "name": _("Events"),
         "alias": "events",
