@@ -34,6 +34,12 @@ class User implements \Stalker\Lib\StbApi\User
         $this->profile = Mysql::getInstance()->from('users')->where(array('id' => $this->id))->get()->first();
         $this->ip = !empty($_SERVER['HTTP_X_REAL_IP']) ? $_SERVER['HTTP_X_REAL_IP'] : @$_SERVER['REMOTE_ADDR'];
 
+        $country = self::getCountryCode();
+
+        if ($country && $country != $this->profile['country']){
+            Mysql::getInstance()->update('users', array('country' => $country), array('id' => $this->id));
+        }
+
         if (!empty($this->profile)){
 
             if ($this->profile['tariff_plan_id'] == 0){
