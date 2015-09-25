@@ -913,7 +913,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                     'access_token' => $this->access_token
                 ),
                 array(
-                    'login' => $user['id']
+                    'id' => $user['id']
                 )
             );
 
