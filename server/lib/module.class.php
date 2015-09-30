@@ -13,7 +13,7 @@ class Module
 
         $external_apps_list = array_map(function($app){
             return array(
-                'id'   => $app['alias'],
+                'id'   => 'external_'.$app['alias'],
                 'name' => $app['alias'],
                 'external' => 1
             );

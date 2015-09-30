@@ -12,8 +12,19 @@ $mac = Cache::getInstance()->get($_GET['key']);
 if (!$mac || $mac != $_GET['mac']){
     return false;
 }
-// todo: include external modules
-$all_modules = Config::get('all_modules');
+
+$apps = new AppsManager();
+$external_apps = $apps->getList(true);
+
+$installed_apps = array_values(array_filter($external_apps, function($app){
+    return $app['installed'] == 1 && !empty($app['alias']);
+}));
+
+$installed_apps = array_map(function($app){
+    return 'external_'.$app['alias'];
+}, $installed_apps);
+
+$all_modules = array_merge(Config::get('all_modules'), $installed_apps);
 $disabled_modules = Stb::getDisabledModulesByUid((int) $_GET['uid']);
 
 $available_modules = array_diff($all_modules, $disabled_modules);
@@ -72,10 +83,23 @@ if ($_GET['type'] == '.js'){
 
     foreach ($available_modules as $module){
 
-        $file = PROJECT_PATH.'/../c/'.$module.'.js';
+        if (strpos($module, 'external_') === 0){
 
-        if (file_exists($file)){
-            readfile($file);
+            $module = str_replace('external_', '', $module);
+
+            $module_url = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
+                .'://'.$_SERVER['HTTP_HOST']
+                .'/'.Config::getSafe('portal_url', '/stalker_portal/')
+                .'server/api/ext_module.php?name='.$module;
+
+            echo file_get_contents($module_url);
+
+        }else{
+            $file = PROJECT_PATH.'/../c/'.$module.'.js';
+
+            if (file_exists($file)){
+                readfile($file);
+            }
         }
     }
 }elseif (strpos($_GET['type'], '.css') !== false){
@@ -114,6 +138,10 @@ if ($_GET['type'] == '.js'){
     header("Content-Type: text/css");
 
     foreach ($available_modules as $module){
+
+        if (strpos($module, 'external_') === 0){
+            continue;
+        }
 
         $file = PROJECT_PATH.'/../c/template/'.$theme.'/'.$module.$resolution_prefix.'.css';
 
