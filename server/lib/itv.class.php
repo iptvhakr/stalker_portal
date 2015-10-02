@@ -314,7 +314,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
 
     private function createTemporaryLink($url){
 
-        $key = md5($url.time().uniqid());
+        $key = md5($url.microtime(1).uniqid());
 
         $cache = Cache::getInstance();
 

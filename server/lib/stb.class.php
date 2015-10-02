@@ -913,7 +913,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                     'access_token' => $this->access_token
                 ),
                 array(
-                    'login' => $user['id']
+                    'id' => $user['id']
                 )
             );
 
@@ -1439,7 +1439,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $template = $this->getUserPortalTheme();
 
-        /*// todo: include external modules
+        // todo: include external modules
         $apps = new AppsManager();
         $external_apps = $apps->getList(true);
 
@@ -1448,11 +1448,11 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         }));
 
         $installed_apps = array_map(function($app){
-            return $app['alias'];
-        }, $installed_apps);*/
+            return 'external_'.$app['alias'];
+        }, $installed_apps);
 
         $result = array(
-            'all_modules'        => Config::get('all_modules'), // todo: merge?
+            'all_modules'        => array_merge(Config::get('all_modules'), $installed_apps), // todo: merge?
             'switchable_modules' => Config::get('disabled_modules'),
             'disabled_modules'   => $this->getDisabledModules(),
             'restricted_modules' => $this->getRestrictedModules(),
