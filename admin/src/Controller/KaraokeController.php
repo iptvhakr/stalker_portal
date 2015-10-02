@@ -165,6 +165,11 @@ class KaraokeController extends \Controller\BaseStalkerController {
             $operation = 'insertKaraoke';
             $karaoke[0]['added'] = 'NOW()';
             $karaoke[0]['add_by'] = $this->admin->getId();
+
+            if ($karaoke[0]['protocol'] == 'custom'){
+                $karaoke[0]['status'] = 1;
+            }
+
         } else {
             $operation = 'updateKaraoke';
             $karaoke['id'] = $this->postData['id'];
@@ -240,27 +245,36 @@ class KaraokeController extends \Controller\BaseStalkerController {
         if (empty($_SERVER['TARGET'])) {
             $_SERVER['TARGET'] = 'ADM';
         }
+
+        $where = array('karaoke.id'=>$this->postData['karaokeid']);
+        $item = $this->db->getKaraokeList(array('select'=> array("*", "karaoke.id as id"), "where" => $where));
+
         ob_start();
-        if ($master = new \KaraokeMaster()){
+        if ($master = new \KaraokeMaster() && $item[0]['protocol'] != 'custom'){
             $good_storages = $master->getAllGoodStoragesForMediaFromNet($media_id, true);
 
             $this->db->updateKaraoke(array('status' => (int)(count($good_storages) > 0)), $this->postData['karaokeid']);
 
         }
         ob_end_clean();
-        if (!empty($good_storages)) {
-            $where = array('karaoke.id'=>$this->postData['karaokeid']);
-            $item = $this->db->getKaraokeList(array('select'=> array("*", "karaoke.id as id"), "where" => $where));
-            if ($item[0]['protocol'] != 'custom' || !empty($item[0]['rtsp_url'])) {
-                $this->db->updateKaraoke(array('accessed' => (int)(!((bool) $this->postData['accessed'])), 'added' => 'NOW()'), $this->postData['karaokeid']);
-                if ((int)(!((bool) $this->postData['accessed'])) == 1){
-                    @chmod(KARAOKE_STORAGE_DIR.'/'.$this->postData['karaokeid'].'.mpg', 0444);
-                }else{
-                    @chmod(KARAOKE_STORAGE_DIR.'/'.$this->postData['karaokeid'].'.mpg', 0666);
-                }
-                $error = '';
-            } else {
+
+
+        if (!empty($good_storages) || $item[0]['protocol'] == 'custom') {
+
+            if ($item[0]['protocol'] == 'custom' && empty($item[0]['rtsp_url'])){
                 $error = $this->setlocalization('You can not publishing record with protocol - "custom", and with empty field - URL');
+            }else{
+
+                $this->db->updateKaraoke(array('accessed' => (int)(!((bool) $this->postData['accessed'])), 'added' => 'NOW()'), $this->postData['karaokeid']);
+                if ($item[0]['protocol'] != 'custom') {
+                    if ((int)(!((bool)$this->postData['accessed'])) == 1) {
+                        @chmod(KARAOKE_STORAGE_DIR . '/' . $this->postData['karaokeid'] . '.mpg', 0444);
+                    } else {
+                        @chmod(KARAOKE_STORAGE_DIR . '/' . $this->postData['karaokeid'] . '.mpg', 0666);
+                    }
+                }
+
+                $error = '';
             }
         } else {
             $error = $this->setlocalization('File unavailable and cannot be published');
