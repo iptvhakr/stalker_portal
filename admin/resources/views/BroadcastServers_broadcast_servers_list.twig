@@ -132,10 +132,10 @@
                             
                             <!-- zone -->
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Streaming area'|trans }}</label>
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Streaming area'|trans }} <span class="icon-required">*</span></label>
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-6 ">
-                                        <select class="populate placeholder own_fields" name="stream_zone" id="s2_zone">
+                                        <select class="populate placeholder own_fields"  data-validation=required name="stream_zone" id="s2_zone">
                                             <option value=""></option>
                                             {% if attribute(app, 'allZones') is defined %}
                                                 {% for key, item in app['allZones'] %}
@@ -291,7 +291,7 @@ $.validate({
                         }
                     });
                     if (lengthObj < form_fields.length) {
-                        alert('{{ 'Fill in the required fields'|trans }}');
+                        notty('{{ 'Fill in the required fields'|trans }}','error');
                         return false;
                     }
                     ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
@@ -343,7 +343,7 @@ $.validate({
         
         var serverListMsg = function(data){
             if (typeof(data.msg) != 'undefined' && data.msg) {
-                alert("{{ 'Deleted'|trans }} " + data.msg.Zone + " {{ 'servers'|trans }} ");
+                 notty("{{ 'Deleted'|trans }} " + data.msg.Zone + " {{ 'servers'|trans }} ",'success');
             }
             manageServerList(data);
         };

@@ -528,20 +528,19 @@
               
         var manageList = function (obj) {
             $('#datatable-1').DataTable().ajax.reload();
-            $("#modalbox").data('complete', 1);
-            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Finish'|trans }}!</span>');
+			notty('<span>{{ 'Finish'|trans }}!</span>','success');
         };
         
         var listMsg = function(data){
             if (typeof(data.msg) != 'undefined' && data.msg) {
-                alert(data.msg);
+                notty(data.msg);
             }
             manageList(data);
         };
         
         var listMsgError = function(data){
             if (typeof(data.msg) != 'undefined' && data.msg) {
-                alert(data.msg);
+                notty(data.msg);
             }
             errAction();
         };
@@ -554,9 +553,7 @@
         };
         
         function showModalBox(){
-            $('#modalbox').find('.modal-header-name span').text('{{ 'Wait'|trans }}...');
-            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Request is being processed'|trans }}...</span>');
-            $("#modalbox").show();
+            notty('<span>{{ 'Request is being processed'|trans }}...</span>','notification');
         };
         
         function showAdModalBox(title){
@@ -581,8 +578,7 @@
         }
         
         var errAction = function(){
-            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Failed'|trans }}!</span>');
-            $("#modalbox").data('complete', 1);
+            notty('<span>{{ 'Failed'|trans }}!</span>','error');
         };
         
         var fillModalAd = function(data){

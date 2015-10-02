@@ -81,6 +81,7 @@ class BaseStalkerController {
 
         $this->saveFiles = $app['saveFiles'];
         $this->setSideBarMenu();
+		$this->setTopBarMenu();
         if($this->app['userlogin'] == 'admin'){
             $this->access_level = 8;
         } else {
@@ -113,19 +114,26 @@ class BaseStalkerController {
     }
 
     private function setSideBarMenu() {
-        $side_bar  = json_decode(str_replace(array("_(", ")"), '', file_get_contents($this->baseDir . '/json_menu/menu.json')), TRUE);
-        if (!empty($this->app['userlogin'])) {
-            $side_bar[1]['add_params'] = '<span class="hidden-xs">"'. $this->app['userlogin'] .'"</span>';
-            if (!empty($this->app['userTaskMsgs'])) {
-                $side_bar[1]['action'][2]['add_params'] = '<span class="hidden-xs badge">'. $this->app['userTaskMsgs'] .'</span>';
-            }
-        }
-        
+        $side_bar  = json_decode(str_replace(array("_(", ")"), '', file_get_contents($this->baseDir . '/json_menu/menu.json')), TRUE);     
         $this->setControllerAccessMap();
         $this->cleanSideBar($side_bar);
         $this->app['side_bar'] = $side_bar;
     }
 
+	 private function setTopBarMenu() {
+        $top_bar  = json_decode(str_replace(array("_(", ")"), '', file_get_contents($this->baseDir . '/json_menu/top_menu.json')), TRUE);
+        if (!empty($this->app['userlogin'])) {
+            $top_bar[1]['add_params'] = '<span class="hidden-xs">"'. $this->app['userlogin'] .'"</span>';
+            if (!empty($this->app['userTaskMsgs'])) {
+                $top_bar[1]['action'][1]['add_params'] = '<span class="hidden-xs badge">'. $this->app['userTaskMsgs'] .'</span>';
+            }
+        }
+        
+        $this->setControllerAccessMap();
+        $this->cleanSideBar($top_bar);
+        $this->app['top_bar'] = $top_bar;
+    }
+	
     private function setRequestMethod() {
         $this->method = $this->request->getMethod();
     }

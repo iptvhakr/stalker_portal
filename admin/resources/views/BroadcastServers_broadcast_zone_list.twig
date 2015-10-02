@@ -170,7 +170,7 @@
         
         var zoneListMsg = function(data){
             if (typeof(data.msg) != 'undefined' && data.msg) {
-                alert("{{ 'Deleted'|trans }} " + data.msg.Zone + " {{ 'zone for'|trans }} " + data.msg.Countries + " {{ 'countries'|trans }}");
+                notty("{{ 'Deleted'|trans }} " + data.msg.Zone + " {{ 'zone for'|trans }} " + data.msg.Countries + " {{ 'countries'|trans }}","success");
             }
             manageZoneList(data);
         }

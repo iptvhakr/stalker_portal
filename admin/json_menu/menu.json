@@ -1,30 +1,5 @@
 {
     "1": {
-        "name": _("Administrator"),
-        "alias": "auth-user",
-        "icon": "fa fa-user",
-        "icon2": "",
-        "action": {
-            "1": {
-              "name": _("Dashboard"),
-              "self_parent_alias": "",
-              "alias": "",
-              "icon": "fa fa-bar-chart-o"
-            },
-            "2": {
-                "name": _("Tasks"),
-                "self_parent_alias": "tasks",
-                "alias": "tasks-list",
-                "icon": "fa fa-tasks"
-            },
-            "3": {
-                "name": _("Logout"),
-                "alias": "auth-user-logout",
-                "icon": "fa fa-power-off"
-            }
-        }
-    },
-    "2": {
         "name": _("IPTV channels"),
         "alias": "tv-channels",
         "icon": "fa fa-desktop",
@@ -53,7 +28,7 @@
             }
         }
     },
-    "3": {
+    "2": {
         "name": _("Video club"),
         "alias": "video-club",
         "icon": "fa fa-video-camera",
@@ -96,7 +71,7 @@
             }
         }
     },
-    "4": {
+    "3": {
         "name": _("Audio club"),
         "alias": "audio-club",
         "icon": "fa fa-music",
@@ -129,7 +104,7 @@
             }
         }
     },
-    "5": {
+    "4": {
         "name": _("Karaoke"),
         "alias": "karaoke",
         "icon": "fa fa-microphone",
@@ -137,7 +112,7 @@
         "action": {
         }
     },
-    "6": {
+    "5": {
         "name": _("Radio"),
         "alias": "radio",
         "icon": "fa fa-bullhorn",
@@ -145,7 +120,7 @@
         "action": {
         }
     },
-    "7": {
+    "6": {
         "name": _("Tariffs"),
         "alias": "tariffs",
         "icon": "fa fa-calculator",
@@ -168,7 +143,7 @@
             }
         }
     },
-    "8": {
+    "7": {
         "name": _("Users"),
         "alias": "users",
         "icon": "fa  fa-users",
@@ -201,7 +176,15 @@
             }
         }
     },
-    "10": {
+    "8": {
+        "name": _("Applications"),
+        "alias": "application-catalog",
+        "icon": "fa fa-rocket",
+        "icon2": "pull-right",
+        "action": {
+        }
+    },
+    "9": {
         "name": _("Events"),
         "alias": "events",
         "icon": "fa fa-calendar",
@@ -224,7 +207,7 @@
             }
         }
     },
-    "11": {
+    "10": {
         "name": _("Administrators"),
         "alias": "admins",
         "icon": "fa fa-user-secret",
@@ -247,7 +230,7 @@
             }
         }
     },
-    "12": {
+    "11": {
         "name": _("Tasks"),
         "alias": "tasks",
         "icon": "fa fa-check",
@@ -265,7 +248,7 @@
             }
         }
     },
-    "13": {
+    "12": {
         "name": _("Information portal"),
         "alias": "infoportal",
         "icon": "fa fa-info",
@@ -283,7 +266,7 @@
             }
         }
     },
-    "14": {
+    "13": {
         "name": _("Statistics"),
         "alias": "statistics",
         "icon": "fa fa-pie-chart",
@@ -331,7 +314,7 @@
             }
         }
     },
-    "15": {
+    "14": {
         "name": _("Storage"),
         "alias": "storages",
         "icon": "fa fa-archive",
@@ -354,7 +337,7 @@
             }
         }
     },
-    "16": {
+    "15": {
         "name": _("Streaming servers"),
         "alias": "broadcast-servers",
         "icon": "fa fa-server",
@@ -372,7 +355,7 @@
             }
         }
     },
-    "17": {
+    "16": {
         "name": _("Settings"),
         "alias": "settings",
         "icon": "fa fa-cogs",

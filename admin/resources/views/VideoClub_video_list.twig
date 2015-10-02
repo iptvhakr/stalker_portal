@@ -357,11 +357,15 @@
                         data: $(this).data(),
                         success: function (data) {
                             if (data.success) {
+								notty('<span>{{ 'Finish'|trans }}!</span>','success');
+								$('#modalbox_ad').hide();
+								$('#modalbox_ad').find('input[type="hidden"]').val('').next().text('');
+								$('#modalbox_ad').find('textarea').val('');
                                 for (var key in data) {
                                     _this.data(key, data[key]);
                                 }
                             } else {
-                                alert('{{ 'Some server error'|trans }}');
+                                notty('{{ 'Some server error'|trans }}','notification');
                             }
                         },
                         error: function (data) {
@@ -375,7 +379,7 @@
                             if ($.isFunction(window[errAction])) {
                                 window[errAction]($(_this));
                             } else {
-                                alert('{{ 'Some network error or access denied'|trans }}');
+                                notty('{{ 'Some network error or access denied'|trans }}','notification');
                             }
                         },
                         dataType: "json",
@@ -423,7 +427,7 @@
                 e.stopPropagation();
                 e.preventDefault();
                 var linkObj = $("a[data-videoid='" + $("#modalbox_ad input[type='hidden']").val() + "'][href*='create']");
-                hideTaskForm(linkObj);
+                
                 linkObj.data('sendData', sendData).click();
                 return false;
             });

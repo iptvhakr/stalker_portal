@@ -79,16 +79,15 @@
         
         var manageTheme = function (obj) {
             changeTheme(obj);
-            $("#modalbox").data('complete', 1);
-            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Finish'|trans }}!</span>');
+            notty('<span>{{ 'Finish'|trans }}!</span>','success');
             var msg_type = typeof(obj.msg);
             msg_type = msg_type.toLowerCase();
             if (msg_type != 'undefined'){
                 if (msg_type == 'string') {
-                    $('#modalbox').find('.devoops-modal-inner').append('<span>' + obj.msg + '</span>');
+                     notty('<span>' + obj.msg + '</span>');
                 } else if (msg_type == 'array' || msg_type == 'object') {
                     for (var i in obj.msg){
-                        $('#modalbox').find('.devoops-modal-inner').append('<br><span>' + obj.msg[i] + '</span>');
+                         notty('<br><span>' + obj.msg[i] + '</span>');
                     }
                 }
             }
@@ -113,8 +112,7 @@
         };
         
         var errAction = function(){
-            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Failed'|trans }}!</span>');
-            $("#modalbox").data('complete', 1);
+            notty('<span>{{ 'Failed'|trans }}!</span>','error'); 
         };
         
         function closeModalBox(){
@@ -125,9 +123,7 @@
         }
         
         function showModalBox(){
-            $('#modalbox').find('.modal-header-name span').text('{{ 'Wait'|trans }}...');
-            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Request is being processed'|trans }}...</span>');
-            $("#modalbox").show();
+			notty('<span>{{ 'Request is being processed'|trans }}...</span>','notification');
         }
         
     </script>

@@ -16,13 +16,15 @@
 				{% block header %}
                 {% include "basic_templates/header.twig" %}
 				{% endblock header %}
+									{% block sidebar %}
+                            {% include "basic_templates/sidebar.twig" %}
+                    {% endblock sidebar %}
                 <div id="main" class="container-fluid">
+				
                     <div class="row">
+
 					<!--Start Content-->
 						<div id="main-wrapper" >
-						{% block sidebar %}
-                            {% include "basic_templates/sidebar.twig" %}
-                        {% endblock sidebar %}
                         <div id="content" >
                             <div class="preloader">
                                 <img src="img/devoops_getdata.gif" class="devoops-getdata" alt="preloader"/>
