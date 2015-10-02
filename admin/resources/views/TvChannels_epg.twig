@@ -149,13 +149,13 @@
                                 </div>
                             </div>
                             <div class="form-group">
+							 <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Languages by priority'|trans }}</label>
                                 <div class="col-sm-12">
-                                <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Languages by priority'|trans }}</label>
                                     <input type="hidden" class="own_fields" name="lang_code" value="">
                                     <fieldset id="letters" class="col-sm-12">
-                                        <div class="col-sm-4">
-                                            <label class="col-sm-10 control-label">{{ 'Available'|trans }}</label>
-                                            <select size="9" class="left populate placeholder col-sm-10" multiple="multiple" name="s2_lang_code_available" id="s2_lang_code_available" >
+                                        <div class="col-sm-4 col-xs-offset-1">
+                                            <label class="col-sm-12 control-label">{{ 'Available'|trans }}</label>
+                                            <select size="9" class="left populate placeholder col-sm-12" multiple="multiple" name="s2_lang_code_available" id="s2_lang_code_available" >
                                                 {% if attribute(app, 'allLanguages') is defined %}
                                                     {% for code, lang in app.allLanguages %}
                                                         <option id="opt_{{ code }}" value="{{ code }}">{{ lang }}</option>
@@ -170,8 +170,8 @@
                                             <button type="button" class="remove all btn btn-block btn-default"> &lt;&lt; {{ 'all'|trans }}</button>
                                         </div>
                                         <div class="col-sm-4">
-                                            <label class="col-sm-10 control-label">{{ 'Selected'|trans }}</label>
-                                            <select size="9" class="right populate placeholder col-sm-10" multiple="multiple" name="s2_lang_code" id="s2_lang_code" >
+                                            <label class="col-sm-12 control-label">{{ 'Selected'|trans }}</label>
+                                            <select size="9" class="right populate placeholder col-sm-12" multiple="multiple" name="s2_lang_code" id="s2_lang_code" >
                                             </select>
                                         </div>
                                     </fieldset>
@@ -451,15 +451,15 @@
         var manageEPG = function (obj) {
             $("#modalbox_ad").click();
             $("#modalbox").data('complete', 1);
-            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Finish'|trans }}!</span>');
+            notty('<span>{{ 'Finish'|trans }}!</span>','success');
             var msg_type = typeof(obj.msg);
             msg_type = msg_type.toLowerCase();
             if (msg_type != 'undefined'){
                 if (msg_type == 'string') {
-                    $('#modalbox').find('.devoops-modal-inner').append('<span>' + obj.msg + '</span>');
+                    notty('<span>' + obj.msg + '</span>');
                 } else if (msg_type == 'array' || msg_type == 'object') {
                     for (var i in obj.msg){
-                        $('#modalbox').find('.devoops-modal-inner').append('<br><span>' + obj.msg[i] + '</span>');
+                        notty('<span>' + obj.msg[i] + '</span>');
                     }
                 }
             }
@@ -474,18 +474,11 @@
         }
         
         function showModalBox(){
-            $('#modalbox').find('.modal-header-name span').text('{{ 'Wait'|trans }}...');
-            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Request is being processed'|trans }}...</span>');
-			$('#modalbox').find('.devoops-modal-bottom').html('<div class="pull-right no-padding">&nbsp;</div>\n\
-                        <div class=" pull-right no-padding">\n\
-                            <a type="reset" class="close-link btn btn-default pull-right" >{{ 'Close'|trans }}</a>\n\
-                        </div> </form>');
-            $("#modalbox").show();
+            notty('<span>{{ 'Request is being processed'|trans }}...</span>','notification');
         }
         
         var errAction = function(){
-            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Failed'|trans }}!</span>');
-            $("#modalbox").data('complete', 1);
+            notty('<span>{{ 'Failed'|trans }}!</span>','error');
         };
     </script>
 {% endblock %}

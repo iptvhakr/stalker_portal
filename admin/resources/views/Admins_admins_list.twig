@@ -293,11 +293,11 @@
                             });
 
                             if (!$('#adm_login').val() && !$('#gid').val()) {
-                                alert('Поля "Логин" и "Группа" обязательные');
+                                notty('Поля "Логин" и "Группа" обязательные','error');
                                 return false;
                             }
                             if ($("#adm_pass").val() !== $("#adm_re_pass").val()) {
-                                alert('Веденные пароли не совпадают');
+                                notty('Веденные пароли не совпадают','error');
                                 return false;
                             }
                             ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
