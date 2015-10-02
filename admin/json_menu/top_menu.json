@@ -1,0 +1,22 @@
+{
+    "1": {
+        "name": _("Administrator"),
+        "alias": "auth-user",
+        "icon": "fa fa-user",
+        "icon2": "",
+        "action": {
+
+            "1": {
+                "name": _("Tasks"),
+                "self_parent_alias": "tasks",
+                "alias": "tasks-list",
+                "icon": "fa fa-tasks"
+            },
+            "2": {
+                "name": _("Logout"),
+                "alias": "auth-user-logout",
+                "icon": "fa fa-power-off"
+            }
+        }
+    }
+}

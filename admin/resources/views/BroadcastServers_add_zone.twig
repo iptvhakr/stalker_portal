@@ -22,7 +22,7 @@
                                     {{ form_widget(app['form'].name, {'attr': {'class': 'form-control'}}) }}
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].name) }}
-                                    </div>
+                                    </div></div><div>
                                     <span class="help-inline col-xs-12 col-sm-12">
                                         <span class="small txt-default">{{ 'Title of the area. You can use letters, digits and symbols from the list: ! @ # $ % ^ & * ( ) _ - + : ; , .'|trans }}</span>
                                     </span>
@@ -41,7 +41,7 @@
                                         <div class="bg-danger">
                                             {{ form_errors(app['form'].default_zone) }}
                                         </div>
-                                    </div>
+                                    </div></div><div>
                                     <span class="help-inline col-xs-12 col-sm-12">
                                         <span class="small txt-default">{{ 'It will be selected as default for all new streaming servers'|trans }}</span>
                                     </span>
@@ -51,7 +51,7 @@
                         <div class="form-group">
                           
                             <div class="col-sm-8">
-                                <fieldset id="letters" class="col-sm-12">
+                                <fieldset id="letters" class="col-sm-12  col-sm-offset-1">
                                     <div class="col-sm-4">
                                         <label class="col-sm-12 control-label">{{ 'Countries'|trans }}</label>
                                         {{ form_widget(app['form'].disabled_countries, {'attr': {'class': 'left populate placeholder col-sm-12', "multiple": "multiple"}}) }}

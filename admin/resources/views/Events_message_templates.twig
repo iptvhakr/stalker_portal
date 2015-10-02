@@ -225,7 +225,7 @@
                 $(document).on('click', "#modalbox button[type='reset']", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
-                    JScloseModalBox();
+                    closeModalBox();
                     return false;
                 });
 
@@ -237,8 +237,9 @@
               
         var manageList = function (obj) {
             $('#datatable-1').DataTable().ajax.reload();
-            $("#modalbox").data('complete', 1);
-            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Finish'|trans }}!</span>');
+            notty('<span>{{ 'Finish'|trans }}!</span>','success');
+			$("#modalbox").data('complete', 1);
+			closeModalBox();
         };
 
         function closeModalBox(){
@@ -249,9 +250,7 @@
         }
         
         function showModalBox(){
-            $('#modalbox').find('.modal-header-name span').text('{{ 'Wait'|trans }}...');
-            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Request is being processed'|trans }}...</span>');
-            $("#modalbox").show();
+            notty('<span>{{ 'Request is being processed'|trans }}...</span>','notification');
         }
 
         var manageListError = function(obj){
@@ -259,8 +258,7 @@
         };
 
         var errAction = function(){
-            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Failed'|trans }}!</span>');
-            $("#modalbox").data('complete', 1);
+            notty('<span>{{ 'Failed'|trans }}!</span>','error');
         };
 
         function getTemplateForm(templateName){
@@ -297,7 +295,7 @@
             <form class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/save-message-template">
                 <div class="form-group">
                     <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Template name'|trans }}</label>
-                    <div class="col-xs-10 col-sm-8">
+                    <div class="col-xs-10 col-sm-6">
                         <span class="col-xs-12 col-sm-12">
                             <input type="hidden" class="own_fields" name="msg_tpl[id]" value="">
                             <input type="hidden" class="own_fields" name="msg_tpl[admin_id]" value="{% if attribute(app, 'user_id') is defined %}{{ app.user_id }}{% endif %}">
@@ -307,7 +305,7 @@
                 </div>
                 <div class="form-group">
                     <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Header'|trans }}</label>
-                    <div class="col-xs-10 col-sm-8">
+                    <div class="col-xs-10 col-sm-6">
                         <span class="col-xs-12 col-sm-12">
                             <input type="text" class="own_fields form-control" name="msg_tpl[header]" value="">
                         </span>
@@ -315,7 +313,7 @@
                 </div>
                 <div class="form-group">
                     <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Text'|trans }}</label>
-                    <div class="col-xs-10 col-sm-8">
+                    <div class="col-xs-10 col-sm-6">
                         <span class="col-xs-12 col-sm-12">
                             <textarea class="own_fields form-control" name="msg_tpl[body]"></textarea>
                         </span>
