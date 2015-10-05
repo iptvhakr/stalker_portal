@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-09-23 12:43+0300\n"
-"PO-Revision-Date: 2015-09-23 12:43+0300\n"
+"PO-Revision-Date: 2015-10-05 17:49+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -8526,8 +8526,7 @@ msgstr "ТВ каналы отсутствуют"
 msgid "You can configure DVB channels in the settings menu"
 msgstr "Вы можете настроить DVB каналы в меню настроек"
 
-#: ../../../lang/stb.php:530
-#: ../../../../admin/json_menu/menu.json:205
+#: ../../../lang/stb.php:530 ../../../../admin/json_menu/menu.json:205
 msgid "Applications"
 msgstr "Приложения"
 
@@ -8685,7 +8684,7 @@ msgstr ""
 "download_135_720p.wmv"
 
 msgid "Group name"
-msgstr "Имя группы группы"
+msgstr "Имя группы"
 
 msgid "Information about the media source"
 msgstr "Информация о медиа ресурсе"
