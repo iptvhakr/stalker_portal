@@ -1,0 +1,209 @@
+﻿<!doctype html>
+<html>
+<head>
+	<title>STB Service page</title>
+	<meta charset="utf-8">
+
+	<script>
+		var PATH_BASE = '';
+	</script>
+
+	
+
+	<script type="text/javascript">
+		(function () {
+			var time = (new Date).getTime();
+			// conditional css loading
+			document.write('<link rel="stylesheet" href="system/' + screen.height + '.css?_=' + time + '">');
+			document.write('<link rel="stylesheet" href="public/portal/' + screen.height + '.css?_=' + time + '">');
+		})();
+	</script>
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+
+	
+	
+	
+
+	<style type="text/css">
+		html, body { overflow:hidden; background-color:black!important; color:#fff; margin:0; padding:0; -webkit-user-select:none; font-family:Ubuntu,sans-serif; }
+
+		/* table cell spacing/padding reset */
+		table { border:0; border-collapse:collapse; border-spacing:0; }
+		table td { padding:0 }
+
+		/* meta-classes */
+		.maxh { height:100% }
+		.maxw { width:100% }
+		a { text-decoration:none }
+
+		/* scroll bars */
+		::-webkit-scrollbar-track { background:#2a2c2f }
+		::-webkit-scrollbar-thumb { background:#ffc20e }
+
+		.stbPage {
+			position: absolute;
+			left: 0;
+			top: 0;
+			overflow: hidden;
+			font-family: Ubuntu, sans-serif;
+			-webkit-user-select: none;
+		}
+		#pageInit {
+			background-color: #8592ff;
+		}
+	</style>
+
+	<script type="text/javascript" src="index.min.js"></script>
+</head>
+<body id="body">
+
+<div id="pageInit" class="stbPage">
+	<div class="main">Loading...</div>
+	<div class="version">0.1.1</div>
+</div>
+
+<!-- Media Browser -->
+<div class="page" id="pageMediaBrowser">
+	<!-- side menu hidden body -->
+	<div class="cgmenu-main"></div>
+
+	<!-- main page body -->
+	<table class="body">
+		<!-- page body top panel -->
+		<tr class="header">
+			<td colspan="2" class="crop">
+				<table class="maxw">
+					<tr>
+						<!-- Breadcrumb component -->
+						<td class="cbcrumb"></td>
+						<!-- Search bar component -->
+						<td class="csbar"></td>
+					</tr>
+				</table>
+			</td>
+			<td class="crop tray"></td>
+		</tr>
+
+		<!-- page body main content block -->
+		<tr class="content">
+			<td colspan="3" class="crop">
+				<table class="maxw">
+					<tr>
+						<td class="main">
+							<!-- FileList component -->
+							<div class="vlist-main"></div>
+							<div class="vscroll"></div>
+						</td>
+						<td class="sbar">
+							<!-- SideBar component -->
+							<table class="maxh maxw">
+								<tr>
+									<td class="view">
+										<!-- main preview block -->
+									</td>
+								</tr>
+								<tr>
+									<td class="info">
+										<div class="block all">
+											<span class="title">Records:</span> <span class="value">0</span>
+										</div>
+										<div class="block sel">
+											<span class="title">Selected:</span> <span class="value">0</span>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+
+		<!-- page body bottom panel -->
+		<tr class="footer">
+			<td class="crop exit">
+				<div class="cbpanel-main"></div>
+				<!--<div onclick="MediaBrowser.actionBack()">Exit</div>-->
+			</td>
+			<td class="crop main" colspan="2">
+				<!-- control buttons block -->
+				<div class="cbpanel-main"></div>
+			</td>
+		</tr>
+	</table>
+</div>
+<!-- end Media Browser -->
+
+<!-- Tools Pan -->
+<div id="toolsPan">
+	<table cellpadding="0" cellspacing="0" width="100%" border="0" class="fixed">
+		<tr>
+			<td id="media_HeaderContainer" valign="top">
+				<!--<div id="mediaHeader_DualMonoIco" class="mediaHeaderIco"></div>-->
+				<!--<div id="mediaHeader_PauseIco" class="mediaHeaderIco"></div>-->
+				<div id="mediaHeader_Aspect" class="mediaHeaderIco">
+					<div class="aspect_icon"></div>
+					<span></span>
+				</div>
+			</td>
+
+			<td class="volumeContainer">
+				<div id="mute" style="visibility:hidden"></div>
+				<div id="volumeForm" style="visibility:hidden">
+					<div id="volume_bar">
+						<img src="" class="alignLeft" id="volumeLeft" alt="" style="float:left">
+						<div id="volume_right"></div>
+					</div>
+					<div id="volume_num"></div>
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>
+<!-- end Tools Pan -->
+
+</body>
+
+<script type="text/javascript">
+	if ( !EMULATION && DEBUG && DEBUG_NAME ) {
+		document.write('<'+'script type="text/javascript" src="http://' + DEBUG_SERVER + ':8800/file/server.js"><'+'/script>');
+	}
+</script>
+
+</html>
