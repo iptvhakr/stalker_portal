@@ -701,7 +701,7 @@ function common_xpcom(){
                                         stb.init_auth_dialog();
                                     }
                                     stb.auth_dialog.show();
-                                }else if (!stb.auth_dialog.on){
+                                }else if (!stb.auth_dialog || !stb.auth_dialog.on){
                                     authentication_problem.show();
                                 }
                             }
