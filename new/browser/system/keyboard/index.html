@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+	<script>
+		var PATH_BASE = '../../';
+	</script>
+
+	
+
+	<script type="text/javascript">
+		(function(){
+			var time = (new Date).getTime();
+			// conditional css loading
+			document.write('<link rel="stylesheet" href="' + screen.width + '.css?_=' + time + '">');
+		})();
+	</script>
+
+	
+	
+	
+	
+	
+
+	<script type="text/javascript" src="index.min.js"></script>
+</head>
+<body>
+	<div id="keyboard" style="display: none;">
+		<!--
+		Классы для <li> кнопок:
+		active - получен фокус
+		pressed - кнопка нажата
+		-->
+	</div>
+	<div id="popup" style="display: none;">
+		<div class="top" onmouseover="popup_over(0)" onclick="navigation.popup('up');"></div>
+		<div class="left" onmouseover="popup_over(1)" onclick="navigation.popup('left');"></div>
+		<div class="right" onmouseover="popup_over(2)" onclick="navigation.popup('right');"></div>
+		<div class="bottom" onmouseover="popup_over(3)" onclick="navigation.popup('down');"></div>
+		<div class="ok" onmouseover="popup_over(4)" onclick="popup_ok()"></div>
+	</div>
+</body>
+</html>
