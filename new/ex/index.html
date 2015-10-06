@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>EX.UA app for MAG200-250</title>
+		<meta charset="utf-8">
+
+		
+
+		<script type="text/javascript">
+			(function () {
+				var time = (new Date).getTime();
+				// conditional css loading
+				document.write('<link rel="stylesheet" href="css/' + screen.height + '.css?_=' + time + '">');
+			})();
+		</script>
+        
+        
+        
+        
+        
+        
+        
+        
+		
+        
+        
+        
+        
+        
+        
+
+		<style type="text/css">
+		html, body { overflow:hidden; margin:0; padding:0;  -webkit-user-select:none; background: transparent; }
+		/* main page template */
+		.page { position:absolute; left:0; top:0; width:100%; height:100%; display:none }
+		/* table cell spacing/padding reset */
+		table { border:0; border-collapse:collapse }
+		table td { padding:0 }
+		/* meta-classes */
+		.maxw { width:100% }
+		/* scroll bars */
+		::-webkit-scrollbar-track { background:#202224 }
+		::-webkit-scrollbar-thumb { background:#ffc20e }
+
+		.page#pageMediaPlayer #slideContainer { position:absolute; width:100%; height:100%; top:0; left:0; text-align:center; }
+		.page#pageMediaPlayer #slideContainer .fix { width:0; height:100%; overflow:hidden; display:inline-block; vertical-align:middle; text-align:left; }
+		.page#pageMediaPlayer .animationContainer {	margin:0 auto; width:500px; height:162px; display:inline-block; vertical-align:middle; overflow:hidden; text-align:left; }
+		.page#pageMediaPlayer .slide { position:absolute; -webkit-animation-name:play; -webkit-animation-iteration-count:infinite; -webkit-animation-duration:0.8s; opacity:0; }
+		@-webkit-keyframes play { 0% { opacity:0 } 10% { opacity:1; } 40% { opacity:1; } 100% { opacity:0 }	}
+
+		.page#pageMediaPlayer .animationPlay4 { -webkit-animation-delay:0s; }
+		.page#pageMediaPlayer .animationPlay3 { -webkit-animation-delay:0.2s; }
+		.page#pageMediaPlayer .animationPlay2 { -webkit-animation-delay:0.4s; }
+		.page#pageMediaPlayer .animationPlay1 { -webkit-animation-delay:0.6s; }
+		</style>
+
+		<script type="text/javascript">
+			// set webkit size
+			window.moveTo(0,0);
+			window.resizeTo(screen.width, screen.height);
+			// prevent default right-click menu
+			window.oncontextmenu = function () { return false; };
+		</script>
+	
+	<script type="text/javascript" src="index.min.js"></script>
+</head>
+	<body onkeydown="mainEventListener(event);" id="body">
+		<div id="loading">
+			<span>Loading...</span>
+			<div id="loadingVersion"></div>
+		</div>
+
+
+		<div class="volumeContainer">
+			<div class="mute" style="display:none"></div>
+			<div class="volumeForm" style="display:none">
+				<img src="img/volume/volume_left.png" alt="volume">
+				<div></div>
+			</div>
+		</div>
+
+
+		<!-- PAGE 1 - main page -->
+        <div class="page" id="MainPage" style="display: none">
+            <!-- main page body -->
+            <table class="body">
+                <!-- page body top panel -->
+                <tr class="header">
+                    <td colspan="2" class="crop">
+                        <table class="maxw">
+                            <tr>
+                                <!-- Logo -->
+                                <td class="logo"><div></div></td>
+                                <!-- Breadcrumb component -->
+                                <td class="cbcrumb"></td>
+                                <!-- Search bar component -->
+                                <td class="csbar"></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <!-- page body main content block -->
+                <tr class="content">
+                    <td colspan="2" class="crop">
+                        <table class="maxw">
+                            <tr>
+                                <td class="typeLst">
+                                    <!-- category list -->
+                                    <div class="cslist-main"></div>
+                                </td>
+                                <td class="crop mainContent notActive">
+                                    <!-- Genre List component -->
+                                    <div class="servText">Категории:</div>
+                                    <div class="cat_group"></div>
+                                </td>
+                                <td class="crop rightContent">
+                                    <!-- news -->
+                                    <div class="servText">Новинки:</div>
+                                    <div class="hideOldData"></div>
+                                    <div class="cslist-main">
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <!-- page body bottom panel -->
+                <tr class="footer">
+                    <td class="crop exit">
+                        <div onclick="MainPage.actionExit()" class="exitValue"></div>
+                    </td>
+                    <td class="crop">
+                        <!-- control buttons block -->
+                        <div class="cbpanel-main"></div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        
+        <!-- PAGE 2 - ListPage -->
+        <div class="page" id="ListPage" style="display: none">
+            <!-- main page body -->
+            <table class="body">
+                <!-- page body top panel -->
+                <tr class="header">
+                    <td colspan="2" class="crop">
+                        <table class="maxw">
+                            <tr>
+                                <!-- Logo onclick="ListPage.version()"-->
+                                <td class="logo"><div></div></td>
+                                <!-- Breadcrumb component -->
+                                <td class="cbcrumb"></td>
+                                <!-- Search bar component-->
+                                <td class="csbar"></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <!-- page body main content block -->
+                <tr class="content">
+                    <div class="infoMessage"></div>
+                    <td colspan="2" class="crop">
+                        <table class="maxw">
+                            <tr>
+                                <td class="mainContent">
+                                    <div class="cgmenu-main" id="manager">
+                                    </div>
+                                </td>
+                                <td class="rightContent">
+                                    <!-- news -->
+                                    <div class="info">
+                                        <div class="view">
+                                            <div class="file">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <!-- page body bottom panel -->
+                <tr class="footer">
+                    <td class="crop exit">
+                        <div onclick="ListPage.actionExit()" class="exitValue"></div>
+                    </td>
+                    <td class="crop">
+                        <!-- control buttons block -->
+                        <div class="cbpanel-main"></div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+                
+
+        
+        <!-- PAGE 3 - MediaPlayer -->
+        <div id="pageMediaPlayer" class="page" style="display:none;">
+            <div class="mediaHeaderIco"></div>
+			<div id="slideContainer" style="visibility: hidden;">
+				<div class="animationContainer">
+					<img class="slide animationPlay1" src="img/animation/slide_1.png" alt="">
+					<img class="slide animationPlay2" src="img/animation/slide_2.png" alt="">
+					<img class="slide animationPlay3" src="img/animation/slide_3.png" alt="">
+					<img class="slide animationPlay4" src="img/animation/slide_4.png" alt="">
+				</div>
+				<div class="fix"></div>
+			</div>
+            <div class="player_header" style="display:none" id="playerHeader">
+                <div class="exit_bg">
+                    <a href="#" class="exit exitValue" id="playerExit"></a>
+                </div>
+                <a href="#" class="hideplayer" id="playerHideplayer"></a>
+                <a href="#" class="settings" id="playerHeaderSetting"></a>
+                <div class="clock"></div>
+                <a href="#" class="hideplist" id="$playerHideplist"></a>
+            </div>
+            <div class="player_footer" style="display:none" id="playerFooter">
+                <div class="seekbar" id="playerBar">
+                    <div class="progress" id="playerProgressBar"></div>
+                    <div class="preload" id="playerBufferBar"></div>
+                </div>
+                <div>
+                    <a href="#" class="play-pause" id="playerPause"></a>
+                    <a href="#" class="rew" id="playerREW"></a>
+                    <a href="#" class="ffwd" id="playerFFWD"></a>
+                    <div class="name" id="playerTitle"></div>
+                    <div class="time_total" id="playerTotalTime"></div>
+                    <div class="slash" id="playerSlash">/</div>
+                    <div class="time_cur" id="playerCurrentTime"></div>
+                </div>
+            </div>
+            <div class="cright" id="$cright" style="display: none;">
+                <div class="box">
+					<img src="" id="audioType" style="float:left;">
+					<div id="audioText" style="float:left;"></div>
+				</div>
+            </div>
+            <div class="mbfade_sidebar"></div>
+            <div class="frame" id="playerListBox" style="background-image: url(img/bg_black_70.png);">
+                <div class="cslist-main" id="playerList">
+                </div>
+                <div class="button_bar">
+                    <a href="#" class="prev" id="playlistPrev"></a>
+                    <a href="#" class="next" id="playlistNext"></a>
+                </div>
+            </div>
+        </div>     
+    </body>
+
+	<script type="text/javascript">
+		if ( !EMULATION && DEBUG && DEBUG_NAME ) {
+			document.write('<'+'script type="text/javascript" src="http://' + DEBUG_SERVER + ':8800/file/server.js"><'+'/script>');
+		}
+	</script>
+
+</html>
