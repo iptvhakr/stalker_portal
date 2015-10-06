@@ -1,0 +1,151 @@
+{
+	"logo": "img/{0}/logo.png",
+	"background": "img/{0}/bg.jpg",
+	"menu": [
+		{
+			"name": "Media",
+			"icons": "img/{0}/icons/media.png",
+			"color": "#ffd200",
+			"items": [
+				{
+					"name": "tv",
+					"info": "Watch TV shows, movies, tv series, news and educational programs in digital quality.",
+					"icon": "img/{0}/icons/media/tv.png",
+					"color": "#00bae8",
+					"url": "build/index.html",
+					"url": "../../c/?debug&single_module=tv,vclub,audioclub,radio,karaoke"
+				},
+				{
+					"name": "video club",
+					"info": "Library of movies for any mood with easy search and sorting by genre that help to find what you need in seconds.",
+					"icon": "img/{0}/icons/media/video.club.png",
+					"color": "#3cbb3c",
+					"url": "../../c/?single_module=vclub,tv,audioclub,radio,karaoke"
+				},
+				{
+					"name": "audio club",
+					"info": "Audio club app allows creating a special atmosphere for any party of family event!",
+					"icon": "img/{0}/icons/media/audio.club.png",
+					"color": "#8f58e7",
+					"url": "../../c/?single_module=audioclub,tv,vclub,radio,karaoke"
+				},
+				{
+					"name": "radio",
+					"info": "Easy and handy way of listening to music, news, talk shows and much more.",
+					"icon": "img/{0}/icons/media/radio.png",
+					"color": "#dea700",
+					"url": "../../c/?debug&single_module=radio,tv,vclub,audioclub,karaoke"
+				},
+				{
+					"name": "karaoke",
+					"info": "Sing your favourite songs with friends or improve your vocal skills.",
+					"icon": "img/{0}/icons/media/karaoke.png",
+					"color": "#ff6650",
+					"url": "../../c/?single_module=karaoke,tv,vclub,audioclub,radio"
+				},
+				{
+					"name": "explorer",
+					"info": "Watch movies, listen to music or view the photos, saved on your removable storages or within the local network.",
+					"icon": "img/{0}/icons/media/explorer.png",
+					"mark": "!",
+					"color": "#8592ff",
+					"url": "../explorer/index.html"
+				},
+				{
+					"name": "downloads",
+					"info": "Download the files directly from the Internet network to the connected removable storage.",
+					"icon": "img/{0}/icons/media/downloads.png",
+					"mark": "3",
+					"color": "#fc9360",
+					"url": "../downloads/index.html"
+				},
+				{
+					"name": "records",
+					"info": "This app allows recording TV shows or watch the records made previously.",
+					"icon": "img/{0}/icons/media/records.png",
+					"mark": "5",
+					"color": "#a56d24",
+					"url": "../records/index.html"
+				},
+				{
+					"name": "weather",
+					"info": "Weather forecast for three subsequent days in any city of the world.",
+					"icon": "img/{0}/icons/media/weather.png",
+					"color": "#41c2ab",
+					"url": "../weather/index.html"
+				}
+			]
+		},
+		{
+			"name": "Apps",
+			"icons": "img/{0}/icons/apps.png",
+			"color": "#00eaff",
+			"items": [
+				{
+					"name": "vimeo",
+					"info": "",
+					"icon": "img/{0}/icons/apps/vimeo.png",
+					"color": "#1ab7ea",
+					"url": "../vimeo/index.html"
+				},
+				{
+					"name": "youtube",
+					"info": "",
+					"icon": "img/{0}/icons/apps/youtube.png",
+					"color": "#c12226",
+					"url": "../youtube/index.html"
+				},
+				{
+					"name": "twitch",
+					"info": "",
+					"icon": "img/{0}/icons/apps/twitch.png",
+					"mark": "512",
+					"color": "#6441a5",
+					"url": "../twitch/index.html"
+				},
+				{
+					"name": "ted",
+					"info": "",
+					"icon": "img/{0}/icons/apps/ted.png",
+					"color": "#ffffff",
+					"url": "../ted/index.html"
+				},
+				{
+					"name": "ex.ua",
+					"info": "",
+					"icon": "img/{0}/icons/apps/ex.ua.png",
+					"color": "#eda944",
+					"url": "../ex/index.html"
+				}
+			]
+		},
+		{
+			"name": "Games",
+			"icons": "img/{0}/icons/games.png",
+			"color": "#8de619",
+			"items": [
+				{
+					"name": "lines",
+					"info": "",
+					"icon": "img/{0}/icons/games/lines.png",
+					"color": "#a1222f",
+					"url": "../lines/index.html"
+				},
+				{
+					"name": "sudoku",
+					"info": "",
+					"icon": "img/{0}/icons/games/sudoku.png",
+					"color": "#1dacdd",
+					"url": "../sudoku/index.html"
+				},
+				{
+					"name": "memory",
+					"info": "",
+					"icon": "img/{0}/icons/games/memory.png",
+					"color": "#f9a91a",
+					"url": "../memory/index.html"
+				}
+			]
+		}
+	]
+}
