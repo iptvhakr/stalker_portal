@@ -226,6 +226,16 @@ class Filters {
         $this->setStringFilter('country', $cond, $cond_value);
     }
 
+    private function getUsersCountrySet() {
+        $field_name = 'name_en';
+        if (!empty($_COOKIE) && !empty($_COOKIE['language']) && substr($_COOKIE['language'], 0, 2) == 'ru') {
+            $field_name = 'name';
+        }
+        $this->cleanDataSet();
+        $this->db->select(array('`iso2` as `value`', "`$field_name` as `title`"))->from('countries')->orderby($field_name);
+        return $this->db->get()->all();
+    }
+
     private function getUsersByLastStart($cond, $cond_value) {
         $this->setTimeStampFilter('last_start', $cond, $cond_value);
     }
