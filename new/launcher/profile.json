@@ -20,7 +20,7 @@
 					"info": "Library of movies for any mood with easy search and sorting by genre that help to find what you need in seconds.",
 					"icon": "img/{0}/icons/media/video.club.png",
 					"color": "#3cbb3c",
-					"url": "../../c/?single_module=vclub,tv,audioclub,radio,karaoke"
+					"url": "../../c/?debug&single_module=vclub,tv,audioclub,radio,karaoke"
 				},
 				{
 					"name": "audio club",
@@ -85,7 +85,7 @@
 					"name": "vimeo",
 					"info": "",
 					"icon": "img/{0}/icons/apps/vimeo.png",
-					"color": "#1ab7ea",
+					"color": "#112233",
 					"url": "../vimeo/index.html"
 				},
 				{
@@ -107,7 +107,7 @@
 					"name": "ted",
 					"info": "",
 					"icon": "img/{0}/icons/apps/ted.png",
-					"color": "#ffffff",
+					"color": "#fe2a05",
 					"url": "../ted/index.html"
 				},
 				{
