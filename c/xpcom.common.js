@@ -792,6 +792,10 @@ function common_xpcom(){
     this.get_saved_access_token = function(){
         _debug('stb.get_saved_access_token');
 
+        if (stb.access_token){
+            return stb.access_token;
+        }
+
         var file = 'stalker_'+this.hashCode(window.location.origin+window.location.pathname);
 
         if (!stb.LoadUserData){
@@ -829,7 +833,7 @@ function common_xpcom(){
             {
                 "type"   : "stb",
                 "action" : "handshake",
-                "token"  : this.get_saved_access_token() || this.access_token || ''
+                "token"  : this.get_saved_access_token() || ''
             },
             function(result){
                 _debug('on handshake', result);

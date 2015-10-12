@@ -13,35 +13,35 @@
 					"icon": "img/{0}/icons/media/tv.png",
 					"color": "#00bae8",
 					"url": "build/index.html",
-					"url": "../../c/?debug&single_module=tv,vclub,audioclub,radio,karaoke"
+					"url": "../../c/?debug&single_module=tv"
 				},
 				{
 					"name": "video club",
 					"info": "Library of movies for any mood with easy search and sorting by genre that help to find what you need in seconds.",
 					"icon": "img/{0}/icons/media/video.club.png",
 					"color": "#3cbb3c",
-					"url": "../../c/?debug&single_module=vclub,tv,audioclub,radio,karaoke"
+					"url": "../../c/?debug&single_module=vclub"
 				},
 				{
 					"name": "audio club",
 					"info": "Audio club app allows creating a special atmosphere for any party of family event!",
 					"icon": "img/{0}/icons/media/audio.club.png",
 					"color": "#8f58e7",
-					"url": "../../c/?single_module=audioclub,tv,vclub,radio,karaoke"
+					"url": "../../c/?debug&single_module=audioclub"
 				},
 				{
 					"name": "radio",
 					"info": "Easy and handy way of listening to music, news, talk shows and much more.",
 					"icon": "img/{0}/icons/media/radio.png",
 					"color": "#dea700",
-					"url": "../../c/?debug&single_module=radio,tv,vclub,audioclub,karaoke"
+					"url": "../../c/?debug&single_module=radio"
 				},
 				{
 					"name": "karaoke",
 					"info": "Sing your favourite songs with friends or improve your vocal skills.",
 					"icon": "img/{0}/icons/media/karaoke.png",
 					"color": "#ff6650",
-					"url": "../../c/?single_module=karaoke,tv,vclub,audioclub,radio"
+					"url": "../../c/?debug&single_module=karaoke"
 				},
 				{
 					"name": "explorer",
