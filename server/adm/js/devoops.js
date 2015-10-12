@@ -764,20 +764,10 @@ $(document).ready(function () {
     $(document).on('click', 'div[data-tvfilter] ul a, div[data-tvfilter] .dropdown-menu button', function (e) {
         e.stopPropagation();
         e.preventDefault();
-        var hrefM = window.location.href;
-        var filterName = $(this).closest('div[data-tvfilter]').data('tvfilter');
-        var filter_str = 'filters[' + filterName + ']=' + ((this.tagName == "A") ? $(this).data('filter'): $(this).prev('input').val() );
-        if (window.location.search == '') {
-            window.location.href = hrefM + '?' + filter_str;
-        } else {
-            var filterRegExp = new RegExp('filters\\[' + filterName + '[^=]*=[^&|^$]*', 'ig');
-            if (filterRegExp.test(hrefM)) {
-                window.location.href = hrefM.replace(filterRegExp, filter_str);
-            } else {
-                window.location.href = hrefM + '&' + filter_str;
-            }
+        if (!$(this).data("postponed")) {
+            window.location.href = getURLFilterString(this);
+            return false;
         }
-        return false;
     });
     
     $(document).off('click', "a[disabled], a.disabled");
@@ -791,6 +781,10 @@ $(document).ready(function () {
     
     $("#breadcrumb ul").addClass("breadcrumb");
 
+    $(document).on('click', 'div[id^="ui-datepicker"], div[id^="ui-datepicker"] *, .ui-datepicker-next, .ui-datepicker-prev', function(e){
+        e.stopPropagation();
+    });
+
     $.datepicker.setDefaults({
         showButtonPanel: true,
         beforeShow: function (input) {
@@ -800,9 +794,10 @@ $(document).ready(function () {
                 buttonPane.empty();
                 $("<button>", {
                     text: words['Clean'],
-                    click: function () {
+                    click: function (e) {
                         //Code to clear your date field (text box, read only field etc.) I had to remove the line below and add custom code here
                         $.datepicker._clearDate(input);
+                        e.stopPropagation();
                     }
                 }).appendTo(buttonPane).addClass("ui-datepicker-clear ui-state-default ui-priority-primary ui-corner-all");
             }, 1);
@@ -813,9 +808,10 @@ $(document).ready(function () {
                 buttonPane.empty();
                 $("<button>", {
                     text: words['Clean'],
-                    click: function () {
+                    click: function (e) {
                         //Code to clear your date field (text box, read only field etc.) I had to remove the line below and add custom code here
                         $.datepicker._clearDate(instance.input);
+                        e.stopPropagation();
                     }
                 }).appendTo(buttonPane).addClass("ui-datepicker-clear ui-state-default ui-priority-primary ui-corner-all");
             }, 1);
@@ -844,6 +840,19 @@ $(document).ready(function () {
     });
     
 });
+
+function getURLFilterString(obj){
+    var hrefM = window.location.href;
+    var filterName = $(obj).closest('div[data-tvfilter]').data('tvfilter');
+    var filter_str = 'filters[' + filterName + ']=' + ((obj.tagName == "A") ? $(obj).data('filter'): $(obj).prev('input').val() );
+    if (window.location.search == '') {
+        return hrefM + '?' + filter_str;
+    } else {
+        var filterRegExp = new RegExp('filters\\[' + filterName + '[^=]*=[^&|^$]*', 'ig');
+        return filterRegExp.test(hrefM) ? hrefM.replace(filterRegExp, filter_str) : hrefM + '&' + filter_str;
+    }
+}
+
 
 function heightCalculate(){
     var height =$("#content").height;

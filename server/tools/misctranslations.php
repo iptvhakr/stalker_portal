@@ -779,21 +779,19 @@ _('title');
 _('Dear Subscriber! Your payment term will expire in "%s" days. Please refill a personal account in order to avoid tripping of services.');
 _("Dear Subscriber! Your payment term will expire today. Please refill a personal account in order to avoid tripping of services.");
 _('Name already used');
-_('Users status');
-_('Users state');
-_('Users date creation');
+
+_('Registration Date');
 _('User country');
-_('Last start STB');
-_('Last user activity');
-_('Users group');
-_('Users interface language');
-_('Watch the TV-channel');
-_('Watch the movie');
-_('Using streaming server');
-_('User\'s STB model');
-_('STB firmware version');
-_('Connected tariff plan');
-_('User by accessible packages of service');
+_('Last start');
+_('Watched TV channel');
+_('Watched movie');
+_('Streaming server');
+_('Firmware version');
+
+_('Auto-complete for watching-tv filter');
+_('Auto-complete for watching-movie filter');
+_('Auto-complete for stbfirmware-version filter');
+
 _('List of templates of messages');
 _('List of filters');
 _('List of filters by page + filters');

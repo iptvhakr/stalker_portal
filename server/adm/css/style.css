@@ -2921,19 +2921,43 @@ border-bottom:1px solid #E3E3E3;padding-left:6px !important; padding-right:5px;}
 }
 .filter .dropdown-menu {max-height:360px;}
 .tfilter {min-width:80px; margin-top:10px !important;}
-#iptv_list .filter  {position: relative;    float: left; margin-right:5px;
-	display:block;}
-#iptv_list .filter a  {border-radius:5px; margin-right:0px;   border: 1px solid #fff !important; max-width: 300px; min-width:90px;  margin-top:5px; margin-bottom:5px; padding-bottom:4px;
-position: relative;
-  min-height: 1px;
-  padding-right: 10px;
-  padding-left: 10px;
+#iptv_list .filter, #iptv_list .filter_s  {
+    position: relative;
     float: left;
+    margin-right:5px;
 	display:block;
-	width:100%;
+    min-height: 42px;
+}
 
+#iptv_list .filter a, #iptv_list .filter_s a.dropdown-toggle  {
+    border-radius: 5px;
+    margin-right: 0px;
+    border: 1px solid #fff !important;
+    max-width: 300px;
+    min-width: 90px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding-bottom: 4px;
+    position: relative;
+    min-height: 1px;
+    padding-right: 10px;
+    padding-left: 10px;
+    float: left;
+    display: block;
+    width: 100%;
 
 }
+
+#iptv_list .filter a.dropdown-toggle span:nth-of-type(2), #iptv_list .filter_s a.dropdown-toggle  span:nth-of-type(2){
+    display: inline-block;
+    margin-top: 4px;
+    max-width: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: bottom;
+    white-space: nowrap;
+}
+
 .dropup {  display: inline;position:relative;}
 .dropup .dropdown-menu, .dropup .dropdown-menu{
 
@@ -2963,6 +2987,10 @@ color:#FFCD1C; background-color:#000 !important;}
    margin-top:5px !important; height:31px; padding-bottom:15px !important;
 }
 
+.filter_s .select2-choices a{
+    padding: 0 0 0 13px !important;
+}
+
 .btn-default .btn-default{
     background-color: #FFFFFF !important;
     color: #000 !important;
@@ -2983,9 +3011,9 @@ color:#000; background-color:#FFF !important; border:1px solid #000; margin-top:
 
 #iptv_list {position:relative;}
 #iptv_list .row,#iptv_list .row2, #iptv_list .row3  {position:relative; min-height:44px;}	
-#iptv_list .filter > a > i, #iptv_list .filter > a > i,
-#iptv_list_move .filter > a > i, #iptv_list_move .filter > a > i{
-    margin-top: 10px;
+#iptv_list .filter > a > i, #iptv_list .filter_s > a.dropdown-toggle > i,
+#iptv_list_move .filter > a > i, #iptv_list_move .filter_s > a.dropdown-toggle > i{
+    margin: 10px 4px 0;
 }
 
 
