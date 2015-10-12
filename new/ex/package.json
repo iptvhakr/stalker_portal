@@ -1,0 +1,15 @@
+{
+  "name": "ex.ua",
+  "date": "2015.10.10",
+  "version": "2.1.16",
+  "description": "STB based application for IPTV-devices. All content from site ex.ua.",
+  "author": {
+    "name": "BAS",
+    "email": "1990bas@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/WhereIsExit/ex.ua.git"
+  },
+  "dependencies": {}
+}

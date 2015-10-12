@@ -1,0 +1,79 @@
+{
+	"meta": {
+		"charset": "utf-8",
+		"project": "youtube.com 1.3.0",
+		"language": "eg",
+		"plural": "EXPRESSION"
+	},
+	"data": {
+		"": {
+			"Author": "",
+			"Back": "",
+			"Best": "",
+			"Categories": "",
+			"Choose default video quality": "",
+			"Close Guide": "",
+			"Default extension": "",
+			"Exit": "",
+			"Guide": "",
+			"Hide unwanted content": "",
+			"In order to apply a new language, you must restart the application": "",
+			"Interface language": "",
+			"Language": "",
+			"Login": "",
+			"Logout": "",
+			"Logout from application?": "",
+			"Main": "",
+			"More": "",
+			"My playlists": "",
+			"No videos": "",
+			"Off": "",
+			"Ok": "",
+			"On": "",
+			"Pause": "",
+			"Play": "",
+			"Playlists": "",
+			"Related videos": "",
+			"Safe mode": "",
+			"Search": "",
+			"Settings": "",
+			"Sing in": "",
+			"Subscriptions": "",
+			"Uploads on the channel": "",
+			"You want to login into app?": "",
+			"ago": "",
+			"day": [
+				"",
+				""
+			],
+			"hour": [
+				"",
+				""
+			],
+			"minute": [
+				"",
+				""
+			],
+			"month": [
+				"",
+				""
+			],
+			"second": [
+				"",
+				""
+			],
+			"subscriber": [
+				"",
+				""
+			],
+			"view": [
+				"",
+				""
+			],
+			"year": [
+				"",
+				""
+			]
+		}
+	}
+}

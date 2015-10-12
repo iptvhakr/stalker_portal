@@ -4,6 +4,19 @@
 */
 include "./common.php";
 
+$from_date = date(Mysql::DATETIME_FORMAT, time() - Config::getSafe("events_messages_ttl", 14)*24*60*60);
+
+$from_id = Mysql::getInstance()
+    ->select('max(id) as max_id')
+    ->from('events')
+    ->where(array('eventtime<' => $from_date))
+    ->get()
+    ->first('max_id');
+
+if ($from_id){
+    Mysql::getInstance()->delete('events', array('id<' => $from_id));
+}
+
 $from_date = date("Y-m-d H:i:s", time() - Config::getSafe("user_log_ttl", 1)*24*60*60);
 
 $from_id = Mysql::getInstance()

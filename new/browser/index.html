@@ -1,0 +1,181 @@
+<!doctype html>
+<html>
+<head>
+	<title>Internet Bookmarks Manager</title>
+	<meta charset="utf-8">
+	<link rel="shortcut icon" href="public/img/1280/media/type_5.png">
+
+	<style type="text/css">
+		html, body { overflow:hidden; background:#010101; color:#fff; margin:0; padding:0; -webkit-user-select:none; font-family:Ubuntu,sans-serif; }
+
+		/* table cell spacing/padding reset */
+		table { border:0; border-collapse:collapse }
+		table td { padding:0 }
+
+		/* meta-classes */
+		.maxh { height:100% }
+		.maxw { width:100% }
+		a { text-decoration:none }
+
+		/* scroll bars */
+		::-webkit-scrollbar-track { background:#2a2c2f }
+		::-webkit-scrollbar-thumb { background:#ffc20e }
+
+		.stbPage {
+			position: absolute;
+			left: 0;
+			top: 0;
+			overflow: hidden;
+			font-family: Ubuntu, sans-serif;
+			-webkit-user-select: none;
+		}
+		#pageInit {
+			background-color: #2255ee;
+		}
+	</style>
+
+	<script>
+		var PATH_BASE = 'system/../';
+	</script>
+
+	
+
+	<script type="text/javascript">
+		(function () {
+			var time = (new Date).getTime();
+			// conditional css loading
+			document.write('<link rel="stylesheet" href="system/' + screen.height + '.css?_=' + time + '">');
+			document.write('<link rel="stylesheet" href="public/' + screen.height + '.css?_=' + time + '">');
+		})();
+	</script>
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+
+	<script type="text/javascript" src="index.min.js"></script>
+</head>
+<body>
+	<div id="pageInit" class="stbPage">
+		<div class="main">Loading...</div>
+		<div class="version">2.0.1</div>
+	</div>
+	<div class="page main">
+		<!-- side menu hidden body -->
+		<div class="cgmenu-main browser"></div>
+		<div class="cgmenu-main bookmarks"></div>
+
+		<!-- main page body -->
+		<table class="body">
+			<!-- page body top panel -->
+			<tr class="header">
+				<td colspan="2" class="crop">
+					<table class="maxw bookmarks" style="display:none">
+						<tr>
+							<!-- Breadcrumb component -->
+							<td class="cbcrumb"></td>
+							<!-- Search bar component -->
+							<td class="csbar"></td>
+						</tr>
+					</table>
+
+					<table class="maxw browser" style="display:none">
+						<tr>
+							<!-- Breadcrumb component -->
+							<!--<td class="cbcrumb"></td>-->
+							<!-- Search bar component -->
+							<td class="csbar" colspan="2">
+								<input type="text" id="web-filter" value="">
+							</td>
+						</tr>
+					</table>
+				</td>
+				<td class="crop tray"><img src=""></td>
+			</tr>
+
+			<!-- page body main content block -->
+			<tr class="content bookmarks" style="display:none; background-color:#010101">
+				<td colspan="3" class="crop">
+					<table class="maxw" style="display:none">
+						<tr>
+							<td class="main">
+								<!-- FileList component -->
+								<div class="cslist-main"></div>
+							</td>
+							<td class="sbar">
+								<!-- SideBar component -->
+								<table class="maxh maxw">
+									<tr>
+										<td class="view">
+											<!-- main preview block -->
+										</td>
+									</tr>
+									<tr>
+										<td class="info">
+											<div class="block all">
+												<span class="title">Records:</span> <span class="value">0</span>
+											</div>
+											<div class="block sel">
+												<span class="title">Selected:</span> <span class="value">0</span>
+											</div>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+
+			<!-- page body main content block -->
+			<tr class="content browser" style="display:none">
+				<td colspan="3">
+					<table class="maxh maxw" style="background:transparent">
+						<tr>
+							<td class="crop" style="width:0; background-color:#010101; padding-right:0;"></td>
+							<td style="background:transparent; width:100%">&nbsp;</td>
+							<td class="crop" style="width:0; background-color:#010101; padding-left:0;"></td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+
+			<!-- page body bottom panel -->
+			<tr class="footer">
+				<td class="crop exit">
+					<div class="cbpanel-main"></div>
+					<!--<div onclick="app.views.main.actions.exit()">Exit</div>-->
+				</td>
+				<td class="crop main" colspan="2">
+					<!-- control buttons block -->
+					<div class="cbpanel-main"></div>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+</body>
+</html>

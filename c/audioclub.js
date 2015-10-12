@@ -690,6 +690,13 @@
                         stb.player.stop();
                         window.location = window.referrer;
                     }
+
+                    this.history.push({
+                        "page" : this.cur_page,
+                        "row" : this.cur_row,
+                        "load_params" : this.load_params
+                    });
+
                     return;
                 }
 

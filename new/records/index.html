@@ -1,0 +1,182 @@
+<!doctype html>
+<html>
+<head>
+	<title>Record Manager</title>
+	<meta charset="utf-8">
+	<link rel="shortcut icon" href="/img/1280/media/type_5.png">
+
+	<style type="text/css">
+		html, body { overflow:hidden; background:#000; color:#fff; margin:0; padding:0; -webkit-user-select:none; font-family:Ubuntu, sans-serif; }
+
+		/* table cell spacing/padding reset */
+		table { border:0; border-collapse:collapse }
+		table td { padding:0 }
+
+		/* meta-classes */
+		.maxh { height:100% }
+		.maxw { width:100% }
+		a { text-decoration:none }
+
+		/* scroll bars */
+		::-webkit-scrollbar-track { background:#2a2c2f }
+		::-webkit-scrollbar-thumb { background:#ffc20e }
+
+		/* list items */
+		.page.main .content .downloads a div.running { background:rgba(0, 255, 0, 0.2) }
+		.page.main .content .downloads a div.waiting { background:rgba(255, 255, 255, 0.2) }
+		.page.main .content .downloads a div.done { background:transparent; }
+		.page.main .content .downloads a div.stopped { background:rgba(0, 120, 230, 0.3) }
+		.page.main .content .downloads a div.error { background:rgba(255, 0, 0, 0.2); }
+		.page.main .content .downloads a div.running .progress { background:rgba(0, 255, 0, 0.3) }
+		.page.main .content .downloads a div.waiting .progress { background:rgba(255, 255, 255, 0.4); }
+		.page.main .content .downloads a div.done .progress { background:transparent; }
+		.page.main .content .downloads a div.stopped .progress { background:rgba(0, 120, 230, 0.7); }
+		.page.main .content .downloads a.focused div.stopped .progress { background:rgba(0, 120, 230, 0.5); }
+		.page.main .content .downloads a div.error .progress { background:rgba(255, 0, 0, 0.3); }
+		.page.main .content .downloads a div .progress { position:absolute; left:0; top:0 }
+		.page.main .content .downloads a .ico { position:absolute; left:0; top:0; }
+		.page.main .content .downloads a .name { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-align:left; }
+		.page.main .content .downloads a { cursor:pointer; text-decoration:none; overflow:hidden; content-style:none; margin:0; padding:0; position:relative; }
+		.page.main .content .downloads a > div { position:relative }
+		.page.main .content .downloads .cslist-main { position:relative; }
+
+		/* special styles */
+
+		.stbPage {
+			position: absolute;
+			left: 0;
+			top: 0;
+			overflow: hidden;
+			font-family: Ubuntu, sans-serif;
+			-webkit-user-select: none;
+		}
+		#pageInit {
+			background-color: #a56d24;
+		}
+
+	</style>
+
+	<script>
+		var PATH_BASE = '';
+	</script>
+
+	
+
+	<script type="text/javascript">
+		(function () {
+			var time = (new Date).getTime();
+			// conditional css loading
+			document.write('<link rel="stylesheet" href="./system/' + screen.height + '.css?_=' + time + '">');
+			document.write('<link rel="stylesheet" href="./public/' + screen.height + '.css?_=' + time + '">');
+		})();
+	</script>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<script>
+
+	</script>
+
+	<script type="text/javascript" src="index.min.js"></script>
+</head>
+<body>
+
+<!-- Init page-->
+<div id="pageInit" class="stbPage">
+	<div class="main">Loading...</div>
+	<div class="version">0.1.0</div>
+</div>
+
+
+<div class="page main">
+	<!-- side menu hidden body -->
+	<div class="cgmenu-main"></div>
+
+	<!-- main page body -->
+	<table class="body">
+		<!-- page body top panel -->
+		<tr class="header">
+			<td colspan="2" class="crop">
+				<table class="maxw">
+					<tr>
+						<!-- Breadcrumb component -->
+						<td class="cbcrumb"></td>
+						<!-- Search input component -->
+						<td>
+							<input type="text" id="place">
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+
+		<!-- page body main content block -->
+		<tr class="content">
+			<td colspan="3" class="crop pvrlogo">
+				<table class="maxw downloads">
+					<tr>
+						<td class="main">
+							<!-- FileList component -->
+							<div class="cslist-main"></div>
+						</td>
+						<td class="sbar">
+							<!-- SideBar component -->
+							<table class="maxh maxw">
+								<tr>
+									<td class="view">
+										<!-- main preview block -->
+									</td>
+								</tr>
+								<tr>
+									<td class="info">
+										<div class="block all">
+											<span class="title">Records:</span> <span class="value">0</span>
+										</div>
+										<div class="block sel">
+											<span class="title">Selected:</span> <span class="value">0</span>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+
+		<!-- page body bottom panel -->
+		<tr class="footer">
+			<td class="crop exit">
+				<div class="cbpanel-main"></div>
+			</td>
+			<td class="crop main" colspan="2">
+				<!-- control buttons block -->
+				<div class="cbpanel-main"></div>
+			</td>
+		</tr>
+	</table>
+</div>
+
+</body>
+</html>

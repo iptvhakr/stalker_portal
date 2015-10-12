@@ -4,18 +4,6 @@ include "./common.php";
 
 $from_id = Mysql::getInstance()
     ->select('max(id) as max_id')
-    ->from('events')
-    ->where(array('eventtime<' => date(Mysql::DATETIME_FORMAT)))
-    ->get()
-    ->first('max_id');
-
-if ($from_id){
-    Mysql::getInstance()->delete('events', array('id<' => $from_id));
-}
-
-
-$from_id = Mysql::getInstance()
-    ->select('max(id) as max_id')
     ->from('vclub_not_ended')
     ->where(array('added<' => date(Mysql::DATETIME_FORMAT, time()-1209600)))
     ->get()
