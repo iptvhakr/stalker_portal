@@ -40,8 +40,8 @@ class UsersController extends \Controller\BaseStalkerController {
         "DATE_FORMAT(last_change_status,'%d.%m.%Y') as last_change_status",
         "concat (users.fname) as fname",
         "UNIX_TIMESTAMP(`keep_alive`) as last_active",
-        "DATE_FORMAT(`expire_billing_date`,'%d.%m.%Y') as `expire_billing_date`",
-        "DATE_FORMAT(users.`created`,'%d.%m.%Y') as `created`",
+        "`expire_billing_date` as `expire_billing_date`",
+        "users.`created` as `created`",
         "account_balance", "now_playing_type", "IF(now_playing_type = 2 and storage_name, CONCAT('[', storage_name, ']', now_playing_content), now_playing_content) as now_playing_content"
     );
     private $logObjectsTypes = array(
@@ -157,10 +157,12 @@ class UsersController extends \Controller\BaseStalkerController {
 
         if (!empty($filters)) {
             $this->app['filters_set'] = array_map(function($row) use ($self){
-                $row['values_set'] = array_map(function($row_in) use ($self){
-                    $row_in['title']= $self->setLocalization($row_in['title']);
-                    return $row_in;
-                }, $row['values_set']);
+                if (is_array($row['values_set'])) {
+                    $row['values_set'] = array_map(function($row_in) use ($self){
+                        $row_in['title']= $self->setLocalization($row_in['title']);
+                        return $row_in;
+                    }, $row['values_set']);
+                }
                 return $row;
             }, array_combine($this->getFieldFromArray($filters, 'text_id'), array_values($filters)));
         }
@@ -644,6 +646,9 @@ class UsersController extends \Controller\BaseStalkerController {
                 );
                 unset($query_param['order']['ls']);
                 $query_param['order'] = array_merge($query_param['order'], $order);
+            } elseif (!empty($query_param['order']['created'])) {
+                $query_param['order']['users.created'] = $query_param['order']['created'];
+                unset($query_param['order']['created']);
             }
         }
 
