@@ -53,7 +53,7 @@ function _log(action, param, content_id){
         "type"   : "stb",
         "action" : "log",
         "real_action" : action,
-        "param"  : encodeURIComponent(param),
+        "param"  : (typeof param == 'string' || param instanceof String) ? encodeURIComponent(param) : param,
         "content_id" : content_id,
         "tmp_type" : stb.get_current_place()
     };
