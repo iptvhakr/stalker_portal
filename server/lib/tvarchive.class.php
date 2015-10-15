@@ -103,7 +103,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
                 }
 
                 $res['cmd'] .= '?ch_id=' . $program['ch_id']
-                    . '&token='.$this->createTemporaryToken(true)
+                    . '&token='.$this->createTemporaryToken($this->stb->id)
                     . '&start=' . $position
                     . '&duration=' . ($stop_timestamp - $start_timestamp)
                     . '&osd_title=' . urlencode($channel['name'].' — '.$program['name'])
