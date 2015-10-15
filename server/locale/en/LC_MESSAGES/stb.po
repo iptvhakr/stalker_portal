@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-12 16:34+0300\n"
-"PO-Revision-Date: 2015-10-12 16:34+0300\n"
+"POT-Creation-Date: 2015-10-15 17:09+0300\n"
+"PO-Revision-Date: 2015-10-15 17:10+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -177,6 +177,7 @@ msgstr "TV Archive has been restarted."
 #: ../../../../admin/src/Controller/AudioClubController.php:1091
 #: ../../../../admin/src/Controller/AudioClubController.php:1109
 #: ../../../../admin/src/Controller/AudioClubController.php:1127
+#: ../../../../admin/src/Controller/StatisticsController.php:1043
 #: ../../../../admin/src/Controller/StoragesController.php:166
 #: ../../../../admin/src/Controller/StoragesController.php:193
 #: ../../../../admin/src/Controller/StoragesController.php:252
@@ -196,29 +197,29 @@ msgstr "TV Archive has been restarted."
 #: ../../../../admin/src/Controller/RadioController.php:194
 #: ../../../../admin/src/Controller/RadioController.php:213
 #: ../../../../admin/src/Controller/RadioController.php:236
-#: ../../../../admin/src/Controller/UsersController.php:669
-#: ../../../../admin/src/Controller/UsersController.php:701
-#: ../../../../admin/src/Controller/UsersController.php:732
-#: ../../../../admin/src/Controller/UsersController.php:752
-#: ../../../../admin/src/Controller/UsersController.php:772
-#: ../../../../admin/src/Controller/UsersController.php:789
-#: ../../../../admin/src/Controller/UsersController.php:814
-#: ../../../../admin/src/Controller/UsersController.php:840
-#: ../../../../admin/src/Controller/UsersController.php:858
-#: ../../../../admin/src/Controller/UsersController.php:880
-#: ../../../../admin/src/Controller/UsersController.php:948
-#: ../../../../admin/src/Controller/UsersController.php:966
-#: ../../../../admin/src/Controller/UsersController.php:1008
-#: ../../../../admin/src/Controller/UsersController.php:1166
-#: ../../../../admin/src/Controller/UsersController.php:1196
-#: ../../../../admin/src/Controller/UsersController.php:1230
-#: ../../../../admin/src/Controller/UsersController.php:1270
-#: ../../../../admin/src/Controller/UsersController.php:1305
-#: ../../../../admin/src/Controller/UsersController.php:1449
-#: ../../../../admin/src/Controller/UsersController.php:1471
-#: ../../../../admin/src/Controller/UsersController.php:1493
-#: ../../../../admin/src/Controller/UsersController.php:1504
-#: ../../../../admin/src/Controller/UsersController.php:1515
+#: ../../../../admin/src/Controller/UsersController.php:680
+#: ../../../../admin/src/Controller/UsersController.php:712
+#: ../../../../admin/src/Controller/UsersController.php:743
+#: ../../../../admin/src/Controller/UsersController.php:763
+#: ../../../../admin/src/Controller/UsersController.php:783
+#: ../../../../admin/src/Controller/UsersController.php:800
+#: ../../../../admin/src/Controller/UsersController.php:825
+#: ../../../../admin/src/Controller/UsersController.php:851
+#: ../../../../admin/src/Controller/UsersController.php:869
+#: ../../../../admin/src/Controller/UsersController.php:891
+#: ../../../../admin/src/Controller/UsersController.php:959
+#: ../../../../admin/src/Controller/UsersController.php:977
+#: ../../../../admin/src/Controller/UsersController.php:1019
+#: ../../../../admin/src/Controller/UsersController.php:1177
+#: ../../../../admin/src/Controller/UsersController.php:1207
+#: ../../../../admin/src/Controller/UsersController.php:1241
+#: ../../../../admin/src/Controller/UsersController.php:1281
+#: ../../../../admin/src/Controller/UsersController.php:1318
+#: ../../../../admin/src/Controller/UsersController.php:1462
+#: ../../../../admin/src/Controller/UsersController.php:1484
+#: ../../../../admin/src/Controller/UsersController.php:1506
+#: ../../../../admin/src/Controller/UsersController.php:1517
+#: ../../../../admin/src/Controller/UsersController.php:1528
 #: ../../../../admin/src/Controller/InfoportalController.php:222
 #: ../../../../admin/src/Controller/InfoportalController.php:256
 #: ../../../../admin/src/Controller/InfoportalController.php:276
@@ -247,7 +248,7 @@ msgstr "Page not found"
 #: ../../../../admin/src/Controller/EventsController.php:835
 #: ../../../../admin/src/Controller/EventsController.php:853
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:397
-#: ../../../../admin/src/Controller/UsersController.php:1881
+#: ../../../../admin/src/Controller/UsersController.php:1894
 msgid "ID"
 msgstr "ID"
 
@@ -280,7 +281,7 @@ msgstr "Logo"
 #: ../../../../admin/src/Controller/VideoClubController.php:2082
 #: ../../../../admin/src/Controller/VideoClubController.php:2090
 #: ../../../../admin/src/Controller/AudioClubController.php:1353
-#: ../../../../admin/src/Controller/UsersController.php:1883
+#: ../../../../admin/src/Controller/UsersController.php:1896
 #: ../../../administrator/tariffs.php:311
 #: ../../../administrator/tariffs.php:342
 #: ../../../administrator/audio_album.php:423
@@ -340,7 +341,7 @@ msgid "Monitoring status"
 msgstr "Monitoring status"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1353
-#: ../../../../admin/src/Controller/UsersController.php:1854
+#: ../../../../admin/src/Controller/UsersController.php:1867
 #: ../../../administrator/events.php:497 ../../../administrator/tasks.php:132
 #: ../../../administrator/add_video.php:828
 msgid "Status"
@@ -349,9 +350,9 @@ msgstr "Status"
 #: ../../../../admin/src/Controller/TvChannelsController.php:1354
 #: ../../../../admin/src/Controller/EventsController.php:814
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:403
-#: ../../../../admin/src/Controller/UsersController.php:1862
 #: ../../../../admin/src/Controller/UsersController.php:1875
-#: ../../../../admin/src/Controller/UsersController.php:1887
+#: ../../../../admin/src/Controller/UsersController.php:1888
+#: ../../../../admin/src/Controller/UsersController.php:1900
 msgid "Operations"
 msgstr "Operations"
 
@@ -412,8 +413,8 @@ msgstr "Installed applications"
 
 #: ../../../../admin/src/Controller/EventsController.php:405
 #: ../../../../admin/src/Controller/EventsController.php:528
-#: ../../../../admin/src/Controller/UsersController.php:1050
-#: ../../../../admin/src/Controller/UsersController.php:1384
+#: ../../../../admin/src/Controller/UsersController.php:1061
+#: ../../../../admin/src/Controller/UsersController.php:1397
 #: ../../../lang/stb.php:362
 msgid "Error"
 msgstr "Error"
@@ -458,13 +459,13 @@ msgid "Filter"
 msgstr "Filter"
 
 #: ../../../../admin/src/Controller/EventsController.php:811
-#: ../../../../admin/src/Controller/UsersController.php:1882
+#: ../../../../admin/src/Controller/UsersController.php:1895
 #: ../../../administrator/add_karaoke.php:813
 msgid "Author"
 msgstr "Author"
 
 #: ../../../../admin/src/Controller/EventsController.php:812
-#: ../../../../admin/src/Controller/UsersController.php:1849
+#: ../../../../admin/src/Controller/UsersController.php:1862
 #: ../../../tools/misctranslations.php:531
 msgid "Created"
 msgstr "Created"
@@ -523,7 +524,7 @@ msgid "Recipient"
 msgstr "Recipient"
 
 #: ../../../../admin/src/Controller/EventsController.php:857
-#: ../../../../admin/src/Controller/UsersController.php:1850
+#: ../../../../admin/src/Controller/UsersController.php:1863
 #: ../../../administrator/claims_log.php:174
 #: ../../../administrator/users.php:580 ../../../lang/stb.php:396
 #: ../../../lang/stb.php:501
@@ -542,7 +543,7 @@ msgstr "End"
 #: ../../../../admin/src/Controller/EventsController.php:860
 #: ../../../administrator/add_video.php:620
 #: ../../../../admin/json_menu/menu.json:43
-#: ../../../../admin/json_menu/menu.json:199
+#: ../../../../admin/json_menu/menu.json:191
 msgid "Schedule"
 msgstr "Schedule"
 
@@ -556,7 +557,7 @@ msgstr "Last run"
 
 #: ../../../../admin/src/Controller/EventsController.php:863
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:402
-#: ../../../../admin/src/Controller/UsersController.php:1853
+#: ../../../../admin/src/Controller/UsersController.php:1866
 msgid "State"
 msgstr "State"
 
@@ -627,9 +628,9 @@ msgstr "Information not available"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:616
 #: ../../../../admin/src/Controller/BroadcastServersController.php:19
-#: ../../../../admin/src/Controller/UsersController.php:690
-#: ../../../../admin/src/Controller/UsersController.php:1569
-#: ../../../../admin/src/Controller/UsersController.php:1573
+#: ../../../../admin/src/Controller/UsersController.php:701
+#: ../../../../admin/src/Controller/UsersController.php:1582
+#: ../../../../admin/src/Controller/UsersController.php:1586
 #: ../../../lang/stb.php:369
 msgid "on"
 msgstr "on"
@@ -765,6 +766,10 @@ msgstr "Add audio album"
 msgid "Edit audio album"
 msgstr "Edit audio album"
 
+#: ../../../../admin/src/Controller/StatisticsController.php:1130
+msgid "Nothing in this category"
+msgstr "Nothing in this category"
+
 #: ../../../../admin/src/Controller/StoragesController.php:212
 msgid "movies"
 msgstr "movies"
@@ -776,7 +781,7 @@ msgstr "karaoke"
 
 #: ../../../../admin/src/Controller/TasksController.php:195
 #: ../../../../admin/src/Controller/TasksController.php:261
-#: ../../../../admin/json_menu/menu.json:240
+#: ../../../../admin/json_menu/menu.json:232
 msgid "Tasks list"
 msgstr "Tasks list"
 
@@ -788,11 +793,11 @@ msgstr "Add radio"
 msgid "Edit radio"
 msgstr "Edit radio"
 
-#: ../../../../admin/src/Controller/UsersController.php:214
-#: ../../../../admin/src/Controller/UsersController.php:239
-#: ../../../../admin/src/Controller/UsersController.php:252
-#: ../../../../admin/src/Controller/UsersController.php:644
-#: ../../../../admin/src/Controller/UsersController.php:1621
+#: ../../../../admin/src/Controller/UsersController.php:222
+#: ../../../../admin/src/Controller/UsersController.php:247
+#: ../../../../admin/src/Controller/UsersController.php:260
+#: ../../../../admin/src/Controller/UsersController.php:655
+#: ../../../../admin/src/Controller/UsersController.php:1634
 #: ../../../../admin/src/Controller/AdminsController.php:48
 #: ../../../../admin/src/Controller/AdminsController.php:66
 #: ../../../../admin/src/Controller/AdminsController.php:323
@@ -800,72 +805,76 @@ msgstr "Edit radio"
 msgid "Empty"
 msgstr "Empty"
 
-#: ../../../../admin/src/Controller/UsersController.php:226
+#: ../../../../admin/src/Controller/UsersController.php:234
 msgid "Used filter"
 msgstr "Used filter"
 
-#: ../../../../admin/src/Controller/UsersController.php:280
+#: ../../../../admin/src/Controller/UsersController.php:288
 msgid "Log of user"
 msgstr "Log of user"
 
-#: ../../../../admin/src/Controller/UsersController.php:298
+#: ../../../../admin/src/Controller/UsersController.php:306
 msgid "STB statuses report"
 msgstr "STB statuses report"
 
-#: ../../../../admin/src/Controller/UsersController.php:334
-#: ../../../../admin/src/Controller/UsersController.php:404
+#: ../../../../admin/src/Controller/UsersController.php:342
+#: ../../../../admin/src/Controller/UsersController.php:412
 #: ../../../../admin/json_menu/menu.json:153
 msgid "Users list"
 msgstr "Users list"
 
-#: ../../../../admin/src/Controller/UsersController.php:426
+#: ../../../../admin/src/Controller/UsersController.php:434
 #: ../../../../admin/json_menu/menu.json:163
 msgid "User groups"
 msgstr "User groups"
 
-#: ../../../../admin/src/Controller/UsersController.php:427
+#: ../../../../admin/src/Controller/UsersController.php:435
 msgid "STB of group"
 msgstr "STB of group"
 
-#: ../../../../admin/src/Controller/UsersController.php:690
-#: ../../../../admin/src/Controller/UsersController.php:1568
-#: ../../../../admin/src/Controller/UsersController.php:1572
+#: ../../../../admin/src/Controller/UsersController.php:701
+#: ../../../../admin/src/Controller/UsersController.php:1581
+#: ../../../../admin/src/Controller/UsersController.php:1585
 #: ../../../lang/stb.php:370
 msgid "off"
 msgstr "off"
 
-#: ../../../../admin/src/Controller/UsersController.php:1023
-#: ../../../../admin/src/Controller/UsersController.php:1024
+#: ../../../../admin/src/Controller/UsersController.php:1034
+#: ../../../../admin/src/Controller/UsersController.php:1035
 msgid "This user is already connected to the group"
 msgstr "This user is already connected to the group"
 
-#: ../../../../admin/src/Controller/UsersController.php:1026
+#: ../../../../admin/src/Controller/UsersController.php:1037
 msgid "User with this MAC-address is not defined"
 msgstr "User with this MAC-address is not defined"
 
-#: ../../../../admin/src/Controller/UsersController.php:1218
-#: ../../../../admin/src/Controller/UsersController.php:1252
+#: ../../../../admin/src/Controller/UsersController.php:1229
+#: ../../../../admin/src/Controller/UsersController.php:1263
 #: ../../../../admin/src/Controller/AdminsController.php:631
 #: ../../../../admin/src/Controller/AdminsController.php:665
 #: ../../../../admin/src/Controller/AdminsController.php:699
 msgid "Moved"
 msgstr "Moved"
 
-#: ../../../../admin/src/Controller/UsersController.php:1220
-#: ../../../../admin/src/Controller/UsersController.php:1259
+#: ../../../../admin/src/Controller/UsersController.php:1231
+#: ../../../../admin/src/Controller/UsersController.php:1270
 #: ../../../../admin/src/Controller/AdminsController.php:667
 #: ../../../../admin/src/Controller/AdminsController.php:701
 msgid "Not found reseller for moving"
 msgstr "Not found reseller for moving"
 
-#: ../../../../admin/src/Controller/UsersController.php:1220
-#: ../../../../admin/src/Controller/UsersController.php:1259
+#: ../../../../admin/src/Controller/UsersController.php:1231
+#: ../../../../admin/src/Controller/UsersController.php:1270
 #: ../../../../admin/src/Controller/AdminsController.php:667
 #: ../../../../admin/src/Controller/AdminsController.php:701
 msgid "Nothing to do"
 msgstr "Nothing to do"
 
-#: ../../../../admin/src/Controller/UsersController.php:1846
+#: ../../../../admin/src/Controller/UsersController.php:1306
+msgid "No data for this filter"
+msgstr "No data for this filter"
+
+#: ../../../../admin/src/Controller/UsersController.php:1859
 #: ../../../administrator/profile.php:394 ../../../administrator/user.php:138
 #: ../../../administrator/administrators.php:164
 #: ../../../administrator/administrators.php:191
@@ -874,12 +883,12 @@ msgstr "Nothing to do"
 msgid "Login"
 msgstr "Login"
 
-#: ../../../../admin/src/Controller/UsersController.php:1847
+#: ../../../../admin/src/Controller/UsersController.php:1860
 msgid "Account"
 msgstr "Account"
 
-#: ../../../../admin/src/Controller/UsersController.php:1848
-#: ../../../../admin/src/Controller/UsersController.php:1869
+#: ../../../../admin/src/Controller/UsersController.php:1861
+#: ../../../../admin/src/Controller/UsersController.php:1882
 #: ../../../administrator/playlists.php:129
 #: ../../../administrator/playlists.php:153
 #: ../../../administrator/audio_year.php:183
@@ -907,40 +916,40 @@ msgstr "Account"
 msgid "Name"
 msgstr "Name"
 
-#: ../../../../admin/src/Controller/UsersController.php:1851
+#: ../../../../admin/src/Controller/UsersController.php:1864
 #: ../../../administrator/msg.php:145
 #: ../../../administrator/claims_log.php:175
 #: ../../../administrator/users.php:581 ../../../administrator/msgs.php:116
 msgid "Media"
 msgstr "Media"
 
-#: ../../../../admin/src/Controller/UsersController.php:1852
+#: ../../../../admin/src/Controller/UsersController.php:1865
 msgid "Last modified"
 msgstr "Last modified"
 
-#: ../../../../admin/src/Controller/UsersController.php:1857
-#: ../../../../admin/src/Controller/UsersController.php:1873
+#: ../../../../admin/src/Controller/UsersController.php:1870
+#: ../../../../admin/src/Controller/UsersController.php:1886
 msgid "Reseller"
 msgstr "Reseller"
 
-#: ../../../../admin/src/Controller/UsersController.php:1860
+#: ../../../../admin/src/Controller/UsersController.php:1873
 #: ../../../administrator/profile.php:427
 msgid "Expire billing date"
 msgstr "Expire billing date"
 
-#: ../../../../admin/src/Controller/UsersController.php:1870
+#: ../../../../admin/src/Controller/UsersController.php:1883
 msgid "Quantity of users"
 msgstr "Quantity of users"
 
-#: ../../../../admin/src/Controller/UsersController.php:1884
+#: ../../../../admin/src/Controller/UsersController.php:1897
 msgid "Filter conditions"
 msgstr "Filter conditions"
 
-#: ../../../../admin/src/Controller/UsersController.php:1885
+#: ../../../../admin/src/Controller/UsersController.php:1898
 msgid "Visibility"
 msgstr "Visibility"
 
-#: ../../../../admin/src/Controller/UsersController.php:1886
+#: ../../../../admin/src/Controller/UsersController.php:1899
 #: ../../../lang/stb.php:385
 msgid "Favorites"
 msgstr "Favorites"
@@ -970,7 +979,7 @@ msgid "ID already used"
 msgstr "ID already used"
 
 #: ../../../../admin/src/Controller/AdminsController.php:108
-#: ../../../../admin/json_menu/menu.json:222
+#: ../../../../admin/json_menu/menu.json:214
 msgid "Groups"
 msgstr "Groups"
 
@@ -1938,7 +1947,7 @@ msgstr "Messages"
 #: ../../../tools/misctranslations.php:301
 #: ../../../tools/misctranslations.php:426 ../../../administrator/tasks.php:59
 #: ../../../administrator/tasks.php:65
-#: ../../../../admin/json_menu/menu.json:234
+#: ../../../../admin/json_menu/menu.json:226
 #: ../../../../admin/json_menu/top_menu.json:10
 msgid "Tasks"
 msgstr "Tasks"
@@ -1946,7 +1955,7 @@ msgstr "Tasks"
 #: ../../../tools/misctranslations.php:302
 #: ../../../tools/misctranslations.php:362
 #: ../../../administrator/index.php:477
-#: ../../../../admin/json_menu/menu.json:359
+#: ../../../../admin/json_menu/menu.json:351
 msgid "Settings"
 msgstr "Settings"
 
@@ -2035,7 +2044,7 @@ msgid "Info portal"
 msgstr "Info portal"
 
 #: ../../../tools/misctranslations.php:327
-#: ../../../../admin/json_menu/menu.json:258
+#: ../../../../admin/json_menu/menu.json:250
 msgid "Phone book"
 msgstr "Phone book"
 
@@ -2179,7 +2188,7 @@ msgid "Setting the skin"
 msgstr "Setting the skin"
 
 #: ../../../tools/misctranslations.php:372
-#: ../../../../admin/json_menu/menu.json:370
+#: ../../../../admin/json_menu/menu.json:362
 msgid "Firmware update"
 msgstr "Firmware update"
 
@@ -2201,7 +2210,7 @@ msgstr "Change the on/off state firmware update"
 
 #: ../../../tools/misctranslations.php:378
 #: ../../../administrator/index.php:432
-#: ../../../../admin/json_menu/menu.json:270
+#: ../../../../admin/json_menu/menu.json:262
 msgid "Statistics"
 msgstr "Statistics"
 
@@ -2254,7 +2263,7 @@ msgid "Subscriber statistics by page + filters"
 msgstr "Subscriber statistics by page + filters"
 
 #: ../../../tools/misctranslations.php:391
-#: ../../../../admin/json_menu/menu.json:306
+#: ../../../../admin/json_menu/menu.json:298
 msgid "Inactive subscribers"
 msgstr "Inactive subscribers"
 
@@ -2417,7 +2426,7 @@ msgstr "Sending messages, change status karaoke-task"
 
 #: ../../../tools/misctranslations.php:434 ../../../administrator/users.php:99
 #: ../../../../admin/json_menu/menu.json:173
-#: ../../../../admin/json_menu/menu.json:245
+#: ../../../../admin/json_menu/menu.json:237
 msgid "Report"
 msgstr "Report"
 
@@ -2927,7 +2936,7 @@ msgid "events"
 msgstr "events"
 
 #: ../../../tools/misctranslations.php:563
-#: ../../../../admin/json_menu/menu.json:194
+#: ../../../../admin/json_menu/menu.json:186
 msgid "Users events"
 msgstr "Users events"
 
@@ -5445,7 +5454,7 @@ msgstr "search by name"
 #: ../../../administrator/stat_moderators.php:59
 #: ../../../administrator/stat_moderators.php:65
 #: ../../../administrator/index.php:460
-#: ../../../../admin/json_menu/menu.json:296
+#: ../../../../admin/json_menu/menu.json:288
 msgid "Moderators statistics"
 msgstr "Moderators statistics"
 
@@ -5556,7 +5565,7 @@ msgstr "File with list is missing"
 
 #: ../../../administrator/events.php:241 ../../../administrator/events.php:247
 #: ../../../administrator/profile.php:310 ../../../administrator/index.php:146
-#: ../../../../admin/json_menu/menu.json:188
+#: ../../../../admin/json_menu/menu.json:180
 msgid "Events"
 msgstr "Events"
 
@@ -6096,7 +6105,7 @@ msgstr "User profile"
 #: ../../../administrator/profile.php:310
 #: ../../../administrator/storages.php:223
 #: ../../../../admin/json_menu/menu.json:168
-#: ../../../../admin/json_menu/menu.json:334
+#: ../../../../admin/json_menu/menu.json:326
 msgid "Logs"
 msgstr "Logs"
 
@@ -6770,7 +6779,7 @@ msgstr "AUDIO CLUB"
 #: ../../../administrator/index.php:152
 #: ../../../administrator/administrators.php:98
 #: ../../../administrator/administrators.php:141
-#: ../../../../admin/json_menu/menu.json:211
+#: ../../../../admin/json_menu/menu.json:203
 msgid "Administrators"
 msgstr "Administrators"
 
@@ -6848,7 +6857,7 @@ msgid "Users statistics for TV"
 msgstr "Users statistics for TV"
 
 #: ../../../administrator/index.php:442
-#: ../../../../admin/json_menu/menu.json:281
+#: ../../../../admin/json_menu/menu.json:273
 msgid "TV statistics"
 msgstr "TV statistics"
 
@@ -6865,7 +6874,7 @@ msgid "Users statistics for Jokes"
 msgstr "Users statistics for Jokes"
 
 #: ../../../administrator/index.php:454
-#: ../../../../admin/json_menu/menu.json:291
+#: ../../../../admin/json_menu/menu.json:283
 msgid "TimeShift statistics"
 msgstr "TimeShift statistics"
 
@@ -8506,7 +8515,6 @@ msgid "You can configure DVB channels in the settings menu"
 msgstr "You can configure DVB channels in the settings menu"
 
 #: ../../../lang/stb.php:530
-#: ../../../../admin/json_menu/menu.json:180
 msgid "Applications"
 msgstr "Applications"
 
@@ -8739,7 +8747,7 @@ msgstr "Relise date"
 msgid "Reseller name"
 msgstr "Reseller name"
 
-#: ../../../../admin/json_menu/menu.json:227
+#: ../../../../admin/json_menu/menu.json:219
 msgid "Resellers"
 msgstr "Resellers"
 
@@ -8749,7 +8757,7 @@ msgstr "Some network error or access denied"
 msgid "Some server error"
 msgstr "Some server error"
 
-#: ../../../../admin/json_menu/menu.json:318
+#: ../../../../admin/json_menu/menu.json:310
 msgid "Storage"
 msgstr "Storage"
 
@@ -9128,10 +9136,13 @@ msgstr "Channel number"
 msgid "Channel type"
 msgstr "Channel type"
 
+msgid "Clean claims"
+msgstr "Clean claims"
+
 msgid "Complaints log"
 msgstr "Complaints log"
 
-#: ../../../../admin/json_menu/menu.json:311
+#: ../../../../admin/json_menu/menu.json:303
 msgid "Complaints statistics"
 msgstr "Complaints statistics"
 
@@ -9394,7 +9405,7 @@ msgstr "Sets the password restriction on the channel Default password 0000"
 msgid "Streaming links"
 msgstr "Streaming links"
 
-#: ../../../../admin/json_menu/menu.json:341
+#: ../../../../admin/json_menu/menu.json:333
 msgid "Streaming servers"
 msgstr "Streaming servers"
 
@@ -9419,7 +9430,7 @@ msgstr "TV archive address"
 msgid "TV archive length"
 msgstr "TV archive length"
 
-#: ../../../../admin/json_menu/menu.json:286
+#: ../../../../admin/json_menu/menu.json:278
 msgid "TV archive statistics"
 msgstr "TV archive statistics"
 
@@ -9927,7 +9938,7 @@ msgstr "Full package"
 msgid "Gives access to all content of the selected service"
 msgstr "Gives access to all content of the selected service"
 
-#: ../../../../admin/json_menu/menu.json:252
+#: ../../../../admin/json_menu/menu.json:244
 msgid "Information portal"
 msgstr "Information portal"
 
@@ -10083,7 +10094,7 @@ msgstr "Force update of EPG"
 msgid "Force update of EPG - complete EPG update for all channels"
 msgstr "Force update of EPG - complete EPG update for all channels"
 
-#: ../../../../admin/json_menu/menu.json:263
+#: ../../../../admin/json_menu/menu.json:255
 msgid "Humor"
 msgstr "Humor"
 
@@ -10112,7 +10123,7 @@ msgstr ""
 "Prefix is necessary to distinguish the EPG source in case, if the following "
 "XNLTV ID is stated in several sources"
 
-#: ../../../../admin/json_menu/menu.json:301
+#: ../../../../admin/json_menu/menu.json:293
 msgid "Subscribers statistic"
 msgstr "Subscribers statistic"
 
@@ -10224,35 +10235,35 @@ msgstr "Categories"
 msgid "Filters"
 msgstr "Filters"
 
-#: ../../../../admin/json_menu/menu.json:204
+#: ../../../../admin/json_menu/menu.json:196
 msgid "Templates of messages"
 msgstr "Templates of messages"
 
-#: ../../../../admin/json_menu/menu.json:217
+#: ../../../../admin/json_menu/menu.json:209
 msgid "Administrators list"
 msgstr "Administrators list"
 
-#: ../../../../admin/json_menu/menu.json:276
+#: ../../../../admin/json_menu/menu.json:268
 msgid "Movie statistics"
 msgstr "Movie statistics"
 
-#: ../../../../admin/json_menu/menu.json:324
+#: ../../../../admin/json_menu/menu.json:316
 msgid "Storage list"
 msgstr "Storage list"
 
-#: ../../../../admin/json_menu/menu.json:329
+#: ../../../../admin/json_menu/menu.json:321
 msgid "Video search"
 msgstr "Video search"
 
-#: ../../../../admin/json_menu/menu.json:347
+#: ../../../../admin/json_menu/menu.json:339
 msgid "Servers list"
 msgstr "Servers list"
 
-#: ../../../../admin/json_menu/menu.json:352
+#: ../../../../admin/json_menu/menu.json:344
 msgid "Streaming areas"
 msgstr "Streaming areas"
 
-#: ../../../../admin/json_menu/menu.json:365
+#: ../../../../admin/json_menu/menu.json:357
 msgid "Appearance"
 msgstr "Appearance"
 

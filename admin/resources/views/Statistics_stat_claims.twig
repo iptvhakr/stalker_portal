@@ -6,6 +6,16 @@
     <div id="iptv_list">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="btn-group pull-right">
+                    <a href="#" class="btn btn-success dropdown-toggle" data-toggle="dropdown">{{ 'Clean claims'|trans }} <span class="fa fa-caret-down"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a class="main_ajax" data-media_type="vclub" href="{{app.request.baseUrl}}/{{app.controller_alias}}/stat-claims-clean">{{ 'Video club'|trans }}</a></li>
+                        <li><a class="main_ajax" data-media_type="itv" href="{{app.request.baseUrl}}/{{app.controller_alias}}/stat-claims-clean">{{ 'TV'|trans }}</a></li>
+                        <li><a class="main_ajax" data-media_type="karaoke" href="{{app.request.baseUrl}}/{{app.controller_alias}}/stat-claims-clean">{{ 'Karaoke'|trans }}</a></li>
+                        <li><a class="main_ajax" data-media_type="epg" href="{{app.request.baseUrl}}/{{app.controller_alias}}/stat-claims-clean">{{ 'EPG'|trans }}</a></li>
+                        <li><a class="main_ajax" data-media_type="all" href="{{app.request.baseUrl}}/{{app.controller_alias}}/stat-claims-clean">{{ 'All'|trans }}</a></li>
+                    </ul>
+                </div>
                 <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/stat-claims-logs" class="btn btn-default pull-right" id="add_audio_years">{{ 'Complaints log'|trans }}</a>
                 {{ main_macro.get_datepicker_double_input() }}
             </div>
@@ -109,9 +119,27 @@
         function yelp() {
             $(document).ready(function () {
                 {{ main_macro.get_datepicker_js_script() }}
+
+                $(document).on("click", "a.main_ajax", function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    ajaxPostSend($(this).prop("href"), $(this).data());
+                    $(this).closest(".open").removeClass("open");
+                    return false;
+                });
+
                 LoadDataTablesScripts(TestTable1);
             });
         }
+
+        var manageClaims = function(data){
+            JSSuccessModalBox(data);
+            $('#datatable-1').DataTable().ajax.reload();
+        };
+
+        var manageClaimsError = function(data){
+            JSErrorModalBox(data);
+        };
 
         document.addEventListener("DOMContentLoaded", yelp, false);
         

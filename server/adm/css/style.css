@@ -2357,7 +2357,7 @@ div.google-visualization-tooltip span{
 #iptv_list_move_send {margin-left:25px !important;}
 .btn + .dropdown-menu {
   margin-top: -10px;
-  background: rgba(0, 0, 0, 0.7) !important; padding: 0; border: 0; 
+  /*background: rgba(0, 0, 0, 0.7) !important;*/ padding: 0; border: 0;
   right: 0; 
   left: auto; 
   min-width: 100%;
