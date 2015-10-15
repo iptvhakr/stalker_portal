@@ -28,7 +28,7 @@
         _debug('stbWindowMgr.openWebFace', !!stbWindowMgr.openWebFace);
 
         if (stbWindowMgr.openWebFace){
-            stbWindowMgr.openWebFace('/home/web/public/app/ibman/index.html?mode=2&url='+encodeURIComponent('http://google.com'));
+            stbWindowMgr.openWebFace('/home/web/public/app/ibman/index.html?mode=2&url='+encodeURIComponent('http://google.com')+'&view=1');
             module.internet.win_inited = true;
         }else if (module.internet.win_inited && stbWindowMgr.IsWebWindowExist && stbWindowMgr.IsWebWindowExist()){
             stbWindowMgr.raiseWebWindow();

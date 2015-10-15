@@ -848,6 +848,9 @@ $(document).ready(function () {
 function heightCalculate(){
     var height =$("#content").height;
     var tableHeight = $("#datatable-1").length ? ($('#datatable-1 tr').length > 50 ? 50 : $('#datatable-1 tr').length) * 50 + $('#datatable-1').position().top + 200: 0;
+/* 	var w=$("#datatable-1").outerWidth();
+	console.log (w);
+	$("body").css({width: 300+ w}); */
     if (tableHeight > height) {
         height = tableHeight;
     }
@@ -915,12 +918,7 @@ function channelUrlDataUpdate(container, data){
 }
 
 function channelListRender(container){
-    JSshowModalBox();
-    setTimeout(function(){
-       if ($("#modalbox").data('complete') != 1) {
-            JSErrorModalBox();
-       } 
-    }, 10000);
+
     var _container = $(container);
     _container.empty();
     var maxBlockHeight = $(window).height()- _container.offset().top - 50;
@@ -1001,6 +999,30 @@ function ajaxSuccess(data, alertMsg, consoleMsg){
         }
     }
 }
+
+
+function notty(data,type){
+    var msg = data;    
+	
+	if (type == 'undefined') { type="notification"; }
+
+	if (type=="notification") { var timeout = "1000"; } else { var timeout = false; }
+ 	noty({
+		text: msg,
+		layout      :	'topCenter',
+		type        :	type,
+		theme       :	'defaultTheme',
+		timeout		:	timeout,
+		animation: {
+			open: {height: 'toggle'}, // jQuery animate function property object
+			close: {height: 'toggle'}, // jQuery animate function property object
+			easing: 'swing', // easing
+		    speed: 500 // opening & closing animation speed
+    }
+});
+}
+
+
 
 function ajaxError(data, alertMsg, consoleMsg){
     var alertMsg = typeof(alertMsg) != 'undefined'? alertMsg: true;
@@ -1152,26 +1174,16 @@ String.prototype.camelCase = function () {
 };
 
 function JScloseModalBox(){
-    $("#modalbox").data('complete', 1);
-    $("#modalbox").hide();
-    $('#modalbox').find('.modal-header-name span').empty();
-    $('#modalbox').find('.devoops-modal-inner').empty();
-    $('#modalbox').find('.devoops-modal-bottom').empty();
+     $.noty.closeAll();
 }
         
 function JSshowModalBox(){
-    $("#modalbox").data('complete', 0);
-    $('#modalbox').find('.modal-header-name span').text(words['Wait'] + "...");
-    $('#modalbox').find('.devoops-modal-inner').html('<span>' + words['Request_is_being_prossessed'] + '...</span>');
-    $('#modalbox').find('.devoops-modal-bottom').empty();
-    $("#modalbox").show();
+    notty('<span>' + words['Request_is_being_prossessed'] + '...</span>','notification');
 }
 
 function JSSuccessModalBox(data) {
     var msg = (typeof(data)!= 'undefined' && typeof(data.msg)!= 'undefined'? data.msg: '');
-    $("#modalbox").data('complete', 1);
-    $('#modalbox').find('.devoops-modal-inner').html('<span>' + words['Done'] + '!' + msg +'</span>');
-    $('#modalbox').find('.devoops-modal-bottom').empty();
+	notty('<span>' + words['Done'] + '!' + msg +'</span>','success');$("#modalbox").hide();$("#modalbox_ad").hide();
 }
 
 function JSErrorModalBox(data){
@@ -1180,7 +1192,5 @@ function JSErrorModalBox(data){
         msg = ( typeof(data.msg)!= 'undefined' ? data.msg: '');
         msg = ( msg.length == 0 && typeof(data.error)!= 'undefined' ? data.error: msg);
     }
-    $('#modalbox').find('.devoops-modal-inner').html('<span>' + words['Failed'] + '!' + msg + '!</span>');
-    $("#modalbox").data('complete', 1);
-    $('#modalbox').find('.devoops-modal-bottom').empty();
+	notty('<span>' + words['Failed'] + '!' + msg + '!</span>','error');
 }

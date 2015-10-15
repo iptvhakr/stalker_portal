@@ -709,7 +709,7 @@ function common_xpcom(){
                                         stb.init_auth_dialog();
                                     }
                                     stb.auth_dialog.show();
-                                }else if (!stb.auth_dialog.on){
+                                }else if (!stb.auth_dialog || !stb.auth_dialog.on){
                                     authentication_problem.show();
                                 }
                             }
@@ -800,6 +800,10 @@ function common_xpcom(){
     this.get_saved_access_token = function(){
         _debug('stb.get_saved_access_token');
 
+        if (stb.access_token){
+            return stb.access_token;
+        }
+
         var file = 'stalker_'+this.hashCode(window.location.origin+window.location.pathname);
 
         if (!stb.LoadUserData){
@@ -837,7 +841,7 @@ function common_xpcom(){
             {
                 "type"   : "stb",
                 "action" : "handshake",
-                "token"  : this.get_saved_access_token() || this.access_token || ''
+                "token"  : this.get_saved_access_token() || ''
             },
             function(result){
                 _debug('on handshake', result);
@@ -1059,6 +1063,10 @@ function common_xpcom(){
 
                 if (this.user.hasOwnProperty('cas_type')){
                     this.player.set_cas(this.user);
+                }
+
+                if (this.user.hasOwnProperty('hls_fast_start')){
+                    this.player.set_hls_fast_start(this.user.hls_fast_start);
                 }
 
                 this.user.fav_itv_on = parseInt(this.user.fav_itv_on, 10);

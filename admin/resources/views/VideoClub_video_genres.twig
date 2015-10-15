@@ -28,7 +28,7 @@
                                         <!-- Start: list_row -->
                                         {% for item in app.allData %}
                                             <tr data-genresid="{{ item.id }}">
-                                                <td><a href="#">{{ item.title }}</a></td>
+                                                <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/video-genres-list-json" class="main_ajax" data-id="{{ item.id }}" id="edit_video_genres_{{ item.id }}">{{ item.title }}</a></td>
                                                 <td>{{ item.localized_title }}</td>
                                                 <td>{{ item.category }}</td>
                                                 <td>
@@ -230,8 +230,6 @@
                                         <div class="bg-danger"></div>\n\
                                     </span>\n\
                                 </div>\n\
-                            </div>\n\
-                            <div class="form-group">\n\
                                 <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Category'|trans }}</label>\n\
                                 <div class="col-xs-10 col-sm-8">\n\
                                     <span class="col-xs-8 col-sm-8">\n\

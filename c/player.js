@@ -429,6 +429,17 @@ player.prototype.set_cas = function(profile){
     }
 };
 
+player.prototype.set_hls_fast_start = function(hls_fast_start){
+    _debug('player.set_hls_fast_start', hls_fast_start);
+
+    if (!stb.SetPlayerOption){
+        _debug('stb.SetPlayerOption method not found!');
+        return;
+    }
+
+    stb.SetPlayerOption('HlsFastStart', hls_fast_start ? '1' : '0')
+};
+
 player.prototype.play_or_download = function(content_type, url){
     _debug('player.play_media', content_type, url);
 

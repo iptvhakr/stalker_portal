@@ -234,9 +234,7 @@
         document.addEventListener("DOMContentLoaded", yelp, false);
               
         var manageList = function (obj) {
-            $('#datatable-1').DataTable().ajax.reload();
-            $("#modalbox").data('complete', 1);
-            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Finish'|trans }}!</span>');
+            notty('<span>{{ 'Finish'|trans }}!</span>','success');
         };
 
         function closeModalBox(){
@@ -247,15 +245,12 @@
         }
         
         function showModalBox(){
-            $('#modalbox').find('.modal-header-name span').text('{{ 'Wait'|trans }}...');
-            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Request is being processed'|trans }}...</span>');
-            $("#modalbox").show();
+			notty('<span>{{ 'Request is being processed'|trans }}...</span>','notification');
         }
 
 
         var errAction = function(){
-            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Failed'|trans }}!</span>');
-            $("#modalbox").data('complete', 1);
+            notty('<span>{{ 'Failed'|trans }}!</span>','error');
         };
 
     </script>

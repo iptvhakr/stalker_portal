@@ -51,13 +51,14 @@
                                 <div class=" col-xs-10 col-sm-6">
                                     <div class="checkbox">
                                         <label>
-                                            {{ form_widget(app['form'].user_default, {'attr': {'disabled': app['userDefault']} }) }}      
+                                            {{ form_widget(app['form'].user_default) }}      
                                             <i class="fa fa-square-o small"></i>
                                         </label>
+										
                                         <div class="bg-danger">
                                             {{ form_errors(app['form'].user_default) }}
                                         </div>
-                                    </div>
+                                    </div></div><div>
                                     <span class="help-inline col-sm-12">
                                         <span class="small txt-default">{{ 'Default tariff for all new STB of the network'|trans }}</span>
                                     </span>
@@ -69,7 +70,7 @@
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].packages, {'attr': {'class': 'populate placeholder', 'multiple': 'multiple'} }) }}
-                                    <div class="bg-danger">
+                                    </div><div><div class="bg-danger">
                                         {{ form_errors(app['form'].packages) }}
                                     </div>
                                     <span class="help-inline col-sm-12">
@@ -83,7 +84,7 @@
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].packages_optional, {'attr': {'class': 'form-control'} }) }}
-                                    <div class="bg-danger">
+                                    </div><div><div class="bg-danger">
                                         {{ form_errors(app['form'].packages_optional) }}
                                     </div>
                                     <span class="help-inline col-sm-12">

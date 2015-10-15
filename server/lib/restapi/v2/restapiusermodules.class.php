@@ -14,6 +14,6 @@ class RESTApiUserModules extends RESTApiController
         $all_modules = \Config::get('all_modules');
         $disabled_modules = \Stb::getDisabledModulesByUid((int) $parent_id);
 
-        return array_diff($all_modules, $disabled_modules);
+        return array_values(array_diff($all_modules, $disabled_modules));
     }
 }
