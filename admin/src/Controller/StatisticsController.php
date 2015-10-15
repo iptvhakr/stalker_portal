@@ -527,7 +527,7 @@ class StatisticsController extends \Controller\BaseStalkerController {
                
         $filds_for_select = $this->getFieldFromArray($this->getClaimsDropdownAttribute(), 'name');
                 
-        $error = "Error";
+        $error = $this->setlocalization("Error");
         $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
@@ -584,12 +584,11 @@ class StatisticsController extends \Controller\BaseStalkerController {
             'data' => array(),
             'recordsTotal' => 0,
             'recordsFiltered' => 0
-        );;
-        
-               
+        );
+
         $filds_for_select = $this->getFieldFromArray($this->getClaimsLogsDropdownAttribute(), 'name');
                 
-        $error = "Error";
+        $error = $this->setlocalization("Error");
         $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
         
         if (!empty($param['type'])) {
@@ -597,7 +596,7 @@ class StatisticsController extends \Controller\BaseStalkerController {
                 $param['media_type'] = 'itv';
             } else {
                 $tmp = explode('_', $param['type']);
-                $param['media_type'] = ($tmp[0] == 'vclub'? 'video': $tmp[0]);
+                $param['media_type'] = $tmp[0];//($tmp[0] == 'vclub'? 'video': $tmp[0]);
                 $param['type'] = $tmp[1];
             }
         }
@@ -1037,6 +1036,104 @@ class StatisticsController extends \Controller\BaseStalkerController {
         } else {
             return $response;
         }
+    }
+
+    public function stat_claims_clean(){
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['media_type'])) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+        $data = array();
+        $data['action'] = 'manageClaims';
+        /*$data['msg'] = $this->setLocalization("Well done!");*/
+        $error = $this->setlocalization('Error');
+
+        if ($this->postData['media_type'] == 'all') {
+            $this->db->truncateTable("daily_media_claims");
+            $this->db->truncateTable("media_claims");
+            $this->db->truncateTable("media_claims_log");
+            $error = "";
+        } else {
+            $query_params = array(
+                'select' => array('id', 'date'),
+                'like' => array(),
+                'order'=>array()
+            );
+
+            if ($this->postData['media_type'] == 'epg') {
+                $query_params['where'] = array(
+                    "no_epg <> 0 OR wrong_epg<>" => 0
+                );
+            } else {
+                $query_params['where'] = array(
+                    $this->postData['media_type']."_sound <> 0 OR ".$this->postData['media_type']."_video<>" => 0
+                );
+            }
+
+            $date = $this->db->getDailyClaimsList($query_params);
+            if (!empty($date) && is_array($date)) {
+                $query_params['select'] = array('M_C_L.id as `id`', 'M_C_L.media_id as `media_id`');
+                if ($this->postData['media_type'] == 'epg') {
+                    $query_params['where'] = array(
+                        "M_C_L.media_type" => 'itv',
+                        "M_C_L.`type` = 'no_epg' OR M_C_L.`type` = " => 'wrong_epg'
+                    );
+                } else {
+                    $query_params['where'] = array(
+                        "media_type" => $this->postData['media_type'],
+                        "(M_C_L.`type` = 'sound' OR M_C_L.`type` = 'video') AND '1'=" => '1'
+                    );
+                }
+
+                $like = array_map(function($row){return "$row%";}, $this->getFieldFromArray($date, 'date'));
+                $like_ctr = '';
+                for($i = 0; $i <= count($like) - 2; $i++) {
+                    $like_ctr .= ' M_C_L.`added` LIKE "' . $like[$i] . '" OR ';
+                }
+                $like_ctr .= " M_C_L.`added` ";
+                $query_params['like'][$like_ctr] = $like[count($like) - 1];
+                $log = $this->db->getClaimsLogsList($query_params);
+
+                if ($this->postData['media_type'] == 'epg') {
+                    $new_values = array(
+                        "no_epg" => 0,
+                        "wrong_epg" => 0
+                    );
+                } else {
+                    $new_values = array(
+                        $this->postData['media_type']."_sound" => 0,
+                        $this->postData['media_type']."_video" => 0
+                    );
+                }
+
+                if ($this->db->updateDailyClaims($new_values, array('id'=>$this->getFieldFromArray($date, 'id')))) {
+                    $this->db->cleanDailyClaims();
+                }
+
+                if ($this->postData['media_type'] != 'epg') {
+                    $new_values = array(
+                        "sound_counter" => 0,
+                        "video_counter" => 0
+                    );
+                }
+
+                if ($this->db->updateMediaClaims($new_values, array('media_id'=>$this->getFieldFromArray($log, 'media_id')), array('media_type' => ($this->postData['media_type'] == 'epg' ? 'itv': $this->postData['media_type'])))) {
+                    $this->db->cleanMediaClaims();
+                }
+
+                $this->db->deleteClaimsLogs(array('id'=>$this->getFieldFromArray($log, 'id')));
+                $error = '';
+            } else {
+                $data['msg'] = $error = $this->setLocalization("Nothing in this category");
+            }
+        }
+
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
     
     //------------------------ service method ----------------------------------

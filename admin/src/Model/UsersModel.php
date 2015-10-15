@@ -354,4 +354,13 @@ class UsersModel extends \Model\BaseStalkerModel {
         }
         return $this->mysqlInstance->delete('filter_set', $where)->total_rows();
     }
+
+    public function getTVChannelNames($param) {
+        return $this->mysqlInstance->from("itv")->like(array('name' => "$param%"), ' OR ')->orderby('name')->get()->all('name');
+    }
+
+    public function getMovieNames($param) {
+        return $this->mysqlInstance->from("video")->like(array('name' => "$param%"), ' OR ')->orderby('name')->get()->all('name');
+    }
+
 }

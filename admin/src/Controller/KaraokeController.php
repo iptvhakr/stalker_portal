@@ -250,7 +250,7 @@ class KaraokeController extends \Controller\BaseStalkerController {
         $item = $this->db->getKaraokeList(array('select'=> array("*", "karaoke.id as id"), "where" => $where));
 
         ob_start();
-        if ($master = new \KaraokeMaster() && $item[0]['protocol'] != 'custom'){
+        if (($master = new \KaraokeMaster()) && $item[0]['protocol'] != 'custom'){
             $good_storages = $master->getAllGoodStoragesForMediaFromNet($media_id, true);
 
             $this->db->updateKaraoke(array('status' => (int)(count($good_storages) > 0)), $this->postData['karaokeid']);

@@ -40,8 +40,8 @@ class UsersController extends \Controller\BaseStalkerController {
         "DATE_FORMAT(last_change_status,'%d.%m.%Y') as last_change_status",
         "concat (users.fname) as fname",
         "UNIX_TIMESTAMP(`keep_alive`) as last_active",
-        "DATE_FORMAT(`expire_billing_date`,'%d.%m.%Y') as `expire_billing_date`",
-        "DATE_FORMAT(users.`created`,'%d.%m.%Y') as `created`",
+        "`expire_billing_date` as `expire_billing_date`",
+        "users.`created` as `created`",
         "account_balance", "now_playing_type", "IF(now_playing_type = 2 and storage_name, CONCAT('[', storage_name, ']', now_playing_content), now_playing_content) as now_playing_content"
     );
     private $logObjectsTypes = array(
@@ -122,8 +122,14 @@ class UsersController extends \Controller\BaseStalkerController {
             }
         }
 
-        if (empty($users_filter)) {
-            $users_filter['state'] = 0;
+        if (!array_key_exists('state', $users_filter)) {
+            $users_filter['state'] = "0";
+        }
+        if (!array_key_exists('status', $users_filter)) {
+            $users_filter['status'] = "0";
+        }
+        if (!array_key_exists('stbmodel', $users_filter)) {
+            $users_filter['stbmodel'] = "0";
         }
 
         $filter_set = \Filters::getInstance();
@@ -146,22 +152,49 @@ class UsersController extends \Controller\BaseStalkerController {
         }
 
         if (!empty($this->app['filters'])) {
-            $this->app['filters'] = array_merge($this->app['filters'], $users_filter);
-        } else {
-            $this->app['filters'] = $users_filter;
+            $users_filter = array_merge($this->app['filters'], $users_filter);
         }
 
         if (!empty($filters)) {
-            $this->app['filters_set'] = array_combine($this->getFieldFromArray($filters, 'text_id'), array_values($filters));
+            $this->app['filters_set'] = array_map(function($row) use ($self){
+                if (is_array($row['values_set'])) {
+                    $row['values_set'] = array_map(function($row_in) use ($self){
+                        $row_in['title']= $self->setLocalization($row_in['title']);
+                        return $row_in;
+                    }, $row['values_set']);
+                }
+                return $row;
+            }, array_combine($this->getFieldFromArray($filters, 'text_id'), array_values($filters)));
         }
 
-        $filters_template = array_map(function($row) use ($users_filter, $self){
-            $row['title']= $self->setLocalization($row['title']);
-            $row['name'] = $row['text_id'];
-            $row['checked'] = array_key_exists($row['text_id'], $users_filter);
-            return $row;
-        }, $filter_set->getFilters());
+        reset($users_filter);
 
+        while(list($text_id, $row) = each($users_filter)){
+            if (array_key_exists($text_id, $this->app['filters_set']) && $this->app['filters_set'][$text_id]['type'] != 'STRING') {
+                $value = explode("|", $row);
+                if ( $this->app['filters_set'][$text_id]['type'] == 'DATETIME') {
+                    $users_filter[$text_id] = array(
+                        'from' => !empty($value[0]) ? $value[0] : '',
+                        'to' => !empty($value[1]) ? $value[1] : ''
+                    );
+                } else {
+                    $users_filter[$text_id] = $value;
+                }
+            }
+        }
+
+        $this->app['filters'] = $users_filter;
+
+        $filters_template = array_filter(array_map(function($row) use ($users_filter, $self, $filter_set){
+            if ((int)$row['default'] || ($row['type'] != 'STRING' && $row['type'] != 'DATETIME' && $row['values_set'] === FALSE)) {
+                return FALSE;
+            } else {
+                $row['title']= $self->setLocalization($row['title']);
+                $row['name'] = $row['text_id'];
+                $row['checked'] = array_key_exists($row['text_id'], $users_filter);
+                return $row;
+            }
+        }, $filter_set->getFilters()));
         if (!empty($filters_template)) {
             $this->app['filters_template'] = array_combine($this->getFieldFromArray($filters_template, 'text_id'), array_values($filters_template));
         }
@@ -501,41 +534,90 @@ class UsersController extends \Controller\BaseStalkerController {
             $app_filter = array();
             if (!empty($this->app['filters'])) {
                 $app_filter = $this->app['filters'];
-            }
-            if(!empty($this->data['filter_set'])) {
+            } elseif(!empty($this->data['filter_set'])) {
                 $data_filter = $this->db->getFilterSet(array('id'=>$this->data['filter_set']));
                 if (!empty($data_filter[0]) && array_key_exists('filter_set', $data_filter[0])) {
                     $data_filter = @unserialize($data_filter[0]['filter_set']);
                     if (is_array($data_filter) && count($data_filter)>0 ) {
-                        $data_filter = array_combine($this->getFieldFromArray($data_filter, 0), $this->getFieldFromArray($data_filter, 2));
-                        $app_filter = array_replace($data_filter, $app_filter);
+                        $app_filter = array_combine($this->getFieldFromArray($data_filter, 0), $this->getFieldFromArray($data_filter, 2));
                     }
                 }
             }
 
             $app_filter = array_filter($app_filter, function($val){ return $val != 'without';});
-
             $all_filters = $filter_set->getFilters();
-            $filters_with_cond = array_filter(array_map(function($row) use ($app_filter) {
+            $filtered_users = $filters_with_cond = array();
+            $greatest = FALSE;
+            $cond = "=";
+            reset($all_filters);
+            while(list($key, $row) = each($all_filters)) {
                 if (array_key_exists($row['text_id'], $app_filter)) {
-                    if ($row['type'] == 'STRING') {
+                     if($row['type'] == 'DATETIME') {
+                        if (is_string($app_filter[$row['text_id']])) {
+                            $tmp = explode('|', $app_filter[$row['text_id']]);
+                            $app_filter[$row['text_id']] = array(
+                                'from' => !empty($tmp[0]) ? $tmp[0] : 0,
+                                'to' => !empty($tmp[1]) ? $tmp[1] : (empty($tmp[0]) ? time(): 0)
+                            );
+                        }
+                        $filters_with_cond[] = array( $row['method'], ">=", $app_filter[$row['text_id']]['from'] );
+                        if (!empty($app_filter[$row['text_id']]['to'])) {
+                            $filters_with_cond[] = array($row['method'], "<=", $app_filter[$row['text_id']]['to']);
+                        }
+                        continue;
+                    } elseif ($row['type'] == 'STRING') {
                         $cond = "*=";
-                    } elseif($row['type'] == 'DATETIME') {
-                        $cond = ">=";
                     } else {
                         $cond = "=";
-                    }
-                    if (empty($app_filter[$row['text_id']]) || (is_numeric($app_filter[$row['text_id']]) && (int)$app_filter[$row['text_id']] == 0) ){
-                        return FALSE;
-                    }
-                    $value = (($row['text_id'] == 'status') || ($row['text_id'] == 'state') ? (int)($app_filter[$row['text_id']] - 1 > 0) : $app_filter[$row['text_id']]);
-                    return array($row['method'], $cond, $value);
-                }
-            }, $all_filters));
+                        if (is_string($app_filter[$row['text_id']])) {
+                            $tmp = explode('|', $app_filter[$row['text_id']]);
+                            if (empty($tmp) || (is_array($tmp) && (array_search('0', $tmp, TRUE) !== FALSE || array_search('', $tmp, TRUE) !== FALSE))){
+                                continue;
+                            }
 
+                            $filtered_users[$row['text_id']] = array();
+                            foreach($tmp as $value){
+                                $filter_set->initData('users', 'id');
+                                if (($row['text_id'] == 'status') || ($row['text_id'] == 'state') ) {
+                                    if ((int)$value) {
+                                        $value = (int)($value - 1 > 0);
+                                    } else {
+                                        continue;
+                                    }
+                                }
+                                $filter_set->setFilters($row['method'], $cond, $value);
+                                $filtered_users[$row['text_id']] = array_unique(array_merge($filtered_users[$row['text_id']], $filter_set->getData()));
+                            }
+                            if ($greatest === FALSE || count($filtered_users[$row['text_id']]) > count($filtered_users[$greatest])) {
+                                $greatest = $row['text_id'];
+                            }
+                        }
+                         continue;
+                    }
+                    if (empty($app_filter[$row['text_id']]) || (is_numeric($app_filter[$row['text_id']]) && (int)$app_filter[$row['text_id']] == 0)){
+                        continue;
+                    }
+                    $value = (($row['text_id'] == 'status' || $row['text_id'] == 'state') ? (int)($app_filter[$row['text_id']] - 1 > 0) : $app_filter[$row['text_id']]);
+                    $filters_with_cond[] = array($row['method'], $cond, $value);
+                }
+            }
+            $filter_set->initData('users', 'id');
             $filter_set->setFilters($filters_with_cond);
-            $filtered_users = $filter_set->getData();
-            $query_param['in'] = array('users.id'=>$filtered_users) ;
+            $last = uniqid();
+            $filtered_users[$last] = $filter_set->getData();
+                                /*print_r($filtered_users);*/
+                                /*exit;*/
+            if ($greatest === FALSE || count($filtered_users[$last]) > count($filtered_users[$greatest])) {
+                $greatest = $last;
+            }
+
+            $result = $filtered_users[$greatest];
+            unset($filtered_users[$greatest]);
+            foreach ($filtered_users as $value) {
+                $result = array_intersect($result, $value);
+            }
+
+            $query_param['in'] = array('users.id'=>$result) ;
         }
 
         $query_param['where'] = array_merge($query_param['where'], $filter);
@@ -548,12 +630,26 @@ class UsersController extends \Controller\BaseStalkerController {
             $query_param['limit']['limit'] = 50;
         }
         
-        if (!empty($query_param['order']) && !empty($query_param['order']['state'])) {
-            $query_param['order']['`keep_alive`'] = $query_param['order']['state'];
-            unset($query_param['order']['state']);
-        } elseif (!empty($query_param['order']) && !empty($query_param['order']['last_change_status'])) {
-            $query_param['order']['unix_timestamp(last_change_status)'] = $query_param['order']['last_change_status'];
-            unset($query_param['order']['last_change_status']);
+        if (!empty($query_param['order'])) {
+            if (!empty($query_param['order']['state'])) {
+                $query_param['order']['`keep_alive`'] = $query_param['order']['state'];
+                unset($query_param['order']['state']);
+            } elseif (!empty($query_param['order']['last_change_status'])) {
+                $query_param['order']['unix_timestamp(last_change_status)'] = $query_param['order']['last_change_status'];
+                unset($query_param['order']['last_change_status']);
+            } elseif (!empty($query_param['order']['ls'])) {
+                $direct = strtoupper($query_param['order']['ls']);
+                $order = array(
+                    'ls=0' =>  $direct == 'ASC' ? 'ASC' : 'DESC',
+                    '-ls' =>  $direct == 'ASC' ? 'DESC': 'ASC',
+                    'ls' =>  $direct == 'ASC' ? 'ASC' : 'DESC'
+                );
+                unset($query_param['order']['ls']);
+                $query_param['order'] = array_merge($query_param['order'], $order);
+            } elseif (!empty($query_param['order']['created'])) {
+                $query_param['order']['users.created'] = $query_param['order']['created'];
+                unset($query_param['order']['created']);
+            }
         }
 
         $reseller_empty_name = $this->setLocalization('Empty');
@@ -1206,6 +1302,8 @@ class UsersController extends \Controller\BaseStalkerController {
                 while(list($key, $row) = each($data['filter']['values_set'])){
                     $data['filter']['values_set'][$key]['title'] = $this->setLocalization($row['title']);
                 }
+            } elseif ($data['filter']['type'] != 'STRING' && $data['filter']['type'] != 'DATETIME' && $data['filter']['values_set'] === FALSE) {
+                $error = $this->setLocalization('No data for this filter');
             }
         }
 
@@ -1242,7 +1340,7 @@ class UsersController extends \Controller\BaseStalkerController {
             $app_filter = $params['filter_set'];
             $all_filters = $filter_set->getFilters();
             $filters_with_cond = array_filter(array_map(function($row) use ($app_filter) {
-                if (array_key_exists($row['text_id'], $app_filter)) {
+                if (array_key_exists($row['text_id'], $app_filter) and trim(trim($app_filter[$row['text_id']], "|")) != '') {
                     if ($row['type'] == 'STRING') {
                         $cond = "*=";
                     } elseif($row['type'] == 'DATETIME') {
@@ -1252,6 +1350,7 @@ class UsersController extends \Controller\BaseStalkerController {
                     }
                     return array($row['text_id'], $cond, $app_filter[$row['text_id']]);
                 }
+                return FALSE;
             }, $all_filters));
 
             $params['filter_set'] = serialize($filters_with_cond);
@@ -1400,6 +1499,39 @@ class UsersController extends \Controller\BaseStalkerController {
         $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function get_autocomplete_watching_tv(){
+        if (!$this->isAjax || empty($this->data)) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+        return new Response(json_encode($this->db->getTVChannelNames($this->data['term'])), 200);
+    }
+
+    public function get_autocomplete_watching_movie(){
+        if (!$this->isAjax || empty($this->data)) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+        return new Response(json_encode($this->db->getMovieNames($this->data['term'])), 200);
+    }
+
+    public function get_autocomplete_stbfirmware_version() {
+        if (!$this->isAjax || empty($this->data)) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+        return new Response(json_encode(array()), 200);
     }
 
     //------------------------ service method ----------------------------------

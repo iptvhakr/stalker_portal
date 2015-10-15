@@ -133,7 +133,7 @@ class StatisticsModel extends \Model\BaseStalkerModel {
         if (!empty($param['limit']['limit'])) {
             $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
-        
+
         return ($counter) ? $this->mysqlInstance->count()->get()->counter() : $this->mysqlInstance->get()->all();
     }
     
@@ -157,7 +157,7 @@ class StatisticsModel extends \Model\BaseStalkerModel {
         $this->mysqlInstance->from("`media_claims_log` as M_C_L")
                             ->join('`itv` as I', 'M_C_L.`media_id`', 'I.`id` and M_C_L.`media_type` = "itv"', "LEFT")
                             ->join('`karaoke` as K', 'M_C_L.`media_id`', 'K.`id` and M_C_L.`media_type` = "karaoke"', "LEFT")
-                            ->join('`video` as V', 'M_C_L.`media_id`', 'V.`id` and M_C_L.`media_type` = "video"', "LEFT")
+                            ->join('`video` as V', 'M_C_L.`media_id`', 'V.`id` and M_C_L.`media_type` = "vclub"', "LEFT")
                             ->join('`users` as U', 'M_C_L.`uid`', 'U.`id`', "LEFT")
                         ->where($param['where'])
                         ->like($param['like'], 'OR')
@@ -445,5 +445,64 @@ class StatisticsModel extends \Model\BaseStalkerModel {
             return $result;
         }
         return 0;
+    }
+
+    public function truncateTable($table_name){
+        $this->mysqlInstance->query("TRUNCATE TABLE $table_name");
+    }
+
+    public function updateDailyClaims($values, $in){
+        if (!empty($in)) {
+            reset($in);
+            list($key, $val) = each($in);
+            $this->mysqlInstance->in($key, $val);
+        } else {
+            return 0;
+        }
+        return $this->mysqlInstance->update('`daily_media_claims`', $values)->total_rows();
+    }
+
+    public function updateMediaClaims($values, $in, $where){
+        if (!empty($in)) {
+            reset($in);
+            list($key, $val) = each($in);
+            $this->mysqlInstance->in($key, $val);
+        } else {
+            return 0;
+        }
+        return $this->mysqlInstance->update('`media_claims`', $values, $where)->total_rows();
+    }
+
+    public function deleteClaimsLogs($in){
+        if (!empty($in)) {
+            reset($in);
+            list($key, $val) = each($in);
+            $this->mysqlInstance->in($key, $val);
+        } else {
+            return 0;
+        }
+        return $this->mysqlInstance->delete('media_claims_log')->total_rows();
+    }
+
+    public function cleanDailyClaims(){
+        return $this->mysqlInstance->delete('daily_media_claims', array(
+            'vclub_sound' => 0,
+            'vclub_video' => 0,
+            'itv_sound' => 0,
+            'itv_video' => 0,
+            'karaoke_sound' => 0,
+            'karaoke_video' => 0,
+            'no_epg' => 0,
+            'wrong_epg' => 0
+        ))->total_rows();
+    }
+
+    public function cleanMediaClaims(){
+        return $this->mysqlInstance->delete('media_claims', array(
+            'sound_counter' => 0,
+            'video_counter' => 0,
+            'no_epg' => 0,
+            'wrong_epg' => 0
+        ))->total_rows();
     }
 }

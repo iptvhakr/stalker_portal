@@ -9,12 +9,14 @@
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 {% if attribute(app, 'filters_set') is defined %}
                     {% for filter in app.filters_set %}
-                        {% if filter.values_set|length != 0 %}
-                        {{ main_macro.get_filter(filter.text_id, filter.title, 'value', 'title', filter.values_set, 6, 8) }}
-                        {% elseif filter.type == 'STRING' %}
-                            {{ main_macro.get_filter_string_input(filter.text_id, filter.title, 'value', 'title', filter.values_set, 6, 8) }}
-                        {% elseif filter.type == 'DATETIME' %}
-                            {{ main_macro.get_filter_datetime_input(filter.text_id, filter.title, 'value', 'title', filter.values_set, 6, 8) }}
+                        {% if filter.default == '1' %}
+                            {% if filter.values_set|length != 0 %}
+                                {{ main_macro.get_filter_value_set_input(filter.text_id, filter.title, 'value', 'title', filter.values_set, 1) }}
+                            {% elseif filter.type == 'STRING' %}
+                                {{ main_macro.get_filter_string_input(filter.text_id, filter.title, 'value', 'title', filter.values_set, 1) }}
+                            {% elseif filter.type == 'DATETIME' %}
+                                {{ main_macro.get_filter_datetime_input(filter.text_id, filter.title, 'value', 'title', filter.values_set, 1) }}
+                            {% endif %}
                         {% endif %}
                     {% endfor %}
                 {% endif %}
@@ -26,6 +28,22 @@
                 <a id="add_button" href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-users" class="btn btn-success pull-right" {% if not app.resellerUserLimit %}style="display: none;"{% endif %}>{{ 'Add user'|trans }}</a>
                 <span id="limit_message" class="btn btn-default pull-right" {% if app.resellerUserLimit %}style="display: none;"{% endif %}>{{ 'Limit of number of the users has been reached'|trans }}</span>
                 <a id="form_filter_button" href="{{app.request.baseUrl}}/{{app.controller_alias}}/save-filter" class="btn btn-success green pull-right" data-filter_set_id="{% if attribute(app, 'filter_set') is defined %}{{ app.filter_set.id }}{% endif %}">{{ 'Save filter'|trans }}</a>
+                <a id="apply_filter_button" href="#" class="btn btn-default pull-right">{{ 'Apply filter'|trans }}</a>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="filter_block">
+                {% if attribute(app, 'filters_set') is defined %}
+                    {% for filter in app.filters_set %}
+                        {% if filter.default == '0' %}
+                            {% if filter.values_set|length != 0 %}
+                                {{ main_macro.get_filter_value_set_input(filter.text_id, filter.title, 'value', 'title', filter.values_set, 0) }}
+                            {% elseif filter.type == 'STRING' %}
+                                {{ main_macro.get_filter_string_input(filter.text_id, filter.title, 'value', 'title', filter.values_set, 0) }}
+                            {% elseif filter.type == 'DATETIME' %}
+                                {{ main_macro.get_filter_datetime_input(filter.text_id, filter.title, 'value', 'title', filter.values_set, 0) }}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
             </div>
         </div>
 
@@ -421,6 +439,7 @@
 
         function DemoSelect2() {
             $("[id^='s2_']").select2({minimumResultsForSearch: -1});
+            $("[id^='filter_s2_']").select2();
         }
 
         function TestTable1() {
@@ -547,8 +566,15 @@
                             d[i] = params[i];
                         }
 
-                        $('input[id^="datepicker_"]').each(function () {
-                            d['filters[' + $(this).attr("id").replace("datepicker_", "interval_") + ']'] = $(this).val();
+                        $("div[data-tvfilter]").each(function(){
+                            var inputs, s2_filter;
+                            if ((inputs = $(this).find('input.datepicker')).length) {
+                                d['filters[' + $.trim($(this).data('tvfilter')) + ']'] = inputs.map(function(){return this.value}).get().join('|');
+                            } else if((s2_filter = $(this).find('select[id^="filter_s2_"]')).length){
+                                d['filters[' + $.trim($(this).data('tvfilter')) + ']'] = s2_filter.find('option:selected').map(function(){return this.value}).get().join('|');
+                            } else {
+                                d['filters[' + $.trim($(this).data('tvfilter')) + ']'] = $.trim($(this).data('filterval')) || '';
+                            }
                         });
                     }
                 },
@@ -584,7 +610,7 @@
 
                 $("#datepicker_from").datepicker({
                     numberOfMonths: 1,
-                    language: 'ru',
+                    language: '{% if attribute(app, 'locale') is defined and app['locale']|length == 2 %}{{ app['locale'] }}{% else %}en{% endif %}',
                     dateFormat: 'dd/mm/yy',
                     dayNamesMin : dayNamesMin,
                     monthNames  : monthNames,
@@ -595,7 +621,7 @@
                 });
                 $("#datepicker_to").datepicker({
                     numberOfMonths: 1,
-                    language: 'ru',
+                    language: '{% if attribute(app, 'locale') is defined and app['locale']|length == 2 %}{{ app['locale'] }}{% else %}en{% endif %}',
                     dateFormat: 'dd/mm/yy',
                     dayNamesMin : dayNamesMin,
                     monthNames  : monthNames,
@@ -792,28 +818,65 @@
                 $(document).on('change', "#filter_param li:not(:first-child) input[type='checkbox']", function (e) {
                     if (this.checked) {
                         ajaxPostSend("{{app.request.baseUrl}}/{{app.controller_alias}}/get-filter", {text_id: $(this).val()});
-                        $(this).closest('.open').removeClass('open');
+                        /*$(this).closest('.open').removeClass('open');*/
                     } else {
-                        $('div.filter[data-tvfilter="' + $(this).val() + '"]').remove();
-                        var hrefM = window.location.href;
+                        $('div[data-tvfilter="' + $(this).val() + '"]').remove();
+                        /*var hrefM = window.location.href;
                         hrefM += window.location.search == '' ? '?': '';
                         var filterRegExp = new RegExp('\\&?filters\\[' + $(this).val() + '[^=]*=[^&|^$]*', 'ig');
                         if (filterRegExp.test(hrefM)) {
                             window.location.href = hrefM.replace(filterRegExp, '&filters['+$(this).val()+']=without').replace('?&', '?').replace('&&', '&');
                         } else {
                             window.location.href = (hrefM + '&filters['+$(this).val()+']=without').replace('?&', '?').replace('&&', '&');
-                        }
+                        }*/
                     }
                 });
 
+                $(document).on('click', 'div[data-tvfilter] ul a, div[data-tvfilter] .dropdown-menu button', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var filter_str = (this.tagName == "A") ? $(this).data('filter'): $(this).closest('.dropdown-menu').find('input').map(function(){return this.value}).get().join('|');
+                    $(this).closest('[data-filterval]').data('filterval', filter_str);
+                    $(this).closest('[data-filterval]').find('a.dropdown-toggle span:nth-child(2)').text((this.tagName == "A") ? $(this).text() : $(this).closest('.dropdown-menu').find('input').map(function(){return this.value}).get().join(' - '));
+                    $(this).closest('.open').removeClass('open');
+                    return false;
+                });
+
+                $(document).on('change', 'select[id^="filter_s2_"]', function (e) {
+                    var filter_val = $(this).find('option:selected').map(function(){return this.value}).get().join('|');
+                    var filter_str = $(this).find('option:selected').map(function(){return $(this).text()}).get().join('|');
+                    $(this).closest('[data-filterval]').data('filterval', filter_val);
+                    $(this).closest('[data-filterval]').find('a.dropdown-toggle span:nth-child(2)').text(filter_str);
+                });
+
                 $('.datepicker[id^="filter_string"]').datepicker({
-                            language    : 'ru',
+                            language    : '{% if attribute(app, 'locale') is defined and app['locale']|length == 2 %}{{ app['locale'] }}{% else %}en{% endif %}',
                             dateFormat  : 'dd-mm-yy',
                             firstDay    : 1,
                             dayNamesMin : dayNamesMin,
-                            monthNames  : monthNames
+                            monthNames  : monthNames,
+                            onClose: function (selectedDate) {
+                                var dateParam, inputNeighbor;
+                                if ($(this).attr('id').slice(-3) == '_to') {
+                                    dateParam = "maxDate";
+                                    inputNeighbor = $(this).prev('input');
+                                } else {
+                                    dateParam = "minDate";
+                                    inputNeighbor = $(this).next('input');
+                                }
+                                if (inputNeighbor && inputNeighbor.length) {
+                                    inputNeighbor.datepicker("option", dateParam, selectedDate);
+                                }
+                            }
                         }
                 );
+
+                $(document).on("click", "#apply_filter_button", function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $('#datatable-1').DataTable().ajax.reload();
+                    return false;
+                });
 
                 $(document).on("click", "#form_filter_button", function(e) {
                     e.stopPropagation();
@@ -829,7 +892,14 @@
                     };
 
                     $("div[data-tvfilter]").each(function(){
-                        filter_set.filter_set[$.trim($(this).data('tvfilter'))] = $.trim($(this).data('filterval')) || '';
+                        var inputs, s2_filter;
+                        if ((inputs = $(this).find('input.datepicker')).length) {
+                            filter_set.filter_set[$.trim($(this).data('tvfilter'))] = inputs.map(function(){return this.value}).get().join('|');
+                        } else if((s2_filter = $(this).find('select[id^="filter_s2_"]')).length){
+                            filter_set.filter_set[$.trim($(this).data('tvfilter'))] = s2_filter.find('option:selected').map(function(){return this.value}).get().join('|');
+                        } else {
+                            filter_set.filter_set[$.trim($(this).data('tvfilter'))] = $.trim($(this).data('filterval')) || '';
+                        }
                     });
 
                     filter_set.filter_set = encodeURIComponent(JSON.stringify(filter_set.filter_set));
@@ -902,9 +972,35 @@
                     $("#" + $("#s2_post_function").val()).show().find('select, input').removeAttr('disabled');
                 });
 
+                $(document).off('click', 'div[data-tvfilter] a.dropdown-toggle i.fa-times-circle');
+                $(document).on('click', 'div[data-tvfilter] a.dropdown-toggle i.fa-times-circle', function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var parentDiv = $(this).closest('div[data-tvfilter]');
+                    $("#filter_param li[data-filter='" + parentDiv.data('tvfilter') + "'] input").prop("checked", false);
+                    parentDiv.remove();
+                    return false;
+                });
+
+                $('input.autocomplete').each(function(){
+                    var _this = $(this);
+                    _this.autocomplete({
+                        source: "{{app.request.baseUrl}}/{{app.controller_alias}}/get-autocomplete-" + _this.prop('name').replace("_", "-"),
+                        minLength: 3,
+                        messages:{
+                            noResults: "{{ 'No search results'|trans }}"
+                        },
+                        close: function( event, ui ) {
+                            _this.closest('[data-filterval]').data('filterval', _this.val());
+                            _this.closest('[data-filterval]').find('a.dropdown-toggle span:nth-child(2)').text(_this.val());
+                        }
+                    });
+                });
+
                 LoadDataTablesScripts(TestTable1);
                 LoadSelect2Script(DemoSelect2);
             });
+
         }
 
         document.addEventListener("DOMContentLoaded", yelp, false);
@@ -953,7 +1049,7 @@
                     .append('<button class="btn btn-success col-sm-4 pull-right" type="submit" id="apply_enable_date">{{ 'Set date'|trans }}</button>');
             $('#modalbox').find('.devoops-modal').width(350);
             $("#expire_date_datepicker").datepicker({
-                        language    : 'ru',
+                        language    : '{% if attribute(app, 'locale') is defined and app['locale']|length == 2 %}{{ app['locale'] }}{% else %}en{% endif %}',
                         dateFormat  : 'dd-mm-yy',
                         firstDay    : 1,
                         minDate     : new Date(),
@@ -1001,12 +1097,14 @@
         {% endif %}
 
         var addFilter = function(data){
-            var last_filter_block = $('div[data-tvfilter]:last');
+            var last_filter_block = $('#filter_block div[data-tvfilter]:last');
+
+            var filtervalStr = '<div class="br '+(data.filter.values_set && data.filter.values_set.length > 0 ? "filter_s": "filter") +'" data-tvfilter="'+ data.filter.text_id +'" data-filterval="'+(data.filter.type == 'DATETIME' ? '|':'')+ '">';
 
             if (last_filter_block.length) {
-                last_filter_block.after('<div class="br filter" data-tvfilter="'+ data.filter.text_id +'" data-filterval="">');
+                last_filter_block.after(filtervalStr);
             } else {
-                $("#filter_param").parent().before('<div class="br filter" data-tvfilter="'+ data.filter.text_id +'" data-filterval="">');
+                $("#filter_block").append(filtervalStr);
             }
             if (data.filter.values_set && data.filter.values_set.length > 0) {
                 createFilterList(data.filter);
@@ -1015,6 +1113,8 @@
             } else if (data.filter.type == 'DATETIME'){
                 createFilterDate(data.filter)
             }
+            $("#filter_param").removeClass('open');
+            $('div[data-tvfilter="'+ data.filter.text_id +'"]').addClass('open').find("input:first-of-type").trigger("focus").trigger("click");
         };
 
         var saveFilterData = function(data){
@@ -1028,39 +1128,71 @@
             JSErrorModalBox(data);
         };
 
+        var addFilterError = function(data){
+            JSErrorModalBox(data);
+        };
+
         function createFilterList(filter_data){
             var filter_bloc = $('div[data-tvfilter="'+ filter_data.text_id +'"]');
-            filter_bloc.append('<a data-toggle="dropdown" class="dropdown-toggle" href="#"><span class="no-padding">' + filter_data.title + ':</span><span>' + '{{ 'All'|trans }}' + '</span><i class="fa fa-caret-down"></i></a>')
-                    .append('<ul class="dropdown-menu pull-left"></ul>');
-            var list = filter_bloc.find('ul');
-            list.append('<li><a data-filter="0" href="#"><span>' + '{{ 'All'|trans }}' + '</span></a></li>');
+            filter_bloc.append('<a data-toggle="dropdown" class="dropdown-toggle" href="#"><span class="no-padding">' + filter_data.title + ':</span><span>' + '{{ 'All'|trans }}' + '</span><i class="fa fa-caret-down"></i><i class="fa fa-times-circle"></i></a>')
+                    .append('<div class="dropdown-menu">');
+            filter_bloc.find("div.dropdown-menu").append('<select class="populate placeholder" name="'+ filter_data.text_id +'" id="filter_s2_'+ filter_data.text_id +'" data-postponed="1" multiple>');
+            var list = filter_bloc.find('select');
+            list.append('<option value="0" >' + '{{ 'All'|trans }}' + '</option>');
             for (var i in filter_data.values_set) {
-                list.append('<li><a data-filter="' + filter_data.values_set[i].value + '" href="#"><span>' + filter_data.values_set[i].title + '</span></a></li>');
+                list.append('<option value="' + filter_data.values_set[i].value + '">' + filter_data.values_set[i].title + '</option>');
             }
+            $("#filter_s2_"+ filter_data.text_id).select2();
         }
 
         function createFilterText(filter_data){
             var filter_bloc = $('div[data-tvfilter="'+ filter_data.text_id +'"]');
-            filter_bloc.append('<a data-toggle="dropdown" class="dropdown-toggle" href="#"><span class="no-padding">' + filter_data.title + ':</span><span></span><i class="fa fa-caret-down"></i></a>');
+            filter_bloc.append('<a data-toggle="dropdown" class="dropdown-toggle" href="#"><span class="no-padding">' + filter_data.title + ':</span><span></span><i class="fa fa-caret-down"></i><i class="fa fa-times-circle"></i></a>');
             filter_bloc.append('<div class="dropdown-menu">' +
-            '<input type="text" class="filter_string" value="" id="filter_string_'+ filter_data.text_id +'" name="'+ filter_data.text_id +'">' +
-            '<button type="button" class="btn btn-success filter_string"><i class="fa fa-check"></i></button>' +
+            '<input type="text" class="filter_string autocomplete" value="" id="filter_string_'+ filter_data.text_id +'" name="'+ filter_data.text_id +'">' +
+            '<button type="button" class="btn btn-success filter_string"  data-postponed="1"><i class="fa fa-check"></i></button>' +
             '</div>');
+            var _this = $( '#filter_string_'+ filter_data.text_id );
+            _this.autocomplete({
+                source: "{{app.request.baseUrl}}/{{app.controller_alias}}/get-autocomplete-" + _this.prop('name').replace("_", "-"),
+                minLength: 3,
+                messages:{
+                    noResults: "{{ 'No search results'|trans }}"
+                },
+                close: function( event, ui ) {
+                    _this.closest('[data-filterval]').data('filterval', _this.val());
+                    _this.closest('[data-filterval]').find('a.dropdown-toggle span:nth-child(2)').text(_this.val());
+                }
+            });
         }
 
         function createFilterDate(filter_data){
             var filter_bloc = $('div[data-tvfilter="'+ filter_data.text_id +'"]');
-            filter_bloc.append('<a data-toggle="dropdown" class="dropdown-toggle" href="#"><span class="no-padding">' + filter_data.title + ':</span><span></span><i class="fa fa-caret-down"></i></a>');
+            filter_bloc.append('<a data-toggle="dropdown" class="dropdown-toggle" href="#"><span class="no-padding">' + filter_data.title + ':</span><span></span><i class="fa fa-caret-down"></i><i class="fa fa-times-circle"></a>');
             filter_bloc.append('<div class="dropdown-menu">' +
-            '<input type="text" class="datepicker filter_string" data-date-format="dd-mm-yy" name="'+ filter_data.text_id +'" id="filter_string_'+ filter_data.text_id +'" value="">' +
-            '<button type="button" class="btn btn-success filter_string"><i class="fa fa-check"></i></button>' +
+            '<input type="text" class="datepicker filter_string" data-date-format="dd-mm-yy" name="'+ filter_data.text_id +'[from]" id="filter_string_'+ filter_data.text_id +'_from" value="">' +
+            '<input type="text" class="datepicker filter_string" data-date-format="dd-mm-yy" name="'+ filter_data.text_id +'[to]" id="filter_string_'+ filter_data.text_id +'_to" value="">' +
+            '<button type="button" class="btn btn-success filter_string" data-postponed="1"></i><i class="fa fa-check"></button>' +
             '</div>');
-            $('#filter_string_'+ filter_data.text_id).datepicker({
-                        language    : 'ru',
+            $('[id^="filter_string_'+ filter_data.text_id + '"]').datepicker({
+                        language    : '{% if attribute(app, 'locale') is defined and app['locale']|length == 2 %}{{ app['locale'] }}{% else %}en{% endif %}',
                         dateFormat  : 'dd-mm-yy',
                         firstDay    : 1,
                         dayNamesMin : dayNamesMin,
-                        monthNames  : monthNames
+                        monthNames  : monthNames,
+                        onClose: function (selectedDate) {
+                            var dateParam, inputNeighbor;
+                            if ($(this).attr('id').slice(-3) == '_to') {
+                                dateParam = "maxDate";
+                                inputNeighbor = $(this).prev('input');
+                            } else {
+                                dateParam = "minDate";
+                                inputNeighbor = $(this).next('input');
+                            }
+                            if (inputNeighbor && inputNeighbor.length) {
+                                inputNeighbor.datepicker("option", dateParam, selectedDate);
+                            }
+                        }
                     }
             );
         }

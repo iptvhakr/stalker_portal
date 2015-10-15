@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-23 12:43+0300\n"
-"PO-Revision-Date: 2015-09-23 12:43+0300\n"
+"POT-Creation-Date: 2015-10-15 17:02+0300\n"
+"PO-Revision-Date: 2015-10-15 17:05+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -178,16 +178,17 @@ msgstr "ТВ архив был успешно перезапущен."
 #: ../../../../admin/src/Controller/AudioClubController.php:1091
 #: ../../../../admin/src/Controller/AudioClubController.php:1109
 #: ../../../../admin/src/Controller/AudioClubController.php:1127
+#: ../../../../admin/src/Controller/StatisticsController.php:1043
 #: ../../../../admin/src/Controller/StoragesController.php:166
 #: ../../../../admin/src/Controller/StoragesController.php:193
 #: ../../../../admin/src/Controller/StoragesController.php:252
 #: ../../../../admin/src/Controller/StoragesController.php:272
 #: ../../../../admin/src/Controller/StoragesController.php:331
 #: ../../../../admin/src/Controller/KaraokeController.php:153
-#: ../../../../admin/src/Controller/KaraokeController.php:186
-#: ../../../../admin/src/Controller/KaraokeController.php:206
-#: ../../../../admin/src/Controller/KaraokeController.php:226
-#: ../../../../admin/src/Controller/KaraokeController.php:277
+#: ../../../../admin/src/Controller/KaraokeController.php:191
+#: ../../../../admin/src/Controller/KaraokeController.php:211
+#: ../../../../admin/src/Controller/KaraokeController.php:231
+#: ../../../../admin/src/Controller/KaraokeController.php:291
 #: ../../../../admin/src/Controller/TasksController.php:137
 #: ../../../../admin/src/Controller/TasksController.php:206
 #: ../../../../admin/src/Controller/TasksController.php:224
@@ -197,26 +198,29 @@ msgstr "ТВ архив был успешно перезапущен."
 #: ../../../../admin/src/Controller/RadioController.php:194
 #: ../../../../admin/src/Controller/RadioController.php:213
 #: ../../../../admin/src/Controller/RadioController.php:236
-#: ../../../../admin/src/Controller/UsersController.php:584
-#: ../../../../admin/src/Controller/UsersController.php:616
-#: ../../../../admin/src/Controller/UsersController.php:647
-#: ../../../../admin/src/Controller/UsersController.php:667
-#: ../../../../admin/src/Controller/UsersController.php:687
-#: ../../../../admin/src/Controller/UsersController.php:704
-#: ../../../../admin/src/Controller/UsersController.php:729
-#: ../../../../admin/src/Controller/UsersController.php:755
-#: ../../../../admin/src/Controller/UsersController.php:773
-#: ../../../../admin/src/Controller/UsersController.php:795
-#: ../../../../admin/src/Controller/UsersController.php:863
-#: ../../../../admin/src/Controller/UsersController.php:881
-#: ../../../../admin/src/Controller/UsersController.php:923
-#: ../../../../admin/src/Controller/UsersController.php:1081
-#: ../../../../admin/src/Controller/UsersController.php:1111
-#: ../../../../admin/src/Controller/UsersController.php:1145
-#: ../../../../admin/src/Controller/UsersController.php:1185
-#: ../../../../admin/src/Controller/UsersController.php:1220
-#: ../../../../admin/src/Controller/UsersController.php:1363
-#: ../../../../admin/src/Controller/UsersController.php:1385
+#: ../../../../admin/src/Controller/UsersController.php:680
+#: ../../../../admin/src/Controller/UsersController.php:712
+#: ../../../../admin/src/Controller/UsersController.php:743
+#: ../../../../admin/src/Controller/UsersController.php:763
+#: ../../../../admin/src/Controller/UsersController.php:783
+#: ../../../../admin/src/Controller/UsersController.php:800
+#: ../../../../admin/src/Controller/UsersController.php:825
+#: ../../../../admin/src/Controller/UsersController.php:851
+#: ../../../../admin/src/Controller/UsersController.php:869
+#: ../../../../admin/src/Controller/UsersController.php:891
+#: ../../../../admin/src/Controller/UsersController.php:959
+#: ../../../../admin/src/Controller/UsersController.php:977
+#: ../../../../admin/src/Controller/UsersController.php:1019
+#: ../../../../admin/src/Controller/UsersController.php:1177
+#: ../../../../admin/src/Controller/UsersController.php:1207
+#: ../../../../admin/src/Controller/UsersController.php:1241
+#: ../../../../admin/src/Controller/UsersController.php:1281
+#: ../../../../admin/src/Controller/UsersController.php:1318
+#: ../../../../admin/src/Controller/UsersController.php:1462
+#: ../../../../admin/src/Controller/UsersController.php:1484
+#: ../../../../admin/src/Controller/UsersController.php:1506
+#: ../../../../admin/src/Controller/UsersController.php:1517
+#: ../../../../admin/src/Controller/UsersController.php:1528
 #: ../../../../admin/src/Controller/InfoportalController.php:222
 #: ../../../../admin/src/Controller/InfoportalController.php:256
 #: ../../../../admin/src/Controller/InfoportalController.php:276
@@ -245,7 +249,7 @@ msgstr "Страница не найдена"
 #: ../../../../admin/src/Controller/EventsController.php:835
 #: ../../../../admin/src/Controller/EventsController.php:853
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:397
-#: ../../../../admin/src/Controller/UsersController.php:1762
+#: ../../../../admin/src/Controller/UsersController.php:1894
 msgid "ID"
 msgstr "ID"
 
@@ -278,7 +282,7 @@ msgstr "Логотип"
 #: ../../../../admin/src/Controller/VideoClubController.php:2082
 #: ../../../../admin/src/Controller/VideoClubController.php:2090
 #: ../../../../admin/src/Controller/AudioClubController.php:1353
-#: ../../../../admin/src/Controller/UsersController.php:1764
+#: ../../../../admin/src/Controller/UsersController.php:1896
 #: ../../../administrator/tariffs.php:311
 #: ../../../administrator/tariffs.php:342
 #: ../../../administrator/audio_album.php:423
@@ -338,8 +342,8 @@ msgid "Monitoring status"
 msgstr "Статус мониторинга"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1353
-#: ../../../../admin/src/Controller/UsersController.php:1735
-#: ../../../administrator/events.php:494 ../../../administrator/tasks.php:132
+#: ../../../../admin/src/Controller/UsersController.php:1867
+#: ../../../administrator/events.php:497 ../../../administrator/tasks.php:132
 #: ../../../administrator/add_video.php:828
 msgid "Status"
 msgstr "Статус"
@@ -347,9 +351,9 @@ msgstr "Статус"
 #: ../../../../admin/src/Controller/TvChannelsController.php:1354
 #: ../../../../admin/src/Controller/EventsController.php:814
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:403
-#: ../../../../admin/src/Controller/UsersController.php:1743
-#: ../../../../admin/src/Controller/UsersController.php:1756
-#: ../../../../admin/src/Controller/UsersController.php:1768
+#: ../../../../admin/src/Controller/UsersController.php:1875
+#: ../../../../admin/src/Controller/UsersController.php:1888
+#: ../../../../admin/src/Controller/UsersController.php:1900
 msgid "Operations"
 msgstr "Действия"
 
@@ -388,7 +392,7 @@ msgid "Users offline"
 msgstr "Пользователей оффлайн"
 
 #: ../../../../admin/src/Controller/IndexController.php:121
-#: ../../../lib/user.class.php:1122
+#: ../../../lib/user.class.php:1128
 msgid "TV channels"
 msgstr "ТВ каналы"
 
@@ -410,14 +414,14 @@ msgstr "Установленных приложений"
 
 #: ../../../../admin/src/Controller/EventsController.php:405
 #: ../../../../admin/src/Controller/EventsController.php:528
-#: ../../../../admin/src/Controller/UsersController.php:965
-#: ../../../../admin/src/Controller/UsersController.php:1298
+#: ../../../../admin/src/Controller/UsersController.php:1061
+#: ../../../../admin/src/Controller/UsersController.php:1397
 #: ../../../lang/stb.php:362
 msgid "Error"
 msgstr "ошибка"
 
 #: ../../../../admin/src/Controller/EventsController.php:569
-#: ../../../tools/misctranslations.php:845
+#: ../../../tools/misctranslations.php:843
 msgid "deferred"
 msgstr "приостановленно"
 
@@ -440,7 +444,7 @@ msgstr "Все"
 
 #: ../../../../admin/src/Controller/EventsController.php:576
 #: ../../../administrator/playlists.php:157
-#: ../../../administrator/events.php:412
+#: ../../../administrator/events.php:415
 #: ../../../administrator/profile.php:450
 #: ../../../administrator/administrators.php:165
 #: ../../../administrator/administrators.php:206
@@ -456,13 +460,13 @@ msgid "Filter"
 msgstr "Фильтр"
 
 #: ../../../../admin/src/Controller/EventsController.php:811
-#: ../../../../admin/src/Controller/UsersController.php:1763
+#: ../../../../admin/src/Controller/UsersController.php:1895
 #: ../../../administrator/add_karaoke.php:813
 msgid "Author"
 msgstr "Автор"
 
 #: ../../../../admin/src/Controller/EventsController.php:812
-#: ../../../../admin/src/Controller/UsersController.php:1730
+#: ../../../../admin/src/Controller/UsersController.php:1862
 #: ../../../tools/misctranslations.php:531
 msgid "Created"
 msgstr "Создано"
@@ -486,13 +490,13 @@ msgstr "MAC"
 
 #: ../../../../admin/src/Controller/EventsController.php:839
 #: ../../../../admin/src/Controller/EventsController.php:854
-#: ../../../administrator/events.php:492
+#: ../../../administrator/events.php:495
 msgid "Event"
 msgstr "Событие"
 
 #: ../../../../admin/src/Controller/EventsController.php:840
 #: ../../../administrator/master_log.php:122
-#: ../../../administrator/events.php:493
+#: ../../../administrator/events.php:496
 msgid "Message"
 msgstr "Сообщение"
 
@@ -521,7 +525,7 @@ msgid "Recipient"
 msgstr "Получатель"
 
 #: ../../../../admin/src/Controller/EventsController.php:857
-#: ../../../../admin/src/Controller/UsersController.php:1731
+#: ../../../../admin/src/Controller/UsersController.php:1863
 #: ../../../administrator/claims_log.php:174
 #: ../../../administrator/users.php:580 ../../../lang/stb.php:396
 #: ../../../lang/stb.php:501
@@ -539,8 +543,8 @@ msgstr "Окончание"
 
 #: ../../../../admin/src/Controller/EventsController.php:860
 #: ../../../administrator/add_video.php:620
-#: ../../../../admin/json_menu/menu.json:68
-#: ../../../../admin/json_menu/menu.json:224
+#: ../../../../admin/json_menu/menu.json:43
+#: ../../../../admin/json_menu/menu.json:191
 msgid "Schedule"
 msgstr "Расписание"
 
@@ -554,7 +558,7 @@ msgstr "Последний запуск"
 
 #: ../../../../admin/src/Controller/EventsController.php:863
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:402
-#: ../../../../admin/src/Controller/UsersController.php:1734
+#: ../../../../admin/src/Controller/UsersController.php:1866
 msgid "State"
 msgstr "Состояние"
 
@@ -565,7 +569,7 @@ msgstr "Запланированно"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:94
 #: ../../../../admin/src/Controller/VideoClubController.php:135
-#: ../../../../admin/json_menu/menu.json:63
+#: ../../../../admin/json_menu/menu.json:38
 msgid "Movie list"
 msgstr "Список фильмов"
 
@@ -580,7 +584,7 @@ msgstr "Редактировать фильм"
 #: ../../../../admin/src/Controller/VideoClubController.php:190
 #: ../../../../admin/src/Controller/VideoClubController.php:225
 #: ../../../administrator/add_video.php:620
-#: ../../../../admin/json_menu/menu.json:73
+#: ../../../../admin/json_menu/menu.json:48
 msgid "Advertising"
 msgstr "Реклама"
 
@@ -594,7 +598,7 @@ msgstr "Редактировать рекламу"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:254
 #: ../../../../admin/src/Controller/VideoClubController.php:282
-#: ../../../../admin/json_menu/menu.json:78
+#: ../../../../admin/json_menu/menu.json:53
 msgid "Moderators"
 msgstr "Модераторы"
 
@@ -625,9 +629,9 @@ msgstr "Информация недоступна"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:616
 #: ../../../../admin/src/Controller/BroadcastServersController.php:19
-#: ../../../../admin/src/Controller/UsersController.php:605
-#: ../../../../admin/src/Controller/UsersController.php:1450
-#: ../../../../admin/src/Controller/UsersController.php:1454
+#: ../../../../admin/src/Controller/UsersController.php:701
+#: ../../../../admin/src/Controller/UsersController.php:1582
+#: ../../../../admin/src/Controller/UsersController.php:1586
 #: ../../../lang/stb.php:369
 msgid "on"
 msgstr "вкл"
@@ -751,7 +755,7 @@ msgstr "Установленная версия"
 #: ../../../../admin/src/Controller/AudioClubController.php:84
 #: ../../../../admin/src/Controller/AudioClubController.php:124
 #: ../../../lib/audioclub.class.php:15 ../../../lang/stb.php:548
-#: ../../../../admin/json_menu/menu.json:106
+#: ../../../../admin/json_menu/menu.json:81
 msgid "Albums"
 msgstr "Альбомы"
 
@@ -762,6 +766,10 @@ msgstr "Добавить аудио альбом"
 #: ../../../../admin/src/Controller/AudioClubController.php:125
 msgid "Edit audio album"
 msgstr "Редактировать аудио альбом"
+
+#: ../../../../admin/src/Controller/StatisticsController.php:1130
+msgid "Nothing in this category"
+msgstr "Ничего нет в данной категории"
 
 #: ../../../../admin/src/Controller/StoragesController.php:212
 msgid "movies"
@@ -774,7 +782,7 @@ msgstr "караоке"
 
 #: ../../../../admin/src/Controller/TasksController.php:195
 #: ../../../../admin/src/Controller/TasksController.php:261
-#: ../../../../admin/json_menu/menu.json:265
+#: ../../../../admin/json_menu/menu.json:232
 msgid "Tasks list"
 msgstr "Список заданий"
 
@@ -786,11 +794,11 @@ msgstr "Добавить радио"
 msgid "Edit radio"
 msgstr "Редактировать радио"
 
-#: ../../../../admin/src/Controller/UsersController.php:189
-#: ../../../../admin/src/Controller/UsersController.php:214
-#: ../../../../admin/src/Controller/UsersController.php:227
-#: ../../../../admin/src/Controller/UsersController.php:559
-#: ../../../../admin/src/Controller/UsersController.php:1502
+#: ../../../../admin/src/Controller/UsersController.php:222
+#: ../../../../admin/src/Controller/UsersController.php:247
+#: ../../../../admin/src/Controller/UsersController.php:260
+#: ../../../../admin/src/Controller/UsersController.php:655
+#: ../../../../admin/src/Controller/UsersController.php:1634
 #: ../../../../admin/src/Controller/AdminsController.php:48
 #: ../../../../admin/src/Controller/AdminsController.php:66
 #: ../../../../admin/src/Controller/AdminsController.php:323
@@ -798,72 +806,76 @@ msgstr "Редактировать радио"
 msgid "Empty"
 msgstr "Пустой"
 
-#: ../../../../admin/src/Controller/UsersController.php:201
+#: ../../../../admin/src/Controller/UsersController.php:234
 msgid "Used filter"
 msgstr "использован фильтр"
 
-#: ../../../../admin/src/Controller/UsersController.php:255
+#: ../../../../admin/src/Controller/UsersController.php:288
 msgid "Log of user"
 msgstr "Логи пользователя"
 
-#: ../../../../admin/src/Controller/UsersController.php:273
+#: ../../../../admin/src/Controller/UsersController.php:306
 msgid "STB statuses report"
 msgstr "Отчет по измененным статусам приставок"
 
-#: ../../../../admin/src/Controller/UsersController.php:309
-#: ../../../../admin/src/Controller/UsersController.php:379
-#: ../../../../admin/json_menu/menu.json:178
+#: ../../../../admin/src/Controller/UsersController.php:342
+#: ../../../../admin/src/Controller/UsersController.php:412
+#: ../../../../admin/json_menu/menu.json:153
 msgid "Users list"
 msgstr "Список пользователей"
 
-#: ../../../../admin/src/Controller/UsersController.php:401
-#: ../../../../admin/json_menu/menu.json:188
+#: ../../../../admin/src/Controller/UsersController.php:434
+#: ../../../../admin/json_menu/menu.json:163
 msgid "User groups"
 msgstr "Группы пользователей"
 
-#: ../../../../admin/src/Controller/UsersController.php:402
+#: ../../../../admin/src/Controller/UsersController.php:435
 msgid "STB of group"
 msgstr "приставки в группе"
 
-#: ../../../../admin/src/Controller/UsersController.php:605
-#: ../../../../admin/src/Controller/UsersController.php:1449
-#: ../../../../admin/src/Controller/UsersController.php:1453
+#: ../../../../admin/src/Controller/UsersController.php:701
+#: ../../../../admin/src/Controller/UsersController.php:1581
+#: ../../../../admin/src/Controller/UsersController.php:1585
 #: ../../../lang/stb.php:370
 msgid "off"
 msgstr "выкл"
 
-#: ../../../../admin/src/Controller/UsersController.php:938
-#: ../../../../admin/src/Controller/UsersController.php:939
+#: ../../../../admin/src/Controller/UsersController.php:1034
+#: ../../../../admin/src/Controller/UsersController.php:1035
 msgid "This user is already connected to the group"
 msgstr "Пользователь уже подключен к группе"
 
-#: ../../../../admin/src/Controller/UsersController.php:941
+#: ../../../../admin/src/Controller/UsersController.php:1037
 msgid "User with this MAC-address is not defined"
 msgstr "Пользователь с таким MAC-адресом не определен"
 
-#: ../../../../admin/src/Controller/UsersController.php:1133
-#: ../../../../admin/src/Controller/UsersController.php:1167
+#: ../../../../admin/src/Controller/UsersController.php:1229
+#: ../../../../admin/src/Controller/UsersController.php:1263
 #: ../../../../admin/src/Controller/AdminsController.php:631
 #: ../../../../admin/src/Controller/AdminsController.php:665
 #: ../../../../admin/src/Controller/AdminsController.php:699
 msgid "Moved"
 msgstr "Перемещено"
 
-#: ../../../../admin/src/Controller/UsersController.php:1135
-#: ../../../../admin/src/Controller/UsersController.php:1174
+#: ../../../../admin/src/Controller/UsersController.php:1231
+#: ../../../../admin/src/Controller/UsersController.php:1270
 #: ../../../../admin/src/Controller/AdminsController.php:667
 #: ../../../../admin/src/Controller/AdminsController.php:701
 msgid "Not found reseller for moving"
 msgstr "Не найден реселлер для перемещения"
 
-#: ../../../../admin/src/Controller/UsersController.php:1135
-#: ../../../../admin/src/Controller/UsersController.php:1174
+#: ../../../../admin/src/Controller/UsersController.php:1231
+#: ../../../../admin/src/Controller/UsersController.php:1270
 #: ../../../../admin/src/Controller/AdminsController.php:667
 #: ../../../../admin/src/Controller/AdminsController.php:701
 msgid "Nothing to do"
 msgstr "Нечего сохранять"
 
-#: ../../../../admin/src/Controller/UsersController.php:1727
+#: ../../../../admin/src/Controller/UsersController.php:1306
+msgid "No data for this filter"
+msgstr "Нет данных для построения фильтра"
+
+#: ../../../../admin/src/Controller/UsersController.php:1859
 #: ../../../administrator/profile.php:394 ../../../administrator/user.php:138
 #: ../../../administrator/administrators.php:164
 #: ../../../administrator/administrators.php:191
@@ -872,12 +884,12 @@ msgstr "Нечего сохранять"
 msgid "Login"
 msgstr "Логин"
 
-#: ../../../../admin/src/Controller/UsersController.php:1728
+#: ../../../../admin/src/Controller/UsersController.php:1860
 msgid "Account"
 msgstr "Лицевой счет"
 
-#: ../../../../admin/src/Controller/UsersController.php:1729
-#: ../../../../admin/src/Controller/UsersController.php:1750
+#: ../../../../admin/src/Controller/UsersController.php:1861
+#: ../../../../admin/src/Controller/UsersController.php:1882
 #: ../../../administrator/playlists.php:129
 #: ../../../administrator/playlists.php:153
 #: ../../../administrator/audio_year.php:183
@@ -905,47 +917,47 @@ msgstr "Лицевой счет"
 msgid "Name"
 msgstr "Имя"
 
-#: ../../../../admin/src/Controller/UsersController.php:1732
+#: ../../../../admin/src/Controller/UsersController.php:1864
 #: ../../../administrator/msg.php:145
 #: ../../../administrator/claims_log.php:175
 #: ../../../administrator/users.php:581 ../../../administrator/msgs.php:116
 msgid "Media"
 msgstr "Медиа"
 
-#: ../../../../admin/src/Controller/UsersController.php:1733
+#: ../../../../admin/src/Controller/UsersController.php:1865
 msgid "Last modified"
 msgstr "Последнее изменение"
 
-#: ../../../../admin/src/Controller/UsersController.php:1738
-#: ../../../../admin/src/Controller/UsersController.php:1754
+#: ../../../../admin/src/Controller/UsersController.php:1870
+#: ../../../../admin/src/Controller/UsersController.php:1886
 msgid "Reseller"
 msgstr "Реселлер"
 
-#: ../../../../admin/src/Controller/UsersController.php:1741
+#: ../../../../admin/src/Controller/UsersController.php:1873
 #: ../../../administrator/profile.php:427
 msgid "Expire billing date"
 msgstr "Действительно до"
 
-#: ../../../../admin/src/Controller/UsersController.php:1751
+#: ../../../../admin/src/Controller/UsersController.php:1883
 msgid "Quantity of users"
 msgstr "Количество пользователей"
 
-#: ../../../../admin/src/Controller/UsersController.php:1765
+#: ../../../../admin/src/Controller/UsersController.php:1897
 msgid "Filter conditions"
 msgstr "Условия фильтра"
 
-#: ../../../../admin/src/Controller/UsersController.php:1766
+#: ../../../../admin/src/Controller/UsersController.php:1898
 msgid "Visibility"
 msgstr "Видимость"
 
-#: ../../../../admin/src/Controller/UsersController.php:1767
+#: ../../../../admin/src/Controller/UsersController.php:1899
 #: ../../../lang/stb.php:385
 msgid "Favorites"
 msgstr "Избранное"
 
 #: ../../../../admin/src/Controller/TariffsController.php:94
 #: ../../../../admin/src/Controller/TariffsController.php:144
-#: ../../../../admin/json_menu/menu.json:155
+#: ../../../../admin/json_menu/menu.json:130
 msgid "Service packages"
 msgstr "Пакеты услуг"
 
@@ -959,7 +971,7 @@ msgstr "Редактировать пакет"
 
 #: ../../../../admin/src/Controller/TariffsController.php:180
 #: ../../../../admin/src/Controller/TariffsController.php:222
-#: ../../../../admin/json_menu/menu.json:160
+#: ../../../../admin/json_menu/menu.json:135
 msgid "Tariff plans"
 msgstr "Тарифные планы"
 
@@ -968,7 +980,7 @@ msgid "ID already used"
 msgstr "ID уже используется"
 
 #: ../../../../admin/src/Controller/AdminsController.php:108
-#: ../../../../admin/json_menu/menu.json:247
+#: ../../../../admin/json_menu/menu.json:214
 msgid "Groups"
 msgstr "Группы"
 
@@ -1218,7 +1230,7 @@ msgid "Foreign Serial"
 msgstr "Зарубежный Сериал"
 
 #: ../../../tools/misctranslations.php:67
-#: ../../../tools/misctranslations.php:131 ../../../lib/user.class.php:1123
+#: ../../../tools/misctranslations.php:131 ../../../lib/user.class.php:1129
 msgid "Movies"
 msgstr "Видео"
 
@@ -1763,7 +1775,7 @@ msgid "View and edit permissions of the current group"
 msgstr "Просмотр и редактирование прав текущей группы"
 
 #: ../../../tools/misctranslations.php:258
-#: ../../../../admin/json_menu/menu.json:100
+#: ../../../../admin/json_menu/menu.json:75
 msgid "Audio club"
 msgstr "Аудио клуб"
 
@@ -1935,22 +1947,22 @@ msgstr "Сообщения"
 #: ../../../tools/misctranslations.php:301
 #: ../../../tools/misctranslations.php:426 ../../../administrator/tasks.php:59
 #: ../../../administrator/tasks.php:65
-#: ../../../../admin/json_menu/menu.json:15
-#: ../../../../admin/json_menu/menu.json:259
+#: ../../../../admin/json_menu/menu.json:226
+#: ../../../../admin/json_menu/top_menu.json:10
 msgid "Tasks"
 msgstr "Задания"
 
 #: ../../../tools/misctranslations.php:302
 #: ../../../tools/misctranslations.php:362
 #: ../../../administrator/index.php:477
-#: ../../../../admin/json_menu/menu.json:384
+#: ../../../../admin/json_menu/menu.json:351
 msgid "Settings"
 msgstr "Настройки"
 
 #: ../../../tools/misctranslations.php:303
 #: ../../../tools/misctranslations.php:349
 #: ../../../administrator/index.php:158
-#: ../../../../admin/json_menu/menu.json:21
+#: ../../../../admin/json_menu/top_menu.json:16
 msgid "Logout"
 msgstr "Выход"
 
@@ -1999,7 +2011,7 @@ msgid "Removing an existing area"
 msgstr "Удаление существующей зоны"
 
 #: ../../../tools/misctranslations.php:317
-#: ../../../tools/misctranslations.php:804
+#: ../../../tools/misctranslations.php:802
 msgid "List of events"
 msgstr "Список событиий"
 
@@ -2032,7 +2044,7 @@ msgid "Info portal"
 msgstr "Инфопортал"
 
 #: ../../../tools/misctranslations.php:327
-#: ../../../../admin/json_menu/menu.json:283
+#: ../../../../admin/json_menu/menu.json:250
 msgid "Phone book"
 msgstr "Телефонный справочник"
 
@@ -2064,7 +2076,7 @@ msgstr "Удаление анекдотов"
 #: ../../../administrator/userlog.php:263
 #: ../../../administrator/stat_moderators.php:237
 #: ../../../administrator/users.php:164
-#: ../../../../admin/json_menu/menu.json:133
+#: ../../../../admin/json_menu/menu.json:108
 msgid "Karaoke"
 msgstr "Караоке"
 
@@ -2139,7 +2151,7 @@ msgstr "Регистрация в системе"
 #: ../../../tools/misctranslations.php:363
 #: ../../../administrator/add_epg.php:263
 #: ../../../administrator/add_epg.php:270
-#: ../../../../admin/json_menu/menu.json:45
+#: ../../../../admin/json_menu/menu.json:20
 msgid "EPG"
 msgstr "EPG"
 
@@ -2176,7 +2188,7 @@ msgid "Setting the skin"
 msgstr "Установка скина"
 
 #: ../../../tools/misctranslations.php:372
-#: ../../../../admin/json_menu/menu.json:395
+#: ../../../../admin/json_menu/menu.json:362
 msgid "Firmware update"
 msgstr "Обновление прошивки"
 
@@ -2198,7 +2210,7 @@ msgstr "Изменить состояние вкл/выкл обновление
 
 #: ../../../tools/misctranslations.php:378
 #: ../../../administrator/index.php:432
-#: ../../../../admin/json_menu/menu.json:295
+#: ../../../../admin/json_menu/menu.json:262
 msgid "Statistics"
 msgstr "Статистика"
 
@@ -2251,7 +2263,7 @@ msgid "Subscriber statistics by page + filters"
 msgstr "Абонентская статистика по-странично + фильтры"
 
 #: ../../../tools/misctranslations.php:391
-#: ../../../../admin/json_menu/menu.json:331
+#: ../../../../admin/json_menu/menu.json:298
 msgid "Inactive subscribers"
 msgstr "Неактивные абоненты"
 
@@ -2331,7 +2343,7 @@ msgid "Logs of storages by page + filters"
 msgstr "Логи хранилищ по-странично + фильтры"
 
 #: ../../../tools/misctranslations.php:412
-#: ../../../../admin/json_menu/menu.json:149
+#: ../../../../admin/json_menu/menu.json:124
 msgid "Tariffs"
 msgstr "Тарифы"
 
@@ -2414,8 +2426,8 @@ msgid "Sending messages, change status karaoke-task"
 msgstr "Отправка сообщений, изменение состояния кароаке-задания"
 
 #: ../../../tools/misctranslations.php:434 ../../../administrator/users.php:99
-#: ../../../../admin/json_menu/menu.json:198
-#: ../../../../admin/json_menu/menu.json:270
+#: ../../../../admin/json_menu/menu.json:173
+#: ../../../../admin/json_menu/menu.json:237
 msgid "Report"
 msgstr "Отчет"
 
@@ -2427,7 +2439,7 @@ msgstr "Отчет по-странично + фильтры"
 #: ../../../administrator/add_itv.php:674
 #: ../../../administrator/add_itv.php:1030
 #: ../../../administrator/index.php:138
-#: ../../../../admin/json_menu/menu.json:28
+#: ../../../../admin/json_menu/menu.json:3
 msgid "IPTV channels"
 msgstr "IPTV каналы"
 
@@ -2485,7 +2497,7 @@ msgstr "Просмотр и редактирование EPG канала"
 
 #: ../../../tools/misctranslations.php:452 ../../../administrator/users.php:88
 #: ../../../administrator/users.php:94 ../../../administrator/index.php:140
-#: ../../../../admin/json_menu/menu.json:172
+#: ../../../../admin/json_menu/menu.json:147
 msgid "Users"
 msgstr "Пользователи"
 
@@ -2582,7 +2594,7 @@ msgid "Report on changing of state STB by page + filters"
 msgstr "Отчет по изменению состояния приставок по-странично + фильтры"
 
 #: ../../../tools/misctranslations.php:477
-#: ../../../../admin/json_menu/menu.json:57
+#: ../../../../admin/json_menu/menu.json:32
 msgid "Video club"
 msgstr "Видео клуб"
 
@@ -2925,7 +2937,7 @@ msgid "events"
 msgstr "событий"
 
 #: ../../../tools/misctranslations.php:563
-#: ../../../../admin/json_menu/menu.json:219
+#: ../../../../admin/json_menu/menu.json:186
 msgid "Users events"
 msgstr "События пользователей"
 
@@ -3774,133 +3786,113 @@ msgstr ""
 msgid "Name already used"
 msgstr "Имя уже используется"
 
-#: ../../../tools/misctranslations.php:782
-msgid "Users status"
-msgstr "Статус пользователей"
-
 #: ../../../tools/misctranslations.php:783
-msgid "Users state"
-msgstr "Состояние пользователей"
+msgid "Registration Date"
+msgstr "Дата регистрации"
 
 #: ../../../tools/misctranslations.php:784
-msgid "Users date creation"
-msgstr "Дата создания пользователей"
-
-#: ../../../tools/misctranslations.php:785
 msgid "User country"
 msgstr "Страна пользователя"
 
+#: ../../../tools/misctranslations.php:785
+msgid "Last start"
+msgstr "Последний старт"
+
 #: ../../../tools/misctranslations.php:786
-msgid "Last start STB"
-msgstr "Последний старт приставки"
+msgid "Watched TV channel"
+msgstr "Просмотр ТВ канала"
 
 #: ../../../tools/misctranslations.php:787
-msgid "Last user activity"
-msgstr "Последняя активность"
+msgid "Watched movie"
+msgstr "Просмотр видео"
 
 #: ../../../tools/misctranslations.php:788
-msgid "Users group"
-msgstr "Группа пользователей"
+msgid "Streaming server"
+msgstr "Стриминг сервер"
 
 #: ../../../tools/misctranslations.php:789
-msgid "Users interface language"
-msgstr "Язык интрефейса пользователя"
-
-#: ../../../tools/misctranslations.php:790
-msgid "Watch the TV-channel"
-msgstr "Просматриваемый канал"
+msgid "Firmware version"
+msgstr "Версия прошивки"
 
 #: ../../../tools/misctranslations.php:791
-msgid "Watch the movie"
-msgstr "Просмотриваемый фильм"
+msgid "Auto-complete for watching-tv filter"
+msgstr "Авто-дополнение для фильтра Просмотр ТВ канала"
 
 #: ../../../tools/misctranslations.php:792
-msgid "Using streaming server"
-msgstr "Используемый сервер вещания"
+msgid "Auto-complete for watching-movie filter"
+msgstr "Авто-дополнение для фильтра Просмотр Видео"
 
 #: ../../../tools/misctranslations.php:793
-msgid "User's STB model"
-msgstr "Модель приставки пользователя"
-
-#: ../../../tools/misctranslations.php:794
-msgid "STB firmware version"
+msgid "Auto-complete for stbfirmware-version filter"
 msgstr "Версия прошивки"
 
 #: ../../../tools/misctranslations.php:795
-msgid "Connected tariff plan"
-msgstr "Используемый тарифный план"
-
-#: ../../../tools/misctranslations.php:796
-msgid "User by accessible packages of service"
-msgstr "Пользователи по подключенным пакетам услуг"
-
-#: ../../../tools/misctranslations.php:797
-#: ../../../tools/misctranslations.php:805
+#: ../../../tools/misctranslations.php:803
 msgid "List of templates of messages"
 msgstr "Список шаблонов сообщений"
 
-#: ../../../tools/misctranslations.php:798
+#: ../../../tools/misctranslations.php:796
 msgid "List of filters"
 msgstr "Список фильтров"
 
-#: ../../../tools/misctranslations.php:799
+#: ../../../tools/misctranslations.php:797
 msgid "List of filters by page + filters"
 msgstr "Список фильтров по-странично + фильтры"
 
-#: ../../../tools/misctranslations.php:800
+#: ../../../tools/misctranslations.php:798
 msgid "Get data for filter construct"
 msgstr "Получение данных для построения фильтра"
 
-#: ../../../tools/misctranslations.php:801
+#: ../../../tools/misctranslations.php:799
 msgid "Save filters set"
 msgstr "Сохранить набор фильтров"
 
-#: ../../../tools/misctranslations.php:802
+#: ../../../tools/misctranslations.php:800
 msgid "Remove filters set"
 msgstr "Удалить набор фильтров"
 
-#: ../../../tools/misctranslations.php:803
+#: ../../../tools/misctranslations.php:801
 msgid "Toggle favorite status for current filter"
 msgstr "Переключение статуса избранного для текущего фильтра"
 
-#: ../../../tools/misctranslations.php:806
+#: ../../../tools/misctranslations.php:804
 msgid "List of templates of messages by page + filters"
 msgstr "Список шаблонов сообщений по-странично + фильтры"
 
-#: ../../../tools/misctranslations.php:807
+#: ../../../tools/misctranslations.php:805
 msgid "Adding and editing the templates of messages"
 msgstr "Добавление и редактирование шаблонов сообщений"
 
-#: ../../../tools/misctranslations.php:808
+#: ../../../tools/misctranslations.php:806
 msgid "Removing the templates of messages"
 msgstr "Удаление шаблона сообщения"
 
-#: ../../../tools/misctranslations.php:809
+#: ../../../tools/misctranslations.php:807
 msgid "Send msg with video"
 msgstr "Отправика сообщения со ссылкой на видео"
 
-#: ../../../tools/misctranslations.php:810
+#: ../../../tools/misctranslations.php:808
 msgid "Run application"
 msgstr "Запуск приложения"
 
-#: ../../../tools/misctranslations.php:811
+#: ../../../tools/misctranslations.php:809
 msgid "Requires at least one link of broadcast"
 msgstr "Требуется по крайней мере одна ссылка вещания"
 
-#: ../../../tools/misctranslations.php:812
+#: ../../../tools/misctranslations.php:810
 msgid "Application catalog. List of applications"
 msgstr "Каталог приложений. Список приложений"
 
-#: ../../../tools/misctranslations.php:813
+#: ../../../tools/misctranslations.php:811
 msgid "Application catalog. List of applications  by page + filters"
 msgstr "Каталог приложений. Список приложений по-странично + фильтры"
 
-#: ../../../tools/misctranslations.php:814
+#: ../../../tools/misctranslations.php:812
 msgid ""
 "Application catalog. Terms of use of  the catalog of applications Stalker"
 msgstr "Каталог приложений.  Условия использования каталога приложений Stalker"
 
-#: ../../../tools/misctranslations.php:815
+#: ../../../tools/misctranslations.php:813
 msgid ""
 "Application catalog. Application info and list of available application "
 "versions"
@@ -3908,213 +3900,213 @@ msgstr ""
 "Каталог приложений. Информация о приложений и список доступных версий "
 "приложения"
 
-#: ../../../tools/misctranslations.php:816
+#: ../../../tools/misctranslations.php:814
 msgid "Application catalog. Getting application info from repository"
 msgstr "Каталог приложений. Получение информации из хранилища приложений"
 
-#: ../../../tools/misctranslations.php:817
+#: ../../../tools/misctranslations.php:815
 msgid "Application catalog. Add new application by URL of the repository"
 msgstr "Каталог приложений. Добавление нового приложения по URL репозитория"
 
-#: ../../../tools/misctranslations.php:818
+#: ../../../tools/misctranslations.php:816
 msgid "Application catalog. List of application versions"
 msgstr "Каталог приложений. Список версий приложения"
 
-#: ../../../tools/misctranslations.php:819
+#: ../../../tools/misctranslations.php:817
 msgid "Application Catalog. Editing the options of application"
 msgstr "Каталог приложений. Редактирование опции приложения"
 
-#: ../../../tools/misctranslations.php:820
+#: ../../../tools/misctranslations.php:818
 msgid "Application catalog. Install available application version"
 msgstr "Каталог приложений. Установка доступной версии приложения"
 
-#: ../../../tools/misctranslations.php:821
+#: ../../../tools/misctranslations.php:819
 msgid "Application catalog. Delete installed application version"
 msgstr "Каталог приложений. Удаление установленной версии приложения"
 
-#: ../../../tools/misctranslations.php:822
+#: ../../../tools/misctranslations.php:820
 msgid "Application catalog. Enable and disable application"
 msgstr "Каталог приложений. Включение и отключение приложения"
 
-#: ../../../tools/misctranslations.php:823
+#: ../../../tools/misctranslations.php:821
 msgid "Application catalog. Delete application"
 msgstr "Каталог приложений. Удаление приложения"
 
-#: ../../../tools/misctranslations.php:825
+#: ../../../tools/misctranslations.php:823
 msgid "once"
 msgstr "разовое"
 
-#: ../../../tools/misctranslations.php:826
+#: ../../../tools/misctranslations.php:824
 msgid "every"
 msgstr "каждый"
 
-#: ../../../tools/misctranslations.php:827
+#: ../../../tools/misctranslations.php:825
 msgid "and"
 msgstr "и"
 
-#: ../../../tools/misctranslations.php:828
+#: ../../../tools/misctranslations.php:826
 msgid "minute"
 msgstr "минут"
 
-#: ../../../tools/misctranslations.php:829
+#: ../../../tools/misctranslations.php:827
 msgid "hour"
 msgstr "часов"
 
-#: ../../../tools/misctranslations.php:830
+#: ../../../tools/misctranslations.php:828
 msgid "day"
 msgstr "день"
 
-#: ../../../tools/misctranslations.php:831
+#: ../../../tools/misctranslations.php:829
 msgid "weekday"
 msgstr "день недели"
 
-#: ../../../tools/misctranslations.php:832
+#: ../../../tools/misctranslations.php:830
 msgid "Week"
 msgstr "Неделя"
 
-#: ../../../tools/misctranslations.php:833
+#: ../../../tools/misctranslations.php:831
 msgid "month"
 msgstr "месяц"
 
-#: ../../../tools/misctranslations.php:834
+#: ../../../tools/misctranslations.php:832
 msgid "year"
 msgstr "год"
 
-#: ../../../tools/misctranslations.php:835
+#: ../../../tools/misctranslations.php:833
 msgid "first"
 msgstr "первый"
 
-#: ../../../tools/misctranslations.php:836
+#: ../../../tools/misctranslations.php:834
 msgid "last"
 msgstr "последний"
 
-#: ../../../tools/misctranslations.php:837
+#: ../../../tools/misctranslations.php:835
 msgid "next"
 msgstr "следующий"
 
-#: ../../../tools/misctranslations.php:838
+#: ../../../tools/misctranslations.php:836
 msgid "previous"
 msgstr "предыдущий"
 
-#: ../../../tools/misctranslations.php:839
+#: ../../../tools/misctranslations.php:837
 msgid "of week"
 msgstr "недели"
 
-#: ../../../tools/misctranslations.php:840
+#: ../../../tools/misctranslations.php:838
 msgid "of month"
 msgstr "месяца"
 
-#: ../../../tools/misctranslations.php:841
+#: ../../../tools/misctranslations.php:839
 msgid "of year"
 msgstr "года"
 
-#: ../../../tools/misctranslations.php:842
+#: ../../../tools/misctranslations.php:840
 msgid "at"
 msgstr "в"
 
-#: ../../../tools/misctranslations.php:843
+#: ../../../tools/misctranslations.php:841
 msgid "from"
 msgstr "с"
 
-#: ../../../tools/misctranslations.php:844
+#: ../../../tools/misctranslations.php:842
 msgid "to"
 msgstr "по"
 
-#: ../../../tools/misctranslations.php:847
-#: ../../../tools/misctranslations.php:854
+#: ../../../tools/misctranslations.php:845
+#: ../../../tools/misctranslations.php:852
 msgid "Sunday"
 msgstr "Воскресенье"
 
-#: ../../../tools/misctranslations.php:848
+#: ../../../tools/misctranslations.php:846
 msgid "Monday"
 msgstr "Понедельник"
 
-#: ../../../tools/misctranslations.php:849
+#: ../../../tools/misctranslations.php:847
 msgid "Tuesday"
 msgstr "Вторник"
 
-#: ../../../tools/misctranslations.php:850
+#: ../../../tools/misctranslations.php:848
 msgid "Wednesday"
 msgstr "Среда"
 
-#: ../../../tools/misctranslations.php:851
+#: ../../../tools/misctranslations.php:849
 msgid "Thursday"
 msgstr "Черверг"
 
-#: ../../../tools/misctranslations.php:852
+#: ../../../tools/misctranslations.php:850
 msgid "Friday"
 msgstr "Пятница"
 
-#: ../../../tools/misctranslations.php:853
+#: ../../../tools/misctranslations.php:851
 msgid "Saturday"
 msgstr "Суббота"
 
-#: ../../../tools/misctranslations.php:856
-#: ../../../tools/misctranslations.php:868
+#: ../../../tools/misctranslations.php:854
+#: ../../../tools/misctranslations.php:866
 msgid "December_c"
 msgstr "Декабре"
 
-#: ../../../tools/misctranslations.php:857
+#: ../../../tools/misctranslations.php:855
 msgid "January_c"
 msgstr "Январе"
 
-#: ../../../tools/misctranslations.php:858
+#: ../../../tools/misctranslations.php:856
 msgid "February_c"
 msgstr "Феврале"
 
-#: ../../../tools/misctranslations.php:859
+#: ../../../tools/misctranslations.php:857
 msgid "March_c"
 msgstr "Марте"
 
-#: ../../../tools/misctranslations.php:860
+#: ../../../tools/misctranslations.php:858
 msgid "April_c"
 msgstr "Апреле"
 
-#: ../../../tools/misctranslations.php:861
+#: ../../../tools/misctranslations.php:859
 msgid "May_c"
 msgstr "Май"
 
-#: ../../../tools/misctranslations.php:862
+#: ../../../tools/misctranslations.php:860
 msgid "June_c"
 msgstr "Июне"
 
-#: ../../../tools/misctranslations.php:863
+#: ../../../tools/misctranslations.php:861
 msgid "July_c"
 msgstr "Июле"
 
-#: ../../../tools/misctranslations.php:864
+#: ../../../tools/misctranslations.php:862
 msgid "August_c"
 msgstr "Августе"
 
-#: ../../../tools/misctranslations.php:865
+#: ../../../tools/misctranslations.php:863
 msgid "September_c"
 msgstr "Сентябре"
 
-#: ../../../tools/misctranslations.php:866
+#: ../../../tools/misctranslations.php:864
 msgid "October_c"
 msgstr "Октябре"
 
-#: ../../../tools/misctranslations.php:867
+#: ../../../tools/misctranslations.php:865
 msgid "November_c"
 msgstr "Ноябре"
 
-#: ../../../tools/misctranslations.php:870
+#: ../../../tools/misctranslations.php:868
 msgid "List of scheduled events"
 msgstr "Список запланированных событий"
 
-#: ../../../tools/misctranslations.php:871
+#: ../../../tools/misctranslations.php:869
 msgid "List of scheduled events by page + filters"
 msgstr "Список запланированных событий по-странично + фильтры"
 
-#: ../../../tools/misctranslations.php:872
+#: ../../../tools/misctranslations.php:870
 msgid "Adding and editing the scheduled events"
 msgstr "Добавление и редактирование запланированного события"
 
-#: ../../../tools/misctranslations.php:873
+#: ../../../tools/misctranslations.php:871
 msgid "Removing the scheduled events"
 msgstr "Удаление запланированного события"
 
-#: ../../../tools/misctranslations.php:874
+#: ../../../tools/misctranslations.php:872
 msgid "Stopping or starting the scheduled events"
 msgstr "Остановка или запуск запланированных событий"
 
@@ -4328,7 +4320,7 @@ msgstr "Новая жалоба на %s - %s (%s, id: %s). От %s"
 msgid "Exchange rate on"
 msgstr "Курс НБУ на"
 
-#: ../../../lib/system.class.php:69 ../../../lib/user.class.php:1066
+#: ../../../lib/system.class.php:69 ../../../lib/user.class.php:1072
 #: ../../../administrator/services_packages.php:439
 msgid "h"
 msgstr "ч"
@@ -4337,7 +4329,7 @@ msgstr "ч"
 msgid "m"
 msgstr "м"
 
-#: ../../../lib/system.class.php:79 ../../../administrator/events.php:456
+#: ../../../lib/system.class.php:79 ../../../administrator/events.php:459
 #: ../../../administrator/stat_tv_archive.php:105
 #: ../../../administrator/stat_timeshift.php:105
 msgid "s"
@@ -4392,7 +4384,7 @@ msgid "Exec time"
 msgstr ""
 
 #: ../../../lib/epg.class.php:517 ../../../lib/epg.class.php:604
-#: ../../../lib/epg.class.php:931
+#: ../../../lib/epg.class.php:927
 msgid "%H:%i"
 msgstr ""
 
@@ -4424,91 +4416,91 @@ msgstr "ПЯТНИЦА"
 msgid "SATURDAY"
 msgstr "СУББОТА"
 
-#: ../../../lib/epg.class.php:842 ../../../lib/epg.class.php:843
-#: ../../../lib/epg.class.php:844 ../../../lib/epg.class.php:845
+#: ../../../lib/epg.class.php:838 ../../../lib/epg.class.php:839
+#: ../../../lib/epg.class.php:840 ../../../lib/epg.class.php:841
 msgid "H:i"
 msgstr ""
 
-#: ../../../lib/epg.class.php:875 ../../../lib/gismeteo.class.php:29
+#: ../../../lib/epg.class.php:871 ../../../lib/gismeteo.class.php:29
 #: ../../../administrator/add_video.php:522
 msgid "Sun"
 msgstr "Вс"
 
-#: ../../../lib/epg.class.php:875 ../../../lib/gismeteo.class.php:29
+#: ../../../lib/epg.class.php:871 ../../../lib/gismeteo.class.php:29
 #: ../../../administrator/add_video.php:523
 msgid "Mon"
 msgstr "Пн"
 
-#: ../../../lib/epg.class.php:875 ../../../lib/gismeteo.class.php:29
+#: ../../../lib/epg.class.php:871 ../../../lib/gismeteo.class.php:29
 #: ../../../administrator/add_video.php:524
 msgid "Tue"
 msgstr "Вт"
 
-#: ../../../lib/epg.class.php:875 ../../../lib/gismeteo.class.php:29
+#: ../../../lib/epg.class.php:871 ../../../lib/gismeteo.class.php:29
 #: ../../../administrator/add_video.php:525
 msgid "Wed"
 msgstr "Ср"
 
-#: ../../../lib/epg.class.php:875 ../../../lib/gismeteo.class.php:29
+#: ../../../lib/epg.class.php:871 ../../../lib/gismeteo.class.php:29
 #: ../../../administrator/add_video.php:526
 msgid "Thu"
 msgstr "Чт"
 
-#: ../../../lib/epg.class.php:875 ../../../lib/gismeteo.class.php:29
+#: ../../../lib/epg.class.php:871 ../../../lib/gismeteo.class.php:29
 #: ../../../administrator/add_video.php:527
 msgid "Fri"
 msgstr "Пт"
 
-#: ../../../lib/epg.class.php:875 ../../../lib/gismeteo.class.php:29
+#: ../../../lib/epg.class.php:871 ../../../lib/gismeteo.class.php:29
 #: ../../../administrator/add_video.php:528
 msgid "Sat"
 msgstr "Сб"
 
-#: ../../../lib/epg.class.php:879 ../../../lang/stb.php:135
+#: ../../../lib/epg.class.php:875 ../../../lang/stb.php:135
 msgid "JANUARY"
 msgstr "ЯНВАРЯ"
 
-#: ../../../lib/epg.class.php:879 ../../../lang/stb.php:135
+#: ../../../lib/epg.class.php:875 ../../../lang/stb.php:135
 msgid "FEBRUARY"
 msgstr "ФЕВРАЛЯ"
 
-#: ../../../lib/epg.class.php:879 ../../../lang/stb.php:135
+#: ../../../lib/epg.class.php:875 ../../../lang/stb.php:135
 msgid "MARCH"
 msgstr "МАРТА"
 
-#: ../../../lib/epg.class.php:879 ../../../lang/stb.php:135
+#: ../../../lib/epg.class.php:875 ../../../lang/stb.php:135
 msgid "APRIL"
 msgstr "АПРЕЛЯ"
 
-#: ../../../lib/epg.class.php:879 ../../../lang/stb.php:135
+#: ../../../lib/epg.class.php:875 ../../../lang/stb.php:135
 msgid "MAY"
 msgstr "МАЯ"
 
-#: ../../../lib/epg.class.php:879 ../../../lang/stb.php:135
+#: ../../../lib/epg.class.php:875 ../../../lang/stb.php:135
 msgid "JUNE"
 msgstr "ИЮНЯ"
 
-#: ../../../lib/epg.class.php:879 ../../../lang/stb.php:135
+#: ../../../lib/epg.class.php:875 ../../../lang/stb.php:135
 msgid "JULY"
 msgstr "ИЮЛЯ"
 
-#: ../../../lib/epg.class.php:879 ../../../lang/stb.php:135
+#: ../../../lib/epg.class.php:875 ../../../lang/stb.php:135
 msgid "AUGUST"
 msgstr "АВГУСТА"
 
-#: ../../../lib/epg.class.php:879 ../../../lang/stb.php:135
+#: ../../../lib/epg.class.php:875 ../../../lang/stb.php:135
 msgid "SEPTEMBER"
 msgstr "СЕНТЯБРЯ"
 
-#: ../../../lib/epg.class.php:879 ../../../lang/stb.php:135
+#: ../../../lib/epg.class.php:875 ../../../lang/stb.php:135
 msgid "OCTOBER"
 msgstr "ОКТЯБРЯ"
 
-#: ../../../lib/epg.class.php:879 ../../../lang/stb.php:135
+#: ../../../lib/epg.class.php:875 ../../../lang/stb.php:135
 msgid "NOVEMBER"
 msgstr "НОЯБРЯ"
 
-#: ../../../lib/epg.class.php:879 ../../../lang/stb.php:135
+#: ../../../lib/epg.class.php:875 ../../../lang/stb.php:135
 msgid "DECEMBER"
 msgstr "ДЕКАБРЯ"
 
@@ -4519,7 +4511,7 @@ msgstr ""
 
 #
 #: ../../../lib/video.class.php:95 ../../../lib/vod.class.php:782
-#: ../../../lib/user.class.php:1112 ../../../lib/user.class.php:1113
+#: ../../../lib/user.class.php:1118 ../../../lib/user.class.php:1119
 #, php-format
 msgid "video_name_format"
 msgstr "%1$s"
@@ -4578,7 +4570,7 @@ msgstr ""
 msgid "end_date_format"
 msgstr "d.m.Y"
 
-#: ../../../lib/accountinfo.class.php:46 ../../../lib/user.class.php:1062
+#: ../../../lib/accountinfo.class.php:46 ../../../lib/user.class.php:1068
 #, php-format
 msgid "%d day"
 msgid_plural "%d days"
@@ -4624,7 +4616,7 @@ msgid "Radio-channel %s set to inactive because its URL are not available."
 msgstr ""
 
 #: ../../../lib/audioclub.class.php:19
-#: ../../../../admin/json_menu/menu.json:111
+#: ../../../../admin/json_menu/menu.json:86
 msgid "Artists"
 msgstr "Исполнители"
 
@@ -4636,15 +4628,15 @@ msgstr "Плейлисты"
 #: ../../../lib/audioclub.class.php:27
 #: ../../../administrator/audio_album.php:393
 #: ../../../administrator/audio_album.php:511
-#: ../../../../admin/json_menu/menu.json:50
-#: ../../../../admin/json_menu/menu.json:93
-#: ../../../../admin/json_menu/menu.json:116
+#: ../../../../admin/json_menu/menu.json:25
+#: ../../../../admin/json_menu/menu.json:68
+#: ../../../../admin/json_menu/menu.json:91
 msgid "Genres"
 msgstr "Жанры"
 
 #: ../../../lib/audioclub.class.php:31
 #: ../../../administrator/audio_album.php:394
-#: ../../../../admin/json_menu/menu.json:126
+#: ../../../../admin/json_menu/menu.json:101
 msgid "Years"
 msgstr "Года"
 
@@ -4794,21 +4786,21 @@ msgstr "давление"
 msgid "wind"
 msgstr "ветер"
 
-#: ../../../lib/user.class.php:1070 ../../../administrator/add_itv.php:1732
+#: ../../../lib/user.class.php:1076 ../../../administrator/add_itv.php:1732
 #: ../../../administrator/add_video.php:2058 ../../../lang/stb.php:100
 #: ../../../lang/stb.php:316
 msgid "min"
 msgstr "мин"
 
-#: ../../../lib/user.class.php:1124
+#: ../../../lib/user.class.php:1130
 msgid "Radio channels"
 msgstr "Радио каналы"
 
-#: ../../../lib/user.class.php:1125
+#: ../../../lib/user.class.php:1131
 msgid "Modules"
 msgstr "Модули"
 
-#: ../../../lib/user.class.php:1126
+#: ../../../lib/user.class.php:1132
 msgid "Options"
 msgstr "Опции"
 
@@ -4831,7 +4823,7 @@ msgstr "Статистика просмотра TV пользователями 
 #: ../../../administrator/other_city_info.php:127
 #: ../../../administrator/stat_tv.php:86
 #: ../../../administrator/users_on_storage.php:78
-#: ../../../administrator/events.php:250 ../../../administrator/themes.php:133
+#: ../../../administrator/events.php:252 ../../../administrator/themes.php:133
 #: ../../../administrator/cache_refresh.php:87
 #: ../../../administrator/audio_performer.php:154
 #: ../../../administrator/help_city_info.php:117
@@ -4961,7 +4953,7 @@ msgstr "Добавить"
 #: ../../../administrator/testers.php:68
 #: ../../../administrator/audio_year.php:234
 #: ../../../administrator/other_city_info.php:242
-#: ../../../administrator/events.php:481
+#: ../../../administrator/events.php:484
 #: ../../../administrator/audio_performer.php:234
 #: ../../../administrator/help_city_info.php:232
 #: ../../../administrator/city_info.php:246
@@ -5205,7 +5197,7 @@ msgid "Audio"
 msgstr "Аудио"
 
 #: ../../../administrator/userlog.php:290 ../../../administrator/users.php:166
-#: ../../../../admin/json_menu/menu.json:141
+#: ../../../../admin/json_menu/menu.json:116
 msgid "Radio"
 msgstr "Радио"
 
@@ -5463,7 +5455,7 @@ msgstr "поиск по названию"
 #: ../../../administrator/stat_moderators.php:59
 #: ../../../administrator/stat_moderators.php:65
 #: ../../../administrator/index.php:460
-#: ../../../../admin/json_menu/menu.json:321
+#: ../../../../admin/json_menu/menu.json:288
 msgid "Moderators statistics"
 msgstr "Статистика Модераторов"
 
@@ -5562,93 +5554,93 @@ msgstr "Язык пользователя"
 msgid "Current views on storage"
 msgstr "Текущие просмотры на хранилище"
 
-#: ../../../administrator/events.php:93 ../../../administrator/events.php:106
-#: ../../../administrator/events.php:133
+#: ../../../administrator/events.php:95 ../../../administrator/events.php:108
+#: ../../../administrator/events.php:135
 #, php-format
 msgid "%s events %s sended, %s errors"
 msgstr "%s событий %s отослано, %s ошибок"
 
-#: ../../../administrator/events.php:137
+#: ../../../administrator/events.php:139
 msgid "File with list is missing"
 msgstr "Отсутствует файл со списком"
 
-#: ../../../administrator/events.php:239 ../../../administrator/events.php:245
+#: ../../../administrator/events.php:241 ../../../administrator/events.php:247
 #: ../../../administrator/profile.php:310 ../../../administrator/index.php:146
-#: ../../../../admin/json_menu/menu.json:213
+#: ../../../../admin/json_menu/menu.json:180
 msgid "Events"
 msgstr "События"
 
-#: ../../../administrator/events.php:250
+#: ../../../administrator/events.php:252
 msgid "New event"
 msgstr "Новое событие"
 
-#: ../../../administrator/events.php:362 ../../../administrator/reply.php:143
+#: ../../../administrator/events.php:364 ../../../administrator/reply.php:143
 #: ../../../administrator/send_to.php:160
 msgid "Send"
 msgstr "Отправить"
 
-#: ../../../administrator/events.php:365
+#: ../../../administrator/events.php:367
 msgid "To one"
 msgstr "одному"
 
-#: ../../../administrator/events.php:366
+#: ../../../administrator/events.php:368
 msgid "To all"
 msgstr "Всем"
 
-#: ../../../administrator/events.php:367
+#: ../../../administrator/events.php:369
 msgid "By list"
 msgstr "По списку"
 
-#: ../../../administrator/events.php:368
+#: ../../../administrator/events.php:370
 msgid "By pattern"
 msgstr "По шаблону"
 
-#: ../../../administrator/events.php:369
+#: ../../../administrator/events.php:371
 msgid "To group"
 msgstr "Группе"
 
-#: ../../../administrator/events.php:377
+#: ../../../administrator/events.php:379
 msgid "Load active events"
 msgstr "Загрузить активные события"
 
-#: ../../../administrator/events.php:382
+#: ../../../administrator/events.php:384
 msgid "List"
 msgstr "Список"
 
-#: ../../../administrator/events.php:390
+#: ../../../administrator/events.php:392
 msgid "Pattern"
 msgstr "Шаблон"
 
-#: ../../../administrator/events.php:447
+#: ../../../administrator/events.php:450
 msgid "restart on OK"
 msgstr "перезапускать по OK"
 
-#: ../../../administrator/events.php:448
+#: ../../../administrator/events.php:451
 msgid "channels"
 msgstr "каналы"
 
-#: ../../../administrator/events.php:489
+#: ../../../administrator/events.php:492
 #, php-format
 msgid "Active events for %s"
 msgstr "Активные события для %s"
 
-#: ../../../administrator/events.php:489
+#: ../../../administrator/events.php:492
 msgid "clean"
 msgstr "очистить"
 
-#: ../../../administrator/events.php:491
+#: ../../../administrator/events.php:494
 msgid "Valid up to"
 msgstr "Действительно до"
 
-#: ../../../administrator/events.php:503
+#: ../../../administrator/events.php:506
 msgid "sended"
 msgstr "отправлено"
 
-#: ../../../administrator/events.php:503
+#: ../../../administrator/events.php:506
 msgid "not sended"
 msgstr "не отправлено"
 
-#: ../../../administrator/events.php:512
+#: ../../../administrator/events.php:515
 #, php-format
 msgid "There are no active events for %s"
 msgstr "Нет активных событий для %s"
@@ -5934,7 +5926,7 @@ msgid "AUDIO TRACKS"
 msgstr "АУДИО ТРЕКИ"
 
 #: ../../../administrator/audio_track.php:215
-#: ../../../../admin/json_menu/menu.json:121
+#: ../../../../admin/json_menu/menu.json:96
 msgid "Languages"
 msgstr "Языки"
 
@@ -6113,8 +6105,8 @@ msgstr "Профиль пользователя"
 
 #: ../../../administrator/profile.php:310
 #: ../../../administrator/storages.php:223
-#: ../../../../admin/json_menu/menu.json:193
-#: ../../../../admin/json_menu/menu.json:359
+#: ../../../../admin/json_menu/menu.json:168
+#: ../../../../admin/json_menu/menu.json:326
 msgid "Logs"
 msgstr "Логи"
 
@@ -6791,7 +6783,7 @@ msgstr "АУДИО КЛУБ"
 #: ../../../administrator/index.php:152
 #: ../../../administrator/administrators.php:98
 #: ../../../administrator/administrators.php:141
-#: ../../../../admin/json_menu/menu.json:236
+#: ../../../../admin/json_menu/menu.json:203
 msgid "Administrators"
 msgstr "Администраторы"
 
@@ -6869,7 +6861,7 @@ msgid "Users statistics for TV"
 msgstr "Абонентская статистика по ТВ"
 
 #: ../../../administrator/index.php:442
-#: ../../../../admin/json_menu/menu.json:306
+#: ../../../../admin/json_menu/menu.json:273
 msgid "TV statistics"
 msgstr "Статистика ТВ"
 
@@ -6886,7 +6878,7 @@ msgid "Users statistics for Jokes"
 msgstr "Абонентская статистика по Анекдотам"
 
 #: ../../../administrator/index.php:454
-#: ../../../../admin/json_menu/menu.json:316
+#: ../../../../admin/json_menu/menu.json:283
 msgid "TimeShift statistics"
 msgstr "Статистика TimeShift"
 
@@ -8527,7 +8519,6 @@ msgid "You can configure DVB channels in the settings menu"
 msgstr "Вы можете настроить DVB каналы в меню настроек"
 
 #: ../../../lang/stb.php:530
-#: ../../../../admin/json_menu/menu.json:205
 msgid "Applications"
 msgstr "Приложения"
 
@@ -8685,7 +8676,7 @@ msgstr ""
 "download_135_720p.wmv"
 
 msgid "Group name"
-msgstr "Имя группы группы"
+msgstr "Имя группы"
 
 msgid "Information about the media source"
 msgstr "Информация о медиа ресурсе"
@@ -8715,7 +8706,7 @@ msgstr "Не установленно"
 msgid "Not published"
 msgstr "Не опубликованно"
 
-#: ../../../../admin/json_menu/menu.json:40
+#: ../../../../admin/json_menu/menu.json:15
 msgid "Organize channels"
 msgstr "Переместить каналы"
 
@@ -8760,7 +8751,7 @@ msgstr "Дата релиза"
 msgid "Reseller name"
 msgstr "Имя реселлера"
 
-#: ../../../../admin/json_menu/menu.json:252
+#: ../../../../admin/json_menu/menu.json:219
 msgid "Resellers"
 msgstr "Реселлеры"
 
@@ -8770,11 +8761,11 @@ msgstr "Ошибка сети или доступ запрещен"
 msgid "Some server error"
 msgstr "Ошибка сервера"
 
-#: ../../../../admin/json_menu/menu.json:343
+#: ../../../../admin/json_menu/menu.json:310
 msgid "Storage"
 msgstr "Хранилище"
 
-#: ../../../../admin/json_menu/menu.json:165
+#: ../../../../admin/json_menu/menu.json:140
 msgid "Subscribe log"
 msgstr "Лог подписок"
 
@@ -8823,7 +8814,7 @@ msgstr "разрешения для администраторов группы"
 msgid "Access denied for this page"
 msgstr "Доступ к этой странице запрещен"
 
-#: ../../../../admin/json_menu/menu.json:83
+#: ../../../../admin/json_menu/menu.json:58
 msgid "Activity log"
 msgstr "История"
 
@@ -9150,10 +9141,13 @@ msgstr "Номер канала"
 msgid "Channel type"
 msgstr "Тип канала"
 
+msgid "Clean claims"
+msgstr "Очистить жалобы"
+
 msgid "Complaints log"
 msgstr "Лог жалоб"
 
-#: ../../../../admin/json_menu/menu.json:336
+#: ../../../../admin/json_menu/menu.json:303
 msgid "Complaints statistics"
 msgstr "Статистика жалоб"
 
@@ -9418,7 +9412,7 @@ msgstr ""
 msgid "Streaming links"
 msgstr "Ссылки для вещания"
 
-#: ../../../../admin/json_menu/menu.json:366
+#: ../../../../admin/json_menu/menu.json:333
 msgid "Streaming servers"
 msgstr "Сервера вещания"
 
@@ -9445,7 +9439,7 @@ msgstr "Адрес для записи ТВ архива"
 msgid "TV archive length"
 msgstr "Длительность ТВ архива"
 
-#: ../../../../admin/json_menu/menu.json:311
+#: ../../../../admin/json_menu/menu.json:278
 msgid "TV archive statistics"
 msgstr "Статистика ТВ архива"
 
@@ -9597,6 +9591,9 @@ msgstr "Разрешить хранение контента"
 msgid "Apache port"
 msgstr "Порт Apache"
 
+msgid "Apply filter"
+msgstr "Применить фильтр"
+
 msgid "Assigned to"
 msgstr "Назначено"
 
@@ -9706,6 +9703,9 @@ msgstr "Шаблоны сообщения"
 
 msgid "Message text"
 msgstr "Текст сообщения"
+
+msgid "No search results"
+msgstr "Нет результатов поиска"
 
 msgid "Not available for the MAG100"
 msgstr "Недоступно для MAG100"
@@ -9925,7 +9925,6 @@ msgstr "Авто-обновление через 59 секунд"
 msgid "Category of content to which this package is belongs"
 msgstr "Категория контента, к которому этот пакет принадлежит"
 
-#: ../../../../admin/json_menu/menu.json:9
 msgid "Dashboard"
 msgstr "Главная"
 
@@ -9950,7 +9949,7 @@ msgstr "Полный пакет"
 msgid "Gives access to all content of the selected service"
 msgstr "Предоставляет полный доступ ко всему контенту выбранной услуги"
 
-#: ../../../../admin/json_menu/menu.json:277
+#: ../../../../admin/json_menu/menu.json:244
 msgid "Information portal"
 msgstr "Инфопортал"
 
@@ -10108,7 +10107,7 @@ msgstr "Принудительно обновить EPG"
 msgid "Force update of EPG - complete EPG update for all channels"
 msgstr "Принудительно обновить EPG - полностью обновляет EPG для всех каналов."
 
-#: ../../../../admin/json_menu/menu.json:288
+#: ../../../../admin/json_menu/menu.json:255
 msgid "Humor"
 msgstr "Юмор"
 
@@ -10139,7 +10138,7 @@ msgstr ""
 "Префикс нужен для определения источника EPG в ситуации, когда данный XNLTV "
 "ID присутствует в нескольких источниках"
 
-#: ../../../../admin/json_menu/menu.json:326
+#: ../../../../admin/json_menu/menu.json:293
 msgid "Subscribers statistic"
 msgstr "Статистика абонентов"
 
@@ -10192,6 +10191,9 @@ msgstr "список пакетов услуг"
 msgid "logs"
 msgstr "логи"
 
+msgid "Attributes"
+msgstr "Атрибуты"
+
 msgid "Date type"
 msgstr "Тип даты"
 
@@ -10238,53 +10240,83 @@ msgstr "Дата запуска события"
 msgid "The date of start event"
 msgstr "Дата начала события"
 
-#: ../../../../admin/json_menu/menu.json:3
-msgid "Administrator"
-msgstr "Администратор"
-
-#: ../../../../admin/json_menu/menu.json:34
+#: ../../../../admin/json_menu/menu.json:9
 msgid "Channels"
 msgstr "Каналы"
 
-#: ../../../../admin/json_menu/menu.json:88
+#: ../../../../admin/json_menu/menu.json:63
 msgid "Categories"
 msgstr "Категории"
 
-#: ../../../../admin/json_menu/menu.json:183
+#: ../../../../admin/json_menu/menu.json:158
 msgid "Filters"
 msgstr "Фильтры"
 
-#: ../../../../admin/json_menu/menu.json:229
+#: ../../../../admin/json_menu/menu.json:196
 msgid "Templates of messages"
 msgstr "Шаблоны сообщений"
 
-#: ../../../../admin/json_menu/menu.json:242
+#: ../../../../admin/json_menu/menu.json:209
 msgid "Administrators list"
 msgstr "Список администраторов"
 
-#: ../../../../admin/json_menu/menu.json:301
+#: ../../../../admin/json_menu/menu.json:268
 msgid "Movie statistics"
 msgstr "Статистика видео"
 
-#: ../../../../admin/json_menu/menu.json:349
+#: ../../../../admin/json_menu/menu.json:316
 msgid "Storage list"
 msgstr "Список хранилищ"
 
-#: ../../../../admin/json_menu/menu.json:354
+#: ../../../../admin/json_menu/menu.json:321
 msgid "Video search"
 msgstr "Поиск видео"
 
-#: ../../../../admin/json_menu/menu.json:372
+#: ../../../../admin/json_menu/menu.json:339
 msgid "Servers list"
 msgstr "Список серверов"
 
-#: ../../../../admin/json_menu/menu.json:377
+#: ../../../../admin/json_menu/menu.json:344
 msgid "Streaming areas"
 msgstr "Зоны вещания"
 
-#: ../../../../admin/json_menu/menu.json:390
+#: ../../../../admin/json_menu/menu.json:357
 msgid "Appearance"
 msgstr "Внешний вид"
+
+#: ../../../../admin/json_menu/top_menu.json:3
+msgid "Administrator"
+msgstr "Администратор"
+
+#~ msgid "Users status"
+#~ msgstr "Статус пользователей"
+
+#~ msgid "Users state"
+#~ msgstr "Состояние пользователей"
+
+#~ msgid "Users date creation"
+#~ msgstr "Дата создания пользователей"
+
+#~ msgid "Last user activity"
+#~ msgstr "Последняя активность"
+
+#~ msgid "Users group"
+#~ msgstr "Группа пользователей"
+
+#~ msgid "Users interface language"
+#~ msgstr "Язык интрефейса пользователя"
+
+#~ msgid "Using streaming server"
+#~ msgstr "Используемый сервер вещания"
+
+#~ msgid "User's STB model"
+#~ msgstr "Модель приставки пользователя"
+
+#~ msgid "Connected tariff plan"
+#~ msgstr "Используемый тарифный план"
+
+#~ msgid "User by accessible packages of service"
+#~ msgstr "Пользователи по подключенным пакетам услуг"
 
 #~ msgid "Install and activate"
 #~ msgstr "Установить и включить"
