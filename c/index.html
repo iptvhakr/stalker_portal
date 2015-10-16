@@ -125,6 +125,11 @@ var loader = {
     append_style : function(module){
         _debug('loader.append_style', module);
 
+        if (module.indexOf('external_') === 0){
+            _debug('skip style loading', module);
+            return;
+        }
+
         var _style = document.createElement('link');
         _style.type = "text/css";
         _style.rel = "stylesheet";
@@ -147,7 +152,18 @@ var loader = {
         if (module.indexOf('supermodule') > 0){
             _script.src  = module + ".js&single_module="+single_module.join(',');
         }else{
-            _script.src  = module + ".js";
+            if (module.indexOf('external_') === 0){
+
+                /*var idx = stb.all_modules.indexOf(module);
+
+                if (idx !== -1){
+                    stb.all_modules[idx] = module.replace('external_','');
+                }*/
+
+                _script.src  = '../server/api/ext_module.php?name='+module.replace('external_', '');
+            }else{
+                _script.src  = module + ".js";
+            }
         }
         this.head.appendChild(_script);
         _debug('append', _script.src);

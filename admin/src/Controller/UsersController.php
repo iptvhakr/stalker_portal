@@ -35,7 +35,7 @@ class UsersController extends \Controller\BaseStalkerController {
     private $allState = array(array('id' => 2, 'title' => 'Offline'), array('id' => 1, 'title' => 'Online'));
     private $watchdog = 0;
     private $userFields = array(
-        'users.id as id', "mac", "ip", "login", "ls", "fname", "reseller.id as reseller_id",
+        'users.id as id', "mac", "ip", "login", "ls", "fname", "reseller.id as reseller_id", "theme",
         "status", 'tariff_plan.name as tariff_plan_name',
         "DATE_FORMAT(last_change_status,'%d.%m.%Y') as last_change_status",
         "concat (users.fname) as fname",
@@ -1640,6 +1640,14 @@ class UsersController extends \Controller\BaseStalkerController {
             }
         }
 
+        $all_themes = \Middleware::getThemes();
+
+        $themes = array();
+
+        foreach ($all_themes as $alias => $theme){
+            $themes[$alias] = $alias;
+        }
+
         $form = $builder->createBuilder('form', $data)
                 ->add('id', 'hidden')
                 ->add('fname', 'text', array('required' => FALSE))
@@ -1659,6 +1667,12 @@ class UsersController extends \Controller\BaseStalkerController {
                     'constraints' => array(new Assert\Choice(array('choices' => array_keys($status)))),
                     'required' => FALSE
                         )
+                )
+                ->add('theme', 'choice', array(
+                        'choices' => $themes,
+                        'constraints' => array(new Assert\Choice(array('choices' => array_keys($themes)))),
+                        'required' => FALSE
+                    )
                 )
                 ->add('comment', 'textarea', array('required' => FALSE))
                 ->add('save', 'submit');

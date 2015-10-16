@@ -36,19 +36,15 @@ class SettingsController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
         $current = $this->db->getCurrentTheme();
-        $this->app['current_theme'] = array('name'=> $current , 'title'=> ucwords(str_replace('_', ' ', $current)) , 'preview' => $this->theme_path.$current."/preview.png");
+        $this->app['current_theme'] = array('name'=> $current);
         $themes = \Middleware::getThemes();
-        $theme_path = $this->theme_path;
         if (is_array($themes)) {
-            $themes = array_map(function($val) use ($theme_path) {
-                $tmp = array('name'=> $val , 'title'=> ucwords(str_replace('_', ' ', $val)) , 'previews' => array($theme_path.$val."/preview.png"));
-                for($i = 1; $i<=2; $i++){
-                    $tmp_preview = $theme_path.$val."/preview$i.png";
-                    if (is_file($tmp_preview)) {
-                       $tmp['previews'][] =  $tmp_preview;
-                    }
-                }
-                return $tmp;
+            $themes = array_map(function($theme){
+                return array(
+                    'name'     => $theme['id'],
+                    'title'    => $theme['name'],
+                    'previews' => array($theme['preview']),
+                );
             }, $themes);
         }
         $this->app['allData'] = $themes;
@@ -90,17 +86,19 @@ class SettingsController extends \Controller\BaseStalkerController {
         $error = $this->setlocalization('There is no such skin');
         $data['name'] = $data['title'] = $data['preview'] = '';
         $themes = \Middleware::getThemes();
-        if (!empty($themes) && in_array($this->postData['themename'], $themes) ) {
+        if (!empty($themes) && array_key_exists($this->postData['themename'], $themes) ) {
             $this->db->setCurrentTheme($this->postData['themename']);
             $error = '';
             
             $event = new \SysEvent();
             $event->setUserListByMac('online');
             $event->sendReboot();
+
+            $theme = $themes[$this->postData['themename']];
             
-            $data['name'] = $this->postData['themename'];
-            $data['title']= ucwords(str_replace('_', ' ', $this->postData['themename']));
-            $data['preview'] = $this->theme_path.$this->postData['themename']."/preview.png";
+            $data['name'] = $theme['id'];
+            $data['title']= $theme['name'];
+            $data['preview'] = $theme['preview'];
         }
         $response = $this->generateAjaxResponse($data, $error);
 

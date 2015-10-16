@@ -26,6 +26,15 @@ if (!empty($_POST['template'])){
 
 $themes = Middleware::getThemes();
 
+if (!empty($themes[$default_template])){
+    $current_theme = $themes[$default_template];
+}else{
+    $current_theme = array(
+        'name'    => ucwords(str_replace('_', ' ', $default_template)),
+        'preview' => "../../c/template/".$default_template."/preview.png"
+    );
+}
+
 ?>
 <html>
 <head>
@@ -149,9 +158,9 @@ $themes = Middleware::getThemes();
     <tr>
         <td align="center">
 
-            <b><?= _('CURRENT THEME')?>: <span class="current-skin"><?= ucwords(str_replace('_', ' ', $default_template))?></span></b>
+            <b><?= _('CURRENT THEME')?>: <span class="current-skin"><?= $current_theme['name']?></span></b>
             <div class="template_preview" style="width: 160px; height: 90px; border: 1px solid #ccc;margin-top: 10px">
-                <img width="160" height="90" onerror="$(this).parent().text('<?= _('preview not available')?>')" src="../../c/template/<?=$default_template?>/preview.png"/>
+                <img width="160" height="90" onerror="$(this).parent().text('<?= _('preview not available')?>')" src="<?= $current_theme['preview']?>"/>
             </div>
 
             <div class="preview-list" style="margin-top: 60px">
@@ -159,13 +168,13 @@ $themes = Middleware::getThemes();
                 foreach ($themes as $theme){
                     ?>
                     <div class="template">
-                        <div class="template-title"><?= ucwords(str_replace('_', ' ', $theme))?></div>
+                        <div class="template-title"><?= $theme['name']?></div>
                         <div class="template-preview">
-                            <img width="320" height="180" onerror="$(this).parent().text('<?= _('preview not available')?>')" src="../../c/template/<?=$theme?>/preview.png"/>
+                            <img width="320" height="180" onerror="$(this).parent().text('<?= _('preview not available')?>')" src="<?= $theme['preview']?>"/>
                         </div>
 
                         <form method="POST">
-                            <input class="template_select" name="template" value="<?= $theme?>" type="hidden">
+                            <input class="template_select" name="template" value="<?= $theme['id']?>" type="hidden">
                             <input type="submit" class="apply-btn" value="<?= _('Apply')?>" style="margin-top: 30px"/>
                         </form>
                     </div>
