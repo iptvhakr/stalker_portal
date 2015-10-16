@@ -1441,7 +1441,6 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $template = $this->getUserPortalTheme();
 
-        // todo: include external modules
         $apps = new AppsManager();
         $external_apps = $apps->getList(true);
 
@@ -1454,7 +1453,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         }, $installed_apps);
 
         $result = array(
-            'all_modules'        => array_merge(Config::get('all_modules'), $installed_apps), // todo: merge?
+            'all_modules'        => array_merge(Config::get('all_modules'), $installed_apps),
             'switchable_modules' => Config::get('disabled_modules'),
             'disabled_modules'   => $this->getDisabledModules(),
             'restricted_modules' => $this->getRestrictedModules(),

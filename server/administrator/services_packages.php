@@ -269,7 +269,7 @@ function get_users_count_in_tariff($tariff){
 
                         $.each(picked_services, function(num, row){
                             if (options_picked.hasOwnProperty(row)) {
-                                $('<option value=' + options_picked[row].id + '>' + options_picked[row].name + (options_picked[row].external ? ' (external)' : '') + '</option>').appendTo('.services-picked');
+                                $('<option value=' + options_picked[row].id + '>' + options_picked[row].name + (options_picked[row].external || options_picked[row].id.indexOf('external_') === 0 ? ' (external)' : '') + '</option>').appendTo('.services-picked');
                             }
                         });
 

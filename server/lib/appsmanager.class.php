@@ -64,7 +64,7 @@ class AppsManager
 
         $app['app_url'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
             .'://'.$_SERVER['HTTP_HOST']
-            .Config::getSafe('apps_path', 'stalker_apps/')
+            .'/'.Config::getSafe('apps_path', 'stalker_apps/')
             .$app['alias']
             .'/'.$app['current_version'];
 
