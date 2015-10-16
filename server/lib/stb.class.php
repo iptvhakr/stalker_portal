@@ -793,7 +793,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             'show_after_loading'    => empty($this->params['show_after_loading']) ? (Config::getSafe('display_menu_after_loading', false) ? 'main_menu' : 'last_channel') : $this->params['show_after_loading'],
             'play_in_preview_by_ok' => $this->params['play_in_preview_by_ok'] === null ? (bool) Config::getSafe('play_in_preview_only_by_ok', false) : (bool) $this->params['play_in_preview_by_ok'],
             'hide_adv_mc_settings'  => Config::getSafe('hide_adv_mc_settings', false),
-            'themes'                => $themes,
+            'themes'                => array_keys($themes),
             'user_theme'            => $this->getUserPortalTheme()
         );
     }
@@ -810,7 +810,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
     public function getUserPortalTheme(){
 
-        return empty($this->params['theme']) || !in_array($this->params['theme'], Middleware::getThemes())
+        return empty($this->params['theme']) || !array_key_exists($this->params['theme'], Middleware::getThemes())
             ? Mysql::getInstance()->from('settings')->get()->first('default_template')
             : $this->params['theme'];
     }

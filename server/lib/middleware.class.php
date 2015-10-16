@@ -195,11 +195,26 @@ class Middleware
 
         $themes = array();
 
+        $portal_url = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
+        .'://'.$_SERVER['HTTP_HOST']
+        .'/'.str_replace('/', '', Config::getSafe('portal_url', '/stalker_portal/'))
+        .'/';
+
         foreach ($items as $item){
             if ($item != '.' && $item != '..' && is_dir($path.'/'.$item)){
-                $themes[] = $item;
+                $themes[$item] = array(
+                    'id'      => $item,
+                    'name'    => ucwords(str_replace('_', ' ', $item)),
+                    'preview' => $portal_url.'c/template/'.$item.'/preview.png'
+                );
             }
         }
+
+        $themes['smart_launcher'] = array(
+            'id'      => 'smart_launcher',
+            'name'    => 'Smart Launcher',
+            'preview' => $portal_url.'new/preview.png'
+        );
 
         return $themes;
     }

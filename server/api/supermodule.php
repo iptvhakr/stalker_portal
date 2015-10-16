@@ -92,7 +92,7 @@ if ($_GET['type'] == '.js'){
         return false;
     }
 
-    $theme = empty($user['theme']) || !in_array($user['theme'], Middleware::getThemes())
+    $theme = empty($user['theme']) || !array_key_exists($user['theme'], Middleware::getThemes())
         ? Mysql::getInstance()->from('settings')->get()->first('default_template')
         : $user['theme'];
 

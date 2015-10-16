@@ -388,6 +388,15 @@ function common_xpcom(){
                     return self.disabled_modules.indexOf(module) == -1;
                 });
 
+                if (result.template == 'smart_launcher'){
+
+                    _debug('redirect to the new launcher');
+                    window.stop();
+                    document.body.hide();
+                    window.location = '../new/launcher';
+                    return;
+                }
+
                 loader.set_template(result.template);
 
                 loader.append_style('load_bar');
