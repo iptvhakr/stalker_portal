@@ -11,11 +11,14 @@ class AppsManager
 
             if (!$without_fetch) {
 
-                $repo = new GitHub($app['url']);
+                try{
+                    $repo = new GitHub($app['url']);
+                    $info = $repo->getFileContent('package.json');
+                }catch (GitHubException $e){
 
-                $info = $repo->getFileContent('package.json');
-                $app['name'] = isset($info['name']) ? $info['name'] : '';
-                $app['alias'] = empty($app['alias']) ? AppsManager::safeFilename($info['name']) : $app['alias'];
+                }
+                $app['name'] = isset($info['name']) ? $info['name'] : $app['name'];
+                $app['alias'] = empty($app['alias']) && !isset($info['name']) ? AppsManager::safeFilename($info['name']) : $app['alias'];
                 $app['available_version'] = isset($info['version']) ? $info['version'] : '';
                 $app['description'] = isset($info['description']) ? $info['description'] : '';
 
