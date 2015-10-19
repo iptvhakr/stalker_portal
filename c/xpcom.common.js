@@ -393,7 +393,8 @@ function common_xpcom(){
                     _debug('redirect to the new launcher');
                     window.stop();
                     document.body.hide();
-                    window.location = '../new/launcher';
+                    _debug('../new/launcher/?profile='+encodeURIComponent('../../server/api/launcher_profile.php?uid=' + this.user['id']));
+                    window.location = '../new/launcher/?profile='+encodeURIComponent('../../server/api/launcher_profile.php?uid=' + this.user['id']);
                     return;
                 }
 
