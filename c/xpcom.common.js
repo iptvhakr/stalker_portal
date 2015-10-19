@@ -390,12 +390,16 @@ function common_xpcom(){
 
                 if (result.template == 'smart_launcher'){
 
-                    _debug('redirect to the new launcher');
-                    window.stop();
-                    document.body.hide();
-                    _debug('../new/launcher/?profile='+encodeURIComponent('../../server/api/launcher_profile.php?uid=' + this.user['id']));
-                    window.location = '../new/launcher/?profile='+encodeURIComponent('../../server/api/launcher_profile.php?uid=' + this.user['id']);
-                    return;
+                    if (single_module.length == 0) {
+                        _debug('redirect to the new launcher');
+                        window.stop();
+                        document.body.hide();
+                        _debug('../new/launcher/?profile=' + encodeURIComponent('../../server/api/launcher_profile.php?uid=' + this.user['id']));
+                        window.location = '../new/launcher/?profile=' + encodeURIComponent('../../server/api/launcher_profile.php?uid=' + this.user['id']);
+                        return;
+                    }else{
+                        result.template = 'default';
+                    }
                 }
 
                 loader.set_template(result.template);

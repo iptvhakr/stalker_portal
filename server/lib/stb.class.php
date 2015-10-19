@@ -1005,6 +1005,10 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         $prefix = $gmode ? '_'.$gmode : '';
 
         $template = $this->getUserPortalTheme();
+
+        if ($template == 'smart_launcher'){
+            $template = 'default';
+        }
         
         $dir = PROJECT_PATH.'/../c/template/'.$template.'/i'.$prefix.'/';
         $files = array();

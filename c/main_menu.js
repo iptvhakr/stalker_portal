@@ -249,7 +249,11 @@ var main_menu = {
         for(var i=0; i<this.map.length; i++){
             
             if (i<3){
-                this.cells[i].img_dom_obj.style.background = 'url('+this.map[i].img+')';
+
+                var img = new Image();
+                img.src = this.map[i].img;
+                this.cells[i].img_dom_obj.appendChild(img);
+
                 this.cells[i].title_dom_obj.innerHTML = this.map[i].title;
             }
             
@@ -298,7 +302,16 @@ var main_menu = {
         _debug('main_menu.render');
         
         for (var i=0; i<=2; i++){
-            this.cells[i].img_dom_obj.style.background = 'url('+this.map[i].img+')';
+
+            var img = new Image();
+            img.src = this.map[i].img;
+            img.onerror = function(){
+                this.src = 'template/' + loader.template + '/i' + resolution_prefix + '/' + 'mm_ico_default.png';
+            };
+
+            this.cells[i].img_dom_obj.innerHTML = '';
+            this.cells[i].img_dom_obj.appendChild(img);
+
             this.cells[i].title_dom_obj.innerHTML = this.map[i].title;
         }
         
