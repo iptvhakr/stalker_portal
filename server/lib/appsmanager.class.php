@@ -18,9 +18,9 @@ class AppsManager
 
                 }
                 $app['name'] = isset($info['name']) ? $info['name'] : $app['name'];
-                $app['alias'] = empty($app['alias']) && !isset($info['name']) ? AppsManager::safeFilename($info['name']) : $app['alias'];
+                $app['alias'] = empty($app['alias']) && isset($info['name']) ? AppsManager::safeFilename($info['name']) : $app['alias'];
                 $app['available_version'] = isset($info['version']) ? $info['version'] : '';
-                $app['description'] = isset($info['description']) ? $info['description'] : '';
+                $app['description'] = isset($info['description']) ? $info['description'] : $app['description'];
 
             }
 
