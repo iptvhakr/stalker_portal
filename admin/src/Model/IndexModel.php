@@ -39,7 +39,7 @@ class IndexModel extends \Model\BaseStalkerModel {
     }
 
     public function getStorages(){
-        return $this->mysqlInstance->from('storages')->where(array('for_records' => 1))->get()->all();
+        return $this->mysqlInstance->from('storages')->get()->all();
     }
 
     public function getStoragesRecords($storage_name, $total_storage_loading = FALSE)
@@ -78,7 +78,7 @@ class IndexModel extends \Model\BaseStalkerModel {
                 'keep_alive>' => date(\Mysql::DATETIME_FORMAT, time() - \Config::get('watchdog_timeout') * 2),
                 'now_playing_type' => 1
             ));
-        if (!empty($this->reseller_id) && !$total_server_loading) {
+        if (!empty($this->reseller_id) && $total_server_loading) {
             $this->mysqlInstance->where(array('reseller_id' => $this->reseller_id));
         }
 

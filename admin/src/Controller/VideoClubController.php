@@ -458,6 +458,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
                 if (array_key_exists($row['id'], $allTasks)) {
                     $response['data'][$key]['tasks'] = $allTasks[$row['id']];
                 }
+                $response['data'][$key]['on_storages'] = (int) $this->check_video_status($row['id']);
             }
         }
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
@@ -501,6 +502,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
                 $data['base_info'] = array();
             }
             foreach ($good_storages as $name => $data_s){
+                sort($data_s['files']);
                 $data['base_info'][] = array(
                     'storage_name' => $name,
                     'path'         => $path,
@@ -1489,7 +1491,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
             $genres[$row['id']] = $row['title'];
         }
         
-        $cat_genres = array();
+        $cat_genres = array(0 => '');
         foreach ($this->app['catGenres'] as $row) {
             $cat_genres[$row['id']] = $row['category_name'];
         }
@@ -1562,11 +1564,9 @@ class VideoClubController extends \Controller\BaseStalkerController {
                 /*+*/->add('genres', 'choice', array(
                             'choices' => $genres,
                             'constraints' => array(
-                                    new Assert\Choice(array('choices' => array_keys($genres), 'multiple' => TRUE)),
-                                    new Assert\NotBlank()
+                                    new Assert\Choice(array('choices' => array_keys($genres), 'multiple' => TRUE))
                                 ),
-                            'multiple' => TRUE, 
-                            'required' => TRUE
+                            'multiple' => TRUE
                         )
                     )
                 /*категория*/
@@ -2092,5 +2092,16 @@ class VideoClubController extends \Controller\BaseStalkerController {
             array('name'=>'category',       'title'=>$this->setLocalization('Category'),        'checked' => TRUE),
             array('name'=>'operations',     'title'=>$this->setLocalization('Operation'),       'checked' => TRUE)
         );
+    }
+
+    private function check_video_status($id){
+
+        $video = \Video::getById($id);
+
+        if (!empty($video['rtsp_url'])){
+            return 2;
+        }
+
+        return $video['status'];
     }
 }

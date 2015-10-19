@@ -304,9 +304,13 @@ class IndexController extends \Controller\BaseStalkerController {
 
         $data['data'] = $this->db->getUsersActivity();
 
-        $data['data'] = array_map(function($row){
+        $reseller = (int) $this->app['reseller'];
+
+        $data['data'] = array_map(function($row) use ($reseller){
             settype($row['time'], 'int');
-            settype($row['users_online'], 'int');
+            $row['users_online'] = @json_decode($row['users_online'], TRUE);
+            $key = empty($reseller) ? 'total': $reseller;
+            $row['users_online'] = array_key_exists($key, $row['users_online']) ? (int) $row['users_online'][$key] : 0;
             return array($row['time'], $row['users_online']);
         }, $data['data']);
 

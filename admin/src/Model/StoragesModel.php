@@ -96,7 +96,7 @@ class StoragesModel extends \Model\BaseStalkerModel {
     
     public function getTotalRowsVideoList($select = array(), $where = array(), $like = array(), $having = array()) {
         $params = array(
-            /*'select' => $select,*/
+            'select' => array("*", "GROUP_CONCAT(`storage_name`) as `storages`"),
             'where' => $where,
             'like' => array(),
             'order' => array()

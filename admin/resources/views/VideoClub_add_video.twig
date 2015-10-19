@@ -47,10 +47,10 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label ">{{ 'Category'|trans }}</label>
+                            <label class="col-sm-2 control-label ">{{ 'Category'|trans }}<span class="icon-required">*</span></label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
-                                    {{ form_widget(app['form'].category_id, {'attr': {'class': 'populate placeholder'} }) }}
+                                    {{ form_widget(app['form'].category_id, {'attr': {'class': 'populate placeholder', 'data-validation':'required'} }) }}
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].category_id) }}
                                     </div>
@@ -72,10 +72,10 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label ">{{ 'Old genre'|trans }}<span class="icon-required">*</span></label>
+                            <label class="col-sm-2 control-label ">{{ 'Old genre'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
-                                    {{ form_widget(app['form'].genres, {'attr': {'class': 'populate placeholder', 'data-validation':'required'}}) }}
+                                    {{ form_widget(app['form'].genres, {'attr': {'class': 'populate placeholder'}}) }}
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].genres) }}
                                     </div>
@@ -575,15 +575,20 @@
                 });
                 
                 $(document).on('click', '#autocomplete_name, #autocomplete_id', function(){
-                    $("#modalbox").show().children().hide();
+                    if ($("#modalbox > div").css('display') != 'none') {
+                        $("#modalbox > div").hide();
+                    }    
+                    $("#modalbox").show();
+                    JSshowModalBox()
                     $.ajax({
                         url: 'video-club/get-kinopoisk-info-by-'+ $(this).attr('id').replace('autocomplete_', ''),
                         type: 'POST',
                         data: {data: $(this).closest('div').prev('div').find('input').val()},
                         success: function (data) {
-                            $("#modalbox").hide().children().show();
-							$("body").removeClass("modal-open");
+                            $("#modalbox").hide();
+                            $("body").removeClass("modal-open");
                             if (data.success) {
+                                JSSuccessModalBox(data);
                                 if (data.result.hasOwnProperty('cover_big')){
                                     $('#form_cover_id').next('img').attr('src', "video-club/get-image?url="+data.result['cover_big']);
 {#                                    $('#form_cover_id').val('');#}
@@ -613,17 +618,17 @@
                                     }
                                 }
                             } else if (data.error){
-                                alert(data.error);
+                                JSErrorModalBox(data);
                             } else {
-                                alert("{{ 'Some server error'|trans }}");
+                                JSErrorModalBox({'msg': "{{ 'Some server error'|trans }}"});
                             }
                         },
                         error: function (data) {
-                            $("#modalbox").hide().children().show();
+                            $("#modalbox").hide();
                             if (typeof(data.responseJSON) != 'undefined' && typeof(data.responseJSON.error) != 'undefined') {
-                                alert(data.responseJSON.error);
+                                JSErrorModalBox(data.responseJSON);
                             } else {
-                                alert("{{ 'Some network error or access denied'|trans }}");
+                                JSErrorModalBox({'msg': "{{ 'Some network error or access denied'|trans }}"});
                             }
                         },
                         dataType: "json",
