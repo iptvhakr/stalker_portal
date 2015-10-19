@@ -1489,7 +1489,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
             $genres[$row['id']] = $row['title'];
         }
         
-        $cat_genres = array();
+        $cat_genres = array(0 => '');
         foreach ($this->app['catGenres'] as $row) {
             $cat_genres[$row['id']] = $row['category_name'];
         }
@@ -1562,11 +1562,9 @@ class VideoClubController extends \Controller\BaseStalkerController {
                 /*+*/->add('genres', 'choice', array(
                             'choices' => $genres,
                             'constraints' => array(
-                                    new Assert\Choice(array('choices' => array_keys($genres), 'multiple' => TRUE)),
-                                    new Assert\NotBlank()
+                                    new Assert\Choice(array('choices' => array_keys($genres), 'multiple' => TRUE))
                                 ),
-                            'multiple' => TRUE, 
-                            'required' => TRUE
+                            'multiple' => TRUE
                         )
                     )
                 /*категория*/
