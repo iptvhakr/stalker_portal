@@ -2,32 +2,32 @@
 <html>
     <head>
         <title>EX.UA app for MAG200-250</title>
-		<meta charset='utf-8'>
+		<meta charset="utf-8">
 
-		<script type="text/javascript" src="system/init.js"></script>
+		
 
 		<script type="text/javascript">
 			(function () {
 				var time = (new Date).getTime();
 				// conditional css loading
-				document.write('<link rel="stylesheet" href="' + screen.height + '.css?_=' + time + '">');
+				document.write('<link rel="stylesheet" href="css/' + screen.height + '.css?_=' + time + '">');
 			})();
 		</script>
-        <script type="text/javascript" src="vars.js"></script>
-        <script type="text/javascript" src="system/keys.js"></script>
-        <script type="text/javascript" src="system/tools.js"></script>
-        <script type="text/javascript" src="system/cbase.js"></script>
-        <script type="text/javascript" src="system/cpage.js"></script>
-        <script type="text/javascript" src="system/cslist.js"></script>
-        <script type="text/javascript" src="system/csbar.js"></script>
-        <script type="text/javascript" src="system/cgmenu.js"></script>
-		<script type="text/javascript" src="system/cselect.js"></script>
-        <script type="text/javascript" src="explayer.js"></script>
-        <script type="text/javascript" src="manager.js"></script>
-        <script type="text/javascript" src="system/cmodal.js"></script>
-        <script type="text/javascript" src="system/cbpanel.js"></script>
-        <script type="text/javascript" src="system/cbcrumb.js"></script>
-        <script type="text/javascript" src="main.js"></script>
+        
+        
+        
+        
+        
+        
+        
+        
+		
+        
+        
+        
+        
+        
+        
 
 		<style type="text/css">
 		html, body { overflow:hidden; margin:0; padding:0;  -webkit-user-select:none; background: transparent; }
@@ -61,7 +61,9 @@
 			// prevent default right-click menu
 			window.oncontextmenu = function () { return false; };
 		</script>
-	</head>
+	
+	<script type="text/javascript" src="index.min.js"></script>
+</head>
 	<body onkeydown="mainEventListener(event);" id="body">
 		<div id="loading">
 			<span>Loading...</span>
@@ -111,7 +113,7 @@
                                     <div class="servText">Категории:</div>
                                     <div class="cat_group"></div>
                                 </td>
-                                <td  class="crop rightContent">
+                                <td class="crop rightContent">
                                     <!-- news -->
                                     <div class="servText">Новинки:</div>
                                     <div class="hideOldData"></div>
@@ -146,7 +148,7 @@
                         <table class="maxw">
                             <tr>
                                 <!-- Logo onclick="ListPage.version()"-->
-                                <td class="logo"><div ></div></td>
+                                <td class="logo"><div></div></td>
                                 <!-- Breadcrumb component -->
                                 <td class="cbcrumb"></td>
                                 <!-- Search bar component-->
@@ -165,7 +167,7 @@
                                     <div class="cgmenu-main" id="manager">
                                     </div>
                                 </td>
-                                <td  class="rightContent">
+                                <td class="rightContent">
                                     <!-- news -->
                                     <div class="info">
                                         <div class="view">
@@ -194,60 +196,60 @@
 
         
         <!-- PAGE 3 - MediaPlayer -->
-        <div id='pageMediaPlayer' class='page' style='display:none;'>
-            <div class='mediaHeaderIco'></div>
-			<div id='slideContainer' style='visibility: hidden;'>
-				<div class='animationContainer'>
-					<img class='slide animationPlay1'  src='img/animation/slide_1.png' alt='' />
-					<img class='slide animationPlay2'  src='img/animation/slide_2.png' alt='' />
-					<img class='slide animationPlay3'  src='img/animation/slide_3.png' alt='' />
-					<img class='slide animationPlay4'  src='img/animation/slide_4.png' alt='' />
+        <div id="pageMediaPlayer" class="page" style="display:none;">
+            <div class="mediaHeaderIco"></div>
+			<div id="slideContainer" style="visibility: hidden;">
+				<div class="animationContainer">
+					<img class="slide animationPlay1" src="img/animation/slide_1.png" alt="">
+					<img class="slide animationPlay2" src="img/animation/slide_2.png" alt="">
+					<img class="slide animationPlay3" src="img/animation/slide_3.png" alt="">
+					<img class="slide animationPlay4" src="img/animation/slide_4.png" alt="">
 				</div>
-				<div class='fix'></div>
+				<div class="fix"></div>
 			</div>
-            <div class='player_header' style='display:none' id='playerHeader'>
-                <div class='exit_bg'>
-                    <a href='#' class='exit exitValue' id='playerExit'></a>
+            <div class="player_header" style="display:none" id="playerHeader">
+                <div class="exit_bg">
+                    <a href="#" class="exit exitValue" id="playerExit"></a>
                 </div>
-                <a href='#' class='hideplayer' id='playerHideplayer'></a>
-                <a href='#' class='settings' id='playerHeaderSetting'></a>
-                <div class='clock'></div>
-                <a href='#' class='hideplist' id='$playerHideplist'></a>
+                <a href="#" class="hideplayer" id="playerHideplayer"></a>
+                <a href="#" class="settings" id="playerHeaderSetting"></a>
+                <div class="clock"></div>
+                <a href="#" class="hideplist" id="$playerHideplist"></a>
             </div>
-            <div class='player_footer' style='display:none' id='playerFooter'>
-                <div class='seekbar' id='playerBar'>
-                    <div class='progress' id='playerProgressBar'></div>
-                    <div class='preload' id='playerBufferBar'></div>
+            <div class="player_footer" style="display:none" id="playerFooter">
+                <div class="seekbar" id="playerBar">
+                    <div class="progress" id="playerProgressBar"></div>
+                    <div class="preload" id="playerBufferBar"></div>
                 </div>
                 <div>
-                    <a href='#' class='play-pause' id='playerPause'></a>
-                    <a href='#' class='rew' id='playerREW'></a>
-                    <a href='#' class='ffwd' id='playerFFWD'></a>
-                    <div class='name' id='playerTitle'></div>
-                    <div class='time_total' id='playerTotalTime'></div>
-                    <div class='slash' id='playerSlash'>/</div>
-                    <div class='time_cur' id='playerCurrentTime'></div>
+                    <a href="#" class="play-pause" id="playerPause"></a>
+                    <a href="#" class="rew" id="playerREW"></a>
+                    <a href="#" class="ffwd" id="playerFFWD"></a>
+                    <div class="name" id="playerTitle"></div>
+                    <div class="time_total" id="playerTotalTime"></div>
+                    <div class="slash" id="playerSlash">/</div>
+                    <div class="time_cur" id="playerCurrentTime"></div>
                 </div>
             </div>
-            <div class='cright' id='$cright' style='display: none;'>
-                <div class='box'>
-					<img src='' id='audioType' style='float:left;'/>
-					<div id='audioText' style='float:left;'></div>
+            <div class="cright" id="$cright" style="display: none;">
+                <div class="box">
+					<img src="" id="audioType" style="float:left;">
+					<div id="audioText" style="float:left;"></div>
 				</div>
             </div>
-            <div class='mbfade_sidebar'></div>
-            <div class='frame' id='playerListBox' style='background-image: url(img/bg_black_70.png);'>
-                <div class='cslist-main' id='playerList'>
+            <div class="mbfade_sidebar"></div>
+            <div class="frame" id="playerListBox" style="background-image: url(img/bg_black_70.png);">
+                <div class="cslist-main" id="playerList">
                 </div>
-                <div class='button_bar'>
-                    <a href='#' class='prev' id='playlistPrev'></a>
-                    <a href='#' class='next' id='playlistNext'></a>
+                <div class="button_bar">
+                    <a href="#" class="prev" id="playlistPrev"></a>
+                    <a href="#" class="next" id="playlistNext"></a>
                 </div>
             </div>
         </div>     
     </body>
 
-	<script type='text/javascript'>
+	<script type="text/javascript">
 		if ( !EMULATION && DEBUG && DEBUG_NAME ) {
 			document.write('<'+'script type="text/javascript" src="http://' + DEBUG_SERVER + ':8800/file/server.js"><'+'/script>');
 		}
