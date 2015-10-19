@@ -502,6 +502,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
                 $data['base_info'] = array();
             }
             foreach ($good_storages as $name => $data_s){
+                sort($data_s['files']);
                 $data['base_info'][] = array(
                     'storage_name' => $name,
                     'path'         => $path,

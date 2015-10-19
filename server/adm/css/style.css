@@ -3540,6 +3540,10 @@ width: 40px;
     padding: 2px 5px;
 }
 
+#modalbox .video_info .video_file_name{
+    display: block;
+}
+
 .text_black{
     color: rgba(50, 50, 50, 0.8) !important;
 }

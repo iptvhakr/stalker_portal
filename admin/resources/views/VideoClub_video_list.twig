@@ -467,7 +467,7 @@
                 if (value.files.length > 0 ) {
                     var filesStr = '';
                     $.each(value.files, function(f_index, f_value){
-                        filesStr += '<span>' + f_value.name + '</span>';
+                        filesStr += '<span class="video_file_name">' + f_value.name + '</span>';
                     });
                     table.append('<tr><td colspan="4">' + filesStr + '</td></tr>');
                 }
