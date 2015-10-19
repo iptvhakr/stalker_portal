@@ -47,7 +47,6 @@
 					"name": "explorer",
 					"info": "Watch movies, listen to music or view the photos, saved on your removable storages or within the local network.",
 					"icon": "img/{0}/icons/media/explorer.png",
-					"mark": "!",
 					"color": "#8592ff",
 					"url": "../explorer/index.html"
 				},
@@ -55,7 +54,6 @@
 					"name": "downloads",
 					"info": "Download the files directly from the Internet network to the connected removable storage.",
 					"icon": "img/{0}/icons/media/downloads.png",
-					"mark": "3",
 					"color": "#fc9360",
 					"url": "../downloads/index.html"
 				},
@@ -63,7 +61,6 @@
 					"name": "records",
 					"info": "This app allows recording TV shows or watch the records made previously.",
 					"icon": "img/{0}/icons/media/records.png",
-					"mark": "5",
 					"color": "#a56d24",
 					"url": "../records/index.html"
 				},
@@ -99,7 +96,6 @@
 					"name": "twitch",
 					"info": "",
 					"icon": "img/{0}/icons/apps/twitch.png",
-					"mark": "512",
 					"color": "#6441a5",
 					"url": "../twitch/index.html"
 				},
@@ -115,7 +111,28 @@
 					"info": "",
 					"icon": "img/{0}/icons/apps/ex.ua.png",
 					"color": "#eda944",
-					"url": "../ex/index.html"
+					"url": "../ex.ua/index.html"
+				},
+				{
+					"name": "shoutcast",
+					"info": "",
+					"icon": "img/{0}/icons/apps/shoutcast.png",
+					"color": "#49266a",
+					"url": "../shoutcast/index.html"
+				},
+				{
+					"name": "vk.music",
+					"info": "",
+					"icon": "img/{0}/icons/apps/vk.music.png",
+					"color": "#667da2",
+					"url": "../vk.music/index.html"
+				},
+				{
+					"name": "vk.video",
+					"info": "",
+					"icon": "img/{0}/icons/apps/vk.video.png",
+					"color": "#667da2",
+					"url": "../vk.video/index.html"
 				}
 			]
 		},

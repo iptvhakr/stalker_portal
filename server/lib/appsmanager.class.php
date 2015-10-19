@@ -15,7 +15,7 @@ class AppsManager
 
                 $info = $repo->getFileContent('package.json');
                 $app['name'] = isset($info['name']) ? $info['name'] : '';
-                $app['alias'] = empty($info['alias']) ? AppsManager::safeFilename($info['name']) : $info['alias'];
+                $app['alias'] = empty($app['alias']) ? AppsManager::safeFilename($info['name']) : $app['alias'];
                 $app['available_version'] = isset($info['version']) ? $info['version'] : '';
                 $app['description'] = isset($info['description']) ? $info['description'] : '';
 
@@ -25,6 +25,12 @@ class AppsManager
                 .Config::getSafe('apps_path', 'stalker_apps/')
                 .$app['alias']
                 .'/'.$app['current_version']));
+
+            $app['app_url'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
+                .'://'.$_SERVER['HTTP_HOST']
+                .'/'.Config::getSafe('apps_path', 'stalker_apps/')
+                .$app['alias']
+                .'/'.$app['current_version'];
 
             return $app;
         }, $db_apps);
@@ -175,6 +181,14 @@ class AppsManager
                 }
             }
 
+            if (!empty($info['description'])){
+                $update_data['description'] = $info['description'];
+            }
+
+            if (!empty($info['color'])){
+                $update_data['icon_color'] = $info['color'];
+            }
+
             Mysql::getInstance()->update('apps',
                 $update_data,
                 array('id' => $app_id)
@@ -231,17 +245,22 @@ class AppsManager
 
         if ($result){
             $update_data = array('current_version' => $version);
-            if (empty($app['alias'])){
-                if (!isset($repo)){
-                    $repo = new GitHub($app['url']);
-                }
-                $info = $repo->getFileContent('package.json');
-                $update_data['alias'] = self::safeFilename($info['name']);
 
-                if (empty($app['name'])){
-                    $update_data['name'] = $info['name'];
-                }
+            $update_data['alias'] = $app['alias'];
+
+            if (!isset($repo)){
+                $repo = new GitHub($app['url']);
             }
+            $info = $repo->getFileContent('package.json');
+
+            if (!empty($info['description'])){
+                $update_data['description'] = $info['description'];
+            }
+
+            if (!empty($info['color'])){
+                $update_data['icon_color'] = $info['color'];
+            }
+
             Mysql::getInstance()->update('apps', $update_data, array('id' => $app_id));
         }
 
