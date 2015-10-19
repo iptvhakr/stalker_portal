@@ -60,6 +60,9 @@
                                         <td data-filter="status">
                                             {% if item.accessed %}<span class="">{{ 'Published'|trans }}</span>{% elseif attribute(item, 'task_id') is defined and item.task_id %}
                                             <span class="">{{ 'Scheduled'|trans }} {% if not(item.task_date_on == 0) %}({{ 'on'|trans }} {{ item.task_date_on|date("d-m-Y") }}){% endif %}</span>{% else %}{{ 'Unpublished'|trans }}{% endif %}
+                                            {% if not(item.on_storages) %}
+                                                <br><span class="">{{ 'Not available on storages'|trans }}</span>
+                                            {% endif %}
                                         </td>
                                         <td data-filter="operations" class="action-menu">
                                             <div class="col-xs-3 col-sm-8">
@@ -269,6 +272,9 @@
                         }
                         if (!json.data[i].complaints) {
                             json.data[i].complaints = "0"
+                        }
+                        if (!json.data[i].on_storages){
+                            json.data[i].accessed += "<br><span class=''>{{ 'Not available on storages'|trans }}</span>";
                         }
                     }
                 }

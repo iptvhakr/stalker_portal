@@ -458,6 +458,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
                 if (array_key_exists($row['id'], $allTasks)) {
                     $response['data'][$key]['tasks'] = $allTasks[$row['id']];
                 }
+                $response['data'][$key]['on_storages'] = (int) $this->check_video_status($row['id']);
             }
         }
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
@@ -2090,5 +2091,16 @@ class VideoClubController extends \Controller\BaseStalkerController {
             array('name'=>'category',       'title'=>$this->setLocalization('Category'),        'checked' => TRUE),
             array('name'=>'operations',     'title'=>$this->setLocalization('Operation'),       'checked' => TRUE)
         );
+    }
+
+    private function check_video_status($id){
+
+        $video = \Video::getById($id);
+
+        if (!empty($video['rtsp_url'])){
+            return 2;
+        }
+
+        return $video['status'];
     }
 }
