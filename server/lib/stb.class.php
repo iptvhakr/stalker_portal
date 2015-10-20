@@ -756,6 +756,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         $profile['disable_youtube_for_mag200'] = Config::getSafe('disable_youtube_for_mag200', true);
 
         $profile['hls_fast_start'] = Config::getSafe('hls_fast_start', true);
+        $profile['auth_access'] = Config::exist('auth_url');
 
         unset($profile['device_id']);
         unset($profile['device_id2']);
@@ -905,6 +906,17 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             }
 
         }else if (!empty($user)){
+
+            Mysql::getInstance()->update('users',
+                array(
+                    'mac'          => '',
+                    'name'         => '',
+                    'device_id'    => '',
+                    'device_id2'   => '',
+                    'access_token' => ''
+                ),
+                array('mac' => $this->mac)
+            );
 
             Mysql::getInstance()->update('users',
                 array(
