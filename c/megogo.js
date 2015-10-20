@@ -3,7 +3,7 @@
  */
 (function(){
 
-    if (stb.type == 'MAG200'){
+    if (stb.type == 'MAG200' || resolution_prefix != '_720'){
         loader.next();
         return;
     }
