@@ -941,7 +941,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         if (!empty($data['number'])){
             $def_number = $data['number'];
         } else {
-            $def_number = $this->getFirstFreeChannelNumber();
+            $def_number = $this->db->getFirstFreeChannelNumber();
         }
 
         if (!empty($data['name'])){
@@ -1306,19 +1306,6 @@ class TvChannelsController extends \Controller\BaseStalkerController {
 
         $this->app['filters'] = $this->data['filters'];
         return $filters;
-    }
-
-    private function getFirstFreeChannelNumber(){
-        $channels = $this->db->getAllChannels();
-        while(list($key, $row) = each($channels)) {
-            $next_key = $key+1;
-            if (array_key_exists($next_key, $channels)) {
-                if (($channels[$next_key]['number'] - $row['number']) >=2 ) {
-                    return ++$row['number'];
-                }
-            }
-        }
-        return (!empty($row['number']) ? ++$row['number']: 1);
     }
 
     private function fillEmptyRows($input_array = array()){
