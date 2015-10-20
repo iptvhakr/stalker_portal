@@ -1044,10 +1044,14 @@
                     if (imageName.length > 1) {
                         imageName.length -= 1;
                     }
+                    imageName = imageName.join('.');
                     var postUrl = 'tv-channels/edit-logo?id=' + (typeof (imageName) != 'undefined' && imageName != '' ? imageName : 'new');
-                        $(this).fineUploader('setEndpoint', postUrl);
-                        return false;
-                    });
+                    $(this).fineUploader('setEndpoint', postUrl);
+
+                    $("#deletelogolink a").data("logo_id", (imageName.search('new') != -1 ? val: imageName));
+
+                    return false;
+                });
                 $("#bootstrapped-fine-uploader").on('click', ".qq-upload-cancel", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
@@ -1239,11 +1243,11 @@
             $('#form_logo').val('');
             $('#cover_container img').attr('src', '');
             $('#bootstrapped-fine-uploader ul.qq-upload-list').empty();
-            JSSuccessModalBox();
+            JSSuccessModalBox(data);
         };
 
-        var deleteLogoError = function(){
-            JSErrorModalBox();
+        var deleteLogoError = function(data){
+            JSErrorModalBox(data);
         };
 
         var closeModalBox = function(){
