@@ -276,9 +276,16 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
         if (!empty($param['select'])) {
             $this->mysqlInstance->select($param['select']);
         }
-        $this->mysqlInstance->from("epg_setting")
-            ->where($param['where'])->like($param['like'], 'OR')
-            ->orderby($param['order']);
+        $this->mysqlInstance->from("epg_setting");
+        if (!empty($param['where'])) {
+            $this->mysqlInstance->where($param['where']);
+        }
+        if (!empty($param['like'])) {
+            $this->mysqlInstance->like($param['like'], 'OR');
+        }
+        if (!empty($param['order'])) {
+            $this->mysqlInstance->orderby($param['order']);
+        }
 
         if (!empty($param['limit']['limit'])) {
             $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
@@ -335,8 +342,17 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
         if (!empty($param['select'])) {
             $this->mysqlInstance->select($param['select']);
         }
-        $this->mysqlInstance->from('tv_genre')
-            ->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
+        $this->mysqlInstance->from('tv_genre');
+
+        if (!empty($param['where'])) {
+            $this->mysqlInstance->where($param['where']);
+        }
+        if (!empty($param['like'])) {
+            $this->mysqlInstance->like($param['like'], 'OR');
+        }
+        if (!empty($param['order'])) {
+            $this->mysqlInstance->orderby($param['order']);
+        }
         if (!empty($param['limit']['limit'])) {
             $this->mysqlInstance->limit($param['limit']['limit'], ( array_key_exists('offset', $param['limit']) ? $param['limit']['offset']: FALSE ) );
         }

@@ -482,6 +482,10 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             $query_param['select'] = "*";
         }
 
+        if (!isset($query_param['like'])) {
+            $query_param['like'] = array();
+        }
+
         $response['recordsTotal'] = $this->db->getTotalRowsEPGList();
         $response["recordsFiltered"] = $this->db->getTotalRowsEPGList($query_param['where'], $query_param['like']);
 
