@@ -526,20 +526,20 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $check = array();
         if (empty($this->postData['id'])) {
             $operation = 'insertEPG';
-            $check = $this->db->searchOneEPGParam(array('uri' => trim($this->postData['uri']), 'id<>' => trim($this->postData['id'])));
+            $check = $this->db->searchOneEPGParam(array('uri' => trim($this->postData['uri'])));
         } else {
             $operation = 'updateEPG';
             $item['id'] = $this->postData['id'];
         }
         unset($item[0]['id']);
-        $error = 'Не удалось. ';
-
+        $error = $this->setlocalization('Failed. ');
         if (empty($check)) {
             if ($result = call_user_func_array(array($this->db, $operation), $item)) {
                 $error = '';
             }
         } else {
-            $error .= 'URL занят';
+            $error .= $this->setlocalization('URL is busy');
+            $data['msg']=$error;
         }
 
         $response = $this->generateAjaxResponse($data, $error);
