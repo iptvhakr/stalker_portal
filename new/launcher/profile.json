@@ -77,64 +77,7 @@
 			"name": "Apps",
 			"icons": "img/{0}/icons/apps.png",
 			"color": "#00eaff",
-			"items": [
-				{
-					"name": "vimeo",
-					"info": "",
-					"icon": "img/{0}/icons/apps/vimeo.png",
-					"color": "#112233",
-					"url": "../vimeo/index.html"
-				},
-				{
-					"name": "youtube",
-					"info": "",
-					"icon": "img/{0}/icons/apps/youtube.png",
-					"color": "#c12226",
-					"url": "../youtube/index.html"
-				},
-				{
-					"name": "twitch",
-					"info": "",
-					"icon": "img/{0}/icons/apps/twitch.png",
-					"color": "#6441a5",
-					"url": "../twitch/index.html"
-				},
-				{
-					"name": "ted",
-					"info": "",
-					"icon": "img/{0}/icons/apps/ted.png",
-					"color": "#fe2a05",
-					"url": "../ted/index.html"
-				},
-				{
-					"name": "ex.ua",
-					"info": "",
-					"icon": "img/{0}/icons/apps/ex.ua.png",
-					"color": "#eda944",
-					"url": "../ex.ua/index.html"
-				},
-				{
-					"name": "shoutcast",
-					"info": "",
-					"icon": "img/{0}/icons/apps/shoutcast.png",
-					"color": "#49266a",
-					"url": "../shoutcast/index.html"
-				},
-				{
-					"name": "vk.music",
-					"info": "",
-					"icon": "img/{0}/icons/apps/vk.music.png",
-					"color": "#667da2",
-					"url": "../vk.music/index.html"
-				},
-				{
-					"name": "vk.video",
-					"info": "",
-					"icon": "img/{0}/icons/apps/vk.video.png",
-					"color": "#667da2",
-					"url": "../vk.video/index.html"
-				}
-			]
+			"items": []
 		},
 		{
 			"name": "Games",

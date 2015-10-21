@@ -1,2 +1,0 @@
-#TED
-TED is a platform for ideas worth spreading. Started in 1984 as a conference where technology, entertainment and design converged, TED today shares ideas from a broad spectrum — from science to business to global issues — in more than 100 languages. Meanwhile, independent TEDx events help share ideas in communities around the world.
