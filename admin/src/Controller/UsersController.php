@@ -276,7 +276,14 @@ class UsersController extends \Controller\BaseStalkerController {
         $list = $this->users_consoles_logs_json();
         
         if (!empty($this->data['id'])) {
-            $this->app['user'] = $this->db->getUsersList(array('select'=>array('`users`.`name`', '`users`.`fname`', '`users`.`mac`'), array('where' => array('`users`.id' => $this->data['id']))));
+            $this->app['user'] = $this->db->getUsersList(array(
+                'select' => array(
+                    '`users`.`name`',
+                    '`users`.`fname`',
+                    '`users`.`mac`'
+                ),
+                'where' => array('`users`.id' => $this->data['id'])
+            ));
         }
         
         $this->app['logList'] = $list['data'];
