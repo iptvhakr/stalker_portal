@@ -37,7 +37,13 @@ class UsersModel extends \Model\BaseStalkerModel {
         } else {
             $this->mysqlInstance->join('(SELECT @rank := 0) r', '1', '1', 'INNER');
         }
-        $this->mysqlInstance->where($param['where'])->like($param['like'], 'OR');
+
+        if (!empty($param['where'])) {
+            $this->mysqlInstance->where($param['where']);
+        }
+        if (!empty($param['like'])) {
+            $this->mysqlInstance->like($param['like'], 'OR');
+        }
 
         if (!empty($param['in'])) {
             list($field, $data) = each($param['in']);
