@@ -70,7 +70,7 @@ foreach ($menu as $section){
             $section['items'][] = array(
                 'name'  => $app['alias'],
                 'info'  => $app['description'],
-                'icon'  => 'img/{0}/icons/apps/icon.png',
+                'icon'  => $app['app_url'].'/img/{0}/'.$app['icons'].'/2015.png',
                 'color' => $app['icon_color'],
                 'url'   => $app['app_url']
             );

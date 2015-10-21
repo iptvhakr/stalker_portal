@@ -1096,6 +1096,8 @@ function common_xpcom(){
                 this.user['timeslot']          = parseFloat(this.user['timeslot']);
                 this.user['timeslot_ratio']    = parseFloat(this.user['timeslot_ratio']);
 
+                this.auth_access = this.user['auth_access'] ? true : false;
+
                 this.profile['plasma_saving_timeout'] = parseInt(this.profile['plasma_saving_timeout'], 10);
 
                 this.profile['ts_enable_icon'] = parseInt(this.profile['ts_enable_icon'], 10);

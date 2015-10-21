@@ -188,8 +188,14 @@ class AppsManager
                 $update_data['description'] = $info['description'];
             }
 
-            if (!empty($info['color'])){
-                $update_data['icon_color'] = $info['color'];
+            if (!empty($info['config']['icons'])){
+                $update_data['icons'] = $info['config']['icons'];
+            }else{
+                $update_data['icons'] = 'icons';
+            }
+
+            if (!empty($info['config']['backgroundColor'])){
+                $update_data['icon_color'] = $info['config']['backgroundColor'];
             }
 
             Mysql::getInstance()->update('apps',
@@ -260,8 +266,14 @@ class AppsManager
                 $update_data['description'] = $info['description'];
             }
 
-            if (!empty($info['color'])){
-                $update_data['icon_color'] = $info['color'];
+            if (!empty($info['config']['icons'])){
+                $update_data['icons'] = $info['config']['icons'];
+            }else{
+                $update_data['icons'] = 'icons';
+            }
+
+            if (!empty($info['config']['backgroundColor'])){
+                $update_data['icon_color'] = $info['config']['backgroundColor'];
             }
 
             Mysql::getInstance()->update('apps', $update_data, array('id' => $app_id));

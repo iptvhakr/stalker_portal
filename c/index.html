@@ -160,7 +160,7 @@ var loader = {
                     stb.all_modules[idx] = module.replace('external_','');
                 }*/
 
-                _script.src  = '../server/api/ext_module.php?name='+module.replace('external_', '');
+                _script.src  = '../server/api/ext_module.php?name='+module.replace('external_', '')+'&mac='+stb.mac;
             }else{
                 _script.src  = module + ".js";
             }

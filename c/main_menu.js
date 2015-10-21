@@ -474,7 +474,14 @@ var main_menu = {
         sub = sub || [];
         
         img = img || '';
-        
+
+        var resolution = resolution_prefix.replace('_', '');
+        resolution = resolution || 576;
+
+        img = img.replace('{0}', resolution);
+
+        _debug('img', img);
+
         if (sub.length > 0){
             for (var k=1; k<3; k++){
                 sub.unshift(sub.pop());
@@ -496,7 +503,7 @@ var main_menu = {
         this.map.push(
             {
                 "title": title,
-                "img": 'template/' + loader.template + '/i' + resolution_prefix + '/' + img,
+                "img": img.indexOf('http') == 0 ? img : 'template/' + loader.template + '/i' + resolution_prefix + '/' + img,
                 "cmd": cmd,
                 "sub": sub,
                 "module": module,
