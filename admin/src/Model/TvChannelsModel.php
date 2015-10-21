@@ -276,9 +276,16 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
         if (!empty($param['select'])) {
             $this->mysqlInstance->select($param['select']);
         }
-        $this->mysqlInstance->from("epg_setting")
-            ->where($param['where'])->like($param['like'], 'OR')
-            ->orderby($param['order']);
+        $this->mysqlInstance->from("epg_setting");
+        if (!empty($param['where'])) {
+            $this->mysqlInstance->where($param['where']);
+        }
+        if (!empty($param['like'])) {
+            $this->mysqlInstance->like($param['like'], 'OR');
+        }
+        if (!empty($param['order'])) {
+            $this->mysqlInstance->orderby($param['order']);
+        }
 
         if (!empty($param['limit']['limit'])) {
             $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
@@ -335,8 +342,17 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
         if (!empty($param['select'])) {
             $this->mysqlInstance->select($param['select']);
         }
-        $this->mysqlInstance->from('tv_genre')
-            ->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
+        $this->mysqlInstance->from('tv_genre');
+
+        if (!empty($param['where'])) {
+            $this->mysqlInstance->where($param['where']);
+        }
+        if (!empty($param['like'])) {
+            $this->mysqlInstance->like($param['like'], 'OR');
+        }
+        if (!empty($param['order'])) {
+            $this->mysqlInstance->orderby($param['order']);
+        }
         if (!empty($param['limit']['limit'])) {
             $this->mysqlInstance->limit($param['limit']['limit'], ( array_key_exists('offset', $param['limit']) ? $param['limit']['offset']: FALSE ) );
         }
@@ -364,5 +380,22 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
             $where['status'] = 0;
         }
         return $this->mysqlInstance->from('ch_links')->where($where)->get()->all();
+    }
+
+    public function getFirstFreeChannelNumber() {
+        $min = (int) $this->mysqlInstance->query("SELECT min(`itv`.`number`) as `empty_number` FROM `itv`")->first('empty_number');
+        if ($min > 1) {
+            return 1;
+        } else {
+            return $this->mysqlInstance
+                ->query("SELECT (`itv`.`number`+1) as `empty_number`
+                    FROM `itv`
+                    WHERE (
+                        SELECT 1 FROM `itv` as `st` WHERE `st`.`number` = (`itv`.`number` + 1)
+                    ) IS NULL
+                    ORDER BY `itv`.`number`
+                    LIMIT 1")
+                ->first('empty_number');
+        }
     }
 }

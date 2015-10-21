@@ -131,10 +131,13 @@
 
         function yelp() {
             $(document).ready(function () {
-                $(document).on('change keyup', '#tv_genres_title', function (e) {
+                $(document).on('keyup', '#tv_genres_title', function (e) {
                     e.stopPropagation();
                     e.preventDefault();
                     var _this = $(this);
+                    if (_this.val().length < 3) {
+                        return;
+                    }
                     _this.next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
                     $('#modalbox button[type="submit"]').removeAttr("disabled");
                     $.ajax({
@@ -144,26 +147,23 @@
                         success: function (data) {
                             if (data.success) {
                                 $('#modalbox button[type="submit"]').removeAttr("disabled");
-                                _this.next('div').append('<i class="txt-success fa fa-check"></i> ' + data.chk_rezult).css('visibility', 'visible');
-                            } else if (data.error) {
-                                $('#modalbox button[type="submit"]').attr("disabled", "disabled");
-                                console.log(data.error);
+                                _this.next('div').empty().append('<i class="txt-success fa fa-check"></i> ' + data.chk_rezult).css('visibility', 'visible');
                             } else {
-                                $('#modalbox button[type="submit"]').removeAttr("disabled");
-                                console.log('{{ 'Some server error'|trans }}');
+                                $('#modalbox button[type="submit"]').attr("disabled", "disabled");
+                                JSErrorModalBox(data);
                             }
                         },
                         error: function (data) {
                             if (typeof (data.responseJSON) != 'undefined' && typeof (data.responseJSON.error) != 'undefined') {
                                 $('#modalbox button[type="submit"]').attr("disabled", "disabled");
-                                _this.next('div').append('<i class="txt-danger fa fa-ban"></i> ' + data.responseJSON.error).css('visibility', 'visible');
+                                _this.next('div').empty().append('<i class="txt-danger fa fa-ban"></i> ' + data.responseJSON.error).css('visibility', 'visible');
                             } else {
                                 $('#modalbox button[type="submit"]').removeAttr("disabled");
-                                console.log('{{ 'Some network error or access denied'|trans }}');
+                                JSErrorModalBox('{{ 'Some network error or access denied'|trans }}');
                             }
                         },
                         dataType: "json",
-                        async: false
+                        async: true
                     });
                     return false;
                 });
@@ -189,7 +189,8 @@
                     }
                     e.stopPropagation();
                     e.preventDefault();
-                    closeModalBox();
+                    JScloseModalBox();
+                    /*closeModalBox();*/
                     return false;
                 });
 
@@ -205,7 +206,7 @@
                     e.stopPropagation();
                     e.preventDefault();
                     ajaxPostSend($("#modalbox form").attr('action'), sendData, false);
-                    closeModalBox();
+                    JScloseModalBox();
                     return false;
                 });
 
@@ -216,34 +217,28 @@
         document.addEventListener("DOMContentLoaded", yelp, false);
 
         var addTvGenre = function(data){
-            $("#modalbox").data('complete', 1);
-            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Done'|trans }}! ' + (data.msg ? data.msg : '') +  '</span>');
-            $('#datatable-1').DataTable().draw();
+            JSSuccessModalBox(data);
+            $('#datatable-1').DataTable().ajax.reload();
         };
 
         var addTvGenreError = function(data){
-            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Error'|trans }}! ' + (data.error? data.error: '') +  '</span>');
-            $("#modalbox").data('complete', 1);
+            JSErrorModalBox(data);
         };
 
         var editTvGenre = function(data){
-            $("#modalbox").data('complete', 1);
-            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Done'|trans }}! ' + (data.msg ? data.msg : '') +  '</span>');
-            $('#datatable-1').DataTable().draw();
+            JSSuccessModalBox(data);
+            $('#datatable-1').DataTable().ajax.reload();
         };
         var editTvGenreError = function(data){
-            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Error'|trans }}! ' + (data.error? data.error: '') +  '</span>');
-            $("#modalbox").data('complete', 1);
+            JSErrorModalBox(data);
         };
         
         var removeTvGenre = function (data) {
-            $("#modalbox").data('complete', 1);
-            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Done'|trans }}! ' + (data.msg ? data.msg : '') +  '</span>');
-            $('#datatable-1').DataTable().draw();
+            JSSuccessModalBox(data);
+            $('#datatable-1').DataTable().ajax.reload();
         };
         var removeTvGenreError = function(data){
-            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Error'|trans }}! ' + (data.error? data.error: '') +  '</span>');
-            $("#modalbox").data('complete', 1);
+            JSErrorModalBox(data);
         };
         
     function closeModalBox(){
@@ -280,6 +275,9 @@
         if (obj.data('genresid')) {
             $('#modalbox').find('.devoops-modal-inner').find('input[type="hidden"]').val(obj.data('genresid'));
             $('#modalbox').find('.devoops-modal-inner').find('input[type="text"]').val(obj.closest('tr').find('a:first').text());
+        } else {
+            $('#modalbox').find('.devoops-modal-inner').find('input[type="hidden"]').val('');
+            $('#modalbox').find('.devoops-modal-inner').find('input[type="text"]').val('');
         }
         $('#modalbox button[type="submit"]').removeAttr("disabled");
         $('#tv_genres_title').next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');

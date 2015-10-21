@@ -359,7 +359,8 @@
                     closeModalBox();
                     $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Add EPG'|trans }}');
                     $("#modalbox_ad .own_fields").prop("disabled", false).removeAttr('disabled').val('');
-                    $("#modalbox_ad input[type='hidden']:not(.not_disabled)").attr('disabled', 'disabled').val('');
+                    /*$("#modalbox_ad input[type='hidden']:not(.not_disabled)").attr('disabled', 'disabled').val('');*/
+                    $("#form_id").attr('disabled', 'disabled').val('');
                     $('#s2_status').select2("destroy").select2({minimumResultsForSearch: -1});
                     $('button.remove.all').click();
                     $('#s2_lang_code_available option.old').removeClass('old').addClass('new');
@@ -450,35 +451,24 @@
         
         var manageEPG = function (obj) {
             $("#modalbox_ad").click();
-            $("#modalbox").data('complete', 1);
-            notty('<span>{{ 'Finish'|trans }}!</span>','success');
-            var msg_type = typeof(obj.msg);
-            msg_type = msg_type.toLowerCase();
-            if (msg_type != 'undefined'){
-                if (msg_type == 'string') {
-                    notty('<span>' + obj.msg + '</span>');
-                } else if (msg_type == 'array' || msg_type == 'object') {
-                    for (var i in obj.msg){
-                        notty('<span>' + obj.msg[i] + '</span>');
-                    }
-                }
-            }
+            JSSuccessModalBox(obj);
             $('#datatable-1').DataTable().ajax.reload();
         };
-        
+
+        var manageEPGError = function (obj) {
+            JSErrorModalBox(obj);
+        };
+
         function closeModalBox(){
-            $("#modalbox").hide();
-            $('#modalbox').find('.modal-header-name span').empty();
-            $('#modalbox').find('.devoops-modal-inner').empty();
-            $('#modalbox').find('.devoops-modal-bottom').empty();
+            JScloseModalBox();
         }
         
         function showModalBox(){
-            notty('<span>{{ 'Request is being processed'|trans }}...</span>','notification');
+            JSshowModalBox();
         }
         
         var errAction = function(){
-            notty('<span>{{ 'Failed'|trans }}!</span>','error');
+            JSErrorModalBox({msg: '<span>{{ 'Failed'|trans }}!</span>'});
         };
     </script>
 {% endblock %}
