@@ -60,7 +60,7 @@ params = stb.add_referrer(params, this.module.layer_name);
 _debug('url', '<?= $app['app_url'] ?>'+params);
 
 window.location = '<?= $app['app_url'] ?>'+params;
-}, {layer_name : "<?= $app['alias'] ?>"});
+}, {layer_name : "external_<?= $app['alias'] ?>"});
 
 loader.next();
 })();
