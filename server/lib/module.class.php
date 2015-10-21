@@ -8,7 +8,7 @@ class Module
         $external_apps = $apps->getList(true);
 
         $installed_apps = array_values(array_filter($external_apps, function($app){
-            return $app['installed'] == 1 && !empty($app['alias']);
+            return $app['installed'] == 1 && $app['status'] == 1 && !empty($app['alias']);
         }));
 
         $external_apps_list = array_map(function($app){
