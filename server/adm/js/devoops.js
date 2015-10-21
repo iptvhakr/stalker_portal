@@ -1183,7 +1183,9 @@ String.prototype.camelCase = function () {
 };
 
 function JScloseModalBox(){
-     $.noty.closeAll();
+     /*$.noty.closeAll();*/
+    $("#modalbox").hide();
+    $("#modalbox_ad").hide();
 }
         
 function JSshowModalBox(){
@@ -1192,7 +1194,9 @@ function JSshowModalBox(){
 
 function JSSuccessModalBox(data) {
     var msg = (typeof(data)!= 'undefined' && typeof(data.msg)!= 'undefined'? data.msg: '');
-	notty('<span>' + words['Done'] + '!' + msg +'</span>','success');$("#modalbox").hide();$("#modalbox_ad").hide();
+	notty('<span>' + words['Done'] + '!' + msg +'</span>','success');
+    $("#modalbox").hide();
+    $("#modalbox_ad").hide();
 }
 
 function JSErrorModalBox(data){
