@@ -24,10 +24,15 @@ class AppsManager
 
             }
 
-            $app['installed'] = !empty($app['alias']) && is_dir(realpath(PROJECT_PATH.'/../../'
-                .Config::getSafe('apps_path', 'stalker_apps/')
-                .$app['alias']
-                .'/'.$app['current_version']));
+            if ($app['current_version']){
+                $app['installed'] = !empty($app['alias']) && is_dir(realpath(PROJECT_PATH.'/../../'
+                    .Config::getSafe('apps_path', 'stalker_apps/')
+                    .$app['alias']
+                    .'/'.$app['current_version']));
+            }else{
+                $app['installed'] = false;
+            }
+
 
             $app['app_url'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
                 .'://'.$_SERVER['HTTP_HOST']
@@ -66,10 +71,14 @@ class AppsManager
 
         unset($app['options']);
 
-        $app['installed'] = is_dir(realpath(PROJECT_PATH.'/../../'
-            .Config::getSafe('apps_path', 'stalker_apps/')
-            .$app['alias']
-            .'/'.$app['current_version']));
+        if ($app['current_version']){
+            $app['installed'] = is_dir(realpath(PROJECT_PATH.'/../../'
+                .Config::getSafe('apps_path', 'stalker_apps/')
+                .$app['alias']
+                .'/'.$app['current_version']));
+        }else{
+            $app['installed'] = false;
+        }
 
         $app['app_url'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
             .'://'.$_SERVER['HTTP_HOST']
