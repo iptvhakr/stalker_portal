@@ -1015,7 +1015,7 @@ function notty(data,type){
 	
 	if (type == 'undefined') { type="notification"; }
 
-	if (type=="notification") { var timeout = "1000"; } else { var timeout = false; }
+	if (type=="notification") { var timeout = "1000"; } else { var timeout = "10000";/*false;*/ }
  	noty({
 		text: msg,
 		layout      :	'topCenter',
@@ -1186,6 +1186,7 @@ function JScloseModalBox(){
      /*$.noty.closeAll();*/
     $("#modalbox").hide();
     $("#modalbox_ad").hide();
+    $("#modalbox").data('complete', 1);
 }
         
 function JSshowModalBox(){
@@ -1197,6 +1198,7 @@ function JSSuccessModalBox(data) {
 	notty('<span>' + words['Done'] + '!' + msg +'</span>','success');
     $("#modalbox").hide();
     $("#modalbox_ad").hide();
+    $("#modalbox").data('complete', 1);
 }
 
 function JSErrorModalBox(data){
@@ -1206,4 +1208,5 @@ function JSErrorModalBox(data){
         msg = ( msg.length == 0 && typeof(data.error)!= 'undefined' ? data.error: msg);
     }
 	notty('<span>' + words['Failed'] + '!' + msg + '!</span>','error');
+    $("#modalbox").data('complete', 1);
 }
