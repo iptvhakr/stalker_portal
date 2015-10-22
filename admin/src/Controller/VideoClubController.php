@@ -980,7 +980,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         $error = $this->setlocalization('Failed');
         $ad = new \VclubAdvertising();
         
-        if ($ad->updateById((int) $this->postData['adsid'], array('status' => (int) $this->postData['adsstatus']))) {
+        if ($ad->updateById((int) $this->postData['adsid'], array('status' => (int) $this->postData['adsstatus'], 'denied_categories' => $ad->getDeniedVclubCategoriesForAd((int) $this->postData['adsid'])))) {
             $error = '';
             $data['title'] = ($this->postData['adsstatus'] ? $this->setLocalization('Unpublish'): $this->setlocalization('Publish'));
             $data['status'] = '<span >' .($this->postData['adsstatus'] ?  $this->setlocalization('Published') : $this->setlocalization('Not published')) . '</span>';
