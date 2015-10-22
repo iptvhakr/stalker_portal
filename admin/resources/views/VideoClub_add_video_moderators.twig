@@ -75,13 +75,20 @@
     <script type="text/javascript" defer>
         function yelp() {
             $(document).ready(function () {
-			$.validate();
-                $(document).on('change keyup', '#form_mac', function (e) {
+			    $.validate();
+                $(document).on('change', '#form_mac', function (e) {
                     var _this = $(this);
                     _this.next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
 
                     if ($.trim(_this.val()) == '') {
                         return;
+                    } else {
+                        var mac_val = $.trim(_this.val());
+                        var regExp = /([0-9a-fA-F]{2}([:]|$)){6}$/ig;
+                        if (!regExp.test(mac_val)) {
+                            _this.next('div').append('<i class="txt-danger fa fa-ban"></i> ' + "{{ 'Error: Not valid mac address'|trans }}").css('visibility', 'visible');
+                            return;
+                        }
                     }
 
                     $.ajax({
@@ -91,17 +98,15 @@
                         success: function (data) {
                             if (data.success) {
                                 _this.next('div').append('<i class="txt-success fa fa-check"></i> ' + data.chk_rezult).css('visibility', 'visible');
-                            } else if (data.error) {
-                                alert(data.error);
                             } else {
-                                alert("{{ 'Some server error'|trans }}");
+                                JSErrorModalBox(data);
                             }
                         },
                         error: function (data) {
                             if (typeof (data.responseJSON) != 'undefined' && typeof (data.responseJSON.error) != 'undefined') {
                                 _this.next('div').append('<i class="txt-danger fa fa-ban"></i> ' + data.responseJSON.error).css('visibility', 'visible');
                             } else {
-                                alert("{{ 'Some network error or access denied'|trans }}");
+                                JSErrorModalBox(data.responseJSON);
                             }
                         },
                         dataType: "json",

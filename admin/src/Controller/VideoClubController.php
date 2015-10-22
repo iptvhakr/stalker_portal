@@ -717,12 +717,16 @@ class VideoClubController extends \Controller\BaseStalkerController {
         }
         $data = array();
         $data['action'] = 'checkModMac';
-        $error = $this->setlocalization('Address is busy');
-        if ($this->db->checkModMac(trim($this->postData['mac']))) {
-            $data['chk_rezult'] = $this->setlocalization('Address is busy');
+        $error = $this->setlocalization("Address is busy");
+        if (preg_match('/([0-9a-fA-F]{2}([:]|$)){6}$/', trim($this->postData['mac']))) {
+            if ($this->db->checkModMac(trim($this->postData['mac']))) {
+                $data['chk_rezult'] = $this->setlocalization("Address is busy");
+            } else {
+                $data['chk_rezult'] = $this->setlocalization("Address is available");
+                $error = '';
+            }
         } else {
-            $data['chk_rezult'] = $this->setlocalization('Address is available');
-            $error = '';
+            $data['chk_rezult'] = $this->setlocalization("Error: Not valid mac address");
         }
         $response = $this->generateAjaxResponse($data, $error);
 
@@ -740,7 +744,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         
         $data = array();
         $data['action'] = 'editCover';
-        $error = $this->setLocalization('Information not available');
+        $error = $this->setLocalization("Information not available");
 
         if (!empty($_FILES)){
             list($f_key, $tmp) = each($_FILES);
@@ -1704,9 +1708,11 @@ class VideoClubController extends \Controller\BaseStalkerController {
                         )
                     )   
                 ->add('mac', 'text', array('constraints' => array( 
-                            new Assert\NotBlank()),
-                            'required' => TRUE
-                        )
+                                                new Assert\NotBlank(),
+                                                new Assert\Regex('/([0-9a-fA-F]{2}([:]|$)){6}$/')
+                                            ),
+                                            'required' => TRUE
+                                        )
                     )
                 ->add('disable_vclub_ad', 'checkbox', array('required' => FALSE))
                 ->add('save', 'submit');
