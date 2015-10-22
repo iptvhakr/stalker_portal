@@ -1058,11 +1058,11 @@ class VideoClubController extends \Controller\BaseStalkerController {
         $param = (!empty($this->data)? $this->data: array());
         
         $query_param = $this->prepareDataTableParams($param);
-        
-        if (!\Admin::isPageActionAllowed('myvideolog')){
-            $query_param['where']["moderator_id"] = $_SESSION['uid'];
+
+        if($this->app['userlogin'] == 'admin') {
+            $query_param['where']["moderator_id"] = $this->app['user_id'];
         }
-        
+
         if (!empty($this->data['video_id'])) {
             $query_param['where']['video_id'] = $this->data['video_id'];
         }
@@ -2013,13 +2013,13 @@ class VideoClubController extends \Controller\BaseStalkerController {
         reset($data);
         while(list($key, $row) = each($data)){
             $data[$key]['video_name'] = "<a href='$this->workURL/" . $this->app['controller_alias'] . "/edit-video?id=$row[video_id]'>$row[video_name]</a>";
-            if ($action = unserialize($row['action'])) {
-                $data[$key]['action'] = strtr($action_link_template, array("{action[task]}" => $action['task'], "{action[event]}" => $this->setLocalization($action['event'])));
+            if ($action = @unserialize($row['action'])) {
+                $data[$key]['action'] = strtr($action_link_template, array("{action[task]}" => $action['task'], "{action[event]}" => $this->mb_ucfirst($this->setLocalization($action['event']))));
             } else {
                 $matches = array();
                 $c = preg_match_all("/task\=(\d*)[^\>]*\>([^\<]*)\</i", stripcslashes($row['action']), $matches);
                 if (count($matches) >= 2 && !empty($matches[1][0]) && !empty($matches[2][0])) {
-                    $data[$key]['action'] = strtr($action_link_template, array("{action[task]}" => $matches[1][0], "{action[event]}" => $this->setlocalization($matches[2][0])));
+                    $data[$key]['action'] = strtr($action_link_template, array("{action[task]}" => $matches[1][0], "{action[event]}" => $this->mb_ucfirst($this->setlocalization($matches[2][0]))));
                 } 
             }
         }
