@@ -436,37 +436,41 @@
                     val = val[val.length - 1];
                     $('#form_cover_id').val(val);
                     $('#form_cover_big').val('');
-                    $("#cover_container a").data('cover_id', val);
+
                     var imageName = val.split('.');
                     if (imageName.length > 1) {
                         imageName.length -= 1;
                     }
+                    imageName = imageName.join('.');
                     var postUrl = 'video-club/edit-cover?id=' + (typeof (imageName) != 'undefined' && imageName != '' ? imageName : 'new');
-                        $(this).fineUploader('setEndpoint', postUrl);
-                        return false;
-                    });
+                    $(this).fineUploader('setEndpoint', postUrl);
+
+                    $("#cover_container a").data("cover_id", (imageName.search('new') != -1 ? val: imageName));
+
+                    return false;
+                });
                 $("#bootstrapped-fine-uploader").on('click', ".qq-upload-cancel", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
                     return false;
                 });
-                 $.validate({
-   
-    onSuccess : function() {
-     $("#form_save").on('click', function(e){
-                    e.stopPropagation();
-                    e.preventDefault();
-                    if($('#form_protocol').val() == 'custom' && $.trim($('#form_rtsp_url').val()) == '') {
-                       $(document).scrollTo('#form_protocol', 'slow');
-                       $('#form_rtsp_url').focus();
-                       $('#form_rtsp_url').attr('required', 'required');
-                       return false;
-                   }
-                    $(this).closest('form').get(0).submit();
-                    return false;
+                $.validate({
+
+                    onSuccess: function () {
+                        $("#form_save").on('click', function (e) {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            if ($('#form_protocol').val() == 'custom' && $.trim($('#form_rtsp_url').val()) == '') {
+                                $(document).scrollTo('#form_protocol', 'slow');
+                                $('#form_rtsp_url').focus();
+                                $('#form_rtsp_url').attr('required', 'required');
+                                return false;
+                            }
+                            $(this).closest('form').get(0).submit();
+                            return false;
+                        });
+                    }
                 });
-    }
-  });
                 
                 $("#form_reset").on('click', function(e){
                     e.stopPropagation();
@@ -641,7 +645,11 @@
                     e.stopPropagation();
                     e.preventDefault();
                     JSshowModalBox();
-                    ajaxPostSend($(this).attr('href'), {cover_id: $(this).data('cover_id')});
+                    if ($(this).data('cover_id')) {
+                        ajaxPostSend($(this).attr('href'), {cover_id: $(this).data('cover_id')});
+                    } else {
+                        deleteCover();
+                    }
                     return false;
                 });
             });
@@ -702,11 +710,11 @@
                 $('#form_cover_big').val('');
                 $('#cover_container img').attr('src', '');
                 $('#bootstrapped-fine-uploader ul.qq-upload-list').empty();
-                JSSuccessModalBox();
+                JSSuccessModalBox(data);
             };
 
-            var deleteCoverError = function(){
-                JSErrorModalBox();
+            var deleteCoverError = function(data){
+                JSErrorModalBox(data);
             };
 
             var closeModalBox = function(){

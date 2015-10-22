@@ -788,19 +788,23 @@ class VideoClubController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'deleteCover';
-        $data['msg'] = $this->setlocalization('Deleted');
         $error = $this->setLocalization('Failed');
         $img_path = $this->getCoverFolder($this->postData['cover_id']);
+        $filename = $img_path . '/' . $this->postData['cover_id'] . '.jpg';
 
-        if ($this->db->removeScreenshotData($this->postData['cover_id'])) {
+        if ($this->db->removeScreenshotData($this->postData['cover_id']) && is_file($filename)) {
             try{
                 unlink($img_path . '/' . $this->postData['cover_id'] . '.jpg');
                 $error = '';
+                $data['msg'] = $this->setlocalization('Deleted');
             } catch (\Exception $e){
                 $error = $this->setLocalization('image file has not been deleted') . ', ';
-                $error = $this->setLocalization('image name') . ' - "' . $this->postData['cover_id'] . '.jpg' . '", ';
-                $error = $this->setLocalization('file can be deleted manually from screenshot directory');
+                $error .= $this->setLocalization('image name') . ' - "' . $this->postData['cover_id'] . '.jpg' . '", ';
+                $error .= $this->setLocalization('file can be deleted manually from screenshot directory');
+                $data['msg'] = $error;
             }
+        } else {
+            $data['msg'] = $error = $this->setLocalization("No information about") . ' - "' . $this->postData['cover_id'] . '.jpg" ' . $this->setLocalization('or file is not exists');
         }
 
         $response = $this->generateAjaxResponse($data, $error);
