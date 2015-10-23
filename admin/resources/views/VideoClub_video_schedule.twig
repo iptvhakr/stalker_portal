@@ -180,7 +180,7 @@
         document.addEventListener("DOMContentLoaded", yelp, false);
 
         var removeTasks = function (obj) {
-            $(obj).closest('tr').remove();
+            $('#datatable-1').DataTable().row( $(obj).closest('tr') ).remove().draw();
         };
 
         var videoenable = function (obj) {
@@ -189,7 +189,7 @@
                 $(obj).removeData('waiting');
                 $(obj).data('curr_on_date', $(obj).data('date_on'));
             } else {
-                $(obj).closest('tr').remove();
+                removeTasks(obj);
             }
         };
 

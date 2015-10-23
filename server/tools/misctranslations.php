@@ -870,3 +870,9 @@ _('List of scheduled events by page + filters');
 _('Adding and editing the scheduled events');
 _('Removing the scheduled events');
 _('Stopping or starting the scheduled events');
+
+_('added');
+_('edited');
+_('This value is not valid.');
+_('task ended');
+_('edit');

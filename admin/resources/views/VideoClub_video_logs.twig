@@ -28,7 +28,7 @@
                                             <td>{{ item.actiontime|date('M d, Y H:i') }}</td>
                                             <td>{{ item.video_name }}</td>
                                             <td>{{ item.login }}</td>
-                                            <td>{{ item.action }}</td>
+                                            <td>{{ item.action|capitalize }}</td>
                                         </tr>
                                     {% endfor %}
                                 {% endautoescape %}
@@ -54,6 +54,7 @@
                             date = new Date(date * 1000);
                             json.data[i]['actiontime'] = date.toLocaleFormat("%b %d, %Y %H:%M");
                         }
+                        json.data[i]['action'] = json.data[i]['action'].ucfirst();
                     }
                 }
             }).dataTable({
