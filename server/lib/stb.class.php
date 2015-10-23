@@ -770,6 +770,10 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $themes = Middleware::getThemes();
 
+        if (isset($themes['smart_launcher']) && !Config::getSafe('enable_launcher_in_theme_settings', false)){
+            unset($themes['smart_launcher']);
+        }
+
         return array(
             "parent_password"       => $this->params['parent_password'],
             "update_url"            => self::getImageUpdateUrl($this->params['stb_type']),
