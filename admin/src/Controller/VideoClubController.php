@@ -1059,6 +1059,10 @@ class VideoClubController extends \Controller\BaseStalkerController {
         
         $query_param = $this->prepareDataTableParams($param);
 
+        if (!array_key_exists('where', $query_param)) {
+            $query_param['where'] = array();
+        }
+
         if($this->app['userlogin'] == 'admin') {
             $query_param['where']["moderator_id"] = $this->app['user_id'];
         }
