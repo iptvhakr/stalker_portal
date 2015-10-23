@@ -72,15 +72,24 @@
             var iNewPosition = -1; // fnGetStartPosition(sSelector);
             var sDirection;
             var trPrevious = tr.prev(sSelector);
+            var trNext = tr.next(sSelector);
+
+            var prevPosition = parseInt(oTable.fnGetData(trPrevious[0], properties.iIndexColumn));
+            var nextPosition = parseInt(oTable.fnGetData(trNext[0], properties.iIndexColumn));
+
             var trTargetId;
             if (trPrevious.length > 0) {
-                iNewPosition = parseInt(oTable.fnGetData(trPrevious[0], properties.iIndexColumn));
-                trTargetId = oTable.fnGetData(trPrevious[0], properties.id);
-                if (iNewPosition < iCurrentPosition) {
-                    iNewPosition = iNewPosition + 1;
+                if (iCurrentPosition > nextPosition) {
+                    iNewPosition = nextPosition;
+                    trTargetId = oTable.fnGetData(trNext[0], properties.id);
+                } else if (iCurrentPosition < prevPosition) {
+                    iNewPosition = prevPosition;
+                    trTargetId = oTable.fnGetData(trPrevious[0], properties.id);
                 }
+                /*if (iNewPosition < iCurrentPosition) {
+                    iNewPosition = iNewPosition + 1;
+                }*/
             } else {
-                var trNext = tr.next(sSelector);
                 trTargetId = oTable.fnGetData(trNext[0], properties.id);
                 if (trNext.length > 0) {
                     iNewPosition = parseInt(oTable.fnGetData(trNext[0], properties.iIndexColumn));

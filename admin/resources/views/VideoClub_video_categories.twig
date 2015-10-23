@@ -42,7 +42,7 @@
                                                                 </a>
                                                             </li>
                                                             <li>
-                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-video-categories" data-categoriesid="{{ item.id }}">
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-video-categories" data-categoriesid="{{ item.id }}" data-curr_pos="{{ item.num }}">
                                                                     <span>{{ 'Delete'|trans }}</span>
                                                                 </a>
                                                             </li>
@@ -70,6 +70,7 @@
                 if (typeof (json.data) == 'object') {
                     for (var i in json.data) {
                         var id = json.data[i].id;
+                        var num = json.data[i].num;
                         json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
                                                         <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
@@ -81,7 +82,7 @@
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-video-categories' data-categoriesid='" + id + "'>\n\
+                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-video-categories' data-categoriesid='" + id + "' data-curr_pos='" + num + "'>\n\
                                                                     <span>{{ 'Delete'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
@@ -234,6 +235,15 @@
         var editVideoCategoryError = function(data){
             $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Error'|trans }}! ' + (data.error? data.error: '') +  '</span>');
             $("#modalbox").data('complete', 1);
+        };
+        
+        var reorder = function(data){
+            JSSuccessModalBox(data);
+            $('#datatable-1').DataTable().ajax.reload();
+        };
+        var reorderError = function(data){
+            JSErrorModalBox()(data);
+            $('#datatable-1').DataTable().ajax.reload();
         };
         
         var removeVideoCategory = function (data) {

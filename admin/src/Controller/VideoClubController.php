@@ -1166,28 +1166,9 @@ class VideoClubController extends \Controller\BaseStalkerController {
         $matches = array();
         $data = array();
         $data['action'] = 'reorder';
-        $error = 'error';
+        $data['msg'] = $error = $this->setLocalization('error');
         if (preg_match("/(\d+)/i", $this->postData['id'], $matches) && preg_match("/(\d+)/i", $this->postData['target_id'], $matches_1)){
-            $params = array(
-                'select' => array(
-                    "id"        => 'media_category.id as `id`',
-                    "num"    => 'media_category.num as `num`'
-                ),
-                'where' => array(),
-                'like' => array(),
-                'order' => array('num'=>'DESC')
-            );
-            $curr_pos = $matches[1];
-            $new_pos = $matches_1[1];
-
-            $params['where']['media_category.id'] = $curr_pos;
-            $curr_genre = $this->db->getCategoriesGenres($params);
-
-            $params['where'] = array();
-            $params['where']['media_category.id'] = $new_pos;
-            $target_genre = $this->db->getCategoriesGenres($params);
-
-            if ($this->db->updateCategoriesGenres($target_genre[0], array('id' => $curr_genre[0]['id'])) && $this->db->updateCategoriesGenres($curr_genre[0], array('id' => $target_genre[0]['id']))) {
+            if ($this->db->mowingCategoriesRows($matches[1], $this->postData['fromPosition'], $this->postData['toPosition'], $this->postData['direction'])){
                 $error = '';
             }
         }
@@ -1280,6 +1261,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'removeVideoCategory';
         $data['id'] = $this->postData['categoriesid'];
+        $this->db->mowingCategoriesRows($this->postData['categoriesid'], $this->postData['curr_pos'], 1000000, 'forward');
         $this->db->deleteCategoriesGenres(array('id' => $this->postData['categoriesid']));
         $response = $this->generateAjaxResponse($data, '');
 
