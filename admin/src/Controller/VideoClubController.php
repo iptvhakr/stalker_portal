@@ -717,12 +717,16 @@ class VideoClubController extends \Controller\BaseStalkerController {
         }
         $data = array();
         $data['action'] = 'checkModMac';
-        $error = $this->setlocalization('Address is busy');
-        if ($this->db->checkModMac(trim($this->postData['mac']))) {
-            $data['chk_rezult'] = $this->setlocalization('Address is busy');
+        $error = $this->setlocalization("Address is busy");
+        if (preg_match('/([0-9a-fA-F]{2}([:]|$)){6}$/', trim($this->postData['mac']))) {
+            if ($this->db->checkModMac(trim($this->postData['mac']))) {
+                $data['chk_rezult'] = $this->setlocalization("Address is busy");
+            } else {
+                $data['chk_rezult'] = $this->setlocalization("Address is available");
+                $error = '';
+            }
         } else {
-            $data['chk_rezult'] = $this->setlocalization('Address is available');
-            $error = '';
+            $data['chk_rezult'] = $this->setlocalization("Error: Not valid mac address");
         }
         $response = $this->generateAjaxResponse($data, $error);
 
@@ -740,7 +744,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         
         $data = array();
         $data['action'] = 'editCover';
-        $error = $this->setLocalization('Information not available');
+        $error = $this->setLocalization("Information not available");
 
         if (!empty($_FILES)){
             list($f_key, $tmp) = each($_FILES);
@@ -788,19 +792,23 @@ class VideoClubController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'deleteCover';
-        $data['msg'] = $this->setlocalization('Deleted');
         $error = $this->setLocalization('Failed');
         $img_path = $this->getCoverFolder($this->postData['cover_id']);
+        $filename = $img_path . '/' . $this->postData['cover_id'] . '.jpg';
 
-        if ($this->db->removeScreenshotData($this->postData['cover_id'])) {
+        if ($this->db->removeScreenshotData($this->postData['cover_id']) && is_file($filename)) {
             try{
                 unlink($img_path . '/' . $this->postData['cover_id'] . '.jpg');
                 $error = '';
+                $data['msg'] = $this->setlocalization('Deleted');
             } catch (\Exception $e){
                 $error = $this->setLocalization('image file has not been deleted') . ', ';
-                $error = $this->setLocalization('image name') . ' - "' . $this->postData['cover_id'] . '.jpg' . '", ';
-                $error = $this->setLocalization('file can be deleted manually from screenshot directory');
+                $error .= $this->setLocalization('image name') . ' - "' . $this->postData['cover_id'] . '.jpg' . '", ';
+                $error .= $this->setLocalization('file can be deleted manually from screenshot directory');
+                $data['msg'] = $error;
             }
+        } else {
+            $data['msg'] = $error = $this->setLocalization("No information about") . ' - "' . $this->postData['cover_id'] . '.jpg" ' . $this->setLocalization('or file is not exists');
         }
 
         $response = $this->generateAjaxResponse($data, $error);
@@ -976,7 +984,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         $error = $this->setlocalization('Failed');
         $ad = new \VclubAdvertising();
         
-        if ($ad->updateById((int) $this->postData['adsid'], array('status' => (int) $this->postData['adsstatus']))) {
+        if ($ad->updateById((int) $this->postData['adsid'], array('status' => (int) $this->postData['adsstatus'], 'denied_categories' => $ad->getDeniedVclubCategoriesForAd((int) $this->postData['adsid'])))) {
             $error = '';
             $data['title'] = ($this->postData['adsstatus'] ? $this->setLocalization('Unpublish'): $this->setlocalization('Publish'));
             $data['status'] = '<span >' .($this->postData['adsstatus'] ?  $this->setlocalization('Published') : $this->setlocalization('Not published')) . '</span>';
@@ -1050,11 +1058,15 @@ class VideoClubController extends \Controller\BaseStalkerController {
         $param = (!empty($this->data)? $this->data: array());
         
         $query_param = $this->prepareDataTableParams($param);
-        
-        if (!\Admin::isPageActionAllowed('myvideolog')){
-            $query_param['where']["moderator_id"] = $_SESSION['uid'];
+
+        if (!array_key_exists('where', $query_param)) {
+            $query_param['where'] = array();
         }
-        
+
+        if($this->app['userlogin'] == 'admin') {
+            $query_param['where']["moderator_id"] = $this->app['user_id'];
+        }
+
         if (!empty($this->data['video_id'])) {
             $query_param['where']['video_id'] = $this->data['video_id'];
         }
@@ -1158,28 +1170,9 @@ class VideoClubController extends \Controller\BaseStalkerController {
         $matches = array();
         $data = array();
         $data['action'] = 'reorder';
-        $error = 'error';
+        $data['msg'] = $error = $this->setLocalization('error');
         if (preg_match("/(\d+)/i", $this->postData['id'], $matches) && preg_match("/(\d+)/i", $this->postData['target_id'], $matches_1)){
-            $params = array(
-                'select' => array(
-                    "id"        => 'media_category.id as `id`',
-                    "num"    => 'media_category.num as `num`'
-                ),
-                'where' => array(),
-                'like' => array(),
-                'order' => array('num'=>'DESC')
-            );
-            $curr_pos = $matches[1];
-            $new_pos = $matches_1[1];
-
-            $params['where']['media_category.id'] = $curr_pos;
-            $curr_genre = $this->db->getCategoriesGenres($params);
-
-            $params['where'] = array();
-            $params['where']['media_category.id'] = $new_pos;
-            $target_genre = $this->db->getCategoriesGenres($params);
-
-            if ($this->db->updateCategoriesGenres($target_genre[0], array('id' => $curr_genre[0]['id'])) && $this->db->updateCategoriesGenres($curr_genre[0], array('id' => $target_genre[0]['id']))) {
+            if ($this->db->mowingCategoriesRows($matches[1], $this->postData['fromPosition'], $this->postData['toPosition'], $this->postData['direction'])){
                 $error = '';
             }
         }
@@ -1272,6 +1265,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'removeVideoCategory';
         $data['id'] = $this->postData['categoriesid'];
+        $this->db->mowingCategoriesRows($this->postData['categoriesid'], $this->postData['curr_pos'], 1000000, 'forward');
         $this->db->deleteCategoriesGenres(array('id' => $this->postData['categoriesid']));
         $response = $this->generateAjaxResponse($data, '');
 
@@ -1700,9 +1694,11 @@ class VideoClubController extends \Controller\BaseStalkerController {
                         )
                     )   
                 ->add('mac', 'text', array('constraints' => array( 
-                            new Assert\NotBlank()),
-                            'required' => TRUE
-                        )
+                                                new Assert\NotBlank(),
+                                                new Assert\Regex('/([0-9a-fA-F]{2}([:]|$)){6}$/')
+                                            ),
+                                            'required' => TRUE
+                                        )
                     )
                 ->add('disable_vclub_ad', 'checkbox', array('required' => FALSE))
                 ->add('save', 'submit');
@@ -2003,13 +1999,13 @@ class VideoClubController extends \Controller\BaseStalkerController {
         reset($data);
         while(list($key, $row) = each($data)){
             $data[$key]['video_name'] = "<a href='$this->workURL/" . $this->app['controller_alias'] . "/edit-video?id=$row[video_id]'>$row[video_name]</a>";
-            if ($action = unserialize($row['action'])) {
-                $data[$key]['action'] = strtr($action_link_template, array("{action[task]}" => $action['task'], "{action[event]}" => $this->setLocalization($action['event'])));
+            if ($action = @unserialize($row['action'])) {
+                $data[$key]['action'] = strtr($action_link_template, array("{action[task]}" => $action['task'], "{action[event]}" => $this->mb_ucfirst($this->setLocalization($action['event']))));
             } else {
                 $matches = array();
                 $c = preg_match_all("/task\=(\d*)[^\>]*\>([^\<]*)\</i", stripcslashes($row['action']), $matches);
                 if (count($matches) >= 2 && !empty($matches[1][0]) && !empty($matches[2][0])) {
-                    $data[$key]['action'] = strtr($action_link_template, array("{action[task]}" => $matches[1][0], "{action[event]}" => $this->setlocalization($matches[2][0])));
+                    $data[$key]['action'] = strtr($action_link_template, array("{action[task]}" => $matches[1][0], "{action[event]}" => $this->mb_ucfirst($this->setlocalization($matches[2][0]))));
                 } 
             }
         }

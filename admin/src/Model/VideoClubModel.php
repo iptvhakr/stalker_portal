@@ -340,4 +340,22 @@ class VideoClubModel extends \Model\BaseStalkerModel {
     public function getVideoByParam($param) {
         return $this->mysqlInstance->from('video')->where($param)->get()->first();
     }
+
+    public function mowingCategoriesRows($curr_id, $curr_pos, $target_pos, $direction){
+        
+        if ($direction == 'back') {
+            $field_update = 'num = num + 1';
+            $where = " num >= $target_pos and num < $curr_pos ";
+        } else {
+            $field_update = " num = num - 1 ";
+            $where = " num > $curr_pos and num <= $target_pos ";
+        }
+
+        if ($this->mysqlInstance->query("UPDATE `media_category` SET $field_update WHERE $where ")->total_rows() &&
+            $this->updateCategoriesGenres(array('num' => $target_pos), array('id'=>$curr_id))){
+            return TRUE;
+        }
+        
+        return FALSE;
+    }
 }
