@@ -9,6 +9,7 @@ if (!$uid){
 }else{
     header("X-AuthDuration: 36000");
     header("X-Unique: true");
+    header("X-Max-Sessions: 1");
     header("X-UserId: ".$uid);
     header($_SERVER["SERVER_PROTOCOL"]." 200 OK");
 }
