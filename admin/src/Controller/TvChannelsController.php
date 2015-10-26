@@ -1000,25 +1000,25 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                         )
                 )
                 ->add('pvr_storage_names', 'choice', array(
-                    'choices' => $storages['storage_names'],
+                    'choices' => (empty($storages['storage_names']) || !is_array($storages['storage_names']) ? array(): $storages['storage_names']),
                     'multiple' => TRUE,
                         )
                 )
                 ->add('storage_names', 'choice', array(
-                    'choices' => $storages['storage_names'],
+                    'choices' => (empty($storages['storage_names']) || !is_array($storages['storage_names']) ? array(): $storages['storage_names']),
                     'multiple' => TRUE,
                         )
                 )
 
                 ->add('wowza_dvr', 'checkbox', array('required' => false))
                 ->add('wowza_storage_names', 'choice', array(
-                        'choices' => $storages['wowza_storage_names'],
+                        'choices' => (empty($storages['wowza_storage_names']) || !is_array($storages['wowza_storage_names']) ? array(): $storages['wowza_storage_names']),
                         'multiple' => TRUE,
                     )
                 )
                 ->add('flussonic_dvr', 'checkbox', array('required' => false))
                 ->add('flussonic_storage_names', 'choice', array(
-                        'choices' => $storages['flussonic_storage_names'],
+                        'choices' => (empty($storages['flussonic_storage_names']) || !is_array($storages['flussonic_storage_names']) ? array(): $storages['flussonic_storage_names']),
                         'multiple' => TRUE,
                     )
                 )
@@ -1261,6 +1261,16 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $current_urls = (!empty($this->channeLinks) ? $this->getFieldFromArray($this->channeLinks, 'url') : array());
         foreach ($this->getLinks($data) as $link) {
             $link['ch_id'] = $ch_id;
+            if (is_array($link['stream_servers'])) {
+                $link['stream_servers'] = call_user_func_array('array_merge', array_map(function($row){
+                    if (is_string($row)) {
+                        $row = explode(',', $row);
+                    } else {
+                        $row = array();
+                    }
+                    return $row;
+                }, $link['stream_servers']));
+            }
             $links_on_server = $link['stream_servers'];
             unset($link['stream_servers']);
             if (!in_array($link['url'], $current_urls)) {
