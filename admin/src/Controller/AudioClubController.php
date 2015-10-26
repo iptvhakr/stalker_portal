@@ -895,20 +895,31 @@ class AudioClubController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'deleteCover';
-        $data['msg'] = $this->setlocalization('Deleted');
         $error = $this->setLocalization('Failed');
-        $album = $this->db->getAudioAlbumsList(array('select' => array('audio_albums.id as id', 'audio_albums.cover as cover'), 'where' => array( 'audio_albums.id'=> $this->postData['cover_id']), 'order' => array('audio_albums.id'=>'ASC')));
+        $album = $this->db->getAudioAlbumsList(array(
+            'select' => array('audio_albums.id as id', 'audio_albums.cover as cover'),
+            'where' => array( 'audio_albums.id'=> $this->postData['cover_id']),
+            'order' => array('audio_albums.id'=>'ASC')
+        ));
+
+        $file_name = (!empty($album[0]['cover']) ? $album[0]['cover']: (!empty($this->postData['file_name']) ? $this->postData['file_name']: ''));
 
         $path = realpath(PROJECT_PATH . "/../misc/audio_covers/").'/' . ceil($album[0]['id']/100).'/';
+        if (!is_file($path . $file_name)) {
+            $path = realpath(PROJECT_PATH . "/../misc/audio_covers/").'/new/';
+        }
 
-        if ($this->db->updateCover($this->postData['cover_id'], '')) {
+        if (!empty($file_name)) {
+            $this->db->updateCover($this->postData['cover_id'], '');
             try{
-                unlink($path . $album[0]['cover']);
+                unlink($path . $file_name);
+                $data['msg'] = $this->setlocalization('Deleted');
                 $error = '';
             } catch (\Exception $e){
                 $error = $this->setLocalization('image file has not been deleted') . ', ';
-                $error = $this->setLocalization('image name') . ' - "' . $album[0]['cover'] . '", ';
-                $error = $this->setLocalization('file can be deleted manually from screenshot directory');
+                $error .= $this->setLocalization('image name') . ' - "' . $file_name . '", ';
+                $error .= $this->setLocalization('file can be deleted manually from screenshot directory');
+                $data['msg'] = $error;
             }
         }
 

@@ -31,8 +31,16 @@ class AudioClubModel extends \Model\BaseStalkerModel {
         $this->mysqlInstance->from('audio_albums')
                     ->join('audio_performers', 'audio_albums.performer_id', 'audio_performers.id', 'LEFT')
                     ->join('audio_years', 'audio_albums.year_id', 'audio_years.id', 'LEFT')
-                    ->join('countries', 'audio_albums.country_id', 'countries.id', 'LEFT')    
-                    ->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
+                    ->join('countries', 'audio_albums.country_id', 'countries.id', 'LEFT');
+        if (!empty($param['where'])) {
+            $this->mysqlInstance->where($param['where']);
+        }
+        if (!empty($param['like'])) {
+            $this->mysqlInstance->like($param['like'], 'OR');
+        }
+        if (!empty($param['order'])) {
+            $this->mysqlInstance->orderby($param['order']);
+        }
 /*         if (!empty($param['limit']['limit'])) {
             $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         } */
