@@ -218,6 +218,27 @@ class Filters {
         );
     }
 
+    private function getUsersByPlayingType($cond, $cond_value) {
+        $this->setNumericFilter('now_playing_type', $cond, $cond_value);
+    }
+
+    private function getUsersPlayingTypeSet() {
+        return array(
+            array('value' => 1, 'title' => 'TV'),
+            array('value' => 2, 'title' => 'Video'),
+            array('value' => 3, 'title' => 'Karaoke'),
+            array('value' => 4, 'title' => 'Audio'),
+            array('value' => 5, 'title' => 'Radio'),
+            array('value' => 6, 'title' => 'My records'),
+            array('value' => 7, 'title' => 'Records'),
+            array('value' => 9, 'title' => 'Advert'),
+            array('value' => 10, 'title' => 'Media browser'),
+            array('value' => 11, 'title' => 'Tv archive'),
+            array('value' => 12, 'title' => 'Records'),
+            array('value' => 14, 'title' => 'TimeShift')
+        );
+    }
+
     private function getUsersByCreateDate($cond, $cond_value) {
         $this->setDateTimeFilter('created', $cond, $cond_value);
     }

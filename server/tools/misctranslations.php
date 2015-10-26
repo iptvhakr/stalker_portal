@@ -876,3 +876,4 @@ _('edited');
 _('This value is not valid.');
 _('task ended');
 _('edit');
+_('Advert');
