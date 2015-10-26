@@ -1000,25 +1000,25 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                         )
                 )
                 ->add('pvr_storage_names', 'choice', array(
-                    'choices' => $storages['storage_names'],
+                    'choices' => (empty($storages['storage_names']) || !is_array($storages['storage_names']) ? array(): $storages['storage_names']),
                     'multiple' => TRUE,
                         )
                 )
                 ->add('storage_names', 'choice', array(
-                    'choices' => $storages['storage_names'],
+                    'choices' => (empty($storages['storage_names']) || !is_array($storages['storage_names']) ? array(): $storages['storage_names']),
                     'multiple' => TRUE,
                         )
                 )
 
                 ->add('wowza_dvr', 'checkbox', array('required' => false))
                 ->add('wowza_storage_names', 'choice', array(
-                        'choices' => $storages['wowza_storage_names'],
+                        'choices' => (empty($storages['wowza_storage_names']) || !is_array($storages['wowza_storage_names']) ? array(): $storages['wowza_storage_names']),
                         'multiple' => TRUE,
                     )
                 )
                 ->add('flussonic_dvr', 'checkbox', array('required' => false))
                 ->add('flussonic_storage_names', 'choice', array(
-                        'choices' => $storages['flussonic_storage_names'],
+                        'choices' => (empty($storages['flussonic_storage_names']) || !is_array($storages['flussonic_storage_names']) ? array(): $storages['flussonic_storage_names']),
                         'multiple' => TRUE,
                     )
                 )
