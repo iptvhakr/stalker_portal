@@ -378,14 +378,14 @@ class UsersController extends \Controller\BaseStalkerController {
             return $this->app->redirect('add-users');
         }
         $this->app['tarifPlanFlag'] = \Config::getSafe('enable_tariff_plans', false);
-        if (!empty($this->user['expire_billing_date']) && preg_match("/(19|20)\d\d([- \/\.])(0[1-9]|1[012])[- \/\.](0[1-9]|[12][0-9]|3[01])/im", $this->user['expire_billing_date'], $match)) {
-            $this->user['expire_billing_date'] = implode('-', array_reverse(explode($match[2], $this->user['expire_billing_date'])));
+        if (!empty($this->user['expire_billing_date']) && preg_match("/(19|20\d\d)[- \/\.](0[1-9]|1[012])[- \/\.](0[1-9]|[12][0-9]|3[01])/im", $this->user['expire_billing_date'], $match)) {
+            unset($match[0]);
+            $this->user['expire_billing_date'] = implode('-', array_reverse($match));
         } elseif (((int) str_replace(array('-', '.'), '', $this->user['expire_billing_date'])) == 0) {
             $this->user['expire_billing_date'] = '';
         } else {
             $this->user['expire_billing_date'] = str_replace('.', '-', $this->user['expire_billing_date']);
         }
-
         $this->user['version'] = preg_replace("/(\r\n|\n\r|\r|\n|\s){2,}/i", "$1", stripcslashes($this->user['version']));
         $form = $this->buildUserForm($this->user, TRUE);
 

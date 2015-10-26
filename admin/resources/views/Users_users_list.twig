@@ -1043,11 +1043,11 @@
             $('#modalbox').find('form')
                     .append("<input type='hidden' class='own_fields' name='setaction' value='set'>")
                     .append("<input type='hidden' class='own_fields' name='userid' value='" + obj.data('userid') + "'>")
-                    .append("<input type='text' readonly='readonly' class='datepicker col-sm-12 own_fields' data-date-format='dd-mm-yy' name='expire_date' id='expire_date_datepicker'>");
+                    .append("<input type='text' readonly='readonly' class='datepicker col-sm-11 own_fields' style='margin-left: 15px;' data-date-format='dd-mm-yy' name='expire_date' id='expire_date_datepicker'>");
             $('#modalbox').find('.devoops-modal-bottom')
                     .append('<button class="btn btn-default col-sm-4 pull-left" type="reset" id="reset_enable_date">{{ 'Cancel'|trans }}</button>')
                     .append('<button class="btn btn-success col-sm-4 pull-right" type="submit" id="apply_enable_date">{{ 'Set date'|trans }}</button>');
-            $('#modalbox').find('.devoops-modal').width(350);
+            $('#modalbox').find('.devoops-modal').width(400);
             $("#expire_date_datepicker").datepicker({
                         language    : '{% if attribute(app, 'locale') is defined and app['locale']|length == 2 %}{{ app['locale'] }}{% else %}en{% endif %}',
                         dateFormat  : 'dd-mm-yy',
