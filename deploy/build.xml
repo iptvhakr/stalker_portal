@@ -211,6 +211,19 @@
             </then>
         </if>
 
+        <echo msg="Now you will be asked to specify MySQL root password." level="warning"/>
+
+        <exec command="mysql_tzinfo_to_sql /usr/share/zoneinfo 2>/dev/null | mysql -u root -p mysql" level="info" outputProperty="zoneinfo.error.msg" returnProperty="zoneinfo.error.code"/>
+
+        <if>
+            <not>
+                <equals arg1="${zoneinfo.error.code}" arg2="0"/>
+            </not>
+            <then>
+                <echo msg="${zoneinfo.error.msg}" level="warning"/>
+            </then>
+        </if>
+
         <exec command="/etc/init.d/apache2 restart" level="info"/>
 
         <exec command="mkdir /var/log/stalkerd" level="info"/>
