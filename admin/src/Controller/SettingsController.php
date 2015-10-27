@@ -22,7 +22,7 @@ class SettingsController extends \Controller\BaseStalkerController {
     public function index() {
         
         if (empty($this->app['action_alias'])) {
-            return $this->app->redirect($this->app['controller_alias'] . '/epg');
+            return $this->app->redirect($this->app['controller_alias'] . '/themes');
         }
         
         if ($no_auth = $this->checkAuth()) {
