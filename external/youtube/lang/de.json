@@ -25,7 +25,6 @@
 			"In order to apply a new language, you must restart the application": "Om een nieuwe taal toe te passen, moet u de toepassing opnieuw starten",
 			"Interface language": "Schnittstellensprache",
 			"Language": "Sprache",
-			"Less": "Weniger",
 			"Live broadcasts are not supported": "Live-Übertragungen werden nicht unterstützt",
 			"Login": "Einloggen",
 			"Logout": "Abmelden",
@@ -57,7 +56,6 @@
 				"Ansichten"
 			],
 			"You want to login into app?": "Sie wollen in die App nicht anmelden?",
-			"Youtube blocked the video to view from set-top box": "Youtube blockiert das Video vom Set-Top-Box zu sehen",
 			"ago": "geleden",
 			"day": [
 				"dag",

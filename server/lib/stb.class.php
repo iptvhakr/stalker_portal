@@ -229,8 +229,13 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             $this->timezone_diff = $date_server->format('Z') - $date_stb->format('Z');
 
             $date = new DateTime();
-            $offset = $date->format('P');
-            Mysql::getInstance()->set_timezone($offset);
+            $offset = $date->format('e');
+
+            if (!Mysql::getInstance()->set_timezone($offset)){
+                // if mysql.time_zone_name is not populated
+                $offset = $date->format('P');
+                Mysql::getInstance()->set_timezone($offset);
+            }
 
             $this->additional_services_on = $user['additional_services_on'];
 
