@@ -152,7 +152,7 @@ class TvArchiveRecorder extends Storage
      */
     private function getRecordsPath($task){
 
-        $dir = RECORDS_DIR.'/archive/'.$task['ch_id'].'/';
+        $dir = str_replace('//', '/', RECORDS_DIR.'/archive/'.$task['ch_id'].'/');
 
         if (!is_dir($dir)){
             umask(0);
