@@ -18,7 +18,7 @@ class LoginController extends \Controller\BaseStalkerController {
                 return $this->app->redirect($this->workURL);
             }
         }
-        $error = array('user_undefined' => 'Пользователь неопределён');
+        $error = array('user_undefined' => $this->setLocalization('User is undefined'));
         $this->app['error_local'] = $error;
         
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));

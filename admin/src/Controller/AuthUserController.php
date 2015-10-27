@@ -41,8 +41,8 @@ class AuthUserController extends \Controller\BaseStalkerController {
 
     public function auth_user_logout() {
         
-        $this->app['request']->getSession()->remove('login');
-        $this->app['request']->getSession()->save('pass');
+        $this->app['request']->getSession()->clear();
+        session_destroy();
         return $this->app->redirect( $this->workURL . '/login', 302);
     }
 

@@ -3,6 +3,17 @@
 
     RewriteEngine On
     #RewriteBase /path/to/app
+
+    RewriteBase /
+
+    RewriteCond %{REQUEST_URI} !\?
+    RewriteCond %{REQUEST_URI} !\&
+    RewriteCond %{REQUEST_URI} !\=
+    RewriteCond %{REQUEST_URI} !\.
+    RewriteCond %{REQUEST_URI} ![^\/]$
+    RewriteRule ^(.*)\/$ stalker_portal/server/adm/$1 [R=301,L]
+
     RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^ index.php [QSA,L]
+    RewriteRule ^ stalker_portal/server/adm/index.php [QSA,L]
+
 </IfModule>
