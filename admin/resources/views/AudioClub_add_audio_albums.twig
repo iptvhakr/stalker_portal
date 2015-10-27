@@ -469,6 +469,8 @@
                     $('#cover_container img').attr('src', newSrc).css('max-width', '100%');
                     $('#form_cover').val(response.name);
 
+                    $('#cover_container a').data('file_name', (typeof (response.name) != 'undefined' && response.name != '' ? response.name : 'new'));
+
                     var postUrl = '{{ app.controller_alias }}/edit-audio-cover?cover=' + (typeof (response.name) != 'undefined' && response.name != '' ? response.name : 'new');
                     $(this).fineUploader('setEndpoint', postUrl);
                     return false;
@@ -547,7 +549,7 @@
                         e.stopPropagation();
                         e.preventDefault();
                         JSshowModalBox();
-                        ajaxPostSend($(this).attr('href'), {cover_id: $(this).data('cover_id')});
+                        ajaxPostSend($(this).attr('href'), $(this).data());
                         return false;
                     });
 
@@ -588,13 +590,14 @@
 
             var deleteCover = function(data){
                 $('#form_cover').val('');
+                $('#cover_container a').data('file_name', '');
                 $('#cover_container img').attr('src', '');
                 $('#bootstrapped-fine-uploader ul.qq-upload-list').empty();
-                JSSuccessModalBox();
+                JSSuccessModalBox(data);
             };
 
-            var deleteCoverError = function(){
-                JSErrorModalBox();
+            var deleteCoverError = function(data){
+                JSErrorModalBox(data);
             };
 
             var closeModalBox = function(){
