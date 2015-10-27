@@ -67,6 +67,12 @@
             (function(){
                 stb.player.change_aspect();
             }).bind(key.FRAME, this);
+
+            (function(){
+                this.hide();
+                this.parent.hide();
+                main_menu.show();
+            }).bind(key.MENU, this);
         };
 
         this.update_image = function(){

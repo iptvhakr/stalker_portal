@@ -51,10 +51,14 @@
                 _debug('media_browser onunmount');
                 _debug('self.on', self.on);
                 
-                if (stb.player.prev_layer == self || self.on){
+                if (stb.player.prev_layer == self || self.on || module.image_viewer.on){
                     
                     if (stb.player.on){
                         stb.player.stop();
+                    }
+
+                    if (module.image_viewer.on){
+                        module.image_viewer.hide();
                     }
                     
                     self.hide();
