@@ -1,7 +1,7 @@
 {
 	"meta": {
 		"charset": "utf-8",
-		"project": "stb-demo 0.1.1",
+		"project": "youtube",
 		"language": "ru",
 		"plural": "(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)"
 	},
@@ -25,7 +25,6 @@
 			"In order to apply a new language, you must restart the application": "Для того чтобы применить новый язык необходимо перезагрузить приложение",
 			"Interface language": "Язык интерфейса",
 			"Language": "Язык",
-			"Less": "Меньше",
 			"Live broadcasts are not supported": "Прямые трансляции не поддерживаются",
 			"Login": "Авторизоваться",
 			"Logout": "Выйти из аккаунта",
@@ -58,7 +57,6 @@
 				"Просмотров"
 			],
 			"You want to login into app?": "Вы желаете авторизоваться?",
-			"Youtube blocked the video to view from set-top box": "Youtube заблокировал видео для просмотра с телеприставки",
 			"ago": "назад",
 			"day": [
 				"день",
