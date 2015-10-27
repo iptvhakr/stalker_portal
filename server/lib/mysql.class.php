@@ -114,16 +114,21 @@ class Mysql
     public function set_timezone($timezone) {
 
         if (empty($timezone)) {
-            return;
+            return false;
         }
+
+        $result = true;
 
         if (empty($this->timezone)){
             $this->timezone = $timezone;
 
             foreach ($this->links as $link) {
-                $this->query('SET time_zone="' . $timezone . '"', $link);
+                $query_result = $this->query('SET time_zone="' . $timezone . '"', $link)->result();
+                $result = $query_result && $result;
             }
         }
+
+        return $result;
     }
 
     public function select($sql = '*') {
