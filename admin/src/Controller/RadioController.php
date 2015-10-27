@@ -260,23 +260,29 @@ class RadioController extends \Controller\BaseStalkerController {
         $builder = $this->app['form.factory'];
         $form = $builder->createBuilder('form', $data)
                 ->add('id', 'hidden')
-                ->add('number', 'text', array('constraints' => array(
-                        new Assert\NotBlank(),
-                        'required' => TRUE
-                    ), 'required' => TRUE))
-                ->add('name', 'text', array('constraints' => array(
-                        new Assert\NotBlank(),
-                        'required' => TRUE
-                    ), 'required' => TRUE))
-                ->add('cmd', 'text', array('constraints' => array(
-                        new Assert\NotBlank(),
-                        'required' => TRUE
-                    ), 'required' => TRUE))
+                ->add('number', 'text', array(
+                            'constraints' => array(
+                                new Assert\NotBlank()
+                            ),
+                            'required' => TRUE)
+                )
+                ->add('name', 'text', array(
+                            'constraints' => array(
+                                new Assert\NotBlank()
+                            ),
+                            'required' => TRUE)
+                )
+                ->add('cmd', 'text', array(
+                            'constraints' => array(
+                                new Assert\NotBlank()
+                            ),
+                            'required' => TRUE)
+                )
                 ->add('volume_correction', 'choice', array(
                             'choices' => array_combine(range(-20, 20, 1), range(-100, 100, 5)),
                             'constraints' => array(
-                                new Assert\Range(array('min' => -20, 'max' => 20)), 
-                                new Assert\NotBlank()),
+                                new Assert\Range(array('min' => -20, 'max' => 20))
+                            ),
                             'required' => TRUE,
                             'data' => (empty($data['volume_correction']) ? 0: $data['volume_correction'])
                         )
