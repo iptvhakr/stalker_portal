@@ -564,3 +564,6 @@ $words['all_title'] = _('All');
 
 $words['outdated_firmware'] = _('Firmware of your STB is outdated.<br>Please update it.');
 
+$words['LOGOUT'] = _('LOGOUT');
+$words['confirm_logout_title'] = _('Confirm');
+$words['confirm_logout'] = _('Do you really want to log out?');
