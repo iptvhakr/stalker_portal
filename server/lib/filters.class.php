@@ -324,7 +324,7 @@ class Filters {
 
     private function getStreamServerSet() {
         $this->cleanDataSet();
-        $this->db->select(array('`id` as `value`', '`name` as `title`'))->from('streaming_servers');
+        $this->db->select(array('`id` as `value`', '`name` as `title`'))->from('streaming_servers')->where(array('status'=>1));
         return $this->db->get()->all();
     }
 

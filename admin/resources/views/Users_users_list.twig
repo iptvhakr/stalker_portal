@@ -89,7 +89,8 @@
                                             {% else %}
                                                 <span class="">Offline</span>
                                                 <br><span>{{ 'Last activity'|trans }}: {% if item.last_active == 0 %}{{ item.last_active|date('M d, Y H:i') }}{% else %} - {% endif %}</span>
-                                            {% endif %}</td>
+                                            {% endif %}
+                                        </td>
                                         <td class="data-filter-status">{% if item.status == 0 %}<span class="">{{ 'on'|trans }}</span>{% else %}<span class="txt-danger">{{ 'off'|trans }}</span>{% endif %}</td>
                                         {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
                                         <td>{{ item.reseller_name }}</td>
@@ -1130,6 +1131,9 @@
 
         var addFilterError = function(data){
             JSErrorModalBox(data);
+            if (typeof(data) != 'undefined' && typeof(data.filter) != 'undefined' && typeof(data.filter.text_id) != 'undefined' ) {
+                $("li[data-filter='" + data.filter.text_id + "'] input[type='checkbox']").prop('disabled', 'disabled').attr('checked', false);
+            }
         };
 
         function createFilterList(filter_data){

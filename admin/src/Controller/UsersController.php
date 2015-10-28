@@ -818,7 +818,7 @@ class UsersController extends \Controller\BaseStalkerController {
         if (empty($check)) {
             $data['id'] = $this->db->insertConsoleGroup(array('name' => $this->postData['name']));
             $data['name'] = $this->postData['name'];
-            $data['reseller_id'] = $this->admin->getResellerID();
+            $data['reseller_id'] = ((int) $this->admin->getResellerID()? $this->admin->getResellerID(): '-');
             $error = '';
         }
 
@@ -846,6 +846,8 @@ class UsersController extends \Controller\BaseStalkerController {
             $data['id'] = $this->postData['id'];
             $data['name'] = $this->postData['name'];
             $data['reseller_id'] = $this->admin->getResellerID();
+        } else {
+            $data['msg'] = $error = $this->setLocalization("Name is busy or has been used old group name");
         }
 
         $response = $this->generateAjaxResponse($data, $error);
@@ -1011,9 +1013,9 @@ class UsersController extends \Controller\BaseStalkerController {
                 }
             } elseif (!empty($check_in_group)) {
                 $group_name = $check_in_group[0]['name'];
-                $error = "Пользователь уже подключен к группе '$group_name'";
+                $data['msg'] = $error = $this->setLocalization("This user is already connected to the group") . " '$group_name'";
             } elseif (empty($check_in_users)) {
-                $error = "Пользователь с таким MAC-адресом не определен";
+                $data['msg'] = $error = $this->setLocalization("User with this MAC-address is not defined");
             }
         }
         $response = $this->generateAjaxResponse($data, $error);
@@ -1304,13 +1306,15 @@ class UsersController extends \Controller\BaseStalkerController {
         if (!empty($data['filter'])) {
             $error = '';
             $data['filter']['title'] = $this->setLocalization($data['filter']['title']);
+            unset($data['filter']['method']);
+
             if (!empty($data['filter']['values_set'])) {
                 reset($data['filter']['values_set']);
                 while(list($key, $row) = each($data['filter']['values_set'])){
                     $data['filter']['values_set'][$key]['title'] = $this->setLocalization($row['title']);
                 }
-            } elseif ($data['filter']['type'] != 'STRING' && $data['filter']['type'] != 'DATETIME' && $data['filter']['values_set'] === FALSE) {
-                $error = $this->setLocalization('No data for this filter');
+            } elseif ($data['filter']['type'] != 'STRING' && $data['filter']['type'] != 'DATETIME' && empty($data['filter']['values_set'])) {
+                $data['msg'] = $error = $this->setLocalization('No data for this filter');
             }
         }
 
