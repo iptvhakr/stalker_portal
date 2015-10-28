@@ -19,30 +19,28 @@
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].id, {'attr': {'class': 'form-control'} }) }}
-                                    {{ form_widget(app['form'].external_id, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}</div>
-									<div>
+                                    {{ form_widget(app['form'].external_id, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].external_id) }}
                                     </div>
-                                    <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">{{ 'Must be unique'|trans }}</span>
-                                    </span>
                                 </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">{{ 'Must be unique'|trans }}</span>
+                                </span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label col-xs-offset-1">{{ 'Tariff'|trans }}<span class="icon-required">*</span></label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
-                                    {{ form_widget(app['form'].name, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}</div>
-									<div>
+                                    {{ form_widget(app['form'].name, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].name) }}
                                     </div>
-                                    <span class="help-inline col-sm-12">
-                                        <span class="small txt-default">{{ 'Tariff title. You can use letters, digits and symbols from the list: ! @ # $ % ^ & * ( ) _ - + : ; , .'|trans }}</span>
-                                    </span>
                                 </div>
+                                <span class="help-inline col-sm-12">
+                                    <span class="small txt-default">{{ 'Tariff title. You can use letters, digits and symbols from the list: ! @ # $ % ^ & * ( ) _ - + : ; , .'|trans }}</span>
+                                </span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -51,18 +49,21 @@
                                 <div class=" col-xs-10 col-sm-6">
                                     <div class="checkbox">
                                         <label>
-                                            {{ form_widget(app['form'].user_default) }}      
+                                            {% if( attribute(app, 'userDefault') is defined) and app.userDefault %}
+                                                {{ form_widget(app['form'].user_default, {'attr': {'disabled': 'disabled' }} ) }}
+                                            {% else %}
+                                                {{ form_widget(app['form'].user_default ) }}
+                                            {% endif %}
                                             <i class="fa fa-square-o small"></i>
                                         </label>
-										
                                         <div class="bg-danger">
                                             {{ form_errors(app['form'].user_default) }}
                                         </div>
-                                    </div></div><div>
-                                    <span class="help-inline col-sm-12">
-                                        <span class="small txt-default">{{ 'Default tariff for all new STB of the network'|trans }}</span>
-                                    </span>
+                                    </div>
                                 </div>
+                                <span class="help-inline col-sm-12">
+                                    <span class="small txt-default">{{ 'Default tariff for all new STB of the network'|trans }}</span>
+                                </span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -70,13 +71,13 @@
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].packages, {'attr': {'class': 'populate placeholder', 'multiple': 'multiple'} }) }}
-                                    </div><div><div class="bg-danger">
+                                    <div class="bg-danger">
                                         {{ form_errors(app['form'].packages) }}
                                     </div>
-                                    <span class="help-inline col-sm-12">
-                                        <span class="small txt-default">{{ 'Service package for the following tariff plan. You may use several packages.'|trans }}</span>
-                                    </span>
                                 </div>
+                                <span class="help-inline col-sm-12">
+                                    <span class="small txt-default">{{ 'Service package for the following tariff plan. You may use several packages.'|trans }}</span>
+                                </span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -84,13 +85,13 @@
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].packages_optional, {'attr': {'class': 'form-control'} }) }}
-                                    </div><div><div class="bg-danger">
+                                    <div class="bg-danger">
                                         {{ form_errors(app['form'].packages_optional) }}
                                     </div>
-                                    <span class="help-inline col-sm-12">
-                                        <span class="small txt-default">*{{ 'Optional default package is switched off, but it can be switched on right in the user profile'|trans }}</span>
-                                    </span>
                                 </div>
+                                <span class="help-inline col-sm-12">
+                                    <span class="small txt-default">*{{ 'Optional default package is switched off, but it can be switched on right in the user profile'|trans }}</span>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -129,7 +130,7 @@
                     
                 }
 
-                $(document).on('change keyup', '#form_external_id', function (e) {
+                $(document).on('change', '#form_external_id', function (e) {
                     var _this = $(this);
                     _this.next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
                     ajaxPostSend('{{app.request.baseUrl}}/{{app.controller_alias}}/check-external-id', {externalid: _this.val(), selfid: $('#form_id').val()}, false);
