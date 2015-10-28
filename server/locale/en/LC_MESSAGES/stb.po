@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-28 17:45+0300\n"
-"PO-Revision-Date: 2015-10-28 17:46+0300\n"
+"POT-Creation-Date: 2015-10-28 17:52+0300\n"
+"PO-Revision-Date: 2015-10-28 17:54+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -7936,6 +7936,7 @@ msgid "Do you really want to stop this record?"
 msgstr "Do you really want to stop this record?"
 
 #: ../../../lang/stb.php:261 ../../../lang/stb.php:381
+#: ../../../lang/stb.php:568
 msgid "Confirm"
 msgstr "Confirm"
 
@@ -8654,6 +8655,14 @@ msgstr "Do you really want to delete this playlist?"
 #: ../../../lang/stb.php:562
 msgid "VK MUSIC"
 msgstr "VK MUSIC"
+
+#: ../../../lang/stb.php:567
+msgid "LOGOUT"
+msgstr "LOGOUT"
+
+#: ../../../lang/stb.php:569
+msgid "Do you really want to log out?"
+msgstr "Do you really want to log out?"
 
 msgid "About app"
 msgstr "About app"
