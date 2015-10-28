@@ -108,7 +108,7 @@
         function yelp() {
             $(document).ready(function () {
                 
-                $(document).on('change keyup', '#console_name', function(e){
+                $(document).on('change', '#console_name', function(e){
                     var _this = $(this);
                     _this.next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
                     $('#modalbox button[type="submit"]').removeAttr("disabled");
@@ -268,7 +268,7 @@
                                     window[data.action](data);
                                 }
                             } else {
-                                alert("{{ 'Some server error'|trans }}");
+                                JSErrorModalBox(data);
                             }
                         },
                         error: function (data) {
@@ -279,7 +279,7 @@
                             if ($.isFunction(window[errAction])) {
                                 window[errAction](data.responseJSON);
                             } else {
-                                alert("{{ 'Some network error or access denied'|trans }}");
+                                JSErrorModalBox(data.responseJSON);
                             }
                         },
                         dataType: "json",

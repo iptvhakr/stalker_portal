@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-28 10:43+0300\n"
-"PO-Revision-Date: 2015-10-28 10:43+0300\n"
+"POT-Creation-Date: 2015-10-28 17:52+0300\n"
+"PO-Revision-Date: 2015-10-28 17:54+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -204,30 +204,30 @@ msgstr "TV Archive has been restarted."
 #: ../../../../admin/src/Controller/UsersController.php:790
 #: ../../../../admin/src/Controller/UsersController.php:807
 #: ../../../../admin/src/Controller/UsersController.php:832
-#: ../../../../admin/src/Controller/UsersController.php:858
-#: ../../../../admin/src/Controller/UsersController.php:876
-#: ../../../../admin/src/Controller/UsersController.php:898
-#: ../../../../admin/src/Controller/UsersController.php:966
-#: ../../../../admin/src/Controller/UsersController.php:984
-#: ../../../../admin/src/Controller/UsersController.php:1026
-#: ../../../../admin/src/Controller/UsersController.php:1184
-#: ../../../../admin/src/Controller/UsersController.php:1214
-#: ../../../../admin/src/Controller/UsersController.php:1248
-#: ../../../../admin/src/Controller/UsersController.php:1288
-#: ../../../../admin/src/Controller/UsersController.php:1325
-#: ../../../../admin/src/Controller/UsersController.php:1469
-#: ../../../../admin/src/Controller/UsersController.php:1491
-#: ../../../../admin/src/Controller/UsersController.php:1513
-#: ../../../../admin/src/Controller/UsersController.php:1524
-#: ../../../../admin/src/Controller/UsersController.php:1535
+#: ../../../../admin/src/Controller/UsersController.php:860
+#: ../../../../admin/src/Controller/UsersController.php:878
+#: ../../../../admin/src/Controller/UsersController.php:900
+#: ../../../../admin/src/Controller/UsersController.php:968
+#: ../../../../admin/src/Controller/UsersController.php:986
+#: ../../../../admin/src/Controller/UsersController.php:1028
+#: ../../../../admin/src/Controller/UsersController.php:1186
+#: ../../../../admin/src/Controller/UsersController.php:1216
+#: ../../../../admin/src/Controller/UsersController.php:1250
+#: ../../../../admin/src/Controller/UsersController.php:1290
+#: ../../../../admin/src/Controller/UsersController.php:1329
+#: ../../../../admin/src/Controller/UsersController.php:1473
+#: ../../../../admin/src/Controller/UsersController.php:1495
+#: ../../../../admin/src/Controller/UsersController.php:1517
+#: ../../../../admin/src/Controller/UsersController.php:1528
+#: ../../../../admin/src/Controller/UsersController.php:1539
 #: ../../../../admin/src/Controller/InfoportalController.php:222
 #: ../../../../admin/src/Controller/InfoportalController.php:256
 #: ../../../../admin/src/Controller/InfoportalController.php:276
 #: ../../../../admin/src/Controller/InfoportalController.php:308
-#: ../../../../admin/src/Controller/TariffsController.php:329
-#: ../../../../admin/src/Controller/TariffsController.php:349
-#: ../../../../admin/src/Controller/TariffsController.php:376
-#: ../../../../admin/src/Controller/TariffsController.php:466
+#: ../../../../admin/src/Controller/TariffsController.php:333
+#: ../../../../admin/src/Controller/TariffsController.php:353
+#: ../../../../admin/src/Controller/TariffsController.php:380
+#: ../../../../admin/src/Controller/TariffsController.php:474
 #: ../../../../admin/src/Controller/AdminsController.php:199
 #: ../../../../admin/src/Controller/AdminsController.php:222
 #: ../../../../admin/src/Controller/AdminsController.php:260
@@ -254,8 +254,8 @@ msgstr "Done"
 #: ../../../../admin/src/Controller/TvChannelsController.php:756
 #: ../../../../admin/src/Controller/TvChannelsController.php:792
 #: ../../../../admin/src/Controller/TvChannelsController.php:821
-#: ../../../../admin/src/Controller/UsersController.php:1238
-#: ../../../../admin/src/Controller/UsersController.php:1277
+#: ../../../../admin/src/Controller/UsersController.php:1240
+#: ../../../../admin/src/Controller/UsersController.php:1279
 #: ../../../../admin/src/Controller/AdminsController.php:667
 #: ../../../../admin/src/Controller/AdminsController.php:701
 msgid "Nothing to do"
@@ -277,8 +277,8 @@ msgstr "Failed"
 #: ../../../../admin/src/Controller/TvChannelsController.php:869
 #: ../../../../admin/src/Controller/EventsController.php:405
 #: ../../../../admin/src/Controller/EventsController.php:528
-#: ../../../../admin/src/Controller/UsersController.php:1068
-#: ../../../../admin/src/Controller/UsersController.php:1404
+#: ../../../../admin/src/Controller/UsersController.php:1070
+#: ../../../../admin/src/Controller/UsersController.php:1408
 #: ../../../lang/stb.php:362
 msgid "Error"
 msgstr "Error"
@@ -288,7 +288,7 @@ msgstr "Error"
 #: ../../../../admin/src/Controller/EventsController.php:835
 #: ../../../../admin/src/Controller/EventsController.php:853
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:397
-#: ../../../../admin/src/Controller/UsersController.php:1915
+#: ../../../../admin/src/Controller/UsersController.php:1919
 msgid "ID"
 msgstr "ID"
 
@@ -321,7 +321,7 @@ msgstr "Logo"
 #: ../../../../admin/src/Controller/VideoClubController.php:2078
 #: ../../../../admin/src/Controller/VideoClubController.php:2086
 #: ../../../../admin/src/Controller/AudioClubController.php:1364
-#: ../../../../admin/src/Controller/UsersController.php:1917
+#: ../../../../admin/src/Controller/UsersController.php:1921
 #: ../../../administrator/tariffs.php:311
 #: ../../../administrator/tariffs.php:342
 #: ../../../administrator/audio_album.php:423
@@ -381,7 +381,7 @@ msgid "Monitoring status"
 msgstr "Monitoring status"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1380
-#: ../../../../admin/src/Controller/UsersController.php:1888
+#: ../../../../admin/src/Controller/UsersController.php:1892
 #: ../../../administrator/events.php:497 ../../../administrator/tasks.php:132
 #: ../../../administrator/add_video.php:828
 msgid "Status"
@@ -390,9 +390,9 @@ msgstr "Status"
 #: ../../../../admin/src/Controller/TvChannelsController.php:1381
 #: ../../../../admin/src/Controller/EventsController.php:814
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:403
-#: ../../../../admin/src/Controller/UsersController.php:1896
-#: ../../../../admin/src/Controller/UsersController.php:1909
-#: ../../../../admin/src/Controller/UsersController.php:1921
+#: ../../../../admin/src/Controller/UsersController.php:1900
+#: ../../../../admin/src/Controller/UsersController.php:1913
+#: ../../../../admin/src/Controller/UsersController.php:1925
 msgid "Operations"
 msgstr "Operations"
 
@@ -440,7 +440,7 @@ msgid "Installed applications"
 msgstr "Installed applications"
 
 #: ../../../../admin/src/Controller/EventsController.php:569
-#: ../../../tools/misctranslations.php:843
+#: ../../../tools/misctranslations.php:844
 msgid "deferred"
 msgstr "deferred"
 
@@ -479,13 +479,13 @@ msgid "Filter"
 msgstr "Filter"
 
 #: ../../../../admin/src/Controller/EventsController.php:811
-#: ../../../../admin/src/Controller/UsersController.php:1916
+#: ../../../../admin/src/Controller/UsersController.php:1920
 #: ../../../administrator/add_karaoke.php:813
 msgid "Author"
 msgstr "Author"
 
 #: ../../../../admin/src/Controller/EventsController.php:812
-#: ../../../../admin/src/Controller/UsersController.php:1883
+#: ../../../../admin/src/Controller/UsersController.php:1887
 #: ../../../tools/misctranslations.php:531
 msgid "Created"
 msgstr "Created"
@@ -544,7 +544,7 @@ msgid "Recipient"
 msgstr "Recipient"
 
 #: ../../../../admin/src/Controller/EventsController.php:857
-#: ../../../../admin/src/Controller/UsersController.php:1884
+#: ../../../../admin/src/Controller/UsersController.php:1888
 #: ../../../administrator/claims_log.php:174
 #: ../../../administrator/users.php:580 ../../../lang/stb.php:396
 #: ../../../lang/stb.php:501
@@ -577,7 +577,7 @@ msgstr "Last run"
 
 #: ../../../../admin/src/Controller/EventsController.php:863
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:402
-#: ../../../../admin/src/Controller/UsersController.php:1887
+#: ../../../../admin/src/Controller/UsersController.php:1891
 msgid "State"
 msgstr "State"
 
@@ -649,8 +649,8 @@ msgstr "Information not available"
 #: ../../../../admin/src/Controller/VideoClubController.php:618
 #: ../../../../admin/src/Controller/BroadcastServersController.php:19
 #: ../../../../admin/src/Controller/UsersController.php:708
-#: ../../../../admin/src/Controller/UsersController.php:1589
 #: ../../../../admin/src/Controller/UsersController.php:1593
+#: ../../../../admin/src/Controller/UsersController.php:1597
 #: ../../../lang/stb.php:369
 msgid "on"
 msgstr "on"
@@ -834,7 +834,7 @@ msgstr "Edit radio"
 #: ../../../../admin/src/Controller/UsersController.php:247
 #: ../../../../admin/src/Controller/UsersController.php:260
 #: ../../../../admin/src/Controller/UsersController.php:662
-#: ../../../../admin/src/Controller/UsersController.php:1641
+#: ../../../../admin/src/Controller/UsersController.php:1645
 #: ../../../../admin/src/Controller/AdminsController.php:48
 #: ../../../../admin/src/Controller/AdminsController.php:66
 #: ../../../../admin/src/Controller/AdminsController.php:323
@@ -870,41 +870,47 @@ msgid "STB of group"
 msgstr "STB of group"
 
 #: ../../../../admin/src/Controller/UsersController.php:708
-#: ../../../../admin/src/Controller/UsersController.php:1588
 #: ../../../../admin/src/Controller/UsersController.php:1592
+#: ../../../../admin/src/Controller/UsersController.php:1596
 #: ../../../lang/stb.php:370
 msgid "off"
 msgstr "off"
 
-#: ../../../../admin/src/Controller/UsersController.php:1041
-#: ../../../../admin/src/Controller/UsersController.php:1042
+#: ../../../../admin/src/Controller/UsersController.php:850
+msgid "Name is busy or has been used old group name"
+msgstr "Name is busy or has been used old group name"
+
+#: ../../../../admin/src/Controller/UsersController.php:1016
+#: ../../../../admin/src/Controller/UsersController.php:1043
+#: ../../../../admin/src/Controller/UsersController.php:1044
 msgid "This user is already connected to the group"
 msgstr "This user is already connected to the group"
 
-#: ../../../../admin/src/Controller/UsersController.php:1044
+#: ../../../../admin/src/Controller/UsersController.php:1018
+#: ../../../../admin/src/Controller/UsersController.php:1046
 msgid "User with this MAC-address is not defined"
 msgstr "User with this MAC-address is not defined"
 
-#: ../../../../admin/src/Controller/UsersController.php:1236
-#: ../../../../admin/src/Controller/UsersController.php:1270
+#: ../../../../admin/src/Controller/UsersController.php:1238
+#: ../../../../admin/src/Controller/UsersController.php:1272
 #: ../../../../admin/src/Controller/AdminsController.php:631
 #: ../../../../admin/src/Controller/AdminsController.php:665
 #: ../../../../admin/src/Controller/AdminsController.php:699
 msgid "Moved"
 msgstr "Moved"
 
-#: ../../../../admin/src/Controller/UsersController.php:1238
-#: ../../../../admin/src/Controller/UsersController.php:1277
+#: ../../../../admin/src/Controller/UsersController.php:1240
+#: ../../../../admin/src/Controller/UsersController.php:1279
 #: ../../../../admin/src/Controller/AdminsController.php:667
 #: ../../../../admin/src/Controller/AdminsController.php:701
 msgid "Not found reseller for moving"
 msgstr "Not found reseller for moving"
 
-#: ../../../../admin/src/Controller/UsersController.php:1313
+#: ../../../../admin/src/Controller/UsersController.php:1317
 msgid "No data for this filter"
 msgstr "No data for this filter"
 
-#: ../../../../admin/src/Controller/UsersController.php:1880
+#: ../../../../admin/src/Controller/UsersController.php:1884
 #: ../../../administrator/profile.php:394 ../../../administrator/user.php:138
 #: ../../../administrator/administrators.php:164
 #: ../../../administrator/administrators.php:191
@@ -913,12 +919,12 @@ msgstr "No data for this filter"
 msgid "Login"
 msgstr "Login"
 
-#: ../../../../admin/src/Controller/UsersController.php:1881
+#: ../../../../admin/src/Controller/UsersController.php:1885
 msgid "Account"
 msgstr "Account"
 
-#: ../../../../admin/src/Controller/UsersController.php:1882
-#: ../../../../admin/src/Controller/UsersController.php:1903
+#: ../../../../admin/src/Controller/UsersController.php:1886
+#: ../../../../admin/src/Controller/UsersController.php:1907
 #: ../../../administrator/playlists.php:129
 #: ../../../administrator/playlists.php:153
 #: ../../../administrator/audio_year.php:183
@@ -946,40 +952,40 @@ msgstr "Account"
 msgid "Name"
 msgstr "Name"
 
-#: ../../../../admin/src/Controller/UsersController.php:1885
+#: ../../../../admin/src/Controller/UsersController.php:1889
 #: ../../../administrator/msg.php:145
 #: ../../../administrator/claims_log.php:175
 #: ../../../administrator/users.php:581 ../../../administrator/msgs.php:116
 msgid "Media"
 msgstr "Media"
 
-#: ../../../../admin/src/Controller/UsersController.php:1886
+#: ../../../../admin/src/Controller/UsersController.php:1890
 msgid "Last modified"
 msgstr "Last modified"
 
-#: ../../../../admin/src/Controller/UsersController.php:1891
-#: ../../../../admin/src/Controller/UsersController.php:1907
+#: ../../../../admin/src/Controller/UsersController.php:1895
+#: ../../../../admin/src/Controller/UsersController.php:1911
 msgid "Reseller"
 msgstr "Reseller"
 
-#: ../../../../admin/src/Controller/UsersController.php:1894
+#: ../../../../admin/src/Controller/UsersController.php:1898
 #: ../../../administrator/profile.php:427
 msgid "Expire billing date"
 msgstr "Expire billing date"
 
-#: ../../../../admin/src/Controller/UsersController.php:1904
+#: ../../../../admin/src/Controller/UsersController.php:1908
 msgid "Quantity of users"
 msgstr "Quantity of users"
 
-#: ../../../../admin/src/Controller/UsersController.php:1918
+#: ../../../../admin/src/Controller/UsersController.php:1922
 msgid "Filter conditions"
 msgstr "Filter conditions"
 
-#: ../../../../admin/src/Controller/UsersController.php:1919
+#: ../../../../admin/src/Controller/UsersController.php:1923
 msgid "Visibility"
 msgstr "Visibility"
 
-#: ../../../../admin/src/Controller/UsersController.php:1920
+#: ../../../../admin/src/Controller/UsersController.php:1924
 #: ../../../lang/stb.php:385
 msgid "Favorites"
 msgstr "Favorites"
@@ -1003,12 +1009,12 @@ msgid "Edit package"
 msgstr "Edit package"
 
 #: ../../../../admin/src/Controller/TariffsController.php:180
-#: ../../../../admin/src/Controller/TariffsController.php:222
+#: ../../../../admin/src/Controller/TariffsController.php:226
 #: ../../../../admin/json_menu/menu.json:135
 msgid "Tariff plans"
 msgstr "Tariff plans"
 
-#: ../../../../admin/src/Controller/TariffsController.php:688
+#: ../../../../admin/src/Controller/TariffsController.php:696
 msgid "ID already used"
 msgstr "ID already used"
 
@@ -2045,7 +2051,7 @@ msgid "Removing an existing area"
 msgstr "Removing an existing area"
 
 #: ../../../tools/misctranslations.php:317
-#: ../../../tools/misctranslations.php:802
+#: ../../../tools/misctranslations.php:803
 msgid "List of events"
 msgstr "List of events"
 
@@ -3843,336 +3849,340 @@ msgstr "Streaming server"
 msgid "Firmware version"
 msgstr "Firmware version"
 
-#: ../../../tools/misctranslations.php:791
+#: ../../../tools/misctranslations.php:790
+msgid "Media type"
+msgstr "Media type"
+
+#: ../../../tools/misctranslations.php:792
 msgid "Auto-complete for watching-tv filter"
 msgstr "Auto-complete for watching-tv filter"
 
-#: ../../../tools/misctranslations.php:792
+#: ../../../tools/misctranslations.php:793
 msgid "Auto-complete for watching-movie filter"
 msgstr "Auto-complete for watching-movie filter"
 
-#: ../../../tools/misctranslations.php:793
+#: ../../../tools/misctranslations.php:794
 msgid "Auto-complete for stbfirmware-version filter"
 msgstr "Auto-complete for stbfirmware-version filter"
 
-#: ../../../tools/misctranslations.php:795
-#: ../../../tools/misctranslations.php:803
+#: ../../../tools/misctranslations.php:796
+#: ../../../tools/misctranslations.php:804
 msgid "List of templates of messages"
 msgstr "List of templates of messages"
 
-#: ../../../tools/misctranslations.php:796
+#: ../../../tools/misctranslations.php:797
 msgid "List of filters"
 msgstr "List of filters"
 
-#: ../../../tools/misctranslations.php:797
+#: ../../../tools/misctranslations.php:798
 msgid "List of filters by page + filters"
 msgstr "List of filters by page + filters"
 
-#: ../../../tools/misctranslations.php:798
+#: ../../../tools/misctranslations.php:799
 msgid "Get data for filter construct"
 msgstr "Get data for filter construct"
 
-#: ../../../tools/misctranslations.php:799
+#: ../../../tools/misctranslations.php:800
 msgid "Save filters set"
 msgstr "Save filters set"
 
-#: ../../../tools/misctranslations.php:800
+#: ../../../tools/misctranslations.php:801
 msgid "Remove filters set"
 msgstr "Remove filters set"
 
-#: ../../../tools/misctranslations.php:801
+#: ../../../tools/misctranslations.php:802
 msgid "Toggle favorite status for current filter"
 msgstr "Toggle favorite status for current filter"
 
-#: ../../../tools/misctranslations.php:804
+#: ../../../tools/misctranslations.php:805
 msgid "List of templates of messages by page + filters"
 msgstr "List of templates of messages by page + filters"
 
-#: ../../../tools/misctranslations.php:805
+#: ../../../tools/misctranslations.php:806
 msgid "Adding and editing the templates of messages"
 msgstr "Adding and editing the templates of messages"
 
-#: ../../../tools/misctranslations.php:806
+#: ../../../tools/misctranslations.php:807
 msgid "Removing the templates of messages"
 msgstr "Removing the templates of messages"
 
-#: ../../../tools/misctranslations.php:807
+#: ../../../tools/misctranslations.php:808
 msgid "Send msg with video"
 msgstr "Send message whith video"
 
-#: ../../../tools/misctranslations.php:808
+#: ../../../tools/misctranslations.php:809
 msgid "Run application"
 msgstr "Run application"
 
-#: ../../../tools/misctranslations.php:809
+#: ../../../tools/misctranslations.php:810
 msgid "Requires at least one link of broadcast"
 msgstr "Requires at least one link of broadcast"
 
-#: ../../../tools/misctranslations.php:810
+#: ../../../tools/misctranslations.php:811
 msgid "Application catalog. List of applications"
 msgstr "Application catalog. List of applications"
 
-#: ../../../tools/misctranslations.php:811
+#: ../../../tools/misctranslations.php:812
 msgid "Application catalog. List of applications  by page + filters"
 msgstr "Application catalog. List of applications  by page + filters"
 
-#: ../../../tools/misctranslations.php:812
-msgid ""
-"Application catalog. Terms of use of  the catalog of applications Stalker"
-msgstr ""
-"Application catalog. Terms of use of  the catalog of applications Stalker"
-
 #: ../../../tools/misctranslations.php:813
 msgid ""
+"Application catalog. Terms of use of  the catalog of applications Stalker"
+msgstr ""
+"Application catalog. Terms of use of  the catalog of applications Stalker"
+
+#: ../../../tools/misctranslations.php:814
+msgid ""
 "Application catalog. Application info and list of available application "
 "versions"
 msgstr ""
 "Application catalog. Application info and list of available application "
 "versions"
 
-#: ../../../tools/misctranslations.php:814
+#: ../../../tools/misctranslations.php:815
 msgid "Application catalog. Getting application info from repository"
 msgstr "Application catalog. Getting application info from repository"
 
-#: ../../../tools/misctranslations.php:815
+#: ../../../tools/misctranslations.php:816
 msgid "Application catalog. Add new application by URL of the repository"
 msgstr "Application catalog. Add new application by URL of the repository"
 
-#: ../../../tools/misctranslations.php:816
+#: ../../../tools/misctranslations.php:817
 msgid "Application catalog. List of application versions"
 msgstr "Application catalog. List of application versions"
 
-#: ../../../tools/misctranslations.php:817
+#: ../../../tools/misctranslations.php:818
 msgid "Application Catalog. Editing the options of application"
 msgstr "Application Catalog. Editing the options of application"
 
-#: ../../../tools/misctranslations.php:818
+#: ../../../tools/misctranslations.php:819
 msgid "Application catalog. Install available application version"
 msgstr "Application catalog. Install available application version"
 
-#: ../../../tools/misctranslations.php:819
+#: ../../../tools/misctranslations.php:820
 msgid "Application catalog. Delete installed application version"
 msgstr "Application catalog. Delete installed application version"
 
-#: ../../../tools/misctranslations.php:820
+#: ../../../tools/misctranslations.php:821
 msgid "Application catalog. Enable and disable application"
 msgstr "Application catalog. Enable and disable application"
 
-#: ../../../tools/misctranslations.php:821
+#: ../../../tools/misctranslations.php:822
 msgid "Application catalog. Delete application"
 msgstr "Application catalog. Delete application"
 
-#: ../../../tools/misctranslations.php:823
+#: ../../../tools/misctranslations.php:824
 msgid "once"
 msgstr "once"
 
-#: ../../../tools/misctranslations.php:824
+#: ../../../tools/misctranslations.php:825
 msgid "every"
 msgstr "every"
 
-#: ../../../tools/misctranslations.php:825
+#: ../../../tools/misctranslations.php:826
 msgid "and"
 msgstr "and"
 
-#: ../../../tools/misctranslations.php:826
+#: ../../../tools/misctranslations.php:827
 msgid "minute"
 msgstr "minute"
 
-#: ../../../tools/misctranslations.php:827
+#: ../../../tools/misctranslations.php:828
 msgid "hour"
 msgstr "hour"
 
-#: ../../../tools/misctranslations.php:828
+#: ../../../tools/misctranslations.php:829
 msgid "day"
 msgstr "day"
 
-#: ../../../tools/misctranslations.php:829
+#: ../../../tools/misctranslations.php:830
 msgid "weekday"
 msgstr "weekday"
 
-#: ../../../tools/misctranslations.php:830
+#: ../../../tools/misctranslations.php:831
 msgid "Week"
 msgstr "Week"
 
-#: ../../../tools/misctranslations.php:831
+#: ../../../tools/misctranslations.php:832
 msgid "month"
 msgstr "month"
 
-#: ../../../tools/misctranslations.php:832
+#: ../../../tools/misctranslations.php:833
 msgid "year"
 msgstr "year"
 
-#: ../../../tools/misctranslations.php:833
+#: ../../../tools/misctranslations.php:834
 msgid "first"
 msgstr "first"
 
-#: ../../../tools/misctranslations.php:834
+#: ../../../tools/misctranslations.php:835
 msgid "last"
 msgstr "last"
 
-#: ../../../tools/misctranslations.php:835
+#: ../../../tools/misctranslations.php:836
 msgid "next"
 msgstr "next"
 
-#: ../../../tools/misctranslations.php:836
+#: ../../../tools/misctranslations.php:837
 msgid "previous"
 msgstr "previous"
 
-#: ../../../tools/misctranslations.php:837
+#: ../../../tools/misctranslations.php:838
 msgid "of week"
 msgstr "of week"
 
-#: ../../../tools/misctranslations.php:838
+#: ../../../tools/misctranslations.php:839
 msgid "of month"
 msgstr "of month"
 
-#: ../../../tools/misctranslations.php:839
+#: ../../../tools/misctranslations.php:840
 msgid "of year"
 msgstr "of year"
 
-#: ../../../tools/misctranslations.php:840
+#: ../../../tools/misctranslations.php:841
 msgid "at"
 msgstr "at"
 
-#: ../../../tools/misctranslations.php:841
+#: ../../../tools/misctranslations.php:842
 msgid "from"
 msgstr "from"
 
-#: ../../../tools/misctranslations.php:842
+#: ../../../tools/misctranslations.php:843
 msgid "to"
 msgstr "to"
 
-#: ../../../tools/misctranslations.php:845
-#: ../../../tools/misctranslations.php:852
+#: ../../../tools/misctranslations.php:846
+#: ../../../tools/misctranslations.php:853
 msgid "Sunday"
 msgstr "Sunday"
 
-#: ../../../tools/misctranslations.php:846
+#: ../../../tools/misctranslations.php:847
 msgid "Monday"
 msgstr "Monday"
 
-#: ../../../tools/misctranslations.php:847
+#: ../../../tools/misctranslations.php:848
 msgid "Tuesday"
 msgstr "Tuesday"
 
-#: ../../../tools/misctranslations.php:848
+#: ../../../tools/misctranslations.php:849
 msgid "Wednesday"
 msgstr "Wednesday"
 
-#: ../../../tools/misctranslations.php:849
+#: ../../../tools/misctranslations.php:850
 msgid "Thursday"
 msgstr "Thursday"
 
-#: ../../../tools/misctranslations.php:850
+#: ../../../tools/misctranslations.php:851
 msgid "Friday"
 msgstr "Friday"
 
-#: ../../../tools/misctranslations.php:851
+#: ../../../tools/misctranslations.php:852
 msgid "Saturday"
 msgstr "Saturday"
 
-#: ../../../tools/misctranslations.php:854
-#: ../../../tools/misctranslations.php:866
+#: ../../../tools/misctranslations.php:855
+#: ../../../tools/misctranslations.php:867
 msgid "December_c"
 msgstr "December"
 
-#: ../../../tools/misctranslations.php:855
+#: ../../../tools/misctranslations.php:856
 msgid "January_c"
 msgstr "January"
 
-#: ../../../tools/misctranslations.php:856
+#: ../../../tools/misctranslations.php:857
 msgid "February_c"
 msgstr "February"
 
-#: ../../../tools/misctranslations.php:857
+#: ../../../tools/misctranslations.php:858
 msgid "March_c"
 msgstr "March"
 
-#: ../../../tools/misctranslations.php:858
+#: ../../../tools/misctranslations.php:859
 msgid "April_c"
 msgstr "April"
 
-#: ../../../tools/misctranslations.php:859
+#: ../../../tools/misctranslations.php:860
 msgid "May_c"
 msgstr "May_c"
 
-#: ../../../tools/misctranslations.php:860
+#: ../../../tools/misctranslations.php:861
 msgid "June_c"
 msgstr "June"
 
-#: ../../../tools/misctranslations.php:861
+#: ../../../tools/misctranslations.php:862
 msgid "July_c"
 msgstr "July"
 
-#: ../../../tools/misctranslations.php:862
+#: ../../../tools/misctranslations.php:863
 msgid "August_c"
 msgstr "August"
 
-#: ../../../tools/misctranslations.php:863
+#: ../../../tools/misctranslations.php:864
 msgid "September_c"
 msgstr "September"
 
-#: ../../../tools/misctranslations.php:864
+#: ../../../tools/misctranslations.php:865
 msgid "October_c"
 msgstr "October"
 
-#: ../../../tools/misctranslations.php:865
+#: ../../../tools/misctranslations.php:866
 msgid "November_c"
 msgstr "November"
 
-#: ../../../tools/misctranslations.php:868
+#: ../../../tools/misctranslations.php:869
 msgid "List of scheduled events"
 msgstr "List of scheduled events"
 
-#: ../../../tools/misctranslations.php:869
+#: ../../../tools/misctranslations.php:870
 msgid "List of scheduled events by page + filters"
 msgstr "List of scheduled events by page + filters"
 
-#: ../../../tools/misctranslations.php:870
+#: ../../../tools/misctranslations.php:871
 msgid "Adding and editing the scheduled events"
 msgstr "Adding and editing the scheduled events"
 
-#: ../../../tools/misctranslations.php:871
+#: ../../../tools/misctranslations.php:872
 msgid "Removing the scheduled events"
 msgstr "Removing the scheduled events"
 
-#: ../../../tools/misctranslations.php:872
+#: ../../../tools/misctranslations.php:873
 msgid "Stopping or starting the scheduled events"
 msgstr "Stopping or starting the scheduled events"
 
-#: ../../../tools/misctranslations.php:874
+#: ../../../tools/misctranslations.php:875
 msgid "added"
 msgstr "added"
 
-#: ../../../tools/misctranslations.php:875
+#: ../../../tools/misctranslations.php:876
 msgid "edited"
 msgstr "edited"
 
-#: ../../../tools/misctranslations.php:876
+#: ../../../tools/misctranslations.php:877
 msgid "This value is not valid."
 msgstr "This value is not valid."
 
-#: ../../../tools/misctranslations.php:877
+#: ../../../tools/misctranslations.php:878
 msgid "task ended"
 msgstr "task ended"
 
-#: ../../../tools/misctranslations.php:878
+#: ../../../tools/misctranslations.php:879
 msgid "edit"
 msgstr "Edited"
 
-#: ../../../tools/misctranslations.php:879
+#: ../../../tools/misctranslations.php:880
 msgid "Advert"
 msgstr "Advert"
 
-#: ../../../tools/misctranslations.php:880
+#: ../../../tools/misctranslations.php:881
 msgid "permanent"
 msgstr "permanent"
 
-#: ../../../tools/misctranslations.php:881
+#: ../../../tools/misctranslations.php:882
 msgid "once-only"
 msgstr "once-only"
 
-#: ../../../tools/misctranslations.php:882
+#: ../../../tools/misctranslations.php:883
 msgid "ID is available"
 msgstr "ID is available"
 
@@ -7926,6 +7936,7 @@ msgid "Do you really want to stop this record?"
 msgstr "Do you really want to stop this record?"
 
 #: ../../../lang/stb.php:261 ../../../lang/stb.php:381
+#: ../../../lang/stb.php:568
 msgid "Confirm"
 msgstr "Confirm"
 
@@ -8644,6 +8655,14 @@ msgstr "Do you really want to delete this playlist?"
 #: ../../../lang/stb.php:562
 msgid "VK MUSIC"
 msgstr "VK MUSIC"
+
+#: ../../../lang/stb.php:567
+msgid "LOGOUT"
+msgstr "LOGOUT"
+
+#: ../../../lang/stb.php:569
+msgid "Do you really want to log out?"
+msgstr "Do you really want to log out?"
 
 msgid "About app"
 msgstr "About app"

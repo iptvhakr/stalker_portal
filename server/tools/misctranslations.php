@@ -787,6 +787,7 @@ _('Watched TV channel');
 _('Watched movie');
 _('Streaming server');
 _('Firmware version');
+_('Media type');
 
 _('Auto-complete for watching-tv filter');
 _('Auto-complete for watching-movie filter');
