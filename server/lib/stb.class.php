@@ -2205,4 +2205,26 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         $this->params['video_clock'] = $clockType;
         return true;
     }
+
+    public function logout(){
+
+        Mysql::getInstance()->update('access_tokens',
+            array(
+                'token'         => 'invalid_'.md5(microtime(1).uniqid()),
+                'refresh_token' => 'invalid_'.md5(microtime(1).uniqid()),
+            ),
+            array('uid' => $this->id));
+
+        Mysql::getInstance()->update('users',
+            array(
+                'access_token' => strtoupper(md5(microtime(1).uniqid())),
+                'mac'        => '',
+                'device_id'  => '',
+                'device_id2' => '',
+            ),
+            array('id' => $this->id)
+        );
+
+        return true;
+    }
 }

@@ -69,4 +69,6 @@ interface Stb
     public function setStreamError();
 
     public function setClockOnVideo();
+
+    public function logout();
 }
