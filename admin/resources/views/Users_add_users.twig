@@ -179,6 +179,7 @@
                                 </div>
                             </div>
                         </div>
+                        {% if app.userEdit %}
                         <div class="form-group">
                             <label class="col-sm-2 control-label ">{{ 'State'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
@@ -191,6 +192,7 @@
                                 </span>
                             </div>
                         </div>
+                        {% endif %}
                         <div class="form-group">
                             <label class="col-sm-2 control-label ">{{ 'Comments'|trans }}:</label>
                             <div class="col-xs-10 col-sm-6">

@@ -156,8 +156,16 @@ class UsersModel extends \Model\BaseStalkerModel {
             $this->mysqlInstance->select($param['select']);
         }
         $this->mysqlInstance->from('stb_in_group')
-                        ->join('stb_groups', 'stb_in_group.stb_group_id', 'stb_groups.id', 'LEFT')
-                        ->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
+                        ->join('stb_groups', 'stb_in_group.stb_group_id', 'stb_groups.id', 'LEFT');
+        if (array_key_exists('where', $param)) {
+            $this->mysqlInstance->where($param['where']);
+        }
+        if (array_key_exists('like', $param)) {
+            $this->mysqlInstance->like($param['like'], 'OR');
+        }
+        if (array_key_exists('order', $param)) {
+            $this->mysqlInstance->orderby($param['order']);
+        }
         if (!empty($param['limit']['limit'])) {
             $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
@@ -230,8 +238,16 @@ class UsersModel extends \Model\BaseStalkerModel {
         if (!empty($param['select'])) {
             $this->mysqlInstance->select($param['select']);
         }
-        $this->mysqlInstance->from('user_log')->join('users', 'user_log.mac', 'users.mac', 'LEFT')
-                        ->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
+        $this->mysqlInstance->from('user_log')->join('users', 'user_log.mac', 'users.mac', 'LEFT');
+        if (array_key_exists('where', $param)) {
+            $this->mysqlInstance->where($param['where']);
+        }
+        if (array_key_exists('like', $param)) {
+            $this->mysqlInstance->like($param['like'], 'OR');
+        }
+        if (array_key_exists('order', $param)) {
+            $this->mysqlInstance->orderby($param['order']);
+        }
         if (!empty($param['limit']['limit'])) {
             $this->mysqlInstance->limit($param['limit']['limit'], (array_key_exists('offset', $param['limit'])?$param['limit']['offset']: FALSE));
         }
