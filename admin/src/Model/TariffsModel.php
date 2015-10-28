@@ -20,8 +20,10 @@ class TariffsModel extends \Model\BaseStalkerModel {
         if (!empty($param['select'])) {
             $this->mysqlInstance->select($param['select']);
         }
-        $this->mysqlInstance->from('services_package')//->join('users', 'tariffs.uid', 'users.id', 'LEFT')
-                        ->where($param['where']);
+        $this->mysqlInstance->from('services_package');//->join('users', 'tariffs.uid', 'users.id', 'LEFT')
+        if (array_key_exists('where', $param)) {
+            $this->mysqlInstance->where($param['where']);
+        }
         if (array_key_exists('like', $param)) {
             $this->mysqlInstance->like($param['like'], 'OR');
         }
@@ -81,8 +83,17 @@ class TariffsModel extends \Model\BaseStalkerModel {
         if (!empty($param['select'])) {
             $this->mysqlInstance->select($param['select']);
         }
-        $this->mysqlInstance->from('tariff_plan')//->join('users', 'tariffs.uid', 'users.id', 'LEFT')
-                        ->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
+        $this->mysqlInstance->from('tariff_plan');//->join('users', 'tariffs.uid', 'users.id', 'LEFT')
+
+        if (array_key_exists('where', $param)) {
+            $this->mysqlInstance->where($param['where']);
+        }
+        if (array_key_exists('like', $param)) {
+            $this->mysqlInstance->like($param['like'], 'OR');
+        }
+        if (array_key_exists('order', $param)) {
+            $this->mysqlInstance->orderby($param['order']);
+        }
         if (!empty($param['limit']['limit'])) {
             $this->mysqlInstance->limit($param['limit']['limit'], (array_key_exists('offset', $param['limit'])? $param['limit']['offset']: NULL));
         }
@@ -110,8 +121,16 @@ class TariffsModel extends \Model\BaseStalkerModel {
         if (!empty($param['select'])) {
             $this->mysqlInstance->select($param['select']);
         }
-        $this->mysqlInstance->from('package_in_plan')->join('services_package', 'package_in_plan.package_id', 'services_package.id', 'LEFT')
-                        ->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
+        $this->mysqlInstance->from('package_in_plan')->join('services_package', 'package_in_plan.package_id', 'services_package.id', 'LEFT');
+        if (array_key_exists('where', $param)) {
+            $this->mysqlInstance->where($param['where']);
+        }
+        if (array_key_exists('like', $param)) {
+            $this->mysqlInstance->like($param['like'], 'OR');
+        }
+        if (array_key_exists('order', $param)) {
+            $this->mysqlInstance->orderby($param['order']);
+        }
         if (!empty($param['limit']['limit'])) {
             $this->mysqlInstance->limit($param['limit']['limit'], (array_key_exists('offset', $param['limit'])? $param['limit']['offset']: NULL));
         }
