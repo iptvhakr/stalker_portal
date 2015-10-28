@@ -877,3 +877,6 @@ _('This value is not valid.');
 _('task ended');
 _('edit');
 _('Advert');
+_('permanent');
+_('once-only');
+_('ID is available');

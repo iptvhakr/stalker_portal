@@ -24,12 +24,12 @@ class TariffsController extends \Controller\BaseStalkerController {
     public function __construct(Application $app) {
         parent::__construct($app, __CLASS__);
         $this->allServiceTypes = array(
-            array("id" => 'periodic', "title" => $this->setlocalization('permanent')),
-            array("id" => 'single', "title" => $this->setlocalization('once-only'))
+            array("id" => 'periodic', "title" => $this->setlocalization("permanent")),
+            array("id" => 'single', "title" => $this->setlocalization("once-only"))
         );
         $this->allServices = array(
-            array("id" => '1', "title" => "complete"),
-            array("id" =>  '2', "title" => "Optional")
+            array("id" => '1', "title" => $this->setlocalization("Complete")),
+            array("id" =>  '2', "title" => $this->setlocalization("Optional"))
         );
 
         $this->allInitiatorRoles = array(
@@ -174,7 +174,7 @@ class TariffsController extends \Controller\BaseStalkerController {
         if ($this->saveTariffPlanData($form)) {
             return $this->app->redirect($this->workURL . '/tariffs/tariff-plans');
         }
-        $this->app['userDefault'] = $this->getDefaultPlan($this->plan['id']);
+        $this->app['userDefault'] = $this->getDefaultPlan();
         $this->app['form'] = $form->createView();
         $this->app['servicePlanEdit'] = FALSE;
         $this->app['breadcrumbs']->addItem($this->setLocalization('Tariff plans'), $this->app['controller_alias'] . '/tariff-plans');
@@ -206,7 +206,11 @@ class TariffsController extends \Controller\BaseStalkerController {
         
         $plan = $this->db->getTariffPlansList($query_param);
         $this->plan = (is_array($plan) && count($plan) > 0) ? $plan[0] : array();
-        $this->plan['packages'] = $this->db->getOptionalForPlan(array('select' => array('package_id as id', 'name', 'optional'), 'where' => array('plan_id' => $id), 'order' => array('package_in_plan.id' => '')));
+        $this->plan['packages'] = $this->db->getOptionalForPlan(array(
+            'select' => array('package_id as id', 'name', 'optional'),
+            'where' => array('plan_id' => $id),
+            'order' => array('package_in_plan.id' => '')
+        ));
 
         $form = $this->buildTariffPlanForm($this->plan);
 
@@ -384,12 +388,16 @@ class TariffsController extends \Controller\BaseStalkerController {
         $error = $this->setlocalization('ID already used');
         $param = array(
             'where' => array(
-                'external_id' => trim($this->postData['externalid']),
-                'id<>' => trim($this->postData['selfid'])
+                'external_id' => trim($this->postData['externalid'])
             ),
             'order' => array('id' => '')
         );
-        if ($this->db->getTariffsList($param)) {
+        if (!empty($this->postData['selfid'])) {
+            $param['where']['id<>'] = trim($this->postData['selfid']);
+        }
+        $result = $this->db->getTariffPlansList($param);
+
+        if (!empty($result)) {
             $data['chk_rezult'] = $this->setlocalization('ID already used');
         } else {
             $data['chk_rezult'] = $this->setlocalization('ID is available');
@@ -767,10 +775,10 @@ class TariffsController extends \Controller\BaseStalkerController {
         $form = $builder->createBuilder('form', $data, array('csrf_protection' => false))
                 ->add('id', 'hidden')
                 ->add('external_id', 'text', array(
-                    'constraints' => array(new Assert\NotBlank(),'required' => TRUE), 
+                    'constraints' => array(new Assert\NotBlank()),
                     'required' => TRUE))
-                ->add('name', 'text', array('constraints' => array(new Assert\NotBlank(),'required' => TRUE), 'required' => TRUE))
-                ->add('user_default', 'checkbox', array('required' => false, 'value' => $val))
+                ->add('name', 'text', array('constraints' => array(new Assert\NotBlank()), 'required' => TRUE))
+                ->add('user_default', 'checkbox', array('required' => TRUE, 'value' => $val))
                 ->add('packages', 'choice', array(
                     'choices' => $all_packeges,
                     'multiple' => TRUE,
@@ -807,7 +815,7 @@ class TariffsController extends \Controller\BaseStalkerController {
                 if ($edit && !empty($data['id'])) {
                     $param[] = $data['id'];    
                     unset($param[0]['id']);
-                    if ($plan['external_id'] == $data['external_id']) {
+                    if (array_key_exists('external_id', $plan) && $plan['external_id'] == $data['external_id']) {
                         unset($param[0]['external_id']);
                     }
                     $this->db->deletePackageInPlanById($data['id']);
@@ -832,12 +840,10 @@ class TariffsController extends \Controller\BaseStalkerController {
     
     private function getDefaultPlan($curr_id = FALSE){
         $default_plan = $this->db->getUserDefaultPlan();
-        if (!empty($default_plan)) {
-            if ($curr_id !== FALSE && $default_plan == $curr_id) {
-                return FALSE;
-            }
-        } 
-        return TRUE;
+        if (!empty($default_plan) && $default_plan != $curr_id) {
+            return TRUE;
+        }
+        return FALSE;
     }
     
     private function getServicePackagesDropdownAttribute() {

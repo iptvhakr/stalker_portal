@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-26 17:15+0300\n"
-"PO-Revision-Date: 2015-10-26 17:15+0300\n"
+"POT-Creation-Date: 2015-10-28 10:43+0300\n"
+"PO-Revision-Date: 2015-10-28 10:43+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -54,14 +54,14 @@ msgstr "monitoring off"
 #: ../../../../admin/src/Controller/TvChannelsController.php:50
 #: ../../../../admin/src/Controller/TvChannelsController.php:1685
 #: ../../../../admin/src/Controller/RadioController.php:24
-#: ../../../../admin/src/Controller/RadioController.php:379
+#: ../../../../admin/src/Controller/RadioController.php:385
 msgid "errors occurred"
 msgstr "errors occurred"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:51
 #: ../../../../admin/src/Controller/TvChannelsController.php:1679
 #: ../../../../admin/src/Controller/RadioController.php:25
-#: ../../../../admin/src/Controller/RadioController.php:377
+#: ../../../../admin/src/Controller/RadioController.php:383
 msgid "no errors"
 msgstr "no errors"
 
@@ -172,11 +172,11 @@ msgstr "TV Archive has been restarted."
 #: ../../../../admin/src/Controller/AudioClubController.php:823
 #: ../../../../admin/src/Controller/AudioClubController.php:845
 #: ../../../../admin/src/Controller/AudioClubController.php:889
-#: ../../../../admin/src/Controller/AudioClubController.php:996
-#: ../../../../admin/src/Controller/AudioClubController.php:1046
-#: ../../../../admin/src/Controller/AudioClubController.php:1091
-#: ../../../../admin/src/Controller/AudioClubController.php:1109
-#: ../../../../admin/src/Controller/AudioClubController.php:1127
+#: ../../../../admin/src/Controller/AudioClubController.php:1007
+#: ../../../../admin/src/Controller/AudioClubController.php:1057
+#: ../../../../admin/src/Controller/AudioClubController.php:1102
+#: ../../../../admin/src/Controller/AudioClubController.php:1120
+#: ../../../../admin/src/Controller/AudioClubController.php:1138
 #: ../../../../admin/src/Controller/StatisticsController.php:1043
 #: ../../../../admin/src/Controller/StoragesController.php:166
 #: ../../../../admin/src/Controller/StoragesController.php:193
@@ -269,7 +269,7 @@ msgstr "Nothing to do"
 #: ../../../../admin/src/Controller/IndexController.php:256
 #: ../../../../admin/src/Controller/IndexController.php:303
 #: ../../../../admin/src/Controller/VideoClubController.php:795
-#: ../../../../admin/src/Controller/AudioClubController.php:899
+#: ../../../../admin/src/Controller/AudioClubController.php:898
 #: ../../../adm/js/js_translate.php:41
 msgid "Failed"
 msgstr "Failed"
@@ -320,7 +320,7 @@ msgstr "Logo"
 #: ../../../../admin/src/Controller/EventsController.php:810
 #: ../../../../admin/src/Controller/VideoClubController.php:2078
 #: ../../../../admin/src/Controller/VideoClubController.php:2086
-#: ../../../../admin/src/Controller/AudioClubController.php:1353
+#: ../../../../admin/src/Controller/AudioClubController.php:1364
 #: ../../../../admin/src/Controller/UsersController.php:1917
 #: ../../../administrator/tariffs.php:311
 #: ../../../administrator/tariffs.php:342
@@ -376,7 +376,7 @@ msgid "URL"
 msgstr "URL"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1379
-#: ../../../../admin/src/Controller/RadioController.php:356
+#: ../../../../admin/src/Controller/RadioController.php:362
 msgid "Monitoring status"
 msgstr "Monitoring status"
 
@@ -406,7 +406,7 @@ msgstr "Localized title"
 #: ../../../../admin/src/Controller/TvChannelsController.php:1468
 #: ../../../../admin/src/Controller/VideoClubController.php:2080
 #: ../../../../admin/src/Controller/VideoClubController.php:2089
-#: ../../../../admin/src/Controller/AudioClubController.php:1354
+#: ../../../../admin/src/Controller/AudioClubController.php:1365
 msgid "Operation"
 msgstr "Operation"
 
@@ -662,17 +662,17 @@ msgid "Error during file moving from %s to %s"
 msgstr "Error during file moving from %s to %s"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:805
-#: ../../../../admin/src/Controller/AudioClubController.php:909
+#: ../../../../admin/src/Controller/AudioClubController.php:919
 msgid "image file has not been deleted"
 msgstr "image file has not been deleted"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:806
-#: ../../../../admin/src/Controller/AudioClubController.php:910
+#: ../../../../admin/src/Controller/AudioClubController.php:920
 msgid "image name"
 msgstr "image name"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:807
-#: ../../../../admin/src/Controller/AudioClubController.php:911
+#: ../../../../admin/src/Controller/AudioClubController.php:921
 msgid "file can be deleted manually from screenshot directory"
 msgstr "file can be deleted manually from screenshot directory"
 
@@ -983,6 +983,10 @@ msgstr "Visibility"
 #: ../../../lang/stb.php:385
 msgid "Favorites"
 msgstr "Favorites"
+
+#: ../../../../admin/src/Controller/LoginController.php:21
+msgid "User is undefined"
+msgstr "User is undefined"
 
 #: ../../../../admin/src/Controller/TariffsController.php:94
 #: ../../../../admin/src/Controller/TariffsController.php:144
@@ -1742,13 +1746,13 @@ msgid ""
 msgstr ""
 "Services are updated according to the subscription. The STB will be rebooted."
 
-#: ../../../tools/misctranslations.php:241 ../../../lib/stb.class.php:531
+#: ../../../tools/misctranslations.php:241 ../../../lib/stb.class.php:536
 #: ../../../lang/stb.php:565
 msgid "Firmware of your STB is outdated.<br>Please update it."
 msgstr "Firmware of your STB is outdated.<br>Please update it."
 
-#: ../../../tools/misctranslations.php:242 ../../../lib/stb.class.php:499
-#: ../../../lib/stb.class.php:510
+#: ../../../tools/misctranslations.php:242 ../../../lib/stb.class.php:504
+#: ../../../lib/stb.class.php:515
 msgid "Your STB is damaged.<br/> Call the provider."
 msgstr "Please contact your provider<br>to register this device."
 
@@ -4160,6 +4164,18 @@ msgstr "Edited"
 msgid "Advert"
 msgstr "Advert"
 
+#: ../../../tools/misctranslations.php:880
+msgid "permanent"
+msgstr "permanent"
+
+#: ../../../tools/misctranslations.php:881
+msgid "once-only"
+msgstr "once-only"
+
+#: ../../../tools/misctranslations.php:882
+msgid "ID is available"
+msgstr "ID is available"
+
 #: ../../../adm/js/js_translate.php:38
 msgid "Wait"
 msgstr "Wait"
@@ -4693,7 +4709,7 @@ msgstr "Years"
 msgid "Break in the program"
 msgstr "Break in the program"
 
-#: ../../../lib/stb.class.php:394
+#: ../../../lib/stb.class.php:399
 msgid ""
 "The portal is temporarily unavailable.<br>Please try again later.<br>Sorry "
 "for the inconvenience."
@@ -4701,7 +4717,7 @@ msgstr ""
 "The portal is temporarily unavailable.<br>Please try again later.<br>Sorry "
 "for the inconvenience."
 
-#: ../../../lib/stb.class.php:597
+#: ../../../lib/stb.class.php:602
 #, php-format
 msgid "Welcome %s<br>We are glad to see you on the Stalker portal!"
 msgstr "Welcome %s<br>We are glad to see you on the Stalker portal!"
