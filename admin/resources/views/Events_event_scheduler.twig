@@ -206,6 +206,7 @@
                         $('select[id^="s2_"]').select2({minimumResultsForSearch: -1});
                         $("#modalbox_ad").show().find('input, select, textarea').removeAttr('disabled');
                         checkFields('#s2_user_list_type', e);
+                        checkFields('#' + $('#s2_user_list_type').val(), e);
                         checkFields('#s2_event', e);
                         checkFields('#s2_schedule_type', e);
                         checkFields('#s2_repeating_interval', e);

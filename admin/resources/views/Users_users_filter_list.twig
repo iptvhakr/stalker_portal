@@ -234,7 +234,13 @@
         document.addEventListener("DOMContentLoaded", yelp, false);
               
         var manageList = function (obj) {
-            notty('<span>{{ 'Finish'|trans }}!</span>','success');
+            /*notty('<span>{{ 'Finish'|trans }}!</span>','success');*/
+            JSSuccessModalBox(obj);
+            $('#datatable-1').DataTable().ajax.reload();
+        };
+
+        var manageListError = function (obj) {
+            JSErrorModalBox(obj);
         };
 
         function closeModalBox(){
