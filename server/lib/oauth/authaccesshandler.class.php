@@ -19,6 +19,8 @@ class AuthAccessHandler extends AccessHandler
             $user = \User::getByLogin($username);
         }elseif(!$password && $mac){
 
+            $_COOKIE['mac'] = $mac;
+
             if ($serial_number){
                 $_REQUEST['serial_number'] = $serial_number;
             }

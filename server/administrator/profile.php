@@ -72,7 +72,8 @@ if (@$_POST['account']){
             'fname'   => $_POST['fname'],
             'phone'   => $_POST['phone'],
             'ls'      => $_POST['ls'],
-            'comment' => $_POST['comment']
+            'comment' => $_POST['comment'],
+            'expire_billing_date' => $_POST['expire_billing_date']
         ),
         array('id' => intval($_GET['id'])));
 
@@ -181,6 +182,44 @@ if (isset($_GET['id']) && isset($_GET['package_id']) && isset($_GET['subscribed'
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link type="text/css" href="../adm/css/jquery.ui.all.css" rel="stylesheet" />
+<script type="text/javascript" src="../adm/js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="../adm/js/jquery-ui-1.8.16.custom.min.js"></script>
+<script type="text/javascript" src="../adm/js/jquery.tmpl.min.js"></script>
+<script type="text/javascript">
+
+    $(function() {
+
+        $("#expire_billing_date").datepicker({
+            dateFormat: 'yy-mm-dd ',
+            dayNamesMin: [
+                '<?= htmlspecialchars(_('Sun'), ENT_QUOTES)?>',
+                '<?= htmlspecialchars(_('Mon'), ENT_QUOTES)?>',
+                '<?= htmlspecialchars(_('Tue'), ENT_QUOTES)?>',
+                '<?= htmlspecialchars(_('Wed'), ENT_QUOTES)?>',
+                '<?= htmlspecialchars(_('Thu'), ENT_QUOTES)?>',
+                '<?= htmlspecialchars(_('Fri'), ENT_QUOTES)?>',
+                '<?= htmlspecialchars(_('Sat'), ENT_QUOTES)?>'
+            ],
+            firstDay: 1,
+            minDate: new Date(),
+            monthNames: [
+                '<?= htmlspecialchars(_('January'), ENT_QUOTES)?>',
+                '<?= htmlspecialchars(_('February'), ENT_QUOTES)?>',
+                '<?= htmlspecialchars(_('March'), ENT_QUOTES)?>',
+                '<?= htmlspecialchars(_('April'), ENT_QUOTES)?>',
+                '<?= htmlspecialchars(_('May'), ENT_QUOTES)?>',
+                '<?= htmlspecialchars(_('June'), ENT_QUOTES)?>',
+                '<?= htmlspecialchars(_('July'), ENT_QUOTES)?>',
+                '<?= htmlspecialchars(_('August'), ENT_QUOTES)?>',
+                '<?= htmlspecialchars(_('September'), ENT_QUOTES)?>',
+                '<?= htmlspecialchars(_('October'), ENT_QUOTES)?>',
+                '<?= htmlspecialchars(_('November'), ENT_QUOTES)?>',
+                '<?= htmlspecialchars(_('December'), ENT_QUOTES)?>'
+            ]
+        });
+    });
+</script>
 <style type="text/css">
 
 body {
@@ -427,7 +466,7 @@ if (empty($packages)){
                 <?= _('Expire billing date') ?>:
             </td>
             <td>
-                <input type="text" name="" readonly="readonly" disabled="disabled" value="<? echo $user['expire_billing_date'] ?>"/>
+                <input type="text" name="expire_billing_date" id="expire_billing_date" value="<? echo date("Y-m-d", strtotime($user['expire_billing_date'])) ?>"/>
             </td>
         </tr>
         <? } ?>

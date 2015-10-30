@@ -402,7 +402,12 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         }
 
         if (function_exists('geoip_country_code_by_name')){
-            $country = geoip_country_code_by_name($this->ip);
+
+            $country = @geoip_country_code_by_name($this->ip);
+
+            if (!$country){
+                error_log('geoip_country_code_by_name(): Host '.$this->ip.' not found');
+            }
         }else{
             $country = '';
         }
