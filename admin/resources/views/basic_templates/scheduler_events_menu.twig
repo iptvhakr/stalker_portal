@@ -10,7 +10,7 @@
                 </a>
             </div>
         </div>
-        <form class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/save-schedule-event">
+        <form id="modalbox_ad_form" class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/save-schedule-event">
             <input type="hidden" name="id" class="form-control" value="">
             <div class="devoops-modal-inner">
                 <div class="box">
@@ -19,7 +19,7 @@
                             <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Recipient'|trans }}<span class="icon-required">*</span></label>
                             <div class="col-xs-10 col-sm-8">
                                 <div class=" col-xs-10 col-sm-6">
-                                    <select class="populate placeholder" name="user_list_type" id="s2_user_list_type">
+                                    <select class="populate placeholder" name="user_list_type" id="s2_user_list_type" data-validation=required>
                                         <option value="to_all">{{ 'All'|trans }}</option>
                                         <option value="by_group">{{ 'Group'|trans }}</option>
                                         <option value="to_single">{{ 'One'|trans }}</option>
@@ -36,7 +36,7 @@
                             <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Group'|trans }}</label>
                             <div class="col-xs-10 col-sm-8">
                                 <div class=" col-xs-10 col-sm-6">
-                                    <select class="populate placeholder" name="group_id" id="s2_group_id">
+                                    <select class="populate placeholder" name="group_id" id="s2_group_id" data-validation=required>
                                         {% for item in app.consoleGroup %}
                                             <option value="{{ item.id }}">{{ item.name }}</option>
                                         {% endfor %}
@@ -51,7 +51,7 @@
                             <label class="col-sm-3 control-label col-sm-offset-1">{{ 'MAC-address'|trans }}</label>
                             <div class="col-xs-10 col-sm-8">
                                 <div class=" col-xs-10 col-sm-8">
-                                    <input class="form-control" type="text" title="" value="{% if attribute(app, 'currentUser') is defined %}{{ app.currentUser.mac }}{% endif %}" name="mac">
+                                    <input class="form-control" type="text" title="" value="{% if attribute(app, 'currentUser') is defined %}{{ app.currentUser.mac }}{% endif %}" name="mac" data-validation=required>
                                 </div>
                                 <span class="help-inline col-xs-12 col-sm-12">
                                     <span class="small txt-default">{{ 'Input user MAC-address'|trans }}</span>
@@ -62,8 +62,7 @@
                             <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Filter name'|trans }}</label>
                             <div class="col-xs-10 col-sm-8">
                                 <div class=" col-xs-10 col-sm-6">
-                                    <select class="populate placeholder" name="filter_set" id="s2_filter">
-                                        <option value="0" data-filter-descriprion=""></option>
+                                    <select class="populate placeholder" name="filter_set" id="s2_filter" data-validation=required>
                                         {% if attribute(app,'allFilters') is defined and app['allFilters']|length > 0 %}
                                             {% if attribute(app, 'user_id') is defined %}
                                                 {% set check_id = app['user_id'] %}
@@ -92,7 +91,7 @@
                             <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Actions'|trans }}<span class="icon-required">*</span></label>
                             <div class="col-xs-10 col-sm-8">
                                 <div class=" col-xs-10 col-sm-6">
-                                    <select class="populate placeholder" data-validation=required name="event" id="s2_event">
+                                    <select class="populate placeholder" data-validation=required name="event" id="s2_event" data-validation=required>
                                         {% for type in app['formEvent'] %}
                                             <option value="{{ type['id'] }}">{{ type['title'] }}</option>
                                         {% endfor %}
@@ -118,7 +117,7 @@
                             <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Channel'|trans }}</label>
                             <div class="col-xs-10 col-sm-8">
                                 <div class=" col-xs-10 col-sm-6">
-                                    <input class="form-control" type="text" title="" value="" name="channel">
+                                    <input class="form-control" type="text" title="" value="" name="channel" data-validation=required>
                                 </div>
                             </div>
                         </div>
@@ -127,7 +126,7 @@
                             <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Type'|trans }}</label>
                             <div class="col-xs-10 col-sm-8">
                                 <div class=" col-xs-10 col-sm-6">
-                                    <select class="populate placeholder" name="type" id="s2_schedule_type">
+                                    <select class="populate placeholder" name="type" id="s2_schedule_type" data-validation=required>
                                         {% if attribute(app,'scheduleType') is defined and app['scheduleType']|length > 0 %}
                                             {% for type in app['scheduleType'] %}
                                                 <option value="schedule_type_{{ type['id'] }}" >{{ type['title'] }}</option>
@@ -139,7 +138,7 @@
                         </div>
 
                         <div class="form-group" data-schedule-type="schedule_type_2">
-                            <label class="col-sm-3 control-label col-sm-offset-1 text-center bg-warning control-label">
+                            <label class="col-sm-9 control-label col-sm-offset-2 text-center bg-warning control-label">
                                 <span class="  text_black">{{ 'If the date the start / end is not specified, the event will be repeated at a specified interval until its status is changed to "Stopped"'|trans }}</span>
                             </label>
                         </div>
@@ -166,7 +165,7 @@
                             <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Repeating interval'|trans }}</label>
                             <div class="col-xs-10 col-sm-8">
                                 <div class=" col-xs-10 col-sm-6">
-                                    <select class="populate placeholder" name="interval" id="s2_repeating_interval">
+                                    <select class="populate placeholder" name="interval" id="s2_repeating_interval" data-validation=required>
                                         {% for type in app['repeatingInterval'] %}
                                             <option value="repeating_interval_{{ type['id'] }}">{{ type['title'] }}</option>
                                         {% endfor %}
@@ -179,7 +178,7 @@
                             <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Month'|trans }}</label>
                             <div class="col-xs-10 col-sm-8">
                                 <div class=" col-xs-10 col-sm-6">
-                                    <select class="populate placeholder" name="month" id="s2_month">
+                                    <select class="populate placeholder" name="month" id="s2_month" data-validation=required>
                                         {% for item in app['monthNames'] %}
                                             <option value="{{ '%02d'|format(item['id']) }}">{{ item['title'] }}</option>
                                         {% endfor %}
@@ -192,7 +191,7 @@
                             <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Every'|trans }}</label>
                             <div class="col-xs-10 col-sm-8">
                                 <div class=" col-xs-5 col-sm-3 col-sm-shifted">
-                                    <select class="populate placeholder" name="every_month" id="s2_every_month">
+                                    <select class="populate placeholder" name="every_month" id="s2_every_month" data-validation=required>
                                         {% for i in range(1, 12) %}
                                             <option value="{{ '%02d'|format(i) }}">{{ i }}</option>
                                         {% endfor %}
@@ -210,7 +209,7 @@
                                 <div class="col-xs-5 col-sm-5 col-sm-shifted">
                                     <div class="radio">
                                         <label class="pull-left">
-                                            <input type="radio" name="date_type" id="date_type_day_week" value="day_week" checked="checked"> {{ 'Day of week'|trans }}
+                                            <input type="radio" name="date_type" id="date_type_day_week" value="day_week" checked="checked" data-validation=required> {{ 'Day of week'|trans }}
                                             <i class="fa fa-circle-o small"></i>
                                         </label>
                                     </div>
@@ -218,7 +217,7 @@
                                 <div class="col-xs-5 col-sm-5">
                                     <div class="radio">
                                         <label class="pull-left">
-                                            <input type="radio" name="date_type" id="date_type_day_number" value="day_number"> {{ 'Day number'|trans }}
+                                            <input type="radio" name="date_type" id="date_type_day_number" value="day_number" data-validation=required> {{ 'Day number'|trans }}
                                             <i class="fa fa-circle-o small"></i>
                                         </label>
                                     </div>
@@ -246,7 +245,7 @@
                             <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Day number'|trans }}</label>
                             <div class="col-xs-10 col-sm-8">
                                 <div class=" col-xs-5 col-sm-3 col-sm-shifted">
-                                    <select class="populate placeholder" name="every_day" id="s2_every_day">
+                                    <select class="populate placeholder" name="every_day" id="s2_every_day" data-validation=required>
                                         {% for i in range(1, 31) %}
                                             <option value="{{ '%02d'|format(i) }}">{{ i }}</option>
                                         {% endfor %}
@@ -259,7 +258,7 @@
                             <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Time'|trans }}</label>
                             <div class="col-xs-10 col-sm-8">
                                 <div class=" col-xs-5 col-sm-3 col-sm-shifted">
-                                    <select class="populate placeholder" name="every_hour" id="s2_every_hour">
+                                    <select class="populate placeholder" name="every_hour" id="s2_every_hour" data-validation=required>
                                         {% for i in range(0, 23) %}
                                             <option value="{{ '%02d'|format(i) }}">{{ '%02d'|format(i) }}</option>
                                         {% endfor %}
@@ -267,7 +266,7 @@
                                 </div>
                                 <label class="col-xs-1 text-right no-padding">:&nbsp;</label>
                                 <div class=" col-xs-5 col-sm-3">
-                                    <select class="populate placeholder" name="every_minute" id="s2_every_minute">
+                                    <select class="populate placeholder" name="every_minute" id="s2_every_minute" data-validation=required>
                                         {% for i in range(0, 55, 5) %}
                                             <option value="{{ '%02d'|format(i) }}">{{ '%02d'|format(i) }}</option>
                                         {% endfor %}
@@ -297,7 +296,7 @@
                                     <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Message header'|trans }}</label>
                                     <div class="col-xs-10 col-sm-8">
                                         <div class=" col-xs-10 col-sm-12">
-                                            <input class="form-control" type="text" title="" value="" name="header" id="msg_header">
+                                            <input class="form-control" type="text" title="" value="" name="header" id="msg_header" data-validation=required>
                                         </div>
                                     </div>
                                 </div>
@@ -305,7 +304,7 @@
                                     <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Message text'|trans }}</label>
                                     <div class="col-xs-10 col-sm-8">
                                         <div class=" col-xs-10 col-sm-12">
-                                            <textarea class="form-control" rows="4" title="" value="" name="msg" id="msg_textarea"></textarea>
+                                            <textarea class="form-control" rows="4" title="" value="" name="msg" id="msg_textarea" data-validation=required></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -357,7 +356,7 @@
                                     <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Post-function'|trans }}</label>
                                     <div class="col-xs-10 col-sm-8">
                                         <div class=" col-xs-10 col-sm-6">
-                                            <select class="populate placeholder" name="post_function" id="s2_post_function">
+                                            <select class="populate placeholder" name="post_function" id="s2_post_function" data-validation=required>
                                                 <option value="send_msg_with_video">{{ 'Send message whith video'|trans }}</option>
                                                 {#<option value="run_application">{{ 'Run application'|trans }}</option>#}
                                             </select>
@@ -371,7 +370,7 @@
                                     <label class="col-sm-3 control-label col-sm-offset-1">{{ 'VIDEO URL'|trans }}</label>
                                     <div class="col-xs-10 col-sm-8">
                                         <div class=" col-xs-10 col-sm-12">
-                                            <input class="form-control" type="text" title="" value="" name="param1">
+                                            <input class="form-control" type="text" title="" value="" name="param1" data-validation=required>
                                         </div>
                                     </div>
                                 </div>
@@ -430,6 +429,9 @@
             if ($(this).prop('id') == 's2_schedule_type' || $(this).prop('id') == 's2_repeating_interval') {
                 checkFields('#date_type_day input');
             }
+            if ($(this).prop('id') == 's2_user_list_type' || $(this).val() == 'by_filter') {
+                $("#s2_filter").trigger('change');
+            }
         });
 
         $(document).on('change', "#s2_filter", function (e) {
@@ -451,6 +453,7 @@
         $(document).on('click', "#modalbox_ad button[type='submit']", function (e) {
 
             $.validate({
+                ignore: ":hidden,:disabled",
                 onSuccess: function () {
                     e.stopPropagation();
                     e.preventDefault();
@@ -458,6 +461,14 @@
                     JSshowModalBox();
                     ajaxPostSend($("#modalbox_ad form").prop('action'), formData);
                     return false;
+                },
+                onError: function (node) {
+                    $(node).find('.error').each(function(){
+                        if ($(this).closest('div.box[data-event-type="send_msg"]').length && !$(this).closest('div.box-content').is(':visible')) {
+                            $(this).closest('div.box[data-event-type="send_msg"]').find("i.fa-chevron-down").removeClass('fa-chevron-down').addClass('fa-chevron-up');
+                            $(this).closest('div.box-content').show();
+                        }
+                    });
                 }
             });
         });
@@ -481,6 +492,10 @@
         $(document).on('change show', "#s2_post_function, #post_function_type", function(e){
             $("[data-event-type^='post_function']").filter("[data-event-type!='post_function_type']").hide().find('select, input').attr('disabled', 'disabled');
             $("#" + $("#s2_post_function").val()).show().find('select, input').removeAttr('disabled');
+        });
+
+        $(document).on('click', '#modalbox_ad button[type="reset"]', function(){
+            $('#modalbox_ad form').get(0).reset();
         });
     }
 
@@ -530,11 +545,17 @@
         if (dataName) {
             var searchVal = $(obj).prop('tagName').toLowerCase() == 'select' ? $(obj).find('option:selected').val() : ($(obj).prop('checked') ? $(obj).val() : false);
             if (searchVal) {
-                $("[" + dataName + "]").hide().find('input, select, textarea').attr('disabled', 'disabled');
+                $("[" + dataName + "]").hide().find('input, select, textarea').attr('disabled', 'disabled').removeAttr('require');//.rules('remove');
                 var dataNameIn = dataName.replace('data-', '').replace('-', ' ').camelCase();
                 $('[' + dataName + '*="' + searchVal + '"]').each(function() {
-                    if (!$(this).is(":visible") && $(this).data(dataNameIn) && $(this).data(dataNameIn).split(";").indexOf(searchVal) !== -1) {
-                        $(this).show().find('input, select, textarea').removeAttr('disabled');
+                    var _this = $(this), inputFields;
+                    if (!_this.is(":visible") && _this.data(dataNameIn) && _this.data(dataNameIn).split(";").indexOf(searchVal) !== -1) {
+                        _this.show();
+                        inputFields = _this.find('input, select, textarea');
+                        inputFields.removeAttr('disabled');
+                        if (inputFields.filter(":not([type='checkbox'])").length) {
+                            inputFields.filter(":not([type='checkbox'])").attr('require', 'require');//.rules('add', {required: true});
+                        }
                     }
                 });
             }
@@ -545,13 +566,15 @@
     var addEvent = function (data) {
         JSSuccessModalBox(data);
         $('#datatable-1').dataTable().fnReloadAjax();
-        $('#modalbox_ad').click();
+        $('#modalbox_ad button[type="reset"]').trigger("click");
+        $('#modalbox_ad form input[type="hidden"][name="id"]').val('');
     };
 
     var addEventError = function (data) {
         JSErrorModalBox(data);
         $('#datatable-1').dataTable().fnReloadAjax();
-        $('#modalbox_ad').click();
+        $('#modalbox_ad button[type="reset"]').trigger("click");
+        $('#modalbox_ad form input[type="hidden"][name="id"]').val('');
     };
 
 </script>
