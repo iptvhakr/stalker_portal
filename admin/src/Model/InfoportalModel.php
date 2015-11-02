@@ -25,9 +25,17 @@ class InfoportalModel extends \Model\BaseStalkerModel {
         if (!empty($param['select'])) {
             $this->mysqlInstance->select($param['select']);
         }
-        $this->mysqlInstance->from("{$table_prefix}_city_info")
-                ->where($param['where'])->like($param['like'], 'OR')
-                ->orderby($param['order']);
+        $this->mysqlInstance->from("{$table_prefix}_city_info");
+
+        if (!empty($param['where'])) {
+            $this->mysqlInstance->where($param['where']);
+        }
+        if (!empty($param['like'])) {
+            $this->mysqlInstance->like($param['like'], 'OR');
+        }
+        if (!empty($param['order'])) {
+            $this->mysqlInstance->orderby($param['order']);
+        }
 
         if (!empty($param['limit']['limit'])) {
             $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
@@ -66,11 +74,19 @@ class InfoportalModel extends \Model\BaseStalkerModel {
         if (!empty($param['select'])) {
             $this->mysqlInstance->select($param['select']);
         }
-        $this->mysqlInstance->from("anec")
-                ->where($param['where'])->like($param['like'], 'OR')
-                ->orderby($param['order']);
+        $this->mysqlInstance->from("anec");
 
-        if (!empty($param['limit']['limit'])) {
+        if (!empty($param['where'])) {
+            $this->mysqlInstance->where($param['where']);
+        }
+        if (!empty($param['like'])) {
+            $this->mysqlInstance->like($param['like'], 'OR');
+        }
+        if (!empty($param['order'])) {
+            $this->mysqlInstance->orderby($param['order']);
+        }
+
+            if (!empty($param['limit']['limit'])) {
             $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
 
@@ -88,5 +104,22 @@ class InfoportalModel extends \Model\BaseStalkerModel {
 
     public function deleteHumor($param) {
         return $this->mysqlInstance->delete("anec", $param)->total_rows();
+    }
+
+    public function getFirstFreeNumber($table_prefix) {
+        $min = (int) $this->mysqlInstance->query("SELECT min(`{$table_prefix}_city_info`.`num`) as `empty_number` FROM `{$table_prefix}_city_info`")->first('empty_number');
+        if ($min > 1) {
+            return 1;
+        } else {
+            return $this->mysqlInstance
+                ->query("SELECT (`{$table_prefix}_city_info`.`num`+1) as `empty_number`
+                    FROM `{$table_prefix}_city_info`
+                    WHERE (
+                        SELECT 1 FROM `{$table_prefix}_city_info` as `st` WHERE `st`.`num` = (`{$table_prefix}_city_info`.`num` + 1)
+                    ) IS NULL
+                    ORDER BY `{$table_prefix}_city_info`.`num`
+                    LIMIT 1")
+                ->first('empty_number');
+        }
     }
 }

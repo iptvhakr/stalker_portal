@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-02 13:58+0300\n"
-"PO-Revision-Date: 2015-11-02 15:54+0300\n"
+"POT-Creation-Date: 2015-11-02 18:14+0300\n"
+"PO-Revision-Date: 2015-11-02 18:15+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -190,10 +190,10 @@ msgstr "ТВ архив был успешно перезапущен."
 #: ../../../../admin/src/Controller/KaraokeController.php:231
 #: ../../../../admin/src/Controller/KaraokeController.php:291
 #: ../../../../admin/src/Controller/TasksController.php:137
-#: ../../../../admin/src/Controller/TasksController.php:206
-#: ../../../../admin/src/Controller/TasksController.php:224
-#: ../../../../admin/src/Controller/TasksController.php:272
-#: ../../../../admin/src/Controller/TasksController.php:503
+#: ../../../../admin/src/Controller/TasksController.php:207
+#: ../../../../admin/src/Controller/TasksController.php:225
+#: ../../../../admin/src/Controller/TasksController.php:274
+#: ../../../../admin/src/Controller/TasksController.php:505
 #: ../../../../admin/src/Controller/RadioController.php:169
 #: ../../../../admin/src/Controller/RadioController.php:194
 #: ../../../../admin/src/Controller/RadioController.php:213
@@ -222,9 +222,9 @@ msgstr "ТВ архив был успешно перезапущен."
 #: ../../../../admin/src/Controller/UsersController.php:1528
 #: ../../../../admin/src/Controller/UsersController.php:1539
 #: ../../../../admin/src/Controller/InfoportalController.php:222
-#: ../../../../admin/src/Controller/InfoportalController.php:256
-#: ../../../../admin/src/Controller/InfoportalController.php:276
-#: ../../../../admin/src/Controller/InfoportalController.php:308
+#: ../../../../admin/src/Controller/InfoportalController.php:263
+#: ../../../../admin/src/Controller/InfoportalController.php:283
+#: ../../../../admin/src/Controller/InfoportalController.php:315
 #: ../../../../admin/src/Controller/TariffsController.php:333
 #: ../../../../admin/src/Controller/TariffsController.php:353
 #: ../../../../admin/src/Controller/TariffsController.php:380
@@ -694,6 +694,7 @@ msgid "No data"
 msgstr "Нет данных"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:1173
+#: ../../../../admin/src/Controller/InfoportalController.php:233
 #: ../../../../admin/src/Controller/AdminsController.php:232
 #: ../../../administrator/subscribe.php:82
 #: ../../../administrator/unique_video.php:101
@@ -819,8 +820,8 @@ msgstr "видео"
 msgid "karaoke"
 msgstr "караоке"
 
-#: ../../../../admin/src/Controller/TasksController.php:195
-#: ../../../../admin/src/Controller/TasksController.php:261
+#: ../../../../admin/src/Controller/TasksController.php:196
+#: ../../../../admin/src/Controller/TasksController.php:263
 #: ../../../../admin/json_menu/menu.json:240
 msgid "Tasks list"
 msgstr "Список заданий"
@@ -992,6 +993,15 @@ msgstr "Видимость"
 #: ../../../lang/stb.php:385
 msgid "Favorites"
 msgstr "Избранное"
+
+#: ../../../../admin/src/Controller/InfoportalController.php:250
+#: ../../../tools/misctranslations.php:558
+msgid "This number is already in use"
+msgstr "Такой номер уже используется"
+
+#: ../../../../admin/src/Controller/InfoportalController.php:251
+msgid "Closest free number"
+msgstr "Ближайший свободный номер"
 
 #: ../../../../admin/src/Controller/LoginController.php:21
 msgid "User is undefined"
@@ -2959,10 +2969,6 @@ msgstr "Хэш XMLTV файла"
 #: ../../../tools/misctranslations.php:557
 msgid "Update date"
 msgstr "Дата обновления"
-
-#: ../../../tools/misctranslations.php:558
-msgid "This number is already in use"
-msgstr "Такой номер канала уже используется"
 
 #: ../../../tools/misctranslations.php:559
 msgid "This name already exists"
