@@ -230,7 +230,7 @@ class InfoportalController extends \Controller\BaseStalkerController {
         $data['action'] = 'managePhoneBook';
         $item = array($this->postData);
 
-        $error = 'error';
+        $error = $this->setLocalization('error');
         if (count($item) != 0 && !empty($item[0]['num']) && ((int)$item[0]['num']) > 0) {
             if (empty($this->postData['id'])) {
                 $operation = 'insertPhoneBoock';
@@ -241,8 +241,15 @@ class InfoportalController extends \Controller\BaseStalkerController {
             unset($item[0]['id']);
             unset($item[0]['phoneboocksource']);
 
-            if ($result = call_user_func_array(array($this->db, $operation), array($this->postData['phoneboocksource'], $item))) {
-                $error = '';
+            $search = $this->db->getTotalRowsPhoneBoockList($this->postData['phoneboocksource'], array('num' => $this->postData['num']));
+            if ( ((int) $search) < 1 ){
+                if ($result = call_user_func_array(array($this->db, $operation), array($this->postData['phoneboocksource'], $item))) {
+                    $error = '';
+                }
+            } else {
+                $error = $this->setLocalization('This number is already in use') . '. ';
+                $error .= $this->setLocalization('Closest free number') . " - " . $this->db->getFirstFreeNumber($this->postData['phoneboocksource']);
+                $data['msg'] = $error;
             }
         }
 
