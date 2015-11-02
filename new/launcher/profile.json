@@ -51,6 +51,14 @@
 					"url": "../explorer/index.html"
 				},
 				{
+					"name": "browser",
+					"info": "Surf the Internet via built-in browser! To make it easier, you can use the MAGic Remote mobile app or connect the keyboard or mouse via USB port.",
+					"icon": "img/{0}/icons/media/browser.png",
+					"color": "#2255ee",
+					"url": "../browser/index.html?mode=2",
+					"type": "webface"
+				},
+				{
 					"name": "downloads",
 					"info": "Download the files directly from the Internet network to the connected removable storage.",
 					"icon": "img/{0}/icons/media/downloads.png",
@@ -70,6 +78,14 @@
 					"icon": "img/{0}/icons/media/weather.png",
 					"color": "#41c2ab",
 					"url": "../weather/index.html"
+				},
+				{
+					"name": "settings",
+					"info": "Surf the Internet via built-in browser! To make it easier, you can use the MAGic Remote mobile app or connect the keyboard or mouse via USB port.",
+					"icon": "img/{0}/icons/media/settings.png",
+					"color": "#ed891d",
+					"url": "../settings/index.html",
+					"type": "iframe"
 				}
 			]
 		},
