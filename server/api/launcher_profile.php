@@ -47,6 +47,8 @@ $module_to_app_map = array(
     'game.lines'    => 'lines',
     'game.memory'   => 'memory',
     'game.sudoku'   => 'sudoku',
+    'internet'      => 'browser',
+    'game.2048'     => '2048'
 );
 
 $available_modules = array_map(function($module) use ($module_to_app_map){

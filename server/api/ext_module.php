@@ -6,7 +6,7 @@ if (empty($_GET['name']) || empty($_GET['mac'])){
     exit;
 }
 
-$alias = $_GET['name'];
+$alias = str_replace('external_', '', $_GET['name']);
 
 $app = Mysql::getInstance()->from('apps')->where(array('alias' => $alias))->get()->first();
 
