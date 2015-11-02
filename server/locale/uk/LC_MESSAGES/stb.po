@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-28 13:59+0300\n"
-"PO-Revision-Date: 2015-10-28 14:00+0300\n"
+"POT-Creation-Date: 2015-11-02 12:08+0300\n"
+"PO-Revision-Date: 2015-11-02 12:08+0300\n"
 "Last-Translator: Aleksey Zhurbitsky <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -72,7 +72,7 @@ msgstr "Реклама в Відео клубі"
 #: ../../../administrator/send_to.php:91
 #: ../../../administrator/add_moderator_mac.php:146
 #: ../../../administrator/cache_refresh.php:87
-#: ../../../administrator/msg.php:69 ../../../administrator/profile.php:310
+#: ../../../administrator/msg.php:69 ../../../administrator/profile.php:349
 #: ../../../administrator/services_packages.php:355
 #: ../../../administrator/stat_moderators.php:70
 #: ../../../administrator/users_on_storage.php:78
@@ -508,6 +508,7 @@ msgstr "Логи користувачів"
 #: ../../../administrator/all_userlog.php:161
 #: ../../../administrator/add_epg.php:140 ../../../administrator/users.php:202
 #: ../../../administrator/add_video.php:533
+#: ../../../administrator/profile.php:207
 msgid "January"
 msgstr "Cічень"
 
@@ -515,6 +516,7 @@ msgstr "Cічень"
 #: ../../../administrator/all_userlog.php:162
 #: ../../../administrator/add_epg.php:141 ../../../administrator/users.php:203
 #: ../../../administrator/add_video.php:534
+#: ../../../administrator/profile.php:208
 msgid "February"
 msgstr "Лютий"
 
@@ -522,6 +524,7 @@ msgstr "Лютий"
 #: ../../../administrator/all_userlog.php:163
 #: ../../../administrator/add_epg.php:142 ../../../administrator/users.php:204
 #: ../../../administrator/add_video.php:535
+#: ../../../administrator/profile.php:209
 msgid "March"
 msgstr "Березень"
 
@@ -529,13 +532,15 @@ msgstr "Березень"
 #: ../../../administrator/all_userlog.php:164
 #: ../../../administrator/add_epg.php:143 ../../../administrator/users.php:205
 #: ../../../administrator/add_video.php:536
+#: ../../../administrator/profile.php:210
 msgid "April"
 msgstr "Квітень"
 
 #: ../../../administrator/userlog.php:164
 #: ../../../administrator/all_userlog.php:165
 #: ../../../administrator/add_epg.php:144 ../../../administrator/users.php:206
-#: ../../../administrator/add_video.php:537 ../../../lib/gismeteo.class.php:31
+#: ../../../administrator/add_video.php:537
+#: ../../../administrator/profile.php:211 ../../../lib/gismeteo.class.php:31
 msgid "May"
 msgstr "Травень"
 
@@ -543,6 +548,7 @@ msgstr "Травень"
 #: ../../../administrator/all_userlog.php:166
 #: ../../../administrator/add_epg.php:145 ../../../administrator/users.php:207
 #: ../../../administrator/add_video.php:538
+#: ../../../administrator/profile.php:212
 msgid "June"
 msgstr "Червень"
 
@@ -550,6 +556,7 @@ msgstr "Червень"
 #: ../../../administrator/all_userlog.php:167
 #: ../../../administrator/add_epg.php:146 ../../../administrator/users.php:208
 #: ../../../administrator/add_video.php:539
+#: ../../../administrator/profile.php:213
 msgid "July"
 msgstr "Липень"
 
@@ -557,6 +564,7 @@ msgstr "Липень"
 #: ../../../administrator/all_userlog.php:168
 #: ../../../administrator/add_epg.php:147 ../../../administrator/users.php:209
 #: ../../../administrator/add_video.php:540
+#: ../../../administrator/profile.php:214
 msgid "August"
 msgstr "Серпень"
 
@@ -564,6 +572,7 @@ msgstr "Серпень"
 #: ../../../administrator/all_userlog.php:169
 #: ../../../administrator/add_epg.php:148 ../../../administrator/users.php:210
 #: ../../../administrator/add_video.php:541
+#: ../../../administrator/profile.php:215
 msgid "September"
 msgstr "Вересень"
 
@@ -571,6 +580,7 @@ msgstr "Вересень"
 #: ../../../administrator/all_userlog.php:170
 #: ../../../administrator/add_epg.php:149 ../../../administrator/users.php:211
 #: ../../../administrator/add_video.php:542
+#: ../../../administrator/profile.php:216
 msgid "October"
 msgstr "Жовтень"
 
@@ -578,6 +588,7 @@ msgstr "Жовтень"
 #: ../../../administrator/all_userlog.php:171
 #: ../../../administrator/add_epg.php:150 ../../../administrator/users.php:212
 #: ../../../administrator/add_video.php:543
+#: ../../../administrator/profile.php:217
 msgid "November"
 msgstr "Листопад"
 
@@ -585,6 +596,7 @@ msgstr "Листопад"
 #: ../../../administrator/all_userlog.php:172
 #: ../../../administrator/add_epg.php:151 ../../../administrator/users.php:213
 #: ../../../administrator/add_video.php:544
+#: ../../../administrator/profile.php:218
 msgid "December"
 msgstr "Грудень"
 
@@ -689,7 +701,7 @@ msgstr "ВІДЕО КЛУБ"
 
 #: ../../../administrator/index.php:146 ../../../administrator/events.php:241
 #: ../../../administrator/events.php:247
-#: ../../../administrator/profile.php:310
+#: ../../../administrator/profile.php:349
 msgid "Events"
 msgstr "Події"
 
@@ -908,7 +920,7 @@ msgstr "Номер"
 #: ../../../administrator/help_city_info.php:222
 #: ../../../administrator/city_info.php:236
 #: ../../../administrator/other_city_info.php:232
-#: ../../../administrator/profile.php:436
+#: ../../../administrator/profile.php:475
 msgid "Phone number"
 msgstr "Номер телефону"
 
@@ -1074,7 +1086,7 @@ msgstr "Зони мовлення"
 #: ../../../administrator/stbgroups.php:154
 #: ../../../administrator/add_moderator_mac.php:169
 #: ../../../administrator/add_moderator_mac.php:241
-#: ../../../administrator/profile.php:533
+#: ../../../administrator/profile.php:572
 #: ../../../administrator/audio_genre.php:183
 #: ../../../administrator/admin_groups.php:215
 #: ../../../administrator/admin_groups.php:238
@@ -1251,7 +1263,7 @@ msgstr "Групи адміністраторів"
 
 #: ../../../administrator/administrators.php:164
 #: ../../../administrator/administrators.php:191
-#: ../../../administrator/user.php:138 ../../../administrator/profile.php:394
+#: ../../../administrator/user.php:138 ../../../administrator/profile.php:433
 #: ../../../administrator/login.php:55 ../../../lang/stb.php:360
 #: ../../../lang/stb.php:373 ../../../lang/stb.php:502
 msgid "Login"
@@ -1260,7 +1272,7 @@ msgstr "Логін"
 #: ../../../administrator/administrators.php:165
 #: ../../../administrator/administrators.php:206
 #: ../../../administrator/events.php:415
-#: ../../../administrator/profile.php:450
+#: ../../../administrator/profile.php:489
 #: ../../../administrator/playlists.php:157
 msgid "Group"
 msgstr "Група"
@@ -1312,7 +1324,7 @@ msgid "Use as default"
 msgstr "За умовчанням"
 
 #: ../../../administrator/tariffs.php:355
-#: ../../../administrator/profile.php:531
+#: ../../../administrator/profile.php:570
 msgid "Packages"
 msgstr "Пакети"
 
@@ -1375,11 +1387,11 @@ msgstr "Помилка: не всі обов'язкові поля заповн�
 msgid "User account"
 msgstr "Обліковий запис користувача"
 
-#: ../../../administrator/user.php:146 ../../../administrator/profile.php:386
+#: ../../../administrator/user.php:146 ../../../administrator/profile.php:425
 msgid "Full name"
 msgstr "ПІБ"
 
-#: ../../../administrator/user.php:150 ../../../administrator/profile.php:402
+#: ../../../administrator/user.php:150 ../../../administrator/profile.php:441
 #: ../../../lang/stb.php:417
 msgid "Account number"
 msgstr "Номер особового рахунку"
@@ -1392,7 +1404,7 @@ msgstr ""
 msgid "Account disabled"
 msgstr "Обліковий запис відключено"
 
-#: ../../../administrator/user.php:162 ../../../administrator/profile.php:502
+#: ../../../administrator/user.php:162 ../../../administrator/profile.php:541
 #: ../../../lang/stb.php:390
 msgid "Tariff plan"
 msgstr "Тарифний план"
@@ -1410,7 +1422,7 @@ msgid "To"
 msgstr "Кому"
 
 #: ../../../administrator/reply.php:135 ../../../administrator/send_to.php:152
-#: ../../../administrator/profile.php:444
+#: ../../../administrator/profile.php:483
 msgid "Comment"
 msgstr "Примітка"
 
@@ -1704,37 +1716,44 @@ msgstr "Помилка при створенні папки на модерат�
 msgid "Error: insufficient permissions for this action"
 msgstr "Помилка: недостатньо прав для даної дії"
 
-#: ../../../administrator/add_video.php:522 ../../../lib/gismeteo.class.php:29
+#: ../../../administrator/add_video.php:522
+#: ../../../administrator/profile.php:196 ../../../lib/gismeteo.class.php:29
 #: ../../../lib/epg.class.php:871
 msgid "Sun"
 msgstr "Нд"
 
-#: ../../../administrator/add_video.php:523 ../../../lib/gismeteo.class.php:29
+#: ../../../administrator/add_video.php:523
+#: ../../../administrator/profile.php:197 ../../../lib/gismeteo.class.php:29
 #: ../../../lib/epg.class.php:871
 msgid "Mon"
 msgstr "Пн"
 
-#: ../../../administrator/add_video.php:524 ../../../lib/gismeteo.class.php:29
+#: ../../../administrator/add_video.php:524
+#: ../../../administrator/profile.php:198 ../../../lib/gismeteo.class.php:29
 #: ../../../lib/epg.class.php:871
 msgid "Tue"
 msgstr "Вт"
 
-#: ../../../administrator/add_video.php:525 ../../../lib/gismeteo.class.php:29
+#: ../../../administrator/add_video.php:525
+#: ../../../administrator/profile.php:199 ../../../lib/gismeteo.class.php:29
 #: ../../../lib/epg.class.php:871
 msgid "Wed"
 msgstr "Ср"
 
-#: ../../../administrator/add_video.php:526 ../../../lib/gismeteo.class.php:29
+#: ../../../administrator/add_video.php:526
+#: ../../../administrator/profile.php:200 ../../../lib/gismeteo.class.php:29
 #: ../../../lib/epg.class.php:871
 msgid "Thu"
 msgstr "Чт"
 
-#: ../../../administrator/add_video.php:527 ../../../lib/gismeteo.class.php:29
+#: ../../../administrator/add_video.php:527
+#: ../../../administrator/profile.php:201 ../../../lib/gismeteo.class.php:29
 #: ../../../lib/epg.class.php:871
 msgid "Fri"
 msgstr "Пт"
 
-#: ../../../administrator/add_video.php:528 ../../../lib/gismeteo.class.php:29
+#: ../../../administrator/add_video.php:528
+#: ../../../administrator/profile.php:202 ../../../lib/gismeteo.class.php:29
 #: ../../../lib/epg.class.php:871
 msgid "Sat"
 msgstr "Сб"
@@ -2175,49 +2194,49 @@ msgstr "Ви дійсно бажаєте відхилити це завданн�
 msgid "Task rejected"
 msgstr "Завдання відхилено"
 
-#: ../../../administrator/profile.php:255 ../../../lang/stb.php:315
+#: ../../../administrator/profile.php:294 ../../../lang/stb.php:315
 msgid "Disabled"
 msgstr "Відключено"
 
-#: ../../../administrator/profile.php:259
+#: ../../../administrator/profile.php:298
 msgid "Enabled"
 msgstr "Включено"
 
-#: ../../../administrator/profile.php:299
-#: ../../../administrator/profile.php:305
+#: ../../../administrator/profile.php:338
+#: ../../../administrator/profile.php:344
 msgid "User profile"
 msgstr "Профіль користувача"
 
-#: ../../../administrator/profile.php:310
+#: ../../../administrator/profile.php:349
 #: ../../../administrator/storages.php:223
 msgid "Logs"
 msgstr "Логи"
 
-#: ../../../administrator/profile.php:349
-#: ../../../administrator/profile.php:353
+#: ../../../administrator/profile.php:388
+#: ../../../administrator/profile.php:392
 msgid "Reset to default password?"
 msgstr "Скинути на пароль за умовчанням?"
 
-#: ../../../administrator/profile.php:349
-#: ../../../administrator/profile.php:353
-#: ../../../administrator/profile.php:357
+#: ../../../administrator/profile.php:388
+#: ../../../administrator/profile.php:392
+#: ../../../administrator/profile.php:396
 msgid "Reset"
 msgstr "Скинути"
 
-#: ../../../administrator/profile.php:352 ../../../lang/stb.php:492
+#: ../../../administrator/profile.php:391 ../../../lang/stb.php:492
 msgid "Access control"
 msgstr "Контроль доступу"
 
-#: ../../../administrator/profile.php:356
+#: ../../../administrator/profile.php:395
 msgid "favorite tv"
 msgstr "вибране тб"
 
-#: ../../../administrator/profile.php:357
+#: ../../../administrator/profile.php:396
 #, php-format
 msgid "%s channels"
 msgstr "%s каналів"
 
-#: ../../../administrator/profile.php:357
+#: ../../../administrator/profile.php:396
 msgid ""
 "Reset favorite TV channels? The channels will be reset only if immediately "
 "restart the stb!"
@@ -2225,42 +2244,42 @@ msgstr ""
 "Скинути вибрані ТБ канали? Канали повністю скинуться тільки якщо відразу "
 "перезапустити приставку!"
 
-#: ../../../administrator/profile.php:410
+#: ../../../administrator/profile.php:449
 msgid "Last change of status"
 msgstr "Зміна статусу"
 
-#: ../../../administrator/profile.php:418 ../../../lang/stb.php:454
+#: ../../../administrator/profile.php:457 ../../../lang/stb.php:454
 msgid "Account balance"
 msgstr "Баланс"
 
-#: ../../../administrator/profile.php:427
+#: ../../../administrator/profile.php:466
 #, fuzzy
 msgid "Expire billing date"
 msgstr "Дата відкриття"
 
-#: ../../../administrator/profile.php:495
-#: ../../../administrator/profile.php:557
+#: ../../../administrator/profile.php:534
+#: ../../../administrator/profile.php:596
 msgid "TV subscription"
 msgstr "Підписка на канали"
 
-#: ../../../administrator/profile.php:518
+#: ../../../administrator/profile.php:557
 msgid "Change"
 msgstr "Змінити"
 
-#: ../../../administrator/profile.php:527
+#: ../../../administrator/profile.php:566
 msgid "No packages available"
 msgstr "Немає доступних пакетів"
 
-#: ../../../administrator/profile.php:534
+#: ../../../administrator/profile.php:573
 msgid "Optional"
 msgstr "Опціональний"
 
-#: ../../../administrator/profile.php:535
+#: ../../../administrator/profile.php:574
 #: ../../../lib/accountinfo.class.php:109
 msgid "Subscribed"
 msgstr "Підключено"
 
-#: ../../../administrator/profile.php:560
+#: ../../../administrator/profile.php:599
 msgid "Additional services"
 msgstr "Дод. сервіси"
 
@@ -3537,12 +3556,12 @@ msgid ""
 msgstr "Послуги оновлено згідно з підпискою. Приставка буде перезавантажена."
 
 #: ../../../tools/misctranslations.php:241 ../../../lang/stb.php:565
-#: ../../../lib/stb.class.php:536
+#: ../../../lib/stb.class.php:541
 msgid "Firmware of your STB is outdated.<br>Please update it."
 msgstr "Прошивка вашої приставки застаріла.<br>Будь ласка обновіть її."
 
-#: ../../../tools/misctranslations.php:242 ../../../lib/stb.class.php:504
-#: ../../../lib/stb.class.php:515
+#: ../../../tools/misctranslations.php:242 ../../../lib/stb.class.php:509
+#: ../../../lib/stb.class.php:520
 msgid "Your STB is damaged.<br/> Call the provider."
 msgstr "Для реєстрації цього пристрою<br/>зв'яжіться з провайдером."
 
@@ -3822,7 +3841,7 @@ msgid "Removing an existing area"
 msgstr ""
 
 #: ../../../tools/misctranslations.php:317
-#: ../../../tools/misctranslations.php:802
+#: ../../../tools/misctranslations.php:803
 msgid "List of events"
 msgstr ""
 
@@ -5698,358 +5717,377 @@ msgstr "Сервера мовлення"
 msgid "Firmware version"
 msgstr "Автоматичне оновлення прошивки"
 
-#: ../../../tools/misctranslations.php:791
+#: ../../../tools/misctranslations.php:790
+#, fuzzy
+msgid "Media type"
+msgstr "Медіа"
+
+#: ../../../tools/misctranslations.php:792
 msgid "Auto-complete for watching-tv filter"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:792
+#: ../../../tools/misctranslations.php:793
 msgid "Auto-complete for watching-movie filter"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:793
+#: ../../../tools/misctranslations.php:794
 msgid "Auto-complete for stbfirmware-version filter"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:795
-#: ../../../tools/misctranslations.php:803
+#: ../../../tools/misctranslations.php:796
+#: ../../../tools/misctranslations.php:804
 #, fuzzy
 msgid "List of templates of messages"
 msgstr "Кількість сховищ"
 
-#: ../../../tools/misctranslations.php:796
+#: ../../../tools/misctranslations.php:797
 #, fuzzy
 msgid "List of filters"
 msgstr "Всього фільмів"
 
-#: ../../../tools/misctranslations.php:797
+#: ../../../tools/misctranslations.php:798
 #, fuzzy
 msgid "List of filters by page + filters"
 msgstr "Неактивні абоненти за місяць"
 
-#: ../../../tools/misctranslations.php:798
+#: ../../../tools/misctranslations.php:799
 msgid "Get data for filter construct"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:799
+#: ../../../tools/misctranslations.php:800
 msgid "Save filters set"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:800
+#: ../../../tools/misctranslations.php:801
 #, fuzzy
 msgid "Remove filters set"
 msgstr "Автоматичне оновлення прошивки"
 
-#: ../../../tools/misctranslations.php:801
+#: ../../../tools/misctranslations.php:802
 msgid "Toggle favorite status for current filter"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:804
+#: ../../../tools/misctranslations.php:805
 #, fuzzy
 msgid "List of templates of messages by page + filters"
 msgstr "Автоматичне оновлення прошивки"
 
-#: ../../../tools/misctranslations.php:805
+#: ../../../tools/misctranslations.php:806
 #, fuzzy
 msgid "Adding and editing the templates of messages"
 msgstr "Пошук по сховищах"
 
-#: ../../../tools/misctranslations.php:806
+#: ../../../tools/misctranslations.php:807
 msgid "Removing the templates of messages"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:807
+#: ../../../tools/misctranslations.php:808
 #, fuzzy
 msgid "Send msg with video"
 msgstr "Надіслати повідомлення"
 
-#: ../../../tools/misctranslations.php:808
+#: ../../../tools/misctranslations.php:809
 #, fuzzy
 msgid "Run application"
 msgstr "Встановити додаток?"
 
-#: ../../../tools/misctranslations.php:809
+#: ../../../tools/misctranslations.php:810
 msgid "Requires at least one link of broadcast"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:810
+#: ../../../tools/misctranslations.php:811
 msgid "Application catalog. List of applications"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:811
+#: ../../../tools/misctranslations.php:812
 msgid "Application catalog. List of applications  by page + filters"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:812
+#: ../../../tools/misctranslations.php:813
 msgid ""
 "Application catalog. Terms of use of  the catalog of applications Stalker"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:813
+#: ../../../tools/misctranslations.php:814
 msgid ""
 "Application catalog. Application info and list of available application "
 "versions"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:814
+#: ../../../tools/misctranslations.php:815
 msgid "Application catalog. Getting application info from repository"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:815
+#: ../../../tools/misctranslations.php:816
 msgid "Application catalog. Add new application by URL of the repository"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:816
+#: ../../../tools/misctranslations.php:817
 msgid "Application catalog. List of application versions"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:817
+#: ../../../tools/misctranslations.php:818
 msgid "Application Catalog. Editing the options of application"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:818
+#: ../../../tools/misctranslations.php:819
 msgid "Application catalog. Install available application version"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:819
+#: ../../../tools/misctranslations.php:820
 msgid "Application catalog. Delete installed application version"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:820
+#: ../../../tools/misctranslations.php:821
 msgid "Application catalog. Enable and disable application"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:821
+#: ../../../tools/misctranslations.php:822
 msgid "Application catalog. Delete application"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:823
+#: ../../../tools/misctranslations.php:824
 msgid "once"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:824
+#: ../../../tools/misctranslations.php:825
 msgid "every"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:825
+#: ../../../tools/misctranslations.php:826
 #, fuzzy
 msgid "and"
 msgstr "додати"
 
-#: ../../../tools/misctranslations.php:826
+#: ../../../tools/misctranslations.php:827
 #, fuzzy
 msgid "minute"
 msgstr "хвилин тому"
 
-#: ../../../tools/misctranslations.php:827
+#: ../../../tools/misctranslations.php:828
 #, fuzzy
 msgid "hour"
 msgstr "г"
 
-#: ../../../tools/misctranslations.php:828
+#: ../../../tools/misctranslations.php:829
 #, fuzzy
 msgid "day"
 msgstr "сьогодні"
 
-#: ../../../tools/misctranslations.php:829
+#: ../../../tools/misctranslations.php:830
 msgid "weekday"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:830
+#: ../../../tools/misctranslations.php:831
 msgid "Week"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:831
+#: ../../../tools/misctranslations.php:832
 msgid "month"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:832
+#: ../../../tools/misctranslations.php:833
 msgid "year"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:833
+#: ../../../tools/misctranslations.php:834
 msgid "first"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:834
+#: ../../../tools/misctranslations.php:835
 #, fuzzy
 msgid "last"
 msgstr "7 днів"
 
-#: ../../../tools/misctranslations.php:835
+#: ../../../tools/misctranslations.php:836
 msgid "next"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:836
+#: ../../../tools/misctranslations.php:837
 msgid "previous"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:837
+#: ../../../tools/misctranslations.php:838
 #, fuzzy
 msgid "of week"
 msgstr "7 днів"
 
-#: ../../../tools/misctranslations.php:838
+#: ../../../tools/misctranslations.php:839
 msgid "of month"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:839
+#: ../../../tools/misctranslations.php:840
 msgid "of year"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:840
+#: ../../../tools/misctranslations.php:841
 #, fuzzy
 msgid "at"
 msgstr "Сб"
 
-#: ../../../tools/misctranslations.php:841
+#: ../../../tools/misctranslations.php:842
 msgid "from"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:842
+#: ../../../tools/misctranslations.php:843
 msgid "to"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:843
+#: ../../../tools/misctranslations.php:844
 msgid "deferred"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:845
-#: ../../../tools/misctranslations.php:852
+#: ../../../tools/misctranslations.php:846
+#: ../../../tools/misctranslations.php:853
 msgid "Sunday"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:846
+#: ../../../tools/misctranslations.php:847
 msgid "Monday"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:847
+#: ../../../tools/misctranslations.php:848
 msgid "Tuesday"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:848
+#: ../../../tools/misctranslations.php:849
 msgid "Wednesday"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:849
+#: ../../../tools/misctranslations.php:850
 msgid "Thursday"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:850
+#: ../../../tools/misctranslations.php:851
 msgid "Friday"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:851
+#: ../../../tools/misctranslations.php:852
 msgid "Saturday"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:854
-#: ../../../tools/misctranslations.php:866
+#: ../../../tools/misctranslations.php:855
+#: ../../../tools/misctranslations.php:867
 #, fuzzy
 msgid "December_c"
 msgstr "Грудень"
 
-#: ../../../tools/misctranslations.php:855
+#: ../../../tools/misctranslations.php:856
 #, fuzzy
 msgid "January_c"
 msgstr "Cічень"
 
-#: ../../../tools/misctranslations.php:856
+#: ../../../tools/misctranslations.php:857
 #, fuzzy
 msgid "February_c"
 msgstr "Лютий"
 
-#: ../../../tools/misctranslations.php:857
+#: ../../../tools/misctranslations.php:858
 #, fuzzy
 msgid "March_c"
 msgstr "Березень"
 
-#: ../../../tools/misctranslations.php:858
+#: ../../../tools/misctranslations.php:859
 #, fuzzy
 msgid "April_c"
 msgstr "Квітень"
 
-#: ../../../tools/misctranslations.php:859
+#: ../../../tools/misctranslations.php:860
 msgid "May_c"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:860
+#: ../../../tools/misctranslations.php:861
 #, fuzzy
 msgid "June_c"
 msgstr "Червень"
 
-#: ../../../tools/misctranslations.php:861
+#: ../../../tools/misctranslations.php:862
 #, fuzzy
 msgid "July_c"
 msgstr "Липень"
 
-#: ../../../tools/misctranslations.php:862
+#: ../../../tools/misctranslations.php:863
 #, fuzzy
 msgid "August_c"
 msgstr "Серпень"
 
-#: ../../../tools/misctranslations.php:863
+#: ../../../tools/misctranslations.php:864
 #, fuzzy
 msgid "September_c"
 msgstr "Вересень"
 
-#: ../../../tools/misctranslations.php:864
+#: ../../../tools/misctranslations.php:865
 #, fuzzy
 msgid "October_c"
 msgstr "Жовтень"
 
-#: ../../../tools/misctranslations.php:865
+#: ../../../tools/misctranslations.php:866
 #, fuzzy
 msgid "November_c"
 msgstr "Листопад"
 
-#: ../../../tools/misctranslations.php:868
+#: ../../../tools/misctranslations.php:869
 #, fuzzy
 msgid "List of scheduled events"
 msgstr "%s каналів"
 
-#: ../../../tools/misctranslations.php:869
+#: ../../../tools/misctranslations.php:870
 #, fuzzy
 msgid "List of scheduled events by page + filters"
 msgstr "Неактивні абоненти за місяць"
 
-#: ../../../tools/misctranslations.php:870
+#: ../../../tools/misctranslations.php:871
 #, fuzzy
 msgid "Adding and editing the scheduled events"
 msgstr "Пошук по сховищах"
 
-#: ../../../tools/misctranslations.php:871
+#: ../../../tools/misctranslations.php:872
 msgid "Removing the scheduled events"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:872
+#: ../../../tools/misctranslations.php:873
 msgid "Stopping or starting the scheduled events"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:874
+#: ../../../tools/misctranslations.php:875
 msgid "added"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:875
+#: ../../../tools/misctranslations.php:876
 msgid "edited"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:876
+#: ../../../tools/misctranslations.php:877
 msgid "This value is not valid."
 msgstr ""
 
-#: ../../../tools/misctranslations.php:877
+#: ../../../tools/misctranslations.php:878
 #, fuzzy
 msgid "task ended"
 msgstr "відправлено"
 
-#: ../../../tools/misctranslations.php:878
+#: ../../../tools/misctranslations.php:879
 msgid "edit"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:879
+#: ../../../tools/misctranslations.php:880
 #, fuzzy
 msgid "Advert"
 msgstr "Реклама"
+
+#: ../../../tools/misctranslations.php:881
+#, fuzzy
+msgid "permanent"
+msgstr "помилка"
+
+#: ../../../tools/misctranslations.php:882
+msgid "once-only"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:883
+#, fuzzy
+msgid "ID is available"
+msgstr "Немає доступних пакетів"
 
 #: ../../../lang/stb.php:10
 msgid "Comfort"
@@ -7535,7 +7573,12 @@ msgstr ""
 "Портал тимчасово недоступний.<br>Будь ласка, спробуйте пізніше.<br>Приносимо "
 "вибачення за незручності."
 
-#: ../../../lib/stb.class.php:602
+#: ../../../lib/stb.class.php:563 ../../../lib/stb.class.php:581
+#, php-format
+msgid "Use your username and password to login or register on %s"
+msgstr "Для входу використовуйте свій логін і пароль або зареєструйтеся на %s"
+
+#: ../../../lib/stb.class.php:609
 #, php-format
 msgid "Welcome %s<br>We are glad to see you on the Stalker portal!"
 msgstr "Ласкаво просимо, %s<br>Ми раді бачити Вас в порталі Stalker!"

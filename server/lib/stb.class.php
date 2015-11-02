@@ -559,7 +559,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                 }
 
                 return array(
-                    'status' => 2 // authentication request
+                    'status' => 2, // authentication request
+                    'info'   => Config::exist('registration_url') ? sprintf(_('Use your username and password to login or register on %s'), Config::get('registration_url')) : ''
                 );
 
             }else{
@@ -576,7 +577,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             if (!$valid_saved_auth && (intval($_REQUEST['auth_second_step']) === 0) && Config::exist('auth_url') && (strpos(Config::get('auth_url'), 'auth_every_load') || $force_auth === true)){
                 $this->getInfoFromOss(!$force_auth);
                 return array(
-                    'status' => 2
+                    'status' => 2,
+                    'info'   => Config::exist('registration_url') ? sprintf(_('Use your username and password to login or register on %s'), Config::get('registration_url')) : ''
                 );
             }
         }
