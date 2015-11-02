@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-28 17:52+0300\n"
-"PO-Revision-Date: 2015-10-28 17:54+0300\n"
+"POT-Creation-Date: 2015-11-02 13:02+0300\n"
+"PO-Revision-Date: 2015-11-02 13:02+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -230,16 +230,16 @@ msgstr "TV Archive has been restarted."
 #: ../../../../admin/src/Controller/TariffsController.php:474
 #: ../../../../admin/src/Controller/AdminsController.php:199
 #: ../../../../admin/src/Controller/AdminsController.php:222
-#: ../../../../admin/src/Controller/AdminsController.php:260
-#: ../../../../admin/src/Controller/AdminsController.php:349
-#: ../../../../admin/src/Controller/AdminsController.php:372
-#: ../../../../admin/src/Controller/AdminsController.php:405
-#: ../../../../admin/src/Controller/AdminsController.php:426
-#: ../../../../admin/src/Controller/AdminsController.php:554
-#: ../../../../admin/src/Controller/AdminsController.php:586
-#: ../../../../admin/src/Controller/AdminsController.php:614
-#: ../../../../admin/src/Controller/AdminsController.php:643
-#: ../../../../admin/src/Controller/AdminsController.php:677
+#: ../../../../admin/src/Controller/AdminsController.php:273
+#: ../../../../admin/src/Controller/AdminsController.php:362
+#: ../../../../admin/src/Controller/AdminsController.php:385
+#: ../../../../admin/src/Controller/AdminsController.php:418
+#: ../../../../admin/src/Controller/AdminsController.php:439
+#: ../../../../admin/src/Controller/AdminsController.php:567
+#: ../../../../admin/src/Controller/AdminsController.php:599
+#: ../../../../admin/src/Controller/AdminsController.php:627
+#: ../../../../admin/src/Controller/AdminsController.php:656
+#: ../../../../admin/src/Controller/AdminsController.php:690
 msgid "Page not found"
 msgstr "Page not found"
 
@@ -256,8 +256,9 @@ msgstr "Done"
 #: ../../../../admin/src/Controller/TvChannelsController.php:821
 #: ../../../../admin/src/Controller/UsersController.php:1240
 #: ../../../../admin/src/Controller/UsersController.php:1279
-#: ../../../../admin/src/Controller/AdminsController.php:667
-#: ../../../../admin/src/Controller/AdminsController.php:701
+#: ../../../../admin/src/Controller/AdminsController.php:260
+#: ../../../../admin/src/Controller/AdminsController.php:680
+#: ../../../../admin/src/Controller/AdminsController.php:714
 msgid "Nothing to do"
 msgstr "Nothing to do"
 
@@ -464,7 +465,7 @@ msgstr "All"
 #: ../../../../admin/src/Controller/EventsController.php:576
 #: ../../../administrator/playlists.php:157
 #: ../../../administrator/events.php:415
-#: ../../../administrator/profile.php:450
+#: ../../../administrator/profile.php:489
 #: ../../../administrator/administrators.php:165
 #: ../../../administrator/administrators.php:206
 msgid "Group"
@@ -692,6 +693,7 @@ msgid "No data"
 msgstr "No data"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:1173
+#: ../../../../admin/src/Controller/AdminsController.php:232
 #: ../../../administrator/subscribe.php:82
 #: ../../../administrator/unique_video.php:101
 #: ../../../administrator/add_video.php:1389
@@ -709,7 +711,7 @@ msgid "In this category already exists such a genre"
 msgstr "In this category already exists such a genre"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:1432
-#: ../../../../admin/src/Controller/AdminsController.php:602
+#: ../../../../admin/src/Controller/AdminsController.php:615
 msgid "Deleted"
 msgstr "Deleted"
 
@@ -837,8 +839,8 @@ msgstr "Edit radio"
 #: ../../../../admin/src/Controller/UsersController.php:1645
 #: ../../../../admin/src/Controller/AdminsController.php:48
 #: ../../../../admin/src/Controller/AdminsController.php:66
-#: ../../../../admin/src/Controller/AdminsController.php:323
-#: ../../../../admin/src/Controller/AdminsController.php:523
+#: ../../../../admin/src/Controller/AdminsController.php:336
+#: ../../../../admin/src/Controller/AdminsController.php:536
 msgid "Empty"
 msgstr "Empty"
 
@@ -893,16 +895,16 @@ msgstr "User with this MAC-address is not defined"
 
 #: ../../../../admin/src/Controller/UsersController.php:1238
 #: ../../../../admin/src/Controller/UsersController.php:1272
-#: ../../../../admin/src/Controller/AdminsController.php:631
-#: ../../../../admin/src/Controller/AdminsController.php:665
-#: ../../../../admin/src/Controller/AdminsController.php:699
+#: ../../../../admin/src/Controller/AdminsController.php:644
+#: ../../../../admin/src/Controller/AdminsController.php:678
+#: ../../../../admin/src/Controller/AdminsController.php:712
 msgid "Moved"
 msgstr "Moved"
 
 #: ../../../../admin/src/Controller/UsersController.php:1240
 #: ../../../../admin/src/Controller/UsersController.php:1279
-#: ../../../../admin/src/Controller/AdminsController.php:667
-#: ../../../../admin/src/Controller/AdminsController.php:701
+#: ../../../../admin/src/Controller/AdminsController.php:680
+#: ../../../../admin/src/Controller/AdminsController.php:714
 msgid "Not found reseller for moving"
 msgstr "Not found reseller for moving"
 
@@ -911,7 +913,7 @@ msgid "No data for this filter"
 msgstr "No data for this filter"
 
 #: ../../../../admin/src/Controller/UsersController.php:1884
-#: ../../../administrator/profile.php:394 ../../../administrator/user.php:138
+#: ../../../administrator/profile.php:433 ../../../administrator/user.php:138
 #: ../../../administrator/administrators.php:164
 #: ../../../administrator/administrators.php:191
 #: ../../../administrator/login.php:55 ../../../lang/stb.php:360
@@ -934,7 +936,7 @@ msgstr "Account"
 #: ../../../administrator/audio_track.php:245
 #: ../../../administrator/admin_groups.php:215
 #: ../../../administrator/admin_groups.php:238
-#: ../../../administrator/profile.php:533
+#: ../../../administrator/profile.php:572
 #: ../../../administrator/audio_genre.php:183
 #: ../../../administrator/stream_zones.php:257
 #: ../../../administrator/stream_zones.php:285
@@ -969,7 +971,7 @@ msgid "Reseller"
 msgstr "Reseller"
 
 #: ../../../../admin/src/Controller/UsersController.php:1898
-#: ../../../administrator/profile.php:427
+#: ../../../administrator/profile.php:466
 msgid "Expire billing date"
 msgstr "Expire billing date"
 
@@ -1032,20 +1034,29 @@ msgstr "Login is already used"
 msgid "Login is available"
 msgstr "Login is available"
 
-#: ../../../../admin/src/Controller/AdminsController.php:357
-#: ../../../../admin/src/Controller/AdminsController.php:359
+#: ../../../../admin/src/Controller/AdminsController.php:237
+msgid "Account \"admin\" is not editable. You may change only password."
+msgstr "Account \"admin\" is not editable. You may change only password."
+
+#: ../../../../admin/src/Controller/AdminsController.php:263
+#: ../../../tools/misctranslations.php:769
+msgid "Not all required fields are filled"
+msgstr "Not all required fields are filled"
+
+#: ../../../../admin/src/Controller/AdminsController.php:370
+#: ../../../../admin/src/Controller/AdminsController.php:372
 msgid "Group name is already used"
 msgstr "Group name is already used"
 
-#: ../../../../admin/src/Controller/AdminsController.php:361
+#: ../../../../admin/src/Controller/AdminsController.php:374
 msgid "Group name is available"
 msgstr "Group name is available"
 
-#: ../../../../admin/src/Controller/AdminsController.php:604
+#: ../../../../admin/src/Controller/AdminsController.php:617
 msgid "Found members of this reseller. Deleting not possible."
 msgstr "Found members of this reseller. Deleting not possible."
 
-#: ../../../../admin/src/Controller/AdminsController.php:633
+#: ../../../../admin/src/Controller/AdminsController.php:646
 msgid "Not found members for moving. Nothing to do"
 msgstr "Not found members for moving. Nothing to do"
 
@@ -1752,13 +1763,13 @@ msgid ""
 msgstr ""
 "Services are updated according to the subscription. The STB will be rebooted."
 
-#: ../../../tools/misctranslations.php:241 ../../../lib/stb.class.php:536
+#: ../../../tools/misctranslations.php:241 ../../../lib/stb.class.php:541
 #: ../../../lang/stb.php:565
 msgid "Firmware of your STB is outdated.<br>Please update it."
 msgstr "Firmware of your STB is outdated.<br>Please update it."
 
-#: ../../../tools/misctranslations.php:242 ../../../lib/stb.class.php:504
-#: ../../../lib/stb.class.php:515
+#: ../../../tools/misctranslations.php:242 ../../../lib/stb.class.php:509
+#: ../../../lib/stb.class.php:520
 msgid "Your STB is damaged.<br/> Call the provider."
 msgstr "Please contact your provider<br>to register this device."
 
@@ -3760,10 +3771,6 @@ msgstr "Chinese"
 msgid "Zulu"
 msgstr "Zulu"
 
-#: ../../../tools/misctranslations.php:769
-msgid "Not all required fields are filled"
-msgstr "Not all required fields are filled"
-
 #: ../../../tools/misctranslations.php:770
 msgid "{{minute}} minutes ago"
 msgstr "{{minute}} minutes ago"
@@ -4498,36 +4505,43 @@ msgid "H:i"
 msgstr "h:i A"
 
 #: ../../../lib/epg.class.php:871 ../../../lib/gismeteo.class.php:29
+#: ../../../administrator/profile.php:196
 #: ../../../administrator/add_video.php:522
 msgid "Sun"
 msgstr "Sun"
 
 #: ../../../lib/epg.class.php:871 ../../../lib/gismeteo.class.php:29
+#: ../../../administrator/profile.php:197
 #: ../../../administrator/add_video.php:523
 msgid "Mon"
 msgstr "Mon"
 
 #: ../../../lib/epg.class.php:871 ../../../lib/gismeteo.class.php:29
+#: ../../../administrator/profile.php:198
 #: ../../../administrator/add_video.php:524
 msgid "Tue"
 msgstr "Tue"
 
 #: ../../../lib/epg.class.php:871 ../../../lib/gismeteo.class.php:29
+#: ../../../administrator/profile.php:199
 #: ../../../administrator/add_video.php:525
 msgid "Wed"
 msgstr "Wed"
 
 #: ../../../lib/epg.class.php:871 ../../../lib/gismeteo.class.php:29
+#: ../../../administrator/profile.php:200
 #: ../../../administrator/add_video.php:526
 msgid "Thu"
 msgstr "Thu"
 
 #: ../../../lib/epg.class.php:871 ../../../lib/gismeteo.class.php:29
+#: ../../../administrator/profile.php:201
 #: ../../../administrator/add_video.php:527
 msgid "Fri"
 msgstr "Fri"
 
 #: ../../../lib/epg.class.php:871 ../../../lib/gismeteo.class.php:29
+#: ../../../administrator/profile.php:202
 #: ../../../administrator/add_video.php:528
 msgid "Sat"
 msgstr "Sat"
@@ -4672,7 +4686,7 @@ msgid "account_terms_info"
 msgstr "account_terms_info"
 
 #: ../../../lib/accountinfo.class.php:109
-#: ../../../administrator/profile.php:535
+#: ../../../administrator/profile.php:574
 msgid "Subscribed"
 msgstr "Subscribed"
 
@@ -4727,7 +4741,7 @@ msgstr ""
 "The portal is temporarily unavailable.<br>Please try again later.<br>Sorry "
 "for the inconvenience."
 
-#: ../../../lib/stb.class.php:602
+#: ../../../lib/stb.class.php:607
 #, php-format
 msgid "Welcome %s<br>We are glad to see you on the Stalker portal!"
 msgstr "Welcome %s<br>We are glad to see you on the Stalker portal!"
@@ -4779,7 +4793,7 @@ msgstr "Apr"
 
 #: ../../../lib/gismeteo.class.php:31 ../../../administrator/userlog.php:164
 #: ../../../administrator/all_userlog.php:165
-#: ../../../administrator/users.php:206
+#: ../../../administrator/users.php:206 ../../../administrator/profile.php:211
 #: ../../../administrator/add_video.php:537
 #: ../../../administrator/add_epg.php:144
 msgid "May"
@@ -4918,7 +4932,7 @@ msgstr "Users TV views statistics per month"
 #: ../../../administrator/audio_language.php:154
 #: ../../../administrator/tasks.php:70
 #: ../../../administrator/admin_groups.php:197
-#: ../../../administrator/profile.php:310
+#: ../../../administrator/profile.php:349
 #: ../../../administrator/audio_genre.php:154
 #: ../../../administrator/stat_tv_archive.php:70
 #: ../../../administrator/stream_zones.php:238
@@ -5117,7 +5131,7 @@ msgid "Use as default"
 msgstr "Use as default"
 
 #: ../../../administrator/tariffs.php:355
-#: ../../../administrator/profile.php:531
+#: ../../../administrator/profile.php:570
 msgid "Packages"
 msgstr "Packages"
 
@@ -5168,7 +5182,7 @@ msgstr "User logs"
 
 #: ../../../administrator/userlog.php:160
 #: ../../../administrator/all_userlog.php:161
-#: ../../../administrator/users.php:202
+#: ../../../administrator/users.php:202 ../../../administrator/profile.php:207
 #: ../../../administrator/add_video.php:533
 #: ../../../administrator/add_epg.php:140
 msgid "January"
@@ -5176,7 +5190,7 @@ msgstr "January"
 
 #: ../../../administrator/userlog.php:161
 #: ../../../administrator/all_userlog.php:162
-#: ../../../administrator/users.php:203
+#: ../../../administrator/users.php:203 ../../../administrator/profile.php:208
 #: ../../../administrator/add_video.php:534
 #: ../../../administrator/add_epg.php:141
 msgid "February"
@@ -5184,7 +5198,7 @@ msgstr "February"
 
 #: ../../../administrator/userlog.php:162
 #: ../../../administrator/all_userlog.php:163
-#: ../../../administrator/users.php:204
+#: ../../../administrator/users.php:204 ../../../administrator/profile.php:209
 #: ../../../administrator/add_video.php:535
 #: ../../../administrator/add_epg.php:142
 msgid "March"
@@ -5192,7 +5206,7 @@ msgstr "March"
 
 #: ../../../administrator/userlog.php:163
 #: ../../../administrator/all_userlog.php:164
-#: ../../../administrator/users.php:205
+#: ../../../administrator/users.php:205 ../../../administrator/profile.php:210
 #: ../../../administrator/add_video.php:536
 #: ../../../administrator/add_epg.php:143
 msgid "April"
@@ -5200,7 +5214,7 @@ msgstr "April"
 
 #: ../../../administrator/userlog.php:165
 #: ../../../administrator/all_userlog.php:166
-#: ../../../administrator/users.php:207
+#: ../../../administrator/users.php:207 ../../../administrator/profile.php:212
 #: ../../../administrator/add_video.php:538
 #: ../../../administrator/add_epg.php:145
 msgid "June"
@@ -5208,7 +5222,7 @@ msgstr "June"
 
 #: ../../../administrator/userlog.php:166
 #: ../../../administrator/all_userlog.php:167
-#: ../../../administrator/users.php:208
+#: ../../../administrator/users.php:208 ../../../administrator/profile.php:213
 #: ../../../administrator/add_video.php:539
 #: ../../../administrator/add_epg.php:146
 msgid "July"
@@ -5216,7 +5230,7 @@ msgstr "July"
 
 #: ../../../administrator/userlog.php:167
 #: ../../../administrator/all_userlog.php:168
-#: ../../../administrator/users.php:209
+#: ../../../administrator/users.php:209 ../../../administrator/profile.php:214
 #: ../../../administrator/add_video.php:540
 #: ../../../administrator/add_epg.php:147
 msgid "August"
@@ -5224,7 +5238,7 @@ msgstr "August"
 
 #: ../../../administrator/userlog.php:168
 #: ../../../administrator/all_userlog.php:169
-#: ../../../administrator/users.php:210
+#: ../../../administrator/users.php:210 ../../../administrator/profile.php:215
 #: ../../../administrator/add_video.php:541
 #: ../../../administrator/add_epg.php:148
 msgid "September"
@@ -5232,7 +5246,7 @@ msgstr "September"
 
 #: ../../../administrator/userlog.php:169
 #: ../../../administrator/all_userlog.php:170
-#: ../../../administrator/users.php:211
+#: ../../../administrator/users.php:211 ../../../administrator/profile.php:216
 #: ../../../administrator/add_video.php:542
 #: ../../../administrator/add_epg.php:149
 msgid "October"
@@ -5240,7 +5254,7 @@ msgstr "October"
 
 #: ../../../administrator/userlog.php:170
 #: ../../../administrator/all_userlog.php:171
-#: ../../../administrator/users.php:212
+#: ../../../administrator/users.php:212 ../../../administrator/profile.php:217
 #: ../../../administrator/add_video.php:543
 #: ../../../administrator/add_epg.php:150
 msgid "November"
@@ -5248,7 +5262,7 @@ msgstr "November"
 
 #: ../../../administrator/userlog.php:171
 #: ../../../administrator/all_userlog.php:172
-#: ../../../administrator/users.php:213
+#: ../../../administrator/users.php:213 ../../../administrator/profile.php:218
 #: ../../../administrator/add_video.php:544
 #: ../../../administrator/add_epg.php:151
 msgid "December"
@@ -5604,7 +5618,7 @@ msgstr "Department"
 #: ../../../administrator/other_city_info.php:232
 #: ../../../administrator/help_city_info.php:222
 #: ../../../administrator/city_info.php:236
-#: ../../../administrator/profile.php:436
+#: ../../../administrator/profile.php:475
 msgid "Phone number"
 msgstr "Phone number"
 
@@ -5632,7 +5646,7 @@ msgid "File with list is missing"
 msgstr "File with list is missing"
 
 #: ../../../administrator/events.php:241 ../../../administrator/events.php:247
-#: ../../../administrator/profile.php:310 ../../../administrator/index.php:146
+#: ../../../administrator/profile.php:349 ../../../administrator/index.php:146
 #: ../../../../admin/json_menu/menu.json:188
 msgid "Events"
 msgstr "Events"
@@ -6110,7 +6124,7 @@ msgstr "Send message"
 msgid "To"
 msgstr "To"
 
-#: ../../../administrator/reply.php:135 ../../../administrator/profile.php:444
+#: ../../../administrator/reply.php:135 ../../../administrator/profile.php:483
 #: ../../../administrator/send_to.php:152
 msgid "Comment"
 msgstr "Comment"
@@ -6157,51 +6171,51 @@ msgstr "reject"
 msgid "Administrators groups"
 msgstr "Administrators groups"
 
-#: ../../../administrator/profile.php:255 ../../../lang/stb.php:315
+#: ../../../administrator/profile.php:294 ../../../lang/stb.php:315
 msgid "Disabled"
 msgstr "Disabled"
 
-#: ../../../administrator/profile.php:259
+#: ../../../administrator/profile.php:298
 msgid "Enabled"
 msgstr "Enabled"
 
-#: ../../../administrator/profile.php:299
-#: ../../../administrator/profile.php:305
+#: ../../../administrator/profile.php:338
+#: ../../../administrator/profile.php:344
 msgid "User profile"
 msgstr "User profile"
 
-#: ../../../administrator/profile.php:310
+#: ../../../administrator/profile.php:349
 #: ../../../administrator/storages.php:223
 #: ../../../../admin/json_menu/menu.json:168
 #: ../../../../admin/json_menu/menu.json:334
 msgid "Logs"
 msgstr "Logs"
 
-#: ../../../administrator/profile.php:349
-#: ../../../administrator/profile.php:353
+#: ../../../administrator/profile.php:388
+#: ../../../administrator/profile.php:392
 msgid "Reset to default password?"
 msgstr "Reset to default password?"
 
-#: ../../../administrator/profile.php:349
-#: ../../../administrator/profile.php:353
-#: ../../../administrator/profile.php:357
+#: ../../../administrator/profile.php:388
+#: ../../../administrator/profile.php:392
+#: ../../../administrator/profile.php:396
 msgid "Reset"
 msgstr "Reset"
 
-#: ../../../administrator/profile.php:352 ../../../lang/stb.php:492
+#: ../../../administrator/profile.php:391 ../../../lang/stb.php:492
 msgid "Access control"
 msgstr "Access control"
 
-#: ../../../administrator/profile.php:356
+#: ../../../administrator/profile.php:395
 msgid "favorite tv"
 msgstr "favorite tv"
 
-#: ../../../administrator/profile.php:357
+#: ../../../administrator/profile.php:396
 #, php-format
 msgid "%s channels"
 msgstr "%s channels"
 
-#: ../../../administrator/profile.php:357
+#: ../../../administrator/profile.php:396
 msgid ""
 "Reset favorite TV channels? The channels will be reset only if immediately "
 "restart the stb!"
@@ -6209,46 +6223,46 @@ msgstr ""
 "Reset favorite TV channels? The channels will be reset only if immediately "
 "restart the stb!"
 
-#: ../../../administrator/profile.php:386 ../../../administrator/user.php:146
+#: ../../../administrator/profile.php:425 ../../../administrator/user.php:146
 msgid "Full name"
 msgstr "Full name"
 
-#: ../../../administrator/profile.php:402 ../../../administrator/user.php:150
+#: ../../../administrator/profile.php:441 ../../../administrator/user.php:150
 #: ../../../lang/stb.php:417
 msgid "Account number"
 msgstr "Account number"
 
-#: ../../../administrator/profile.php:410
+#: ../../../administrator/profile.php:449
 msgid "Last change of status"
 msgstr "Last change of status"
 
-#: ../../../administrator/profile.php:418 ../../../lang/stb.php:454
+#: ../../../administrator/profile.php:457 ../../../lang/stb.php:454
 msgid "Account balance"
 msgstr "Account balance"
 
-#: ../../../administrator/profile.php:495
-#: ../../../administrator/profile.php:557
+#: ../../../administrator/profile.php:534
+#: ../../../administrator/profile.php:596
 msgid "TV subscription"
 msgstr "TV subscription"
 
-#: ../../../administrator/profile.php:502 ../../../administrator/user.php:162
+#: ../../../administrator/profile.php:541 ../../../administrator/user.php:162
 #: ../../../lang/stb.php:390
 msgid "Tariff plan"
 msgstr "Tariff plan"
 
-#: ../../../administrator/profile.php:518
+#: ../../../administrator/profile.php:557
 msgid "Change"
 msgstr "Change"
 
-#: ../../../administrator/profile.php:527
+#: ../../../administrator/profile.php:566
 msgid "No packages available"
 msgstr "No packages available"
 
-#: ../../../administrator/profile.php:534
+#: ../../../administrator/profile.php:573
 msgid "Optional"
 msgstr "Optional"
 
-#: ../../../administrator/profile.php:560
+#: ../../../administrator/profile.php:599
 msgid "Additional services"
 msgstr "Additional services"
 
@@ -9422,6 +9436,9 @@ msgstr ""
 msgid "PVR to the USB-driver"
 msgstr "PVR to the USB-driver"
 
+msgid "Password mismatch"
+msgstr "Password mismatch"
+
 msgid "Pay attention."
 msgstr "Pay attention."
 
@@ -9536,6 +9553,9 @@ msgstr "Temporary URL"
 
 msgid "Text"
 msgstr "Text"
+
+msgid "The fields \"Login\" and \"Group\" are required"
+msgstr "The fields \"Login\" and \"Group\" are required"
 
 msgid "Time correction for EPG"
 msgstr "Time correction for EPG"
