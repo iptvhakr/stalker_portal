@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-02 13:48+0300\n"
-"PO-Revision-Date: 2015-11-02 13:48+0300\n"
+"POT-Creation-Date: 2015-11-02 15:55+0300\n"
+"PO-Revision-Date: 2015-11-02 15:56+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -4798,7 +4798,12 @@ msgstr ""
 "The portal is temporarily unavailable.<br>Please try again later.<br>Sorry "
 "for the inconvenience."
 
-#: ../../../lib/stb.class.php:607
+#: ../../../lib/stb.class.php:563 ../../../lib/stb.class.php:581
+#, php-format
+msgid "Use your username and password to login or register on %s"
+msgstr "Use your username and password to login or register on %s"
+
+#: ../../../lib/stb.class.php:609
 #, php-format
 msgid "Welcome %s<br>We are glad to see you on the Stalker portal!"
 msgstr "Welcome %s<br>We are glad to see you on the Stalker portal!"
