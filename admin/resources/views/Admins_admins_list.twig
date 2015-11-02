@@ -293,11 +293,11 @@
                             });
 
                             if (!$('#adm_login').val() && !$('#gid').val()) {
-                                notty('Поля "Логин" и "Группа" обязательные','error');
+                                notty("{{ 'The fields "Login" and "Group" are required'|trans }}",'error');
                                 return false;
                             }
                             if ($("#adm_pass").val() !== $("#adm_re_pass").val()) {
-                                notty('Веденные пароли не совпадают','error');
+                                notty("{{ 'Password mismatch'|trans }}",'error');
                                 return false;
                             }
                             ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
@@ -390,13 +390,19 @@
                     $("#modalbox_ad input").prop("disabled", false).removeAttr('disabled').val('');
                     $("#modalbox_ad input[type='hidden']").attr('disabled', 'disabled').val('');
                     $("#modalbox_ad select[name='gid'] option").removeAttr('selected');
+                    $("#adm_pass").val('').attr('data-validation', 'required').removeAttr('current-error').removeAttr('style').next('span.form-error').remove();
+                    $("#adm_re_pass").val('').attr('data-validation', 'required').removeAttr('current-error').removeAttr('style').next('span.form-error').remove();
+                    if ($("#adm_pass").closest(".form-group").children('label').find('span.icon-required').length == 0) {
+                        $("#adm_pass").closest(".form-group").children('label').append('<span class="icon-required">*</span>');
+                        $("#adm_re_pass").closest(".form-group").children('label').append('<span class="icon-required">*</span>');
+                    }
                     $('#gid').select2("destroy").select2({minimumResultsForSearch: -1});
                     $('#modalbox_ad button[type="submit"]').removeAttr("disabled");
                     $("#modalbox_ad").show();
                     return false;
                 });
                 
-                $(document).on('change keyup', '#adm_login', function (e) { 
+                $(document).on('change', '#adm_login', function (e) {
                     e.stopPropagation();
                     e.preventDefault();
                     var _this = $(this);
@@ -449,32 +455,58 @@
                 for (var field_name in row) {
                     $("#modalbox_ad input[name='" + field_name + "']").val(row[field_name]);
                 }
-                if (typeof(data.data[0]['gid']) != 'undefined' && data.data[0]['gid']) {
-                    $("#gid option").removeAttr('selected').each(function () {
-                        $(this).attr('selected', $(this).val().toString() == data.data[0]['gid'].toString());
+                if (typeof(row['gid']) != 'undefined' && row['gid']) {
+                    $("#gid option").removeAttr('selected');
+                    $("#gid option").each(function () {
+                        if ($(this).val().toString() == row['gid'].toString()) {
+                            $(this).attr('selected', 'selected');
+                        }
                     })
                 }
+
             }
-            $("#modalbox_ad input").removeAttr('disabled');
-            $('#gid').select2("destroy").select2({minimumResultsForSearch: -1});
+            $("#modalbox_ad input, #modalbox_ad select").removeAttr('disabled');
+            if ($("#adm_login").val() == 'admin') {
+                $("#adm_login").attr('disabled', "disabled");
+                $("#gid").attr('disabled', "disabled");
+                $('#gid').prepend("<option value=0 selected='selected'></option>");
+            } else {
+                $('#gid option[value="0"]').remove();
+            }
+            $('#gid').select2("destroy");
+            $('#gid').select2({minimumResultsForSearch: -1});
+
+            $("#adm_pass").val('').removeAttr('data-validation').removeAttr('current-error').removeAttr('style').next('span.form-error').remove();
+            $("#adm_pass").closest(".form-group").children('label').find('span.icon-required').remove();
+            $("#adm_re_pass").val('').removeAttr('data-validation').removeAttr('current-error').removeAttr('style').next('span.form-error').remove();
+            $("#adm_re_pass").closest(".form-group").children('label').find('span.icon-required').remove();
+
             $('#modalbox_ad button[type="submit"]').removeAttr("disabled");
             $("#modalbox_ad").show();
         };
 
        
         var manageAdminsList = function (obj) {
-            $("#modalbox_ad").click();
+            JSSuccessModalBox(obj);
+            $("#modalbox_ad").trigger("click");
             $('#datatable-1').DataTable().ajax.reload();
+        };
+        var manageAdminsListError = function (obj) {
+            JSErrorModalBox(obj);
+            $("#modalbox_ad").trigger("click");
+            $("#modalbox_ad").trigger("click");
         };
 
         {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
         var manageAdmins = function (obj) {
             JSSuccessModalBox(obj);
+            $("#modalbox_ad").trigger("click");
             $('#datatable-1').DataTable().ajax.reload();
         };
 
         var manageAdminsError = function (obj) {
             JSErrorModalBox(obj);
+            $("#modalbox_ad").trigger("click");
         };
         {% endif %}
 

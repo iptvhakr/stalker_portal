@@ -33,10 +33,13 @@ class AdminsModel extends \Model\BaseStalkerModel {
                         ->join("admin_groups as A_G", "A.gid", "A_G.id", "LEFT")
                         ->join("reseller as R", "A.reseller_id", "R.id", "LEFT")
                         ->where($param['where'])
-                        ->where($where)
-                        ->like($param['like'], 'OR')
-                        ->orderby($param['order']);
-
+                        ->where($where);
+        if (!empty($param['like'])) {
+            $this->mysqlInstance->like($param['like'], ' OR ');
+        }
+        if (!empty($param['order'])) {
+            $this->mysqlInstance->orderby($param['order']);
+        }
         if (!empty($param['limit']['limit'])) {
             $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
@@ -153,9 +156,14 @@ class AdminsModel extends \Model\BaseStalkerModel {
             $this->mysqlInstance->select($param['select']);
         }
         $this->mysqlInstance->from("reseller as R")
-            ->where($param['where'])
-            ->like($param['like'], 'OR')
-            ->orderby($param['order']);
+            ->where($param['where']);
+
+        if (!empty($param['like'])) {
+            $this->mysqlInstance->like($param['like'], ' OR ');
+        }
+        if (!empty($param['order'])) {
+            $this->mysqlInstance->orderby($param['order']);
+        }
 
         if (!empty($param['limit']['limit'])) {
             $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
@@ -163,7 +171,6 @@ class AdminsModel extends \Model\BaseStalkerModel {
 
         return ($counter) ? $this->mysqlInstance->count()->get()->counter() : $this->mysqlInstance->get()->all();
     }
-
 
     public function insertReseller($param){
         $param[0]['created'] = 'NOW()';

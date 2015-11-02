@@ -124,7 +124,7 @@
                     }
                 }
                 if(typeof(json.videotime != 'undefined') && json.videotime!=-1) {
-                    $('#videoduration').text($('#videoduration').text().replace(/\d+/ig, json.videotime));
+                    $('#videoduration').text($('#videoduration').text().replace(/\d+/ig, (json.videotime ? json.videotime: '0')));
                 }
                 
             }).dataTable({

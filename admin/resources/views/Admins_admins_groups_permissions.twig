@@ -237,7 +237,11 @@
         }
         
         var managePermissions = function(data){
-            alert(data.msg);
+            JSSuccessModalBox(data);
+        };
+
+        var managePermissionsError = function(data){
+            JSErrorModalBox(data);
         }
     </script>
     {% endblock %}

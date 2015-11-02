@@ -229,8 +229,14 @@ class AdminsController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'manageAdminsList';
         $item = array($this->postData);
+        $error = $this->setLocalization('error');
 
-        $error = 'error';
+        if (!empty($this->postData['login']) && $this->postData['login'] == 'admin') {
+            unset($item[0]['login']);
+            unset($item[0]['gid']);
+            $error = $this->setLocalization('Account "admin" is not editable. You may change only password.');
+        }
+
         if (empty($this->postData['id'])) {
             $operation = 'insertAdmin';
         } else {
@@ -245,11 +251,18 @@ class AdminsController extends \Controller\BaseStalkerController {
         unset($item[0]['id']);
         unset($item[0]['re_pass']);
 
-        if ($result = call_user_func_array(array($this->db, $operation), array($item))) {
-            $error = '';    
+        if (!empty($item[0]['pass']) || $operation != 'insertAdmin') {
+            if ($result = call_user_func_array(array($this->db, $operation), array($item))) {
+                $error = '';
+            } else if (!empty($this->postData['login']) && $this->postData['login'] == 'admin') {
+                $data['msg'] = $error;
+            } else {
+                $data['msg'] = $error = $this->setLocalization("Nothing to do");
+            }
+        } else {
+            $data['msg'] = $error = $this->setLocalization("Not all required fields are filled");
         }
-        
-        
+
         $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));

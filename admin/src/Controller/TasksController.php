@@ -185,7 +185,8 @@ class TasksController extends \Controller\BaseStalkerController {
         
         
         if (empty($last_row)) {
-            $last_row = @end($this->app['taskAll']);
+            $tmp = $this->app['taskAll'];
+            $last_row = end($tmp);
         }
                 
         $this->app['replyTo'] = $last_row['id'];
@@ -252,7 +253,8 @@ class TasksController extends \Controller\BaseStalkerController {
         $this->app['selfID'] = $this->uid;
         $this->app['recipientID'] = $this->uid;
         $this->app['task_type'] = 'karaoke';
-        $last_row = end($this->app['taskAll']);
+        $tmp = $this->app['taskAll'];
+        $last_row = end($tmp);
         
         $this->app['replyTo'] = $last_row['id'];
         $this->app['showForm'] = (!((bool)$last_row['archived']) && ($last_row['state'] != 1  && $last_row['state'] != 2));

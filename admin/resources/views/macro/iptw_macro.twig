@@ -40,7 +40,7 @@
     {% endmacro %}
     
     {% macro get_filter(name, title, id_field, title_field, list_all, block_width, label_width, without_all, postponed) %}
-        {% if postponed is defined %}
+        {% if postponed is defined and postponed %}
             {% set postponed = 1 %}
         {% else  %}
             {% set postponed = 0 %}
@@ -48,7 +48,7 @@
         {% if without_all %}
             {% set list = '' %}
         {% else %}
-            {% set list = ('<li><a href="#" data-filter="0" ' ~ (postponed ? 'data-postponed="1"') ~ '><span>' ~ 'All'|trans ~ '</span></a></li>') | trans %}
+            {% set list = ('<li><a href="#" data-filter="0" ' ~ (postponed ? 'data-postponed="1"': '') ~ '><span>' ~ 'All'|trans ~ '</span></a></li>') | trans %}
         {% endif %}
         {% if not (block_width) %}
             {% set block_width = 3 %}
