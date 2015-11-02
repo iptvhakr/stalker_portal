@@ -1,0 +1,859 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: settings\n"
+"POT-Creation-Date: 2015-02-17 12:10+0200\n"
+"PO-Revision-Date: 2015-02-17 12:10+0200\n"
+"Last-Translator: denvas <denvasden@gmail.com>\n"
+"Language-Team: \n"
+"Language: Turkish\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.7\n"
+"X-Poedit-KeywordsList: _;gettext.data\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../js/base_function.js:6 ../js/keypress.js:470 ../js/main.js:776
+#: ../js/main.js:943 ../js/main.js:2305 ../js/main.js:2328 ../js/main.js:3555
+#: ../js/main.js:3567
+msgid "Confirm"
+msgstr "Onayla"
+
+#: ../js/base_function.js:6 ../js/keypress.js:470 ../js/keypress.js:481
+#: ../js/main.js:778 ../js/main.js:841 ../js/main.js:929 ../js/main.js:945
+#: ../js/main.js:1158 ../js/main.js:1493 ../js/main.js:1549 ../js/main.js:1637
+#: ../js/main.js:2305 ../js/main.js:2330 ../js/main.js:2556 ../js/main.js:2570
+#: ../js/main.js:2717 ../js/main.js:2853 ../js/main.js:3025 ../js/main.js:3027
+#: ../js/main.js:3130 ../js/main.js:3555 ../js/main.js:3569 ../js/main.js:3655
+#: ../js/main.js:3700 ../js/main.js:3714 ../js/main.js:3848 ../js/modals.js:59
+#: ../js/modals.js:147 ../js/modals.js:229 ../js/modals.js:289
+msgid "Cancel"
+msgstr "İptal"
+
+#: ../js/base_function.js:6 ../js/main.js:138 ../js/main.js:4221
+#: ../js/main.js:4246
+msgid "Save"
+msgstr "Kaydet"
+
+#: ../js/keypress.js:470
+msgid ""
+"You have changed some settings.<br>To apply new settings it is necessary to "
+"reboot device.<br>Reboot now?"
+msgstr ""
+"Sadece cihazın yeniden açılmasından sonra yürürlüğe giren <br>değişiklikleri "
+"yapıldı.<br>Şimdi yeniden açar mısınız?"
+
+#: ../js/keypress.js:476 ../js/keypress.js:487 ../js/main.js:780
+#: ../js/main.js:947 ../js/main.js:2305 ../js/main.js:2332 ../js/main.js:3555
+#: ../js/main.js:3570
+msgid "Yes"
+msgstr "Evet"
+
+#: ../js/keypress.js:481
+msgid "Confirmation"
+msgstr "Onayla"
+
+#: ../js/keypress.js:481
+msgid ""
+"You have changed some settings.<br>To apply new settings it is necessary to "
+"restart portal.<br>Restart now?"
+msgstr ""
+"Sadece cihazın yeniden açılmasından sonra yürürlüğe giren <br>değişiklikleri "
+"yapıldı.<br>Şimdi yeniden açar mısınız?"
+
+#: ../js/keypress.js:514 ../js/keypress.js:583
+msgid "Some settings have been changed"
+msgstr "Bazı ayarlar değiştirildi"
+
+#: ../js/main.js:11
+#, fuzzy
+msgid "No data"
+msgstr "No data"
+
+#: ../js/main.js:44
+msgid "USB storage is connected"
+msgstr "USB bellek aygıtı bağlı"
+
+#: ../js/main.js:121
+msgid "Exit"
+msgstr "Çıkış"
+
+#: ../js/main.js:129 ../js/main.js:1743 ../js/main.js:2032 ../js/main.js:2661
+#: ../js/main.js:2890 ../js/main.js:3058 ../js/main.js:3267 ../js/main.js:4219
+msgid "More"
+msgstr "Fazla"
+
+#: ../js/main.js:132 ../js/main.js:4224
+msgid "Up"
+msgstr "Yukarıya"
+
+#: ../js/main.js:135 ../js/main.js:4226
+msgid "Down"
+msgstr "Aşağıya"
+
+#: ../js/main.js:158
+msgid "Info"
+msgstr "Bilgi"
+
+#: ../js/main.js:178 ../js/main.js:4250
+#, fuzzy
+msgid "Add network"
+msgstr "Ağı ekleyin"
+
+#: ../js/main.js:181 ../js/main.js:4241 ../js/modals.js:61 ../js/modals.js:149
+#: ../js/modals.js:231
+msgid "Refresh"
+msgstr "Yenile"
+
+#: ../js/main.js:578 ../js/main.js:582 ../js/main.js:841 ../js/main.js:929
+#: ../js/main.js:1158 ../js/main.js:1175 ../js/main.js:1493 ../js/main.js:1549
+#: ../js/main.js:1637 ../js/main.js:1765 ../js/main.js:1774 ../js/main.js:2102
+#: ../js/main.js:2717 ../js/main.js:2853 ../js/main.js:3025 ../js/main.js:3027
+#: ../js/main.js:3130 ../js/main.js:3655 ../js/main.js:3700 ../js/main.js:3714
+#: ../js/main.js:3848
+msgid "Notice"
+msgstr "Bildirim"
+
+#: ../js/main.js:578 ../js/main.js:1765
+msgid ""
+"During file playback, video output frame rate will be automatically "
+"adjusted<br/>according to played content.<br />Notes:<br />- works only with "
+"HDMI 720p/1080i/1080p video modes<br />- make sure your TV supports required "
+"video mode"
+msgstr ""
+"Saniyelik görüntü sayısı oynatma süresinde oynatılan dosyaya göre<br/"
+">otomatik olarak ayarlanacak.<br />Not: <br />- sadece HDMI 720p/1080i/1080p "
+"video rejiminde çalışır.<br />- Televizyonunuzun gereken rejimi "
+"desteklediğini kontrol ediniz"
+
+#: ../js/main.js:578 ../js/main.js:582 ../js/main.js:1175 ../js/main.js:1765
+#: ../js/main.js:1774 ../js/main.js:2102 ../js/main.js:3181
+msgid "Close"
+msgstr "Kapat"
+
+#: ../js/main.js:582
+msgid ""
+"<span style=\"color: red\">With option enabled in DIV mode<br/>HDMI audio "
+"will be missing</span>"
+msgstr ""
+"<span style=\"color: red\">DVI rejimi seçmekte ses HDMI kablosu üzerinden "
+"çıkmaz</span> "
+
+#: ../js/main.js:650 ../js/main.js:708 ../js/main.js:4014
+msgid "Network"
+msgstr "Ağ"
+
+#: ../js/main.js:651 ../js/main.js:2646 ../js/main.js:4015
+msgid "Servers"
+msgstr "Sunucular"
+
+#: ../js/main.js:652 ../js/main.js:1658 ../js/main.js:4016
+msgid "Video"
+msgstr "Video kayıtları"
+
+#: ../js/main.js:653 ../js/main.js:3196 ../js/main.js:4017
+msgid "Audio"
+msgstr "Ses kayıtları"
+
+#: ../js/main.js:654 ../js/main.js:1849 ../js/main.js:1852 ../js/main.js:4018
+msgid "Advanced settings"
+msgstr "Gelişmiş ayarlar"
+
+#: ../js/main.js:655 ../js/main.js:3415 ../js/main.js:4019
+msgid "Keyboard layout"
+msgstr "Klavye düzeni"
+
+#: ../js/main.js:656 ../js/main.js:768 ../js/main.js:993 ../js/main.js:1206
+#: ../js/main.js:2133 ../js/main.js:4020 ../js/main.js:4233 ../js/modals.js:59
+#: ../js/modals.js:147 ../js/modals.js:229
+msgid "Network info"
+msgstr "Ağ durumu"
+
+#: ../js/main.js:657 ../js/main.js:3519 ../js/main.js:4021
+msgid "Device info"
+msgstr "Cihaz bilgisi"
+
+#: ../js/main.js:658 ../js/main.js:4022
+msgid "Restart portal"
+msgstr "Portalı yenile"
+
+#: ../js/main.js:659 ../js/main.js:4023
+msgid "Reboot device"
+msgstr "Cihaz yeniden aç"
+
+#: ../js/main.js:660 ../js/main.js:4024
+msgid "Reset settings"
+msgstr "Ayarları sıfırla"
+
+#: ../js/main.js:661 ../js/main.js:4025
+msgid "Clear user data"
+msgstr "Kullanıcı verilerini sil"
+
+#: ../js/main.js:662 ../js/main.js:2360 ../js/main.js:2524 ../js/main.js:2596
+#: ../js/main.js:4026
+msgid "Software update"
+msgstr "Yazılımın güncellenmesi"
+
+#: ../js/main.js:665 ../js/main.js:3597 ../js/main.js:4029
+msgid "Remote control"
+msgstr "Uzaktan kumanda"
+
+#: ../js/main.js:688
+msgid "System settings"
+msgstr "Sistem ayarları"
+
+#: ../js/main.js:714 ../js/main.js:745 ../js/main.js:2142 ../js/main.js:2172
+msgid "Wired (Ethernet)"
+msgstr "Kablolu (Ethernet)"
+
+#: ../js/main.js:715 ../js/main.js:975 ../js/main.js:2143 ../js/main.js:2228
+msgid "PPPoE"
+msgstr "PPPoE"
+
+#: ../js/main.js:716 ../js/main.js:1183 ../js/main.js:2144 ../js/main.js:2271
+msgid "Wireless (Wi-Fi)"
+msgstr "Kablosuz (Wi-Fi)"
+
+#: ../js/main.js:755 ../js/main.js:982 ../js/main.js:1036 ../js/main.js:1194
+#: ../js/main.js:1246
+msgid "Auto (DHCP)"
+msgstr "Otomatik (DHCP)"
+
+#: ../js/main.js:756 ../js/main.js:807 ../js/main.js:983 ../js/main.js:1118
+#: ../js/main.js:1195 ../js/main.js:1515
+msgid "Auto (DHCP), manual DNS"
+msgstr "Otomatik (DHCP), DNS elle"
+
+#: ../js/main.js:757 ../js/main.js:861 ../js/main.js:1196 ../js/main.js:1572
+msgid "Manual"
+msgstr "Elle"
+
+#: ../js/main.js:758
+msgid "No IP"
+msgstr "IP'siz"
+
+#: ../js/main.js:777 ../js/main.js:944
+msgid "Confirm changes?"
+msgstr "Değişikleri uygulamak istiyor musunuz?"
+
+#: ../js/main.js:841 ../js/main.js:929 ../js/main.js:1158 ../js/main.js:1493
+#: ../js/main.js:1549 ../js/main.js:1637 ../js/main.js:2102 ../js/main.js:2717
+#: ../js/main.js:2853 ../js/main.js:3027 ../js/main.js:3130 ../js/main.js:3655
+#: ../js/main.js:3700 ../js/main.js:3714 ../js/main.js:3848
+msgid "Following fields filled in incorrectly:"
+msgstr "Aşağıdaki alanlar yanlış dolduruldu:"
+
+#: ../js/main.js:872 ../js/main.js:900 ../js/main.js:1583 ../js/main.js:1608
+#: ../js/main.js:2204 ../js/main.js:2247 ../js/main.js:2295 ../js/modals.js:42
+#: ../js/modals.js:134 ../js/modals.js:216
+msgid "IP address:"
+msgstr "IP adresi:"
+
+#: ../js/main.js:873 ../js/main.js:908 ../js/main.js:1584 ../js/main.js:1616
+#: ../js/main.js:2205 ../js/modals.js:46
+msgid "Network mask:"
+msgstr "Ağ maskesi:"
+
+#: ../js/main.js:874 ../js/main.js:916 ../js/main.js:1585 ../js/main.js:1624
+#: ../js/main.js:2206 ../js/main.js:2248 ../js/main.js:2296 ../js/modals.js:50
+#: ../js/modals.js:138 ../js/modals.js:220
+msgid "Gateway:"
+msgstr "Geçit:"
+
+#: ../js/main.js:875 ../js/main.js:924 ../js/main.js:2207 ../js/main.js:2249
+#: ../js/main.js:2297 ../js/modals.js:54 ../js/modals.js:142
+#: ../js/modals.js:224
+msgid "DNS server:"
+msgstr "DNS sunucusu:"
+
+#: ../js/main.js:1011 ../js/main.js:1083
+msgid "PPPoE:"
+msgstr "PPPoE:"
+
+#: ../js/main.js:1024 ../js/main.js:1105
+msgid "Login:"
+msgstr "Ad:"
+
+#: ../js/main.js:1025 ../js/main.js:1106 ../js/modals.js:273
+msgid "Password:"
+msgstr "Şifre:"
+
+#: ../js/main.js:1107
+msgid "DNS:"
+msgstr "DNS:"
+
+#: ../js/main.js:1175
+msgid "Wi-Fi adapter not connected"
+msgstr "Wi-Fi adaptör bağlı değil"
+
+#: ../js/main.js:1274 ../js/main.js:1338
+msgid "Open"
+msgstr "Açık"
+
+#: ../js/main.js:1275 ../js/main.js:1339
+msgid "Shared key"
+msgstr "Paylaşılan anahtar"
+
+#: ../js/main.js:1276 ../js/main.js:1340
+msgid "Auto Open/Shared key"
+msgstr "Otomatik açık/Paylaşılan anahtar"
+
+#: ../js/main.js:1281 ../js/main.js:1345
+msgid "NONE"
+msgstr "Kesildi"
+
+#: ../js/main.js:1302 ../js/main.js:1397 ../js/main.js:4278
+msgid "Authentication mode:"
+msgstr "Yetkilendirilme modu:"
+
+#: ../js/main.js:1303 ../js/main.js:1398 ../js/main.js:4279
+msgid "Encryption:"
+msgstr "Kodlama:"
+
+#: ../js/main.js:1304 ../js/main.js:1399 ../js/main.js:1452 ../js/main.js:1464
+#: ../js/main.js:1468 ../js/main.js:1475 ../js/main.js:1486
+msgid "Key or passphrase:"
+msgstr "Şifre:"
+
+#: ../js/main.js:1305 ../js/main.js:1400
+msgid "Keys and encoding setup"
+msgstr "Tuşlar ve kodlama kurulumu"
+
+#: ../js/main.js:1670 ../js/main.js:1691
+msgid "Video output mode:"
+msgstr "Video çıkışı modu:"
+
+#: ../js/main.js:1688
+msgid "Graphic resolution:"
+msgstr "Grafik çözünürlük:"
+
+#: ../js/main.js:1757
+msgid "Auto frame rate:"
+msgstr "Saniyelik görüntü sayısı  otomatik ayarlanması:"
+
+#: ../js/main.js:1758 ../js/main.js:1929 ../js/main.js:2235 ../js/main.js:3288
+#: ../js/modals.js:121 ../js/modals.js:162
+msgid "Disabled"
+msgstr "Kesildi"
+
+#: ../js/main.js:1769
+msgid "HDMI/DVI:"
+msgstr "HDMI/DVI:"
+
+#: ../js/main.js:1770
+msgid "HDMI"
+msgstr "HDMI"
+
+#: ../js/main.js:1771
+msgid "DVI"
+msgstr "DVI"
+
+#: ../js/main.js:1774
+msgid ""
+"<span style='color: red'>With option enabled in DIV mode<br/>HDMI audio will "
+"be missing</span>"
+msgstr ""
+"<span style=\"color: red\">DVI rejimi seçmekte ses HDMI kablosu üzerinden "
+"çıkmaz</span> "
+
+#: ../js/main.js:1917
+msgid "Language:"
+msgstr "Dil:"
+
+#: ../js/main.js:1927
+msgid "Time zone:"
+msgstr "Saat dilimi:"
+
+#: ../js/main.js:1928
+msgid "UPnP client enabled:"
+msgstr "UPnP istemcisi aç:"
+
+#: ../js/main.js:1931
+msgid "Wireless"
+msgstr "Kablosuz"
+
+#: ../js/main.js:1933
+msgid "Buffer size (ms):"
+msgstr "Buffer büyüklüğü (msan.):"
+
+#: ../js/main.js:2038
+msgid "Storages access mode:"
+msgstr "Depolama cıhazlarına erişim modu:"
+
+#: ../js/main.js:2039
+msgid "full access"
+msgstr "tam erişim"
+
+#: ../js/main.js:2040
+msgid "read only"
+msgstr "sadece okuma"
+
+#: ../js/main.js:2043
+msgid "This change will take effect after reboot"
+msgstr "Bu değişiklik sadece yeni açılmaktan sonra yürürlüğe girer"
+
+#: ../js/main.js:2047
+msgid "IGMP version:"
+msgstr "IGMP versiyonu: "
+
+#: ../js/main.js:2051
+msgid "Multicast proxy enabled:"
+msgstr "Multicast proxy aç:"
+
+#: ../js/main.js:2060 ../js/main.js:2097
+msgid "Multicast proxy URL:"
+msgstr "Multicast proxy URL:"
+
+#: ../js/main.js:2189 ../js/modals.js:23 ../js/modals.js:81
+msgid "Manual DNS"
+msgstr "DNS değiştir"
+
+#: ../js/main.js:2192 ../js/main.js:2282 ../js/modals.js:19 ../js/modals.js:77
+#: ../js/modals.js:197 ../js/modals.js:243
+msgid "Static IP"
+msgstr "Statik IP"
+
+#: ../js/main.js:2195 ../js/modals.js:16 ../js/modals.js:74
+msgid "No config"
+msgstr "Ayarlar yok"
+
+#: ../js/main.js:2199 ../js/main.js:2243 ../js/main.js:2290
+msgid "Current configuration"
+msgstr "Carî ayarlar"
+
+#: ../js/main.js:2201 ../js/main.js:2245 ../js/main.js:2292
+msgid "Current status"
+msgstr "Cari durum"
+
+#: ../js/main.js:2202 ../js/main.js:2246 ../js/main.js:2293 ../js/modals.js:34
+#: ../js/modals.js:130 ../js/modals.js:208
+msgid "Link status:"
+msgstr "Link durumu:"
+
+#: ../js/main.js:2203 ../js/main.js:2294 ../js/main.js:3540 ../js/modals.js:38
+#: ../js/modals.js:212
+msgid "MAC address:"
+msgstr "MAC adresi:"
+
+#: ../js/main.js:2305
+msgid "Restart portal?"
+msgstr "Portalı yenilemek istiyor musunuz?"
+
+#: ../js/main.js:2329
+msgid "Reset settings?"
+msgstr "Ayarları sıfırlamak istiyor musunuz?"
+
+#: ../js/main.js:2345 ../js/main.js:2603
+msgid "HTTP"
+msgstr "HTTP"
+
+#: ../js/main.js:2346 ../js/main.js:2604
+msgid "USB"
+msgstr "USB"
+
+#: ../js/main.js:2349 ../js/main.js:2607
+msgid "Multicast"
+msgstr "Multicast"
+
+#: ../js/main.js:2352 ../js/main.js:2610
+msgid "TFTP"
+msgstr "TFTP"
+
+#: ../js/main.js:2367 ../js/main.js:2598
+msgid "Update method:"
+msgstr "Güncelleme yöntemi:"
+
+#: ../js/main.js:2416 ../js/main.js:2599
+msgid "Disk:"
+msgstr "Disk:"
+
+#: ../js/main.js:2423 ../js/main.js:2444 ../js/main.js:2616
+msgid "No disk found"
+msgstr "Disk bulunamadı"
+
+#: ../js/main.js:2427 ../js/main.js:2600
+msgid "Path:"
+msgstr "Yol:"
+
+#: ../js/main.js:2535
+msgid "Incorrect URL"
+msgstr "URL yanlış"
+
+#: ../js/main.js:2546
+msgid "USB device not found!"
+msgstr "USB aygıtı bulunamadı!"
+
+#: ../js/main.js:2556 ../js/main.js:2570 ../js/main.js:3181
+msgid "Warning"
+msgstr "Uyarı"
+
+#: ../js/main.js:2556 ../js/main.js:2570
+msgid ""
+"<span class=\"alert\">Warning!</span> The device will be rebooted and "
+"updated automatically."
+msgstr ""
+"<span class='alert'>Dikkat!</span> Cihaz otomatik olarak yeniden açılacak."
+
+#: ../js/main.js:2558 ../js/main.js:2572
+msgid "Update"
+msgstr "Güncelle"
+
+#: ../js/main.js:2560 ../js/main.js:2574
+msgid "Starting update..."
+msgstr "Güncelleme başlıyor..."
+
+#: ../js/main.js:2562 ../js/main.js:2576
+msgid "Some error occurred. Please, contact your operator."
+msgstr "Bir hata ortaya çıktı. Operatörünüze başvurunuz, lütfen."
+
+#: ../js/main.js:2587
+msgid "Verify"
+msgstr "Doğrula"
+
+#: ../js/main.js:2659 ../js/main.js:2689
+msgid "General"
+msgstr "Genel"
+
+#: ../js/main.js:2660 ../js/main.js:2768
+msgid "Portals"
+msgstr "Portallar"
+
+#: ../js/main.js:2696 ../js/main.js:2712
+msgid "NTP server:"
+msgstr "NTP sunucusu:"
+
+#: ../js/main.js:2795
+msgid "Portal 1 name"
+msgstr "Portal 1 ad"
+
+#: ../js/main.js:2796 ../js/main.js:2832
+msgid "Portal 1 URL"
+msgstr "Portal 1 URL"
+
+#: ../js/main.js:2797
+msgid "Portal 2 name"
+msgstr "Portal 2 ad"
+
+#: ../js/main.js:2798 ../js/main.js:2849
+msgid "Portal 2 URL"
+msgstr "Portal 2 URL"
+
+#: ../js/main.js:2917 ../js/main.js:2918 ../js/main.js:2919 ../js/main.js:2920
+msgid "sec."
+msgstr "san."
+
+#: ../js/main.js:2921 ../js/main.js:2922
+msgid "min."
+msgstr "dk."
+
+#: ../js/main.js:2923
+msgid "Without auto start"
+msgstr "Otomatik yüklenmeden"
+
+#: ../js/main.js:2926
+msgid "Multiportal mode:"
+msgstr "Multiportal modu:"
+
+#: ../js/main.js:2927
+msgid "Default portal:"
+msgstr "Standart portal:"
+
+#: ../js/main.js:2928
+msgid "Portal load delay:"
+msgstr "Portal yüklenmesinin gecikmesi:"
+
+#: ../js/main.js:2929 ../js/main.js:4105 ../js/main.js:4109 ../js/main.js:4138
+#: ../js/main.js:4142
+msgid "Portal:"
+msgstr "Portal :"
+
+#: ../js/main.js:2930 ../js/main.js:3156
+msgid "Use portal"
+msgstr "Portalı kullan"
+
+#: ../js/main.js:2931 ../js/main.js:3157
+msgid "Name"
+msgstr "Ad"
+
+#: ../js/main.js:2932 ../js/main.js:3158
+msgid "URL"
+msgstr "URL"
+
+#: ../js/main.js:3020
+msgid "Not all required fields are filled."
+msgstr "Tüm alanlar doldurulmadı."
+
+#: ../js/main.js:3064
+msgid "Use DHCP portal:"
+msgstr "DHCP portalını kullan:"
+
+#: ../js/main.js:3073 ../js/main.js:3101
+msgid "DHCP portal:"
+msgstr "DHCP portalı:"
+
+#: ../js/main.js:3074 ../js/main.js:3109
+msgid "Bootstrap URL:"
+msgstr "Bootstrap URL:"
+
+#: ../js/main.js:3075 ../js/main.js:3117
+msgid "Update URL:"
+msgstr "URL güncelle:"
+
+#: ../js/main.js:3076 ../js/main.js:3125
+msgid "Control channel URL:"
+msgstr "Yönetim kanalı (URL):"
+
+#: ../js/main.js:3181
+msgid ""
+"For correct work of \"Multiportal mode\" it is necessary to turn off \"Use "
+"DHCP portal\" (System settings/Servers/More)"
+msgstr ""
+"Multiportal modunun uygun çalışmasına  \"DHCP portalını kullan\" kapatmanız "
+"lâzım (Sistem ayarları/Sunucular/Fazla) "
+
+#: ../js/main.js:3211
+msgid "Initial volume:"
+msgstr "İlk ses kuvveti:"
+
+#: ../js/main.js:3212
+msgid "Audio output mode:"
+msgstr "Ses çıkışı modu::"
+
+#: ../js/main.js:3213
+msgid "Stereo"
+msgstr "Stereo"
+
+#: ../js/main.js:3214
+msgid "Mono"
+msgstr "Mono"
+
+#: ../js/main.js:3215
+msgid "Mono Left"
+msgstr "Mono sol"
+
+#: ../js/main.js:3216
+msgid "Mono Right"
+msgstr "Mono sağ"
+
+#: ../js/main.js:3287
+msgid "Dynamic range compression:"
+msgstr "Dinamik aralığın sıkıştırılma:"
+
+#: ../js/main.js:3296
+msgid "Max"
+msgstr "Max."
+
+#: ../js/main.js:3298
+msgid "Operating mode:"
+msgstr "İşleme modu:"
+
+#: ../js/main.js:3304
+msgid "SPDIF Mode:"
+msgstr "SPDIF rejimi:"
+
+#: ../js/main.js:3308
+msgid "HDMI Audio:"
+msgstr "HDMI sesi:"
+
+#: ../js/main.js:3398
+msgid "Russian"
+msgstr "Rusça"
+
+#: ../js/main.js:3399
+msgid "Ukrainian"
+msgstr "Ukraynaca"
+
+#: ../js/main.js:3400
+msgid "English"
+msgstr "İngilizce"
+
+#: ../js/main.js:3401
+msgid "German"
+msgstr "Almanca"
+
+#: ../js/main.js:3402
+#, fuzzy
+msgid "Turkish"
+msgstr "Türk"
+
+#: ../js/main.js:3403
+#, fuzzy
+msgid "Bulgarian"
+msgstr "Bulgar"
+
+#: ../js/main.js:3404
+#, fuzzy
+msgid "Greek"
+msgstr "Yunan"
+
+#: ../js/main.js:3405
+#, fuzzy
+msgid "Spanish"
+msgstr "İspanyolca"
+
+#: ../js/main.js:3494
+msgid ""
+"None of the proposed layouts selected.<br>Layouts will be selected according "
+"to the location."
+msgstr "Sunulan düzeni seçilmedi.<br>Düzenler yerelleştirmeye göre seçilecek."
+
+#: ../js/main.js:3538
+msgid "Model:"
+msgstr "Model:"
+
+#: ../js/main.js:3539
+msgid "Serial number:"
+msgstr "Seri numarası:"
+
+#: ../js/main.js:3541
+msgid "Vendor:"
+msgstr "Üretici:"
+
+#: ../js/main.js:3542
+msgid "Hardware version:"
+msgstr "Donanım versiyonu:"
+
+#: ../js/main.js:3543
+msgid "Active bank:"
+msgstr "Aktif banka:"
+
+#: ../js/main.js:3544
+msgid "Image version:"
+msgstr "Kalıp dosyası versiyonu:"
+
+#: ../js/main.js:3545
+msgid "Image description:"
+msgstr "Kalıp dosyası tarifi:"
+
+#: ../js/main.js:3546
+#, fuzzy
+msgid "Image date:"
+msgstr "Image date:"
+
+#: ../js/main.js:3547
+msgid "RootFS version:"
+msgstr "RootFS versiyonu:"
+
+#: ../js/main.js:3555
+msgid "Device is going to reboot. Are you sure?"
+msgstr "Cihaz yeni açılacak. Yeni açmak istemekten emin misiniz?"
+
+#: ../js/main.js:3568
+msgid ""
+"<span style=\"color: red\">User data will be lost!</span><br>We strongly "
+"recommend read Menu Guide.<br>Do you want to do it?"
+msgstr ""
+"<span style=\"color: red\">Kullanıcı verileri tamamen silinecek!</span> "
+"<br>Menü Kılavuzunu okumanızu tavsiye ederiz. <br>Kullanıcı verileri silmek "
+"istiyor musunuz? "
+
+#: ../js/main.js:3607
+msgid "Use remote control:"
+msgstr "Uzaktan kumanda kullan:"
+
+#: ../js/main.js:3620
+msgid "Device name:"
+msgstr "Cihazın adı:"
+
+#: ../js/main.js:3621
+msgid "Password (numbers only):"
+msgstr "Şifre (rakam sadece):"
+
+#: ../js/main.js:3641
+msgid "Device name"
+msgstr "Cihaz bilgisi"
+
+#: ../js/main.js:3647
+msgid "Password"
+msgstr "Şifre:"
+
+#: ../js/main.js:3678 ../js/main.js:3700 ../js/main.js:3714
+msgid "Passphrase:"
+msgstr "Parola:"
+
+#: ../js/main.js:3679
+msgid "Generate WEP 64 keys"
+msgstr "64 bit anahtarları oluştur"
+
+#: ../js/main.js:3680
+msgid "Generate WEP 128 keys"
+msgstr "128 bit anahtarları oluştur"
+
+#: ../js/main.js:3681 ../js/main.js:3728
+msgid "Default key"
+msgstr "Standart anahtar"
+
+#: ../js/main.js:3682 ../js/main.js:3683 ../js/main.js:3684 ../js/main.js:3685
+#: ../js/main.js:3742 ../js/main.js:3750 ../js/main.js:3754 ../js/main.js:3768
+#: ../js/main.js:3776 ../js/main.js:3781 ../js/main.js:3785 ../js/main.js:3798
+#: ../js/main.js:3806 ../js/main.js:3810 ../js/main.js:3815 ../js/main.js:3828
+#: ../js/main.js:3836 ../js/main.js:3840 ../js/main.js:3844
+msgid "Key"
+msgstr "Anahtar"
+
+#: ../js/main.js:3682 ../js/main.js:3683 ../js/main.js:3684 ../js/main.js:3685
+msgid "symbols"
+msgstr "semboller"
+
+#: ../js/main.js:4076
+msgid "Successfully saved"
+msgstr "Başarılı kaydedildi"
+
+#: ../js/main.js:4082
+msgid "Same as video"
+msgstr "Videoya göre"
+
+#: ../js/main.js:4097 ../js/main.js:4122
+msgid "Embedded portal"
+msgstr "Oturtulmuş portal"
+
+#: ../js/main.js:4267
+msgid "Networks:"
+msgstr "Ağlar:"
+
+#: ../js/main.js:4277
+msgid "SSID:"
+msgstr "SSID:"
+
+#: ../js/main.js:4280
+msgid "Frequency:"
+msgstr "Frekans:"
+
+#: ../js/main.js:4281
+msgid "Channel:"
+msgstr "Kanal:"
+
+#: ../js/main.js:4282
+msgid "Signal info:"
+msgstr "Sinyal bilgisi:"
+
+#: ../js/main.js:4314
+msgid "Detailed info on selected network"
+msgstr "Seçilen ağın ayrıntılı bilgisi"
+
+#: ../js/modals.js:30 ../js/modals.js:126 ../js/modals.js:204
+msgid "Current configuration:"
+msgstr "Carî ayarlar:"
+
+#: ../js/modals.js:289
+#, fuzzy
+msgid "Enter password"
+msgstr "Enter password"
+
+#: ../js/modals.js:316
+#, fuzzy
+msgid "Ok"
+msgstr "Ok"
+
+#: ../js/modals.js:321
+#, fuzzy
+msgid "Wrong password!"
+msgstr "Wrong password!"
+
+#~ msgid "Not connected "
+#~ msgstr "Bağlı değil"
+
+#~ msgid "Connected"
+#~ msgstr "Bağlı"
