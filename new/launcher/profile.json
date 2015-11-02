@@ -104,6 +104,13 @@
 					"icon": "img/{0}/icons/games/memory.png",
 					"color": "#f9a91a",
 					"url": "../memory/index.html"
+				},
+				{
+					"name": "2048",
+					"info": "2048 is one of the world’s most popular puzzles.",
+					"icon": "/stalker_portal/external/2048/img/{0}/icons/2015.png",
+					"color": "#97897c",
+					"url": "../../external/2048/index.html"
 				}
 			]
 		}

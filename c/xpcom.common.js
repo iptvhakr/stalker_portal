@@ -447,10 +447,6 @@ function common_xpcom(){
                     loader.add(this.all_modules);
                 }
 
-                this.all_modules = this.all_modules.map(function(module){
-                    return module.replace('external_', '');
-                });
-
                 if (window.self !== window.top){
                     // notify parent to show this window
                     parent && parent.postMessage('show', '*');
@@ -502,10 +498,6 @@ function common_xpcom(){
                 }else{
                     loader.add(this.all_modules);
                 }
-
-                this.all_modules = this.all_modules.map(function(module){
-                    return module.replace('external_', '');
-                });
 
             },
 
