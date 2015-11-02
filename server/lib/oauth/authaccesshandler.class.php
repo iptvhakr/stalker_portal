@@ -37,6 +37,8 @@ class AuthAccessHandler extends AccessHandler
             // init user as STB
             \Stb::getInstance()->getProfile();
             $user = \User::getByMac(\Stb::getInstance()->mac);
+
+            $request->setUsername($user->getLogin());
         }
 
         if (!$user){
