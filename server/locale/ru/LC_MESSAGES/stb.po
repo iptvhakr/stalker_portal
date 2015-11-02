@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-02 13:46+0300\n"
-"PO-Revision-Date: 2015-11-02 13:48+0300\n"
+"POT-Creation-Date: 2015-11-02 13:58+0300\n"
+"PO-Revision-Date: 2015-11-02 15:54+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -1037,7 +1037,7 @@ msgstr "Логин доступен"
 
 #: ../../../../admin/src/Controller/AdminsController.php:237
 msgid "Account \"admin\" is not editable. You may change only password."
-msgstr "Аккаунт \"admin\" не редактируется. Вы можете изменить только пароль."
+msgstr "Аккаунт \"admin \" не редактируется. Вы можете изменить только пароль."
 
 #: ../../../../admin/src/Controller/AdminsController.php:263
 #: ../../../tools/misctranslations.php:784
@@ -2451,11 +2451,11 @@ msgstr "Удалить тарифный план"
 
 #: ../../../tools/misctranslations.php:426
 msgid "Logs on/off of user's packages"
-msgstr "Лог включения/отключения пакетов пользователя"
+msgstr "Лог вкл/откл пакетов пользователя"
 
 #: ../../../tools/misctranslations.php:427
 msgid "Logs on/off of user's packages by page + filters"
-msgstr "Лог включения/отключения пакетов пользователя по-странично + фильтры"
+msgstr "Лог вкл/откл пакетов пользователя по-странично + фильтры"
 
 #: ../../../tools/misctranslations.php:430
 msgid "List of tasks"
@@ -2832,7 +2832,7 @@ msgstr "Список видео-категорий по-странично + ф�
 
 #: ../../../tools/misctranslations.php:522
 msgid "Change the order of categories"
-msgstr "Изменить порядок видео-категорий"
+msgstr "Изменить порядок видео-жанров"
 
 #: ../../../tools/misctranslations.php:523
 msgid "List of video genres"
@@ -4799,7 +4799,12 @@ msgstr ""
 "Портал временно недоступен.<br>Пожалуйста, повторите попытку позже."
 "<br>Приносим извинения за неудобства."
 
-#: ../../../lib/stb.class.php:607
+#: ../../../lib/stb.class.php:563 ../../../lib/stb.class.php:581
+#, php-format
+msgid "Use your username and password to login or register on %s"
+msgstr "Для входа используйте свой логин и пароль или зарегистрируйтесь на %s"
+
+#: ../../../lib/stb.class.php:609
 #, php-format
 msgid "Welcome %s<br>We are glad to see you on the Stalker portal!"
 msgstr "Добро пожаловать %s<br>Мы рады видеть Вас в портале Stalker!"
@@ -9621,7 +9626,7 @@ msgid "Text"
 msgstr "Текст"
 
 msgid "The fields \"Login\" and \"Group\" are required"
-msgstr "Поля \"Логин\" и \"Группа\" оязательные"
+msgstr "Поля \"Логин\" и \"Группа\" обязательны"
 
 msgid "Time correction for EPG"
 msgstr "Коррекция времени для EPG"

@@ -290,8 +290,28 @@ function common_xpcom(){
 
     this.init_auth_dialog = function(){
         this.auth_dialog = new ModalForm({"title" : get_word('auth_title')});
-        this.auth_dialog.addItem(new ModalFormInput({"label" : get_word('auth_login'),    "name" : "login",    "onchange" : function(){_debug('change'); stb.auth_dialog.resetStatus()}}));
-        this.auth_dialog.addItem(new ModalFormInput({"label" : get_word('auth_password'), "name" : "password", "onchange" : function(){_debug('change'); stb.auth_dialog.resetStatus()}}));
+        this.auth_dialog.addItem(new ModalFormInput({
+            "label": get_word('auth_login'),
+            "name": "login",
+            "onchange": function () {
+                _debug('change');
+                stb.auth_dialog.resetStatus();
+                if (stb.msg && stb.msg.on){
+                    stb.msg.hide();
+                }
+            }
+        }));
+        this.auth_dialog.addItem(new ModalFormInput({
+            "label": get_word('auth_password'),
+            "name": "password",
+            "onchange": function () {
+                _debug('change');
+                stb.auth_dialog.resetStatus();
+                if (stb.msg && stb.msg.on){
+                    stb.msg.hide();
+                }
+            }
+        }));
         var self = this;
         this.auth_dialog.addItem(new ModalFormButton(
             {
@@ -337,6 +357,10 @@ function common_xpcom(){
     this.init_alerts = function(){
         _debug('stb.init_alerts');
 
+        if (this.notice){
+            return;
+        }
+
         this.notice = new _alert();
 
         this.msg = new _alert('info');
@@ -344,6 +368,15 @@ function common_xpcom(){
 
         this.confirm = new _alert('confirm');
         this.confirm.bind();
+
+        if (this.user['info']){
+
+            stb.msg.push(
+                {
+                    msg : this.user['info']
+                }
+            );
+        }
     };
 
     this.get_server_params = function(){
