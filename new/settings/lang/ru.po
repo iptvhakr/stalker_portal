@@ -1,0 +1,859 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: settings\n"
+"POT-Creation-Date: 2015-07-27 12:20+0200\n"
+"PO-Revision-Date: 2015-07-27 12:20+0200\n"
+"Last-Translator: Harry <harry@aaa.aa>\n"
+"Language-Team: \n"
+"Language: Russian\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.7\n"
+"X-Poedit-KeywordsList: _;gettext.data\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../js/base_function.js:6 ../js/keypress.js:470 ../js/main.js:776
+#: ../js/main.js:943 ../js/main.js:2306 ../js/main.js:2329 ../js/main.js:3556
+#: ../js/main.js:3568
+msgid "Confirm"
+msgstr "Подтверждение"
+
+#: ../js/base_function.js:6 ../js/keypress.js:470 ../js/keypress.js:481
+#: ../js/main.js:778 ../js/main.js:841 ../js/main.js:929 ../js/main.js:945
+#: ../js/main.js:1158 ../js/main.js:1493 ../js/main.js:1549 ../js/main.js:1637
+#: ../js/main.js:2306 ../js/main.js:2331 ../js/main.js:2557 ../js/main.js:2571
+#: ../js/main.js:2718 ../js/main.js:2854 ../js/main.js:3026 ../js/main.js:3028
+#: ../js/main.js:3131 ../js/main.js:3556 ../js/main.js:3570 ../js/main.js:3656
+#: ../js/main.js:3701 ../js/main.js:3715 ../js/main.js:3849 ../js/modals.js:59
+#: ../js/modals.js:147 ../js/modals.js:229 ../js/modals.js:289
+msgid "Cancel"
+msgstr "Отмена"
+
+#: ../js/base_function.js:6 ../js/main.js:138 ../js/main.js:4222
+#: ../js/main.js:4247
+msgid "Save"
+msgstr "Сохранить"
+
+#: ../js/keypress.js:470
+msgid ""
+"You have changed some settings.<br>To apply new settings it is necessary to "
+"reboot device.<br>Reboot now?"
+msgstr ""
+"Были изменены важные настройки, которые<br>вступят в силу после перезапуска "
+"устройства.<br>Выполнить перезапуск сейчас?"
+
+#: ../js/keypress.js:476 ../js/keypress.js:487 ../js/main.js:780
+#: ../js/main.js:947 ../js/main.js:2306 ../js/main.js:2333 ../js/main.js:3556
+#: ../js/main.js:3571
+msgid "Yes"
+msgstr "Да"
+
+#: ../js/keypress.js:481
+msgid "Confirmation"
+msgstr "Подтверждение"
+
+#: ../js/keypress.js:481
+msgid ""
+"You have changed some settings.<br>To apply new settings it is necessary to "
+"restart portal.<br>Restart now?"
+msgstr ""
+"Были изменены важные настройки, которые<br>вступят в силу после перезапуска "
+"портала.<br>Выполнить перезапуск сейчас?"
+
+#: ../js/keypress.js:514 ../js/keypress.js:583
+msgid "Some settings have been changed"
+msgstr "Некоторые настройки были изменены"
+
+#: ../js/main.js:11
+msgid "No data"
+msgstr "Нет данных"
+
+#: ../js/main.js:44
+msgid "USB storage is connected"
+msgstr "Подключен USB-накопитель"
+
+#: ../js/main.js:121
+msgid "Exit"
+msgstr "Выход"
+
+#: ../js/main.js:129 ../js/main.js:1744 ../js/main.js:2033 ../js/main.js:2662
+#: ../js/main.js:2891 ../js/main.js:3059 ../js/main.js:3268 ../js/main.js:4220
+msgid "More"
+msgstr "Дополнительно"
+
+#: ../js/main.js:132 ../js/main.js:4225
+msgid "Up"
+msgstr "Вверх"
+
+#: ../js/main.js:135 ../js/main.js:4227
+msgid "Down"
+msgstr "Вниз"
+
+#: ../js/main.js:158
+msgid "Info"
+msgstr "Информация"
+
+#: ../js/main.js:178 ../js/main.js:4251
+msgid "Add network"
+msgstr "Добавить сеть"
+
+#: ../js/main.js:181 ../js/main.js:4242 ../js/modals.js:61 ../js/modals.js:149
+#: ../js/modals.js:231
+msgid "Refresh"
+msgstr "Обновить"
+
+#: ../js/main.js:578 ../js/main.js:582 ../js/main.js:841 ../js/main.js:929
+#: ../js/main.js:1158 ../js/main.js:1175 ../js/main.js:1493 ../js/main.js:1549
+#: ../js/main.js:1637 ../js/main.js:1766 ../js/main.js:1775 ../js/main.js:2103
+#: ../js/main.js:2718 ../js/main.js:2854 ../js/main.js:3026 ../js/main.js:3028
+#: ../js/main.js:3131 ../js/main.js:3656 ../js/main.js:3701 ../js/main.js:3715
+#: ../js/main.js:3849
+msgid "Notice"
+msgstr "Уведомление"
+
+#: ../js/main.js:578 ../js/main.js:1766
+msgid ""
+"During file playback, video output frame rate will be automatically "
+"adjusted<br/>according to played content.<br />Notes:<br />- works only with "
+"HDMI 720p/1080i/1080p video modes<br />- make sure your TV supports required "
+"video mode"
+msgstr ""
+"Частота кадров видеовыхода будет автоматически подстроена<br/>под "
+"проигрываемый контент в процессе воспроизведения.<br />Замечания:<br />- "
+"работает только в HDMI 720p/1080i/1080p режимах видео.<br />- Убедитесь, что "
+"ваш телевизор поддерживает требуемый режим."
+
+#: ../js/main.js:578 ../js/main.js:582 ../js/main.js:1175 ../js/main.js:1766
+#: ../js/main.js:1775 ../js/main.js:2103 ../js/main.js:3182
+msgid "Close"
+msgstr "Закрыть"
+
+#: ../js/main.js:582
+msgid ""
+"<span style=\"color: red\">With option enabled in DIV mode<br/>HDMI audio "
+"will be missing</span>"
+msgstr ""
+"<span style=\"color: red\">При выборе режима DVI звук по HDMI-кабелю "
+"передаваться не будет</span>"
+
+#: ../js/main.js:650 ../js/main.js:708 ../js/main.js:4015
+msgid "Network"
+msgstr "Сеть"
+
+#: ../js/main.js:651 ../js/main.js:2647 ../js/main.js:4016
+msgid "Servers"
+msgstr "Серверы"
+
+#: ../js/main.js:652 ../js/main.js:1658 ../js/main.js:4017
+msgid "Video"
+msgstr "Видео"
+
+#: ../js/main.js:653 ../js/main.js:3197 ../js/main.js:4018
+msgid "Audio"
+msgstr "Аудио"
+
+#: ../js/main.js:654 ../js/main.js:1850 ../js/main.js:1853 ../js/main.js:4019
+msgid "Advanced settings"
+msgstr "Расширенные настройки"
+
+#: ../js/main.js:655 ../js/main.js:3416 ../js/main.js:4020
+msgid "Keyboard layout"
+msgstr "Раскладка клавиатуры"
+
+#: ../js/main.js:656 ../js/main.js:768 ../js/main.js:993 ../js/main.js:1206
+#: ../js/main.js:2134 ../js/main.js:4021 ../js/main.js:4234 ../js/modals.js:59
+#: ../js/modals.js:147 ../js/modals.js:229
+msgid "Network info"
+msgstr "Состояние сети"
+
+#: ../js/main.js:657 ../js/main.js:3520 ../js/main.js:4022
+msgid "Device info"
+msgstr "Информация об устройстве"
+
+#: ../js/main.js:658 ../js/main.js:4023
+msgid "Restart portal"
+msgstr "Перезапуск портала"
+
+#: ../js/main.js:659 ../js/main.js:4024
+msgid "Reboot device"
+msgstr "Перезагрузка устройства"
+
+#: ../js/main.js:660 ../js/main.js:4025
+msgid "Reset settings"
+msgstr "Сброс настроек"
+
+#: ../js/main.js:661 ../js/main.js:4026
+msgid "Clear user data"
+msgstr "Очистить пользовательские данные"
+
+#: ../js/main.js:662 ../js/main.js:2361 ../js/main.js:2525 ../js/main.js:2597
+#: ../js/main.js:4027
+msgid "Software update"
+msgstr "Обновление ПО"
+
+#: ../js/main.js:665 ../js/main.js:3598 ../js/main.js:4030
+msgid "Remote control"
+msgstr "Дистанционное управление"
+
+#: ../js/main.js:688
+msgid "System settings"
+msgstr "Системные Настройки"
+
+#: ../js/main.js:714 ../js/main.js:745 ../js/main.js:2143 ../js/main.js:2173
+msgid "Wired (Ethernet)"
+msgstr "Проводное (Ethernet)"
+
+#: ../js/main.js:715 ../js/main.js:975 ../js/main.js:2144 ../js/main.js:2229
+msgid "PPPoE"
+msgstr "PPPoE"
+
+#: ../js/main.js:716 ../js/main.js:1183 ../js/main.js:2145 ../js/main.js:2272
+msgid "Wireless (Wi-Fi)"
+msgstr "Беспроводное (Wi-Fi)"
+
+#: ../js/main.js:755 ../js/main.js:982 ../js/main.js:1036 ../js/main.js:1194
+#: ../js/main.js:1246
+msgid "Auto (DHCP)"
+msgstr "Авто (DHCP)"
+
+#: ../js/main.js:756 ../js/main.js:807 ../js/main.js:983 ../js/main.js:1118
+#: ../js/main.js:1195 ../js/main.js:1515
+msgid "Auto (DHCP), manual DNS"
+msgstr "Авто (DHCP), DNS вручную"
+
+#: ../js/main.js:757 ../js/main.js:861 ../js/main.js:1196 ../js/main.js:1572
+msgid "Manual"
+msgstr "Вручную"
+
+#: ../js/main.js:758
+msgid "No IP"
+msgstr "Без IP"
+
+#: ../js/main.js:777 ../js/main.js:944
+msgid "Confirm changes?"
+msgstr "Применить изменения?"
+
+#: ../js/main.js:841 ../js/main.js:929 ../js/main.js:1158 ../js/main.js:1493
+#: ../js/main.js:1549 ../js/main.js:1637 ../js/main.js:2103 ../js/main.js:2718
+#: ../js/main.js:2854 ../js/main.js:3028 ../js/main.js:3131 ../js/main.js:3656
+#: ../js/main.js:3701 ../js/main.js:3715 ../js/main.js:3849
+msgid "Following fields filled in incorrectly:"
+msgstr "Следующие поля заполнены неверно:"
+
+#: ../js/main.js:872 ../js/main.js:900 ../js/main.js:1583 ../js/main.js:1608
+#: ../js/main.js:2205 ../js/main.js:2248 ../js/main.js:2296 ../js/modals.js:42
+#: ../js/modals.js:134 ../js/modals.js:216
+msgid "IP address:"
+msgstr "IP адрес:"
+
+#: ../js/main.js:873 ../js/main.js:908 ../js/main.js:1584 ../js/main.js:1616
+#: ../js/main.js:2206 ../js/modals.js:46
+msgid "Network mask:"
+msgstr "Сетевая маска:"
+
+#: ../js/main.js:874 ../js/main.js:916 ../js/main.js:1585 ../js/main.js:1624
+#: ../js/main.js:2207 ../js/main.js:2249 ../js/main.js:2297 ../js/modals.js:50
+#: ../js/modals.js:138 ../js/modals.js:220
+msgid "Gateway:"
+msgstr "Шлюз:"
+
+#: ../js/main.js:875 ../js/main.js:924 ../js/main.js:2208 ../js/main.js:2250
+#: ../js/main.js:2298 ../js/modals.js:54 ../js/modals.js:142
+#: ../js/modals.js:224
+msgid "DNS server:"
+msgstr "DNS сервер:"
+
+#: ../js/main.js:1011 ../js/main.js:1083
+msgid "PPPoE:"
+msgstr "PPPoE:"
+
+#: ../js/main.js:1024 ../js/main.js:1105
+msgid "Login:"
+msgstr "Имя:"
+
+#: ../js/main.js:1025 ../js/main.js:1106 ../js/modals.js:273
+msgid "Password:"
+msgstr "Пароль:"
+
+#: ../js/main.js:1107
+msgid "DNS:"
+msgstr "DNS:"
+
+#: ../js/main.js:1175
+msgid "Wi-Fi adapter not connected"
+msgstr "Wi-Fi адаптер не подключен"
+
+#: ../js/main.js:1274 ../js/main.js:1338
+msgid "Open"
+msgstr "Открытая"
+
+#: ../js/main.js:1275 ../js/main.js:1339
+msgid "Shared key"
+msgstr "Общий ключ"
+
+#: ../js/main.js:1276 ../js/main.js:1340
+msgid "Auto Open/Shared key"
+msgstr "Открытая сеть/Общий ключ"
+
+#: ../js/main.js:1281 ../js/main.js:1345
+msgid "NONE"
+msgstr "Отключен"
+
+#: ../js/main.js:1302 ../js/main.js:1397 ../js/main.js:4279
+msgid "Authentication mode:"
+msgstr "Режим аутентификации:"
+
+#: ../js/main.js:1303 ../js/main.js:1398 ../js/main.js:4280
+msgid "Encryption:"
+msgstr "Шифрование:"
+
+#: ../js/main.js:1304 ../js/main.js:1399 ../js/main.js:1452 ../js/main.js:1464
+#: ../js/main.js:1468 ../js/main.js:1475 ../js/main.js:1486
+msgid "Key or passphrase:"
+msgstr "Пароль:"
+
+#: ../js/main.js:1305 ../js/main.js:1400
+msgid "Keys and encoding setup"
+msgstr "Ввод ключей доступа"
+
+#: ../js/main.js:1670 ../js/main.js:1692
+msgid "Video output mode:"
+msgstr "Режим видеовыхода:"
+
+#: ../js/main.js:1671
+#, fuzzy
+msgid "Auto"
+msgstr "Авто"
+
+#: ../js/main.js:1689
+msgid "Graphic resolution:"
+msgstr "Графическое разрешение:"
+
+#: ../js/main.js:1758
+msgid "Auto frame rate:"
+msgstr "Автоподстройка частоты кадров:"
+
+#: ../js/main.js:1759 ../js/main.js:1930 ../js/main.js:2236 ../js/main.js:3289
+#: ../js/modals.js:121 ../js/modals.js:162
+msgid "Disabled"
+msgstr "Отключено"
+
+#: ../js/main.js:1770
+msgid "HDMI/DVI:"
+msgstr "HDMI/DVI:"
+
+#: ../js/main.js:1771
+msgid "HDMI"
+msgstr "HDMI"
+
+#: ../js/main.js:1772
+msgid "DVI"
+msgstr "DVI"
+
+#: ../js/main.js:1775
+msgid ""
+"<span style='color: red'>With option enabled in DIV mode<br/>HDMI audio will "
+"be missing</span>"
+msgstr ""
+"<span style=\"color: red\">При выборе режима DVI звук по HDMI-кабелю "
+"передаваться не будет</span>"
+
+#: ../js/main.js:1918
+msgid "Language:"
+msgstr "Язык:"
+
+#: ../js/main.js:1928
+msgid "Time zone:"
+msgstr "Часовой пояс:"
+
+#: ../js/main.js:1929
+msgid "UPnP client enabled:"
+msgstr "Запускать UPnP клиент:"
+
+#: ../js/main.js:1932
+msgid "Wireless"
+msgstr "Беспроводная сеть"
+
+#: ../js/main.js:1934
+msgid "Buffer size (ms):"
+msgstr "Размер буфера (мс):"
+
+#: ../js/main.js:2039
+msgid "Storages access mode:"
+msgstr "Режим доступа к накопителям:"
+
+#: ../js/main.js:2040
+msgid "full access"
+msgstr "полный доступ"
+
+#: ../js/main.js:2041
+msgid "read only"
+msgstr "только чтение"
+
+#: ../js/main.js:2044
+msgid "This change will take effect after reboot"
+msgstr "Это изменение вступит в силу после перезагрузки"
+
+#: ../js/main.js:2048
+msgid "IGMP version:"
+msgstr "Версия IGMP:"
+
+#: ../js/main.js:2052
+msgid "Multicast proxy enabled:"
+msgstr "Использовать multicast proxy:"
+
+#: ../js/main.js:2061 ../js/main.js:2098
+msgid "Multicast proxy URL:"
+msgstr "Адрес multicast proxy:"
+
+#: ../js/main.js:2190 ../js/modals.js:23 ../js/modals.js:81
+msgid "Manual DNS"
+msgstr "Изменить DNS"
+
+#: ../js/main.js:2193 ../js/main.js:2283 ../js/modals.js:19 ../js/modals.js:77
+#: ../js/modals.js:197 ../js/modals.js:243
+msgid "Static IP"
+msgstr "Статический IP"
+
+#: ../js/main.js:2196 ../js/modals.js:16 ../js/modals.js:74
+msgid "No config"
+msgstr "Без настроек"
+
+#: ../js/main.js:2200 ../js/main.js:2244 ../js/main.js:2291
+msgid "Current configuration"
+msgstr "Текущие настройки"
+
+#: ../js/main.js:2202 ../js/main.js:2246 ../js/main.js:2293
+msgid "Current status"
+msgstr "Текущее состояние"
+
+#: ../js/main.js:2203 ../js/main.js:2247 ../js/main.js:2294 ../js/modals.js:34
+#: ../js/modals.js:130 ../js/modals.js:208
+msgid "Link status:"
+msgstr "Состояние линка:"
+
+#: ../js/main.js:2204 ../js/main.js:2295 ../js/main.js:3541 ../js/modals.js:38
+#: ../js/modals.js:212
+msgid "MAC address:"
+msgstr "MAC адрес:"
+
+#: ../js/main.js:2306
+msgid "Restart portal?"
+msgstr "Перезапустить портал?"
+
+#: ../js/main.js:2330
+msgid "Reset settings?"
+msgstr "Сбросить настройки?"
+
+#: ../js/main.js:2346 ../js/main.js:2604
+msgid "HTTP"
+msgstr "HTTP"
+
+#: ../js/main.js:2347 ../js/main.js:2605
+msgid "USB"
+msgstr "USB"
+
+#: ../js/main.js:2350 ../js/main.js:2608
+msgid "Multicast"
+msgstr "Multicast"
+
+#: ../js/main.js:2353 ../js/main.js:2611
+msgid "TFTP"
+msgstr "TFTP"
+
+#: ../js/main.js:2368 ../js/main.js:2599
+msgid "Update method:"
+msgstr "Метод обновления:"
+
+#: ../js/main.js:2417 ../js/main.js:2600
+msgid "Disk:"
+msgstr "Диск:"
+
+#: ../js/main.js:2424 ../js/main.js:2445 ../js/main.js:2617
+msgid "No disk found"
+msgstr "Диск не найден"
+
+#: ../js/main.js:2428 ../js/main.js:2601
+msgid "Path:"
+msgstr "Путь:"
+
+#: ../js/main.js:2536
+msgid "Incorrect URL"
+msgstr "Неверный URL"
+
+#: ../js/main.js:2547
+msgid "USB device not found!"
+msgstr "USB устройство не найдено!"
+
+#: ../js/main.js:2557 ../js/main.js:2571 ../js/main.js:3182
+msgid "Warning"
+msgstr "Предупреждение"
+
+#: ../js/main.js:2557 ../js/main.js:2571
+msgid ""
+"<span class=\"alert\">Warning!</span> The device will be rebooted and "
+"updated automatically."
+msgstr ""
+"<span class='alert'>Внимание!</span> Устройство будет перезагружено и "
+"обновлено автоматически."
+
+#: ../js/main.js:2559 ../js/main.js:2573
+msgid "Update"
+msgstr "Обновить"
+
+#: ../js/main.js:2561 ../js/main.js:2575
+msgid "Starting update..."
+msgstr "Запуск обновления..."
+
+#: ../js/main.js:2563 ../js/main.js:2577
+msgid "Some error occurred. Please, contact your operator."
+msgstr "Возникла некоторая ошибка. Пожалуйста свяжитесь со своим оператором."
+
+#: ../js/main.js:2588
+msgid "Verify"
+msgstr "Проверить"
+
+#: ../js/main.js:2660 ../js/main.js:2690
+msgid "General"
+msgstr "Общие"
+
+#: ../js/main.js:2661 ../js/main.js:2769
+msgid "Portals"
+msgstr "Порталы"
+
+#: ../js/main.js:2697 ../js/main.js:2713
+msgid "NTP server:"
+msgstr "NTP сервер:"
+
+#: ../js/main.js:2796
+msgid "Portal 1 name"
+msgstr "Портал 1 имя"
+
+#: ../js/main.js:2797 ../js/main.js:2833
+msgid "Portal 1 URL"
+msgstr "Портал 1 URL"
+
+#: ../js/main.js:2798
+msgid "Portal 2 name"
+msgstr "Портал 2 имя"
+
+#: ../js/main.js:2799 ../js/main.js:2850
+msgid "Portal 2 URL"
+msgstr "Портал 2 URL"
+
+#: ../js/main.js:2918 ../js/main.js:2919 ../js/main.js:2920 ../js/main.js:2921
+msgid "sec."
+msgstr "сек."
+
+#: ../js/main.js:2922 ../js/main.js:2923
+msgid "min."
+msgstr "мин."
+
+#: ../js/main.js:2924
+msgid "Without auto start"
+msgstr "Без автозагрузки"
+
+#: ../js/main.js:2927
+msgid "Multiportal mode:"
+msgstr "Режим мультипортальности:"
+
+#: ../js/main.js:2928
+msgid "Default portal:"
+msgstr "Портал по умолчанию:"
+
+#: ../js/main.js:2929
+msgid "Portal load delay:"
+msgstr "Задержка загрузки портала:"
+
+#: ../js/main.js:2930 ../js/main.js:4106 ../js/main.js:4110 ../js/main.js:4139
+#: ../js/main.js:4143
+msgid "Portal:"
+msgstr "Портал:"
+
+#: ../js/main.js:2931 ../js/main.js:3157
+msgid "Use portal"
+msgstr "Использовать портал"
+
+#: ../js/main.js:2932 ../js/main.js:3158
+msgid "Name"
+msgstr "Имя"
+
+#: ../js/main.js:2933 ../js/main.js:3159
+msgid "URL"
+msgstr "URL"
+
+#: ../js/main.js:3021
+msgid "Not all required fields are filled."
+msgstr "Заполнены не все поля."
+
+#: ../js/main.js:3065
+msgid "Use DHCP portal:"
+msgstr "Использовать DHCP портал:"
+
+#: ../js/main.js:3074 ../js/main.js:3102
+msgid "DHCP portal:"
+msgstr "DHCP портал:"
+
+#: ../js/main.js:3075 ../js/main.js:3110
+msgid "Bootstrap URL:"
+msgstr "Bootstrap URL:"
+
+#: ../js/main.js:3076 ../js/main.js:3118
+msgid "Update URL:"
+msgstr "URL образа:"
+
+#: ../js/main.js:3077 ../js/main.js:3126
+msgid "Control channel URL:"
+msgstr "Канал управления (URL):"
+
+#: ../js/main.js:3182
+msgid ""
+"For correct work of \"Multiportal mode\" it is necessary to turn off \"Use "
+"DHCP portal\" (System settings/Servers/More)"
+msgstr ""
+"Для корректного использования режима мультипортальности необходимо "
+"отключить  \"использовать DHCP портал\" (Системные настройки/Серверы/"
+"Дополнительно)"
+
+#: ../js/main.js:3212
+msgid "Initial volume:"
+msgstr "Начальная громкость:"
+
+#: ../js/main.js:3213
+msgid "Audio output mode:"
+msgstr "Режим вывода звука:"
+
+#: ../js/main.js:3214
+msgid "Stereo"
+msgstr "Стерео"
+
+#: ../js/main.js:3215
+msgid "Mono"
+msgstr "Моно"
+
+#: ../js/main.js:3216
+msgid "Mono Left"
+msgstr "Моно левый"
+
+#: ../js/main.js:3217
+msgid "Mono Right"
+msgstr "Моно правый"
+
+#: ../js/main.js:3288
+msgid "Dynamic range compression:"
+msgstr "Сжатие динамического диапазона:"
+
+#: ../js/main.js:3297
+msgid "Max"
+msgstr "Макс."
+
+#: ../js/main.js:3299
+msgid "Operating mode:"
+msgstr "Operating mode:"
+
+#: ../js/main.js:3305
+msgid "SPDIF Mode:"
+msgstr "Режим SPDIF:"
+
+#: ../js/main.js:3309
+msgid "HDMI Audio:"
+msgstr "HDMI аудио:"
+
+#: ../js/main.js:3399
+msgid "Russian"
+msgstr "Русская"
+
+#: ../js/main.js:3400
+msgid "Ukrainian"
+msgstr "Украинская"
+
+#: ../js/main.js:3401
+msgid "English"
+msgstr "Английская"
+
+#: ../js/main.js:3402
+msgid "German"
+msgstr "Немецкая"
+
+#: ../js/main.js:3403
+msgid "Turkish"
+msgstr "Турецкая"
+
+#: ../js/main.js:3404
+msgid "Bulgarian"
+msgstr "Болгарская"
+
+#: ../js/main.js:3405
+msgid "Greek"
+msgstr "Греческая"
+
+#: ../js/main.js:3406
+msgid "Spanish"
+msgstr "Испанская"
+
+#: ../js/main.js:3495
+msgid ""
+"None of the proposed layouts selected.<br>Layouts will be selected according "
+"to the location."
+msgstr ""
+"Не выбрана ни одна из предложенных раскладок.<br>Раскладки будут выбраны "
+"согласно локализации."
+
+#: ../js/main.js:3539
+msgid "Model:"
+msgstr "Модель:"
+
+#: ../js/main.js:3540
+msgid "Serial number:"
+msgstr "Серийный номер:"
+
+#: ../js/main.js:3542
+msgid "Vendor:"
+msgstr "Производитель:"
+
+#: ../js/main.js:3543
+msgid "Hardware version:"
+msgstr "Версия аппаратуры:"
+
+#: ../js/main.js:3544
+msgid "Active bank:"
+msgstr "Активный банк:"
+
+#: ../js/main.js:3545
+msgid "Image version:"
+msgstr "Версия образа:"
+
+#: ../js/main.js:3546
+msgid "Image description:"
+msgstr "Описание образа:"
+
+#: ../js/main.js:3547
+msgid "Image date:"
+msgstr "Дата образа:"
+
+#: ../js/main.js:3548
+msgid "RootFS version:"
+msgstr "Версия RootFS:"
+
+#: ../js/main.js:3556
+msgid "Device is going to reboot. Are you sure?"
+msgstr "Перезагрузить устройство?"
+
+#: ../js/main.js:3569
+msgid ""
+"<span style=\"color: red\">User data will be lost!</span><br>We strongly "
+"recommend read Menu Guide.<br>Do you want to do it?"
+msgstr ""
+"<span style=\"color: red\">Пользовательские данные будут безвозвратно "
+"удалены!</span> <br>Настоятельно рекомендуем ознакомиться со справкой по "
+"меню.<br>Удалить пользовательские данные?"
+
+#: ../js/main.js:3608
+msgid "Use remote control:"
+msgstr "Использовать дистанционное управление:"
+
+#: ../js/main.js:3621
+msgid "Device name:"
+msgstr "Имя устройства:"
+
+#: ../js/main.js:3622
+msgid "Password (numbers only):"
+msgstr "Пароль (только цифры):"
+
+#: ../js/main.js:3642
+msgid "Device name"
+msgstr "Информация об устройстве"
+
+#: ../js/main.js:3648
+msgid "Password"
+msgstr "Пароль:"
+
+#: ../js/main.js:3679 ../js/main.js:3701 ../js/main.js:3715
+msgid "Passphrase:"
+msgstr "Кодовая фраза:"
+
+#: ../js/main.js:3680
+msgid "Generate WEP 64 keys"
+msgstr "Генерация ключей 64 бит"
+
+#: ../js/main.js:3681
+msgid "Generate WEP 128 keys"
+msgstr "Генерация ключей 128 бит"
+
+#: ../js/main.js:3682 ../js/main.js:3729
+msgid "Default key"
+msgstr "Ключ по умолчанию"
+
+#: ../js/main.js:3683 ../js/main.js:3684 ../js/main.js:3685 ../js/main.js:3686
+#: ../js/main.js:3743 ../js/main.js:3751 ../js/main.js:3755 ../js/main.js:3769
+#: ../js/main.js:3777 ../js/main.js:3782 ../js/main.js:3786 ../js/main.js:3799
+#: ../js/main.js:3807 ../js/main.js:3811 ../js/main.js:3816 ../js/main.js:3829
+#: ../js/main.js:3837 ../js/main.js:3841 ../js/main.js:3845
+msgid "Key"
+msgstr "Ключ"
+
+#: ../js/main.js:3683 ../js/main.js:3684 ../js/main.js:3685 ../js/main.js:3686
+msgid "symbols"
+msgstr "символов"
+
+#: ../js/main.js:4077
+msgid "Successfully saved"
+msgstr "Успешно сохранено"
+
+#: ../js/main.js:4083
+msgid "Same as video"
+msgstr "Соотв. видеовыходу"
+
+#: ../js/main.js:4098 ../js/main.js:4123
+msgid "Embedded portal"
+msgstr "Встроенный портал"
+
+#: ../js/main.js:4268
+msgid "Networks:"
+msgstr "Сети:"
+
+#: ../js/main.js:4278
+msgid "SSID:"
+msgstr "SSID:"
+
+#: ../js/main.js:4281
+msgid "Frequency:"
+msgstr "Частота:"
+
+#: ../js/main.js:4282
+msgid "Channel:"
+msgstr "Канал:"
+
+#: ../js/main.js:4283
+msgid "Signal info:"
+msgstr "Информация о сигнале:"
+
+#: ../js/main.js:4315
+msgid "Detailed info on selected network"
+msgstr "Подробная информация о выбранной сети"
+
+#: ../js/modals.js:30 ../js/modals.js:126 ../js/modals.js:204
+msgid "Current configuration:"
+msgstr "Текущие настройки:"
+
+#: ../js/modals.js:289
+msgid "Enter password"
+msgstr "Введите пароль"
+
+#: ../js/modals.js:316
+#, fuzzy
+msgid "Ok"
+msgstr "Ok"
+
+#: ../js/modals.js:321
+msgid "Wrong password!"
+msgstr "Неверный пароль!"
+
+#~ msgid "Not connected "
+#~ msgstr "Не подключена"
+
+#~ msgid "Connected"
+#~ msgstr "Подключена"
