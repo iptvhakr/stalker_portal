@@ -36,7 +36,7 @@ if ($user['status'] == 1){
     exit;
 }
 
-$profile['stalkerApiDomain'] = $profile['stalkerAuthDomain'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
+/*$profile['stalkerApiDomain'] = $profile['stalkerAuthDomain'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
     .'://'.$_SERVER['HTTP_HOST']
     .Config::getSafe('portal_url', '/stalker_portal/')
     .'api/api_v2.php?_resource=';
@@ -44,7 +44,10 @@ $profile['stalkerApiDomain'] = $profile['stalkerAuthDomain'] = 'http'.(((!empty(
 $profile['stalkerAuthDomain'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
     .'://'.$_SERVER['HTTP_HOST']
     .Config::getSafe('portal_url', '/stalker_portal/')
-    .'auth/token/';
+    .'auth/token/';*/
+
+unset($profile['stalkerApiDomain']);
+unset($profile['stalkerAuthDomain']);
 
 $available_modules = array_diff($all_modules, $disabled_modules);
 
