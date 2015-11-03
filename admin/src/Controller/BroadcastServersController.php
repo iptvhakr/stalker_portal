@@ -305,7 +305,7 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
     public function toggle_server_status() {
         
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['id']) || !array_key_exists('status', $this->postData)) {
-            $this->app->abort(404, 'Page not found...');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
