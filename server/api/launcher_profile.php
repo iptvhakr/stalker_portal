@@ -87,7 +87,8 @@ foreach ($menu as $section){
                 'info'  => $app['description'],
                 'icon'  => $app['app_url'].'/img/{0}/'.$app['icons'].'/2015.png',
                 'color' => $app['icon_color'],
-                'url'   => $app['app_url']
+                'url'   => $app['app_url'],
+                'type'  => 'iframe'
             );
         }
     }
