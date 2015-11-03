@@ -74,23 +74,23 @@ class StoragesModel extends \Model\BaseStalkerModel {
         return $this->mysqlInstance->update('storage_cache', $param, $id)->total_rows() || 1;
     }
     
-    public function getNoCustomVideo($id) {
+    public function getNoCustomVideo() {
         return $this->mysqlInstance->from("video")->where(array('protocol!=' => 'custom'))->get()->all('id');
     }
     
-    public function getNoCustomKaraoke($id) {
+    public function getNoCustomKaraoke() {
         return $this->mysqlInstance->from("karaoke")->where(array('protocol!=' => 'custom'))->get()->all('id');
     }
     
-    public function updateStrages($param, $id){
+    public function updateStorages($param, $id){
         return $this->mysqlInstance->update('storages', $param, array('id'=>$id))->total_rows() || 1;
     }
     
-    public function insertStrages($param){
+    public function insertStorages($param){
         return $this->mysqlInstance->insert('storages', $param)->insert_id();
     }
     
-    public function deleteStrages($id){
+    public function deleteStorages($id){
         return $this->mysqlInstance->delete('storages', array('id' => $id))->total_rows();
     }
     

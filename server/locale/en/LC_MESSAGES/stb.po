@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-02 18:16+0300\n"
-"PO-Revision-Date: 2015-11-02 18:16+0300\n"
+"POT-Creation-Date: 2015-11-03 11:27+0300\n"
+"PO-Revision-Date: 2015-11-03 11:27+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -179,10 +179,10 @@ msgstr "TV Archive has been restarted."
 #: ../../../../admin/src/Controller/AudioClubController.php:1138
 #: ../../../../admin/src/Controller/StatisticsController.php:1043
 #: ../../../../admin/src/Controller/StoragesController.php:166
-#: ../../../../admin/src/Controller/StoragesController.php:193
-#: ../../../../admin/src/Controller/StoragesController.php:252
-#: ../../../../admin/src/Controller/StoragesController.php:272
-#: ../../../../admin/src/Controller/StoragesController.php:331
+#: ../../../../admin/src/Controller/StoragesController.php:194
+#: ../../../../admin/src/Controller/StoragesController.php:253
+#: ../../../../admin/src/Controller/StoragesController.php:273
+#: ../../../../admin/src/Controller/StoragesController.php:332
 #: ../../../../admin/src/Controller/KaraokeController.php:153
 #: ../../../../admin/src/Controller/KaraokeController.php:191
 #: ../../../../admin/src/Controller/KaraokeController.php:211
@@ -278,6 +278,7 @@ msgstr "Failed"
 #: ../../../../admin/src/Controller/TvChannelsController.php:869
 #: ../../../../admin/src/Controller/EventsController.php:405
 #: ../../../../admin/src/Controller/EventsController.php:528
+#: ../../../../admin/src/Controller/StoragesController.php:175
 #: ../../../../admin/src/Controller/UsersController.php:1070
 #: ../../../../admin/src/Controller/UsersController.php:1408
 #: ../../../lang/stb.php:362
@@ -810,11 +811,11 @@ msgstr "Edit audio album"
 msgid "Nothing in this category"
 msgstr "Nothing in this category"
 
-#: ../../../../admin/src/Controller/StoragesController.php:212
+#: ../../../../admin/src/Controller/StoragesController.php:213
 msgid "movies"
 msgstr "movies"
 
-#: ../../../../admin/src/Controller/StoragesController.php:229
+#: ../../../../admin/src/Controller/StoragesController.php:230
 #: ../../../administrator/tasks.php:164 ../../../administrator/index.php:275
 msgid "karaoke"
 msgstr "karaoke"
@@ -4255,6 +4256,14 @@ msgstr "once-only"
 #: ../../../tools/misctranslations.php:898
 msgid "ID is available"
 msgstr "ID is available"
+
+#: ../../../tools/misctranslations.php:899
+msgid "A cache has been reset"
+msgstr "A cache has been reset"
+
+#: ../../../tools/misctranslations.php:900
+msgid "for all servers"
+msgstr "for all servers"
 
 #: ../../../adm/js/js_translate.php:38
 msgid "Wait"
