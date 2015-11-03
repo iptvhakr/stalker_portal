@@ -444,7 +444,7 @@
                     e.stopPropagation();
                     e.preventDefault();
                     $("#modalbox").data('complete', 0);
-                    showModalBox();
+                    JSshowModalBox();
                     var sendData = $(this).data();
                     ajaxPostSend($(this).attr('href'), sendData, false, false, true);
                     $(this).closest('div.open').removeClass('open');
@@ -501,7 +501,6 @@
                 $(document).off('click', '#modalbox_ad .save_storage button[type="submit"]');
                 $(document).on('click', '#modalbox_ad .save_storage button[type="submit"]', function(e){
 
-
                     $.validate({
                         onSuccess: function () {
                             e.stopPropagation();
@@ -514,7 +513,7 @@
                             });
                             hideAdModalBox();
                             $("#modalbox").data('complete', 0);
-                            showModalBox();
+                            JSshowModalBox();
                             ajaxPostSend($('#modalbox_ad form').attr('action'), sendData, false, false, true);
                             return false;
                         }
@@ -525,24 +524,14 @@
         }
 
         document.addEventListener("DOMContentLoaded", yelp, false);
-              
-        var manageList = function (obj) {
-            $('#datatable-1').DataTable().ajax.reload();
-			notty('<span>{{ 'Finish'|trans }}!</span>','success');
-        };
-        
+
         var listMsg = function(data){
-            if (typeof(data.msg) != 'undefined' && data.msg) {
-                notty(data.msg);
-            }
-            manageList(data);
+            JSSuccessModalBox(data);
+            $('#datatable-1').DataTable().ajax.reload();
         };
         
         var listMsgError = function(data){
-            if (typeof(data.msg) != 'undefined' && data.msg) {
-                notty(data.msg);
-            }
-            errAction();
+            JSErrorModalBox(data);
         };
         
         function closeModalBox(){
@@ -551,11 +540,7 @@
             $('#modalbox').find('.devoops-modal-inner').empty();
             $('#modalbox').find('.devoops-modal-bottom').empty();
         };
-        
-        function showModalBox(){
-            notty('<span>{{ 'Request is being processed'|trans }}...</span>','notification');
-        };
-        
+
         function showAdModalBox(title){
             $("#modalbox_ad").find(".modal-header-name").children('span').text(title);
             $("#modalbox_ad").find("input, select").prop("disabled", false).removeAttr('disabled').val('').prop("checked", false).removeAttr('checked');
@@ -576,11 +561,7 @@
             }
             $("#modalbox_ad").hide();
         }
-        
-        var errAction = function(){
-            notty('<span>{{ 'Failed'|trans }}!</span>','error');
-        };
-        
+
         var fillModalAd = function(data){
             if (typeof(data.storage) != 'undefined') {
                 $("#modalbox").data('complete') == 1
