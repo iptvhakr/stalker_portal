@@ -891,8 +891,16 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         $user_id = Mysql::getInstance()->insert('users', $data)->insert_id();
 
         if ($user_id && !empty($data['password'])){
-            $password = md5(md5($data['password']).$user_id);
-            Mysql::getInstance()->update('users', array('password' => $password), array('id' => $user_id));
+
+            $update_data = array(
+                'password' => md5(md5($data['password']).$user_id)
+            );
+
+            if (empty($data['login'])){
+                $update_data['login'] = $user_id;
+            }
+
+            Mysql::getInstance()->update('users', $update_data, array('id' => $user_id));
         }
 
         self::$just_created = true;
@@ -977,6 +985,10 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
                 $uid = self::create($data);
             }else{
+
+                if (empty($data['login'])){
+                    $data['login'] = $user['id'];
+                }
 
                 Mysql::getInstance()->update('users',
                     $data,

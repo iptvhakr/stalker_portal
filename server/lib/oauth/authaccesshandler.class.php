@@ -51,7 +51,9 @@ class AuthAccessHandler extends AccessHandler
 
         $possible_user = $user->getProfile();
 
-        if ((strlen($possible_user['password']) == 32 && md5(md5($password).$possible_user['id']) == $possible_user['password'])
+        if(!$password && $mac){
+            $verified_user = $possible_user;
+        }elseif ((strlen($possible_user['password']) == 32 && md5(md5($password).$possible_user['id']) == $possible_user['password'])
             || (strlen($possible_user['password']) < 32 && $password == $possible_user['password'])){
 
             if (\Config::getSafe('oauth_force_mac_check', false) && \Config::getSafe('oauth_force_serial_number_check', false)){

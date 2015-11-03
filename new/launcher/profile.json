@@ -1,4 +1,6 @@
 {
+	"stalkerApiDomain": "http://v2.api.example.com/",
+	"stalkerAuthDomain": "http://example.com/stalker_portal/auth/token/",
 	"logo": "img/{0}/logo.png",
 	"background": "img/{0}/bg.jpg",
 	"menu": [
@@ -49,6 +51,14 @@
 					"icon": "img/{0}/icons/media/explorer.png",
 					"color": "#8592ff",
 					"url": "../explorer/index.html"
+				},
+				{
+					"name": "browser",
+					"info": "Surf the Internet via built-in browser! To make it easier, you can use the MAGic Remote mobile app or connect the keyboard or mouse via USB port.",
+					"icon": "img/{0}/icons/media/browser.png",
+					"color": "#2255ee",
+					"url": "file:///home/web/public/app/ibman/index.html?mode=2",
+					"type": "webface"
 				},
 				{
 					"name": "downloads",
