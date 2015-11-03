@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-02 18:14+0300\n"
-"PO-Revision-Date: 2015-11-02 18:15+0300\n"
+"POT-Creation-Date: 2015-11-03 11:27+0300\n"
+"PO-Revision-Date: 2015-11-03 11:27+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -180,10 +180,10 @@ msgstr "ТВ архив был успешно перезапущен."
 #: ../../../../admin/src/Controller/AudioClubController.php:1138
 #: ../../../../admin/src/Controller/StatisticsController.php:1043
 #: ../../../../admin/src/Controller/StoragesController.php:166
-#: ../../../../admin/src/Controller/StoragesController.php:193
-#: ../../../../admin/src/Controller/StoragesController.php:252
-#: ../../../../admin/src/Controller/StoragesController.php:272
-#: ../../../../admin/src/Controller/StoragesController.php:331
+#: ../../../../admin/src/Controller/StoragesController.php:194
+#: ../../../../admin/src/Controller/StoragesController.php:253
+#: ../../../../admin/src/Controller/StoragesController.php:273
+#: ../../../../admin/src/Controller/StoragesController.php:332
 #: ../../../../admin/src/Controller/KaraokeController.php:153
 #: ../../../../admin/src/Controller/KaraokeController.php:191
 #: ../../../../admin/src/Controller/KaraokeController.php:211
@@ -279,6 +279,7 @@ msgstr "Ошибка"
 #: ../../../../admin/src/Controller/TvChannelsController.php:869
 #: ../../../../admin/src/Controller/EventsController.php:405
 #: ../../../../admin/src/Controller/EventsController.php:528
+#: ../../../../admin/src/Controller/StoragesController.php:175
 #: ../../../../admin/src/Controller/UsersController.php:1070
 #: ../../../../admin/src/Controller/UsersController.php:1408
 #: ../../../lang/stb.php:362
@@ -811,11 +812,11 @@ msgstr "Редактировать аудио альбом"
 msgid "Nothing in this category"
 msgstr "Ничего нет в данной категории"
 
-#: ../../../../admin/src/Controller/StoragesController.php:212
+#: ../../../../admin/src/Controller/StoragesController.php:213
 msgid "movies"
 msgstr "видео"
 
-#: ../../../../admin/src/Controller/StoragesController.php:229
+#: ../../../../admin/src/Controller/StoragesController.php:230
 #: ../../../administrator/tasks.php:164 ../../../administrator/index.php:275
 msgid "karaoke"
 msgstr "караоке"
@@ -4255,6 +4256,14 @@ msgstr "разовый"
 #: ../../../tools/misctranslations.php:898
 msgid "ID is available"
 msgstr "ID доступнен"
+
+#: ../../../tools/misctranslations.php:899
+msgid "A cache has been reset"
+msgstr "Кэш был сброшен"
+
+#: ../../../tools/misctranslations.php:900
+msgid "for all servers"
+msgstr "для всех серверов"
 
 #: ../../../adm/js/js_translate.php:38
 msgid "Wait"

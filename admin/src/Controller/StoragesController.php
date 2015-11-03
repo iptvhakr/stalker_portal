@@ -172,6 +172,7 @@ class StoragesController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'listMsg';
+        $error = $this->setLocalization('Error');
         if ($this->postData['id'] != 'all') {
             $result = $this->db->getListList(array('select'=>array('storage_name'), 'where'=>array('id'=>$this->postData['id'])));
             $names = array('storage_name'=>$result[0]['storage_name']);
@@ -208,7 +209,7 @@ class StoragesController extends \Controller\BaseStalkerController {
         $updated_karaoke = 0;
 
         $not_custom_video = $this->db->getNoCustomVideo();
-        
+
         $data['msg'] = $this->setlocalization('Updated') . ": " . count($not_custom_video) . " - " . $this->setLocalization('movies') . "; ";
         $_SERVER['TARGET'] = 'ADM';
         
@@ -218,7 +219,7 @@ class StoragesController extends \Controller\BaseStalkerController {
             ob_start();
             ob_implicit_flush (FALSE);
             $master = new \VideoMaster();
-            $master->getAllGoodStoragesForMediaFromNet($row['id'], true);
+            $master->getAllGoodStoragesForMediaFromNet($row, true);
             ob_end_clean();
             
             unset($master);
@@ -234,7 +235,7 @@ class StoragesController extends \Controller\BaseStalkerController {
             ob_start();
             ob_implicit_flush (FALSE);
             $master = new \KaraokeMaster();
-            $master->getAllGoodStoragesForMediaFromNet($row['id']);
+            $master->getAllGoodStoragesForMediaFromNet($row);
             ob_end_clean();
             
             unset($master);
@@ -283,9 +284,9 @@ class StoragesController extends \Controller\BaseStalkerController {
         $error = 'error';
         if (!empty($storage[0]['storage_name']) && !empty($storage[0]['storage_ip']) && !empty($storage[0]['apache_port'])) {
             if (empty($this->postData['form']['id'])) {
-                $operation = 'insertStrages';
+                $operation = 'insertStorages';
             } else {
-                $operation = 'updateStrages';
+                $operation = 'updateStorages';
                 $storage['id'] = $this->postData['form']['id'];
             }
             unset($storage[0]['id']);
@@ -319,7 +320,7 @@ class StoragesController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'listMsg';
         $data['id'] = $this->postData['id'];
-        $this->db->updateStrages(array('status' => (int)(!((bool) $this->postData['status']))), $this->postData['id']);
+        $this->db->updateStorages(array('status' => (int)(!((bool) $this->postData['status']))), $this->postData['id']);
         $error = '';    
         $response = $this->generateAjaxResponse($data, $error);
 
@@ -337,7 +338,7 @@ class StoragesController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'listMsg';
-        $result = $this->db->deleteStrages($this->postData['id']);
+        $result = $this->db->deleteStorages($this->postData['id']);
         $data['msg'] = $this->setlocalization('Deleted') . " " . (!empty($result)? $result: '');
 
         $error = '';

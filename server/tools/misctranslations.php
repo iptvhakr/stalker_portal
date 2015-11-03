@@ -896,3 +896,5 @@ _('Advert');
 _('permanent');
 _('once-only');
 _('ID is available');
+_('A cache has been reset');
+_('for all servers');
