@@ -113,7 +113,7 @@
 			"items": [
 				{
 					"name": "lines",
-					"info": "",
+					"info": "Lines is the puzzle from 90-s which is still popular. The game’s goal is to remove balls by forming lines of at least five balls of the same color.",
 					"icon": "img/{0}/icons/games/lines.png",
 					"color": "#a1222f",
 					"url": "../lines/index.html",
@@ -121,7 +121,7 @@
 				},
 				{
 					"name": "sudoku",
-					"info": "",
+					"info": "Sudoku is a well-known Japanese puzzle. You need to fill all the cells the way there won't be the same two numbers in each row, column or block.",
 					"icon": "img/{0}/icons/games/sudoku.png",
 					"color": "#1dacdd",
 					"url": "../sudoku/index.html",
@@ -129,7 +129,7 @@
 				},
 				{
 					"name": "memory",
-					"info": "",
+					"info": "Memory is a game for memory development. Find out how much time you need to open all the matching cards.",
 					"icon": "img/{0}/icons/games/memory.png",
 					"color": "#f9a91a",
 					"url": "../memory/index.html",
