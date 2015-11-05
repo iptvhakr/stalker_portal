@@ -9,7 +9,7 @@ class RESTApiUserSettings extends RESTApiController
     private $fields_map;
 
     public function __construct(){
-        $this->fields_map = array_fill_keys(array("parent_password"), true);
+        $this->fields_map = array_fill_keys(array("parent_password", "theme"), true);
     }
 
     public function get(RESTApiRequest $request, $parent_id){
@@ -21,7 +21,7 @@ class RESTApiUserSettings extends RESTApiController
 
     public function update(RESTApiRequest $request, $parent_id){
 
-        $allowed_for_update = array_fill_keys(array("parent_password"), true);
+        $allowed_for_update = array_fill_keys(array("parent_password", "theme"), true);
 
         $data = $request->getData();
 
@@ -35,6 +35,14 @@ class RESTApiUserSettings extends RESTApiController
             throw new RESTBadRequest("Update data is empty");
         }
 
+        if (!empty($data['theme'])){
+            $themes = \Middleware::getThemes();
+
+            if (!isset($themes[$data['theme']])){
+                throw new RESTBadRequest("Theme '".$data['theme']."' is not supported");
+            }
+        }
+
         return \Stb::updateById($parent_id, $data);
     }
 
@@ -45,6 +53,14 @@ class RESTApiUserSettings extends RESTApiController
         }
 
         $profile = array_intersect_key($profile, $this->fields_map);
+
+        $themes = \Middleware::getThemes();
+
+        $profile['theme'] = empty($profile['theme']) || !array_key_exists($profile['theme'], $themes)
+            ? \Mysql::getInstance()->from('settings')->get()->first('default_template')
+            : $profile['theme'];
+
+        $profile['themes'] = $themes;
 
         return $profile;
     }
