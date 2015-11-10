@@ -167,6 +167,18 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
             throw new Exception("Obtaining url failed");
         }
 
+        if (!empty($link['storage_id'])){
+            $storage = Master::getStorageById($link['storage_id']);
+            if (!empty($storage)){
+                $cache = Cache::getInstance();
+                $cache->set($this->stb->id.'_playback',
+                    array('type' => 'video', 'id' => $link['id'], 'storage' => $storage['storage_name']), 0, 10);
+            }
+        }else{
+            $cache = Cache::getInstance();
+            $cache->del($this->stb->id.'_playback');
+        }
+
         return $link['cmd'];
     }
 

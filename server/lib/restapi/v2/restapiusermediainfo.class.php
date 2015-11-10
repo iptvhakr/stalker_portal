@@ -56,8 +56,26 @@ class RESTApiUserMediaInfo extends RESTApiController
             throw new RESTNotFound("Media not found");
         }
 
-        //todo: save storage name for video and karaoke?
-        //todo: load balancing
+        $cache = \Cache::getInstance();
+        $playback_session = $cache->get($parent_id.'_playback');
+
+        if (!empty($playback_session) && is_array($playback_session)){
+
+            if ($playback_session['type'] == 'tv-channel' && isset($playback_session['id'])
+                && $playback_session['id'] == $media_id && !empty($playback_session['streamer_id'])){
+
+                $now_playing_streamer_id = $playback_session['streamer_id'];
+            } else if ($playback_session['type'] == 'video' && isset($playback_session['id'])
+            && $playback_session['id'] == $media_id && !empty($playback_session['storage'])){
+                $storage_name = $playback_session['storage'];
+            } else if ($playback_session['type'] == 'karaoke' && isset($playback_session['id'])
+            && $playback_session['id'] == $media_id && !empty($playback_session['storage'])){
+                $storage_name = $playback_session['storage'];
+            } else if ($playback_session['type'] == 'tv-archive' && isset($playback_session['id'])
+            && $playback_session['id'] == $media_id && !empty($playback_session['storage'])){
+                $storage_name = $playback_session['storage'];
+            }
+        }
 
         if ($type == 'tv-archive'){
 
@@ -74,6 +92,8 @@ class RESTApiUserMediaInfo extends RESTApiController
                  'now_playing_type'    => $this->types_map[$type]['code'],
                  'now_playing_link_id' => $media_id,
                  'now_playing_content' => $now_playing_content,
+                 'now_playing_streamer_id' => isset($now_playing_streamer_id) ? $now_playing_streamer_id : 0,
+                 'storage_name'        => isset($storage_name) ? $storage_name : '',
                  'now_playing_start'   => 'NOW()',
                  'last_active'         => 'NOW()',
             ),
@@ -135,6 +155,8 @@ class RESTApiUserMediaInfo extends RESTApiController
             array(
                  'now_playing_type'    => '',
                  'now_playing_content' => '',
+                 'now_playing_streamer_id' => 0,
+                 'storage_name'        => '',
                  'last_active'         => 'NOW()',
             ),
             array('id' => $parent_id)

@@ -320,6 +320,15 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
                 . '&real_id=' . $program['real_id'];
         }
 
+        if (!empty($storage['storage_name'])){
+            $cache = Cache::getInstance();
+            $cache->set($this->stb->id.'_playback',
+                array('type' => 'tv-archive', 'id' => $program_id, 'storage' => $storage['storage_name']), 0, 10);
+        }else{
+            $cache = Cache::getInstance();
+            $cache->del($this->stb->id.'_playback');
+        }
+
         return $url;
     }
 
