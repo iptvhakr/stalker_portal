@@ -20,47 +20,11 @@
                     <div class="box-content no-padding">
                         <div class="dataTables_processing"></div>
                         <table class="table  table-hover table-datatable" id="datatable-1">
-                            <thead>
-                                <tr>
-                                    <th data-filter="external_id">{{ 'External ID'|trans }}</th>
-                                    <th data-filter="name">{{ 'Tariff'|trans }}</th>
-                                    <th data-filter="users_count">{{ 'Users'|trans }}</th>
-                                    <th data-filter="operations">{{ 'Operations'|trans }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            {% if attribute(app, 'allTariffsPlans') is defined %}
-                                <!-- Start: list_row -->
-                                {% for item in app.allTariffsPlans %}
-                                    <tr data-radioid="{{ item.id }}">
-                                        <td>{{ item.external_id }}</td>
-                                        <td>
-                                            <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-tariff-plan?id={{ item.id }}">{{ item.name }}</a> {% if item.user_default %}({{ 'default'|trans }}){% endif %}
-                                        </td>
-                                        <td>{{ item.users_count }}</td>
-                                        <td>
-                                            <div class="col-xs-3 col-sm-8">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                    <i class="pull-right fa fa-cog"></i>
-                                                </a>
-                                                <ul class="dropdown-menu pull-right">
-                                                    <li>
-                                                        <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-tariff-plan?id={{ item.id }}">
-                                                            <span>{{ 'Edit'|trans }}</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-tariff-plan" data-planid="{{ item.id }}">
-                                                            <span>{{ 'Delete'|trans }}</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
+                            {% if attribute(app, 'dropdownAttribute') is defined %}
+                                {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
                             {% endif %}
-                            <!-- End: list_row -->
+                            <tbody>
+
                             </tbody>
                         </table>
                     </div>
@@ -122,12 +86,9 @@
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
-                "columns": [
-                    {"data": "external_id"},
-                    {"data": "name"},
-                    {"data": "users_count"},
-                    {"data": "operations"}
-                ],
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
+                {% endif %}
                 "bFilter": true,
                 "bPaginate": true,
                 "bInfo": true,
@@ -138,9 +99,7 @@
                     {"sortable": false, "targets": [-1, -2]}
                 ]
             }).prev('.dataTables_processing').hide('');
-            $("#attribute_set input[type='checkbox']").each(function(index){
-                $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
-            });
+            $('#datatable-1').DataTable().ajax.reload();
         }
 
         function yelp() {

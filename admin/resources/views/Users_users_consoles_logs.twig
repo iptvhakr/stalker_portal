@@ -1,4 +1,5 @@
 {% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
 {% set title = ('Users'|trans ~ ': ' ~ 'users log'|trans ~ (app.currentUser != '' ? ": " ~ "user"|trans ~ " - " ~ app.currentUser: '')) | trans %}
 
 {% block content %}
@@ -9,33 +10,11 @@
                     <div class="box-content no-padding">
                         <div class="dataTables_processing"></div>
                         <table class="table dataTable table-hover table-datatable"  id="datatable-1">
-                            <thead>
-                            <tr>
-                                <th data-filter="time">{{ 'Time'|trans }}</th>
-                                <th data-filter="mac">MAC</th>
-                                <th data-filter="action">{{ 'Actions'|trans }}</th>
-                                <th data-filter="object">{{ 'Object'|trans }}</th>
-                                <th data-filter="type">{{ 'Type'|trans }}</th>
-                                <th data-filter="param">{{ 'Parameter'|trans }}</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% if attribute(app, 'logList') is defined %}
-                                <!-- Start: list_row -->
-                                {% for item in app.logList %}
-                                    <tr>
-                                        <td>{{ item.time|date('M d, Y H:i') }}</td>
-                                        <td>
-                                            <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-users?id={{ item.uid }}">{{ item.mac }}</a>
-                                        </td>
-                                        <td>{{ item.action }}</td>
-                                        <td>{{ item.object }}</td>
-                                        <td>{{ item.type }}</td>
-                                        <td>{{ item.param }}</td>
-                                    </tr>
-                                {% endfor %}
-                                <!-- End: list_row -->
+                            {% if attribute(app, 'dropdownAttribute') is defined %}
+                                {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
                             {% endif %}
+                            <tbody>
+
                             </tbody>
                         </table>
                     </div>
@@ -77,22 +56,12 @@
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
-                "columns": [
-                    {"data": "time"},
-                    {"data": "mac"},
-                    {"data": "action"},
-                    {"data": "object"},
-                    {"data": "type"},
-                    {"data": "param"}
-                ],
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
+                {% endif %}
                 "bFilter": true,
                 "bPaginate": true,
 				"columnDefs": [     ],
-				"fnDrawCallback": function() {  
-					var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
-					var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
-					if (pageCount > 1)  {$("#datatable-1_paginate").css("display", "block");} else { $("#datatable-1_paginate").css("display", "none");  }
-				},
                 "bInfo": true
             }).prev('.dataTables_processing').hide('');
             $('#datatable-1').DataTable().ajax.reload();

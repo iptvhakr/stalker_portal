@@ -921,7 +921,7 @@ td.beauty-hover {
 .DTTT.btn-group {
   position: absolute;
   top: -0px;
-  right: 353px;
+  right: 383px;
   border-right:1px solid #DBDBDB;
 }
 .DTTT.btn-group a {
@@ -3087,39 +3087,64 @@ color:#000; background-color:#FFF !important; border:1px solid #000; margin-top:
 
 	
 }
-#attribute_set a {border: 1px solid #D3D3D3;
-color:#747474;
-	border-radius:5px;
-	font-size:15px;
-	padding-left:10px;
-	width:48px; display:block;
-	position:absolute;
-	text-decoration:none;
-	right:0;
-	}
-.dataTables_filter {position: absolute; 
-    top: 0px; right:74px; 
-z-index:320;
-    }
-	.DDDP  {position: absolute; 
-    top: 0px; right:344px; 
-z-index:320;
-    }
 
-.dataTables_filter input[type=search]{
-  
-  margin-top:-5px;
-  height: 24px;
-width:200px;
-  font-size: 14px;
- z-index: 304;
-  color: #555;
-  background-color: #fff;
-  background-image: none;
-  border: 1px solid #ccc;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
+#attribute_set a {
+    border: 1px solid #D3D3D3;
+    color: #747474;
+    border-radius: 5px;
+    font-size: 15px;
+    padding-left: 10px;
+    width: 48px;
+    display: block;
+    position: absolute;
+    text-decoration: none;
+    right: 0;
+}
+
+.dataTables_filter {
+    position: absolute;
+    top: 0px;
+    right: 124px;
+    z-index: 320;
+}
+
+#dataTables_ajax_update_button{
+    border: 1px solid #ccc;
+    height: 24px;
+    margin-top: 2px !important;
+    padding: 3px 10px !important;
+    position: absolute;
+    right: 74px;
+    z-index: 320;
+}
+
+#dataTables_ajax_update_button i{
+    font-size: 16px;
+    line-height: 16px;
+    vertical-align: top;
+}
+
+.DDDP {
+    position: absolute;
+    top: 0px;
+    right: 344px;
+    z-index: 320;
+}
+
+.dataTables_filter input[type=search] {
+
+    margin-top: -5px;
+    height: 24px;
+    width: 200px;
+    font-size: 14px;
+    z-index: 304;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
 
 }
 ::-webkit-scrollbar {

@@ -22,45 +22,7 @@
                                 {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
                             {% endif %}
                             <tbody>
-                            {% if attribute(app, 'ads') is defined %}
-                                <!-- Start: list_row -->
-                                {% for item in app.ads %}
-                                    <tr data-adsid="{{ item.id }}">
-                                        <td ><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-video-ads?id={{ item.id }}">{{ item.title }}</a></td>
-                                        <td data-filter="url">{{ item.url }}</td>
-                                        <td data-filter="weight">{{ item.weight }}</td>
-                                        <td data-filter="started">{{ item.started }}</td>
-                                        <td data-filter="ended">{{ item.ended }}</td>
-                                        <td data-filter="must_watch">{{ item.must_watch }}</td>
-                                        <td data-filter="status">{% if item.status %}<span class="">{{ 'Published'|trans }}</span>{% else %}<span class="">{{ 'Not published'|trans }}</span>{% endif %}</td>
-                                        <td data-filter="operations">
-                                            <div class="col-xs-3 col-sm-8">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                    <i class="pull-right fa fa-cog"></i>
-                                                </a>
-                                                <ul class="dropdown-menu pull-right">
-                                                    <li>
-                                                        <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-video-ads?id={{ item.id }}">
-                                                            <span>{{ 'Edit'|trans }}</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-video-ads-status" data-adsstatus="{% if item.status %}0{% else %}1{% endif %}" data-adsid="{{ item.id }}">
-                                                            <span>{% if item.status %}{{ 'Unpublish'|trans }}{% else %}{{ 'Publish'|trans }}{% endif %}</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-video-ads" data-adsid="{{ item.id }}">
-                                                            <span>{{ 'Delete'|trans }}</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                                <!-- End: list_row -->
-                            {% endif %}
+
                             </tbody>
                         </table>
                     </div>
@@ -71,7 +33,54 @@
 <script type="text/javascript" defer>
 
     function TestTable1() {
-        $('#datatable-1').dataTable({
+        $('#datatable-1').on('xhr.dt', function (e, settings, json) {
+            if (typeof (json.data) == 'object') {
+                var id, title, status;
+                for (var i in json.data) {
+                    id = json.data[i].id;
+                    title = json.data[i].title;
+                    status = json.data[i].status;
+
+                    json.data[i]['title'] = '<a href="{{ app.controller_alias }}/edit-video-ads?id='+id+'">'+title+'</a>';
+                    json.data[i]['status'] = status ? "<span class='' data-filter='status'>{{ 'Published'|trans }}</span>" : "<span class='' data-filter='status'>{{ 'Not published'|trans }}</span>";
+
+                    json.data[i].operations = '<div class="col-xs-3 col-sm-8 ddd">\n\
+                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">\n\
+                                                            <i class="pull-right fa fa-cog"></i>\n\
+                                                        </a>\n\
+                                                        <ul class="dropdown-menu pull-right">\n\
+                                                            <li>\n\
+                                                                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-video-ads?id='+id+'" >\n\
+                                                                    <span>{{ 'Edit'|trans }}</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                            <li>\n\
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-video-ads-status" data-adsstatus="'+(status ? 0: 1)+'" data-adsid="'+id+'">\n\
+                                                                    <span>'+(status ? "{{ 'Unpublish'|trans }}": "{{ 'Publish'|trans }}")+'</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                            <li>\n\
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-video-ads" data-adsid="'+id+'">\n\
+                                                                    <span>{{ 'Delete'|trans }}</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                        </ul>\n\
+                                                    </div>';
+
+                }
+            }
+        }).dataTable({
+            "processing": true,
+            "serverSide": false,
+            "ajax": {
+                "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/video-advertise-list-json",
+                "data": function (d) {
+                    var params = $.parseParams(window.location.href.split('?')[1] || ''); //window.location.href.split('?')[1] || ''
+                    for (var i in params) {
+                        d[i] = params[i];
+                    }
+                }
+            },
             "language": {
                 "url": "{{ app.datatable_lang_file }}"
             },
@@ -81,12 +90,15 @@
             "scrollCollapse": true,
             "bFilter": true,
             "bPaginate": true,
+            "deferLoading": [{{ app.recordsFiltered }}, {{ app.totalRecords }}],
+            {% if attribute(app, 'dropdownAttribute') is defined %}
+            {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
+            {% endif %}
             "aoColumnDefs": [ 
                 { className: "action-menu", "targets": [ -1 ] },
                 { "targets": [ -1 ], "orderable": false},
-                { "targets": [ 1, 2, 3, 4, 5, 6, -1], "searchable": false},
-				 { "width": "16px", "targets": [ -1] }
-
+                { "targets": [ /*1, 2, 3, 4, 5, 6,*/ -1], "searchable": false},
+				{ "width": "16px", "targets": [ -1] }
             ]
         }).prev('.dataTables_processing').hide('');
     }
@@ -99,38 +111,36 @@
                 e.preventDefault();
                 var _this = $(this);
 
-                if (!_this.data('atcion')) {
-                    $.ajax({
-                        url: $(this).attr('href'),
-                        type: 'POST',
-                        data: $(this).data(),
-                        success: function (data) {
-                            if (data.success) {
-                                for (var key in data) {
-                                    _this.data(key, data[key]);
-                                }
-                            } else {
-                                alert("{{ 'Some server error'|trans }}");
+                $.ajax({
+                    url: $(this).attr('href'),
+                    type: 'POST',
+                    data: $(this).data(),
+                    success: function (data) {
+                        if (data.success) {
+                            for (var key in data) {
+                                _this.data(key, data[key]);
                             }
-                        },
-                        error: function (data) {
-                            var errAction = '';
-                            if (typeof(data.responseJSON) == 'object') {
-                                errAction +=  data.responseJSON.action + 'Error';
-                                for (var key in data.responseJSON) {
-                                    _this.data(key, data.responseJSON[key]);
-                                }
+                        } else {
+                            JSErrorModalBox({msg:"{{ 'Some server error'|trans }}"});
+                        }
+                    },
+                    error: function (data) {
+                        var errAction = '';
+                        if (typeof(data.responseJSON) == 'object') {
+                            errAction +=  data.responseJSON.action + 'Error';
+                            for (var key in data.responseJSON) {
+                                _this.data(key, data.responseJSON[key]);
                             }
-                            if ($.isFunction(window[errAction])) {
-                                window[errAction]($(_this));
-                            } else {
-                                alert("{{ 'Some network error or access denied'|trans }}");
-                            }
-                        },
-                        dataType: "json",
-                        async: false
-                    });
-                } 
+                        }
+                        if ($.isFunction(window[errAction])) {
+                            window[errAction]($(_this));
+                        } else {
+                            JSErrorModalBox({msg: "{{ 'Some network error or access denied'|trans }}"});
+                        }
+                    },
+                    dataType: "json",
+                    async: false
+                });
 
                 if ($.isFunction(window[$(this).data('action')]) && !$(this).data('error')) {
                     window[$(this).data('action')]($(this));
@@ -147,10 +157,14 @@
         var cRow = $(obj).closest('tr');
         $('#datatable-1').DataTable().row(cRow).remove().draw( false );
     };
-    
+
     var toggleVideoAdsStatus = function(obj){
         $(obj).text($(obj).data('title'));
-        $(obj).closest('tr').find('td[data-filter="status"]').html($(obj).data('status'));
+        $(obj).closest('tr').find('span[data-filter="status"]').html($(obj).data('status'));
+    };
+
+    var errAction = function(obj){
+        JSErrorModalBox(obj);
     }
 </script>
 {% endblock %}

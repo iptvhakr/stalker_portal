@@ -26,20 +26,43 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
         return $this->mysqlInstance->from('itv')->where(array('modified!=' => ''))->orderby('modified', 'DESC')->limit(1, 0)->get()->first('id');
     }
 
-    public function getAllChannels($filter = '') {
-        $where = '';
-        if (!empty($filter)) {
-            $where = "where " . (is_string($filter)? $filter: (is_array($filter)? implode(' and ', $filter): ''));
+    public function getTotalRowsAllChannels($where = array(), $like = array()) {
+        $params = array(
+            'where' => $where
+        );
+        if (!empty($like)) {
+            $params['like'] = $like;
         }
-        return $this->mysqlInstance->query("select itv.*, tv_genre.title as genres_name, media_claims.media_type, media_claims.media_id, "
-                                                . "media_claims.sound_counter, media_claims.video_counter, media_claims.no_epg, "
-                                                . "media_claims.wrong_epg "
-                                            . "from itv "
-                                                . "left join media_claims on itv.id=media_claims.media_id and media_claims.media_type='itv' "
-                                                . "left join tv_genre on itv.tv_genre_id=tv_genre.id "
-                                            . " $where "
-                                            . "group by itv.id "
-                                            . "order by number")->all();
+        return $this->getAllChannels($params, TRUE);
+    }
+
+    public function getAllChannels($param = array(), $counter = FALSE) {
+
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+
+        $this->mysqlInstance->from("itv")
+            ->join('media_claims', 'itv.id', 'media_claims.media_id and media_claims.media_type="itv"', 'LEFT')
+            ->join('tv_genre', 'itv.tv_genre_id', 'tv_genre.id', 'LEFT');
+        if (!empty($param['where'])) {
+            $this->mysqlInstance->where($param['where']);
+        }
+        if (!empty($where)) {
+            $this->mysqlInstance->where($where);
+        }
+        if (!empty($param['like'])) {
+            $this->mysqlInstance->like($param['like'], ' OR ');
+        }
+
+        if (!empty($param['order'])) {
+            $this->mysqlInstance->orderby($param['order']);
+        }
+        if (!empty($param['limit']['limit'])) {
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
+        }
+
+        return ($counter) ? $this->mysqlInstance->count()->get()->counter() : $this->mysqlInstance->get()->all();
     }
 
     public function getAllGenres() {

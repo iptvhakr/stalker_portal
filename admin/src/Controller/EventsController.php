@@ -284,7 +284,13 @@ class EventsController extends \Controller\BaseStalkerController {
             $row['event'] = $events[$row['event']];
             $row['mac'] = (!empty($row['mac']) ? $row['mac']: 'no_mac_address');
             $row['addtime'] = (int)  strtotime($row['addtime']);
+            if ($row['addtime'] < 0) {
+                $row['addtime'] = 0;
+            }
             $row['eventtime'] = (int)  strtotime($row['eventtime']);
+            if ($row['eventtime'] < 0) {
+                $row['eventtime'] = 0;
+            }
             if (!empty($row['post_function'])) {
                 $row['post_function'] = $self->setLocalization(str_replace('_', ' ', ucfirst($row['post_function'])));
             }
@@ -568,7 +574,7 @@ class EventsController extends \Controller\BaseStalkerController {
 
         $deferred = $this->setLocalization('deferred');
         $unlimited = $this->setLocalization('unlimited');
-        $not_run = $this->setLocalization('do not yet runing');
+        $not_run = $this->setLocalization('do not yet running');
         $all_event = array_merge($this->formEvent, $this->hiddenEvent);
         $all_event = array_combine($this->getFieldFromArray($all_event, 'id'), $this->getFieldFromArray($all_event, 'title'));
         $all_recipients = array(
@@ -876,8 +882,8 @@ class EventsController extends \Controller\BaseStalkerController {
             'post_function' => 'S_E.post_function as `post_function`',
             'recipient' => 'S_E.recipient as `recipient`',
             'periodic' => 'S_E.periodic as `periodic`',
-            'date_begin' => 'S_E.date_begin as `date_begin`',
-            'date_end' => 'S_E.date_end as `date_end`',
+            'date_begin' => 'TIMESTAMP(S_E.date_begin) as `date_begin`',
+            'date_end' => 'TIMESTAMP(S_E.date_end) as `date_end`',
             'schedule' => 'S_E.schedule as `schedule`',
             'state' => 'S_E.state as `state`',
             'reboot_after_ok' => 'S_E.reboot_after_ok as `reboot_after_ok`',

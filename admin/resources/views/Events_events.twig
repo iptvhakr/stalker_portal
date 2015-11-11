@@ -33,28 +33,7 @@
                                 {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
                             {% endif %}
                             <tbody>
-                            {% if attribute(app, 'eventList') is defined %}
-                                <!-- Start: list_row -->
-                                {% for item in app.eventList %}
-                                    <tr>
-                                        <td>{{ item.events_id }}</td>
-                                        <td>{{ item.addtime|date('M d, Y H:i') }}</td>
-                                        <td>{{ item.eventtime|date('M d, Y H:i') }}</td>
-                                        <td>
-                                            <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/{{ app.controller_alias }}?uid={{ item.uid }}">{{ item.mac }}</a>
-                                        </td>
-                                        <td>{{ item.event }}</td>
-                                        <td>
-                                            <div class="event_message">{{ item.msg }}</div>
-                                        </td>
-                                        <td>{{ item.post_function }}</td>
-                                        <td>{{ item.param1 }}</td>
-                                        <td>{% if item.sended != '0' %}<span class="">{{ 'Delivered'|trans }}</span>{% else %}<span class="">{{ 'Not delivered'|trans }}</span>{% endif %}</td>
-                                        <td>{% if item.ended != '0' %}<span class="">{{ 'Received'|trans }}</span>{% else %}<span class="">{{ 'Not received'|trans }}</span>{% endif %}</td>
-                                    </tr>
-                                {% endfor %}
-                                <!-- End: list_row -->
-                            {% endif %}
+
                             </tbody>
                         </table>
                     </div>
@@ -68,7 +47,6 @@
     <script type="text/javascript" defer>
 
         function TestTable1() {
-            $.getScript('plugins/datatables/fnReloadAjax.js');            
             $('#datatable-1').on('xhr.dt', function (e, settings, json) {
                 if (typeof (json.data) == 'object' && json.data.length >0) {
                     var date;
@@ -115,13 +93,9 @@
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
-                "columns": [
-                    {% if attribute(app, 'dropdownAttribute') is defined%}
-                    {% for item in app.dropdownAttribute %}
-                    {"data": "{{ item.name }}"}{% if not loop.last %},{% endif %}
-                    {% endfor %}
-                    {% endif %}
-                ],
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
+                {% endif %}
                 "bFilter": true,
                 "bPaginate": true,
                 "bInfo": true,

@@ -132,20 +132,42 @@ class UsersModel extends \Model\BaseStalkerModel {
     public function getCostSubChannelsDB($channels = array()){
         return empty($channels)? 0 : $this->mysqlInstance->select('SUM(cost) as total_cost')->from('itv')->in('id', $channels)->get()->first('total_cost');
     }
-    
-    public function getConsoleGroup($param = array()){
-        if (!empty($this->reseller_id)) {
-            $param['reseller_id'] = $this->reseller_id;
+
+    public function getTotalRowsConsoleGroup($where = array(), $like = array()) {
+        $params = array(
+            /*'select' => array("*"),*/
+            'where' => $where,
+            'like' => array(),
+            'order' => array()
+        );
+        if (!empty($like)) {
+            $params['like'] = $like;
         }
-        return $this->mysqlInstance->select(array(
-            'Sg.`id` as `id`',
-            'Sg.name as `name`',
-            '(select count(*) from stb_in_group as Si where Si.stb_group_id = Sg.id) as users_count',
-            'R.id as reseller_id',
-            'R.name as reseller_name',
-        ))->from('stb_groups as Sg')
-            ->join('reseller as R', 'Sg.reseller_id', 'R.id', 'LEFT')
-            ->where($param)->get()->all();
+        return $this->getConsoleGroup($params, TRUE);
+    }
+
+    public function getConsoleGroup($param, $counter = FALSE){
+
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from('stb_groups as Sg')
+            ->join('reseller as R', 'Sg.reseller_id', 'R.id', 'LEFT');
+        if (!empty($param['where'])) {
+            $this->mysqlInstance->where($param['where']);
+        }
+        if (!empty($param['like'])) {
+            $this->mysqlInstance->like($param['like'], 'OR');
+        }
+        if (!empty($param['order'])) {
+            $this->mysqlInstance->orderby($param['order']);
+        }
+
+        if (!empty($param['limit']['limit'])) {
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
+        }
+
+        return ($counter) ? $this->mysqlInstance->count()->get()->counter() : $this->mysqlInstance->get()->all();
     }
     
     public function getConsoleGroupList($param = array()){

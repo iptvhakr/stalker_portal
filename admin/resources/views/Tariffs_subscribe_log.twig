@@ -26,30 +26,7 @@
                                     {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
                                 {% endif %}
                                 <tbody>
-                                {% autoescape false %}
-                                {% if attribute(app, 'allLogs') is defined %}
-                                    <!-- Start: list_row -->
-                                    {% for row in app.allLogs %}
-                                        <tr>
-                                            {% for key, item in row %}
-                                                {% if key != 'user_id' %}
-                                                    {% if key == 'modified' %}
-                                                        <td>{{ item|date('M d, Y H:i') }}</td>
-                                                    {% elseif key == 'mac' %}
-                                                        <td>
-                                                            <a href="{{ app.request.baseUrl }}/users/edit-users?id={{ row.user_id }}">{{ item }}</a>
-                                                        </td>
-                                                    {% elseif key == 'state' %}
-                                                        <td>{{ app.allPackageStates[item].title }}</td>
-                                                    {% else %}
-                                                        <td>{{ item }}</td>
-                                                    {% endif %}
-                                                {% endif %}
-                                            {% endfor %}
-                                        </tr>
-                                    {% endfor %}
-                                {% endif %}
-                                {% endautoescape %}
+
                                 </tbody>
                             </table>
                         </div>
@@ -90,28 +67,17 @@
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
-                "columns": [
-                    {% if attribute(app, 'dropdownAttribute') is defined%}
-                    {% for item in app.dropdownAttribute %}
-                    {"data": "{{ item.name }}"},
-                    {% endfor %}
-                    {% endif %}
-                ],
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
+                {% endif %}
                 "bFilter": true,
                 "bPaginate": true,
                 "bInfo": true,
-                "fnDrawCallback": function() {
-                    var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
-                    var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
-                    if (pageCount > 1)  {$("#datatable-1_paginate").css("display", "block");} else { $("#datatable-1_paginate").css("display", "none");  }
-                },
                 "columnDefs": [
                     {"searchable": false, "targets": [3]}
                 ]
             }).prev('.dataTables_processing').hide('');
-            $("#attribute_set input[type='checkbox']").each(function(index){
-                $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
-            });
+            $('#datatable-1').DataTable().ajax.reload();
         }
 
         function yelp() {

@@ -52,49 +52,7 @@
                                         {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
                                     {% endif %}
                                     <tbody>
-                                    {% if attribute(app, 'allData') is defined %}
-                                        <!-- Start: list_row -->
-                                        {% for item in app.allData %}
-                                            <tr>
-                                                <td>{{ item.id }}</td>
-                                                <td><a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-storage" data-id="{{ item.id }}">{{ item.storage_name }}</a></td>
-                                                <td>{{ item.storage_ip }}</td>
-                                                <td>{{ item.nfs_home_path }}</td>
-                                                <td>{{ item.max_online }}</td>
-                                                <td>{% if item.status == 1 %}<span class="">{{ 'on'|trans }}</span>{% else %} <span>{{ 'off'|trans }}</span>{% endif %}</td>
-                                                <td>
-                                                    <div class="col-xs-3 col-sm-8">
-                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                            <i class="pull-right fa fa-cog"></i>
-                                                        </a>
-                                                        <ul class="dropdown-menu pull-right">
-                                                            <li>
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-storages-status' data-id='{{ item.id }}' data-status='{{ item.status }}'>
-                                                                    <span>{% if item.status == 1 %}{{ 'Switch off'|trans }}{% else %}{{ 'Swith on'|trans }}{% endif %}</span>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a class='main_ajax' href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/reset-cache" data-id="{{ item.id }}">
-                                                                    <span>{{ 'Clean the cache'|trans }}</span>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-storage" data-id="{{ item.id }}">
-                                                                    <span>{{ 'Edit'|trans }}</span>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-storage" data-id="{{ item.id }}">
-                                                                    <span> {{ 'Delete'|trans }} </span>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        {% endfor %}
-                                        <!-- End: list_row -->
-                                    {% endif %}
+
                                     </tbody>
                                 </table>
                             </div>
@@ -412,30 +370,19 @@
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
-                "columns": [
-                {% if attribute(app, 'dropdownAttribute') is defined%}
-                    {% for item in app.dropdownAttribute %}    
-                    {"data": "{{ item.name }}"},
-                    {% endfor %}
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
                 {% endif %}
-                ],
                 "bFilter": true,
                 "bPaginate": true,
-				"fnDrawCallback": function() {  
-					var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
-					var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
-					if (pageCount > 1)  {$("#datatable-1_paginate").css("display", "block");} else { $("#datatable-1_paginate").css("display", "none");  }
-				},
                 "bInfo": true,
                 "columnDefs": [
                     { className: "action-menu", "targets": [ -1 ] },
                     {"searchable": false, "targets": [-1]},
-                    {"sortable": false, "targets": [-1,]}
+                    {"sortable": false, "targets": [-1]}
                 ]
             }).prev('.dataTables_processing').hide('');
-            $("#attribute_set input[type='checkbox']").each(function(index){
-                $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
-            });
+            $('#datatable-1').DataTable().ajax.reload();
         }
 
         function yelp() {
@@ -539,7 +486,7 @@
             $('#modalbox').find('.modal-header-name span').empty();
             $('#modalbox').find('.devoops-modal-inner').empty();
             $('#modalbox').find('.devoops-modal-bottom').empty();
-        };
+        }
 
         function showAdModalBox(title){
             $("#modalbox_ad").find(".modal-header-name").children('span').text(title);

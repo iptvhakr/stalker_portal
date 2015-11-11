@@ -26,42 +26,7 @@
                                 {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
                                 {% endif %}
                                 <tbody>
-                                    {% if attribute(app, 'allData') is defined  and app.allData|length > 0%}
-                                        <!-- Start: list_row -->
-                                        {% for item in app.allData %}
-                                            <tr data-taskid="{{ item.id }}">                                               
-                                                <td>{{ item.id }}</td>
-                                                <td>{{ item.type }}</td>
-                                                <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/task-detail-{% if app['task_type'] == 'karaoke' %}karaoke{% else %}video{% endif %}?id={{ item.id }}">{{ item.name }}</a></td>
-                                                <td>{{ item.to_user_name }}</td>
-                                                <td>{{ item.start_time|date('M d, Y H:i' ) }}</td>
-                                                <td>{% if item.messages %}<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/task-detail-{% if app['task_type'] == 'karaoke' %}karaoke{% else %}video{% endif %}?id={{ item.id }}">{{ 'new'|trans }}</a>{% else %}<span>-</span>{% endif %}</td>
-                                                <td><span class="txt-{{app['taskStateColor'][item.state]}}">{{ app["taskState"][item.state]['title'] }}</span></td>
-                                                <td>
-                                                    <div class="col-xs-3 col-sm-8">
-                                                        {% if item.state == '0' or item.state == '3'%}
-                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
-                                                            <i class="pull-right fa fa-cog"></i>
-                                                        </a>
-                                                        <ul class="dropdown-menu pull-right">
-                                                            <li>
-                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/task-state-change" data-taskid="{{ item.id }}" data-apply="ended">
-                                                                    <span>{{ 'Done'|trans }}</span>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/task-state-change" data-taskid="{{ item.id }}" data-apply="rejected">
-                                                                    <span>{{ 'Reject'|trans }}</span>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                        {% endif %}
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        {% endfor %}
-                                    {% endif %}
-                                    <!-- End: list_row -->
+
                                 </tbody>
                             </table>
                         </div>
@@ -141,23 +106,11 @@
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
-                "columns": [
-                    {"data": 'id'},
-                    {"data": 'type'},
-                    {"data": 'name'},
-                    {"data": 'to_user_name'},
-                    {"data": 'start_time'},
-                    {"data": 'messages'},
-                    {"data": 'state'},
-                    {"data": 'operations'}
-                ],
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                    {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
+                {% endif %}
                 "bFilter": true,
                 "bPaginate": true,
-				"fnDrawCallback": function() {  
-					var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
-					var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
-					if (pageCount > 1)  {$("#datatable-1_paginate").css("display", "block");} else { $("#datatable-1_paginate").css("display", "none");  }
-				},
                 "bInfo": true,
                 "order": [[ 4, "desc" ]],
                 "columnDefs": [
@@ -170,9 +123,7 @@
                     {"width": "14%", "targets": [1, 2, 3, 8] }#}
                 ]
             }).prev('.dataTables_processing').hide('');
-            $("#attribute_set input[type='checkbox']").each(function(index){
-                $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
-            });
+            $('#datatable-1').DataTable().ajax.reload();
         }
 
         function yelp() {
@@ -194,8 +145,13 @@
         document.addEventListener("DOMContentLoaded", yelp, false);
 
         var manageTasks = function (obj) {
+            JSSuccessModalBox(obj);
             $('#datatable-1').DataTable().ajax.reload();
         };
-        
+
+        var manageTasksError = function (obj) {
+            JSErrorModalBox(obj);
+        };
+
     </script>
 {% endblock %}

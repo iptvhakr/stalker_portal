@@ -20,34 +20,7 @@
                                 {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
                             {% endif %}
                             <tbody>
-                            {% if attribute(app, 'allAudioArtists') is defined %}
-                                <!-- Start: list_row -->
-                                {% for item in app.allAudioArtists %}
-                                    <tr data-artistsid="{{ item.id }}">
-                                        <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-audio-artists" data-artistsid="{{ item.id }}" id="edit_audio_artists_{{ item.id }}">{{ item.name }}</a></td>
-                                        <td>
-                                            <div class="col-xs-3 col-sm-8">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                    <i class="pull-right fa fa-cog"></i>
-                                                </a>
-                                                <ul class="dropdown-menu pull-right">
-                                                    <li>
-                                                        <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-audio-artists" data-artistsid="{{ item.id }}" id="edit_audio_artists_{{ item.id }}">
-                                                            <span>{{ 'Edit'|trans }}</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-audio-artists" data-artistsid="{{ item.id }}">
-                                                            <span>{{ 'Delete'|trans }}</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            {% endif %}
-                            <!-- End: list_row -->
+
                             </tbody>
                         </table>
                     </div>
@@ -94,10 +67,9 @@
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
-                "columns": [
-                    {"data": "name"},
-                    {"data": "operations"}
-                ],
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
+                {% endif %}
                 "bFilter": true,
                 "bPaginate": true,
                 "bInfo": true,
@@ -108,6 +80,7 @@
 					{"width": "20px", "targets": [-1] },
                 ]
             }).prev('.dataTables_processing').hide('');
+            $('#datatable-1').DataTable().ajax.reload();
         }
 
         function yelp() {

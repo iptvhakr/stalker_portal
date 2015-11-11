@@ -74,8 +74,11 @@ class AudioClubController extends \Controller\BaseStalkerController {
         }
         $this->app['form'] = $form->createView();
         $this->app['audioAlbumEdit'] = FALSE;
-        $this->app['dropdownAttribute'] = $this->getDropdownAttributeAudioComposition();
-               
+
+        $attribute = $this->getDropdownAttributeAudioComposition();
+        $this->checkDropdownAttribute($attribute);
+        $this->app['dropdownAttribute'] = $attribute;
+
         $this->app['allAlbumComposition'] = array();
         $this->app['totalRecords'] = 0;
         $this->app['recordsFiltered'] = 0;
@@ -113,7 +116,9 @@ class AudioClubController extends \Controller\BaseStalkerController {
         $this->app['audioAlbumEdit'] = TRUE;
         $this->app['audioAlbumID'] = $id;
         $this->app['allLanguages'] = $this->db->getAllFromTable('audio_languages');
-        $this->app['dropdownAttribute'] = $this->getDropdownAttributeAudioComposition();
+        $attribute = $this->getDropdownAttributeAudioComposition();
+        $this->checkDropdownAttribute($attribute);
+        $this->app['dropdownAttribute'] = $attribute;
         
         $list = $this->audio_albums_composition_list_json(array('album_id' => $id));
         

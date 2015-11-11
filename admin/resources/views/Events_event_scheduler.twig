@@ -27,50 +27,7 @@
                                 {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
                             {% endif %}
                             <tbody>
-                            {% if attribute(app, 'allData') is defined %}
-                                <!-- Start: list_row -->
-                                {% for item in app.allData %}
-                                    <tr>
-                                        <td>{{ item.id }}</td>
-                                        <td>{{ item.event_trans }}</td>
-                                        <td>{{ item.post_function }}</td>
-                                        <td><a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/event-scheduler-list-json" data-id="{{ item.id }}">{{ item.recipient }}</a></td>
-                                        <td>{% if item.periodic == '0' %}{{ 'One-time event'|trans }}{% else %}{{ 'For a period'|trans }}{% endif %}</td>
-                                        <td>{% if item.date_begin > 0 %}{{ item.date_begin|date('M d, Y H:i') }}{% endif %}</td>
-                                        <td>{% if item.date_end matches '/^\\d+$/' and item.date_end > 0 %}{{ item.date_end|date('M d, Y H:i') }}{% else %}{{ item.date_end }}{% endif %}</td>
-                                        <td>{{ item.schedule }}</td>
 
-                                        <td>{% if item.next_run matches '/^\\d+$/' %}{{ item.next_run|date('M d, Y H:i') }}{% else %}{{ item.next_run }}{% endif %}</td>
-                                        <td>{% if item.last_run matches '/^\\d+$/' %}{{ item.last_run|date('M d, Y H:i') }}{% else %}{{ item.last_run }}{% endif %}</td>
-                                        <td>{% if item.state != '0' %}{{ 'Scheduled'|trans }}{% else %}{{ 'Stopped'|trans }}{% endif %}</td>
-                                        <td>
-                                            <div class="col-xs-3 col-sm-8 ddd">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                    <i class="pull-right fa fa-cog"></i>
-                                                </a>
-                                                <ul class="dropdown-menu pull-right">
-                                                    <li>
-                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/event-scheduler-list-json" data-id="{{ item.id }}">
-                                                            <span>{{ 'Edit'|trans }}</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/scheduler-toggle-state" data-id="{{ item.id }}" data-state="{{ item.state }}">
-                                                            <span>{% if item.state != '0' %}{{ 'Stop it'|trans }}{% else %}{{ 'Start it'|trans }}{% endif %}</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/scheduler-remove" data-id="{{ item.id }}">
-                                                            <span>{{ 'Delete'|trans }}</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                                <!-- End: list_row -->
-                            {% endif %}
                             </tbody>
                         </table>
                     </div>
@@ -84,7 +41,6 @@
     <script type="text/javascript" defer>
 
         function TestTable1() {
-            $.getScript('plugins/datatables/fnReloadAjax.js');            
             $('#datatable-1').on('xhr.dt', function (e, settings, json) {
                 if (typeof (json.data) == 'object' && json.data.length >0) {
                     var date;
@@ -169,13 +125,9 @@
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
-                "columns": [
-                    {% if attribute(app, 'dropdownAttribute') is defined%}
-                    {% for item in app.dropdownAttribute %}
-                    {"data": "{{ item.name }}"}{% if not loop.last %},{% endif %}
-                    {% endfor %}
-                    {% endif %}
-                ],
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
+                {% endif %}
                 "bFilter": true,
                 "bPaginate": true,
                 "bInfo": true,

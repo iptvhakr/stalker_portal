@@ -48,31 +48,7 @@
                                 {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
                             {% endif %}
                             <tbody>
-                            {% if attribute(app, 'allData') is defined  and app.allData|length > 0 %}
-                                <!-- Start: list_row -->
-                                {% for item in app.allData %}
-                                    <tr data-taskid="{{ item.id }}">
-                                        <td>{{ item.id }}</td>
-                                        <td>{{ item.type }}</td>
-                                        <td>{{ item.start_time|date('M d, Y H:i') }}</td>
-                                        <td>{{ item.end_time|date('M d, Y H:i') }}</td>
-                                        <td>
-                                            <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/task-detail-{% if app['task_type'] == 'karaoke' %}karaoke{% else %}video{% endif %}?id={{ item.id }}">{{ item.name }}</a>
-                                        </td>
-                                        <td>{{ item.video_quality }}</td>
-                                        <td>{{ item.duration }}</td>
-                                        <td>{{ item.to_user_name }}</td>
-                                        <td>
-                                            <span class="txt-{{ app['taskStateColor'][item.state] }}">{{ app["taskState"][item.state]['title'] }}</span>
-                                            {% if not(item.archived == '0') %}
-                                                <br><span
-                                                    class="bg-{{ app['taskStateColor'][4] }}">{{ app["taskState"][4]['title'] }}</span>
-                                            {% endif %}
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            {% endif %}
-                            <!-- End: list_row -->
+
                             </tbody>
                         </table>
                     </div>
@@ -148,17 +124,9 @@
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
-                "columns": [
-                    {"data": 'id'},
-                    {"data": 'type'},
-                    {"data": 'start_time'},
-                    {"data": 'end_time'},
-                    {"data": 'name'},
-                    {"data": 'video_quality'},
-                    {"data": 'duration'},
-                    {"data": 'to_user_name'},
-                    {"data": 'state'}
-                ],
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
+                {% endif %}
                 "order": [[ 0, "desc" ]],
                 "bFilter": true,
                 "bPaginate": true,
@@ -169,10 +137,7 @@
                     {"sortable": false, "targets": [1]}
                 ]
             }).prev('.dataTables_processing').hide('');
-            
-            $("#attribute_set input[type='checkbox']").each(function(index){
-                $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
-            });
+            $('#datatable-1').DataTable().ajax.reload();
         }
 
         function yelp() {

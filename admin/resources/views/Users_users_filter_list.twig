@@ -28,49 +28,7 @@
                                         {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
                                     {% endif %}
                                     <tbody>
-                                    {% if attribute(app, 'allData') is defined %}
-                                        <!-- Start: list_row -->
-                                        {% for item in app.allData %}
-                                            <tr>
-                                                <td>{{ item.id }}</td>
-                                                <td><a href="#">{{ item.login }}</a></td>
-                                                <td><a href="{{ app.request.baseUrl }}/users/users-list?filter_set={{ item.id }}">{{ item.title }}</a></td>
-                                                <td>{{ item.filter_set }}</td>
-                                                <td>{% if item.for_all %}{{ 'For all'|trans }}{% else %}{{ 'Only for'|trans }} {{ item.login }}{% endif %}</td>
-                                                <td>{% if item.favorites %}<span class="txt txt-danger"><i class="fa fa-star"></i> </span>{% endif %}</td>
-                                                <td>
-                                                    <div class="col-xs-3 col-sm-8">
-                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                            <i class="pull-right fa fa-cog"></i>
-                                                        </a>
-                                                        <ul class="dropdown-menu pull-right">
-                                                            <li>
-                                                                <a href='#' class="add_events" data-filter_set="{{ item.id }}">
-                                                                    <span>{{ 'Add event'|trans }}</span>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="{{ app.request.baseUrl }}/users/users-list?filter_set={{ item.id }}">
-                                                                    <span>{{ 'Edit'|trans }}</span>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-filter-favorite" data-id="{{ item.id }}" data-favorites="{{ item.favorites }}">
-                                                                    <span>{% if item.favorites %}{{ 'Remove from favorites'|trans }}{% else %}{{ 'Add to favorites'|trans }}{% endif %}</span>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-filter" data-id="{{ item.id }}">
-                                                                    <span> {{ 'Delete'|trans }} </span>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        {% endfor %}
-                                        <!-- End: list_row -->
-                                    {% endif %}
+
                                     </tbody>
                                 </table>
                             </div>
@@ -150,24 +108,11 @@
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
-                "columns": [
-                {% if attribute(app, 'dropdownAttribute') is defined%}
-                    {% for item in app.dropdownAttribute %}    
-                    {"data": "{{ item.name }}"}{% if not loop.last %},{% endif %}
-                    {% endfor %}
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
                 {% endif %}
-                ],
                 "bFilter": true,
                 "bPaginate": true,
-				"fnDrawCallback": function() {  
-					var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
-					var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
-					if (pageCount > 1)  {
-                        $("#datatable-1_paginate").css("display", "block");
-                    } else {
-                        $("#datatable-1_paginate").css("display", "none");
-                    }
-				},
                 "bInfo": true,
                 "columnDefs": [
                     { className: "action-menu", "targets": [ -1 ] },
@@ -175,9 +120,7 @@
                     {"sortable": false, "targets": [-1]}
                 ]
             }).prev('.dataTables_processing').hide('');
-            $("#attribute_set input[type='checkbox']").each(function(index){
-                $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
-            });
+            $('#datatable-1').DataTable().ajax.reload();
         }
 
         function yelp() {

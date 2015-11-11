@@ -35,14 +35,14 @@ class UsersController extends \Controller\BaseStalkerController {
     private $allState = array(array('id' => 2, 'title' => 'Offline'), array('id' => 1, 'title' => 'Online'));
     private $watchdog = 0;
     private $userFields = array(
-        'users.id as id', "mac", "ip", "login", "ls", "fname", "reseller.id as reseller_id", "theme",
-        "status", 'tariff_plan.name as tariff_plan_name',
-        "DATE_FORMAT(last_change_status,'%d.%m.%Y') as last_change_status",
-        "concat (users.fname) as fname",
-        "UNIX_TIMESTAMP(`keep_alive`) as last_active",
+        'users.id as `id`', "`mac`", "`ip`", "`login`", "`ls`", "`fname`", "reseller.id as `reseller_id`", "`theme`",
+        "`status`", 'tariff_plan.name as `tariff_plan_name`',
+        "DATE_FORMAT(last_change_status,'%d.%m.%Y') as `last_change_status`",
+        "concat (users.fname) as `fname`",
+        "UNIX_TIMESTAMP(`keep_alive`) as `last_active`",
         "`expire_billing_date` as `expire_billing_date`",
         "users.`created` as `created`",
-        "account_balance", "now_playing_type", "IF(now_playing_type = 2 and storage_name, CONCAT('[', storage_name, ']', now_playing_content), now_playing_content) as now_playing_content"
+        "`account_balance`", "`now_playing_type`", "IF(now_playing_type = 2 and storage_name, CONCAT('[', storage_name, ']', now_playing_content), now_playing_content) as `now_playing_content`"
     );
     private $logObjectsTypes = array(
         'itv' => 'IPTV каналы',
@@ -55,7 +55,7 @@ class UsersController extends \Controller\BaseStalkerController {
     public function __construct(Application $app) {
         parent::__construct($app, __CLASS__);
         $this->watchdog = \Config::get('watchdog_timeout') * 2;
-        $this->userFields[] = "((UNIX_TIMESTAMP() - UNIX_TIMESTAMP(`keep_alive`)) <= $this->watchdog) as state";
+        $this->userFields[] = "((UNIX_TIMESTAMP() - UNIX_TIMESTAMP(`keep_alive`)) <= $this->watchdog) as `state`";
         $this->allStatus = array(
             array('id' => 1, 'title' => $this->setlocalization('on')),
             array('id' => 2, 'title' => $this->setlocalization('off'))
@@ -83,7 +83,7 @@ class UsersController extends \Controller\BaseStalkerController {
         );
 
         if (empty($this->app['reseller'])) {
-            $this->userFields[] = "reseller.name as reseller_name";
+            $this->userFields[] = "reseller.name as `reseller_name`";
         }
     }
 
@@ -206,7 +206,7 @@ class UsersController extends \Controller\BaseStalkerController {
         $this->app['allState'] = $this->allState;
         $this->app['totalRecords'] = $users['recordsTotal'];
         $this->app['recordsFiltered'] = $users['recordsFiltered'];
-        $this->app['consoleGroup'] = $this->db->getConsoleGroup();
+        $this->app['consoleGroup'] = $this->db->getConsoleGroup(array('select' => $this->getUsersGroupsConsolesListFields()));
 
         $attribute = $this->getUsersListDropdownAttribute();
         $this->checkDropdownAttribute($attribute);
@@ -244,26 +244,19 @@ class UsersController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
 
-        $empty_reseller = $this->setLocalization('Empty');
-        $data = $this->db->getConsoleGroup();
         if (empty($this->app['reseller'])) {
-            $this->app['allGroups'] = array_map(function ($row) use ($empty_reseller) {
-                if (empty($row['reseller_name'])) {
-                    $row['reseller_name'] = $empty_reseller;
-                }
-                if (empty($row['reseller_id'])) {
-                    $row['reseller_id'] = '-';
-                }
-                $row['operations'] = '';
-                return $row;
-            }, $data);
             $resellers = array(array('id' => '-', 'name' => $this->setLocalization('Empty')));
             $this->app['allResellers'] = array_merge($resellers, $this->db->getAllFromTable('reseller'));
-        } else {
-            $this->app['allGroups'] = $data;
         }
 
-        $this->app['dropdownAttribute'] = $this->getUsersConsolesGroupsDropdownAttribute();
+        $list = $this->users_consoles_groups_list_json();
+        $this->app['ads'] = $list['data'];
+        $this->app['recordsFiltered'] = $list['recordsFiltered'];
+        $this->app['totalRecords'] = $list['recordsTotal'];
+
+        $attribute = $this->getUsersConsolesGroupsDropdownAttribute();
+        $this->checkDropdownAttribute($attribute);
+        $this->app['dropdownAttribute'] = $attribute;
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -290,6 +283,11 @@ class UsersController extends \Controller\BaseStalkerController {
         $this->app['totalRecords'] = $list['recordsTotal'];
         $this->app['recordsFiltered'] = $list['recordsFiltered'];
         $user_name = '';
+
+        $attribute = $this->getUsersConsolesLogsDropdownAttribute();
+        $this->checkDropdownAttribute($attribute);
+        $this->app['dropdownAttribute'] = $attribute;
+
         if (!empty($this->app['user'])) {
             $user_name = " {$this->app['user'][0]['name']} {$this->app['user'][0]['fname']} ({$this->app['user'][0]['mac']})";
             $this->app['breadcrumbs']->addItem($this->setLocalization("Log of user") . $user_name);
@@ -304,6 +302,10 @@ class UsersController extends \Controller\BaseStalkerController {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
+
+        $attribute = $this->getUsersConsolesReportDropdownAttribute();
+        $this->checkDropdownAttribute($attribute);
+        $this->app['dropdownAttribute'] = $attribute;
 
         $list = $this->users_consoles_report_json();
         $this->app['consoleReport'] = $list['data'];
@@ -431,12 +433,16 @@ class UsersController extends \Controller\BaseStalkerController {
         } else {
             return $this->app->redirect('users-consoles-groups');
         }
-        $tmp = $this->db->getConsoleGroup(array('Sg.id' => $id));
+        $tmp = $this->db->getConsoleGroup(array('select' => $this->getUsersGroupsConsolesListFields(), 'where' => array('Sg.id' => $id)));
         $this->app['consoleGroup'] = $tmp[0];
         $this->app['groupid'] = $id;
         $list = $this->users_groups_consoles_list_json();
         $this->app['consoleGroupList'] = $list['data'];
         $this->app['totalRecords'] = $list['recordsTotal'];
+
+        $attribute = $this->getUsersGroupsConsolesListDropdownAttribute();
+        $this->checkDropdownAttribute($attribute);
+        $this->app['dropdownAttribute'] = $attribute;
 
         $this->app['breadcrumbs']->addItem($this->setLocalization('User groups'), $this->app['controller_alias'] . '/users-consoles-groups');
         $this->app['breadcrumbs']->addItem($this->setLocalization("STB of group") . " '{$this->app['consoleGroup']['name']}'");
@@ -463,7 +469,7 @@ class UsersController extends \Controller\BaseStalkerController {
             $this->app['filters'] = $this->data['filters'];
         }
 
-        $this->app['consoleGroup'] = $this->db->getConsoleGroup();
+        $this->app['consoleGroup'] = $this->db->getConsoleGroup(array('select' => $this->getUsersGroupsConsolesListFields()));
 
         $this->app['formEvent'] = $this->formEvent;
         $this->app['allEvent'] = array_merge($this->formEvent, $this->hiddenEvent);
@@ -635,6 +641,8 @@ class UsersController extends \Controller\BaseStalkerController {
 
         if (empty($query_param['limit']['limit'])) {
             $query_param['limit']['limit'] = 50;
+        } elseif ($query_param['limit']['limit'] == -1) {
+            $query_param['limit']['limit'] = FALSE;
         }
         
         if (!empty($query_param['order'])) {
@@ -802,6 +810,87 @@ class UsersController extends \Controller\BaseStalkerController {
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
 
+    public function users_consoles_groups_list_json() {
+
+        if ($this->isAjax) {
+            if ($no_auth = $this->checkAuth()) {
+                return $no_auth;
+            }
+        }
+
+        $response = array(
+            'data' => array(),
+            'recordsTotal' => 0,
+            'recordsFiltered' => 0
+        );
+
+        $error = $this->setLocalization("Error");
+        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
+
+        $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
+
+        if (!isset($query_param['where'])) {
+            $query_param['where'] = array();
+        }
+
+        $filds_for_select = $this->getUsersGroupsConsolesListFields();
+
+        $query_param['select'] = array_values($filds_for_select);
+
+        $this->cleanQueryParams($query_param, array_keys($filds_for_select), $filds_for_select);
+
+        foreach($query_param['order'] as $key => $val){
+            if ($search = array_search($key, $filds_for_select )){
+                $new_key = str_replace(" as $search", '', $key);
+                unset($query_param['order'][$key]);
+                $query_param['order'][$new_key] = $val;
+            }
+        }
+
+        if (!isset($query_param['like'])) {
+            $query_param['like'] = array();
+        }
+
+        if (empty($query_param['limit']['limit'])) {
+            $query_param['limit']['limit'] = 50;
+        } elseif ($query_param['limit']['limit'] == -1) {
+            $query_param['limit']['limit'] = FALSE;
+        }
+
+        if (!empty($this->app['reseller'])) {
+            $query_param['where']['reseller_id'] = $this->app['reseller'];
+        }
+
+        $response['recordsTotal'] = $this->db->getTotalRowsConsoleGroup();
+        $response['recordsFiltered'] = $this->db->getTotalRowsConsoleGroup($query_param['where'], $query_param['like']);
+
+        $allGroups = $this->db->getConsoleGroup($query_param);
+        if (is_array($allGroups)) {
+            $empty_reseller = $this->setLocalization('Empty');
+            $response["data"] = array_map(function ($row) use ($empty_reseller) {
+                if (empty($row['reseller_name'])) {
+                    $row['reseller_name'] = $empty_reseller;
+                }
+                if (empty($row['reseller_id'])) {
+                    $row['reseller_id'] = '-';
+                }
+                $row['operations'] = '';
+                return $row;
+            }, $allGroups);
+        }
+
+        $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
+
+        $error = "";
+
+        if ($this->isAjax) {
+            $response = $this->generateAjaxResponse($response);
+            return new Response(json_encode($response), (empty($error) ? 200 : 500));
+        } else {
+            return $response;
+        }
+    }
+
     public function add_console_group() {
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['name'])) {
             $this->app->abort(404, $this->setLocalization('Page not found'));
@@ -812,7 +901,7 @@ class UsersController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'addConsoleGroup';
+        $data['action'] = 'manageList';
         $error = $this->setlocalization('Failed');
         $check = $this->db->getConsoleGroup(array('Sg.name' => $this->postData['name']));
         if (empty($check)) {
@@ -837,9 +926,9 @@ class UsersController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'editConsoleGroup';
+        $data['action'] = 'manageList';
         $error = $this->setlocalization('Failed');
-        $check = $this->db->getConsoleGroup(array('Sg.name' => $this->postData['name']));
+        $check = $this->db->getConsoleGroup(array('where' => array('Sg.name' => $this->postData['name'])));
         if (empty($check)) {
             $this->db->updateConsoleGroup(array('name' => $this->postData['name']), array('id' => $this->postData['id']));
             $error = '';
@@ -865,7 +954,7 @@ class UsersController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'removeConsoleGroup';
+        $data['action'] = 'manageList';
         $data['id'] = $this->postData['consolegroupid'];
         $this->db->deleteConsoleGroup(array('id' => $this->postData['consolegroupid']));
         $response = $this->generateAjaxResponse($data, '');
@@ -1255,7 +1344,7 @@ class UsersController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'editConsoleGroup';
+        $data['action'] = 'manageList';
         $console_group_id = $this->postData['consolegroupid'];
         $source_id = $this->postData['source_id'] !== '-' ? $this->postData['source_id']: NULL;
         $target_id = $this->postData['target_id'] !== '-' ? $this->postData['target_id']: NULL;
@@ -1270,7 +1359,7 @@ class UsersController extends \Controller\BaseStalkerController {
         if (!empty($count_reseller) && $source_id !== $target_id) {
             $this->db->updateResellerMemberByID('stb_groups', $console_group_id, $target_id);
             $data['msg'] = $this->setLocalization('Moved');
-            $check = $this->db->getConsoleGroup(array('Sg.id' => $this->postData['consolegroupid']));
+            $check = $this->db->getConsoleGroup(array('where' => array('Sg.id' => $this->postData['consolegroupid'])));
             $data['id'] = $this->postData['consolegroupid'];
             $data['name'] = $check[0]['name'];
             $data['reseller_id'] = $check[0]['reseller_id'];
@@ -1938,4 +2027,47 @@ class UsersController extends \Controller\BaseStalkerController {
         );
     }
 
+    private function getUsersGroupsConsolesListDropdownAttribute() {
+        $attribute = array(
+            array('name'=>'mac',        'title'=>$this->setLocalization('MAC'),         'checked' => TRUE),
+            array('name'=>'uid',        'title'=>$this->setLocalization('uid'),         'checked' => TRUE)
+        );
+        if (!empty($this->app['reseller'])) {
+            $attribute[] = array('name'=>'reseller_name', 'title'=>$this->setLocalization('Reseller'), 'checked' => TRUE);
+        }
+        $attribute[] = array('name'=>'operations', 'title'=>$this->setLocalization('Operations'), 'checked' => TRUE);
+        return $attribute;
+    }
+
+    private function getUsersGroupsConsolesListFields(){
+        return array(
+            'id' => 'Sg.`id` as `id`',
+            'name' => 'Sg.name as `name`',
+            'users_count' => '(select count(*) from stb_in_group as Si where Si.stb_group_id = Sg.id) as `users_count`',
+            'reseller_id' => 'R.id as `reseller_id`',
+            'reseller_name' => 'R.name as `reseller_name`',
+        );
+    }
+
+    private function getUsersConsolesLogsDropdownAttribute() {
+        $attribute = array(
+            array('name' => 'time',     'title' => $this->setLocalization('Time'),      'checked' => TRUE),
+            array('name' => 'mac',      'title' => $this->setLocalization('MAC'),       'checked' => TRUE),
+            array('name' => 'action',   'title' => $this->setLocalization('Actions'),   'checked' => TRUE),
+            array('name' => 'object',   'title' => $this->setLocalization('Object'),    'checked' => TRUE),
+            array('name' => 'type',     'title' => $this->setLocalization('Type'),      'checked' => TRUE),
+            array('name' => 'param',    'title' => $this->setLocalization('Parameter'), 'checked' => TRUE)
+        );
+        return $attribute;
+    }
+
+    private function getUsersConsolesReportDropdownAttribute() {
+        $attribute = array(
+            array('name' => 'rank',             'title' => '#',                             'checked' => TRUE),
+            array('name' => 'mac',              'title' => $this->setLocalization('MAC'),   'checked' => TRUE),
+            array('name' => 'status',           'title' => $this->setLocalization('Status'),'checked' => TRUE),
+            array('name' => 'last_change_status','title' => $this->setLocalization('Time'), 'checked' => TRUE)
+        );
+        return $attribute;
+    }
 }

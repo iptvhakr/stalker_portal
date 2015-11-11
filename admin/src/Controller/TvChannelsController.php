@@ -73,26 +73,10 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
 
-        $filter = array();
-
-        if ($this->method == 'GET' && !empty($this->data['filters'])) {
-            $filter = $this->getIPTVfilters();
-        }
-        $allChannels = $this->db->getAllChannels($filter);
-        $allChannels = $this->setLocalization($allChannels, 'genres_name');
-        if (is_array($allChannels)) {
-            reset($allChannels);
-            while (list($num, $row) = each($allChannels)) {
-                $allChannels[$num]['logo'] = $this->getLogoUriById(FALSE, $row, 120);
-                $allChannels[$num]['genres_name'] = $this->mb_ucfirst($allChannels[$num]['genres_name']);
-                if (($monitoring_status = $this->getMonitoringStatus($row)) !== FALSE) {
-                    $allChannels[$num]['monitoring_status'] = $monitoring_status;
-                } else {
-                    unset($allChannels[$num]);
-                }
-            }
-        }
-        $this->app['allChannels'] = $allChannels;
+        $allChannels = $this->iptv_list_json();
+        $this->app['allChannels'] = $allChannels['data'];
+        $this->app['recordsFiltered'] = $allChannels['recordsFiltered'];
+        $this->app['totalRecords'] = $allChannels['recordsTotal'];
         $this->app['allGenres'] = $this->getAllGenres();
 
         $attribute = $this->getIptvListDropdownAttribute();
@@ -114,7 +98,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             $filter = $this->getIPTVfilters();
         }
 
-        $allChannels = $this->db->getAllChannels($filter);
+        $allChannels = $this->db->getAllChannels(array('where' => $filter));
 
         if (is_array($allChannels)) {
             while (list($num, $row) = each($allChannels)) {
@@ -230,6 +214,89 @@ class TvChannelsController extends \Controller\BaseStalkerController {
     }
 
     //----------------------- ajax method --------------------------------------
+
+    public function iptv_list_json(){
+        if ($this->isAjax) {
+            if ($no_auth = $this->checkAuth()) {
+                return $no_auth;
+            }
+        }
+
+        $response = array(
+            'data' => array(),
+            'recordsTotal' => 0,
+            'recordsFiltered' => 0
+        );
+
+        $error = "Error";
+        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
+
+        $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
+
+        if (!isset($query_param['where'])) {
+            $query_param['where'] = array();
+        }
+
+        $filter = $this->getIPTVfilters();
+
+        $query_param['where'] = array_merge($query_param['where'], $filter);
+        $filds_for_select = $this->getAllChannelsFields();
+
+        $query_param['select'] = array_values($filds_for_select);
+
+        $this->cleanQueryParams($query_param, array_keys($filds_for_select), $filds_for_select);
+
+        foreach($query_param['order'] as $key => $val){
+            if ($search = array_search($key, $filds_for_select )){
+                $new_key = str_replace(" as $search", '', $key);
+                unset($query_param['order'][$key]);
+                $query_param['order'][$new_key] = $val;
+            }
+        }
+
+        if (!isset($query_param['like'])) {
+            $query_param['like'] = array();
+        }
+
+        $response['recordsTotal'] = $this->db->getTotalRowsAllChannels();
+        $response["recordsFiltered"] = $this->db->getTotalRowsAllChannels($query_param['where'], $query_param['like']);
+        if (empty($query_param['limit']['limit'])) {
+            $query_param['limit']['limit'] = 50;
+        } elseif ($query_param['limit']['limit'] == -1) {
+            $query_param['limit']['limit'] = FALSE;
+        }
+
+        $allChannels = $this->db->getAllChannels($query_param);
+
+        $allChannels = $this->setLocalization($allChannels, 'genres_name');
+        $response["data"] = array();
+        if (is_array($allChannels)) {
+            reset($allChannels);
+            while (list($num, $row) = each($allChannels)) {
+                $allChannels[$num]['logo'] = $this->getLogoUriById(FALSE, $row, 120);
+                $allChannels[$num]['genres_name'] = $this->mb_ucfirst($allChannels[$num]['genres_name']);
+                $allChannels[$num]['enable_tv_archive'] = (int) $allChannels[$num]['enable_tv_archive'];
+                if (($monitoring_status = $this->getMonitoringStatus($row)) !== FALSE) {
+                    $allChannels[$num]['monitoring_status'] = $monitoring_status;
+                    $response["data"][] = $allChannels[$num];
+                    /*if (count($response["data"]) >= 50) {
+                        break;
+                    }*/
+                } else {
+                    unset($allChannels[$num]);
+                }
+            }
+        }
+        $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
+        $error = "";
+
+        if ($this->isAjax) {
+            $response = $this->generateAjaxResponse($response);
+            return new Response(json_encode($response), (empty($error) ? 200 : 500));
+        } else {
+            return $response;
+        }
+    }
 
     public function remove_channel() {
         if ($no_auth = $this->checkAuth()) {
@@ -490,7 +557,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $response["recordsFiltered"] = $this->db->getTotalRowsEPGList($query_param['where'], $query_param['like']);
 
         if (empty($query_param['limit']['limit'])) {
-            $query_param['limit']['limit'] = 10;
+            $query_param['limit']['limit'] = 50;
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }
@@ -1325,26 +1392,27 @@ class TvChannelsController extends \Controller\BaseStalkerController {
 
     private function getIPTVfilters() {
         $filters = array();
-        if (array_key_exists('tv_genre_id', $this->data['filters']) && $this->data['filters']['tv_genre_id'] != 0) {
-            $filters[] = "tv_genre_id = '" . $this->data['filters']['tv_genre_id'] . "'";
-        }
-        if (array_key_exists('archive_id', $this->data['filters']) && $this->data['filters']['archive_id'] != 0) {
-            $filters[] = "enable_tv_archive = '" . (int) ($this->data['filters']['archive_id'] == 1) . "'";
-        }
-        if (array_key_exists('status_id', $this->data['filters']) && $this->data['filters']['status_id'] != 0) {
-            $filters[] = "status='" . (int) ($this->data['filters']['status_id'] == 1) . "'";
-        }
 
-        if (array_key_exists('monitoring_status', $this->data['filters']) && $this->data['filters']['monitoring_status'] != 0) {
-            if (((int)$this->data['filters']['monitoring_status']) == 1) {
-                $filters[] = "enable_monitoring='0'";
-            } else {
-                $filters[] = "enable_monitoring='1'";
-                /*$filters[] = "monitoring_status='" . (int) ($this->data['filters']['monitoring_status'] != 2) . "'";*/
+        if (array_key_exists('filters', $this->data)) {
+
+            if (array_key_exists('tv_genre_id', $this->data['filters']) && $this->data['filters']['tv_genre_id'] != 0) {
+                $filters['tv_genre_id'] = $this->data['filters']['tv_genre_id'];
             }
-        }
+            if (array_key_exists('archive_id', $this->data['filters']) && $this->data['filters']['archive_id'] != 0) {
+                $filters['enable_tv_archive'] = (int) ($this->data['filters']['archive_id'] == 1);
+            }
+            if (array_key_exists('status_id', $this->data['filters']) && $this->data['filters']['status_id'] != 0) {
+                $filters['status'] = (int) ($this->data['filters']['status_id'] == 1);
+            }
 
-        $this->app['filters'] = $this->data['filters'];
+            if (array_key_exists('monitoring_status', $this->data['filters']) && $this->data['filters']['monitoring_status'] != 0) {
+                $filters['enable_monitoring'] = (int) !($this->data['filters']['monitoring_status'] == 1);
+            }
+
+            $this->app['filters'] = $this->data['filters'];
+        } else {
+            $this->app['filters'] = array();
+        }
         return $filters;
     }
 
@@ -1695,5 +1763,27 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             $getAllGenres[$key]['title'] = $this->mb_ucfirst($row['title']);
         }
         return $getAllGenres;
+    }
+
+    private function getAllChannelsFields(){
+        return array(
+            'id' => 'itv.id as `id`',
+            'number' => 'itv.number as `number`',
+            'logo' => 'itv.logo as `logo`',
+            'name' => 'itv.name as `name`',
+            'genres_name' => 'tv_genre.title as `genres_name`',
+            'enable_tv_archive' => 'itv.enable_tv_archive as `enable_tv_archive`',
+            'cmd' => 'itv.cmd as `cmd`',
+            'monitoring_status' => 'itv.monitoring_status as `monitoring_status`',
+            'status' => 'itv.status as `status`',
+            'media_type' => 'media_claims.media_type',
+            'media_id' => ' media_claims.media_id',
+            'sound_counter' =>'media_claims.sound_counter',
+            'video_counter' => 'media_claims.video_counter',
+            'no_epg' => 'media_claims.no_epg',
+            'wrong_epg' => 'media_claims.wrong_epg',
+            'enable_monitoring' => 'itv.enable_monitoring',
+            'monitoring_status_updated' => 'itv.monitoring_status_updated'
+        );
     }
 }

@@ -24,53 +24,7 @@
                                         {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
                                     {% endif %}
                                     <tbody>
-                                    {#                                    {% if attribute(app, 'allData') is defined %}
-                                                                            <!-- Start: list_row -->
-                                                                            {% for item in app.allData %}
-                                                                                <tr>
-                                                                                    <td>{{ item.id }}</td>
-                                                                                    <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-detail?id={{ item.id }}">{{ item.name }}</a></td>
-                                                                                    <td>{{ item.publisher }}</td>
-                                                                                    <td>{{ item.url }}</td>
-                                                                                    <td>
-                                                                                        {% if attribute(item, 'installed') is defined and item.installed %}
-                                                                                            {{ item.current_version }}
-                                                                                            {% if attribute(item, 'available_update') is defined and item.available_update %}
-                                                                                                &nbsp;&nbsp;&nbsp;<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-detail?id={{ item.id }}">{{ 'Update'|trans }}</a>
-                                                                                            {% endif %}
-                                                                                        {% else %}
-                                                                                            <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-detail?id={{ item.id }}">{{ 'Install'|trans }}</a>
-                                                                                        {% endif %}
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        {% if attribute(item, 'installed') is defined and item.installed %}
-                                                                                            {% if attribute(item, 'status') is defined and item.status %}{{ 'Enabled'|trans }}{% else %}{{ 'Disabled'|trans }}{% endif %}</td>
-                                                                                        {% else %}
-                                                                                            {{ 'Not installed'|trans }}
-                                                                                        {% endif %}
-                                                                                    <td>
-                                                                                        <div class="col-xs-3 col-sm-8">
-                                                                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                                                                <i class="pull-right fa fa-cog"></i>
-                                                                                            </a>
-                                                                                            <ul class="dropdown-menu pull-right">
-                                                                                                <li>
-                                                                                                    <a class="main_ajax" {% if not(attribute(item, 'installed') is defined) or not(item.installed) %}disabled="disabled"{% endif %} href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-toggle-state" data-id="{{ item.id }}" data-status="{{ item.status }}">
-                                                                                                        <span>{% if attribute(item, 'status') is defined and item.status %}{{ 'Disable'|trans }}{% else %}{{ 'Enable'|trans }}{% endif %}</span>
-                                                                                                    </a>
-                                                                                                </li>
-                                                                                                <li>
-                                                                                                    <a class="main_ajax" {% if attribute(item, 'status') is defined and item.status %}disabled="disabled"{% endif %} href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-delete" data-id="{{ item.id }}">
-                                                                                                        <span> {{ 'Delete'|trans }} </span>
-                                                                                                    </a>
-                                                                                                </li>
-                                                                                            </ul>
-                                                                                        </div>
-                                                                                    </td>
-                                                                                </tr>
-                                                                            {% endfor %}
-                                                                            <!-- End: list_row -->
-                                                                        {% endif %}#}
+
                                     </tbody>
                                 </table>
                             </div>
@@ -146,24 +100,11 @@
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
-                "columns": [
-                    {% if attribute(app, 'dropdownAttribute') is defined%}
-                    {% for item in app.dropdownAttribute %}
-                    {"data": "{{ item.name }}"}{% if not loop.last %}, {% endif %}
-                    {% endfor %}
-                    {% endif %}
-                ],
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
+                {% endif %}
                 "bFilter": true,
                 "bPaginate": true,
-                "fnDrawCallback": function () {
-                    var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
-                    var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
-                    if (pageCount > 1) {
-                        $("#datatable-1_paginate").css("display", "block");
-                    } else {
-                        $("#datatable-1_paginate").css("display", "none");
-                    }
-                },
                 "bInfo": true,
                 "columnDefs": [
                     {className: "action-menu", "targets": [-1]},
@@ -171,9 +112,6 @@
                     {"sortable": false, "targets": [-1]}
                 ]
             }).prev('.dataTables_processing').hide('');
-            $("#attribute_set input[type='checkbox']").each(function (index) {
-                $("#datatable-1").dataTable().fnSetColumnVis(index - 1, $(this).prop('checked'));
-            });
         }
 
         function yelp() {
