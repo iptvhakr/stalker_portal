@@ -382,9 +382,9 @@ class User implements \Stalker\Lib\StbApi\User
                 ->select('service_id as id')
                 ->from('service_in_package')
                 ->where(array('package_id' => $package['id']))
+                ->orderby('service_in_package.id')
                 ->get()
                 ->all('id');
-
             $service_ids = array_merge($service_ids, $ids);
         }
 
