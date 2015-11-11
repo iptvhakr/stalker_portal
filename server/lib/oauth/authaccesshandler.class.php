@@ -139,7 +139,8 @@ class AuthAccessHandler extends AccessHandler
     public function getAdditionalParams($username){
         return array(
             'user_id'    => $this->getUserId($username),
-            'expires_in' => $this->token_expire
+            'expires_in' => $this->token_expire,
+            'portal_url' => \Config::getSafe('portal_url', '/stalker_portal/')
         );
     }
 
