@@ -63,6 +63,10 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             return $this->app->redirect($this->workURL . '/application-catalog');
         }
 
+        $attribute = $this->getApplicationDetailDropdownAttribute();
+        $this->checkDropdownAttribute($attribute);
+        $this->app['dropdownAttribute'] = $attribute;
+
         $this->app['app_info'] = $this->application_version_list_json();
         $this->app['breadcrumbs']->addItem(!empty($this->app['app_info']['info']['name']) ? $this->app['app_info']['info']['name'] : $this->setLocalization('Undefined'));
 
@@ -401,6 +405,16 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             array('name' => 'current_version',  'title' => $this->setLocalization('Installed version'), 'checked' => TRUE),
             array('name' => 'status',           'title' => $this->setLocalization('State'),             'checked' => TRUE),
             array('name' => 'operations',       'title' => $this->setLocalization('Operations'),        'checked' => TRUE)
+        );
+        return $attribute;
+    }
+
+    private function getApplicationDetailDropdownAttribute() {
+        $attribute = array(
+            array('name' => 'version',      'title' => $this->setlocalization('Application version'),   'checked' => TRUE),
+            array('name' => 'published',    'title' => $this->setLocalization('Release date'),          'checked' => TRUE),
+            array('name' => 'status',       'title' => $this->setLocalization('State'),                 'checked' => TRUE),
+            array('name' => 'operations',   'title' => $this->setLocalization('Operations'),            'checked' => TRUE)
         );
         return $attribute;
     }

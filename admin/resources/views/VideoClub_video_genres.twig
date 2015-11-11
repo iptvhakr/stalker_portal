@@ -24,36 +24,7 @@
                                         {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
                                     {% endif %}
                                     <tbody>
-                                    {% if attribute(app, 'allData') is defined %}
-                                        <!-- Start: list_row -->
-                                        {% for item in app.allData %}
-                                            <tr data-genresid="{{ item.id }}">
-                                                <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/video-genres-list-json" class="main_ajax" data-id="{{ item.id }}" id="edit_video_genres_{{ item.id }}">{{ item.title }}</a></td>
-                                                <td>{{ item.localized_title }}</td>
-                                                <td>{{ item.category }}</td>
-                                                <td>
-                                                    <div class="col-xs-3 col-sm-8">
-                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                            <i class="pull-right fa fa-cog"></i>
-                                                        </a>
-                                                        <ul class="dropdown-menu pull-right">
-                                                            <li>
-                                                                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/video-genres-list-json" class="main_ajax" data-id="{{ item.id }}" id="edit_video_genres_{{ item.id }}">
-                                                                    <span>{{ 'Edit'|trans }}</span>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-video-genres" data-genresid="{{ item.id }}">
-                                                                    <span>{{ 'Delete'|trans }}</span>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        {% endfor %}
-                                    {% endif %}
-                                    <!-- End: list_row -->
+
                                     </tbody>
                                 </table>
                             </div>
@@ -113,21 +84,12 @@
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
-                "columns": [
-                    {% if attribute(app, 'dropdownAttribute') is defined%}
-                    {% for item in app.dropdownAttribute %}
-                    {"data": "{{ item.name }}"},
-                    {% endfor %}
-                    {% endif %}
-                ],
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
+                {% endif %}
                 "scrollCollapse": true,
                 "bFilter": true,
                 "bPaginate": true,
-                "fnDrawCallback": function() {
-                    var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
-                    var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
-                    if (pageCount > 1)  {$("#datatable-1_paginate").css("display", "block");} else { $("#datatable-1_paginate").css("display", "none");  }
-                },
                 "bInfo": true,
                 "ordering": false,
                 "aoColumnDefs": [
@@ -136,6 +98,7 @@
                     { "searchable": false, "targets": [-1, -2]}
                 ]
             }).prev('.dataTables_processing').hide('');
+            $('#datatable-1').DataTable().ajax.reload();
         }
 
         function yelp() {

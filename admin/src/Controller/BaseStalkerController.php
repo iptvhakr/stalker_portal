@@ -93,8 +93,8 @@ class BaseStalkerController {
         }
     }
 
-    protected function getTemplateName($metod_name) {
-        return str_replace(array(__NAMESPACE__, '\\', '::'), array('', '', '_'), $metod_name) . ".twig";
+    protected function getTemplateName($method_name) {
+        return str_replace(array(__NAMESPACE__, '\\', '::'), array('', '', '_'), $method_name) . ".twig";
     }
 
     private function getPathInfo() {

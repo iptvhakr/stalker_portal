@@ -26,22 +26,7 @@
                                         {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
                                         {% endif %}
                                         <tbody>
-                                            {% autoescape false %}
-                                            {% if attribute(app, 'allStat') is defined %}
-                                                    <!-- Start: list_row -->
-                                                {% for row in app.allStat %}
-                                                    <tr>
-                                                        {% for key, item in row %}  
-                                                            {% if key == 'mac' %}
-                                                                <td><a href="{{app.request.baseUrl}}/users/edit-users?id={{ row.uid }}">{{ item }}</a></td>
-                                                            {% elseif key != 'uid' %}
-                                                            <td>{% if key == 'added' %}{{ item|date('M d, Y H:i') }}{% else %}{{ item }}{% endif %}</td>
-                                                            {% endif %}
-                                                        {% endfor %}
-                                                    </tr>
-                                                {% endfor %}
-                                            {% endif %}
-                                            {% endautoescape %}
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -91,13 +76,9 @@
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
-                "columns": [
-                {% if attribute(app, 'dropdownAttribute') is defined%}
-                    {% for item in app.dropdownAttribute %}    
-                    {"data": "{{ item.name }}"},
-                    {% endfor %}
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
                 {% endif %}
-                ],
                 "bFilter": true,
                 "bPaginate": true,
                 "bInfo": true,
@@ -105,9 +86,7 @@
                     {"width": "150px", "targets": [-1] }
                 ]
             }).prev('.dataTables_processing').hide('');
-            $("#attribute_set input[type='checkbox']").each(function(index){
-                $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
-            });
+            $('#datatable-1').DataTable().ajax.reload();
         }
 
         function yelp() {

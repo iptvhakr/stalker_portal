@@ -1,39 +1,22 @@
 {% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
 {% set title = ('Video club'|trans ~ ': ' ~ 'Activity log'|trans) | trans %}
 
 {% block content %}
     <div id="iptv_list">
         <div class="row row_no_padding">
             <div class="box">
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                    {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
+                {% endif %}
                 <div class="box-content">
                     <div class="box-content no-padding">
                         <div class="dataTables_processing"></div>
                         <table class="table dataTable no-footer table-hover table-datatable"  id="datatable-1">
-                            <thead>
-                                <tr>
-                                    <th data-filter="video_id">{{ 'ID'|trans }}</th>
-                                    <th data-filter="actiontime">{{ 'Date'|trans }}</th>
-                                    <th data-filter="video_name">{{ 'Title'|trans }}</th>
-                                    <th data-filter="login">{{ 'Moderator'|trans }}</th>
-                                    <th data-filter="action">{{ 'Status'|trans }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            {% if attribute(app, 'allVideoLogs') is defined %}
-                            <!-- Start: list_row -->
-                                {% autoescape false %}
-                                    {% for item in app.allVideoLogs %}
-                                        <tr data-videologid="{{ item.id }}">
-                                            <td>{{ item.video_id }}</td>
-                                            <td>{{ item.actiontime|date('M d, Y H:i') }}</td>
-                                            <td>{{ item.video_name }}</td>
-                                            <td>{{ item.login }}</td>
-                                            <td>{{ item.action|capitalize }}</td>
-                                        </tr>
-                                    {% endfor %}
-                                {% endautoescape %}
+                            {% if attribute(app, 'dropdownAttribute') is defined %}
+                                {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
                             {% endif %}
-                            <!-- End: list_row -->
+                            <tbody>
                             </tbody>
                         </table>
                     </div>
@@ -73,21 +56,12 @@
             "language": {
                 "url": "{{ app.datatable_lang_file }}"
             },
-            "columns": [
-                { "data": "video_id" },
-                { "data": "actiontime" },
-                { "data": "video_name" },
-                { "data": "login" },
-                { "data": "action" }
-            ],
+            {% if attribute(app, 'dropdownAttribute') is defined %}
+            {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
+            {% endif %}
             "bFilter": true,
             "bPaginate": true,
 			"scrollCollapse": true,
-			"fnDrawCallback": function() {  
-					var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
-					var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
-					if (pageCount > 1)  {$("#datatable-1_paginate").css("display", "block");} else { $("#datatable-1_paginate").css("display", "none");  }
-				},
             "bInfo":     true,
             "order": [[ 1, "desc" ]],
             "aoColumnDefs": [ 
@@ -100,7 +74,7 @@
 {#                { "searchable": false, "targets": [0, 2, 3 ] }#}
             ]
         }).prev('.dataTables_processing').hide('');
-        $("#datatable-1").DataTable().ajax.reload();
+        $('#datatable-1').DataTable().ajax.reload();
     }
 
 

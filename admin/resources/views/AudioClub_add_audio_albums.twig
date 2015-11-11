@@ -141,43 +141,7 @@
                                                     {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
                                                 {% endif %}
                                                 <tbody>
-                                                    {% if attribute(app, 'allAlbumComposition') is defined %}
-                                                        <!-- Start: list_row -->
-                                                        {% for item in app.allAlbumComposition %}
-                                                            <tr data-trackid="{{ item.id }}">
-                                                                <td>{{ item.number }}</td>
-                                                                <td><a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/audio-albums-composition-list-json" data-trackid="{{ item.id }}" >{{ item.name }}</a></td>
-                                                                <td>{{ item.url }}</td>
-                                                                <td>{{ item.language }}</td>
-                                                                <td>{% if item.status %}<span class="txt-success">{{ 'Published'|trans }}</span>{% else %}<span class="txt-danger">{{ 'Unpublished'|trans }}</span>{% endif %}</td>
-                                                                <td>
-                                                                    <div class="col-xs-3 col-sm-8">
-                                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
-                                                                            <i class="pull-right fa fa-cog"></i>
-                                                                        </a>
-                                                                        <ul class="dropdown-menu pull-right">
-                                                                            <li>
-                                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/audio-albums-composition-list-json" data-trackid="{{ item.id }}">
-                                                                                    <span>{{ 'Edit'|trans }}</span>
-                                                                                </a>
-                                                                            </li>
-                                                                            <li>
-                                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-audio-album-track" data-trackid="{{ item.id }}" data-trackstatus="{{ item.status }}">
-                                                                                    <span>{% if item.status %}{{ 'Unpublish'|trans }}{% else %}{{ 'Publish'|trans }}{% endif %}</span>
-                                                                                </a>
-                                                                            </li>
-                                                                            <li>
-                                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-audio-album-track" data-trackid="{{ item.id }}">
-                                                                                    <span>{{ 'Delete'|trans }}</span>
-                                                                                </a>
-                                                                            </li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                        {% endfor %}
-                                                    {% endif %}
-                                                    <!-- End: list_row -->
+
                                                 </tbody>
                                             </table>
                                         </div>
@@ -345,14 +309,9 @@
                 "fnRowCallback": function (nRow, aData, iDisplayIndex) {
                     nRow.setAttribute('id', aData.RowOrder);  //Initialize row id for every row
                 },
-                "columns": [
-                    {"data": "number"},
-                    {"data": "name"},
-                    {"data": "url"},
-                    {"data": "language"},
-                    {"data": "status"},
-                    {"data": "operations"}
-                ],
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
+                {% endif %}
 				
                 "lengthMenu": [-1],
                 "bFilter": true,

@@ -26,54 +26,7 @@
                                         {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
                                         {% endif %}
                                         <tbody>
-                                        {% if attribute(app, 'allData') is defined %}
-                                            <!-- Start: list_row -->
-                                            {% for row in app.allData %}
-                                                <tr>
-                                                    {% for key, item in row %}
-                                                        <td>
-                                                            {% if key == 'created' or key == 'modified' %}
-                                                                {% if item > 0 %}
-                                                                    {{ item|date('M d, Y H:i') }}
-                                                                {% else %}
-                                                                    0
-                                                                {% endif %}
-                                                            {% elseif  key == 'max_users' %}
-                                                                {% if item > 0 %}item{% else %}&#8734;{% endif %}
-                                                            {% else %}
-                                                                {{ item }}
-                                                            {% endif %}</td>
-                                                    {% endfor %}
-                                                    <td>
-                                                        <div class="col-xs-3 col-sm-8">
-                                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                                <i class="pull-right fa fa-cog"></i>
-                                                            </a>
-                                                            <ul class="dropdown-menu pull-right">
-                                                                <li>
-                                                                    <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-users-to-reseller" data-id="{{ row.id }}">
-                                                                        <span>{{ 'Move all users to another reseller'|trans }}</span>
-                                                                    </a>
-                                                                </li>
-                                                                {% if row.id != '-' %}
-                                                                <li>
-                                                                    <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/resellers-list-json" data-id="{{ row.id }}">
-                                                                        <span>{{ 'Edit'|trans }}</span>
-                                                                    </a>
-                                                                </li>
-                                                                <li>
-                                                                    <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/resellers-delete" data-id="{{ row.id }}">
-                                                                        <span> {{ 'Delete'|trans }} </span>
-                                                                    </a>
-                                                                </li>
-                                                                {% endif %}
-                                                            </ul>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            {% endfor %}
-                                            <!-- End: list_row -->
-                                        {% endif %}
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -207,18 +160,9 @@
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
-                "columns": [
-                {% if attribute(app, 'dropdownAttribute') is defined%}
-                    {% for item in app.dropdownAttribute %}    
-                    {"data": "{{ item.name }}"},
-                    {% endfor %}
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
                 {% endif %}
-                ],
-				"fnDrawCallback": function() {  
-					var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
-					var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
-					if (pageCount > 1)  {$("#datatable-1_paginate").css("display", "block");} else { $("#datatable-1_paginate").css("display", "none");  }
-				},
                 "bFilter": true,
                 "bPaginate": true,
                 "bInfo": true,
@@ -229,10 +173,7 @@
                     {"sortable": false, "targets": [-1]}
                 ]
             }).prev('.dataTables_processing').hide('');
-            
-            $("#attribute_set input[type='checkbox']").each(function(index){
-                $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
-            });
+            $('#datatable-1').DataTable().ajax.reload();
         }
 
         function yelp() {
@@ -257,13 +198,9 @@
                 });
 
                 $(document).on('click', "#modalbox_ad button[type='submit'], #modalbox button[type='submit']", function (e) {
-				
-				
-                    var _this = $(this);
-$.validate({
-                        onSuccess: function () {
                     e.stopPropagation();
                     e.preventDefault();
+                    var _this = $(this);
                     var sendData = new Object();
                     var form_fields = _this.closest("div[id*='modalbox']").find('form').find(".own_fields:not(:disabled)");
                     form_fields.each(function () {
@@ -275,8 +212,6 @@ $.validate({
                     JSshowModalBox();
                     ajaxPostSend(action, sendData, false, false);
                     return false;
-  }
-                    });
                 });
 
                 $("#add_reseller").on("click", function (e) {
@@ -301,11 +236,11 @@ $.validate({
                             <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Reseller name'|trans }}</label>\n\
                             <div class="col-xs-10 col-sm-8">\n\
                                 <span class="col-xs-12 col-sm-12">\n\
-                                    <input type="hidden" class="own_fields" data-validation=required  name="source_id" value="'+ $(this).data('id') + '">\n\
+                                    <input type="hidden" class="own_fields" name="source_id" value="'+ $(this).data('id') + '">\n\
                                     <select class="own_fields" name="target_id" id="target_reseller">\n\
                     {% if attribute(app, 'allData') is defined %}
                         {% for row in app.allData %}
-                                    <option value="{{ row.id }}">{{ row.name }}</option>\n\
+                                    <option value="{{ row.id }}" >{{ row.name }}</option>\n\
                         {% endfor %}
                     {% endif %}
                                 </span>\n\
@@ -320,6 +255,7 @@ $.validate({
                             <button type="reset" id="form_reset" class="btn btn-default pull-right" >{{ 'Cancel'|trans }}</button>\n\
                         </div>');
 
+                    $("#target_reseller option[value='"+$(this).data('id')+"']").prop('selected', 'selected');
                     $("#target_reseller").select2("destroy");
                     $("#target_reseller").select2({minimumResultsForSearch: -1});
 

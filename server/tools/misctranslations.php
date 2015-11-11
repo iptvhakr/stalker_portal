@@ -898,3 +898,10 @@ _('once-only');
 _('ID is available');
 _('A cache has been reset');
 _('for all servers');
+
+_('List of tv-channels by page + filters');
+_('Schedule switch on of movie by page + filters');
+_('List of advertising blocks by page + filters');
+_('List of STBs of video-moderators by page + filters');
+_('List of STB by page + filters');
+_('Application version');

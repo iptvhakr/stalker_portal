@@ -545,7 +545,7 @@ class StoragesController extends \Controller\BaseStalkerController {
     
     private function getLogsFields(){
         return array(
-            "added" => "M_L.`added` as `added`",
+            "added" => "CAST(M_L.`added` AS CHAR) as `added`",
             "log_txt" => "M_L.`log_txt` as `log_txt`"
         );
     }

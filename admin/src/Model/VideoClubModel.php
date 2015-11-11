@@ -27,8 +27,13 @@ class VideoClubModel extends \Model\BaseStalkerModel {
         }
         $this->mysqlInstance->from('video')
                     ->join('media_claims', 'video.id', 'media_claims.media_id and media_claims.media_type = "vclub"', 'LEFT')
-                    ->join('video_on_tasks', 'video.id', 'video_on_tasks.video_id', 'LEFT')
-                    ->where($param['where'])->like($param['like'], 'OR');
+                    ->join('video_on_tasks', 'video.id', 'video_on_tasks.video_id', 'LEFT');
+        if (!empty($param['where'])) {
+            $this->mysqlInstance->where($param['where']);
+        }
+        if (!empty($param['like'])) {
+            $this->mysqlInstance->like($param['like'], 'OR');
+        }
         if (!empty($param['order'])) {
             $this->mysqlInstance->orderby($param['order']);
         }
@@ -36,7 +41,7 @@ class VideoClubModel extends \Model\BaseStalkerModel {
         if (!empty($param['limit']['limit'])) {
             $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
-//        if (!$counter) {print_r($this->mysqlInstance->get()); exit;}
+
         return ($counter) ? $this->mysqlInstance->count()->get()->counter() : $this->mysqlInstance->get()->all();
     }
     
@@ -155,11 +160,46 @@ class VideoClubModel extends \Model\BaseStalkerModel {
     public function getAllAdmins() {
         return $this->mysqlInstance->from('administrators')->get()->all();
     }
-    
-    public function getModerators($id = FALSE) {
+
+    public function getTotalRowsModerators($where = array(), $like = array()) {
+        $params = array(
+            /*'select' => array("*"),*/
+            'where' => $where,
+            'like' => array(),
+            'order' => array()
+        );
+        if (!empty($like)) {
+            $params['like'] = $like;
+        }
+        return $this->getModerators($params, TRUE);
+    }
+
+    public function getModerators($param, $counter = FALSE) {
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
         $this->mysqlInstance->from('moderators');
-        if ($id !== FALSE) {
-            return $this->mysqlInstance->where(array('id' => $id))->get()->first();
+
+        if (!empty($param['where'])) {
+            $this->mysqlInstance->where($param['where']);
+        }
+        if (!empty($param['like'])) {
+            $this->mysqlInstance->like($param['like'], 'OR');
+        }
+        if (!empty($param['order'])) {
+            $this->mysqlInstance->orderby($param['order']);
+        }
+
+        if (!empty($param['limit']['limit'])) {
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
+        }
+
+        if ($counter){
+            return $this->mysqlInstance->count()->get()->counter();
+        }
+
+        if (!empty($param['where']) && !empty($param['where']['id'])) {
+            return $this->mysqlInstance->get()->first();
         } else {
             return $this->mysqlInstance->get()->all();
         }
@@ -188,15 +228,44 @@ class VideoClubModel extends \Model\BaseStalkerModel {
                                             order by id")->all();
                                             /*where moderator_tasks.ended = 0 $add_where*/
     }
-    
-    public function getAllVideoTasks($params = FALSE) {
-        $this->mysqlInstance->select('video_on_tasks.*, video_on_tasks.id as task_id, video_on_tasks.added as task_added, video.*')
-                                    ->from('video_on_tasks')
-                                    ->join('video', 'video.id', 'video_on_tasks.video_id', 'INNER');
-        if ($params !== FALSE) {
-            $this->mysqlInstance->where($params);
+
+    public function getTotalRowsAllVideoTasks($where = array(), $like = array()) {
+        $params = array(
+            'where' => $where
+        );
+        if (!empty($like)) {
+            $params['like'] = $like;
         }
-        return $this->mysqlInstance->orderby('date_on')->get()->all();
+        return $this->getAllVideoTasks($params, TRUE);
+    }
+
+    public function getAllVideoTasks($param, $counter = FALSE) {
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from('video_on_tasks')
+                            ->join('video', 'video.id', 'video_on_tasks.video_id', 'INNER');
+
+        if (!empty($param['where'])) {
+            $this->mysqlInstance->where($param['where']);
+        }
+        if (!empty($where)) {
+            $this->mysqlInstance->where($where);
+        }
+        if (!empty($param['like'])) {
+            $this->mysqlInstance->like($param['like'], ' OR ');
+        }
+
+        if (!empty($param['order'])) {
+            $this->mysqlInstance->orderby($param['order']);
+        } else {
+            $this->mysqlInstance->orderby('date_on');
+        }
+        if (!empty($param['limit']['limit'])) {
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
+        }
+
+        return ($counter) ? $this->mysqlInstance->count()->get()->counter() : $this->mysqlInstance->get()->all();
     }
     
     public function getVideoGenres() {

@@ -25,47 +25,7 @@
                                 {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
                             {% endif %}
                             <tbody>
-                            {% if attribute(app, 'allRadio') is defined %}
-                                <!-- Start: list_row -->
-                                {% for item in app.allRadio %}
-                                    <tr data-radioid="{{ item.id }}">
-                                        <td>{{ item.id }}</td>
-                                        <td>{{ item.number }}</td>
-                                        <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-radio?id={{ item.id }}" >{{ item.name }}</a></td>
-                                        <td>{{ item.cmd }}</td>
-                                        <td>{{ item.volume_correction * 5}}</td>
-                                        <td class="data-filter-status">{% if item.status %}<span class="txt-success">{{ 'Published'|trans }}</span>{% else %}<span class="txt-danger">{{ 'Unpublished'|trans }}</span>{% endif %}</td>
-                                        {% autoescape false %}
-                                        <td>{{ item.monitoring_status }}</td>
-                                        {% endautoescape %}
-                                        <td>
-                                            <div class="col-xs-3 col-sm-8">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                    <i class="pull-right fa fa-cog"></i>
-                                                </a>
-                                                <ul class="dropdown-menu pull-right">
-                                                    <li>
-                                                        <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-radio?id={{ item.id }}">
-                                                            <span>{{ 'Edit'|trans }}</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-radio" data-radioid="{{ item.id }}" data-radiostatus="{{ item.status }}">
-                                                            <span>{% if item.status %}{{ 'Unpublish'|trans }}{% else %}{{ 'Publish'|trans }}{% endif %}</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-radio" data-radioid="{{ item.id }}">
-                                                            <span>{{ 'Delete'|trans }}</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            {% endif %}
-                            <!-- End: list_row -->
+
                             </tbody>
                         </table>
                     </div>
@@ -131,13 +91,9 @@
                         "language": {
                             "url": "{{ app.datatable_lang_file }}"
                         },
-                "columns": [
-                    {% if attribute(app, 'dropdownAttribute') is defined%}
-                    {% for item in app.dropdownAttribute %}
-                    {"data": "{{ item.name }}"},
-                    {% endfor %}
-                    {% endif %}
-                ],
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
+                {% endif %}
                 "bFilter": true,
                 "bPaginate": true,
                 "bInfo": true,
@@ -149,9 +105,7 @@
 		            { "width": "16px", "targets": [ -1 ] }			
                 ]
             }).prev('.dataTables_processing').hide('');
-            $("#attribute_set input[type='checkbox']").each(function(index){
-                $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
-            });
+            $('#datatable-1').DataTable().ajax.reload();
         }
 
         function yelp() {

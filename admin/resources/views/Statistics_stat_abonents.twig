@@ -42,17 +42,7 @@
                                 {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
                             {% endif %}
                             <tbody>
-                            {% if attribute(app, 'allStat') is defined %}
-                                <!-- Start: list_row -->
-                                {% for row in app.allStat %}
-                                    <tr>
-                                        {% for key, item in row %}
-                                            <td>{% if key == 'readed' %}{{ item|date('M d, Y H:i') }}{% else %}{{ item }}{% endif %}</td>
-                                        {% endfor %}
-                                    </tr>
-                                {% endfor %}
-                                <!-- End: list_row -->
-                            {% endif %}
+
                             </tbody>
                         </table>
                     </div>
@@ -103,21 +93,15 @@
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
-                "columns": [
-                {% if attribute(app, 'dropdownAttribute') is defined%}
-                    {% for item in app.dropdownAttribute %}    
-                    {"data": "{{ item.name }}"},
-                    {% endfor %}
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
                 {% endif %}
-                ],
                 "bFilter": true,
                 "bPaginate": true,
 				"columnDefs": [     ],
                 "bInfo": true
             }).prev('.dataTables_processing').hide('');
-            $("#attribute_set input[type='checkbox']").each(function(index){
-                $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
-            });
+            $('#datatable-1').DataTable().ajax.reload();
         }
 
         function yelp() {

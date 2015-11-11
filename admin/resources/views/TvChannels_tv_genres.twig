@@ -23,36 +23,7 @@
                                         {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
                                     {% endif %}
                                     <tbody>
-                                    {% if attribute(app, 'allData') is defined %}
-                                        <!-- Start: list_row -->
-                                        {% for item in app.allData %}
-                                            <tr data-genresid="{{ item.id }}">
-                                                <td>{{ item.number }}</td>
-                                                <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-tv-genres" data-genresid="{{ item.id }}" id="edit_tv_genres_{{ item.id }}">{{ item.title }}</a></td>
-                                                <td>{{ item.localized_title }}</td>
-                                                <td>
-                                                    <div class="col-xs-3 col-sm-8">
-                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                            <i class="pull-right fa fa-cog"></i>
-                                                        </a>
-                                                        <ul class="dropdown-menu pull-right">
-                                                            <li>
-                                                                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-tv-genres" data-genresid="{{ item.id }}" id="edit_tv_genres_{{ item.id }}">
-                                                                    <span>{{ 'Edit'|trans }}</span>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-tv-genres" data-genresid="{{ item.id }}">
-                                                                    <span>{{ 'Delete'|trans }}</span>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        {% endfor %}
-                                    {% endif %}
-                                    <!-- End: list_row -->
+
                                     </tbody>
                                 </table>
                             </div>
@@ -105,13 +76,9 @@
                 "fnRowCallback": function (nRow, aData, iDisplayIndex) {
                     nRow.setAttribute('id', aData.RowOrder);  //Initialize row id for every row
                 },
-                "columns": [
-                    {% if attribute(app, 'dropdownAttribute') is defined%}
-                    {% for item in app.dropdownAttribute %}
-                    {"data": "{{ item.name }}"},
-                    {% endfor %}
-                    {% endif %}
-                ],
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
+                {% endif %}
                 "lengthMenu": [-1],
                 "bFilter": true,
                 "bPaginate": false,
@@ -127,6 +94,7 @@
                 iIndexColumn: 0,
                 sURL: "{{ app.request.baseUrl }}/{{ app.controller_alias }}/tv-genres-reorder"
             }).closest('#iptv_list').find('.dataTables_processing').hide('');
+            /*$('#datatable-1').DataTable().ajax.reload();*/
         }
 
         function yelp() {

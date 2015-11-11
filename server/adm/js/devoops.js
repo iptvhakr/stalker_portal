@@ -73,14 +73,35 @@ function LoadDataTablesScripts(callback) {
         $.getScript('plugins/datatables/jquery.dataTables.js', function () {
             $.getScript('plugins/datatables/ZeroClipboard.js', function () {
                 $.getScript('plugins/datatables/TableTools.js', function () {
-                    $.getScript('plugins/datatables/dataTables.bootstrap.js', function(){
-                        $.fn.dataTableExt.oApi.fnDataUpdate = function ( oSettings, nRowObject, iRowIndex ){
-                            $(nRowObject).find("TD").each( function(i) {
-                                  var iColIndex = oSettings.oApi._fnVisibleToColumnIndex( oSettings, i );
-                                  oSettings.oApi._fnSetCellData( oSettings, iRowIndex, iColIndex, $(this).html() );
+                    $.getScript('plugins/datatables/fnReloadAjax.js', function () {
+                        $.getScript('plugins/datatables/dataTables.bootstrap.js', function(){
+                            $.fn.dataTableExt.oApi.fnDataUpdate = function ( oSettings, nRowObject, iRowIndex ){
+                                $(nRowObject).find("TD").each( function(i) {
+                                    var iColIndex = oSettings.oApi._fnVisibleToColumnIndex( oSettings, i );
+                                    oSettings.oApi._fnSetCellData( oSettings, iRowIndex, iColIndex, $(this).html() );
+                                } );
+                            };
+
+                            $.fn.dataTableExt.oApi.fnFeatureReloadButtonHtml = function ( oSettings, nRowObject, iRowIndex ){
+                                alert('jjj');
+                            };
+
+                            $.fn.dataTableExt.aoFeatures.push( {
+                                "fnInit": function( oDTSettings ) {
+                                    var filterContainer = $(oDTSettings.nTableWrapper).find("#" + oDTSettings.sTableId + '_filter');
+                                    if (filterContainer.length) {
+                                        filterContainer.after('<button id="dataTables_ajax_update_button" class="btn" type="button"><i class="fa fa-refresh"></i></button>');
+                                        $(document).on("click", "#dataTables_ajax_update_button", function(){
+                                            $("#" + oDTSettings.sTableId).DataTable().ajax.reload();
+                                        });
+                                    }
+                                },
+                                "cFeature": "A"
                             } );
-                        };
-                        callback();
+
+                            $.fn.dataTable.defaults.sDom += "A";
+                            callback();
+                        });
                     });
                 });
             });
@@ -88,13 +109,13 @@ function LoadDataTablesScripts(callback) {
     }
     if (!$.fn.dataTables) {
         LoadDatatables();
-    }
-    else {
+    } else {
         if (callback && typeof (callback) === "function") {
             callback();
         }
     }
 }
+
 //
 //  Dynamically load Fancybox 2 plugin
 //  homepage: http://fancyapps.com/fancybox/ v2.1.5 License - MIT
@@ -1152,6 +1173,7 @@ var d = new Date();
 if (!$.isFunction(d['toLocaleFormat'])) {
     Date.prototype.toLocaleFormat = function (format) {
         var year = this.getFullYear();
+        var yearShort = year.toString().slice(2);
         var month = this.getMonth() + 1;
             month = (month.toString().length == 1) ? '0' + month: month;
         var monthNum = this.getMonth();
@@ -1164,7 +1186,7 @@ if (!$.isFunction(d['toLocaleFormat'])) {
             min = (min.toString().length == 1) ? '0' + min: min;
         var sec = this.getSeconds();
             sec = (sec.toString().length == 1) ? '0' + sec: sec;
-        return format.replace("%Y", year).replace("%m", month).replace("%d", day).replace("%H", hour).replace("%M", min).replace("%s", sec).replace("%b", monthName[monthNum]) ;
+        return format.replace("%Y", year).replace("%y", yearShort).replace("%m", month).replace("%d", day).replace("%H", hour).replace("%M", min).replace("%s", sec).replace("%b", monthName[monthNum]) ;
     };    
 }
 

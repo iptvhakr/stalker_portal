@@ -23,36 +23,7 @@
                                     {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
                                 {% endif %}
                                 <tbody>
-                                {% if attribute(app, 'allData') is defined %}
-                                    <!-- Start: list_row -->
-                                    {% for item in app.allData %}
-                                        <tr data-phonebookeid="{{ item.id }}">
-                                            <td>{{ item.id }}</td>
-                                            <td>{{ item.added|date('M d, Y H:i') }}</td>
-                                            <td>{{ item.anec_body|length > 50 ? item.anec_body|slice(0, 50) ~ '...' : item.anec_body }}</td>
-                                            <td>
-                                                <div class="col-xs-3 col-sm-8">
-                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                        <i class="pull-right fa fa-cog"></i>
-                                                    </a>
-                                                    <ul class="dropdown-menu pull-right">
-                                                        <li>
-                                                            <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/humor-list-json" data-id="{{ item.id }}">
-                                                                <span>{{ 'Edit'|trans }}</span>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-humor-item" data-id="{{ item.id }}">
-                                                                <span> {{ 'Delete'|trans }} </span>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-                                    <!-- End: list_row -->
-                                {% endif %}
+
                                 </tbody>
                             </table>
                         </div>
@@ -64,20 +35,20 @@
 
     <div id="modalbox_ad">
         <div class="devoops-modal">
-            <div class="devoops-modal-header">
-                <div class="modal-header-name">
-                    <span></span>
+            <form class="form-horizontal" role="form" id="anek_form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/save-humor-item">
+                <div class="devoops-modal-header">
+                    <div class="modal-header-name">
+                        <span></span>
+                    </div>
+                    <div class="box-icons">
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
                 </div>
-                <div class="box-icons">
-                    <a class="close-link">
-                        <i class="fa fa-times"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="devoops-modal-inner">
-                <div class="box">
-                    <div class="box-content">
-                        <form class="form-horizontal" role="form" id="anek_form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/save-humor-item">
+                <div class="devoops-modal-inner">
+                    <div class="box">
+                        <div class="box-content">
                             <!-- name -->
                             <div class="form-group">
                                 <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Text'|trans }}<span class="icon-required">*</span></label>
@@ -88,22 +59,22 @@
                                     </div>
                                 </div>
                             </div>
-                      
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="devoops-modal-bottom">
-                <div class="box">
-                    <div class="box-content">
-                        <div class="row">
-                            <div class="col-xs-10 col-sm-6 pull-right">
-                                <button type="submit" class="btn btn-success col-sm-5 pull-right">{{ 'Save'|trans }}</button>
-                                <button type="reset" class="btn btn-default col-sm-5 pull-left" > {{ 'Cancel'|trans }} </button>
+                <div class="devoops-modal-bottom">
+                    <div class="box">
+                        <div class="box-content">
+                            <div class="row">
+                                <div class="col-xs-10 col-sm-6 pull-right">
+                                    <button type="submit" class="btn btn-success col-sm-5 pull-right">{{ 'Save'|trans }}</button>
+                                    <button type="reset" class="btn btn-default col-sm-5 pull-left" > {{ 'Cancel'|trans }} </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>  </form>
+            </form>
         </div>
     </div>
                                     
@@ -165,12 +136,9 @@
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
-                "columns": [
-                    {"data": "id"},
-                    {"data": "added"},
-                    {"data": "anec_body"},
-                    {"data": "operations"}
-                ],
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
+                {% endif %}
                 "bFilter": true,
                 "bPaginate": true,
                 "bInfo": true,
@@ -182,9 +150,7 @@
                     {"width": "19%", "targets": [5] },#}
                 ]
             }).prev('.dataTables_processing').hide('');
-            $("#attribute_set input[type='checkbox']").each(function(index){
-                $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
-            });
+            $('#datatable-1').DataTable().ajax.reload();
         }
 
         function yelp() {
@@ -208,27 +174,28 @@
                 
                 $("#modalbox_ad button[type='submit']").on('click', function (e) { 
 				
-						  $.validate({
-  onSuccess : function() {     
-                    e.stopPropagation();
-                    e.preventDefault();
-                    var sendData = new Object();
-                    var lengthObj = 0;
-                    var form_fields = $("#modalbox_ad .own_fields:not(:disabled)");
-                        form_fields.each(function () {
-                        if ($(this).val()) {
-                            sendData[this.name] = $(this).val();
-                            lengthObj++;
-                        }
+                    $.validate({
+                        onSuccess : function() {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            var sendData = new Object();
+                            var lengthObj = 0;
+                            var form_fields = $("#modalbox_ad .own_fields:not(:disabled)");
+                                form_fields.each(function () {
+                                if ($(this).val()) {
+                                    sendData[this.name] = $(this).val();
+                                    lengthObj++;
+                                }
+                            });
+                            if (lengthObj < form_fields.length) {
+                                JSErrorModalBox({msg: '{{ 'All fields is required'|trans }}'});
+                                return false;
+                            }
+                            ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
+                            return false;
+                         }
                     });
-                    if (lengthObj < form_fields.length) {
-                        alert('{{ 'All fields is required'|trans }}');
-                        return false;
-                    }
-                    ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
-                    return false;
-                 }
-  }); });
+                });
                 
                 $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
                     if (e.currentTarget != e.target) {
@@ -270,15 +237,15 @@
             $("#modalbox_ad").show();
         };
 
-        var removeHumor = function (obj) {
-            var cRow = $(obj).closest('tr');
-            $('#datatable-1').DataTable().row(cRow).remove().draw(false);
-        };
-        
         var manageHumor = function (obj) {
+            JSSuccessModalBox(obj);
             $("#modalbox_ad").click();
             $('#datatable-1').DataTable().ajax.reload();
-        }
+        };
+
+        var manageHumorError = function (obj) {
+            JSErrorModalBox(obj);
+        };
         
     </script>
 {% endblock %}

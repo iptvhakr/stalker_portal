@@ -22,49 +22,7 @@
                                             {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
                                         {% endif %}
                                         <tbody>
-                                            {% if attribute(app, 'allGroups') is defined %}
-                                                <!-- Start: list_row -->
-                                                {% for item in app.allGroups %}
-                                                    <tr data-consolegroupid="{{ item.id }}">
-                                                        <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/users-groups-consoles-list?id={{ item.id }}" >{{ item.name }}</a></td>
-                                                        <td>{{ item.users_count }} </td>
-                                                        {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
-                                                        <td>
-                                                            <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-user-group-to-reseller" data-consolegroupid="{{ item.id }}" data-reseller_id="{{ item.reseller_id }}">
-                                                                {{ item.reseller_name }}
-                                                            </a>
-                                                        </td>
-                                                        {% endif %}
-                                                        <td>
-                                                            <div class="col-xs-3 col-sm-8">
-                                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
-                                                                    <i class="pull-right fa fa-cog"></i>
-                                                                </a>
-                                                                <ul class="dropdown-menu pull-right">
-                                                                    <li>
-                                                                        <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-console-group" data-consolegroupid="{{ item.id }}" id="edit_console_group_{{ item.id }}">
-                                                                            <span>{{ 'Edit'|trans }}</span>
-                                                                        </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-console-group" data-consolegroupid="{{ item.id }}">
-                                                                            <span>{{ 'Delete'|trans }}</span>
-                                                                        </a>
-                                                                    </li>
-                                                                    {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
-                                                                    <li>
-                                                                        <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-user-group-to-reseller" data-consolegroupid="{{ item.id }}" data-reseller_id="{{ item.reseller_id }}">
-                                                                            <span>{{ 'Change reseller for current group'|trans }}</span>
-                                                                        </a>
-                                                                    </li>
-                                                                    {% endif %}
-                                                                </ul>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                {% endfor %}
-                                            {% endif %}
-                                            <!-- End: list_row -->
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -82,17 +40,36 @@
         }
         {% endif %}
         function TestTable1() {
-            $('#datatable-1').dataTable({
+            $('#datatable-1').on('xhr.dt', function (e, settings, json) {
+                if (typeof (json.data) == 'object') {
+                    for (var i in json.data) {
+                        cels = getCeils(json.data[i]);
+                        json.data[i].mac = cels.mac;
+                        json.data[i].uid = cels.uid;
+                        json.data[i].operations = cels.operations;
+                        json.data[i].name = cels.name;
+                        json.data[i].reseller_name = cels.reseller_name;
+                    }
+                }
+            }).dataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/users-consoles-groups-list-json",
+                    "data": function (d) {
+                        var params = $.parseParams(window.location.href.split('?')[1] || ''); //window.location.href.split('?')[1] || ''
+                        for (var i in params) {
+                            d[i] = params[i];
+                        }
+                    }
+                },
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
-                "columns": [
-                    {% if attribute(app, 'dropdownAttribute') is defined%}
-                    {% for item in app.dropdownAttribute %}
-                    {"data": "{{ item.name }}"},
-                    {% endfor %}
-                    {% endif %}
-                ],
+                "deferLoading": [{{ app.recordsFiltered }}, {{ app.totalRecords }}],
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
+                {% endif %}
                 "bFilter": true,
                 "bPaginate": true,
                 "bInfo": true,
@@ -103,6 +80,7 @@
                     {"sortable": false, "targets": [-1]}
                 ]
             }).prev('.dataTables_processing').hide('');
+            $('#datatable-1').DataTable().ajax.reload();
         }
 
         function yelp() {
@@ -145,40 +123,9 @@
                 $(document).on('click', "a.main_ajax", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
-                    var _this = $(this);
-                    
-                    $.ajax({
-                        url: $(this).attr('href'),
-                        type: 'POST',
-                        data: $(this).data(),
-                        success: function (data) {
-                            if (data.success) {
-                                if ($.isFunction(window[data.action]) && !data.error) {
-                                    window[data.action](data);
-                                }
-                            } else {
-                                alert("{{ 'Some server error'|trans }}");
-                            }
-                        },
-                        error: function (data) {
-                            var errAction = '';
-                            if (typeof (data.responseJSON) == 'object') {
-                                errAction += data.responseJSON.action + 'Error';
-                            }
-                            if ($.isFunction(window[errAction])) {
-                                window[errAction]($(_this));
-                            } else {
-                                alert("{{ 'Some network error or access denied'|trans }}");
-                            }
-                        },
-                        dataType: "json",
-                        async: false
-                    });
 
-                    if ($.isFunction(window[$(this).data('action')]) && !$(this).data('error')) {
-                        window[$(this).data('action')]($(this));
-                    }
-                    _this.closest('div.open').removeClass('open');
+                    ajaxPostSend($(this).attr('href'), $(this).data());
+                    $(this).closest('div.open').removeClass('open');
                     return false;
                 });
                 
@@ -258,34 +205,7 @@
 
                     e.stopPropagation();
                     e.preventDefault();
-                    $.ajax({
-                        url: $("#modalbox form").attr('action'),
-                        type: 'POST',
-                        data: sendData,
-                        success: function (data) {
-                            if (data.success) {
-                                if ($.isFunction(window[data.action]) && !data.error) {
-                                    window[data.action](data);
-                                }
-                            } else {
-                                JSErrorModalBox(data);
-                            }
-                        },
-                        error: function (data) {
-                            var errAction = '';
-                            if (typeof (data.responseJSON) == 'object') {
-                                errAction += data.responseJSON.action + 'Error';
-                            }
-                            if ($.isFunction(window[errAction])) {
-                                window[errAction](data.responseJSON);
-                            } else {
-                                JSErrorModalBox(data.responseJSON);
-                            }
-                        },
-                        dataType: "json",
-                        async: false
-                    });
-
+                    ajaxPostSend($("#modalbox form").attr('action'), sendData);
                     closeModalBox();
                     return false;
                 });
@@ -294,22 +214,17 @@
         }
 
         document.addEventListener("DOMContentLoaded", yelp, false);
-        
-        var addConsoleGroup = function(data){
-            var cRow = $("#datatable-1 tr:last");
-            $('#datatable-1').DataTable().row.add(getCeils(data)).draw();
+
+        var manageList = function (obj) {
+            $("#modalbox_ad").click();
+            JSSuccessModalBox(obj);
+            $('#datatable-1').DataTable().ajax.reload();
         };
-        
-        var editConsoleGroup = function(data){
-            removeConsoleGroup(data);
-            addConsoleGroup(data);
+
+        var manageListError = function (obj) {
+            JSErrorModalBox(obj);
         };
-        
-        var removeConsoleGroup = function (data) {
-            var cRow = $('a[data-consolegroupid="' + data.id + '"]').closest('tr');
-            $('#datatable-1').DataTable().row(cRow).remove().draw();
-        };
-        
+
     function closeModalBox(){
         $("#modalbox").hide();
         $('#modalbox').find('.modal-header-name span').empty();
@@ -351,6 +266,7 @@
         $("#modalbox").show();
         obj.closest('div.open').removeClass('open');
     }
+
     function getCeils(data){
         var resellers = {};
         {% if attribute(app, 'allResellers') is defined %}
@@ -380,7 +296,7 @@
                                     </li>";
         {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
         ceils.operations        += "<li>\n\
-                                        <a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-user-group-to-reseller' data-consolegroupid='" + data.id + "' data-reseller_id='-'>\n\
+                                        <a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-user-group-to-reseller' data-consolegroupid='" + data.id + "' data-reseller_id='"+reseller_id+"'>\n\
                                             <span>{{ 'Change reseller for current group'|trans }}</span>\n\
                                         </a>\n\
                                     </li>\n\

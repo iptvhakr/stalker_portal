@@ -30,18 +30,15 @@
 
 					<div class="col-sm-2 ">
                         {{ main_macro.get_dropdown_attribute(app['dropdownQuality'], 'quality', 'Video quality'|trans, 4, 0, 'true') }}
-                       
                     </div>
 					<div class="col-sm-1 ">
                      {{ main_macro.get_dropdown_attribute(app['dropdownStatus'], 'status', 'Status'|trans, 4, 0, 'true') }}
 					</div>
 					
-				<div class="col-sm-3  pull-right">
-                   
-					 <a class="btn btn-default pull-right" id="video_search_submit">{{ 'Search'|trans }}</a>
+				    <div class="col-sm-3  pull-right">
+                        <a class="btn btn-default pull-right" id="video_search_submit">{{ 'Search'|trans }}</a>
                         <button class="btn btn-default pull-right" id="textshow" type="submit" form="video_search_form">{{ 'In text format'|trans }}</button>
-                 
-                </div>
+                    </div>
                 </div>
       
             </form>
@@ -62,23 +59,7 @@
                                         {{ main_macros.get_datatable_head(app['dropdownAttribute']) }}
                                     {% endif %}
                                     <tbody>
-                                    {% if attribute(app, 'allData') is defined %}
-                                        <!-- Start: list_row -->
-                                        {% for item in app.allData %}
-                                            <tr>
-                                                <td>{{ item.id }}</td>
-                                                <td>{{ item.path }}</td>
-                                                <td>{{ item.name }}</td>
-                                                <td>{{ item.hd }}</td>
-                                                <td>{{ item.on_storages }}</td>
-                                                <td>{{ item.count }}</td>
-                                                <td>{{ item.month_counter }}</td>
-                                                <td>{{ item.last_played|date('M d, Y H:i') }}</td>
-                                                <td>{% if item.accessed %}<span class="">{{ 'Published'|trans }}</span>{% elseif attribute(item, 'tasks') is defined and item.tasks > 0 %} <span class="">{{ 'Scheduled'|trans }}</span>{% else %}{{ 'Unpublished'|trans }}{% endif %} </td>
-                                            </tr>
-                                        {% endfor %}
-                                        <!-- End: list_row -->
-                                    {% endif %}
+
                                     </tbody>
                                 </table>
                             </div>
@@ -143,28 +124,17 @@
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
-                "columns": [
-                {% if attribute(app, 'dropdownAttribute') is defined%}
-                    {% for item in app.dropdownAttribute %}    
-                    {"data": "{{ item.name }}"},
-                    {% endfor %}
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                {{ main_macros.get_datatable_column(app['dropdownAttribute']) }}
                 {% endif %}
-                ],
                 "bFilter": true,
                 "bPaginate": true,
-				"fnDrawCallback": function() {  
-					var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
-					var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
-					if (pageCount > 1)  {$("#datatable-1_paginate").css("display", "block");} else { $("#datatable-1_paginate").css("display", "none");  }
-				},
                 "bInfo": true,
                 "columnDefs": [
                
                 ]
             }).prev('.dataTables_processing').hide('');
-            $("#attribute_set input[type='checkbox']").each(function(index){
-                $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
-            });
+            $('#datatable-1').DataTable().ajax.reload();
         }
 
         function yelp() {
@@ -235,21 +205,21 @@
             $('#datatable-1').DataTable().ajax.reload();
             $("#modalbox").data('complete', 1);
             $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Finished'|trans }}!</span>');
-        }
+        };
         
         var listMsg = function(data){
             if (typeof(data.msg) != 'undefined' && data.msg) {
                 alert(data.msg);
             }
             manageList(data);
-        }
+        };
         
         var listMsgError = function(data){
             if (typeof(data.msg) != 'undefined' && data.msg) {
                 alert(data.msg);
             }
             errAction();
-        }
+        };
         
         function closeModalBox(){
             $("#modalbox").hide();

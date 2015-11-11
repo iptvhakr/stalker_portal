@@ -63,14 +63,9 @@
                             <div class="col-xs-10 col-sm-10">
                                 <div class="dataTables_processing" style="z-index: 305; min-height: 200px;"></div>
                                 <table class="table  table-hover table-datatable" id="datatable-1">
-                                    <thead>
-                                        <tr>
-                                            <th data-filter="version">{{ 'Application version'|trans }}</th>
-                                            <th data-filter="published">{{ 'Relise date'|trans }}</th>
-                                            <th data-filter="status">{{ 'State'|trans }}</th>
-                                            <th data-filter="operations" class="action-menu"></th>
-                                        </tr>
-                                    </thead>
+                                    {% if attribute(app, 'dropdownAttribute') is defined %}
+                                        {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                                    {% endif %}
                                     <tbody>
 
                                     </tbody>
@@ -193,23 +188,11 @@
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
-                "columns": [
-                    {"data":"version"},
-                    {"data":"published"},
-                    {"data":"status"},
-                    {"data":"operations"}
-                ],
-                "bFilter": false,
-                "bPaginate": false,
-                "fnDrawCallback": function () {
-                    var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
-                    var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
-                    if (pageCount > 1) {
-                        $("#datatable-1_paginate").css("display", "block");
-                    } else {
-                        $("#datatable-1_paginate").css("display", "none");
-                    }
-                },
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
+                {% endif %}
+                "bFilter": true,
+                "bPaginate": true,
                 "bInfo": false,
                 "columnDefs": [
                     {className: "action-menu", "targets": [-1]},

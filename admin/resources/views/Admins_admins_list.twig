@@ -26,48 +26,7 @@
                                         {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
                                         {% endif %}
                                         <tbody>
-                                            {% if attribute(app, 'allAdmins') is defined %}
-                                                <!-- Start: list_row -->
-                                                {% for item in app.allAdmins %}
-                                                    <tr data-adminid="{{ item.id }}">
-                                                        <td>{{ item.id }}</td>
-                                                        <td><a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/admins-list-json" data-id="{{ item.id }}">{{ item.login }}</a></td>
-                                                        <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/admins-groups-permissions?id={{ item.gid }}">{{ item.group_name }}</a></td>
-                                                        {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
-                                                        <td><a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-admin-to-reseller" data-id="{{ item.id }}" data-reseller_id="{{ item.reseller_id }}">{{ item.reseller_name }}</a></td>
-                                                        {% endif %}
-                                                        <td>
-                                                            <div class="col-xs-3 col-sm-8">
-                                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
-                                                                    <i class="pull-right fa fa-cog"></i>
-                                                                </a>
-                                                                <ul class="dropdown-menu pull-right">
-                                                                    <li>
-                                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/admins-list-json" data-id="{{ item.id }}">
-                                                                            <span>{{ 'Edit'|trans }}</span>
-                                                                        </a>
-                                                                    </li>
-                                                                    {% if item.login != 'admin' %}
-                                                                    {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
-                                                                    <li>
-                                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-admin-to-reseller" data-id="{{ item.id }}" data-reseller_id="{{ item.reseller_id }}">
-                                                                            <span>{{ 'Change reseller for current admin'|trans }}</span>
-                                                                        </a>
-                                                                    </li>
-                                                                    {% endif %}
-                                                                    <li>
-                                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-admin" data-id="{{ item.id }}">
-                                                                            <span> {{ 'Delete'|trans }} </span>
-                                                                        </a>
-                                                                    </li>
-                                                                    {% endif %} }}
-                                                                </ul>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                {% endfor %}
-                                            <!-- End: list_row -->
-                                            {% endif %}
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -177,9 +136,16 @@
                         var id = json.data[i].id;
                         var login = json.data[i].login;
                         var group_name = (typeof(json.data[i].group_name) != 'undefined' && json.data[i].group_name)? json.data[i].group_name: '';
+                        var allResellers = {};
                         {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
-                        var reseller_id = json.data[i].reseller_id;
-                        var reseller_name = (typeof(json.data[i].reseller_name) != 'undefined' && json.data[i].reseller_name)? json.data[i].reseller_name: '';
+                        {% if attribute(app, 'allResellers') is defined %}
+                            {% for row in app['allResellers'] %}
+                        allResellers['{{ row.id }}'] = '{{ row.name }}'{% if not(loop.last) %},{% endif %}
+                            {% endfor %}
+                        {% endif %}
+
+                        var reseller_id = (typeof(json.data[i].reseller_id) != 'undefined' && json.data[i].reseller_id) ? json.data[i].reseller_id: '-';
+                        var reseller_name = (typeof(json.data[i].reseller_name) != 'undefined' && json.data[i].reseller_name) ? json.data[i].reseller_name: (typeof (allResellers[reseller_id]) != 'undefined' ? allResellers[reseller_id]: '');
                         {% endif %}
                         var gid = json.data[i].gid;
                         json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
@@ -229,18 +195,9 @@
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
-                "columns": [
-                {% if attribute(app, 'dropdownAttribute') is defined%}
-                    {% for item in app.dropdownAttribute %}    
-                    {"data": "{{ item.name }}"},
-                    {% endfor %}
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
                 {% endif %}
-                ],
-				"fnDrawCallback": function() {  
-					var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
-					var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
-					if (pageCount > 1)  {$("#datatable-1_paginate").css("display", "block");} else { $("#datatable-1_paginate").css("display", "none");  }
-				},
                 "bFilter": true,
                 "bPaginate": true,
                 "bInfo": true,
@@ -252,10 +209,7 @@
                     {"width": "19%", "targets": [5] },#}
                 ]
             }).prev('.dataTables_processing').hide('');
-            
-            $("#attribute_set input[type='checkbox']").each(function(index){
-                $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
-            });
+            $('#datatable-1').DataTable().ajax.reload();
         }
 
         function yelp() {

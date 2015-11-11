@@ -150,8 +150,9 @@ class SettingsController extends \Controller\BaseStalkerController {
         $commonList = $this->db->getCommonList($query_param);
         $response['data'] = array_map(function($val){
             $val['enable'] = (int)$val['enable'];
-            if (strtotime($val['require_image_date']) === FALSE) {
-                $val['require_image_date'] = "0000-00-00";
+            $val['require_image_date'] = (int) strtotime($val['require_image_date']);
+            if ($val['require_image_date'] < 0) {
+                $val['require_image_date'] = 0;
             }
             return $val;
         }, $commonList);

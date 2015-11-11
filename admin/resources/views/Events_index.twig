@@ -260,7 +260,6 @@
         }
 
         function TestTable1() {
-            $.getScript('plugins/datatables/fnReloadAjax.js');
             $('#datatable-1').on('xhr.dt', function (e, settings, json) {
                 if (typeof (json.data) == 'object' && json.data.length >0) {
                     var date;

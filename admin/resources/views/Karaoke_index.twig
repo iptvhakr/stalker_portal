@@ -25,79 +25,7 @@
                                 {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
                             {% endif %}
                             <tbody>
-                            {% if attribute(app, 'allKaraoke') is defined %}
-                                <!-- Start: list_row -->
-                                {% for item in app.allKaraoke %}
-                                    <tr data-karaokeid="{{ item.id }}">
-                                        <td>{{ item.id }}</td>
-                                        <td><a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/karaoke-list-json" data-karaokeid="{{ item.id }}">{{ item.name }}</a></td>
-                                        <td>{{ item.singer }}</td>
-                                        <td>{{ item.added|date('M d, Y') }}</td>
-                                        <td>{{ item.protocol }}</td>
-                                        <td>
-                                            {% if item.rtsp_url|length > 0 %}
-                                                {{ item.rtsp_url }}
-                                            {% elseif not(item.protocol == 'custom') %}
-                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/check-karaoke-source' data-karaokeid='{{ item.id }}'>{{ 'in storage'|trans }}</a>
-                                            {% endif %}
-                                        </td>
-                                        <td>{{ item.media_claims }}</td>
-                                        <td>
-                                            {% if item.done %}
-                                                <span class="">{{ 'Completed'|trans }}</span>
-                                            {% else %}
-                                                <span class="">{{ 'Do not completed'|trans }}</span>
-                                            {% endif %}
-                                            <a href="{{ app.request.baseUrl }}/tasks/task-detail-karaoke?id={{ item.id }}">№{{ item.id }}</a>
-                                        </td>
-                                        <td>
-                                            {% if item.accessed %}
-                                                <span class="">{{ 'Published'|trans }}</span>
-                                            {% else %}
-                                                <span>{{ 'Unpublished'|trans }}</span>
-                                            {% endif %}
-                                            {% if not item.status %}
-                                                <br><span class="">{{ 'Error'|trans }}</span>
-                                            {% endif %}
-                                        </td>
-                                        <td class="action-menu">
-                                            <div class="col-xs-3 col-sm-8">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                    <i class="pull-right fa fa-cog"></i>
-                                                </a>
-                                                <ul class="dropdown-menu pull-right">
-                                                    <li>
-                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/karaoke-list-json" data-karaokeid="{{ item.id }}">
-                                                            <span>{{ 'Edit'|trans }}</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a {% if not item.status and not item.accessed %}disabled="disabled"{% endif %} class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-karaoke-accessed" data-karaokeid="{{ item.id }}" data-accessed="{{ item.accessed }}">
-                                                            <span>{% if not item.accessed %}{{ 'Publish'|trans }}{% else %}{{ 'Unpublish'|trans }}{% endif %}</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/check-karaoke-source" data-karaokeid="{{ item.id }}">
-                                                            <span>{{ 'Check file'|trans }}</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-karaoke-done" data-karaokeid="{{ item.id }}" data-done="{{ item.done }}">
-                                                            <span>{% if item.done %}{{ 'Cancel performing of the task'|trans }}{% else %}{{ 'Confirm performing of the task'|trans }}{% endif %}</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-karaoke" data-karaokeid="{{ item.id }}">
-                                                            <span>{{ 'Delete'|trans }}</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            {% endif %}
-                            <!-- End: list_row -->
+
                             </tbody>
                         </table>
                     </div>
@@ -298,25 +226,11 @@
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
-                "columns": [
-                    {"data": "id"},
-                    {"data": "name"},
-                    {"data": "singer"},
-                    {"data": "added"},
-                    {"data": "protocol"},
-                    {"data": "rtsp_url"},
-                    {"data": "media_claims"},
-                    {"data": "done"},
-                    {"data": "accessed"},
-                    {"data": "operations"}
-                ],
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
+                {% endif %}
                 "bFilter": true,
                 "bPaginate": true,
-                "fnDrawCallback": function() {
-                    var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
-                    var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
-                    if (pageCount > 1)  {$("#datatable-1_paginate").css("display", "block");} else { $("#datatable-1_paginate").css("display", "none");  }
-                },
                 "bInfo": true,
                 "order": [[ 0, "asc" ]],
                 "columnDefs": [
@@ -325,9 +239,7 @@
                     {"sortable": false, "targets": [-1,]}
                 ]
             }).prev('.dataTables_processing').hide('');
-            $("#attribute_set input[type='checkbox']").each(function(index){
-                $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
-            });
+            $('#datatable-1').DataTable().ajax.reload();
         }
 
         function yelp() {

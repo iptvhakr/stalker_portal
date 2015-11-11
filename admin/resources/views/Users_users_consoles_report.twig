@@ -1,4 +1,5 @@
 {% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
 {% set title = ('Users'|trans ~ ': ' ~ 'STB statuses report '|trans ~ app.now_time) | trans %}
 
 {% block content %}
@@ -20,29 +21,11 @@
                         <div class="" id="table_container">
                             <div class="dataTables_processing"></div>
                             <table class="table dataTable table-hover table-datatable" id="datatable-1">
-                                <thead>
-                                    <tr>
-                                        <th data-filter="rank">#</th>
-                                        <th data-filter="mac">MAC</th>
-                                        <th data-filter="status">{{ 'Status'|trans }}</th>
-                                        <th data-filter="last_change_status">{{ 'Time'|trans }}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                {% if attribute(app, 'consoleReport') is defined %}
-                                    <!-- Start: list_row -->
-                                    {% for item in app.consoleReport %}
-                                        <tr data-userid="{{ item.id }}">
-                                            <td>{{ item.rank }}</td>
-                                            <td>
-                                                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-users?id={{ item.id }}">{{ item.mac }}</a>
-                                            </td>
-                                            <td data-filter="status">{% if item.status %}<span class="">{{ 'on'|trans }}</span>{% else %}<span class="">{{ 'off'|trans }}</span>{% endif %}</td>
-                                            <td>{{ item.last_change_status|date('M d, Y H:i') }}</td>
-                                        </tr>
-                                    {% endfor %}
+                                {% if attribute(app, 'dropdownAttribute') is defined %}
+                                    {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
                                 {% endif %}
-                                <!-- End: list_row -->
+                                <tbody>
+
                                 </tbody>
                             </table>
                         </div>
@@ -94,12 +77,9 @@
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
-                "columns": [
-                    {"data": "rank"},
-                    {"data": "mac"},
-                    {"data": "status"},
-                    {"data": "last_change_status"}
-                ],
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
+                {% endif %}
                 "bFilter": true,
                 "bPaginate": true,
                 "bInfo": true,

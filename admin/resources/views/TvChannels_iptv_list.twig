@@ -27,75 +27,11 @@
                             <div class="box-content no-padding">
                                 <div class="dataTables_processing"></div>
                                 <table class="table table-hover table-datatable" id="datatable-1">
-                                    <thead>
-                                        <tr>
-                                            <th data-filter="id">{{ 'ID'|trans }}</th>
-                                            <th data-filter="number">{{ 'Number'|trans }}</th>
-											<th data-filter="logo">{{ 'Logo'|trans }}</th>
-                                            <th data-filter="name"><span>{{ 'Title'|trans }}</span></th>
-                                            <th data-filter="genres_name">{{ 'Genre'|trans }}</th>
-                                            <th data-filter="enable_tv_archive">{{ 'Archive'|trans }}</th>
-                                            <th data-filter="cmd">{{ 'URL'|trans }}</th>
-                                            <th data-filter="status">{{ 'Monitoring status'|trans }}</th>
-                                            <th data-filter="status">{{ 'Status'|trans }}</th>
-                                            <th data-filter="operations">{{ 'Operations'|trans }}</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% if attribute(app, 'allChannels') is defined %}
-                                        <!-- Start: list_row -->
-                                        {% for item in app.allChannels %}
-                                            <tr>
-                                                <td>{{item.id }}</td>
-                                                <td>{{item.number }}</td>
-												<td><img class="img-rounded channel-logo" src="{% if item.logo %}{{ item.logo }}?{{ random(100000) }}{% endif %}" alt=""></td>
-                                                <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-channel?id={{ item.id }}">{{ item.name }}</a></td>
-                                                <td>{{ item.genres_name }}</td>
-                                                <td>{% if item.enable_tv_archive %}{{ 'Yes'|trans }}{% else %}{{ 'No'|trans }}{% endif %}</td>
-                                                <td>{{ item.cmd }}</td>
-                                                {% autoescape false %}
-                                                <td>{{ item.monitoring_status }}</td>
-                                                {% endautoescape %}
-                                                <td>{% if item.status %}{{ 'Published'|trans }}{% else %}{{ 'Unpublished'|trans }}{% endif %}</td>
-                                                <td>
-                                                    <div class="col-xs-3 col-sm-8 ddd">
-                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
-                                                            <i class="pull-right fa fa-cog"></i>
-                                                        </a>
-                                                        <ul class="dropdown-menu pull-right">
-                                                            <li>
-                                                                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-channel?id={{ item.id }}">
-                                                                    <span>{{ 'Edit'|trans }}</span>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-channel">
-                                                                    <span>{{ 'Move'|trans }}</span>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-channel?id={{ item.id }}">
-                                                                    <span>{{ 'Delete'|trans }}</span>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/{% if item.status %}disable{% else %}enable{% endif %}-channel?id={{ item.id }}">
-                                                                    <span>{% if item.status %}{{ 'Unublish'|trans }}{% else %}{{ 'Publish'|trans }}{% endif %}</span>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-channel-epg-item?id={{ item.id }}">
-                                                                    <span>{{ 'Manage EPG'|trans }}</span>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        {% endfor %}
-                                        <!-- End: list_row -->
+                                    {% if attribute(app, 'dropdownAttribute') is defined %}
+                                        {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
                                     {% endif %}
-                                    </tbody>
+                                    <tbody>
+                                     </tbody>
                                 </table>
                             </div>
                         </div>
@@ -179,38 +115,91 @@
         }
 
         function TestTable1() {
-            $('#datatable-1').dataTable({
+            $('#datatable-1').on('xhr.dt', function (e, settings, json) {
+                if (typeof (json.data) == 'object') {
+                    for (var i in json.data) {
+                        var status = json.data[i].status;
+
+                        json.data[i].logo = '<img class="img-rounded channel-logo" src="' + ( json.data[i].logo ? json.data[i].logo + "?" + $.random(100000) : '') + '" alt="">';
+                        json.data[i].name = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-channel?id=' + json.data[i].id + '">' + json.data[i].name + '</a>';
+                        json.data[i].enable_tv_archive = ( json.data[i].enable_tv_archive ? "{{ 'Yes'|trans }}" : "{{ 'No'|trans }}");
+                        json.data[i].status = ( json.data[i].status ? "{{ 'Published'|trans }}" : "{{ 'Unpublished'|trans }}");
+
+                        json.data[i].operations = '<div class="col-xs-3 col-sm-8 ddd">\n\
+                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">\n\
+                                                            <i class="pull-right fa fa-cog"></i>\n\
+                                                        </a>\n\
+                                                        <ul class="dropdown-menu pull-right">\n\
+                                                            <li>\n\
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-channel?id=' + json.data[i].id  + '">\n\
+                                                                    <span>{{ 'Edit'|trans }}</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                            <li>\n\
+                                                                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-channel">\n\
+                                                                    <span>{{ 'Move'|trans }}</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                            <li>\n\
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-channel?id=' + json.data[i].id  + '">\n\
+                                                                    <span>{{ 'Delete'|trans }}</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                            <li>\n\
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/' + (status ? 'disable' : 'enable') + '-channel?id=' + json.data[i].id  + '">\n\
+                                                                    <span>' + (status ? "{{ 'Unublish'|trans }}" : "{{ 'Publish'|trans }}") + '</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                            <li>\n\
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-channel-epg-item?id=' + json.data[i].id  + '">\n\
+                                                                    <span>{{ 'Manage EPG'|trans }}</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                        </ul>\n\
+                                                    </div>';
+
+                    }
+                }
+            }).dataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/iptv-list-json",
+                    "data": function (d) {
+                        var params = $.parseParams(window.location.href.split('?')[1] || ''); //window.location.href.split('?')[1] || ''
+                        for (var i in params) {
+                            d[i] = params[i];
+                        }
+                    }
+                },
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
                 "bFilter": true,
                 "bPaginate": true,
                 "bInfo":     true,
-				"fnDrawCallback": function() {  
-					var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
-					var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
-					if (pageCount > 1)  {$("#datatable-1_paginate").css("display", "block");} else { $("#datatable-1_paginate").css("display", "none");  }
-				},
-				"order": [[ 1, "asc" ]],
+                "order": [[ 1, "asc" ]],
+                "deferLoading": [{{ app.recordsFiltered }}, {{ app.totalRecords }}],
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
+                {% endif %}
                 "aoColumnDefs": [ 
-                    { "targets": [  -1 ], "orderable": false},
-                    { "searchable": false, "targets": [ 2, 5, 7, 8] },
+                    { "targets": [ -1 ], "orderable": false},
+                    {#{ "searchable": false, "targets": [ 2, 5, 7, 8] },#}
                     { className: "action-menu", "targets": [ -1 ] },
-					{ "width": "3%", "targets": [ 0 ] },
-					{ "width": "6%", "targets": [ 1 ] },
-					{ "width": "15px", "targets": [ -1] }
+                    { "width": "3%", "targets": [ 0 ] },
+                    { "width": "6%", "targets": [ 1 ] },
+                    { "width": "15px", "targets": [ -1] }
                 ]
             }).prev('.dataTables_processing').hide('');
-            $("#attribute_set input[type='checkbox']").each(function(index){
-                $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
-            });
+            $('#datatable-1').DataTable().order( [ 0, 'desc' ] ).draw();
         }
 
         function yelp() {
             $(document).ready(function () {
 			
-			var size_tr = $("tr").length;
-			if (size_tr > 20 && size_tr < 55 ) {
+            var size_tr = $("tr").length;
+            if (size_tr > 20 && size_tr < 55 ) {
                 $('.dropdown-toggle').parent('div').slice(-3).addClass('dropup');
             } else if ( size_tr >=4) {
                 $('.dropdown-toggle').parent('div').slice(-4).addClass('dropup');
@@ -306,11 +295,6 @@
         }
 
         document.addEventListener("DOMContentLoaded", yelp, false);
-
-        function closeModalBox(){
-            $("#modalbox_ad").hide();
-
-        }
 
         function showModalBox(data){
             fillEPGForm(data);

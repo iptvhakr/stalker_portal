@@ -240,6 +240,14 @@
             </tr>
         </thead>
     {% endmacro %}
+
+    {% macro get_datatable_column(dropdownAttribute) %}
+        "columns": [
+        {% for item in app.dropdownAttribute %}
+            {"data": "{{ item.name }}" {% if not(item.checked) %}, visible: false, className: 'none'{% endif %}}{% if not loop.last %},{% endif %}
+        {% endfor %}
+        ],
+    {% endmacro %}
     
     {% macro get_filter_button_bar(name, id_field, title_field, list_all) %}           
             {% autoescape false %}

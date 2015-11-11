@@ -142,9 +142,15 @@ class VideoClubController extends \Controller\BaseStalkerController {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
-        $this->app['allTasks'] = $this->db->getAllVideoTasks();
 
-        $this->app['dropdownAttribute'] = $this->getVideoScheduleDropdownAttribute();
+        $allTasks = $this->video_schedule_list_json();
+        $this->app['allTasks'] = $allTasks['data'];
+        $this->app['recordsFiltered'] = $allTasks['recordsFiltered'];
+        $this->app['totalRecords'] = $allTasks['recordsTotal'];
+
+        $attribute = $this->getVideoScheduleDropdownAttribute();
+        $this->checkDropdownAttribute($attribute);
+        $this->app['dropdownAttribute'] = $attribute;
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -153,18 +159,16 @@ class VideoClubController extends \Controller\BaseStalkerController {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
-        
-        $ad = new \VclubAdvertising();
-        $self = $this;
-        $this->app['ads'] = array_map(function($row) use ($self){
-            if (!is_numeric($row['must_watch'])) {
-                $row['must_watch'] = $self->setLocalization($row['must_watch']);
-            }
-            return $row;
-        }, $ad->getAllWithStatForMonth());
 
-        $this->app['dropdownAttribute'] = $this->getVideoAdvertiseDropdownAttribute();
-        
+        $allAds= $this->video_advertise_list_json();
+        $this->app['ads'] = $allAds['data'];
+        $this->app['recordsFiltered'] = $allAds['recordsFiltered'];
+        $this->app['totalRecords'] = $allAds['recordsTotal'];
+
+        $attribute = $this->getVideoAdvertiseDropdownAttribute();
+        $this->checkDropdownAttribute($attribute);
+        $this->app['dropdownAttribute'] = $attribute;
+
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
@@ -231,9 +235,18 @@ class VideoClubController extends \Controller\BaseStalkerController {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
-        
-        $this->app['Moderators'] = $this->db->getModerators();
-        
+
+        $allModerators= $this->video_moderators_addresses_list_json();
+        $this->app['ads'] = $allModerators['data'];
+        $this->app['Moderators'] = $allModerators['data'];
+        $this->app['recordsFiltered'] = $allModerators['recordsFiltered'];
+        $this->app['totalRecords'] = $allModerators['recordsTotal'];
+
+        $attribute = $this->getVideoModeratorsAddressesDropdownAttribute();
+        $this->checkDropdownAttribute($attribute);
+        $this->app['dropdownAttribute'] = $attribute;
+
+
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
     
@@ -268,7 +281,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         } else {
             return $this->app->redirect('add-video-moderators');
         }
-        $this->mod = $this->db->getModerators($id);
+        $this->mod = $this->db->getModerators(array('where' => array('id' => $id)));
         $this->mod['disable_vclub_ad'] = (bool)$this->mod['disable_vclub_ad'];
         $form = $this->buildModForm($this->mod);
         
@@ -293,6 +306,10 @@ class VideoClubController extends \Controller\BaseStalkerController {
         $this->app['totalRecords'] = $logs['recordsTotal'];
         $this->app['recordsFiltered'] = $logs['recordsFiltered'];
         $this->app['allVideoLogs'] = $logs['data'];
+
+        $attribute = $this->getVideoLogsDropdownAttribute();
+        $this->checkDropdownAttribute($attribute);
+        $this->app['dropdownAttribute'] = $attribute;
 
         $param = (!empty($this->data)? $this->data: array());
 
@@ -927,7 +944,121 @@ class VideoClubController extends \Controller\BaseStalkerController {
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
-    
+
+    public function video_schedule_list_json(){
+        if ($this->isAjax) {
+            if ($no_auth = $this->checkAuth()) {
+                return $no_auth;
+            }
+        }
+
+        $response = array(
+            'data' => array(),
+            'recordsTotal' => 0,
+            'recordsFiltered' => 0
+        );
+
+        $error = $this->setLocalization("Error");
+        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
+
+        $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
+
+        if (!isset($query_param['where'])) {
+            $query_param['where'] = array();
+        }
+
+        $filds_for_select = $this->getVideoScheduleFields();
+
+        $query_param['select'] = array_values($filds_for_select);
+
+        $this->cleanQueryParams($query_param, array_keys($filds_for_select), $filds_for_select);
+
+        foreach($query_param['order'] as $key => $val){
+            if ($search = array_search($key, $filds_for_select )){
+                $new_key = str_replace(" as $search", '', $key);
+                unset($query_param['order'][$key]);
+                $query_param['order'][$new_key] = $val;
+            }
+        }
+
+        if (!isset($query_param['like'])) {
+            $query_param['like'] = array();
+        }
+
+        $response['recordsTotal'] = $this->db->getTotalRowsAllVideoTasks();
+        $response["recordsFiltered"] = $this->db->getTotalRowsAllVideoTasks($query_param['where'], $query_param['like']);
+        if (empty($query_param['limit']['limit'])) {
+            $query_param['limit']['limit'] = 50;
+        } elseif ($query_param['limit']['limit'] == -1) {
+            $query_param['limit']['limit'] = FALSE;
+        }
+
+        $allTasks = $this->db->getAllVideoTasks($query_param);
+
+        $scheduled_on = $this->setlocalization('scheduled') . ' ' .$this->setlocalization('on');
+
+        if (is_array($allTasks)) {
+            reset($allTasks);
+            while (list($num, $row) = each($allTasks)) {
+                $allTasks[$num]['date_on'] = strtotime($row['date_on']);
+                if ($allTasks[$num]['date_on'] < 0) {
+                    $allTasks[$num]['date_on'] = 0;
+                }
+                $allTasks[$num]['task_added'] = strtotime($row['task_added']);
+                if ($allTasks[$num]['task_added'] < 0) {
+                    $allTasks[$num]['task_added'] = 0;
+                }
+                $allTasks[$num]['tasks'] = "№ {$row['id']} (<span data-task-state=1>$scheduled_on " . strftime('%d-%m-%Y', $allTasks[$num]['date_on']) . "</span>)";
+            }
+            $response["data"] = $allTasks;
+        }
+        $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
+        $error = "";
+
+        if ($this->isAjax) {
+            $response = $this->generateAjaxResponse($response);
+            return new Response(json_encode($response), (empty($error) ? 200 : 500));
+        } else {
+            return $response;
+        }
+    }
+
+    public function video_advertise_list_json() {
+
+        if ($this->isAjax) {
+            if ($no_auth = $this->checkAuth()) {
+                return $no_auth;
+            }
+        }
+
+        $response = array(
+            'data' => array(),
+            'recordsTotal' => 0,
+            'recordsFiltered' => 0
+        );
+
+        $ad = new \VclubAdvertising();
+        $self = $this;
+        $response["data"] = array_map(function($row) use ($self){
+            if (!is_numeric($row['must_watch'])) {
+                $row['must_watch'] = $self->setLocalization($row['must_watch']);
+            }
+            settype($row['status'], 'int');
+            return $row;
+        }, $ad->getAllWithStatForMonth());
+
+        $response["recordsFiltered"] = $response["recordsTotal"] = (string) count($response["data"]);
+        $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
+        $error = "";
+
+        if ($this->isAjax) {
+            $response = $this->generateAjaxResponse($response);
+            return new Response(json_encode($response), (empty($error) ? 200 : 500));
+        } else {
+            return $response;
+        }
+    }
+
     public function remove_tasks() {
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['taskid'])) {
             $this->app->abort(404, $this->setlocalization('Page not found'));
@@ -987,14 +1118,84 @@ class VideoClubController extends \Controller\BaseStalkerController {
         if ($ad->updateById((int) $this->postData['adsid'], array('status' => (int) $this->postData['adsstatus'], 'denied_categories' => $ad->getDeniedVclubCategoriesForAd((int) $this->postData['adsid'])))) {
             $error = '';
             $data['title'] = ($this->postData['adsstatus'] ? $this->setLocalization('Unpublish'): $this->setlocalization('Publish'));
-            $data['status'] = '<span >' .($this->postData['adsstatus'] ?  $this->setlocalization('Published') : $this->setlocalization('Not published')) . '</span>';
+            $data['status'] = '<span data-filter="status" >' .($this->postData['adsstatus'] ?  $this->setlocalization('Published') : $this->setlocalization('Not published')) . '</span>';
             $data['adsstatus'] = (int)!$this->postData['adsstatus'];
         } 
         $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
-    
+
+    public function video_moderators_addresses_list_json() {
+        if ($this->isAjax) {
+            if ($no_auth = $this->checkAuth()) {
+                return $no_auth;
+            }
+        }
+
+        $response = array(
+            'data' => array(),
+            'recordsTotal' => 0,
+            'recordsFiltered' => 0
+        );
+
+        $error = $this->setLocalization("Error");
+        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
+
+        $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
+
+        if (!isset($query_param['where'])) {
+            $query_param['where'] = array();
+        }
+
+        $filds_for_select = $this->getVideoModeratorsAddressesFields();
+
+        $query_param['select'] = array_values($filds_for_select);
+
+        $this->cleanQueryParams($query_param, array_keys($filds_for_select), $filds_for_select);
+
+        foreach($query_param['order'] as $key => $val){
+            if ($search = array_search($key, $filds_for_select )){
+                $new_key = str_replace(" as $search", '', $key);
+                unset($query_param['order'][$key]);
+                $query_param['order'][$new_key] = $val;
+            }
+        }
+
+        if (!isset($query_param['like'])) {
+            $query_param['like'] = array();
+        }
+
+        if (empty($query_param['limit']['limit'])) {
+            $query_param['limit']['limit'] = 50;
+        } elseif ($query_param['limit']['limit'] == -1) {
+            $query_param['limit']['limit'] = FALSE;
+        }
+
+        $response['recordsTotal'] = $this->db->getTotalRowsModerators();
+        $response['recordsFiltered'] = $this->db->getTotalRowsModerators($query_param['where'], $query_param['like']);
+
+        $allModerators = $this->db->getModerators($query_param);
+        if (is_array($allModerators)) {
+            $response["data"] = array_map(function ($row) {
+                settype($row['status'], 'int');
+                settype($row['disable_vclub_ad'], 'int');
+                return $row;
+            }, $allModerators);
+        }
+
+        $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
+
+        $error = "";
+
+        if ($this->isAjax) {
+            $response = $this->generateAjaxResponse($response);
+            return new Response(json_encode($response), (empty($error) ? 200 : 500));
+        } else {
+            return $response;
+        }
+    }
+
     public function remove_video_moderators() {
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['modid'])) {
             $this->app->abort(404, $this->setlocalization('Page not found'));
@@ -1005,7 +1206,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         }
         
         $data = array();
-        $data['action'] = 'removeMod';
+        $data['action'] = 'manageList';
         $error = '';
         $this->db->deleteModeratorsById($this->postData['modid']);
         
@@ -1024,15 +1225,12 @@ class VideoClubController extends \Controller\BaseStalkerController {
         }
         
         $data = array();
-        $data['action'] = 'toggleVideoModStatus';
+        $data['action'] = 'manageList';
         $error = $this->setlocalization('Failed');
         
         if ($this->db->updateModeratorsById((int) $this->postData['modid'], array('status' => (int) $this->postData['modstatus']))) {
             $error = '';
-            $data['title'] = ($this->postData['modstatus'] ? $this->setlocalization('Switch off'): $this->setlocalization('Switch on'));
-            $data['status'] = ($this->postData['modstatus'] ? '<span class="txt-success">' . $this->setlocalization('On') . '</span>': '<span class="txt-danger">' . $this->setlocalization('Off') . '</span>');
-            $data['modstatus'] = (int)!$this->postData['modstatus'];
-        } 
+        }
         $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
@@ -1436,6 +1634,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
+
     //------------------------ service method ----------------------------------
 
     private function getVideoListFilters()
@@ -2099,5 +2298,50 @@ class VideoClubController extends \Controller\BaseStalkerController {
         }
 
         return $video['status'];
+    }
+
+    private function getVideoScheduleFields(){
+        return array(
+            'task_added' => 'video_on_tasks.added as `task_added`',
+            'name' => 'video.name as `name`',
+            'o_name' => 'video.o_name as `o_name`',
+            'time' => 'video.time as `time`',
+            'tasks' => '"" as `tasks`',
+            'year' => 'video.year as `year`',
+            'task_id' => 'video_on_tasks.id as `task_id`',
+            'video_id' => 'video_on_tasks.video_id as `video_id`',
+            'date_on' => 'DATE_FORMAT(video_on_tasks.date_on, "%Y-%m-%d %H:%i:%s") as `date_on`',
+            'id' => 'video_on_tasks.id as `id`'
+        );
+    }
+
+    private function getVideoModeratorsAddressesDropdownAttribute(){
+        return array(
+            array('name'=>'name',           'title'=>$this->setLocalization('Name'),        'checked' => TRUE),
+            array('name'=>'mac',            'title'=>$this->setLocalization('MAC address'), 'checked' => TRUE),
+            array('name'=>'disable_vclub_ad','title'=>$this->setLocalization('Advertising'),'checked' => TRUE),
+            array('name'=>'status',         'title'=>$this->setLocalization('Status'),      'checked' => TRUE),
+            array('name'=>'operations',     'title'=>$this->setLocalization('Operation'),   'checked' => TRUE)
+        );
+    }
+
+    private function getVideoModeratorsAddressesFields(){
+        return array(
+            'id' => 'moderators.id as `id`',
+            'name' => 'moderators.name as `name`',
+            'mac' => 'moderators.mac as `mac`',
+            'disable_vclub_ad' => 'moderators.disable_vclub_ad as `disable_vclub_ad`',
+            'status' => 'moderators.status as `status`'
+        );
+    }
+
+    private function getVideoLogsDropdownAttribute(){
+        return array(
+            array('name'=>'video_id',           'title'=>$this->setLocalization('ID'),        'checked' => TRUE),
+            array('name'=>'actiontime',            'title'=>$this->setLocalization('Date'), 'checked' => TRUE),
+            array('name'=>'video_name','title'=>$this->setLocalization('Title'),'checked' => TRUE),
+            array('name'=>'login',         'title'=>$this->setLocalization('Moderator'),      'checked' => TRUE),
+            array('name'=>'action',     'title'=>$this->setLocalization('Status'),   'checked' => TRUE)
+        );
     }
 }

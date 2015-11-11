@@ -60,103 +60,7 @@
                                 {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
                             {% endif %}
                             <tbody>
-                            {% if attribute(app, 'allUsers') is defined %}
-                                <!-- Start: list_row -->
-                                {% for item in app.allUsers %}
-                                    <tr data-userid="{{ item.id }}">
-                                        <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-users?id={{ item.id }}" >{{ item.mac }}</a></td>
-                                        <td>{{ item.ip }}</td>
-                                        <td>{{ item.login }}</td>
-                                        <td>{{ item.ls }}</td>
-                                        <td>{{ item.fname }}</td>
-                                        <td>{% if item.created > 0 %}{{ item.created|date('M d, Y H:i') }}{% else %}---{% endif %}</td>
-                                        <td>
-                                            {% if attribute(app.mediaTypeName, item.now_playing_type) is defined and not app.hide_media_info and item.status %}
-                                                {{ app.mediaTypeName[item.now_playing_type] }}
-                                            {% else %}
-                                                --
-                                            {% endif %}
-                                        </td>
-                                        <td>
-                                            {% if app.hide_media_info and not item.status %}
-                                            {% else %}
-                                                {{ item.now_playing_content }}
-                                            {% endif %}
-                                        </td>
-                                        <td>{% if item.last_change_status > 0 %}{{ item.last_change_status|date('M d, Y H:i') }}{% else %}{#00-00-0000#}{% endif %}</td>
-                                        <td>{% if item.state %}
-                                                <span class="">Online</span>
-                                            {% else %}
-                                                <span class="">Offline</span>
-                                                <br><span>{{ 'Last activity'|trans }}: {% if item.last_active == 0 %}{{ item.last_active|date('M d, Y H:i') }}{% else %} - {% endif %}</span>
-                                            {% endif %}
-                                        </td>
-                                        <td class="data-filter-status">{% if item.status == 0 %}<span class="">{{ 'on'|trans }}</span>{% else %}<span class="txt-danger">{{ 'off'|trans }}</span>{% endif %}</td>
-                                        {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
-                                        <td>{{ item.reseller_name }}</td>
-                                        {% endif %}
-                                        {% if attribute(app, 'enableBilling') is defined and app.enableBilling %}
-                                        <td>{% if item.expire_billing_date > 0 %}{{ item.expire_billing_date|date('M d, Y H:i') }}{% else %}{{ 'Unlimited'|trans }}{% endif %}</td>
-                                        {% endif %}
-                                        <td>
-                                            <div class="col-xs-3 col-sm-8">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                    <i class="pull-right fa fa-cog"></i>
-                                                </a>
-                                                <ul class="dropdown-menu pull-right">
-                                                    <li>
-                                                        <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-users?id={{ item.id }}">
-                                                            <span>{{ 'Edit'|trans }}</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/users-consoles-logs?id={{ item.id }}">
-                                                            <span>{{ 'Details'|trans }}</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/send-message" data-userid="{{ item.id }}">
-                                                            <span>{{ 'Send message'|trans }}</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-user" data-userid="{{ item.id }}" data-userstatus="{{ item.status }}">
-                                                            <span>{% if item.status == 0 %}{{ 'Turn off'|trans }}{% else %}{{ 'Turn on'|trans }}{% endif %}</span>
-                                                        </a>
-                                                    </li>
-                                                    {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
-                                                    <li>
-                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-user-to-reseller" data-id="{{ item.id }}" data-reseller_id="{{ item.reseller_id }}">
-                                                            <span>{{ 'Change reseller for current user'|trans }}</span>
-                                                        </a>
-                                                    </li>
-                                                    {% endif %}
-                                                    {% if attribute(app, 'enableBilling') is defined and app.enableBilling %}
-                                                        <li>
-                                                            <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/set-expire-billing-date" data-userid="{{ item.id }}" data-setaction="set">
-                                                                <span>{{ 'Set expires billing date'|trans }}</span>
-                                                            </a>
-                                                        </li>
-                                                        {% if item.expire_billing_date > 0 %}
-                                                        <li>
-                                                            <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/set-expire-billing-date" data-userid="{{ item.id }}" data-setaction="unset">
-                                                                <span>{{ 'Unset expires billing date'|trans }}</span>
-                                                            </a>
-                                                        </li>
-                                                        {% endif %}
-                                                    {% endif %}
-                                                    <li>
-                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-user" data-userid="{{ item.id }}">
-                                                            <span>{{ 'Delete'|trans }}</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            {% endif %}
-                            <!-- End: list_row -->
+
                             </tbody>
                         </table>
                     </div>
@@ -583,13 +487,9 @@
                         "language": {
                             "url": "{{ app.datatable_lang_file }}"
                         },
-                "columns": [
-                    {% if attribute(app, 'dropdownAttribute') is defined%}
-                    {% for item in app.dropdownAttribute %}
-                    {"data": "{{ item.name }}"},
-                    {% endfor %}
-                    {% endif %}
-                ],
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
+                {% endif %}
                 "bFilter": true,
                 "bPaginate": true,
                 "bInfo": true,
@@ -601,9 +501,7 @@
                     { "width": "16px", "targets": [ -1 ] }
                 ]
             }).prev('.dataTables_processing').hide('');
-            $("#attribute_set input[type='checkbox']").each(function(index){
-                $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
-            });
+            $('#datatable-1').DataTable().ajax.reload();
         }
 
         function yelp() {
