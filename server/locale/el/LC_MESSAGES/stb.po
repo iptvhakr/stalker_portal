@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-05-24 13:59+0200\n"
-"PO-Revision-Date: 2014-11-18 12:05+0300\n"
+"PO-Revision-Date: 2015-11-11 11:22+0300\n"
 "Last-Translator: Aleksey Zhurbitsky <zhurbitsky@gmail.com>\n"
 "Language-Team: Greek-MAG-infomir <georgesat20@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -497,31 +497,31 @@ msgstr "Σφάλμα: ανεπαρκή δικαιώματα για αυτήν τ
 
 #: ../../../administrator/add_video.php:521
 msgid "Sun"
-msgstr "Κυριακή"
+msgstr "Κυρ"
 
 #: ../../../administrator/add_video.php:521
 msgid "Mon"
-msgstr "Δευτέρα"
+msgstr "Δευ"
 
 #: ../../../administrator/add_video.php:521
 msgid "Tue"
-msgstr "Τρίτη"
+msgstr "Τρι"
 
 #: ../../../administrator/add_video.php:521
 msgid "Wed"
-msgstr "Τετάρτη"
+msgstr "Τετ"
 
 #: ../../../administrator/add_video.php:521
 msgid "Thu"
-msgstr "Πέμπτη"
+msgstr "Πεμ"
 
 #: ../../../administrator/add_video.php:521
 msgid "Fri"
-msgstr "Παρασκευή"
+msgstr "Παρ"
 
 #: ../../../administrator/add_video.php:521
 msgid "Sat"
-msgstr "Σάββατο "
+msgstr "Σαβ "
 
 #: ../../../administrator/add_video.php:561
 msgid "Turn on"

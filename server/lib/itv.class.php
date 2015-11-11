@@ -279,6 +279,17 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
             }
         }
 
+        if (!empty($channel['streamer_id'])){
+            $cache = Cache::getInstance();
+            $cache->set($this->stb->id.'_playback',
+                array('type' => 'tv-channel', 'id' => $channel['id'], 'link_id' => $channel['link_id'],
+                      'streamer_id' => $channel['streamer_id']), 0, 10);
+
+        }else{
+            $cache = Cache::getInstance();
+            $cache->del($this->stb->id.'_playback');
+        }
+
         return $channel;
     }
 

@@ -708,6 +708,11 @@ abstract class Master
 
         return Mysql::getInstance()->from('storages')->where(array('storage_name' => $name))->get()->first();
     }
+
+    public static function getStorageById($id){
+
+        return Mysql::getInstance()->from('storages')->where(array('id' => $id))->get()->first();
+    }
     
     /**
      * Return online sessions on storage
