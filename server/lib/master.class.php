@@ -139,6 +139,25 @@ abstract class Master
 
                         if (empty($this->storages[$name]['wowza_server'])){
                             $res['cmd'] .= $base_path.$this->media_id.'.'.$ext;
+
+                            // nginx secure link
+                            $secret = Config::get('nginx_secure_link_secret');
+
+                            if(preg_match('/http(s)?:\/\/([^\/]+)\/(.+)$/', $res['cmd'], $match)){
+                                $uri = '/'.$match[3];
+                            }else{
+                                $uri = '';
+                            }
+
+                            $remote_addr = $this->stb->ip;
+                            $expire = time() + Config::getSafe('vclub_nginx_tmp_link_ttl', 7200);
+
+                            $hash = base64_encode(md5($secret.$uri.$remote_addr.$expire, true));
+
+                            $hash = strtr($hash, '+/', '-_');
+                            $hash = str_replace('=', '', $hash);
+
+                            $res['cmd'] .= '?st='.$hash.'&e='.$expire;
                         }else{
                             $res['cmd'] .= $base_path.'playlist.m3u8?token='.$this->createTemporaryLink("1");
                         }
@@ -150,7 +169,8 @@ abstract class Master
                         $file_info = array_values($file_info);
 
                         if (!empty($file_info) && !empty($file_info[0]['subtitles'])){
-                            $res['subtitles'] = array_map(function($subtitle) use ($base_path, $file){
+                            $ip = $this->stb->ip;
+                            $res['subtitles'] = array_map(function($subtitle) use ($base_path, $file, $ip){
 
                                 $file_base = substr($file, 0, strrpos($file, '.'));
 
@@ -160,8 +180,27 @@ abstract class Master
                                     $lang = substr($lang, 1);
                                 }
 
+                                $file = $base_path.$subtitle;
+
+                                // nginx secure link
+                                $secret = Config::get('nginx_secure_link_secret');
+
+                                if(preg_match('/http(s)?:\/\/([^\/]+)\/(.+)$/', $file, $match)){
+                                    $uri = '/'.$match[3];
+                                }else{
+                                    $uri = '';
+                                }
+
+                                $remote_addr = $ip;
+                                $expire = time() + Config::getSafe('vclub_nginx_tmp_link_ttl', 7200);
+
+                                $hash = base64_encode(md5($secret.$uri.$remote_addr.$expire, true));
+
+                                $hash = strtr($hash, '+/', '-_');
+                                $hash = str_replace('=', '', $hash);
+
                                 return array(
-                                    'file' => $base_path.$subtitle,
+                                    'file' => $file.'?st='.$hash.'&e='.$expire,
                                     'lang' => $lang
                                 );
                             }, $file_info[0]['subtitles']);
