@@ -1496,6 +1496,20 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             return 'external_'.$app['alias'];
         }, $installed_apps);
 
+        // change order order according to the package
+        if (Config::get('enable_tariff_plans')){
+
+            $user = User::getInstance(Stb::getInstance()->id);
+
+            $user_enabled_modules = $user->getServicesByType('module');
+
+            $flipped_installed_apps = array_flip($installed_apps);
+
+            $installed_apps = array_values(array_filter($user_enabled_modules, function($module) use ($flipped_installed_apps){
+                return isset($flipped_installed_apps[$module]);
+            }));
+        }
+
         $result = array(
             'all_modules'        => array_merge(Config::get('all_modules'), $installed_apps),
             'switchable_modules' => Config::get('disabled_modules'),
