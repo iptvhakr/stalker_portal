@@ -87,12 +87,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
 
         try{
             $apps_list = new \AppsManager();
-            $response['data'] = array_map(function($row){
-                if (array_key_exists('available_version', $row)) {
-                    $row['available_version'] = 'v'.$row['available_version'];
-                }
-                return $row;
-            },$apps_list->getList());
+            $response['data'] = $apps_list->getList();
         } catch (\Exception $e){
             $response['error'] = $error = $this->setLocalization('Failed to get the list of applications');
         }
