@@ -12,7 +12,7 @@ class IndexController extends \Controller\BaseStalkerController {
 
     public function __construct(Application $app) {
         parent::__construct($app, __CLASS__);
-        $this->logoHost = $this->baseHost . "/stalker_portal/misc/logos";
+        $this->logoHost = $this->baseHost . \Config::getSafe('portal_url', '/stalker_portal/') . "misc/logos";
         $this->logoDir = str_replace('/admin', '', $this->baseDir) . "/misc/logos";
         $this->app['error_local'] = array();
         $this->app['baseHost'] = $this->baseHost;
