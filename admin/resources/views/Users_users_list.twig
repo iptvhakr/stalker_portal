@@ -424,7 +424,12 @@
                                                     </div>";
                         var last_active = new Date(json.data[i].last_active * 1000);
                         json.data[i].state = state != 0 ? "<span class=''>Online</span>" : "<span class=''>Offline</span><br><span>{{ 'Last activity'|trans }}: " + (json.data[i].last_active != 0? last_active.toLocaleFormat("%b %d, %Y %H:%M"): "-") + "</span>";
-                        json.data[i].status = status == 0 ? "<span class=''>{{ 'on'|trans }}</span>" : "<span class=''>{{ 'off'|trans }}</span>";
+                        json.data[i].status = "<span class=''>" + (status == 0 ? "{{ 'on'|trans }}" : "{{ 'off'|trans }}") + "</span>";
+
+                        if (json.data[i].country) {
+                            json.data[i].ip = "<span class='countries-flag-container'><span class='pull-left'>" + json.data[i].ip + "</span>&nbsp;<span class='flag-wrapper pull-right'><span class='img-thumbnail flag flag-icon-background flag-icon-"+json.data[i].country+"'>&nbsp;</span></span></span>";
+                        }
+
                         date = json.data[i]['last_change_status'];
                         if (date > 0) {
                             date = new Date(date * 1000);
