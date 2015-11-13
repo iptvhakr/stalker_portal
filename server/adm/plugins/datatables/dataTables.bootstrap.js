@@ -1,25 +1,55 @@
 /* Set the defaults for DataTables initialisation */
-$.extend( true, $.fn.dataTable.defaults, {
-	"sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
-	"sPaginationType": "bootstrap",
-	"iDisplayLength": 50,
-	"fnDrawCallback": function() {  
-					var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
-					var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
-					if (pageCount > 1)  {$("#datatable-1_paginate").css("display", "block");} else { $("#datatable-1_paginate").css("display", "none");  }
-				},
-	"oLanguage": {
-		"sLengthMenu": "_MENU_ records per page"
-	},
-	 "aoColumnDefs": [ 
-			
-            
-                { "width": "16px", "targets": [ -1] }
-            ]
-	
-	
-	
-} );
+$.extend(true, $.fn.dataTable.defaults, {
+    "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+    "sPaginationType": "bootstrap",
+    "iDisplayLength": 50,
+    "fnDrawCallback": function (oSettings) {
+        var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
+        var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
+        if (pageCount > 1) {
+            $("#datatable-1_paginate").css("display", "block");
+        } else {
+            $("#datatable-1_paginate").css("display", "none");
+        }
+        if (oSettings.fnRecordsDisplay() && oSettings.aoData && oSettings.aoData.length) {
+            var tableHeight = oSettings.oInstance.height();
+            var ddMenuMaxHeight = 0, ddMenuHeight = 0, trParentOffset = 0, ddMenuItem;
+            $(oSettings.nTable).children("tbody").find('tr').each(function(){
+                ddMenuItem = $(this).find('td:last-of-type').find(".dropdown-menu");
+                if (!ddMenuItem.length) {
+                    console.log("ddMenu not found");
+                    return false;
+                }
+                ddMenuItem.closest('dropup').removeClass('dropup');
+                trParentOffset = $(this).position();
+                trParentOffset = trParentOffset.top;
+                ddMenuHeight = ddMenuItem.height();
+
+                if (ddMenuHeight > ddMenuMaxHeight){
+                    ddMenuMaxHeight = ddMenuHeight ;
+                }
+
+                if (ddMenuHeight > tableHeight) {
+                    return true;
+                }
+
+                if ((trParentOffset + ddMenuHeight - 50) > tableHeight ) {
+                    ddMenuItem.closest('div').addClass('dropup');
+                }
+
+            });
+            if (ddMenuMaxHeight > tableHeight) {
+                $(oSettings.nTableWrapper).css('minHeight', ddMenuMaxHeight + tableHeight);
+            }
+        }
+    },
+    "oLanguage": {
+        "sLengthMenu": "_MENU_ records per page"
+    },
+    "aoColumnDefs": [
+        {"width": "16px", "targets": [-1]}
+    ]
+});
 
 
 /* Default class modification */
