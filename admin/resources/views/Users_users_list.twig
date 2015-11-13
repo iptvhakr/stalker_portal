@@ -901,6 +901,12 @@
                     });
                 });
 
+                $(document).on('click', 'div[data-tvfilter] a:first-child', function(e){
+                    if ($(this).closest('div').hasClass('open')){
+                        $(this).closest('div').find("input:first-of-type").trigger("focus").trigger("click");
+                    }
+                });
+
                 LoadDataTablesScripts(TestTable1);
                 LoadSelect2Script(DemoSelect2);
             });
