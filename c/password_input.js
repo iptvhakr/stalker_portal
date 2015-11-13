@@ -151,7 +151,9 @@ password_input.prototype.bind = function(){
     }).bind(key.UP, this, key.UP)
       .bind(key.DOWN, this, key.DOWN)
       .bind(key.PREV, this, key.PREV)
-      .bind(key.NEXT, this, key.NEXT);
+      .bind(key.NEXT, this, key.NEXT)
+      .bind(key.CHANNEL_PREV, this, key.CHANNEL_PREV)
+      .bind(key.CHANNEL_NEXT, this, key.CHANNEL_NEXT);
 };
 
 loader.next();

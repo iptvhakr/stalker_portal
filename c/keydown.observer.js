@@ -36,11 +36,7 @@ var keydown_observer = new function(){
         
         _debug('code:', code);
 
-        if (code == 0){
-            return;
-        }
-
-        if ([1000, 2000, 3000].indexOf(code) >= 0){
+        if ([0, 1000, 2000, 3000].indexOf(code) >= 0){
             return;
         }
         
@@ -79,6 +75,10 @@ var keydown_observer = new function(){
                 normal_item.f.apply(normal_item.c, normal_item.a);
             }
             
+        }
+
+        if ([9, 1009].indexOf(code) != -1){
+            e.preventDefault && e.preventDefault();
         }
 
         _debug('keydown handler exit');
