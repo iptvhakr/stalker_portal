@@ -305,9 +305,9 @@ var main_menu = {
 
             var img = new Image();
             img.src = this.map[i].img;
-            /*img.onerror = function(){
+            img.onerror = function(){
                 this.src = 'template/' + loader.template + '/i' + resolution_prefix + '/' + 'mm_ico_default.png';
-            };*/
+            };
 
             this.cells[i].img_dom_obj.innerHTML = '';
             this.cells[i].img_dom_obj.appendChild(img);
