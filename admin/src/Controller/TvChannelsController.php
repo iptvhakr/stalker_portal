@@ -818,7 +818,6 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         if (empty($check)) {
             if ($this->db->insertTvGenres(array('title' => $this->postData['title']))) {
                 $error = '';
-                $data['msg'] = $this->setLocalization('Done');
             } else {
                 $data['msg'] = $error = ' ' . $this->setLocalization('Nothing to do');
             }
@@ -852,7 +851,6 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         if (empty($check)) {
             if ($this->db->updateTvGenres(array('title' => $this->postData['title']), array('id' => $this->postData['id']))) {
                 $error = '';
-                $data['msg'] = $this->setLocalization('Done');
                 $data['id'] = $this->postData['id'];
                 $data['title'] = $this->postData['title'];
             } else {
@@ -882,7 +880,6 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $error = $this->setLocalization('Failed');
 
         if ($this->db->deleteTvGenres(array('id' => $this->postData['genresid']))){
-            $data['msg'] = $this->setLocalization('Done');
             $error = '';
         } else {
             $data['msg'] = $error = $this->setLocalization('Nothing to do');
