@@ -35,7 +35,7 @@ class UsersController extends \Controller\BaseStalkerController {
     private $allState = array(array('id' => 2, 'title' => 'Offline'), array('id' => 1, 'title' => 'Online'));
     private $watchdog = 0;
     private $userFields = array(
-        'users.id as `id`', "`mac`", "`ip`", "`login`", "`ls`", "`fname`", "reseller.id as `reseller_id`", "`theme`",
+        'users.id as `id`', "`mac`", "`ip`", "`country`", "`login`", "`ls`", "`fname`", "reseller.id as `reseller_id`", "`theme`",
         "`status`", 'tariff_plan.name as `tariff_plan_name`',
         "DATE_FORMAT(last_change_status,'%d.%m.%Y') as `last_change_status`",
         "concat (users.fname) as `fname`",
@@ -668,7 +668,15 @@ class UsersController extends \Controller\BaseStalkerController {
         }
 
         $reseller_empty_name = $this->setLocalization('Empty');
-        $response['data'] = array_map(function($val) use ($reseller_empty_name) {
+
+        $countries = array();
+        $country_field_name  = ($this->app['lang'] == 'ru' ? 'name': 'name_en');
+
+        foreach($this->db->getAllFromTable('countries') as $row){
+            $countries[$row['iso2']] = $row[$country_field_name];
+        }
+
+        $response['data'] = array_map(function($val) use ($reseller_empty_name, $countries) {
             $val['last_active'] = (int)$val['last_active']; 
             $val['last_change_status'] = (int) strtotime($val['last_change_status']);
             $val['last_change_status'] = $val['last_change_status'] > 0 ? $val['last_change_status']: 0;
@@ -678,6 +686,12 @@ class UsersController extends \Controller\BaseStalkerController {
             $val['created'] = $val['created'] > 0 ? $val['created']: 0;
             $val['reseller_id'] = !empty($val['reseller_id']) ? $val['reseller_id']: '-';
             $val['reseller_name'] = !empty($val['reseller_name']) ? $val['reseller_name']: $reseller_empty_name;
+            if (!empty($val['country'])) {
+                $val['country_name'] = $countries[$val['country']];
+                $val['country'] = strtolower($val['country']);
+            } else {
+                $val['country_name'] = $val['country'] = '';
+            }
             return $val;
         }, $this->db->getUsersList($query_param));
 
