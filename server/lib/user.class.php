@@ -747,8 +747,17 @@ class User implements \Stalker\Lib\StbApi\User
                 $new_account[$key] = $value;
             }
         }
+
+        $login = empty($login) && !empty($info['login']) ? $info['login'] : $login;
+
         $new_account['login']    = $login;
         $new_account['password'] = $password;
+
+        $user = User::getByLogin($login);
+
+        if ($user !== false){
+            return $user;
+        }
 
         $uid = self::createAccount($new_account);
 

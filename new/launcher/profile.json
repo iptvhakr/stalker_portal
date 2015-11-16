@@ -1,6 +1,7 @@
 {
-	"stalkerApiDomain": "http://v2.api.example.com/",
-	"stalkerAuthDomain": "http://example.com/stalker_portal/auth/token/",
+	"apiDomain": "http://v2.api.example.com/",
+	"authDomain": "http://example.com/stalker_portal/auth/token/",
+	"pingTimeout" : 120000,
 	"logo": "img/{0}/logo.png",
 	"background": "img/{0}/bg.jpg",
 	"menu": [

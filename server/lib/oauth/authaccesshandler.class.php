@@ -38,10 +38,16 @@ class AuthAccessHandler extends AccessHandler
             \Stb::getInstance()->getProfile();
             $user = \User::getByMac(\Stb::getInstance()->mac);
 
-            $request->setUsername($user->getLogin());
+            if ($user){
+                $request->setUsername($user->getLogin());
+            }
         }
 
-        if (!$user){
+        if (\Config::exist('auth_url') && strpos(\Config::get('auth_url'), 'auth_every_load') && empty($username) && empty($password)){
+            return false;
+        }
+
+        if (!$user || !empty($username) && !empty($password) && \Config::exist('auth_url')){
             $user = \User::authorizeFromOss($username, $password, $mac);
         }
 
@@ -52,6 +58,10 @@ class AuthAccessHandler extends AccessHandler
         $possible_user = $user->getProfile();
 
         if(!$password && $mac){
+            $request->setUsername($user->getLogin());
+        }
+
+        if(!$password && $mac || \Config::exist('auth_url') && $username && $password){
             $verified_user = $possible_user;
         }elseif ((strlen($possible_user['password']) == 32 && md5(md5($password).$possible_user['id']) == $possible_user['password'])
             || (strlen($possible_user['password']) < 32 && $password == $possible_user['password'])){

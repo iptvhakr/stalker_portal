@@ -1080,6 +1080,17 @@ function common_xpcom(){
         }
 
         if (this.user['status'] == 2){
+
+            // redirect to the new launcher without auth
+            if (this.user['template'] == 'smart_launcher' && single_module.length == 0){
+                _debug('redirect to the new launcher');
+                window.stop();
+                document.body.hide();
+                _debug('../new/launcher/?profile=' + encodeURIComponent('../../server/api/launcher_profile.php?uid=' + this.user['id']));
+                window.location = '../new/launcher/?profile=' + encodeURIComponent('../../server/api/launcher_profile.php?uid=' + this.user['id']);
+                return;
+            }
+
             this.auth_access = true;
             this.init_auth_dialog();
             this.key_lock = false;
