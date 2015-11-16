@@ -470,7 +470,12 @@ class Filters {
 
     public function getFilters($filter_id = array()) {
         $return_filter = array();
-        $dbt = debug_backtrace(0, 2);
+        if (defined('PHP_VERSION_ID') && ((int) PHP_VERSION_ID) >= 50400) {
+            $args = array(0, 2);
+        } else {
+            $args = array(0);
+        }
+        $dbt = call_user_func_array('debug_backtrace', $args);
         $caller = isset($dbt[1]['function']) ? $dbt[1]['function'] : null;
         if (!empty($filter_id)) {
             if ((is_array($filter_id))) {
