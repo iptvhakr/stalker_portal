@@ -1239,11 +1239,11 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                         $video = $this->db->from('video')->where(array('rtsp_url' => $param, 'protocol' => 'custom'))->get()->first();
 
                         if (empty($video)){
-                            preg_match("/\/([^\/]+)\/[^\/]+\/(\d+)\.[a-z0-9]*$/", $param, $tmp_arr);
+                            preg_match("/\/([^\/]+)\/[^\/]+\/(\d+)\.[a-z0-9]*/", $param, $tmp_arr);
                         }
 
                     }else{
-                        preg_match("/auto \/media\/([\S\s]+)\/(\d+)\.[a-z0-9]*$/", $param, $tmp_arr);
+                        preg_match("/auto \/media\/([\S\s]+)\/(\d+)\.[a-z0-9]*/", $param, $tmp_arr);
                     }
 
                     if (empty($video) && !empty($tmp_arr)){
@@ -1301,9 +1301,9 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                     break;
                 case 3: // Karaoke
                     
-                    preg_match("/(\d+).mpg$/", $param, $tmp_arr);
+                    preg_match("/(\d+).mpg/", $param, $tmp_arr);
                     $karaoke_id = intval($tmp_arr[1]);
-                    
+
                     $karaoke = $this->db->from('karaoke')->where(array('id' => $karaoke_id))->get()->first();
                     
                     if (!empty($karaoke)){
