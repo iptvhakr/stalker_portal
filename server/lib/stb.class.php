@@ -1505,6 +1505,10 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
             $user_enabled_modules = $user->getServicesByType('module');
 
+            if ($user_enabled_modules === null){
+                $user_enabled_modules = array();
+            }
+
             $flipped_installed_apps = array_flip($installed_apps);
 
             $installed_apps = array_values(array_filter($user_enabled_modules, function($module) use ($flipped_installed_apps){
