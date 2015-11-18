@@ -123,7 +123,11 @@ class Mysql
             $this->timezone = $timezone;
 
             foreach ($this->links as $link) {
-                $query_result = $this->query('SET time_zone="' . $timezone . '"', $link)->result();
+                try {
+                    $query_result = $this->query('SET time_zone="' . $timezone . '"', $link)->result();
+                }catch (MysqlException $e){
+                    $query_result = false;
+                }
                 $result = $query_result && $result;
             }
         }
