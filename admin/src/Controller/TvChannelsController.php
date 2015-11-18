@@ -98,7 +98,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             $filter = $this->getIPTVfilters();
         }
 
-        $allChannels = $this->db->getAllChannels(array('where' => $filter));
+        $allChannels = $this->db->getAllChannels(array('select' => $this->getAllChannelsFields(), 'where' => $filter, 'order'=> array('number' => 'ASC')));
 
         if (is_array($allChannels)) {
             while (list($num, $row) = each($allChannels)) {
@@ -110,7 +110,6 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                 unset($allChannels[0]);
             }
         }
-
         $this->app['allChannels'] = $this->fillEmptyRows($allChannels);
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
@@ -1775,6 +1774,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
     private function getAllChannelsFields(){
         return array(
             'id' => 'itv.id as `id`',
+            'locked' => 'itv.locked as `locked`',
             'number' => 'itv.number as `number`',
             'logo' => 'itv.logo as `logo`',
             'name' => 'itv.name as `name`',
