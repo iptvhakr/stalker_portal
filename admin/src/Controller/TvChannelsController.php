@@ -1516,7 +1516,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                             return $task_row['storage_name'];
                         }
                     }, $tasks));
-                    return array_combine(array_values($names), $names);
+                    return (is_array($names) && !empty($names) ? array_combine(array_values($names), $names): array());
                 }, $return );
             } else {
                 $return = array('storage_names' => array(), 'wowza_storage_names' => array(), 'flussonic_storage_names' => array());

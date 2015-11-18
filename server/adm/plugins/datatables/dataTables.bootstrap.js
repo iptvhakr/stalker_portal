@@ -39,7 +39,7 @@ $.extend(true, $.fn.dataTable.defaults, {
 
             });
             if (ddMenuMaxHeight > tableHeight) {
-                $(oSettings.nTableWrapper).css('minHeight', ddMenuMaxHeight + tableHeight);
+                $(oSettings.nTableWrapper).css('minHeight', ddMenuMaxHeight + tableHeight + 40);
             }
         }
     },

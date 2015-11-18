@@ -1179,7 +1179,11 @@
                 $("#modalbox_ad").on('change', "input[name*='enable_balancer_monitoring']", function(e){
                     var enable_monitoring = $("#modalbox_ad input[name*='enable_monitoring']:checked");
                     if ( this.checked && (enable_monitoring.length == 0 || enable_monitoring.val() == 'off') ){
+                        e.stopPropagation();
+                        e.preventDefault();
+                        $(this).prop('checked', false);
                         showModalBox();
+                        return false;
                     }
                 });
 
@@ -1226,12 +1230,12 @@
             }
         }
 
-        function closeModalBox(){
+        var closeModalBox = function(){
             $("#modalbox").hide();
             $('#modalbox').find('.modal-header-name span').empty();
             $('#modalbox').find('.devoops-modal-inner').empty();
             $('#modalbox').find('.devoops-modal-bottom').empty();
-        }
+        };
 
         function showModalBox(){
             $('#modalbox').find('.modal-header-name span').text('{{ 'Pay attention.'|trans }}');
@@ -1250,9 +1254,6 @@
             JSErrorModalBox(data);
         };
 
-        var closeModalBox = function(){
-            JScloseModalBox();
-        };
     </script>
 
     <script type="text/template" id="qq-template-bootstrap">

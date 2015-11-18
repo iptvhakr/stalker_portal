@@ -848,7 +848,7 @@ $(document).ready(function () {
         e.preventDefault();
         if (typeof($("#modalbox").data('complete')) == 'undefined' || $("#modalbox").data('complete') == 1) {
             if (typeof(closeModalBox) == 'function') {
-
+                closeModalBox();
             } else {
                 JScloseModalBox();
             }
