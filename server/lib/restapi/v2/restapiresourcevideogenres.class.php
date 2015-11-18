@@ -39,9 +39,19 @@ class RESTApiResourceVideoGenres extends RESTApiCollection
         if (!empty($this->categories)){
             $response = array();
 
-            foreach ($this->categories as $category){
-                $response[$category['id']] = $this->filter($genres->getByCategoryId($category['id'], true));
+            if (count($this->categories) == 1){
+                $response = $this->filter($genres->getByCategoryId($this->categories[0]['id'], true));
+            }else{
+
+                foreach ($this->categories as $category){
+
+                    $response[] = array(
+                        'id'     => $category['id'],
+                        'genres' => $this->filter($genres->getByCategoryId($category['id'], true))
+                    );
+                }
             }
+
             return $response;
         }else{
             return $this->filter($genres->getAll(true));
