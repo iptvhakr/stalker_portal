@@ -6,7 +6,15 @@
 {% set active_alias = 'iptv-list' %}
 
 {% block content %}
-    
+    {% if attribute(app, 'not_found') is defined and app.not_found %}
+    <div class="row ">
+        <div class="box">
+            <div class="box-content">
+                <h3 class="text-danger">{{ 'Requested channel not found'|trans }}. {{ 'Add a channel'|trans }}?</h3>
+            </div>
+        </div>
+    </div>
+    {% endif %}
     <div id="add_channel">
         {{ form_start(app['form'], {'method': 'POST', 'action': (app.request.baseUrl ~ '/' ~ app.controller_alias  ~ '/' ~ app.action_alias) | trans, 'attr': {'class': 'form-horizontal', 'role': 'form' }}) }}
         <div class="bg-danger">

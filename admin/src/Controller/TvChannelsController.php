@@ -121,6 +121,12 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
 
+        $this->app['not_found'] = $this->app['request']->getSession()->get('channel_error');
+
+        if (!empty($this->app['not_found'])) {
+            $this->app['request']->getSession()->remove('channel_error');
+        }
+
         $this->app['allGenres'] = $this->getAllGenres();
         $this->app['streamServers'] = $this->db->getAllStreamServer();
         $this->app['channelEdit'] = FALSE;
@@ -147,6 +153,10 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $this->app['allGenres'] = $this->getAllGenres();
         $this->app['channelEdit'] = TRUE;
         $this->oneChannel = $this->db->getChannelById($id);
+        if (empty($this->oneChannel)) {
+            $this->app['request']->getSession()->set('channel_error', TRUE);
+            return $this->app->redirect('add-channel');
+        }
         $this->oneChannel = array_merge($this->oneChannel, $this->getStorages($id));
         $this->oneChannel['pvr_storage_names'] = array_keys(\RemotePvr::getStoragesForChannel($id));
         settype($this->oneChannel['enable_tv_archive'], 'boolean');
