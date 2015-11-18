@@ -184,7 +184,7 @@
 
         function yelp() {
             $(document).ready(function () { 
-                $(document).on('click', "a.main_ajax:not([href*='move-admin-to-reseller'])", function (e) {
+                $(document).on('click', "a.main_ajax:not([href*='move-admin-group-to-reseller'])", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
                     var sendData = $(this).data();
