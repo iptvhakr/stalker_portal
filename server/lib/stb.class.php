@@ -819,6 +819,10 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
     private function resetOauthToken(){
 
+        if ($this->getUserPortalTheme() == 'smart_launcher'){
+            return;
+        }
+
         Mysql::getInstance()->update('access_tokens',
             array(
                 'token'         => 'invalid_'.md5(microtime(1).uniqid()),
