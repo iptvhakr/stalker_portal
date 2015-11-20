@@ -827,6 +827,10 @@
                         var fav_num = stb.player.fav_channels[fav_idx].number;
                         stb.player.fav_channels[fav_idx] = stb.player.channels[idx].clone();
                         stb.player.fav_channels[fav_idx].number = fav_num;
+
+                        if (stb.user.fav_itv_on){
+                            channel.number = fav_num;
+                        }
                     }
                 }
 
