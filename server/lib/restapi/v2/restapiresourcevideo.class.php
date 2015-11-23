@@ -179,7 +179,7 @@ class RESTApiResourceVideo extends RESTApiCollection
                 }
             }
 
-            $new_video['added']         = strtotime($video['added']);
+            $new_video['added']         = intval(strtotime($video['added']));
             $new_video['original_name'] = $video['o_name'];
             $new_video['hd']            = (int) $video['hd'];
             $new_video['rating_kinopoisk'] = (float) $video['rating_kinopoisk'];

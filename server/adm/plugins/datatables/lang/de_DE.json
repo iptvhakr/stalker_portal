@@ -1,19 +1,23 @@
 {
-    "sProcessing": "Bezig...",
-    "sLengthMenu": "_MENU_ resultaten weergeven",
-    "sZeroRecords": "Geen resultaten gevonden",
-    "sInfo": "<b>_START_-_END_</b> van <b>_TOTAL_</b>",
-    "sInfoEmpty": "Geen resultaten om weer te geven",
-    "sInfoFiltered": " (gefilterd uit _MAX_ resultaten)",
-    "sInfoPostFix": "",
-    "sSearch": "Zoeken:",
-    "sEmptyTable": "Geen resultaten aanwezig in de tabel",
-    "sInfoThousands": ".",
-    "sLoadingRecords": "Een moment geduld aub - bezig met laden...",
-    "oPaginate": {
-        "sFirst": "Eerste",
-        "sLast": "Laatste",
-        "sNext": "",
-        "sPrevious": ""
-    }
+  "sEmptyTable":      "Keine Daten in der Tabelle vorhanden",
+  "sInfo":            "_START_ bis _END_ von _TOTAL_ Einträgen",
+  "sInfoEmpty":       "0 bis 0 von 0 Einträgen",
+  "sInfoFiltered":    "(gefiltert von _MAX_ Einträgen)",
+  "sInfoPostFix":     "",
+  "sInfoThousands":   ".",
+  "sLengthMenu":      "_MENU_ Einträge anzeigen",
+  "sLoadingRecords":  "Wird geladen...",
+  "sProcessing":      "Bitte warten...",
+  "sSearch":          "Suchen",
+  "sZeroRecords":     "Keine Einträge vorhanden.",
+  "oPaginate": {
+    "sFirst":       "Erste",
+    "sPrevious":    "Zurück",
+    "sNext":        "Nächste",
+    "sLast":        "Letzte"
+  },
+  "oAria": {
+    "sSortAscending":  ": aktivieren, um Spalte aufsteigend zu sortieren",
+    "sSortDescending": ": aktivieren, um Spalte absteigend zu sortieren"
+  }
 }
