@@ -35,14 +35,25 @@ if (Config::get('enable_tariff_plans')){
         $user_enabled_modules = array();
     }
 
-    $flipped_installed_apps = array_flip($installed_apps);
+    if (Config::getSafe('enable_modules_order_by_package', false)){
 
-    $installed_apps = array_values(array_filter($user_enabled_modules, function($module) use ($flipped_installed_apps){
-        return isset($flipped_installed_apps[$module]);
-    }));
+        $static_modules = array_diff(Config::get('all_modules'), $user_enabled_modules);
+
+        $all_modules = array_merge($static_modules, $user_enabled_modules);
+    }else{
+
+        $flipped_installed_apps = array_flip($installed_apps);
+
+        $installed_apps = array_values(array_filter($user_enabled_modules, function($module) use ($flipped_installed_apps){
+            return isset($flipped_installed_apps[$module]);
+        }));
+
+        $all_modules = array_merge(Config::get('all_modules'), $installed_apps);
+    }
+}else{
+    $all_modules = array_merge(Config::get('all_modules'), $installed_apps);
 }
 
-$all_modules = array_merge(Config::get('all_modules'), $installed_apps);
 $disabled_modules = Stb::getDisabledModulesByUid((int) $_GET['uid']);
 
 $available_modules = array_diff($all_modules, $disabled_modules);
