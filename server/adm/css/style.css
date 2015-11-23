@@ -3022,10 +3022,25 @@ color:#000; background-color:#FFF !important; border:1px solid #000; margin-top:
     border-radius: 12px 0 0 12px;
 }
 #iptv_list input[type=text]:first-of-type, #iptv_list_move input[type=text]:first-of-type{
-   border-left-color: transparent;
+    border-left-color: transparent;
     border-radius: 0 12px 12px 0;
     padding-left: 5px;
     padding-right: 0;
+}
+
+#channels_container input[type=text] {
+    border: 1px solid #ccc !important;
+    border-radius: 4px !important;
+}
+
+.m3u_item_error {
+    background-color: rgba(250, 120, 120, 0.1);
+    border: 1px solid rgba(250, 120, 120, 0.7);
+    border-radius: 4px;
+}
+
+.m3u_item_error .select2-choice, .m3u_item_error .checkbox i.fa{
+    background-color: #FFF;
 }
 
 #iptv_list .filter_string{

@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request as Request;
 use Symfony\Component\HttpFoundation\Response as Response;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
+use M3uParser;
 
 class TvChannelsController extends \Controller\BaseStalkerController {
 
@@ -218,6 +219,16 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $this->app['allData'] = $list['data'];
         $this->app['totalRecords'] = $list['recordsTotal'];
         $this->app['recordsFiltered'] = $list['recordsFiltered'];
+
+        return $this->app['twig']->render($this->getTemplateName(__METHOD__));
+    }
+
+    public function m3u_import(){
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $this->app['allGenres'] = $this->getAllGenres();
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -974,6 +985,109 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
 
+    public function get_m3u_data() {
+        if (!$this->isAjax || $this->method != 'POST') {
+            $this->app->abort(404, 'Page not found...');
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array();
+        $data['action'] = 'loadM3UData';
+        $data['data'] = array(
+            'channels' => array(),
+            'last_channel_number' => 0,
+            'free_number_exists' => 1
+        );
+        $error = $this->setLocalization('Upload failed');
+
+        $storage = new \Upload\Storage\FileSystem('/tmp', TRUE);
+        $file = new \Upload\File('qqfile', $storage);
+
+        try {
+            // Success!
+            $file->upload();
+
+            $obj = new M3uParser\M3uParser();
+            $m3u_data = $obj->parseFile($file->getPath() . '/' .$file->getNameWithExtension());
+            @unlink($file->getPath() . '/' .$file->getNameWithExtension());
+
+            $data['data']['last_channel_number'] = (int) $this->db->getLastChannelNumber();
+
+            if ($data['data']['last_channel_number'] + count($m3u_data) > 9999) {
+                $data['data']['free_number_exists'] = (int)(($this->db->getAllChannels(array(), 'COUNT') + count($m3u_data)) <= 9999);
+            }
+
+            foreach ($m3u_data as $entry) {
+                $data['data']['channels'][] = array(
+                    'name' => trim($entry->getName()),
+                    'cmd' => trim($entry->getPath())
+                );
+            }
+            $error = '';
+        } catch (\Exception $e) {
+            // Fail!
+            $data['msg'] = $error = $file->getErrors();
+        }
+
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function save_m3u_item(){
+        if (!$this->isAjax || $this->method != 'POST') {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+        $data = array();
+        $data['action'] = 'saveM3UItem';
+        $error = $this->setlocalization('Error');
+
+        $item_data = $this->postData;
+
+        $data['item_id'] = $item_data['item_id'];
+
+        $is_repeating_name = count($this->db->getFieldFirstVal('name', $item_data['name']));
+        $is_repeating_number = count($this->db->getFieldFirstVal('number', $item_data['number']));
+
+        if (!$is_repeating_name && !$is_repeating_number) {
+            $this->dataPrepare($item_data);
+            if (empty($item_data['cmd'])) {
+                $data['msg'] = $error = $this->setlocalization('Requires at least one link of broadcast');
+            } if (empty($item_data['name'])) {
+                $data['msg'] = $error = $this->setlocalization('Field "Channel name" cannot be empty');
+            } if (empty($item_data['number'])) {
+                $data['msg'] = $error = $this->setlocalization('Field "Channel number" cannot be empty');
+            } else {
+                $item_data['cmd'] = array(0=>$item_data['cmd']);
+                $item_data['priority'] = array(0=>0);
+                $item_data['user_agent_filter'] = array(0=>'');
+                $item_data['monitoring_url'] = array(0=>'');
+
+                $ch_id = $this->db->insertITVChannel($item_data);
+                $this->setDBLincs($ch_id, $item_data);
+                $this->createTasks($ch_id, $item_data);
+                $error = '';
+            }
+        } else {
+             if ($is_repeating_number) {
+                $data['msg'] = $error = $this->setlocalization('Number "%number%" is already in use', '', '', array('%number%' => $item_data['number']));
+            } elseif ($is_repeating_name) {
+                 $data['msg'] = $error = $this->setlocalization('Name "%name%" already exists', '', '', array('%name%' => $item_data['name']));
+             }
+        }
+
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
     //------------------------ service method ----------------------------------
 
     private function getLogoUriById($id = FALSE, $row = FALSE, $resolution = 320) {
@@ -1334,7 +1448,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $current_urls = (!empty($this->channeLinks) ? $this->getFieldFromArray($this->channeLinks, 'url') : array());
         foreach ($this->getLinks($data) as $link) {
             $link['ch_id'] = $ch_id;
-            if (is_array($link['stream_servers'])) {
+            if (is_array($link['stream_servers']) && !empty($link['stream_servers'])) {
                 $link['stream_servers'] = call_user_func_array('array_merge', array_map(function($row){
                     if (is_string($row)) {
                         $row = explode(',', $row);
@@ -1348,7 +1462,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             unset($link['stream_servers']);
             if (!in_array($link['url'], $current_urls)) {
                 $link_id = $this->db->insertCHLink($link);
-                if ($link_id && $links_on_server) {
+                if ($link_id && !empty($links_on_server)) {
                     foreach ($links_on_server as $streamer_id) {
                         $this->db->insertCHLinkOnStreamer($link_id, $streamer_id);
                     }
