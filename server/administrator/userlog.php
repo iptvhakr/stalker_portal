@@ -230,7 +230,7 @@ function parse_param($action, $param, $type){
                 break;
             case 2: // Video Club
 
-                if (!preg_match("/(\d+)\.[a-z0-9]*$/", $param, $tmp_arr)){
+                if (!preg_match("/(\d+)\.[a-z0-9]*/", $param, $tmp_arr)){
                     $name = $param;
                     break;
                 }
