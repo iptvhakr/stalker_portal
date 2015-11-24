@@ -1,0 +1,372 @@
+{% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
+
+{% set title = ('IPTV channels'|trans ~ ': ' ~ 'genres list'|trans) | trans %}
+
+{% block content %}
+    <div id="iptv_list">
+        <div class="row" style="background: #fff none repeat scroll 0 0;">
+            <div class="box">
+                <div class="box-content" id="add_channel_base">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="form-group">
+                            <div class="col-xs-5 col-sm-5">
+                                <div class="pull-left" id="bootstrapped-fine-uploader"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-5 col-sm-5 pull-right">
+                                <button id="clean_channels" class="btn btn-danger  pull-right">{{ 'Clean channels'|trans }}</button>
+                                <button id="save_channels" class="btn btn-success  pull-right">{{ 'Save channels'|trans }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row" style="display: none;">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-content">
+                        <h4 class="text-danger center" id="warning_message"></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="channels_container">
+
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" defer>
+        function DemoSelect2() {
+        }
+
+        function yelp() {
+            $(document).ready(function () {
+
+                $("#content, #main").css("background-color", "#f2f2f2");
+
+                LoadSelect2Script(DemoSelect2);
+
+                var uploader = $("#bootstrapped-fine-uploader").fineUploader({
+                    element: $('#bootstrapped-fine-uploader'),
+                    autoUpload: true,
+                    debug: false,
+                    multiple: false,
+                    text: {
+                        formatProgress: "{percent}% {{ 'from'|trans }} {total_size}", //из
+                        failUpload: "{{ 'Upload failed'|trans }}", //Сбой при загрузке
+                        waitingForResponse: "{{ 'Processing'|trans }}...", //Обработка
+                        paused: "{{ 'Pause'|trans }}" //Пауза
+                    },
+                    request: {
+                        endpoint: '{{ app.controller_alias }}/get-m3u-data'
+                    },
+                    validation: {
+                        allowedExtensions: ['m3u'],
+                        sizeLimit: 1048576 // 1Mb
+                    },
+                    template: 'qq-template-bootstrap',
+                    classes: {
+                        success: 'alert alert-success',
+                        fail: 'alert alert-error'
+                    }
+
+                }).on('complete', function (event, id, name, response) {
+/*                    $(this).prev('div').children('img').attr('src', response.pic + '?' + $.random(100000)).css('max-width', '100%');
+                    var val = response.pic.split('/');
+                    val = val[val.length - 1];
+                    $(this).prev('div').children('input').val(val);
+                    var imageName = val.split('.');
+                    if (imageName.length > 1) {
+                        imageName.length -= 1;
+                    }
+                    imageName = imageName.join('.');
+                    var postUrl = 'tv-channels/edit-logo?id=' + (typeof (imageName) != 'undefined' && imageName != '' ? imageName : 'new');
+                    $(this).fineUploader('setEndpoint', postUrl);
+
+                    $("#deletelogolink a").data("logo_id", (imageName.search('new') != -1 ? val: imageName));*/
+                    ajaxSuccess(response);
+                    return false;
+                });
+                $("#bootstrapped-fine-uploader").on('click', ".qq-upload-cancel", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    return false;
+                });
+
+                $(document).on('click', "a.main_ajax", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    ajaxPostSend($(this).attr('href'), $(this).data(), false);
+                    $(this).closest('div.open').removeClass('open');
+                    return false;
+                });
+
+                $(document).on('click', "#modalbox button[type='reset'], #modalbox, #modalbox a.close-link, #modalbox a.close-link *", function (e) {
+                    if (e.currentTarget != e.target) {
+                        return;
+                    }
+                    e.stopPropagation();
+                    e.preventDefault();
+                    JScloseModalBox();
+                    return false;
+                });
+
+                $(document).on('click', '#clean_channels', function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    cleanM3UData();
+                    return false;
+                });
+
+                $(document).on('click', '[id^="channel_item_"] button[data-action="delete"]', function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    removeM3UItem($(this).closest("div[id^='channel_item_']"));
+                    return false;
+                });
+
+                $(document).on("click", "[id^='channel_item_'] button[type='submit']", function(e){
+                    saveChannelItem(this);
+                });
+
+                $(document).on("click", "#save_channels", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $("[id^='channel_item_'] button[type='submit']").trigger('click');
+                    return false;
+                });
+
+            });
+        }
+
+        var loadM3UData = function(obj){
+            if (obj.data && obj.data.channels) {//warning_message
+                var auto_fill = obj.data.channels.length;
+                if ( (obj.data.last_channel_number + obj.data.channels.length) >= 9999 ){
+                    var text_message = "{{ 'The maximum number of registered channel'|trans }} - " + obj.data.last_channel_number + ". ";
+                    if (obj.data.free_number_exists) {
+                        var free_number = 9999 - obj.data.last_channel_number;
+                        if ( free_number < auto_fill && free_number > 0) {
+                            auto_fill = free_number;
+                        } else if(free_number <= 0) {
+                            auto_fill = 0
+                        }
+
+                        text_message += "{{ 'But in the channel list exist skipped numbers'|trans }}. ";
+                        text_message += auto_fill + " {{ 'channel numbers filled in automatically'|trans }}. ";
+                        text_message += "{{ 'Rest of numbers must be filled manually'|trans }}.";
+                    } else {
+                        text_message += "{{ 'No available numbers of channels'|trans }}. ";
+                        text_message += "{{ 'To add more channels, you can delete the unwanted channels in the channel list'|trans }}. ";
+                    }
+
+                    $("#warning_message").text(text_message);
+                    $("#warning_message").closest('.row').slideDown("300");
+                }
+                for( var i in obj.data.channels){
+                    var item = $($('#channel-template').html());
+                    item.attr('id', 'channel_item_' + i);
+                    item.find('form').attr('id', 'channel_form_' + i);
+                    item.find('select').attr('id', 'channel_s2_' + i);
+                    i = parseInt(i, 10);
+                    if (obj.data.free_number_exists && i < auto_fill) {
+                        var num =  parseInt(obj.data.last_channel_number, 10) + i + 1;
+                        item.find("input[name='number']").val(num);
+                    }
+
+                    item.find("input[name='name']").val(obj.data.channels[i].name);
+                    item.find("input[name='cmd']").val(obj.data.channels[i].cmd);
+
+                    $('#channels_container').append(item);
+                }
+                $('[id^="channel_s2_"]').select2({minimumResultsForSearch: -1});
+                var n = $('#channels_container').children().length;
+                var i = 0;
+                while ( n-- ){
+                    setTimeout(function(){
+                        var cItem = $('#channels_container').children().filter(':not(:visible)').get(0);
+                        $(cItem).slideDown(100);
+                    }, ((i++) * 250));
+                }
+            }
+        };
+
+        var loadM3UDataError = function(obj){
+            JSErrorModalBox(obj);
+        };
+
+        var cleanM3UData = function(){
+            $('#channels_container').children().each(function(i){
+                var time  = ((i + 1) * 250);
+                var _this = this;
+                setTimeout(function(){
+                    removeM3UItem(_this)
+                }, time);
+            });
+        };
+
+        var removeM3UItem = function(obj){
+            $(obj).slideUp(100, function(){
+                $(this).remove();
+                if ($('#channels_container').children().length == 0) {
+                    $("#warning_message").closest('.row').slideUp("100", function(){ $("#warning_message").text('');} );
+                    $("#bootstrapped-fine-uploader ul.qq-upload-list li").slideUp("100", function(){ $(this).remove() });
+                }
+            });
+        };
+
+        var saveChannelItem = function(obj){
+            var formId = $(obj).closest('form').attr('id');
+            var itemId = $(obj).closest('[id^="channel_item_"]').attr('id');
+            $.validate({
+                form: '#' + formId,
+                onSuccess: function () {
+                    var sendData = { item_id: itemId };
+                    $('#' + formId).find('.own_field:not(.select2-container)').each(function(){
+                        if (this.type && this.type.toLowerCase() == 'checkbox'){
+                            sendData[$(this).attr('name')] = $(this).prop('checked') ? 'on': 'off';
+                        } else {
+                            sendData[$(this).attr('name')] = $(this).val();
+                        }
+                    });
+                    ajaxPostSend("{{ app.controller_alias }}/save-m3u-item", sendData, false, false, true);
+                    return false;
+                }
+            });
+        };
+
+        var saveM3UItem = function(obj){
+            JSSuccessModalBox(obj);
+            removeM3UItem("#"+obj.item_id);
+        };
+
+        var saveM3UItemError = function(obj){
+            JSErrorModalBox(obj);
+            if (!$("#" + obj.item_id).children('div.box-content').hasClass('m3u_item_error')) {
+                $("#" + obj.item_id).children('div.box-content').addClass('m3u_item_error')
+            }
+        };
+
+        document.addEventListener("DOMContentLoaded", yelp, false);
+
+    </script>
+
+    <script type="text/template" id="qq-template-bootstrap">
+        <div class="qq-uploader-selector qq-uploader span12">
+            <div class="qq-upload-drop-area-selector qq-upload-drop-area span12" qq-hide-dropzone>
+                <!--<span>Drop files here to upload</span>-->
+            </div>
+            <div class="qq-upload-button-selector qq-upload-button btn btn-success" style="width: auto; margin: 0 auto; float: none; display: block;">
+                <div><i class="icon-upload icon-white"></i>{{ 'Add a file'|trans }}</div>
+            </div>
+        <span class="qq-drop-processing-selector qq-drop-processing">
+        <!--<span>Processing dropped files...</span>-->
+        <span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
+        </span>
+            <ul class="qq-upload-list-selector qq-upload-list" style="margin-top: 10px; text-align: center;">
+                <li>
+                    <div class="qq-progress-bar-container-selector">
+                        <div class="qq-progress-bar-selector qq-progress-bar"></div>
+                    </div>
+                    <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
+                    <span class="qq-upload-file-selector qq-upload-file"></span>
+                    <span class="qq-upload-size-selector qq-upload-size"></span>
+                    <!--<a class="qq-upload-cancel-selector qq-upload-cancel" href="#"> {{ 'Delete'|trans }} </a>-->
+                    <span class="qq-upload-status-text-selector qq-upload-status-text"></span>
+                </li>
+            </ul>
+        </div>
+    </script>
+
+    <script type="text/template" id="channel-template" >
+        <div class="box" style="display: none;">
+            <div class="box-content">
+                <form>
+                    <div class="row">
+                        <div class="col-xs-1">
+                            <div class="form-group">
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">{{ 'Channel number'|trans }}</span>
+                                </span>
+                                <div class=" col-xs-12">
+                                    <input type="text" name="number" class="form-control own_field" data-validation="required">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-2">
+                            <div class="form-group">
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">{{ 'Channel name'|trans }}</span>
+                                </span>
+                                <input type="text" class="form-control own_field" name="name" data-validation="required">
+                            </div>
+                        </div>
+                        <div class="col-xs-3">
+                            <div class="form-group">
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">{{ 'Streaming links'|trans }}</span>
+                                </span>
+                                <input type="text" class="form-control own_field" name="cmd" data-validation="required">
+                            </div>
+                        </div>
+                        <div class="col-xs-2">
+                            <div class="form-group">
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">{{ 'Genre'|trans }}</span>
+                                </span>
+                                <select class="populate placeholder own_field" name="tv_genre_id" data-validation="required">
+                                    {% if app['allGenres'] %}
+                                        {% for s_item in app.allGenres %}
+                                            <option value="{{ s_item.id }}">{{ s_item.title }}</option>
+                                        {% endfor %}
+                                    {% endif %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xs-1">
+                            <div class="form-group">
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">{{ 'Basic channel'|trans }}</span>
+                                </span>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" value="1" name="base_ch" class="own_field">
+                                        <i class="fa fa-square-o small"></i>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-1">
+                            <div class="form-group">
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">{{ 'Age restriction'|trans }}</span>
+                                </span>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" value="1" name="censored" class="own_field">
+                                        <i class="fa fa-square-o small"></i>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-2">
+                            <div class="form-group pull-left">
+                                <button class="btn btn-success" type="submit"><i class="fa fa-check"></i></button>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-danger " type="button" data-action="delete"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </script>
+
+{% endblock %}

@@ -25,6 +25,11 @@
                 "name": _("Genres"),
                 "alias": "tv-genres",
                 "icon": ""
+            },
+            "5": {
+                "name": _("Import from m3u"),
+                "alias": "m3u-import",
+                "icon": ""
             }
         }
     },

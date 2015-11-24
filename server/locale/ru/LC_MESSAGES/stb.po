@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-18 15:52+0300\n"
-"PO-Revision-Date: 2015-11-18 16:01+0300\n"
+"POT-Creation-Date: 2015-11-23 18:33+0300\n"
+"PO-Revision-Date: 2015-11-23 18:33+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -22,23 +22,23 @@ msgstr ""
 "X-Poedit-SearchPath-2: ../../../../admin/json_menu\n"
 "X-Poedit-SearchPath-3: ../../..\n"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:40
+#: ../../../../admin/src/Controller/TvChannelsController.php:41
 msgid "Yes"
 msgstr "Да"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:41
+#: ../../../../admin/src/Controller/TvChannelsController.php:42
 msgid "No"
 msgstr "Нет"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:44
-#: ../../../../admin/src/Controller/TvChannelsController.php:359
+#: ../../../../admin/src/Controller/TvChannelsController.php:45
+#: ../../../../admin/src/Controller/TvChannelsController.php:369
 #: ../../../../admin/src/Controller/VideoClubController.php:22
 #: ../../../../admin/src/Controller/StoragesController.php:20
 msgid "Published"
 msgstr "Опубликован"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:45
-#: ../../../../admin/src/Controller/TvChannelsController.php:345
+#: ../../../../admin/src/Controller/TvChannelsController.php:46
+#: ../../../../admin/src/Controller/TvChannelsController.php:355
 #: ../../../../admin/src/Controller/VideoClubController.php:21
 #: ../../../../admin/src/Controller/StoragesController.php:19
 #: ../../../../admin/src/Controller/KaraokeController.php:19
@@ -46,86 +46,87 @@ msgstr "Опубликован"
 msgid "Unpublished"
 msgstr "Не опубликован"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:49
+#: ../../../../admin/src/Controller/TvChannelsController.php:50
 #: ../../../../admin/src/Controller/RadioController.php:23
 #: ../../../administrator/add_itv.php:1391
 msgid "monitoring off"
 msgstr "не мониторится"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:50
-#: ../../../../admin/src/Controller/TvChannelsController.php:1760
+#: ../../../../admin/src/Controller/TvChannelsController.php:51
+#: ../../../../admin/src/Controller/TvChannelsController.php:1872
 #: ../../../../admin/src/Controller/RadioController.php:24
 #: ../../../../admin/src/Controller/RadioController.php:385
 msgid "errors occurred"
 msgstr "обнаружены ошибки"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:51
-#: ../../../../admin/src/Controller/TvChannelsController.php:1754
+#: ../../../../admin/src/Controller/TvChannelsController.php:52
+#: ../../../../admin/src/Controller/TvChannelsController.php:1866
 #: ../../../../admin/src/Controller/RadioController.php:25
 #: ../../../../admin/src/Controller/RadioController.php:383
 msgid "no errors"
 msgstr "ошибок нет"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:52
-#: ../../../../admin/src/Controller/TvChannelsController.php:1749
+#: ../../../../admin/src/Controller/TvChannelsController.php:53
+#: ../../../../admin/src/Controller/TvChannelsController.php:1861
 msgid "there are some problems"
 msgstr "есть проблемы"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:316
-#: ../../../../admin/src/Controller/TvChannelsController.php:341
-#: ../../../../admin/src/Controller/TvChannelsController.php:345
+#: ../../../../admin/src/Controller/TvChannelsController.php:326
+#: ../../../../admin/src/Controller/TvChannelsController.php:351
 #: ../../../../admin/src/Controller/TvChannelsController.php:355
-#: ../../../../admin/src/Controller/TvChannelsController.php:359
-#: ../../../../admin/src/Controller/TvChannelsController.php:371
-#: ../../../../admin/src/Controller/TvChannelsController.php:389
+#: ../../../../admin/src/Controller/TvChannelsController.php:365
+#: ../../../../admin/src/Controller/TvChannelsController.php:369
+#: ../../../../admin/src/Controller/TvChannelsController.php:381
+#: ../../../../admin/src/Controller/TvChannelsController.php:399
 msgid "Cannot find channel"
 msgstr "Канал не найден"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:345
+#: ../../../../admin/src/Controller/TvChannelsController.php:355
 msgid "Publish"
 msgstr "Опубликовать"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:359
+#: ../../../../admin/src/Controller/TvChannelsController.php:369
 #: ../../../../admin/src/Controller/VideoClubController.php:1120
 msgid "Unpublish"
 msgstr "Не публиковать"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:412
-#: ../../../../admin/src/Controller/TvChannelsController.php:438
-#: ../../../../admin/src/Controller/TvChannelsController.php:468
-#: ../../../../admin/src/Controller/TvChannelsController.php:505
+#: ../../../../admin/src/Controller/TvChannelsController.php:422
+#: ../../../../admin/src/Controller/TvChannelsController.php:448
+#: ../../../../admin/src/Controller/TvChannelsController.php:478
+#: ../../../../admin/src/Controller/TvChannelsController.php:515
 msgid "The unexpected request"
 msgstr "Неожиданный запрос"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:416
+#: ../../../../admin/src/Controller/TvChannelsController.php:426
 #: ../../../tools/misctranslations.php:585
 msgid "No moved items, nothing to do"
 msgstr "Нет перемещенных элементов, нечего сохранять"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:424
-#: ../../../../admin/src/Controller/TvChannelsController.php:453
+#: ../../../../admin/src/Controller/TvChannelsController.php:434
+#: ../../../../admin/src/Controller/TvChannelsController.php:463
 msgid "Failed to save, update the channel list"
 msgstr "Не удалось сохранить, обновить список каналов"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:745
+#: ../../../../admin/src/Controller/TvChannelsController.php:755
 msgid "Some channels not enough params."
 msgstr "Для некоторых каналов указаны не все обязательные параметры."
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:750
+#: ../../../../admin/src/Controller/TvChannelsController.php:760
 #: ../../../administrator/add_itv.php:90
 msgid "TV Archive has NOT been restarted correctly."
 msgstr "При перезапуска ТВ архива возникли неполадки."
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:752
+#: ../../../../admin/src/Controller/TvChannelsController.php:762
 #: ../../../administrator/add_itv.php:92
 msgid "TV Archive has been restarted."
 msgstr "ТВ архив был успешно перезапущен."
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:817
-#: ../../../../admin/src/Controller/TvChannelsController.php:845
-#: ../../../../admin/src/Controller/TvChannelsController.php:880
-#: ../../../../admin/src/Controller/TvChannelsController.php:906
-#: ../../../../admin/src/Controller/TvChannelsController.php:934
+#: ../../../../admin/src/Controller/TvChannelsController.php:827
+#: ../../../../admin/src/Controller/TvChannelsController.php:855
+#: ../../../../admin/src/Controller/TvChannelsController.php:890
+#: ../../../../admin/src/Controller/TvChannelsController.php:916
+#: ../../../../admin/src/Controller/TvChannelsController.php:944
+#: ../../../../admin/src/Controller/TvChannelsController.php:1041
 #: ../../../../admin/src/Controller/EventsController.php:314
 #: ../../../../admin/src/Controller/EventsController.php:347
 #: ../../../../admin/src/Controller/EventsController.php:381
@@ -245,9 +246,9 @@ msgstr "ТВ архив был успешно перезапущен."
 msgid "Page not found"
 msgstr "Страница не найдена"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:832
-#: ../../../../admin/src/Controller/TvChannelsController.php:867
-#: ../../../../admin/src/Controller/TvChannelsController.php:895
+#: ../../../../admin/src/Controller/TvChannelsController.php:842
+#: ../../../../admin/src/Controller/TvChannelsController.php:877
+#: ../../../../admin/src/Controller/TvChannelsController.php:905
 #: ../../../../admin/src/Controller/UsersController.php:1343
 #: ../../../../admin/src/Controller/UsersController.php:1382
 #: ../../../../admin/src/Controller/AdminsController.php:260
@@ -256,7 +257,7 @@ msgstr "Страница не найдена"
 msgid "Nothing to do"
 msgstr "Нечего сохранять"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:890
+#: ../../../../admin/src/Controller/TvChannelsController.php:900
 #: ../../../../admin/src/Controller/IndexController.php:52
 #: ../../../../admin/src/Controller/IndexController.php:108
 #: ../../../../admin/src/Controller/IndexController.php:166
@@ -269,7 +270,7 @@ msgstr "Нечего сохранять"
 msgid "Failed"
 msgstr "Ошибка"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:943
+#: ../../../../admin/src/Controller/TvChannelsController.php:953
 #: ../../../../admin/src/Controller/EventsController.php:411
 #: ../../../../admin/src/Controller/EventsController.php:534
 #: ../../../../admin/src/Controller/VideoClubController.php:961
@@ -282,12 +283,16 @@ msgstr "Ошибка"
 msgid "Error"
 msgstr "ошибка"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:966
+#: ../../../../admin/src/Controller/TvChannelsController.php:976
 #: ../../../tools/misctranslations.php:550 ../../../adm/js/js_translate.php:40
 msgid "Done"
 msgstr "Готово"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1447
+#: ../../../../admin/src/Controller/TvChannelsController.php:1004
+msgid "Upload failed"
+msgstr "Сбой при загрузке"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1559
 #: ../../../../admin/src/Controller/EventsController.php:815
 #: ../../../../admin/src/Controller/EventsController.php:841
 #: ../../../../admin/src/Controller/EventsController.php:859
@@ -297,8 +302,8 @@ msgstr "Готово"
 msgid "ID"
 msgstr "ID"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1448
-#: ../../../../admin/src/Controller/TvChannelsController.php:1540
+#: ../../../../admin/src/Controller/TvChannelsController.php:1560
+#: ../../../../admin/src/Controller/TvChannelsController.php:1652
 #: ../../../../admin/src/Controller/VideoClubController.php:2276
 #: ../../../administrator/other_city_info.php:151
 #: ../../../administrator/other_city_info.php:214
@@ -315,13 +320,13 @@ msgstr "ID"
 msgid "Number"
 msgstr "Номер"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1449
+#: ../../../../admin/src/Controller/TvChannelsController.php:1561
 #: ../../../administrator/add_itv.php:1772
 msgid "Logo"
 msgstr "Логотип"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1450
-#: ../../../../admin/src/Controller/TvChannelsController.php:1541
+#: ../../../../admin/src/Controller/TvChannelsController.php:1562
+#: ../../../../admin/src/Controller/TvChannelsController.php:1653
 #: ../../../../admin/src/Controller/EventsController.php:816
 #: ../../../../admin/src/Controller/VideoClubController.php:2277
 #: ../../../../admin/src/Controller/VideoClubController.php:2285
@@ -351,7 +356,7 @@ msgstr "Логотип"
 msgid "Title"
 msgstr "Название"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1451
+#: ../../../../admin/src/Controller/TvChannelsController.php:1563
 #: ../../../administrator/audio_album.php:425
 #: ../../../administrator/add_itv.php:1074
 #: ../../../administrator/add_itv.php:1556
@@ -365,13 +370,13 @@ msgstr "Название"
 msgid "Genre"
 msgstr "Жанр"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1452
+#: ../../../../admin/src/Controller/TvChannelsController.php:1564
 #: ../../../tools/misctranslations.php:553
 #: ../../../administrator/add_itv.php:1075
 msgid "Archive"
 msgstr "Архив"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1453
+#: ../../../../admin/src/Controller/TvChannelsController.php:1565
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:399
 #: ../../../administrator/add_itv.php:1072
 #: ../../../administrator/audio_track.php:246
@@ -381,12 +386,12 @@ msgstr "Архив"
 msgid "URL"
 msgstr "URL"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1454
+#: ../../../../admin/src/Controller/TvChannelsController.php:1566
 #: ../../../../admin/src/Controller/RadioController.php:362
 msgid "Monitoring status"
 msgstr "Статус мониторинга"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1455
+#: ../../../../admin/src/Controller/TvChannelsController.php:1567
 #: ../../../../admin/src/Controller/VideoClubController.php:2323
 #: ../../../../admin/src/Controller/VideoClubController.php:2344
 #: ../../../../admin/src/Controller/UsersController.php:1995
@@ -396,7 +401,7 @@ msgstr "Статус мониторинга"
 msgid "Status"
 msgstr "Статус"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1456
+#: ../../../../admin/src/Controller/TvChannelsController.php:1568
 #: ../../../../admin/src/Controller/EventsController.php:820
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:402
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:412
@@ -407,14 +412,14 @@ msgstr "Статус"
 msgid "Operations"
 msgstr "Действия"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1542
+#: ../../../../admin/src/Controller/TvChannelsController.php:1654
 #: ../../../../admin/src/Controller/VideoClubController.php:2278
 #: ../../../../admin/src/Controller/VideoClubController.php:2286
 #: ../../../tools/misctranslations.php:593
 msgid "Localized title"
 msgstr "Переведенное название"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1543
+#: ../../../../admin/src/Controller/TvChannelsController.php:1655
 #: ../../../../admin/src/Controller/VideoClubController.php:2279
 #: ../../../../admin/src/Controller/VideoClubController.php:2288
 #: ../../../../admin/src/Controller/VideoClubController.php:2324
@@ -578,8 +583,8 @@ msgstr "Окончание"
 
 #: ../../../../admin/src/Controller/EventsController.php:866
 #: ../../../administrator/add_video.php:620
-#: ../../../../admin/json_menu/menu.json:43
-#: ../../../../admin/json_menu/menu.json:199
+#: ../../../../admin/json_menu/menu.json:48
+#: ../../../../admin/json_menu/menu.json:204
 msgid "Schedule"
 msgstr "Расписание"
 
@@ -605,7 +610,7 @@ msgstr "Запланированно"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:94
 #: ../../../../admin/src/Controller/VideoClubController.php:135
-#: ../../../../admin/json_menu/menu.json:38
+#: ../../../../admin/json_menu/menu.json:43
 msgid "Movie list"
 msgstr "Список фильмов"
 
@@ -621,7 +626,7 @@ msgstr "Редактировать фильм"
 #: ../../../../admin/src/Controller/VideoClubController.php:229
 #: ../../../../admin/src/Controller/VideoClubController.php:2322
 #: ../../../administrator/add_video.php:620
-#: ../../../../admin/json_menu/menu.json:48
+#: ../../../../admin/json_menu/menu.json:53
 msgid "Advertising"
 msgstr "Реклама"
 
@@ -635,7 +640,7 @@ msgstr "Редактировать рекламу"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:267
 #: ../../../../admin/src/Controller/VideoClubController.php:295
-#: ../../../../admin/json_menu/menu.json:53
+#: ../../../../admin/json_menu/menu.json:58
 msgid "Moderators"
 msgstr "Модераторы"
 
@@ -867,7 +872,7 @@ msgstr "Дата релиза"
 #: ../../../../admin/src/Controller/AudioClubController.php:87
 #: ../../../../admin/src/Controller/AudioClubController.php:129
 #: ../../../lib/audioclub.class.php:15 ../../../lang/stb.php:548
-#: ../../../../admin/json_menu/menu.json:81
+#: ../../../../admin/json_menu/menu.json:86
 msgid "Albums"
 msgstr "Альбомы"
 
@@ -894,7 +899,7 @@ msgstr "караоке"
 
 #: ../../../../admin/src/Controller/TasksController.php:196
 #: ../../../../admin/src/Controller/TasksController.php:263
-#: ../../../../admin/json_menu/menu.json:240
+#: ../../../../admin/json_menu/menu.json:245
 msgid "Tasks list"
 msgstr "Список заданий"
 
@@ -932,12 +937,12 @@ msgstr "Отчет по измененным статусам приставок
 
 #: ../../../../admin/src/Controller/UsersController.php:351
 #: ../../../../admin/src/Controller/UsersController.php:421
-#: ../../../../admin/json_menu/menu.json:153
+#: ../../../../admin/json_menu/menu.json:158
 msgid "Users list"
 msgstr "Список пользователей"
 
 #: ../../../../admin/src/Controller/UsersController.php:447
-#: ../../../../admin/json_menu/menu.json:163
+#: ../../../../admin/json_menu/menu.json:168
 msgid "User groups"
 msgstr "Группы пользователей"
 
@@ -1081,7 +1086,7 @@ msgstr "Пользователь неопределен"
 
 #: ../../../../admin/src/Controller/TariffsController.php:94
 #: ../../../../admin/src/Controller/TariffsController.php:144
-#: ../../../../admin/json_menu/menu.json:130
+#: ../../../../admin/json_menu/menu.json:135
 msgid "Service packages"
 msgstr "Пакеты услуг"
 
@@ -1095,7 +1100,7 @@ msgstr "Редактировать пакет"
 
 #: ../../../../admin/src/Controller/TariffsController.php:180
 #: ../../../../admin/src/Controller/TariffsController.php:226
-#: ../../../../admin/json_menu/menu.json:135
+#: ../../../../admin/json_menu/menu.json:140
 msgid "Tariff plans"
 msgstr "Тарифные планы"
 
@@ -1104,7 +1109,7 @@ msgid "ID already used"
 msgstr "ID уже используется"
 
 #: ../../../../admin/src/Controller/AdminsController.php:108
-#: ../../../../admin/json_menu/menu.json:222
+#: ../../../../admin/json_menu/menu.json:227
 msgid "Groups"
 msgstr "Группы"
 
@@ -1908,7 +1913,7 @@ msgid "View and edit permissions of the current group"
 msgstr "Просмотр и редактирование прав текущей группы"
 
 #: ../../../tools/misctranslations.php:258
-#: ../../../../admin/json_menu/menu.json:75
+#: ../../../../admin/json_menu/menu.json:80
 msgid "Audio club"
 msgstr "Аудио клуб"
 
@@ -2080,7 +2085,7 @@ msgstr "Сообщения"
 #: ../../../tools/misctranslations.php:301
 #: ../../../tools/misctranslations.php:429 ../../../administrator/tasks.php:59
 #: ../../../administrator/tasks.php:65
-#: ../../../../admin/json_menu/menu.json:234
+#: ../../../../admin/json_menu/menu.json:239
 #: ../../../../admin/json_menu/top_menu.json:10
 msgid "Tasks"
 msgstr "Задания"
@@ -2088,7 +2093,7 @@ msgstr "Задания"
 #: ../../../tools/misctranslations.php:302
 #: ../../../tools/misctranslations.php:362
 #: ../../../administrator/index.php:477
-#: ../../../../admin/json_menu/menu.json:359
+#: ../../../../admin/json_menu/menu.json:364
 msgid "Settings"
 msgstr "Настройки"
 
@@ -2177,7 +2182,7 @@ msgid "Info portal"
 msgstr "Инфопортал"
 
 #: ../../../tools/misctranslations.php:327
-#: ../../../../admin/json_menu/menu.json:258
+#: ../../../../admin/json_menu/menu.json:263
 msgid "Phone book"
 msgstr "Телефонный справочник"
 
@@ -2209,7 +2214,7 @@ msgstr "Удаление анекдотов"
 #: ../../../administrator/userlog.php:263
 #: ../../../administrator/stat_moderators.php:237
 #: ../../../administrator/users.php:164
-#: ../../../../admin/json_menu/menu.json:108
+#: ../../../../admin/json_menu/menu.json:113
 msgid "Karaoke"
 msgstr "Караоке"
 
@@ -2321,7 +2326,7 @@ msgid "Setting the skin"
 msgstr "Установка скина"
 
 #: ../../../tools/misctranslations.php:372
-#: ../../../../admin/json_menu/menu.json:370
+#: ../../../../admin/json_menu/menu.json:375
 msgid "Firmware update"
 msgstr "Обновление прошивки"
 
@@ -2343,7 +2348,7 @@ msgstr "Изменить состояние вкл/выкл обновление
 
 #: ../../../tools/misctranslations.php:378
 #: ../../../administrator/index.php:432
-#: ../../../../admin/json_menu/menu.json:270
+#: ../../../../admin/json_menu/menu.json:275
 msgid "Statistics"
 msgstr "Статистика"
 
@@ -2396,7 +2401,7 @@ msgid "Subscriber statistics by page + filters"
 msgstr "Абонентская статистика по-странично + фильтры"
 
 #: ../../../tools/misctranslations.php:391
-#: ../../../../admin/json_menu/menu.json:306
+#: ../../../../admin/json_menu/menu.json:311
 msgid "Inactive subscribers"
 msgstr "Неактивные абоненты"
 
@@ -2477,7 +2482,7 @@ msgid "Logs of storages by page + filters"
 msgstr "Логи хранилищ по-странично + фильтры"
 
 #: ../../../tools/misctranslations.php:413
-#: ../../../../admin/json_menu/menu.json:124
+#: ../../../../admin/json_menu/menu.json:129
 msgid "Tariffs"
 msgstr "Тарифы"
 
@@ -2568,8 +2573,8 @@ msgid "Sending messages, change status karaoke-task"
 msgstr "Отправка сообщений, изменение состояния кароаке-задания"
 
 #: ../../../tools/misctranslations.php:437 ../../../administrator/users.php:99
-#: ../../../../admin/json_menu/menu.json:173
-#: ../../../../admin/json_menu/menu.json:245
+#: ../../../../admin/json_menu/menu.json:178
+#: ../../../../admin/json_menu/menu.json:250
 msgid "Report"
 msgstr "Отчет"
 
@@ -2639,7 +2644,7 @@ msgstr "Просмотр и редактирование EPG канала"
 
 #: ../../../tools/misctranslations.php:455 ../../../administrator/users.php:88
 #: ../../../administrator/users.php:94 ../../../administrator/index.php:140
-#: ../../../../admin/json_menu/menu.json:147
+#: ../../../../admin/json_menu/menu.json:152
 msgid "Users"
 msgstr "Пользователи"
 
@@ -2736,7 +2741,7 @@ msgid "Report on changing of state STB by page + filters"
 msgstr "Отчет по изменению состояния приставок по-странично + фильтры"
 
 #: ../../../tools/misctranslations.php:480
-#: ../../../../admin/json_menu/menu.json:32
+#: ../../../../admin/json_menu/menu.json:37
 msgid "Video club"
 msgstr "Видео клуб"
 
@@ -3119,7 +3124,7 @@ msgid "events"
 msgstr "событий"
 
 #: ../../../tools/misctranslations.php:578
-#: ../../../../admin/json_menu/menu.json:194
+#: ../../../../admin/json_menu/menu.json:199
 msgid "Users events"
 msgstr "События пользователей"
 
@@ -4360,6 +4365,34 @@ msgstr "Список приставок по-странично + фильтры
 msgid "Application version"
 msgstr "Версия приложения"
 
+#: ../../../tools/misctranslations.php:909
+msgid "Import tv-channels from m3u-file"
+msgstr "Импорт телеканалов из m3u-файла"
+
+#: ../../../tools/misctranslations.php:910
+msgid "Parse m3u-file"
+msgstr "Разбор m3u-файла"
+
+#: ../../../tools/misctranslations.php:911
+msgid "Save one m3u-item as channel"
+msgstr "Сохранить один m3u-элемент как канал"
+
+#: ../../../tools/misctranslations.php:912
+msgid "Field \"Channel name\" cannot be empty"
+msgstr "Поле \"Название канала\" не может быть пустым"
+
+#: ../../../tools/misctranslations.php:913
+msgid "Field \"Channel number\" cannot be empty"
+msgstr "Поле \"Номер канала\" не может быть пустым"
+
+#: ../../../tools/misctranslations.php:914
+msgid "Number \"%number%\" is already in use"
+msgstr "Номер \"%number%\" уже используется"
+
+#: ../../../tools/misctranslations.php:915
+msgid "Name \"%name%\" already exists"
+msgstr "Имя \"%name%\" уже существует"
+
 #: ../../../adm/js/js_translate.php:38
 msgid "Wait"
 msgstr "Ожидайте"
@@ -4873,7 +4906,7 @@ msgid "Radio-channel %s set to inactive because its URL are not available."
 msgstr ""
 
 #: ../../../lib/audioclub.class.php:19
-#: ../../../../admin/json_menu/menu.json:86
+#: ../../../../admin/json_menu/menu.json:91
 msgid "Artists"
 msgstr "Исполнители"
 
@@ -4886,14 +4919,14 @@ msgstr "Плейлисты"
 #: ../../../administrator/audio_album.php:393
 #: ../../../administrator/audio_album.php:511
 #: ../../../../admin/json_menu/menu.json:25
-#: ../../../../admin/json_menu/menu.json:68
-#: ../../../../admin/json_menu/menu.json:91
+#: ../../../../admin/json_menu/menu.json:73
+#: ../../../../admin/json_menu/menu.json:96
 msgid "Genres"
 msgstr "Жанры"
 
 #: ../../../lib/audioclub.class.php:31
 #: ../../../administrator/audio_album.php:394
-#: ../../../../admin/json_menu/menu.json:101
+#: ../../../../admin/json_menu/menu.json:106
 msgid "Years"
 msgstr "Года"
 
@@ -5459,7 +5492,7 @@ msgid "Audio"
 msgstr "Аудио"
 
 #: ../../../administrator/userlog.php:290 ../../../administrator/users.php:166
-#: ../../../../admin/json_menu/menu.json:116
+#: ../../../../admin/json_menu/menu.json:121
 msgid "Radio"
 msgstr "Радио"
 
@@ -5685,7 +5718,7 @@ msgstr "поиск по названию"
 #: ../../../administrator/stat_moderators.php:59
 #: ../../../administrator/stat_moderators.php:65
 #: ../../../administrator/index.php:460
-#: ../../../../admin/json_menu/menu.json:296
+#: ../../../../admin/json_menu/menu.json:301
 msgid "Moderators statistics"
 msgstr "Статистика Модераторов"
 
@@ -5796,7 +5829,7 @@ msgstr "Отсутствует файл со списком"
 
 #: ../../../administrator/events.php:241 ../../../administrator/events.php:247
 #: ../../../administrator/profile.php:349 ../../../administrator/index.php:146
-#: ../../../../admin/json_menu/menu.json:188
+#: ../../../../admin/json_menu/menu.json:193
 msgid "Events"
 msgstr "События"
 
@@ -6156,7 +6189,7 @@ msgid "AUDIO TRACKS"
 msgstr "АУДИО ТРЕКИ"
 
 #: ../../../administrator/audio_track.php:215
-#: ../../../../admin/json_menu/menu.json:96
+#: ../../../../admin/json_menu/menu.json:101
 msgid "Languages"
 msgstr "Языки"
 
@@ -6330,8 +6363,8 @@ msgstr "Профиль пользователя"
 
 #: ../../../administrator/profile.php:349
 #: ../../../administrator/storages.php:223
-#: ../../../../admin/json_menu/menu.json:168
-#: ../../../../admin/json_menu/menu.json:334
+#: ../../../../admin/json_menu/menu.json:173
+#: ../../../../admin/json_menu/menu.json:339
 msgid "Logs"
 msgstr "Логи"
 
@@ -7008,7 +7041,7 @@ msgstr "АУДИО КЛУБ"
 #: ../../../administrator/index.php:152
 #: ../../../administrator/administrators.php:98
 #: ../../../administrator/administrators.php:141
-#: ../../../../admin/json_menu/menu.json:211
+#: ../../../../admin/json_menu/menu.json:216
 msgid "Administrators"
 msgstr "Администраторы"
 
@@ -7086,7 +7119,7 @@ msgid "Users statistics for TV"
 msgstr "Абонентская статистика по ТВ"
 
 #: ../../../administrator/index.php:442
-#: ../../../../admin/json_menu/menu.json:281
+#: ../../../../admin/json_menu/menu.json:286
 msgid "TV statistics"
 msgstr "Статистика ТВ"
 
@@ -7103,7 +7136,7 @@ msgid "Users statistics for Jokes"
 msgstr "Абонентская статистика по Анекдотам"
 
 #: ../../../administrator/index.php:454
-#: ../../../../admin/json_menu/menu.json:291
+#: ../../../../admin/json_menu/menu.json:296
 msgid "TimeShift statistics"
 msgstr "Статистика TimeShift"
 
@@ -8745,7 +8778,7 @@ msgid "You can configure DVB channels in the settings menu"
 msgstr "Вы можете настроить DVB каналы в меню настроек"
 
 #: ../../../lang/stb.php:530
-#: ../../../../admin/json_menu/menu.json:180
+#: ../../../../admin/json_menu/menu.json:185
 msgid "Applications"
 msgstr "Приложения"
 
@@ -8977,7 +9010,7 @@ msgstr ""
 msgid "Reseller name"
 msgstr "Имя реселлера"
 
-#: ../../../../admin/json_menu/menu.json:227
+#: ../../../../admin/json_menu/menu.json:232
 msgid "Resellers"
 msgstr "Реселлеры"
 
@@ -8987,11 +9020,11 @@ msgstr "Ошибка сети или доступ запрещен"
 msgid "Some server error"
 msgstr "Ошибка сервера"
 
-#: ../../../../admin/json_menu/menu.json:318
+#: ../../../../admin/json_menu/menu.json:323
 msgid "Storage"
 msgstr "Хранилище"
 
-#: ../../../../admin/json_menu/menu.json:140
+#: ../../../../admin/json_menu/menu.json:145
 msgid "Subscribe log"
 msgstr "Лог подписок"
 
@@ -9043,7 +9076,7 @@ msgstr "разрешения для администраторов группы"
 msgid "Access denied for this page"
 msgstr "Доступ к этой странице запрещен"
 
-#: ../../../../admin/json_menu/menu.json:58
+#: ../../../../admin/json_menu/menu.json:63
 msgid "Activity log"
 msgstr "История"
 
@@ -9226,9 +9259,6 @@ msgstr "Задание"
 msgid "Update"
 msgstr "Обновить"
 
-msgid "Upload failed"
-msgstr "Сбой при загрузке"
-
 msgid "Video title"
 msgstr "Название видео"
 
@@ -9379,7 +9409,7 @@ msgstr "Очистить жалобы"
 msgid "Complaints log"
 msgstr "Лог жалоб"
 
-#: ../../../../admin/json_menu/menu.json:311
+#: ../../../../admin/json_menu/menu.json:316
 msgid "Complaints statistics"
 msgstr "Статистика жалоб"
 
@@ -9650,7 +9680,7 @@ msgstr ""
 msgid "Streaming links"
 msgstr "Ссылки для вещания"
 
-#: ../../../../admin/json_menu/menu.json:341
+#: ../../../../admin/json_menu/menu.json:346
 msgid "Streaming servers"
 msgstr "Сервера вещания"
 
@@ -9677,7 +9707,7 @@ msgstr "Адрес для записи ТВ архива"
 msgid "TV archive length"
 msgstr "Длительность ТВ архива"
 
-#: ../../../../admin/json_menu/menu.json:286
+#: ../../../../admin/json_menu/menu.json:291
 msgid "TV archive statistics"
 msgstr "Статистика ТВ архива"
 
@@ -10142,6 +10172,9 @@ msgstr "зон для"
 msgid "Access"
 msgstr "Доступ"
 
+msgid "Add a file"
+msgstr "Добавить файл"
+
 msgid "Add album"
 msgstr "Добавить альбом"
 
@@ -10160,8 +10193,14 @@ msgstr "Ошибка: необходимо заполнить все поля"
 msgid "Auto-update within 59 seconds"
 msgstr "Авто-обновление через 59 секунд"
 
+msgid "But in the channel list exist skipped numbers"
+msgstr "Но в списке каналов существуют пропущенные номера"
+
 msgid "Category of content to which this package is belongs"
 msgstr "Категория контента, к которому этот пакет принадлежит"
+
+msgid "Clean channels"
+msgstr "Очистить каналы"
 
 msgid "Dashboard"
 msgstr "Главная"
@@ -10187,15 +10226,15 @@ msgstr "Полный пакет"
 msgid "Gives access to all content of the selected service"
 msgstr "Предоставляет полный доступ ко всему контенту выбранной услуги"
 
-#: ../../../../admin/json_menu/menu.json:252
+#: ../../../../admin/json_menu/menu.json:257
 msgid "Information portal"
 msgstr "Инфопортал"
 
 msgid "Mainpage"
 msgstr "Главная"
 
-msgid "Manage EPG"
-msgstr "Добавить EPG"
+msgid "No available numbers of channels"
+msgstr "Нет свободных номеров каналов"
 
 msgid "Number of sessions"
 msgstr "Количество сессий"
@@ -10224,6 +10263,9 @@ msgstr "Опубликовать сейчас"
 msgid "Remove schedule"
 msgstr "Удалить"
 
+msgid "Rest of numbers must be filled manually"
+msgstr "Оставшиеся номера необходимо заполнить вручную"
+
 msgid ""
 "STB of moderators  allow to show unpublished video and optionally skipping "
 "advertising"
@@ -10231,14 +10273,14 @@ msgstr ""
 "Приставки модераторов позволяют показывать неопубликованное видео и "
 "опционально пропускают рекламу"
 
+msgid "Save channels"
+msgstr "Сохранить каналы"
+
 msgid "Schedule switch on"
 msgstr "Расписание включения"
 
 msgid "Server name"
 msgstr "Имя сервера"
-
-msgid "Show EPG"
-msgstr "Показать EPG"
 
 msgid "Start it"
 msgstr "Запустить"
@@ -10267,8 +10309,18 @@ msgstr "Включен"
 msgid "The duration of the specified service hours"
 msgstr "Длительность действия указанной услуги в часах"
 
+msgid "The maximum number of registered channel"
+msgstr "Максимальный номер зарегистрированного канала"
+
 msgid "Timeshift"
 msgstr "Timeshift"
+
+msgid ""
+"To add more channels, you can delete the unwanted channels in the channel "
+"list"
+msgstr ""
+"Для добавления новых каналов вы можете удалить ненужные каналы в списке "
+"каналов"
 
 msgid "Total sessions"
 msgstr "Всего сессий"
@@ -10282,9 +10334,6 @@ msgid ""
 msgstr ""
 "Тип доступа к услуге: постоянный или разовый - с указанным сроком и ценой "
 "аренды"
-
-msgid "Unublish"
-msgstr "Не опубликовать"
 
 msgid "User's language"
 msgstr "Язык пользователя"
@@ -10303,8 +10352,8 @@ msgstr "список альбомов"
 msgid "all"
 msgstr "все"
 
-msgid "channels list"
-msgstr "список каналов"
+msgid "channel numbers filled in automatically"
+msgstr "номеров каналов заполнены автоматически"
 
 msgid "list of scheduled events "
 msgstr "cписок запланированных событий"
@@ -10339,7 +10388,7 @@ msgstr "Принудительно обновить EPG"
 msgid "Force update of EPG - complete EPG update for all channels"
 msgstr "Принудительно обновить EPG - полностью обновляет EPG для всех каналов."
 
-#: ../../../../admin/json_menu/menu.json:263
+#: ../../../../admin/json_menu/menu.json:268
 msgid "Humor"
 msgstr "Юмор"
 
@@ -10357,6 +10406,9 @@ msgstr ""
 msgid "Languages by priority"
 msgstr "Языки по приоритету"
 
+msgid "Manage EPG"
+msgstr "Добавить EPG"
+
 msgid "Max count of languages 5"
 msgstr "Макс кол-во языков 5"
 
@@ -10370,7 +10422,10 @@ msgstr ""
 "Префикс нужен для определения источника EPG в ситуации, когда данный XNLTV "
 "ID присутствует в нескольких источниках"
 
-#: ../../../../admin/json_menu/menu.json:301
+msgid "Show EPG"
+msgstr "Показать EPG"
+
+#: ../../../../admin/json_menu/menu.json:306
 msgid "Subscribers statistic"
 msgstr "Статистика абонентов"
 
@@ -10383,6 +10438,9 @@ msgid ""
 msgstr ""
 "Название зоны. Можно использовать буквы, цифры и символы из списка: ! @ # $ "
 "% ^ & * ( ) _ - + : ; , ."
+
+msgid "Unublish"
+msgstr "Не опубликовать"
 
 msgid "Update EPG – consider only the new/last changes"
 msgstr "Обновить EPG - учитывает только новые/последние изменения"
@@ -10401,6 +10459,9 @@ msgstr "Просмотром считается проигрывание кан�
 
 msgid "add area"
 msgstr "добавить зону"
+
+msgid "channels list"
+msgstr "список каналов"
 
 msgid "edit area"
 msgstr "редактировать зону"
@@ -10476,43 +10537,47 @@ msgstr "Дата начала события"
 msgid "Channels"
 msgstr "Каналы"
 
-#: ../../../../admin/json_menu/menu.json:63
+#: ../../../../admin/json_menu/menu.json:30
+msgid "Import from m3u"
+msgstr "Импорт из m3u"
+
+#: ../../../../admin/json_menu/menu.json:68
 msgid "Categories"
 msgstr "Категории"
 
-#: ../../../../admin/json_menu/menu.json:158
+#: ../../../../admin/json_menu/menu.json:163
 msgid "Filters"
 msgstr "Фильтры"
 
-#: ../../../../admin/json_menu/menu.json:204
+#: ../../../../admin/json_menu/menu.json:209
 msgid "Templates of messages"
 msgstr "Шаблоны сообщений"
 
-#: ../../../../admin/json_menu/menu.json:217
+#: ../../../../admin/json_menu/menu.json:222
 msgid "Administrators list"
 msgstr "Список администраторов"
 
-#: ../../../../admin/json_menu/menu.json:276
+#: ../../../../admin/json_menu/menu.json:281
 msgid "Movie statistics"
 msgstr "Статистика видео"
 
-#: ../../../../admin/json_menu/menu.json:324
+#: ../../../../admin/json_menu/menu.json:329
 msgid "Storage list"
 msgstr "Список хранилищ"
 
-#: ../../../../admin/json_menu/menu.json:329
+#: ../../../../admin/json_menu/menu.json:334
 msgid "Video search"
 msgstr "Поиск видео"
 
-#: ../../../../admin/json_menu/menu.json:347
+#: ../../../../admin/json_menu/menu.json:352
 msgid "Servers list"
 msgstr "Список серверов"
 
-#: ../../../../admin/json_menu/menu.json:352
+#: ../../../../admin/json_menu/menu.json:357
 msgid "Streaming areas"
 msgstr "Зоны вещания"
 
-#: ../../../../admin/json_menu/menu.json:365
+#: ../../../../admin/json_menu/menu.json:370
 msgid "Appearance"
 msgstr "Внешний вид"
 

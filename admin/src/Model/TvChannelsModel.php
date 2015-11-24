@@ -421,4 +421,10 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
                 ->first('empty_number');
         }
     }
+
+    public function getLastChannelNumber() {
+        return $this->mysqlInstance
+            ->query("SELECT max(`itv`.`number`) as `last_number` FROM `itv`")
+            ->first('last_number');
+    }
 }
