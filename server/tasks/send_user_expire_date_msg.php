@@ -2,7 +2,11 @@
 
 include "./common.php";
 
-if (Config::getSafe('enable_internal_billing', false) && Config::getSafe('number_of_days_to_send_message', false) !== FALSE){
+
+$enable_internal_billing = Config::getSafe('enable_internal_billing', false);
+$end_billing_interval = Config::getSafe('number_of_days_to_send_message', false);
+
+if (!empty($enable_internal_billing) && !empty($end_billing_interval) && is_numeric($end_billing_interval)){
 
     $locales = array();
 
@@ -13,15 +17,13 @@ if (Config::getSafe('enable_internal_billing', false) && Config::getSafe('number
     textdomain('stb');
     bind_textdomain_codeset('stb', 'UTF-8');
 
-    $end_billing_interval = Config::getSafe('number_of_days_to_send_message', false);
-
     $users = Mysql::getInstance()->select(array(
         'id',
         '(TO_DAYS(`expire_billing_date`) - TO_DAYS(NOW())) as `end_billing_days`',
         'locale'
     ))->from("`users`")
         ->where(array(
-            "(TO_DAYS(`expire_billing_date`) - TO_DAYS(NOW())) <= $end_billing_interval AND CAST(`expire_billing_date` AS CHAR) <> '0000-00-00 00:00:00' AND 1=" => 1,
+            "(TO_DAYS(`expire_billing_date`) - TO_DAYS(NOW())) <= '$end_billing_interval' AND CAST(`expire_billing_date` AS CHAR) <> '0000-00-00 00:00:00' AND 1=" => 1,
             'status'=>0))
         ->get()->all();
 

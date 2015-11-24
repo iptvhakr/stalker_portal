@@ -236,12 +236,13 @@
                                     _this.text(data.action);
                                     _this.attr('href', _this.attr('href').replace(data.urlactfrom, data.urlactto))
                                 }
+                                JSSuccessModalBox(data);
                             } else {
-                                alert("{{ 'Some server error'|trans }}");
+                                JSErrorModalBox(data);
                             }
                         },
-                        error: function () {
-                            alert("{{ 'Some network error or access denied'|trans }}");
+                        error: function (data) {
+                            JSErrorModalBox((data.responseJSON ? data.responseJSON: {msg : "{{ 'Some network error or access denied'|trans }}"}));
                         },
                         dataType: "json",
                         async: false
