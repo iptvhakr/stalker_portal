@@ -296,6 +296,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                 $allChannels[$num]['logo'] = $this->getLogoUriById(FALSE, $row, 120);
                 $allChannels[$num]['genres_name'] = $this->mb_ucfirst($allChannels[$num]['genres_name']);
                 $allChannels[$num]['enable_tv_archive'] = (int) $allChannels[$num]['enable_tv_archive'];
+                $allChannels[$num]['status'] = (int) $allChannels[$num]['status'];
                 if (($monitoring_status = $this->getMonitoringStatus($row)) !== FALSE) {
                     $allChannels[$num]['monitoring_status'] = $monitoring_status;
                     $response["data"][] = $allChannels[$num];
@@ -352,7 +353,19 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         }
 
         $rows = $this->db->changeChannelStatus($this->data['id'], 0);
-        $response = $this->generateAjaxResponse(array('rows' => $rows, 'action' => $this->setLocalization('Publish'), 'status' => $this->setLocalization('Unpublished'), 'urlactfrom' => 'disable', 'urlactto' => 'enable'), ($rows) ? '' : $this->setLocalization('Cannot find channel'));
+
+        $data = array(
+            'rows' => $rows,
+            'action' => $this->setLocalization('Publish'),
+            'status' => $this->setLocalization('Unpublished'),
+            'urlactfrom' => 'disable',
+            'urlactto' => 'enable');
+        $error = '';
+        if (empty($rows)) {
+            $data['msg'] = $error = $this->setLocalization('Nothing to do');
+        }
+
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -366,7 +379,21 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         }
 
         $rows = $this->db->changeChannelStatus($this->data['id'], 1);
-        $response = $this->generateAjaxResponse(array('rows' => $rows, 'action' => $this->setLocalization('Unpublish'), 'status' => $this->setLocalization('Published'), 'urlactfrom' => 'enable', 'urlactto' => 'disable'), ($rows) ? '' : $this->setLocalization('Cannot find channel'));
+
+        $data = array(
+            'rows' => $rows,
+            'action' => $this->setLocalization('Unpublish'),
+            'status' => $this->setLocalization('Published'),
+            'urlactfrom' => 'enable',
+            'urlactto' => 'disable'
+        );
+
+        $error = '';
+        if (empty($rows)) {
+            $data['msg'] = $error = $this->setLocalization('Nothing to do');
+        }
+
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
