@@ -47,7 +47,7 @@ class AuthAccessHandler extends AccessHandler
             return false;
         }
 
-        if (!$user || !empty($username) && !empty($password) && \Config::exist('auth_url')){
+        if (!$user || !empty($username) && !empty($password) && \Config::getSafe('oss_url', '')){
             $user = \User::authorizeFromOss($username, $password, $mac);
         }
 
