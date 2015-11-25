@@ -144,6 +144,7 @@ h3{
                         <select name="stb_type" class="stb-type">
                             <option value="MAG200" {{if stb_type==="MAG200"}}selected{{/if}} >MAG200</option>
                             <option value="MAG245" {{if stb_type==="MAG245"}}selected{{/if}} >MAG245</option>
+                            <option value="MAG245D" {{if stb_type==="MAG245D"}}selected{{/if}} >MAG245D</option>
                             <option value="MAG250" {{if stb_type==="MAG250"}}selected{{/if}} >MAG250</option>
                             <option value="MAG254" {{if stb_type==="MAG254"}}selected{{/if}} >MAG254</option>
                             <option value="MAG255" {{if stb_type==="MAG255"}}selected{{/if}} >MAG255</option>

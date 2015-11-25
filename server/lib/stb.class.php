@@ -675,11 +675,11 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $profile['allowed_stb_types']      = array_map(function($item){
             return strtolower(trim($item));
-        },explode(',', Config::getSafe('allowed_stb_types', 'MAG200,MAG245,MAG250,MAG254,MAG255,MAG260,MAG270,MAG275,AuraHD,WR320,IP_STB_HD')));
+        },explode(',', Config::getSafe('allowed_stb_types', 'MAG200,MAG245,MAG245D,MAG250,MAG254,MAG255,MAG260,MAG270,MAG275,AuraHD,WR320,IP_STB_HD')));
 
         $profile['allowed_stb_types_for_local_recording'] = array_map(function($item){
             return strtolower(trim($item));
-        },explode(',', Config::getSafe('allowed_stb_types_for_local_recording', 'MAG245,MAG250,MAG254,MAG255,MAG260,MAG270,MAG275,AuraHD,WR320,IP_STB_HD')));
+        },explode(',', Config::getSafe('allowed_stb_types_for_local_recording', 'MAG245,MAG245D,MAG250,MAG254,MAG255,MAG260,MAG270,MAG275,AuraHD,WR320,IP_STB_HD')));
 
         $auto_update_setting = ImageAutoUpdate::getSettingByStbType($this->params['stb_type']);
 
