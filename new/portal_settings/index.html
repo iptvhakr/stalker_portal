@@ -1,0 +1,207 @@
+<html>
+<head>
+	<title>Settings</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+	<style type="text/css">
+		html, body { overflow:hidden; background:#000; color:#fff; margin:0; padding:0; -webkit-user-select:none; font-family:Ubuntu,sans-serif; }
+
+		/* table cell spacing/padding reset */
+		table { border:0; border-collapse:collapse; }
+		table td { padding:0; }
+
+		/* meta-classes */
+		.maxh { height:100%; }
+		.maxw { width:100%; }
+		a { text-decoration:none; }
+
+		/* scroll bars */
+		::-webkit-scrollbar-track { background:#2a2c2f; }
+		::-webkit-scrollbar-thumb { background:#ffc20e; }
+
+
+		.page.main .content .accessPoints .cslist-main { position:relative; }
+		.page.main .content .accessPoints a { cursor:pointer; text-decoration:none; overflow:hidden; content-style:none; margin:0; padding:0; }
+		.page.main .content .accessPoints a > div { position:relative }
+		.page.main .content .accessPoints a .status { position:absolute; left:0; top:0; }
+		.page.main .content .accessPoints a .ssid { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-align:left; }
+		.page.main .content .accessPoints a .icon { position:absolute; right:28px; top:0; }
+		.page.main .content .accessPoints a div.connected .status { background:url('img/1280/system/settings/connected.png') center no-repeat; }
+		.page.main .content .accessPoints a div.open .icon { background:url('img/1280/settings/open_wifi.png') center no-repeat; }
+		.page.main .content .accessPoints a div.closed .icon { background:url('img/1280/settings/closed_wifi.png')  center no-repeat; }
+
+		.stbPage {
+			position: absolute;
+			left: 0;
+			top: 0;
+			overflow: hidden;
+			font-family: Ubuntu, sans-serif;
+			-webkit-user-select: none;
+			z-index: 10;
+		}
+		#pageInit {
+			background-color: transparent;
+		}
+	</style>
+
+	<script>
+		var PATH_BASE = '';
+	</script>
+
+	
+
+    <script type="text/javascript" src="rules.js"></script>
+
+	<script type="text/javascript">
+		(function(){
+			var time = (new Date).getTime();
+			// conditional css loading
+			document.write('<link rel="stylesheet" href="css/system/' + screen.height + '.css?_=' + time + '">');
+			document.write('<link rel="stylesheet" href="css/' + screen.height + '.css?_=' + time + '">');
+		})();
+	</script>
+	
+	
+	
+	
+    
+    
+    
+    
+    
+    
+	
+    
+	
+	
+	
+	
+	
+	
+	
+	
+	<!--<script type="text/javascript" src="js/system/access.control/main.js"></script>-->
+	
+	
+	
+	
+	
+	
+
+	<style type="text/css">
+		/* fixes the insert in the blank input field error */
+		.page { position:static; }
+	</style>
+
+	<script type="text/javascript" src="index.min.js"></script>
+</head>
+<body onkeydown="mainEventListener(event);" style="overflow:hidden; display:none; background-color:#010101">
+	<div id="pageInit" class="stbPage">
+		<div class="main">Loading...</div>
+		<div class="version">2.0.1</div>
+	</div>
+	<div class="page main">
+		<!-- main page body -->
+		<table class="body">
+			<!-- page body top panel -->
+			<tr class="header">
+				<td colspan="2" class="crop">
+					<table class="maxw list">
+						<tr>
+							<!-- Breadcrumb component -->
+							<td class="cbcrumb"></td>
+							<!-- Search bar component -->
+							<td class="csbar"></td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+
+			<!-- page body main content block -->
+			<tr class="content" style="background-color:#010101">
+				<td colspan="3" class="crop">
+					<div id="main_page" class="settings_main" style="display: none;"></div>
+					<div id="list_page" class="settings_folder" style="display: none;"></div>
+					<div id="elements_page" class="settings_page" style="display: none;"></div>
+					<div id="wifi_page" class="wifi_search" style="display: none;">
+						<table class="maxw accessPoints">
+							<tr>
+								<td class="main">
+									<!-- FileList component -->
+									<div class="cslist-main"></div>
+								</td>
+								<td class="sbar">
+									<!-- SideBar component -->
+									<table class="maxh maxw">
+										<tr>
+											<td class="view">
+												<!-- main preview block -->
+											</td>
+										</tr>
+										<tr>
+											<td class="info">
+												<div class="block all">
+													<span class="title">Networks:</span> <span class="value">0</span>
+												</div>
+											</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div id="info_page" class="info_list" style="display: none;"></div>
+					<div id="update_page" class="settings_page" style="display: none;">
+						<div class="list">
+							<a href="#" class="item" id="update_type">
+								<div class="vertical">
+									<div class="title update_type_title"></div>
+								</div>
+								<div class="control">
+									<select class="elements update_type"></select>
+								</div>
+							</a>
+							<a href="#" class="item type web" id="web_update_url">
+								<div class="vertical">
+									<div class="title">URL :</div>
+								</div>
+								<div class="control">
+									<input class="elements update_url wide500" type="text">
+								</div>
+							</a>
+							<a href="#" class="item type usb" id="usb_device">
+								<div class="vertical">
+									<div class="title"></div>
+								</div>
+								<div class="control">
+									<select class="elements usb_device_select"></select>
+								</div>
+							</a>
+							<a href="#" class="item type usb" id="usb_update_url">
+								<div class="vertical">
+									<div class="title"></div>
+								</div>
+								<div class="control">
+									<input class="elements usb_device_update_url wide500" type="text">
+								</div>
+							</a>
+						</div>
+					</div>
+				</td>
+			</tr>
+
+			<!-- page body bottom panel -->
+			<tr class="footer">
+				<td class="crop exit">
+					<div class="cbpanel-main"></div>
+					<!--<div onclick="navigation.exit_press()">Exit</div>-->
+				</td>
+				<td class="crop main" colspan="2">
+					<!-- control buttons block -->
+					<div class="cbpanel-main"></div>
+				</td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>
