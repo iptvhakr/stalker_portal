@@ -19,6 +19,13 @@ class KaraokeMaster extends Master
     protected function getMediaName(){
         return $this->media_id.'.mpg';
     }
+
+    protected function setStatus($status){
+
+        $this->db->update('karaoke',
+            array('status' => $status),
+            array('id' => $this->media_id));
+    }
 }
 
 ?>
