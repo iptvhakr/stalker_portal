@@ -98,6 +98,14 @@
 					"color": "#ed891d",
 					"url": "../settings/index.html",
 					"type": "iframe"
+				},
+				{
+					"name": "portal settings",
+					"info": "",
+					"icon": "img/{0}/icons/media/settings.png",
+					"color": "#ed891d",
+					"url": "../portal_settings/index.html",
+					"type": "iframe"
 				}
 			]
 		},

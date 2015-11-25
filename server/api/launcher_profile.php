@@ -49,6 +49,7 @@ $profile['authDomain'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'
 $profile['pingTimeout'] = Config::getSafe('watchdog_timeout', 120) * 1000;
 
 $available_modules = array_diff($all_modules, $disabled_modules);
+$available_modules[] = 'portal settings';
 
 $module_to_app_map = array(
     'vclub'         => 'video club',
