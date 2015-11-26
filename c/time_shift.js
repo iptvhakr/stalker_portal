@@ -436,9 +436,9 @@
             _debug('date 2', date);*/
 
             return date.getUTCFullYear()
-                + this.format_date(date.getUTCMonth() + 1)
-                + this.format_date(date.getUTCDate())
-                + this.format_date(date.getUTCHours())
+                + '' + this.format_date(date.getUTCMonth() + 1)
+                + '' + this.format_date(date.getUTCDate())
+                + '' + this.format_date(date.getUTCHours())
                 + '0000';
         },
 
