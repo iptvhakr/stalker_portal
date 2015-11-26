@@ -772,6 +772,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         $profile['hls_fast_start'] = Config::getSafe('hls_fast_start', true);
         $profile['auth_access'] = Config::exist('auth_url');
 
+        $profile['epg_data_block_period_for_stb'] = Config::getSafe('epg_data_block_period_for_stb', 5);
+
         unset($profile['device_id']);
         unset($profile['device_id2']);
         unset($profile['access_token']);

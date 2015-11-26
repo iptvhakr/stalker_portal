@@ -1772,7 +1772,7 @@ function common_xpcom(){
 
             this.load();
             var self = this;
-            this.timer_id = window.setInterval(function(){self.load()}, (stb.type == 'MAG200' ? 3 : 6)*3600000);
+            this.timer_id = window.setInterval(function(){self.load()}, (stb.type == 'MAG200' ? 3 : stb.profile['epg_data_block_period_for_stb'])*3600000);
         },
 
         stop : function(){
@@ -1790,7 +1790,7 @@ function common_xpcom(){
                 {
                     "type"   : "itv",
                     "action" : "get_epg_info",
-                    "period" : stb.type == 'MAG200' ? 3 : 6
+                    "period" : stb.type == 'MAG200' ? 3 : stb.profile['epg_data_block_period_for_stb']
                 },
 
                 function(result){
