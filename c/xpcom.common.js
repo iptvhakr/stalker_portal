@@ -39,6 +39,8 @@ function common_xpcom(){
 
     this.recordings = [];
 
+    this.hdmi_on = true;
+
     // iso639
     this.lang_map = {
         "aa" : "aar", //Afar

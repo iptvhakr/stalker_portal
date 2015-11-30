@@ -773,6 +773,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         $profile['auth_access'] = Config::exist('auth_url');
 
         $profile['epg_data_block_period_for_stb'] = Config::getSafe('epg_data_block_period_for_stb', 5);
+        $profile['standby_on_hdmi_off'] = Config::getSafe('standby_on_hdmi_off', false);
 
         unset($profile['device_id']);
         unset($profile['device_id2']);
