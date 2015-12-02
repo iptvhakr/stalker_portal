@@ -42,7 +42,8 @@ function get_data(){
                             'path'         => $path,
                             'series'       => count($data['series']),
                             'files'        => $data['files'],
-                            'for_moderator' => $data['for_moderator'],
+                            'tv_series'    => $data['tv_series'],
+                            'for_moderator' => $data['for_moderator']
                         );
                     }
                     $result['data'] = $arr;

@@ -280,6 +280,7 @@ abstract class Master
      *
      * @param string $media_name
      * @param string $extending_name default = ''
+     * @throws MasterException
      */
     public function createMediaDir($media_name, $extending_name = ''){
         if (!empty($extending_name)) {
@@ -476,7 +477,7 @@ abstract class Master
             
             $raw = $this->checkMediaDir($name, $this->media_name);
 
-            if (!$raw || count($raw['files']) > 1 && empty($raw['series'])){
+            if (!$raw){
                 continue;
             }
 
@@ -489,10 +490,20 @@ abstract class Master
                 $raw['load'] = $this->getStorageLoad($storage);
 
                 $raw['for_moderator'] = $storage['for_moderator'];
-                
+
                 $good_storages[$name] = $raw;
                 
+            }elseif(!empty($raw['tv_series'])){
+
+                $raw['load'] = $this->getStorageLoad($storage);
+
+                $raw['for_moderator'] = $storage['for_moderator'];
+
+                $good_storages[$name] = $raw;
             }
+
+            $raw['tv_series'] = isset($storage['tv_series']) ? $storage['tv_series'] : array();
+
         }
         $this->checkMD5Sum($good_storages);
         
