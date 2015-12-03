@@ -414,7 +414,7 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
                 ->query("SELECT (`itv`.`number`+1) as `empty_number`
                     FROM `itv`
                     WHERE (
-                        SELECT 1 FROM `itv` as `st` WHERE `st`.`number` = (`itv`.`number` + 1)
+                        SELECT 1 FROM `itv` as `st` WHERE `st`.`number` = (`itv`.`number` + 1) LIMIT 1
                     ) IS NULL
                     ORDER BY `itv`.`number`
                     LIMIT 1")
