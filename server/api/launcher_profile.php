@@ -44,7 +44,7 @@ $profile['apiDomain'] = $profile['stalkerAuthDomain'] = 'http'.(((!empty($_SERVE
 $profile['authDomain'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
     .'://'.$_SERVER['HTTP_HOST']
     .Config::getSafe('portal_url', '/stalker_portal/')
-    .'auth/token/';
+    .'auth/token.php';
 
 $profile['pingTimeout'] = Config::getSafe('watchdog_timeout', 120) * 1000;
 
