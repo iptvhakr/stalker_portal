@@ -1048,8 +1048,12 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             }
 
             foreach ($m3u_data as $entry) {
+                $name = trim($entry->getName());
+                if (!mb_check_encoding($name, array('UTF-8'))) {
+                    $name = mb_convert_encoding($name, 'UTF-8', array('CP1251'));
+                }
                 $data['data']['channels'][] = array(
-                    'name' => trim($entry->getName()),
+                    'name' => $name,
                     'cmd' => trim($entry->getPath())
                 );
             }
@@ -1060,8 +1064,13 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         }
 
         $response = $this->generateAjaxResponse($data, $error);
+        $json_string = json_encode($response);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            $error = $this->setLocalization('Error m3u parse. Check the file encoding. Required UTF-8 encoding.');
+            $json_string = json_encode(array('msg' => $error, 'error' => $error));
+        }
 
-        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+        return new Response($json_string, (empty($error) ? 200 : 500));
     }
 
     public function save_m3u_item(){
