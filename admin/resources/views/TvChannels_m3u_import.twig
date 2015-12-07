@@ -70,6 +70,15 @@
                         allowedExtensions: ['m3u'],
                         sizeLimit: 1048576 // 1Mb
                     },
+                    callbacks: {
+                        onError: function(id, name, errorReason, xhrOrXdr) {
+                            if (typeof (xhrOrXdr) != 'undefined' && typeof(xhrOrXdr.responseText)  != 'undefined') {
+                                JSErrorModalBox(JSON.parse(xhrOrXdr.responseText));
+                            } else {
+                                alert(qq.format("Error on file number {} - {}.  Reason: {}", id, name, errorReason));
+                            }
+                        }
+                    },
                     template: 'qq-template-bootstrap',
                     classes: {
                         success: 'alert alert-success',
@@ -77,20 +86,9 @@
                     }
 
                 }).on('complete', function (event, id, name, response) {
-/*                    $(this).prev('div').children('img').attr('src', response.pic + '?' + $.random(100000)).css('max-width', '100%');
-                    var val = response.pic.split('/');
-                    val = val[val.length - 1];
-                    $(this).prev('div').children('input').val(val);
-                    var imageName = val.split('.');
-                    if (imageName.length > 1) {
-                        imageName.length -= 1;
+                    if (response.success) {
+                        ajaxSuccess(response, false);
                     }
-                    imageName = imageName.join('.');
-                    var postUrl = 'tv-channels/edit-logo?id=' + (typeof (imageName) != 'undefined' && imageName != '' ? imageName : 'new');
-                    $(this).fineUploader('setEndpoint', postUrl);
-
-                    $("#deletelogolink a").data("logo_id", (imageName.search('new') != -1 ? val: imageName));*/
-                    ajaxSuccess(response);
                     return false;
                 });
                 $("#bootstrapped-fine-uploader").on('click', ".qq-upload-cancel", function (e) {
