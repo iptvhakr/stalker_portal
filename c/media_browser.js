@@ -767,7 +767,7 @@
             if (type == 'smb'){
                 var mount_str = 'mount cifs //' + Utf8.encode(this.net_server_ip + '/' + this.net_share) + ' /ram/mnt/smb username=' + login + ',password=' + password + ',iocharset=utf8';
             }else{
-                mount_str = 'mount nfs '+ this.net_server_ip + ':/' + Utf8.encode(this.net_share + '/' + this.net_path) + ' /ram/mnt/smb ro,nolock';
+                mount_str = 'mount nfs '+ this.net_server_ip + ':/' + Utf8.encode(this.net_share + (this.net_path ? '/' + this.net_path : '')) + ' /ram/mnt/smb ro,nolock';
             }
 
             _debug('mount_str', mount_str);

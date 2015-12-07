@@ -938,7 +938,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                 $this->resetOauthToken();
             }
 
-        }else if (!empty($user)){
+        }else if (!empty($user) && Config::getSafe('unique_login', true)){
 
             Mysql::getInstance()->update('users',
                 array(
@@ -985,7 +985,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                 'access_token' => $this->access_token,
                 'device_id'    => $device_id,
                 'device_id2'   => $device_id2,
-                //'login'        => $login,
+                'login'        => $login,
             );
 
             if (empty($user)){
