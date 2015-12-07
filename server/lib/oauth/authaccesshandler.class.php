@@ -61,7 +61,7 @@ class AuthAccessHandler extends AccessHandler
             $request->setUsername($user->getLogin());
         }
 
-        if(!$password && $mac || \Config::exist('auth_url') && $username && $password){
+        if(!$password && $mac || \Config::getSafe('oss_url', '') && $username && $password){
             $verified_user = $possible_user;
         }elseif ((strlen($possible_user['password']) == 32 && md5(md5($password).$possible_user['id']) == $possible_user['password'])
             || (strlen($possible_user['password']) < 32 && $password == $possible_user['password'])){
