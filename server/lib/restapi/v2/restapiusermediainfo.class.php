@@ -87,6 +87,14 @@ class RESTApiUserMediaInfo extends RESTApiController
             $now_playing_content = $media[$this->types_map[$type]['title_field']];
         }
 
+        \Mysql::getInstance()->insert('user_log', array(
+            'uid'    => $parent_id,
+            'action' => 'play',
+            'param'  => $now_playing_content,
+            'time'   => 'NOW()',
+            'type'   => $this->types_map[$type]['code']
+        ));
+
         return \Mysql::getInstance()->update('users',
             array(
                  'now_playing_type'    => $this->types_map[$type]['code'],
@@ -104,6 +112,12 @@ class RESTApiUserMediaInfo extends RESTApiController
     public function delete(RESTApiRequest $request, $parent_id){
 
         $user = \Mysql::getInstance()->from('users')->where(array('id' => $parent_id))->get()->first();
+
+        \Mysql::getInstance()->insert('user_log', array(
+            'uid'    => $parent_id,
+            'action' => 'stop',
+            'time'   => 'NOW()'
+        ));
 
         if (!empty($user['now_playing_link_id'])){
             switch ($user['now_playing_type']){

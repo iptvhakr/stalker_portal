@@ -127,7 +127,12 @@ $where .= "where time > '$time_from' and time < '$time_to'";
 
 $mac = get_mac_by_id();
 
-$where .= " and mac='$mac'";
+if ($mac){
+    $where .= " and mac='$mac'";
+}else{
+    $where .= " and uid='".$_GET['id']."'";
+}
+
 
 //$where .= " and action<>'play_now()' and action<>'create_link()' and action<>'create_link' ";
 $where .= " and action<>'create_link()' and action<>'create_link' ";
@@ -231,7 +236,7 @@ function parse_param($action, $param, $type){
             case 2: // Video Club
 
                 if (!preg_match("/(\d+)\.[a-z0-9]*/", $param, $tmp_arr)){
-                    $name = $param;
+                    $name = '['._('Video').'] '.$param;
                     break;
                 }
 
@@ -244,15 +249,17 @@ function parse_param($action, $param, $type){
                 }else{
                     $video_name = htmlspecialchars($param);
                 }
-                
+
                 $name = '['._('Video').'] '.$video_name;
                 break;
             case 3: // Karaoke
 
-                preg_match("/(\d+)\.[a-z]*$/", $param, $tmp_arr);
-                $karaoke_id = $tmp_arr[1];
+                if (preg_match("/(\d+)\.[a-z]*$/", $param, $tmp_arr)){
 
-                $karaoke = Karaoke::getById($karaoke_id);
+                    $karaoke_id = $tmp_arr[1];
+
+                    $karaoke = Karaoke::getById($karaoke_id);
+                }
 
                 if (!empty($karaoke)){
                     $karaoke_name = $karaoke['name'];
@@ -346,6 +353,24 @@ function parse_param($action, $param, $type){
                 }
                 
                 $name = '['._('Clip').'] '.$video_name;
+                break;
+            case 11: // Archive
+
+                $channel = Mysql::getInstance()
+                                ->from('itv')
+                                ->where(array(
+                                    'cmd'    => $param,
+                                    'status' => 1
+                                ))
+                                ->get()->first();
+
+                if (!empty($channel)){
+                    $ch_name = $channel['name'];
+                }else{
+                    $ch_name = htmlspecialchars($param);
+                }
+
+                $name = '['._('Archive').'] '.$ch_name;
                 break;
             default:
                 $name = 'unknown media';
