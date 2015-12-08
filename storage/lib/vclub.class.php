@@ -129,7 +129,7 @@ class Vclub extends Storage
                                     $result['tv_series']['seasons'][$season]['episodes'] = array();
                                 }
 
-                                $result['tv_series']['seasons'][$season]['episodes'][$episode] = $info;
+                                $result['tv_series']['seasons'][$season]['episodes'][$episode][] = $info;
                             }
 
                         }
