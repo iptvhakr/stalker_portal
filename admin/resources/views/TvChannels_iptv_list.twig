@@ -197,16 +197,7 @@
 
         function yelp() {
             $(document).ready(function () {
-			
-            var size_tr = $("tr").length;
-            if (size_tr > 20 && size_tr < 55 ) {
-                $('.dropdown-toggle').parent('div').slice(-3).addClass('dropup');
-            } else if ( size_tr >=4) {
-                $('.dropdown-toggle').parent('div').slice(-4).addClass('dropup');
-            } /*else if ( size_tr <=4) {
-                $('.dropdown-toggle').parent('div').slice(-4).addClass('dropup');
-            }*/
-			
+
                 LoadDataTablesScripts(TestTable1);
                 LoadSelect2Script(DemoSelect2);
 

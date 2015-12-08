@@ -360,16 +360,9 @@
                         var status = json.data[i].status;
                         var state = json.data[i].state;
                         var expire_billing_date = json.data[i].expire_billing_date;
-                        var drop;
-						if (json.data.length >1 && i!==json.data.length && i==json.data.length-1) {
-                            drop="dropup";
-                        } else if ( json.data.length >2 && i!==json.data.length && i==json.data.length-2) {
-                            drop="dropup";
-                        } else {
-                            drop=""
-                        }
+
                         json.data[i].now_playing_type = (typeof (mediaTypeName[json.data[i].now_playing_type]) != 'undefined' ? mediaTypeName[json.data[i].now_playing_type]: '--');
-                        json.data[i].operations = "<div class='col-xs-3 col-sm-8 "+drop+"'>\n\
+                        json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
                                                         <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\

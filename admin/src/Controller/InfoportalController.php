@@ -187,7 +187,19 @@ class InfoportalController extends \Controller\BaseStalkerController {
         if (empty($query_param['select'])) {
             $query_param['select'] = "*";
         }
-        
+
+        if (array_key_exists('added', $query_param['where'])) {
+            $tmp = $query_param['where']['added'];
+            unset($query_param['where']['added']);
+            $query_param['where']['CAST(`added` as CHAR)'] = $tmp;
+        }
+
+        if (array_key_exists('added', $query_param['like'])) {
+            $tmp = $query_param['like']['added'];
+            unset($query_param['like']['added']);
+            $query_param['like']['CAST(`added` as CHAR)'] = $tmp;
+        }
+
         $response['recordsTotal'] = $this->db->getTotalRowsHumorList();
         $response["recordsFiltered"] = $this->db->getTotalRowsHumorList($query_param['where'], $query_param['like']);
 
