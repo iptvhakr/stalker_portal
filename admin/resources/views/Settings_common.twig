@@ -248,22 +248,13 @@
                         var enable = json.data[i].enable;
                         json.data[i].enable = (enable == 1 ?"<span class='txt-success'>{{ 'on'|trans }}</span>":"<span>{{ 'off'|trans }}</span>");
 
-                        var drop;
-						if (json.data.length >1 && i!==json.data.length && i==json.data.length-1) {
-                            drop="dropup";
-                        } else if ( json.data.length >2 && i!==json.data.length && i==json.data.length-2) {
-                            drop="dropup";
-                        } else {
-                            drop="";
-                        }
-
                         date = json.data[i]['require_image_date'];
                         if (date > 0) {
                             date = new Date(date * 1000);
                             json.data[i]['require_image_date'] = date.toLocaleFormat("%b %d, %Y");
                         }
 
-                        json.data[i].operations = "<div class='col-xs-3 col-sm-8 "+drop+"'>\n\
+                        json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
                                                         <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\

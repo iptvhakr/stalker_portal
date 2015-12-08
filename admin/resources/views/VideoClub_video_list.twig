@@ -106,15 +106,8 @@
                         var accessed = json.data[i].accessed;
                         var path = json.data[i].path;
                         var tasks = json.data[i].tasks;
-						var drop;
-						
-						if ( i!==json.data.length && i==json.data.length-1) { drop="dropup"; } 
-						else if ( i!==json.data.length && i==json.data.length-2) { drop="dropup"; } 
-						else if ( i!==json.data.length && i==json.data.length-3) { drop="dropup"; } 
-						else if ( i!==json.data.length && i==json.data.length-4) { drop="dropup"; } 
-						else if ( i!==json.data.length && i==json.data.length-5) { drop="dropup"; } 
-						else {drop=""}
-                        json.data[i].operations = "<div class='col-xs-3 col-sm-8 "+drop+"'>\n\
+
+						json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
                                                         <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\

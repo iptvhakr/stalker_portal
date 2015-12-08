@@ -117,9 +117,7 @@
                     for (var i in json.data) {
                         var id = json.data[i].id;
                         var title = json.data[i].title;
-						var drop;
-						if ( i==json.data.length-1) { drop="dropup"; } else {drop=""}
-                        json.data[i].operations = "<div class='col-xs-3 col-sm-8 "+drop+"' >\n\
+                        json.data[i].operations = "<div class='col-xs-3 col-sm-8' >\n\
                                                         <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\

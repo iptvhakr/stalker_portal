@@ -23,7 +23,7 @@ $.extend(true, $.fn.dataTable.defaults, {
                 ddMenuItem.closest('dropup').removeClass('dropup');
                 trParentOffset = $(this).position();
                 trParentOffset = trParentOffset.top;
-                ddMenuHeight = ddMenuItem.height();
+                ddMenuHeight = ddMenuItem.height() + 10;
 
                 if (ddMenuHeight > ddMenuMaxHeight){
                     ddMenuMaxHeight = ddMenuHeight ;
@@ -33,13 +33,14 @@ $.extend(true, $.fn.dataTable.defaults, {
                     return true;
                 }
 
-                if ((trParentOffset + ddMenuHeight - 50) > tableHeight ) {
+                if ((trParentOffset > ddMenuHeight) && (trParentOffset + ddMenuHeight - 30) > tableHeight ) {
                     ddMenuItem.closest('div').addClass('dropup');
                 }
 
             });
-            if (ddMenuMaxHeight > tableHeight) {
-                $(oSettings.nTableWrapper).css('minHeight', ddMenuMaxHeight + tableHeight + 40);
+
+            if (((tableHeight - trParentOffset) - ddMenuMaxHeight) < 30) {
+                $(oSettings.nTableWrapper).css('minHeight', ddMenuMaxHeight + tableHeight + 30);
             }
         }
     },
