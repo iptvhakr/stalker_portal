@@ -176,6 +176,10 @@ class Filters {
         if (in_array($cond, $this->compare_cond)) {
             try {
                 $date = @date_create($cond_value);
+                if ($date->format('H:i:s') == '00:00:00' && ($cond == '<=' || $cond == '<')) {
+                    $date->modify('tomorrow -1 second');
+                }
+
                 $this->db->where(array("$field $cond " => @date_format($date, 'Y-m-d H:i:s')));
                 $this->applyFilter();
             } catch (FiltersException $e) {

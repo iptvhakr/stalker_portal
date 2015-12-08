@@ -43,14 +43,6 @@
                     for (var i in json.data) {
                         var item = json.data[i];
                         var id = json.data[i].id;
-                        var drop;
-                        if (json.data.length > 1 && i !== json.data.length && i == json.data.length - 1) {
-                            drop = "dropup";
-                        } else if (json.data.length > 2 && i !== json.data.length && i == json.data.length - 2) {
-                            drop = "dropup";
-                        } else {
-                            drop = ""
-                        }
 
                         json.data[i].name = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-detail?id=' + id + '">' + json.data[i].name + '</a>';
                         var status = item.status;
@@ -65,7 +57,7 @@
                             item.status = "{{ 'Not installed'|trans }}";
                         }
 
-                        json.data[i].operations = "<div class='col-xs-3 col-sm-8 " + drop + "'>\n\
+                        json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
                                                         <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\

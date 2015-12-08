@@ -50,20 +50,13 @@
                         var id = json.data[i].id;
                         var favorites =json.data[i].favorites;
                         var login =json.data[i].login;
-                        var drop;
-						if (json.data.length >1 && i!==json.data.length && i==json.data.length-1) {
-                            drop="dropup";
-                        } else if ( json.data.length >2 && i!==json.data.length && i==json.data.length-2) {
-                            drop="dropup";
-                        } else {
-                            drop=""
-                        }
+
                         json.data[i].login = '<a href="#">' + json.data[i].login + '</a>';
                         json.data[i].title = '<a href="{{ app.request.baseUrl }}/users/users-list?filter_set='+ id +'">' + json.data[i].title + '</a>';
                         json.data[i].for_all = (json.data[i].for_all ? "{{ 'For all'|trans }}": "{{ 'Only for'|trans }} " + login);
                         json.data[i].favorites = (favorites ? '<span class="txt txt-danger"><i class="fa fa-star"></i></span>': '');
 
-                        json.data[i].operations = "<div class='col-xs-3 col-sm-8 "+drop+"'>\n\
+                        json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
                                                         <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\
