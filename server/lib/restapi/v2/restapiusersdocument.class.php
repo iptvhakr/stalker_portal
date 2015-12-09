@@ -33,6 +33,15 @@ class RESTApiUsersDocument extends RESTApiDocument
         $document['account'] = $document['ls'];
         unset($document['ls']);
 
+        $document['logo'] = \Config::exist('portal_logo_url') ? \Config::get('portal_logo_url') : null;
+
+        if (is_readable(realpath(PROJECT_PATH.'/../new/launcher/img/1080/bg.jpg'))){
+            $document['background'] = \Config::getSafe('portal_url', '/stalker_portal/').'new/launcher/img/1080/bg.jpg';
+        }else{
+            $document['background'] = null;
+        }
+
+
         return $document;
     }
 }
