@@ -282,13 +282,14 @@ var main_menu = {
             
             if (i != 1){
                 this.map[i].sub_obj.hide();
-                
+            }else if (i == 1){
                 if (this.map[i].sub.length > 0){
                     this.sub_menu_show();
                 }else{
                     this.sub_menu_hide();
                 }
             }
+
         }
         
         if(this.map[1]){
@@ -448,7 +449,7 @@ var main_menu = {
         
         try{
             for (var i=0; i<=2; i++){
-                this.cells[i].img_dom_obj.style.background = '';
+                this.cells[i].img_dom_obj.innerHTML = '';
                 this.cells[i].title_dom_obj.innerHTML = '';
             }
             
