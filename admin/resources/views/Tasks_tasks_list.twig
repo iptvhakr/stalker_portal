@@ -116,11 +116,7 @@
                 "columnDefs": [
                     { className: "action-menu", "targets": [ -1 ] },
                     {"searchable": false, "targets": [-1, -2, 1]},
-                    {"sortable": false, "targets": [-1, 1]},
-                    {#{"width": "19%", "targets": [5] },
-                    {"width": "5%", "targets": [0, 4, 6,  7] },
-					  { "width": "16px", "targets": [ -1 ] }	
-                    {"width": "14%", "targets": [1, 2, 3, 8] }#}
+                    {"sortable": false, "targets": [-1, 1]}
                 ]
             }).prev('.dataTables_processing').hide('');
             $('#datatable-1').DataTable().ajax.reload();

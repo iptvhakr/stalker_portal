@@ -81,10 +81,7 @@
                 {% endif %}
                 "bFilter": true,
                 "bPaginate": true,
-                "bInfo": true,
-                "columnDefs": [
-                    {"width": "150px", "targets": [-1] }
-                ]
+                "bInfo": true
             }).prev('.dataTables_processing').hide('');
             $('#datatable-1').DataTable().ajax.reload();
         }
