@@ -15,7 +15,7 @@
             "2": {
                 "name": _("Logout"),
                 "alias": "auth-user-logout",
-                "icon": "fa fa-power-off"
+                "icon": "fa fa-sign-out"
             }
         }
     }
