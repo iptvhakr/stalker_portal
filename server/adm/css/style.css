@@ -128,7 +128,7 @@ min-width:800px;
   background: #fff;
   min-height:500px;
   padding-bottom: 2000px !important;
-  margin-bottom: -2000px !important;
+  margin-bottom: -1990px !important;
   overflow: auto;
   -webkit-transition: 0.2s;
   -moz-transition: 0.2s;
@@ -442,7 +442,7 @@ z-index:20;
 }
 .box {
   display: block;
-  z-index:99;
+ 
   position: relative;
   background: transparent;
   margin-bottom: 20px;
@@ -611,7 +611,7 @@ table.no-border-bottom tr:last-child td {
 }
 .dataTables_wrapper {
 /* overflow-y: hidden;*/
- overflow-x:auto;
+/* overflow-x:auto;*/
 }
 
 
@@ -634,12 +634,12 @@ label.myErrorClass {
     /*    font-style: italic;*/
     display: block;
 }
-.dataTables_wrapper table.table {
+.table-datatable table.table, .dataTables_wrapper table.table {
   clear: both;
   max-width: inherit;
   margin-bottom: 0;
 }
-.table-datatable {margin-top:-2px;}
+.table-datatable {margin-top:20px;}
 .table-datatable *, .table-datatable :after, .table-datatable :before {
   margin: 0;
   padding: 0;
@@ -668,7 +668,7 @@ label.myErrorClass {
   
 }
 
-#content .col-sm-2 {padding-right: 0px !important; margin-right: -15px;  width:240px;}
+#content .col-sm-2 {padding-right: 0px !important; margin-right: -15px;  width:200px;}
 
 .table-datatable .sorting {}
 
@@ -738,7 +738,7 @@ ul.DTTT_dropdown.dropdown-menu > li:hover > a {
   background:rgba(0, 0, 0, 0.3);
   color:#f0f0f0;
 }
-.dataTables_wrapper input[type="text"] {
+.table-datatable input[type="text"], .dataTables_wrapper input[type="text"] {
   display: block;
   width: 90%;
   height: 26px;
@@ -763,7 +763,7 @@ ul.DTTT_dropdown.dropdown-menu > li:hover > a {
   -o-transition: 0.2s;
   transition: 0.2s;
 }
-.dataTables_wrapper input[type="text"]:focus {
+.table-datatable input[type="text"]:focus, .dataTables_wrapper input[type="text"]:focus {
   border-color: #66afe9;
   outline: 0;
   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
@@ -1033,7 +1033,8 @@ td.beauty-hover {
 .lobtn { background-color: #FFCD1C; color: #000; }
 .pull-right .btn {margin-left:15px !important;}
 .pull-left .btn {margin-left:15px !important;}
-
+.btn-success:hover {color: #fff !important;}
+.btn-default:hover { background-color: #e3e3e3  !important;}
 .btn .btn-success{
   border-width: 1px;
   border-style: solid;
@@ -1205,7 +1206,27 @@ a.disabled, a.disabled:focus, a.disabled:hover, a.disabled:active, a.disabled.ac
   border-color: rgba(0, 0, 0, 0.3);
   
 }
-.table > thead > tr > th  { border-bottom: 1px solid #E3E3E3 !important}
+.table > thead > tr > th  { border-bottom: 1px solid #E3E3E3 !important;
+color: #5F5F5F !important;     height: 34px; padding: 4px 1px 4px 12px !important;
+}
+.table{display:none;}
+#cmd_data, #tariff_plan_table{display:inline-table;}
+#datatable-1_wrapper .table {display:inline-table;}
+
+.table > tbody > th, .table > tbody  > td {padding:5px 0px 5px 12px !important;}
+.table > thead > th,
+.table > thead > td {
+  padding: 4px 1px 4px 12px !important;
+  border-bottom: 1px solid #FFF !important;
+}
+
+
+.table > thead > tr > th:hover{ background-color:#e3e3e3;}
+.table > thead {
+	
+	height:43px;
+}
+
 .progress {
   overflow: visible;
 }
@@ -1572,6 +1593,59 @@ a.disabled, a.disabled:focus, a.disabled:hover, a.disabled:active, a.disabled.ac
   border:2px solid #6AA6D6;
   background: #6AA6D6;
 }
+
+
+
+.mswitch > input[type="checkbox"] {
+    display: none;   
+}
+ 
+.mswitch > label {
+    cursor: pointer;
+    height: 0px;
+    position: relative; 
+    width: 50px;  
+}
+
+.mswitch > label::before {
+    background: #d9534f;
+  
+    border-radius: 10px;
+    content: '';
+    height: 22px;
+    margin-top: -8px;
+    position:absolute;
+    
+    transition: all 0.4s ease-in-out;
+    width: 50px;
+}
+.mswitch > label::after {
+    background: #fff;
+    border-radius: 16px;
+
+    content: '';
+    height: 18px;
+    left: 4px;
+    margin-top: -2px;
+    position: absolute;
+    top: -4px;
+    transition: all 0.3s ease-in-out;
+    width: 18px;
+}
+.mswitch > input[type="checkbox"]:checked + label::before {
+    background: inherit;
+}
+
+.mswitch > input[type="checkbox"]:disabled + label::before { 
+ opacity: 0.3;
+}
+.mswitch > input[type="checkbox"]:checked + label::after {
+    background: #fff;
+    left: 28px;
+}
+
+
+
 .select2-highlighted {  background: #FFF5D2 !important; color: #000 !important;}
 .select2-container {
   width: 100%;
@@ -1842,6 +1916,8 @@ border: 1px solid #F3E3AA;
 .form-group .form-control, .form-group .input-group {
   margin-bottom: 5px;
 }
+
+.form-group .checkbox { margin-top:6px;}
 .input-group .form-control {
   margin:0;
 }
@@ -2508,7 +2584,7 @@ div.google-visualization-tooltip span{
   width: 100%;
   height: 100%;
   left: 0;
-  background: #ebebeb;
+  background: #fff;
   z-index: 2000;
 }
 .devoops-getdata {
@@ -2577,7 +2653,7 @@ div.google-visualization-tooltip span{
   padding: 3px 15px 5px;
   background: #FCFCFC;
   margin-left:90px;
-  min-height: 80px;
+  min-height: 50px;
 }
 .page-feed-content small.time {
   font-style: italic;
@@ -2911,7 +2987,7 @@ border-bottom:1px solid #E3E3E3;padding-left:6px !important; padding-right:5px;}
 }
 
 #iptv_list .dropdown-menu, #iptv_list_move .dropdown-menu{
-
+    min-height: 30px;
 	min-width:200px;
 	max-width:400px;
     overflow-x: hidden;
@@ -2973,8 +3049,8 @@ border-bottom:1px solid #E3E3E3;padding-left:6px !important; padding-right:5px;}
  #iptv_list .dropdown-menu a, #iptv_list_move .dropdown-menu a { margin:0;padding:5px 10px 5px 10px; }
   #iptv_list  .dropdown-menu > li > a:hover{background-color:#FFF5D2 !important} 
 #iptv_list .fa-cog {float:right !important;}
-#iptv_list .filter a:hover  { text-decoration:none; border: 1px solid #E3E3E3 !important;}
-#iptv_list .filter a:focus  { text-decoration:none; border: 1px solid #E3E3E3 !important; }
+#iptv_list .filter a:hover,#iptv_list .filter_s a:hover   { text-decoration:none; border: 1px solid #E3E3E3 !important;}
+#iptv_list .filter a:focus,#iptv_list .filter_s a:focus  { text-decoration:none; border: 1px solid #E3E3E3 !important; }
 #iptv_list .btn-success, #iptv_list .btn-danger { margin-left:5px;
 margin-top:5px !important; height:31px; padding-bottom:15px !important;}
 #iptv_list .btn-success {
@@ -2992,7 +3068,7 @@ color:#FFCD1C; background-color:#000 !important;}
 }
 
 .btn-default .btn-default{
-    background-color: #FFFFFF !important;
+    background-color: #FFFFFF;
     color: #000 !important;
 	border:1px solid #000 !important;
     font-weight: normal;
@@ -3007,7 +3083,7 @@ color:#FFCD1C; background-color:#000 !important; height:32px; padding-bottom:15p
 #iptv_list label {margin-top:5px;}
 #iptv_list input[type=text] { height:30px;}
 #iptv_list .btn-default {
-color:#000; background-color:#FFF !important; border:1px solid #000; margin-top:5px !important; height:31px; padding-bottom:15px !important;}
+color:#000; background-color:#FFF; border:1px solid #000; margin-top:5px !important; height:31px; padding-bottom:15px !important;}
 
 #iptv_list {position:relative;}
 #iptv_list .row,#iptv_list .row2, #iptv_list .row3  {position:relative; min-height:44px;}	
@@ -3115,21 +3191,24 @@ color:#000; background-color:#FFF !important; border:1px solid #000; margin-top:
     text-decoration: none;
     right: 0;
 }
-
+#attribute_set a:hover,#attribute_set a:focus,#dataTables_ajax_update_button:hover {
+     background-color: #e3e3e3;
+}
 .dataTables_filter {
     position: absolute;
-    top: 0px;
-    right: 124px;
+    top: 1px;
+    right: 110px;
     z-index: 320;
 }
 
 #dataTables_ajax_update_button{
-    border: 1px solid #ccc;
+    border: 1px solid #D3D3D3;
+	background-color: #fff;
     height: 24px;
-    margin-top: 2px !important;
+    margin-top: 1px !important;
     padding: 3px 10px !important;
     position: absolute;
-    right: 74px;
+    right: 65px;
     z-index: 320;
 }
 
@@ -3150,7 +3229,7 @@ color:#000; background-color:#FFF !important; border:1px solid #000; margin-top:
 
     margin-top: -5px;
     height: 24px;
-    width: 200px;
+    width: 150px;
     font-size: 14px;
     z-index: 304;
     color: #555;
@@ -3196,7 +3275,7 @@ color:#000; background-color:#FFF !important; border:1px solid #000; margin-top:
 }
 
 #attribute_set .checkbox, .attribute_set .checkbox{
-    min-width:190px;
+    min-width:90px;
     margin: 4px 0 4px 0px;
     padding-left: 15px;
 }
@@ -3247,7 +3326,7 @@ margin-bottom:5px;
 .action-menu .dropdown-menu >li:last-child  ul{ /* ...or use a class on the last link for IE */
  background-color: #FFF5D2; border-radius: 2px;
 }
-#datatable-1_wrapper {z-index:300; position:relative; min-height:100px;}
+#datatable-1_wrapper { position:relative; min-height:100px;}
 #datatable-1_wrapper > .row-fluid{
     overflow: hidden;
     min-height: 10px;
@@ -3526,23 +3605,22 @@ width: 40px;
 #datatable-1 th:hover {  background-color: #FFF5D2 !important;}
 #datatable-1 th, #datatable-1 td{
     max-width: 20% !important;
+	min-width:20px;
     word-wrap: break-word;
     overflow: hidden;
     text-overflow: clip;
 	height:34px;
 }
-
+#datatable-1 th.action-menu {width:20px !important;font-size:1px;}
 #datatable-1 th.action-menu, #datatable-1 td.action-menu{
     overflow: visible;
-	
-
 }
 #datatable-1 a.dropdown-toggle {display:none; float:right;}
 #datatable-1 tr:hover a.dropdown-toggle,#datatable-1 td:hover a.dropdown-toggle {
     display:    block; 
 }
 #datatable-1 tr:focus a.dropdown-toggle,#datatable-1 td:focus a.dropdown-toggle {
-    display:    block; 
+    display:   block; 
 }
 #datatable-1 tr:target a.dropdown-toggle,#datatable-1 td:target a.dropdown-toggle {
     display:    block; 
@@ -3592,7 +3670,7 @@ width: 40px;
     max-width: 200px;
     word-wrap: break-word;
 }
-
+.box .admin-permissions {padding-left:15px;}
 .box .admin-permissions > .row:hover{
     background-color: rgba(0, 0, 0, 0.05);
 }
@@ -3616,6 +3694,7 @@ left:10px;
     height: 100% !important;
     top: 10px !important;
     margin-top: 0 !important;
+	min-height: 200px;
 }
 
 .dataTables_processing {  
@@ -3827,10 +3906,10 @@ table .dropdown-toggle  i:hover {background-color:#FFCD1C !important;}
 table .dropdown-toggle  i {padding:5px !important;}
 
 
-table.dataTable tbody th, table.dataTable tbody td {padding:5px 0px 5px 12px !important;}
+table.dataTable tbody th, table.dataTable tbody td {padding:5px 0px 5px 10px !important;}
 table.dataTable thead th,
 table.dataTable thead td {
-  padding: 4px 1px 4px 12px !important;
+  padding: 4px 10px 4px 10px !important;
   border-bottom: 1px solid #FFF !important;
 }
 table.dataTable tfoot th,
@@ -3844,7 +3923,7 @@ footer a {color:#000; margin-right:5px;margin-left:5px;}
 .no-footer {border-bottom: 1px solid #E3E3E3 !important;}
 table.dataTable thead th,
 table.dataTable thead th {
-  color: #5F5F5F !important}
+  color: #5F5F5F !important;     height: 34px;}
 
 .bord { border-bottom:2px solid #2e2e2e;}
 .select2-results .select2-no-results, .select2-results .select2-searching, .select2-results .select2-selection-limit { background-color: #FFCD1C !important; }
