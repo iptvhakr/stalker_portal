@@ -98,7 +98,7 @@ function LoadDataTablesScripts(callback) {
                                 },
                                 "cFeature": "A"
                             } );
-
+							
                             $.fn.dataTable.defaults.sDom += "A";
                             callback();
                         });
@@ -878,9 +878,6 @@ function getURLFilterString(obj){
 function heightCalculate(){
     var height =$("#content").height;
     var tableHeight = $("#datatable-1").length ? ($('#datatable-1 tr').length > 50 ? 50 : $('#datatable-1 tr').length) * 50 + $('#datatable-1').position().top + 200: 0;
-/* 	var w=$("#datatable-1").outerWidth();
-	console.log (w);
-	$("body").css({width: 300+ w}); */
     if (tableHeight > height) {
         height = tableHeight;
     }
