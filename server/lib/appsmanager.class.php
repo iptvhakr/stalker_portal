@@ -48,7 +48,7 @@ class AppsManager
 
     public function getAppInfo($app_id){
 
-        $app = Mysql::getInstance()->from('apps')->where(array('id' => $app_id))->get()->first();
+        $app = $original_app = Mysql::getInstance()->from('apps')->where(array('id' => $app_id))->get()->first();
 
         if (empty($app)){
             return false;
@@ -67,6 +67,32 @@ class AppsManager
 
         if (empty($option_values)){
             $option_values = array();
+        }
+
+        $update_data = array();
+
+        if (!$original_app['alias'] && $app['alias']){
+            $update_data['alias'] = $app['alias'];
+        }
+
+        if (!$original_app['description'] && $app['description']){
+            $update_data['description'] = $app['description'];
+        }
+
+        if (!$original_app['icon_color'] && !empty($info['config']['backgroundColor'])){
+            $update_data['icon_color'] = $info['config']['backgroundColor'];
+        }
+
+        if (!$original_app['icons']){
+            if (!empty($info['icons'])){
+                $update_data['icons'] = $info['icons'];
+            }else{
+                $update_data['icons'] = 'icons';
+            }
+        }
+
+        if (!empty($update_data)){
+            Mysql::getInstance()->update('apps', $update_data, array('id' => $app_id));
         }
 
         unset($app['options']);
