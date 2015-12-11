@@ -421,8 +421,8 @@
                         endpoint: 'video-club/edit-cover?id=' + ($('#form_cover_id').val() ? $('#form_cover_id').val() : 'new')
                     },
                     validation: {
-                        allowedExtensions: ['jpeg', 'jpg']
-                        //sizeLimit: 1048576 // 1Mb
+                        allowedExtensions: ['jpeg', 'jpg'],
+                        sizeLimit: 1048576 // 1Mb
                     },
                     template: 'qq-template-bootstrap',
                     classes: {

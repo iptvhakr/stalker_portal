@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response as Response;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
+use Imagine\Image\Box;
 
 class VideoClubController extends \Controller\BaseStalkerController {
 
@@ -783,12 +784,13 @@ class VideoClubController extends \Controller\BaseStalkerController {
                 $upload_id = $this->db->saveScreenshotData($s_data);
                 $img_path = $this->getCoverFolder($upload_id);
                 umask(0);
-
-                if (!rename($tmp['tmp_name'], $img_path.'/'.$upload_id.'.jpg')){
-                    $error = sprintf(_('Error during file moving from %s to %s'), $tmp['tmp_name'], $img_path.'/'.$upload_id.'.jpg');
-                }else{
+                try{
+                    $uploaded = $this->request->files->get($f_key)->getPathname();
+                    $this->app['imagine']->open($uploaded)->resize(new Box(240, 320))->save($img_path.'/'.$upload_id.'.jpg');
                     chmod($img_path.'/'.$upload_id.'.jpg', 0644);
                     $error = '';
+                } catch (\ImagickException $e) {
+                    $error = sprintf(_('Error during file moving from %s to %s'), $tmp['tmp_name'], $img_path.'/'.$upload_id.'.jpg');
                 }
             }
         }
