@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-11-23 18:33+0300\n"
-"PO-Revision-Date: 2015-11-23 18:33+0300\n"
+"PO-Revision-Date: 2015-12-11 11:18+0200\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -16,7 +16,7 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.8.5\n"
 "X-Poedit-SearchPath-0: ../../../../admin/src\n"
 "X-Poedit-SearchPath-1: ../../../../admin/resources\n"
 "X-Poedit-SearchPath-2: ../../../../admin/json_menu\n"
@@ -459,7 +459,7 @@ msgstr "Установленных приложений"
 #: ../../../../admin/src/Controller/EventsController.php:575
 #: ../../../tools/misctranslations.php:859
 msgid "deferred"
-msgstr "приостановленно"
+msgstr "приостановлено"
 
 #: ../../../../admin/src/Controller/EventsController.php:576
 msgid "unlimited"
@@ -480,8 +480,7 @@ msgstr "Все"
 
 #: ../../../../admin/src/Controller/EventsController.php:582
 #: ../../../administrator/playlists.php:157
-#: ../../../administrator/events.php:415
-#: ../../../administrator/profile.php:489
+#: ../../../administrator/events.php:415 ../../../administrator/profile.php:489
 #: ../../../administrator/administrators.php:165
 #: ../../../administrator/administrators.php:206
 msgid "Group"
@@ -606,7 +605,7 @@ msgstr "Состояние"
 #: ../../../../admin/src/Controller/VideoClubController.php:23
 #: ../../../../admin/src/Controller/VideoClubController.php:635
 msgid "Scheduled"
-msgstr "Запланированно"
+msgstr "Запланировано"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:94
 #: ../../../../admin/src/Controller/VideoClubController.php:135
@@ -1005,8 +1004,7 @@ msgid "Account"
 msgstr "Лицевой счет"
 
 #: ../../../../admin/src/Controller/UsersController.php:1992
-#: ../../../administrator/msg.php:145
-#: ../../../administrator/claims_log.php:175
+#: ../../../administrator/msg.php:145 ../../../administrator/claims_log.php:175
 #: ../../../administrator/users.php:581 ../../../administrator/msgs.php:116
 msgid "Media"
 msgstr "Медиа"
@@ -2077,8 +2075,7 @@ msgstr "Блок авторизованного пользователя сис�
 msgid "Profile"
 msgstr "Профиль пользователя"
 
-#: ../../../tools/misctranslations.php:300
-#: ../../../administrator/tasks.php:133
+#: ../../../tools/misctranslations.php:300 ../../../administrator/tasks.php:133
 msgid "Messages"
 msgstr "Сообщения"
 
@@ -2091,15 +2088,13 @@ msgid "Tasks"
 msgstr "Задания"
 
 #: ../../../tools/misctranslations.php:302
-#: ../../../tools/misctranslations.php:362
-#: ../../../administrator/index.php:477
+#: ../../../tools/misctranslations.php:362 ../../../administrator/index.php:477
 #: ../../../../admin/json_menu/menu.json:364
 msgid "Settings"
 msgstr "Настройки"
 
 #: ../../../tools/misctranslations.php:303
-#: ../../../tools/misctranslations.php:349
-#: ../../../administrator/index.php:158
+#: ../../../tools/misctranslations.php:349 ../../../administrator/index.php:158
 #: ../../../../admin/json_menu/top_menu.json:16
 msgid "Logout"
 msgstr "Выход"
@@ -2346,8 +2341,7 @@ msgstr "Удалить обновление прошивки"
 msgid "Change the on/off state firmware update"
 msgstr "Изменить состояние вкл/выкл обновление прошивки"
 
-#: ../../../tools/misctranslations.php:378
-#: ../../../administrator/index.php:432
+#: ../../../tools/misctranslations.php:378 ../../../administrator/index.php:432
 #: ../../../../admin/json_menu/menu.json:275
 msgid "Statistics"
 msgstr "Статистика"
@@ -2427,8 +2421,7 @@ msgstr "Логи жалоб по-странично + фильтры"
 
 #: ../../../tools/misctranslations.php:398
 #: ../../../administrator/storages.php:185
-#: ../../../administrator/storages.php:218
-#: ../../../administrator/index.php:483
+#: ../../../administrator/storages.php:218 ../../../administrator/index.php:483
 msgid "Storages"
 msgstr "Хранилища"
 
@@ -2584,8 +2577,7 @@ msgstr "Отчет по-странично + фильтры"
 
 #: ../../../tools/misctranslations.php:440
 #: ../../../administrator/add_itv.php:674
-#: ../../../administrator/add_itv.php:1030
-#: ../../../administrator/index.php:138
+#: ../../../administrator/add_itv.php:1030 ../../../administrator/index.php:138
 #: ../../../../admin/json_menu/menu.json:3
 msgid "IPTV channels"
 msgstr "IPTV каналы"
@@ -4905,8 +4897,7 @@ msgstr ""
 msgid "Radio-channel %s set to inactive because its URL are not available."
 msgstr ""
 
-#: ../../../lib/audioclub.class.php:19
-#: ../../../../admin/json_menu/menu.json:91
+#: ../../../lib/audioclub.class.php:19 ../../../../admin/json_menu/menu.json:91
 msgid "Artists"
 msgstr "Исполнители"
 
@@ -5109,8 +5100,8 @@ msgstr "Статистика просмотра TV пользователями 
 #: ../../../administrator/setting_common.php:291
 #: ../../../administrator/userlog.php:66
 #: ../../../administrator/subscribe.php:324
-#: ../../../administrator/audio_album.php:390
-#: ../../../administrator/msg.php:69 ../../../administrator/playlists.php:110
+#: ../../../administrator/audio_album.php:390 ../../../administrator/msg.php:69
+#: ../../../administrator/playlists.php:110
 #: ../../../administrator/testers.php:125
 #: ../../../administrator/audio_year.php:154
 #: ../../../administrator/stat_moderators.php:70
@@ -5318,8 +5309,7 @@ msgstr "Пользователей"
 #: ../../../administrator/add_itv.php:1138
 #: ../../../administrator/audio_track.php:261
 #: ../../../administrator/anecdote.php:177
-#: ../../../administrator/playlist.php:181
-#: ../../../administrator/users.php:623
+#: ../../../administrator/playlist.php:181 ../../../administrator/users.php:623
 #: ../../../administrator/audio_language.php:193
 #: ../../../administrator/admin_groups.php:223
 #: ../../../administrator/audio_genre.php:193
@@ -5666,8 +5656,7 @@ msgstr "Просмотр сообщения"
 msgid "Reply"
 msgstr "Ответить"
 
-#: ../../../administrator/msg.php:149
-#: ../../../administrator/claims_log.php:177
+#: ../../../administrator/msg.php:149 ../../../administrator/claims_log.php:177
 #: ../../../administrator/msgs.php:115
 msgid "From"
 msgstr "От"
@@ -5733,9 +5722,9 @@ msgstr "Архив караоке"
 #: ../../../administrator/stat_moderators.php:199
 #: ../../../administrator/users_on_storage.php:135
 #: ../../../administrator/playlist.php:167
-#: ../../../administrator/playlist.php:257
-#: ../../../administrator/reply.php:120 ../../../administrator/tasks.php:130
-#: ../../../administrator/tasks.php:224 ../../../administrator/send_to.php:136
+#: ../../../administrator/playlist.php:257 ../../../administrator/reply.php:120
+#: ../../../administrator/tasks.php:130 ../../../administrator/tasks.php:224
+#: ../../../administrator/send_to.php:136
 #: ../../../administrator/last_closed_tasks.php:209
 #: ../../../administrator/last_closed_tasks.php:263
 #: ../../../administrator/last_closed_tasks.php:317
@@ -6203,8 +6192,7 @@ msgid "Video log"
 msgstr "Видео лог"
 
 #: ../../../administrator/anecdote.php:106
-#: ../../../administrator/anecdote.php:113
-#: ../../../administrator/index.php:424
+#: ../../../administrator/anecdote.php:113 ../../../administrator/index.php:424
 msgid "Jokes"
 msgstr "Анекдоты"
 
@@ -6217,8 +6205,7 @@ msgstr "Анекдот"
 msgid "Playlist"
 msgstr "Плейлист"
 
-#: ../../../administrator/users.php:99
-#: ../../../administrator/stbgroups.php:100
+#: ../../../administrator/users.php:99 ../../../administrator/stbgroups.php:100
 #: ../../../administrator/stbgroups.php:106
 msgid "Stb groups"
 msgstr "Группы приставок"
@@ -8777,8 +8764,7 @@ msgstr "ТВ каналы отсутствуют"
 msgid "You can configure DVB channels in the settings menu"
 msgstr "Вы можете настроить DVB каналы в меню настроек"
 
-#: ../../../lang/stb.php:530
-#: ../../../../admin/json_menu/menu.json:185
+#: ../../../lang/stb.php:530 ../../../../admin/json_menu/menu.json:185
 msgid "Applications"
 msgstr "Приложения"
 
@@ -8963,10 +8949,10 @@ msgid "Move"
 msgstr "Переместить"
 
 msgid "Not installed"
-msgstr "Не установленно"
+msgstr "Не установлено"
 
 msgid "Not published"
-msgstr "Не опубликованно"
+msgstr "Не опубликовано"
 
 #: ../../../../admin/json_menu/menu.json:15
 msgid "Organize channels"
@@ -9172,7 +9158,7 @@ msgstr ""
 "для неограниченного количества пользователей."
 
 msgid "Message has not been read"
-msgstr "Сообщение еще не прочитанно"
+msgstr "Сообщение еще не прочитано"
 
 msgid "Monitoring"
 msgstr "Мониторинг"
@@ -10510,7 +10496,7 @@ msgid ""
 "a specified interval until its status is changed to \"Stopped\""
 msgstr ""
 "Если дата начала/окончания не указаны, событие будет повторяться с указанным "
-"интервалом пока его статус не будет изменен на \"Остановленно\""
+"интервалом пока его статус не будет изменен на \"Остановлено\""
 
 msgid "Infomir News"
 msgstr "Новости Infomir"
@@ -10708,7 +10694,7 @@ msgstr "Администратор"
 #~ msgstr "Список караоке"
 
 #~ msgid "published"
-#~ msgstr "опубликованно"
+#~ msgstr "опубликовано"
 
 #~ msgid "publish"
 #~ msgstr "опубликовать"
