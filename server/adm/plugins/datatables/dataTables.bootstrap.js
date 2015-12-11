@@ -1,9 +1,23 @@
 /* Set the defaults for DataTables initialisation */
 $.extend(true, $.fn.dataTable.defaults, {
+	"searchHighlight": true,
     "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
     "sPaginationType": "bootstrap",
     "iDisplayLength": 50,
+	"fnInitComplete": function (oSettings) {
+	var th_length=$('#datatable-1 th').length;
+	var tr_width=$('#datatable-1 tr').width();
+	var plus_width=tr_width;	
+	if (tr_width==null || plus_width <=980 || plus_width >1280) {} else {$("body").css({width: 295+ plus_width});}
+	},
     "fnDrawCallback": function (oSettings) {
+		var table = $('#dataTable-1').DataTable();
+ 
+		table.on( 'draw', function () {
+			var body = $( table.table().body() );
+			body.unhighlight();
+			body.highlight( table.search() );  		
+										} );
         var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
         var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
         if (pageCount > 1) {

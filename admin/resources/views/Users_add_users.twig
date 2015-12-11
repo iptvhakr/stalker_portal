@@ -12,7 +12,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+           
                 <div class="box">
                     <a class="collapse-link">
                         <div class="box-header">
@@ -362,15 +362,10 @@
                                                     </td>
                                                     <td>
                                                         <div class="col-sm-12">
-                                                            <div class="toggle-switch toggle-switch-{% if item.optional == 0 %}default{% else %}success{% endif %}">
-                                                                <label>
-                                                                    <input type="checkbox" {% if item.optional == 0 %}readonly="readonly" disabled="disabled"{% endif %}  {% if item.subscribed == 1 %}value="on" checked="checked"{% else %}value="off"{% endif %} name="tariff_plan_packages[{{ item.package_id }}]">
-                                                                    <div class="toggle-switch-inner"></div>
-                                                                    <div class="toggle-switch-switch">
-                                                                        <i class="fa fa-check"></i>
-                                                                    </div>
-                                                                </label>
-                                                            </div>
+														<div class="mswitch">
+															<input id="tariff_plan_packages[{{ item.package_id }}]"  type="checkbox" {% if item.optional == 0 %}readonly="readonly" disabled="disabled"{% endif %}  {% if item.subscribed == 1 %}value="on" checked="checked"{% else %}value="off"{% endif %} name="tariff_plan_packages[{{ item.package_id }}]"/>
+															<label for="tariff_plan_packages[{{ item.package_id }}]" class="label-success"></label>
+															</div>                  
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -385,6 +380,7 @@
                         </div>
                     </div>
                 {% endif %}
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="box">
                     <div class="box-content">
                         <div class="row">
@@ -395,7 +391,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+             </div>
         </div>
         <div style="display: none;">
             {{ form_rest(app.form) }}
