@@ -143,6 +143,10 @@ watchdog.prototype.parse_result = function(data){
             case 'send_msg':
             {
 
+                if (data.param1){
+                    data.event = 'send_msg_with_video'
+                }
+
                 if (!stb.msg){
                     return;
                 }
