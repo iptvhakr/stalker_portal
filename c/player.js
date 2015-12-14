@@ -1680,6 +1680,10 @@ player.prototype.event_callback = function(event, params){
         case 32: // HDMI on
         {
 
+            if (stb.type == 'MAG200'){
+                break;
+            }
+
             if (!stb.hdmi_on){
                 window.clearTimeout(this.hdmi_reaction_timer);
             }
@@ -1717,6 +1721,11 @@ player.prototype.event_callback = function(event, params){
         }
         case 33: // HDMI off
         {
+
+            if (stb.type == 'MAG200'){
+                break;
+            }
+
             window.clearTimeout(this.hdmi_reaction_timer);
 
             _debug('stb.profile[hdmi_event_reaction]', stb.profile['hdmi_event_reaction']);
