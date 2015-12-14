@@ -1224,22 +1224,22 @@ class AudioClubController extends \Controller\BaseStalkerController {
         );
         
         $tmp = $this->db->getAudioArtistList($query_param);
-        $all_performers = array('0'=>'');
+        $all_performers = array();
         if (!empty($tmp)) {
-            $all_performers += array_combine($this->getFieldFromArray($tmp, 'id'), $this->getFieldFromArray($tmp, 'name'));
+            $all_performers = array_combine($this->getFieldFromArray($tmp, 'id'), $this->getFieldFromArray($tmp, 'name'));
         }
         
         $tmp = $this->db->getAudioGenresList($query_param);
-        $all_genres = array('0'=>'');
+        $all_genres = array();
         if (!empty($tmp)) {
             $tmp = $this->getUCArray($tmp, 'name');
-            $all_genres += array_combine($this->getFieldFromArray($tmp, 'id'), $this->getFieldFromArray($tmp, 'name'));
+            $all_genres = array_combine($this->getFieldFromArray($tmp, 'id'), $this->getFieldFromArray($tmp, 'name'));
         }
         
         $tmp = $this->db->getAudioYearList($query_param);
-        $all_years = array('0'=>'');
+        $all_years = array();
         if (!empty($tmp)) {
-            $all_years += array_combine($this->getFieldFromArray($tmp, 'id'), $this->getFieldFromArray($tmp, 'name'));
+            $all_years = array_combine($this->getFieldFromArray($tmp, 'id'), $this->getFieldFromArray($tmp, 'name'));
         }
 
         if (!empty($this->app['locale']) && substr($this->app['locale'], 0, 2) == 'ru') {
@@ -1251,9 +1251,9 @@ class AudioClubController extends \Controller\BaseStalkerController {
         }
 
         $tmp = $this->db->getAudioCountryList($query_param);
-        $all_countries = array('0'=>'');
+        $all_countries = array();
         if (!empty($tmp)) {
-            $all_countries += array_combine($this->getFieldFromArray($tmp, 'id'), $this->getFieldFromArray($tmp, 'name'));
+            $all_countries = array_combine($this->getFieldFromArray($tmp, 'id'), $this->getFieldFromArray($tmp, 'name'));
         }
         $builder = $this->app['form.factory'];
         $form = $builder->createBuilder('form', $data)
@@ -1269,7 +1269,8 @@ class AudioClubController extends \Controller\BaseStalkerController {
                     'constraints' => array(new Assert\Choice(array('choices' => array_keys($all_genres), 'multiple' => TRUE))),
                     'multiple' => TRUE
                         )
-                )->add('year_id', 'choice', array(
+                )
+                ->add('year_id', 'choice', array(
                     'choices' => $all_years,
                     'constraints' => array(new Assert\Choice(array('choices' => array_keys($all_years))))
                         )
