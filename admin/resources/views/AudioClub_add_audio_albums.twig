@@ -14,20 +14,22 @@
         </div>
         <div class="row">
             <div class="">
-                <div class="box"> <a class="collapse-link">
-                    <div class="box-header">
-                        <div class="box-name">
-                            <div class="row">
-                                <div class="col-xs-10 col-sm-3">
-                                    <span>{{ 'Basic'|trans }}</span>
+                <div class="box">
+                    <a class="collapse-link">
+                        <div class="box-header">
+                            <div class="box-name">
+                                <div class="row">
+                                    <div class="col-xs-10 col-sm-3">
+                                        <span>{{ 'Basic'|trans }}</span>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="box-icons">
+                                <i class="fa fa-chevron-up"></i>
+                            </div>
+                            <div class="no-move"></div>
                         </div>
-                        <div class="box-icons">
-                            <i class="fa fa-chevron-up"></i>
-                        </div>
-                        <div class="no-move"></div>
-                    </div>  </a>
+                    </a>
                     <div class="box-content">
                         <div class="form-group">
                             <label class="col-sm-2 control-label">{{ 'Artist'|trans }}<span class="icon-required">*</span></label>
@@ -149,7 +151,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
                 <div class="box">
@@ -435,8 +436,8 @@
                 $("#bootstrapped-fine-uploader").on('click', ".qq-upload-cancel", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
-                        return false;
-                    });
+                    return false;
+                });
 
                     $("#form_reset").on('click', function (e) {
                         e.stopPropagation();
@@ -496,7 +497,9 @@
                     $("#form_save").on('click', function (e) {
                         var tracksId = [];
                         $("#datatable-1 tr:has(td)").each(function () {
-                            tracksId.push($(this).attr('id').replace(/[^\d]/ig, ''));
+                            if (typeof($(this).attr('id')) != "undefined") {
+                                tracksId.push($(this).attr('id').replace(/[^\d]/ig, ''));
+                            }
                         });
 
                         $("#form_").append("<input type='hidden' name='album_tracks' value='" + JSON.stringify(tracksId) + "'>");
@@ -513,9 +516,7 @@
                     LoadSelect2Script(DemoSelect2);
                     LoadDataTablesScripts(TestTable1);
 		
-	
                 });
-
             }
 
             document.addEventListener("DOMContentLoaded", yelp, false);
