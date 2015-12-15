@@ -49,8 +49,8 @@ function onLoad()
         var info_width = document.getElementById("blueback").offsetWidth+'px'
         info[0].style.width = info_width;
         info[2].style.width = info_width;
-        info[0].innerHTML=parent.t('Current version:')+' <span class="item_name">'+parent.stb.RDir("ImageVersion")+'&nbsp;&nbsp;&nbsp;</span>'+parent.t('Description:')+' <span class="item_name">'+vers[0]+'</span>';
-        info[1].innerHTML=parent.t('Date:')+' <span class="item_name">'+vers[1]+' '+vers[2]+' '+vers[3]+' '+vers[4]+' '+vers[5]+' '+vers[6]+'</span>';
+        info[0].innerHTML=parent.t('Current version:')+' <span class="item_name">'+parent.stb.RDir("ImageVersion")+'&nbsp;&nbsp;&nbsp;</span>'+parent.t('Description:')+' <span class="item_name">'+parent.stb.RDir("ImageDescription")+'</span>';
+        info[1].innerHTML=parent.t('Date:')+' <span class="item_name">'+parent.stb.RDir("ImageDate")+'</span>';
         info[2].innerHTML=parent.t('Available version:')+' <span class="item_name">n/a</span>';
         info[3].innerHTML='<span class="item_name"><br /></span>';
         parent.cont.focus();
