@@ -643,7 +643,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
         array_unshift($genres, array('id' => '*', 'title' => $this->all_title));
 
         $genres = array_map(function($item){
-            $item['alias'] = $item['title'];
+            $item['alias'] = strtolower($item['title']);
             $item['title'] = _($item['title']);
             return $item;
         }, $genres);
