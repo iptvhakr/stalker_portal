@@ -1739,8 +1739,23 @@ class UsersController extends \Controller\BaseStalkerController {
 
             if (is_array($plan_keys) && is_array($plan_names) && count($plan_keys) == count($plan_names) && count($plan_keys) > 0) {
                 $tariff_plans = array_combine($plan_keys, $plan_names);
+                if (!array_key_exists(0 , $tariff_plans)) {
+                    $tariff_plans[0] = '---';
+                }
             } else {
                 $tariff_plans = array(NULL);
+            }
+            if (!empty($data) && is_array($data) && array_key_exists('tariff_plan_id', $data) && (int)$data['tariff_plan_id'] == 0) {
+                $user_default = array_filter(array_combine($plan_keys, $this->getFieldFromArray($tarif_plans, 'user_default')));
+                reset($user_default);
+                list($default_id) = each($user_default);
+                if (!empty($default_id) ) {
+                    settype($default_id, 'int');
+                    if (array_key_exists($default_id, $tariff_plans)){
+                        $data['tariff_plan_id'] = $default_id;
+                        $data['tariff_plan_name'] = $tariff_plans[$default_id];
+                    }
+                }
             }
         }
 
