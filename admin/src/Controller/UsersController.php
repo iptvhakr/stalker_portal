@@ -85,6 +85,12 @@ class UsersController extends \Controller\BaseStalkerController {
         if (empty($this->app['reseller'])) {
             $this->userFields[] = "reseller.name as `reseller_name`";
         }
+
+        $this->app['defTTL'] = array(
+            'send_msg' => 7*24*3600,
+            'send_msg_with_video' => 7*24*3600,
+            'other' => $this->watchdog
+        );
     }
 
     // ------------------- action method ---------------------------------------

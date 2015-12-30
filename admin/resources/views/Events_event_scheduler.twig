@@ -162,6 +162,16 @@
                         checkFields('#s2_schedule_type', e);
                         checkFields('#s2_repeating_interval', e);
                         checkFields('#date_type_day input', e);
+                        switch ($("#s2_event").val()) {
+                                {% if attribute(app, 'defTTL') is defined %}
+                                {% for key, val in app['defTTL'] %}
+                                {% if key != 'other' %}
+                            case '{{ key }}': { $("#ttl").val("{{ val }}"); break; }
+                                {% endif %}
+                                {% endfor %}
+                            default : { $("#ttl").val("{{ app['defTTL']['other'] }}"); break; }
+                                {% endif %}
+                        }
                         return false;
                     });
 
