@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-11-18 16:01+0300\n"
-"PO-Revision-Date: 2015-12-11 10:42+0200\n"
-"Last-Translator: Ivan <massiw@inbox.ru>\n"
+"PO-Revision-Date: 2016-01-04 11:55+0300\n"
+"Last-Translator: Aleksey Zhurbitsky <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
@@ -15,7 +15,7 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.5\n"
+"X-Generator: Poedit 1.5.4\n"
 "X-Poedit-SearchPath-0: ../../../../admin/json_menu\n"
 "X-Poedit-SearchPath-1: ../../../../admin/src\n"
 "X-Poedit-SearchPath-2: ../../../../admin/resources\n"
@@ -24,7 +24,6 @@ msgstr ""
 #: ../../../../admin/src/Controller/TvChannelsController.php:40
 msgid "Yes"
 msgstr "Yes"
-
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:41
 msgid "No"
@@ -475,7 +474,8 @@ msgstr "All"
 
 #: ../../../../admin/src/Controller/EventsController.php:582
 #: ../../../administrator/playlists.php:157
-#: ../../../administrator/events.php:415 ../../../administrator/profile.php:489
+#: ../../../administrator/events.php:415
+#: ../../../administrator/profile.php:489
 #: ../../../administrator/administrators.php:165
 #: ../../../administrator/administrators.php:206
 msgid "Group"
@@ -999,7 +999,8 @@ msgid "Account"
 msgstr "Account"
 
 #: ../../../../admin/src/Controller/UsersController.php:1992
-#: ../../../administrator/msg.php:145 ../../../administrator/claims_log.php:175
+#: ../../../administrator/msg.php:145
+#: ../../../administrator/claims_log.php:175
 #: ../../../administrator/users.php:581 ../../../administrator/msgs.php:116
 msgid "Media"
 msgstr "Media"
@@ -2071,7 +2072,8 @@ msgstr "Block the authorized user of the system"
 msgid "Profile"
 msgstr "Profile"
 
-#: ../../../tools/misctranslations.php:300 ../../../administrator/tasks.php:133
+#: ../../../tools/misctranslations.php:300
+#: ../../../administrator/tasks.php:133
 msgid "Messages"
 msgstr "Messages"
 
@@ -2084,13 +2086,15 @@ msgid "Tasks"
 msgstr "Tasks"
 
 #: ../../../tools/misctranslations.php:302
-#: ../../../tools/misctranslations.php:362 ../../../administrator/index.php:477
+#: ../../../tools/misctranslations.php:362
+#: ../../../administrator/index.php:477
 #: ../../../../admin/json_menu/menu.json:359
 msgid "Settings"
 msgstr "Settings"
 
 #: ../../../tools/misctranslations.php:303
-#: ../../../tools/misctranslations.php:349 ../../../administrator/index.php:158
+#: ../../../tools/misctranslations.php:349
+#: ../../../administrator/index.php:158
 #: ../../../../admin/json_menu/top_menu.json:16
 msgid "Logout"
 msgstr "Logout"
@@ -2337,7 +2341,8 @@ msgstr "Remove firmware update"
 msgid "Change the on/off state firmware update"
 msgstr "Change the on/off state firmware update"
 
-#: ../../../tools/misctranslations.php:378 ../../../administrator/index.php:432
+#: ../../../tools/misctranslations.php:378
+#: ../../../administrator/index.php:432
 #: ../../../../admin/json_menu/menu.json:270
 msgid "Statistics"
 msgstr "Statistics"
@@ -2417,7 +2422,8 @@ msgstr "Logs of complaints by page + filters"
 
 #: ../../../tools/misctranslations.php:398
 #: ../../../administrator/storages.php:185
-#: ../../../administrator/storages.php:218 ../../../administrator/index.php:483
+#: ../../../administrator/storages.php:218
+#: ../../../administrator/index.php:483
 msgid "Storages"
 msgstr "Storages"
 
@@ -2572,7 +2578,8 @@ msgstr "Report by page + filters"
 
 #: ../../../tools/misctranslations.php:440
 #: ../../../administrator/add_itv.php:674
-#: ../../../administrator/add_itv.php:1030 ../../../administrator/index.php:138
+#: ../../../administrator/add_itv.php:1030
+#: ../../../administrator/index.php:138
 #: ../../../../admin/json_menu/menu.json:3
 msgid "IPTV channels"
 msgstr "IPTV channels"
@@ -4763,7 +4770,7 @@ msgstr "Action \"%s\" denied for page \"%s\""
 #: ../../../lib/user.class.php:1127 ../../../lib/user.class.php:1128
 #, php-format
 msgid "video_name_format"
-msgstr "---"
+msgstr "%2$s"
 
 #: ../../../lib/itv.class.php:634
 msgid "DVB"
@@ -4864,7 +4871,8 @@ msgstr "Radio-channel %s set to active because its URL became available."
 msgid "Radio-channel %s set to inactive because its URL are not available."
 msgstr "Radio-channel %s set to inactive because its URL are not available."
 
-#: ../../../lib/audioclub.class.php:19 ../../../../admin/json_menu/menu.json:86
+#: ../../../lib/audioclub.class.php:19
+#: ../../../../admin/json_menu/menu.json:86
 msgid "Artists"
 msgstr "Artists"
 
@@ -5067,8 +5075,8 @@ msgstr "Users TV views statistics per month"
 #: ../../../administrator/setting_common.php:291
 #: ../../../administrator/userlog.php:66
 #: ../../../administrator/subscribe.php:324
-#: ../../../administrator/audio_album.php:390 ../../../administrator/msg.php:69
-#: ../../../administrator/playlists.php:110
+#: ../../../administrator/audio_album.php:390
+#: ../../../administrator/msg.php:69 ../../../administrator/playlists.php:110
 #: ../../../administrator/testers.php:125
 #: ../../../administrator/audio_year.php:154
 #: ../../../administrator/stat_moderators.php:70
@@ -5276,7 +5284,8 @@ msgstr "Total users"
 #: ../../../administrator/add_itv.php:1138
 #: ../../../administrator/audio_track.php:261
 #: ../../../administrator/anecdote.php:177
-#: ../../../administrator/playlist.php:181 ../../../administrator/users.php:623
+#: ../../../administrator/playlist.php:181
+#: ../../../administrator/users.php:623
 #: ../../../administrator/audio_language.php:193
 #: ../../../administrator/admin_groups.php:223
 #: ../../../administrator/audio_genre.php:193
@@ -5623,7 +5632,8 @@ msgstr "View message"
 msgid "Reply"
 msgstr "Reply"
 
-#: ../../../administrator/msg.php:149 ../../../administrator/claims_log.php:177
+#: ../../../administrator/msg.php:149
+#: ../../../administrator/claims_log.php:177
 #: ../../../administrator/msgs.php:115
 msgid "From"
 msgstr "From"
@@ -5689,9 +5699,9 @@ msgstr "Karaoke archive"
 #: ../../../administrator/stat_moderators.php:199
 #: ../../../administrator/users_on_storage.php:135
 #: ../../../administrator/playlist.php:167
-#: ../../../administrator/playlist.php:257 ../../../administrator/reply.php:120
-#: ../../../administrator/tasks.php:130 ../../../administrator/tasks.php:224
-#: ../../../administrator/send_to.php:136
+#: ../../../administrator/playlist.php:257
+#: ../../../administrator/reply.php:120 ../../../administrator/tasks.php:130
+#: ../../../administrator/tasks.php:224 ../../../administrator/send_to.php:136
 #: ../../../administrator/last_closed_tasks.php:209
 #: ../../../administrator/last_closed_tasks.php:263
 #: ../../../administrator/last_closed_tasks.php:317
@@ -6159,7 +6169,8 @@ msgid "Video log"
 msgstr "Video log"
 
 #: ../../../administrator/anecdote.php:106
-#: ../../../administrator/anecdote.php:113 ../../../administrator/index.php:424
+#: ../../../administrator/anecdote.php:113
+#: ../../../administrator/index.php:424
 msgid "Jokes"
 msgstr "Jokes"
 
@@ -6172,7 +6183,8 @@ msgstr "Joke"
 msgid "Playlist"
 msgstr "Playlist"
 
-#: ../../../administrator/users.php:99 ../../../administrator/stbgroups.php:100
+#: ../../../administrator/users.php:99
+#: ../../../administrator/stbgroups.php:100
 #: ../../../administrator/stbgroups.php:106
 msgid "Stb groups"
 msgstr "Stb groups"
@@ -10120,6 +10132,7 @@ msgstr "Access"
 
 msgid "Add a file"
 msgstr "Add a file"
+
 msgid "Add album"
 msgstr "Add album"
 
@@ -10210,6 +10223,7 @@ msgstr "Remove schedule"
 
 msgid "Rest of numbers must be filled manually"
 msgstr "Rest of numbers must be filled manually"
+
 msgid ""
 "STB of moderators  allow to show unpublished video and optionally skipping "
 "advertising"
@@ -10219,6 +10233,7 @@ msgstr ""
 
 msgid "Save channels"
 msgstr "Save channels"
+
 msgid "Schedule switch on"
 msgstr "Schedule switch on"
 
@@ -10254,6 +10269,7 @@ msgstr "The duration of the specified service hours"
 
 msgid "The maximum number of registered channel"
 msgstr "The maximum number of registered channel"
+
 msgid "Timeshift"
 msgstr "Timeshift"
 
@@ -10263,6 +10279,7 @@ msgid ""
 msgstr ""
 "To add more channels, you can delete the unwanted channels in the channel "
 "list"
+
 msgid "Total sessions"
 msgstr "Total sessions"
 
@@ -10293,6 +10310,7 @@ msgstr "all"
 
 msgid "channel numbers filled in automatically"
 msgstr "channel numbers filled in automatically"
+
 msgid "list of scheduled events "
 msgstr "list of scheduled events "
 
@@ -10344,6 +10362,7 @@ msgstr "Languages by priority"
 
 msgid "Manage EPG"
 msgstr "Manage EPG"
+
 msgid "Max count of languages 5"
 msgstr "Max count of languages 5"
 
@@ -10360,6 +10379,7 @@ msgstr ""
 #: ../../../../admin/json_menu/menu.json:301
 msgid "Show EPG"
 msgstr "Show EPG"
+
 msgid "Subscribers statistic"
 msgstr "Subscribers statistic"
 
@@ -10375,6 +10395,7 @@ msgstr ""
 
 msgid "Unublish"
 msgstr "Unublish"
+
 msgid "Update EPG – consider only the new/last changes"
 msgstr "Update EPG – consider only the new/last changes"
 
@@ -10393,6 +10414,7 @@ msgstr "add area"
 
 msgid "channels list"
 msgstr "channels list"
+
 msgid "edit area"
 msgstr "edit area"
 
@@ -10470,6 +10492,7 @@ msgstr "Channels"
 #: ../../../../admin/json_menu/menu.json:63
 msgid "Import from m3u"
 msgstr "Import from m3u"
+
 msgid "Categories"
 msgstr "Categories"
 
