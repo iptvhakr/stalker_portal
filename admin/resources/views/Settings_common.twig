@@ -332,7 +332,11 @@
                           var lengthObj = 0;
                           var form_fields = $("#modalbox_ad input.own_fields:not(:disabled), #s2_stb_type,  #s2_update_type");
                           form_fields.each(function () {
-                              sendData[this.name] = $(this).val();
+                              if (typeof($(this).attr('type')) != 'undefined' && $(this).attr('type').toLowerCase() == 'checkbox') {
+                                  sendData[this.name] = $(this).prop('checked') ? 1: 0;
+                              } else {
+                                  sendData[this.name] = $(this).val();
+                              }
                               if ($(this).val() || !$(this).is("[required]")) {
                                   lengthObj++;
                               }

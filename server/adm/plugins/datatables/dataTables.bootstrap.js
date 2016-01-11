@@ -5,10 +5,16 @@ $.extend(true, $.fn.dataTable.defaults, {
     "sPaginationType": "bootstrap",
     "iDisplayLength": 50,
 	"fnInitComplete": function (oSettings) {
-	var th_length=$('#datatable-1 th').length;
-	var tr_width=$('#datatable-1 tr').width();
-	var plus_width=tr_width;	
-	if (tr_width==null || plus_width <=980 || plus_width >1280) {} else {$("body").css({width: 295+ plus_width});}
+        var th_length=$('#datatable-1 th').length;
+        var tr_width=$('#datatable-1 tr').width();
+        var plus_width=tr_width;
+        if (tr_width==null || plus_width <=980 || plus_width >1280) {} else {$("body").css({width: 295+ plus_width});}
+
+        $(oSettings.nTableWrapper).on("input keypress keyup", "input", function (e) {
+            this.value = this.value.replace(/^\s+/ig, '').replace(/\s{2}/ig, ' ');
+            return;
+        });
+
 	},
     "fnDrawCallback": function (oSettings) {
 		var table = $('#dataTable-1').DataTable();
@@ -204,4 +210,27 @@ if ( $.fn.DataTable.TableTools ) {
 		}
 	} );
 }
+
+/*// Call datatables, and return the API to the variable for use in our code
+// Binds datatables to all elements with a class of datatable
+var dtable = $(".dataTable").dataTable().api();
+
+// Grab the datatables input box and alter how it is bound to events
+$(".dataTables_filter input")
+    .unbind("input keypress keyup") // Unbind previous default bindings
+    .bind("input keypress keyup", function(e) { // Bind our desired behavior
+        console.log(jn);
+        dtable.search(this.value.replace(/^\s+/ig, '').replace(/\s{2}$/, ' ')).draw();
+        return;
+    });*/
+
+/*$('.dataTables_filter input').on('keyup click input keypress', function () {
+    var val = $(".dataTables_filter input").val().replace(/\s/g, '');
+    console.log(val);
+    filterGlobal(val);
+});
+
+function filterGlobal(val) {
+    $(".dataTable").dataTable().api().search(val, true, false).draw();
+}*/
 

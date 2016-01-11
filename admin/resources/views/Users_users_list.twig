@@ -206,7 +206,7 @@
                                 <label class="col-sm-3 control-label col-sm-offset-1">TTL</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-6">
-                                        <input class="form-control" type="text" title="" value="" name="ttl">
+                                        <input class="form-control" type="text" title="" value="" name="ttl" id="ttl">
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
                                         <span class="small txt-default">{{ 'Term relevance of action, is measured in seconds'|trans }}</span>
@@ -529,6 +529,16 @@
 
                 $('#filter_param').css({left: "10px", top: "2px"});
                 $('#filter_param').parent().css({minHeight: '42px'});
+                switch ($("#s2_event").val()) {
+                        {% if attribute(app, 'defTTL') is defined %}
+                        {% for key, val in app['defTTL'] %}
+                        {% if key != 'other' %}
+                    case '{{ key }}': { $("#ttl").val("{{ val }}"); break; }
+                        {% endif %}
+                        {% endfor %}
+                    default : { $("#ttl").val("{{ app['defTTL']['other'] }}"); break; }
+                        {% endif %}
+                }
 
                 $(document).on('click', "a.main_ajax", function (e) {
                     e.stopPropagation();
@@ -580,6 +590,16 @@
                 $("[data-list-type], [data-event-type]").hide().find('input, select, textarea').attr('disabled', 'disabled');
                 $(document).on('change', "#s2_user_list_type, #s2_event", function (e) {
                     checkFields($(this), e);
+                    switch ($("#s2_event").val()) {
+                            {% if attribute(app, 'defTTL') is defined %}
+                            {% for key, val in app['defTTL'] %}
+                            {% if key != 'other' %}
+                        case '{{ key }}': { $("#ttl").val("{{ val }}"); break; }
+                            {% endif %}
+                            {% endfor %}
+                        default : { $("#ttl").val("{{ app['defTTL']['other'] }}"); break; }
+                            {% endif %}
+                    }
                 });
 
                 $(document).on('change', "#s2_msg_pattern", function (e) {
