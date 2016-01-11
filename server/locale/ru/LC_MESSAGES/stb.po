@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-12-30 17:36+0300\n"
-"PO-Revision-Date: 2016-01-11 12:38+0300\n"
+"PO-Revision-Date: 2016-01-11 12:53+0300\n"
 "Last-Translator: Aleksey Zhurbitsky <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -694,7 +694,7 @@ msgstr "Ошибка при перемещении файла из %s в %s"
 #: ../../../../admin/src/Controller/VideoClubController.php:824
 #: ../../../../admin/src/Controller/AudioClubController.php:924
 msgid "image file has not been deleted"
-msgstr "Вайл изображения не был удален"
+msgstr "Файл изображения не был удален"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:825
 #: ../../../../admin/src/Controller/AudioClubController.php:925
