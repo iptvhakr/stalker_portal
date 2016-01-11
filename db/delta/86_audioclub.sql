@@ -50,7 +50,7 @@ INSERT INTO `audio_genres` (`name`, `modified`) VALUES
 ('Jazz', NOW()),
 ('Disco', NOW()),
 ('Indie', NOW()),
-('Country', NOW()),
+('Country Music', NOW()),
 ('Classical', NOW()),
 ('Latin Music', NOW()),
 ('Easy Listening', NOW()),

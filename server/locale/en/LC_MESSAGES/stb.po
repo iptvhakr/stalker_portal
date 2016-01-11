@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-11-18 16:01+0300\n"
-"PO-Revision-Date: 2016-01-04 11:55+0300\n"
+"PO-Revision-Date: 2016-01-11 16:17+0300\n"
 "Last-Translator: Aleksey Zhurbitsky <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -1072,7 +1072,7 @@ msgstr "This number is already in use"
 
 #: ../../../../admin/src/Controller/InfoportalController.php:251
 msgid "Closest free number"
-msgstr "Yes"
+msgstr "Closest free number"
 
 #: ../../../../admin/src/Controller/LoginController.php:21
 msgid "User is undefined"
@@ -7945,7 +7945,7 @@ msgstr "JOKES"
 
 #: ../../../lang/stb.php:203
 msgid "GOTO"
-msgstr "GOTO"
+msgstr "GO TO"
 
 #: ../../../lang/stb.php:204
 msgid "LIKE"
@@ -8037,7 +8037,7 @@ msgstr "Memo"
 
 #: ../../../lang/stb.php:232
 msgid "Goto channel"
-msgstr "Goto channel"
+msgstr "Go to channel"
 
 #: ../../../lang/stb.php:233
 msgid "Close"
