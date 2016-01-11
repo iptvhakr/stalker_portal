@@ -122,7 +122,7 @@ class UsersModel extends \Model\BaseStalkerModel {
     }
 
     public function getAllTariffPlans() {
-        return $this->mysqlInstance->select('id, name')->from('tariff_plan')->orderby('name')->get()->all();
+        return $this->mysqlInstance->select('id, name, user_default')->from('tariff_plan')->orderby('name')->get()->all();
     }
     
     public function getSubChannelsDB($id){

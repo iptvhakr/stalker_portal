@@ -94,6 +94,7 @@
                     e.stopPropagation();
                     e.preventDefault();
                     var _this = $(this);
+                    _this.val(_this.val().replace(/^\s+/ig, '').replace(/\s{2}$/, ' '));
                     _this.next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
                     $('#modalbox button[type="submit"]').removeAttr("disabled");
                     $.ajax({

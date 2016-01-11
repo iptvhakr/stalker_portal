@@ -93,6 +93,11 @@ class EventsController extends \Controller\BaseStalkerController {
             array("id" => 6 , "title" => $this->setlocalization('Sat')),
             array("id" => 7 , "title" => $this->setlocalization('Sun'))
         );
+        $this->app['defTTL'] = array(
+            'send_msg' => 7*24*3600,
+            'send_msg_with_video' => 7*24*3600,
+            'other' => \Config::get('watchdog_timeout') * 2
+        );
     }
 
     // ------------------- action method ---------------------------------------
