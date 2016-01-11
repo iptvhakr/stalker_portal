@@ -923,7 +923,7 @@ class UsersController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'manageList';
         $error = $this->setlocalization('Failed');
-        $check = $this->db->getConsoleGroup(array('Sg.name' => $this->postData['name']));
+        $check = $this->db->getConsoleGroup(array('where' => array('Sg.name' => $this->postData['name'])), 'COUNT');
         if (empty($check)) {
             $data['id'] = $this->db->insertConsoleGroup(array('name' => $this->postData['name']));
             $data['name'] = $this->postData['name'];
