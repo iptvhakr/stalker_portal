@@ -1,7 +1,7 @@
 
 <html>
     <head>
-        
+
 <script>
 var iid=1; var flb=false;
 var flesh=new Object();
@@ -60,11 +60,13 @@ function onLoad()
         mid--;
 }
 
-function submit()
+function submit( start )
 {
-    if(parent.stbUpdate.getStatus() == 21){
+    var st = parent.stbUpdate.getStatus();
+    if(st == 21 && start){
         var activeBank = parent.stbUpdate.getActiveBank();
-        if(model.toUpperCase() == 'MAG250'){
+        model = model.toUpperCase();
+        if(model !== 'MAG200'){
             if(activeBank == 1){
                 parent.stbUpdate.startUpdate(0, turl);
             }else{
@@ -204,7 +206,7 @@ function on(){
         </div>
     <div id="footer">
         <input id="i4" type="button" name="chb" value="" onClick="parent.nextMenu('g_update.html');"/>
-        <input id="i0" type="button" name="chb" value="" onClick="parent.conf(parent.t('After updating the device will reboot automatically. Start updating?'),'i'+iid,'erMbeck();cont.contentWindow.submit()');" style="visibility: hidden;"/>
+        <input id="i0" type="button" name="chb" value="" onClick="parent.conf(parent.t('After updating the device will reboot automatically. Start updating?'),'i'+iid,'erMbeck();cont.contentWindow.submit(true)');" style="visibility: hidden;"/>
     </div>
 </body>
 </html>
