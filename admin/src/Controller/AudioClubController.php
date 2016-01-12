@@ -890,7 +890,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
     }
 
     public function delete_cover() {
-        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['cover_id'])) {
+        if (!$this->isAjax || $this->method != 'POST' || (empty($this->postData['cover_id']) && empty($this->postData['file_name']))) {
             $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
@@ -901,21 +901,27 @@ class AudioClubController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'deleteCover';
         $error = $this->setLocalization('Failed');
-        $album = $this->db->getAudioAlbumsList(array(
-            'select' => array('audio_albums.id as id', 'audio_albums.cover as cover'),
-            'where' => array( 'audio_albums.id'=> $this->postData['cover_id']),
-            'order' => array('audio_albums.id'=>'ASC')
-        ));
+        $album = array();
+        if (!empty($this->postData['cover_id'])) {
+            $album = $this->db->getAudioAlbumsList(array(
+                'select' => array('audio_albums.id as id', 'audio_albums.cover as cover'),
+                'where' => array( 'audio_albums.id'=> $this->postData['cover_id']),
+                'order' => array('audio_albums.id'=>'ASC')
+            ));
+        }
 
-        $file_name = (!empty($album[0]['cover']) ? $album[0]['cover']: (!empty($this->postData['file_name']) ? $this->postData['file_name']: ''));
+        $file_name = (count($album) != 0 && !empty($album[0]['cover']) ? $album[0]['cover']: (!empty($this->postData['file_name']) ? $this->postData['file_name']: ''));
 
-        $path = realpath(PROJECT_PATH . "/../misc/audio_covers/").'/' . ceil($album[0]['id']/100).'/';
-        if (!is_file($path . $file_name)) {
+        if (count($album) != 0 && !empty($album[0]['cover'])){
+            $path = realpath(PROJECT_PATH . "/../misc/audio_covers/").'/' . ceil($album[0]['id']/100).'/';
+        } else {
             $path = realpath(PROJECT_PATH . "/../misc/audio_covers/").'/new/';
         }
 
         if (!empty($file_name)) {
-            $this->db->updateCover($this->postData['cover_id'], '');
+            if (!empty($this->postData['cover_id'])) {
+                $this->db->updateCover($this->postData['cover_id'], '');
+            }
             try{
                 unlink($path . $file_name);
                 $data['msg'] = $this->setlocalization('Deleted');
