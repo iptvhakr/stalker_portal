@@ -241,13 +241,18 @@ class RadioController extends \Controller\BaseStalkerController {
         }
         $data = array();
         $data['action'] = 'checkRadioNumber';
-        $error = $this->setlocalization('Number is not unique');
-        if ($this->db->searchOneRadioParam(array('number' => trim($this->postData['param']), 'id<>' => trim($this->postData['radioid'])))) {
-            $data['chk_rezult'] = $this->setlocalization('Number is not unique');
+        if (is_numeric($this->postData['param'])) {
+            $error = $this->setlocalization('Number is not unique');
+            if ($this->db->searchOneRadioParam(array('number' => trim($this->postData['param']), 'id<>' => trim($this->postData['radioid'])))) {
+                $data['chk_rezult'] = $this->setlocalization('Number is not unique');
+            } else {
+                $data['chk_rezult'] = $this->setlocalization('Number is unique');
+                $error = '';
+            }
         } else {
-            $data['chk_rezult'] = $this->setlocalization('Number is unique');
-            $error = '';
+            $error = $data['chk_rezult'] = $this->setLocalization('This field can contain only numbers');
         }
+
         $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
@@ -262,7 +267,10 @@ class RadioController extends \Controller\BaseStalkerController {
                 ->add('id', 'hidden')
                 ->add('number', 'text', array(
                             'constraints' => array(
-                                new Assert\NotBlank()
+                                new Assert\NotBlank(),
+                                new Assert\Regex(array(
+                                    'pattern' => '/^\d+$/',
+                                ))
                             ),
                             'required' => TRUE)
                 )

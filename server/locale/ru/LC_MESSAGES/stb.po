@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-12 18:07+0300\n"
-"PO-Revision-Date: 2016-01-12 18:07+0300\n"
+"POT-Creation-Date: 2016-01-12 18:48+0300\n"
+"PO-Revision-Date: 2016-01-12 18:49+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -55,14 +55,14 @@ msgstr "Не мониторится"
 #: ../../../../admin/src/Controller/TvChannelsController.php:51
 #: ../../../../admin/src/Controller/TvChannelsController.php:1909
 #: ../../../../admin/src/Controller/RadioController.php:24
-#: ../../../../admin/src/Controller/RadioController.php:385
+#: ../../../../admin/src/Controller/RadioController.php:393
 msgid "errors occurred"
 msgstr "Обнаружены ошибки"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:52
 #: ../../../../admin/src/Controller/TvChannelsController.php:1903
 #: ../../../../admin/src/Controller/RadioController.php:25
-#: ../../../../admin/src/Controller/RadioController.php:383
+#: ../../../../admin/src/Controller/RadioController.php:391
 msgid "no errors"
 msgstr "Ошибок нет"
 
@@ -394,7 +394,7 @@ msgid "URL"
 msgstr "URL"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1603
-#: ../../../../admin/src/Controller/RadioController.php:362
+#: ../../../../admin/src/Controller/RadioController.php:370
 msgid "Monitoring status"
 msgstr "Статус мониторинга"
 
@@ -917,6 +917,10 @@ msgstr "Добавить радио"
 #: ../../../../admin/src/Controller/RadioController.php:101
 msgid "Edit radio"
 msgstr "Редактировать радио"
+
+#: ../../../../admin/src/Controller/RadioController.php:253
+msgid "This field can contain only numbers"
+msgstr "Это поле может содержать только цифры"
 
 #: ../../../../admin/src/Controller/UsersController.php:228
 #: ../../../../admin/src/Controller/UsersController.php:254
@@ -4399,6 +4403,14 @@ msgstr "Номер \"%number%\" уже используется"
 #: ../../../tools/misctranslations.php:916
 msgid "Name \"%name%\" already exists"
 msgstr "Имя \"%name%\" уже существует"
+
+#: ../../../tools/misctranslations.php:917
+msgid "Number is unique"
+msgstr "Номер уникален"
+
+#: ../../../tools/misctranslations.php:918
+msgid "Number is not unique"
+msgstr "Номер не уникален"
 
 #: ../../../adm/js/js_translate.php:38
 msgid "Wait"
@@ -9253,8 +9265,8 @@ msgstr "Отчет по измененным статусам приставок
 msgid "Schedule of publishing"
 msgstr "Расписание публикации"
 
-msgid "Should be unique"
-msgstr "Должен быть уникальным"
+msgid "Should be unique, can contain only numbers"
+msgstr "Должен быть уникальным, может содержать только цифры"
 
 msgid "Show categories that won't see the advertising"
 msgstr "Указать категории для которых реклама отображаться не будет"
@@ -10599,6 +10611,9 @@ msgstr "Внешний вид"
 #: ../../../../admin/json_menu/top_menu.json:3
 msgid "Administrator"
 msgstr "Администратор"
+
+#~ msgid "Should be unique"
+#~ msgstr "Должен быть уникальным"
 
 #~ msgid "Swith on"
 #~ msgstr "Включить"
