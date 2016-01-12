@@ -241,26 +241,27 @@ class UsersModel extends \Model\BaseStalkerModel {
     }
     
     public function getTotalRowsLogList($where = array(), $like = array()) {
+        $this->mysqlInstance->count()->from('user_log');
         if (!empty($this->reseller_id)) {
             $where['reseller_id'] = $this->reseller_id;
+            $this->mysqlInstance->join('users', 'user_log.mac', 'users.mac', 'LEFT');
         }
-        $this->mysqlInstance->count()->from('user_log')
-                ->join('users', 'user_log.mac', 'users.mac', 'LEFT')
-                ->where($where);
+        $this->mysqlInstance->where($where);
         if (!empty($like)) {
             $this->mysqlInstance->like($like, 'OR');
-        }        
+        }
         return $this->mysqlInstance->get()->counter();
     }
     
     public function getLogList($param) {
-        if (!empty($this->reseller_id)) {
-            $param['where']['reseller_id'] = $this->reseller_id;
-        }
         if (!empty($param['select'])) {
             $this->mysqlInstance->select($param['select']);
         }
-        $this->mysqlInstance->from('user_log')->join('users', 'user_log.mac', 'users.mac', 'LEFT');
+        $this->mysqlInstance->from('user_log');
+        if (!empty($this->reseller_id)) {
+            $param['where']['reseller_id'] = $this->reseller_id;
+            $this->mysqlInstance->join('users', 'user_log.mac', 'users.mac', 'LEFT');
+        }
         if (array_key_exists('where', $param)) {
             $this->mysqlInstance->where($param['where']);
         }

@@ -363,13 +363,7 @@ class UsersController extends \Controller\BaseStalkerController {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
-        if ($this->method == 'POST' && !empty($this->postData['form']['id'])) {
-            $id = $this->postData['form']['id'];
-        } else if ($this->method == 'GET' && !empty($this->data['id'])) {
-            $id = $this->data['id'];
-        } else {
-            return $this->app->redirect('add-users');
-        }
+
         $query_param = array(
             'select' => array("*"),
             'where' => array(),
@@ -378,7 +372,17 @@ class UsersController extends \Controller\BaseStalkerController {
         );
 
         $query_param['select'] = array_merge($query_param['select'], array_diff($this->userFields, $query_param['select']));
-        $query_param['where']['users.id'] = $id;
+
+        if ($this->method == 'POST' && !empty($this->postData['form']['id'])) {
+            $query_param['where']['users.id'] = $this->postData['form']['id'];
+        } elseif ($this->method == 'GET' && !empty($this->data['id'])) {
+            $query_param['where']['users.id'] = $this->data['id'];
+        } elseif ($this->method == 'GET' && !empty($this->data['mac'])) {
+            $query_param['where']['users.mac'] = $this->data['mac'];
+        } else {
+            return $this->app->redirect('add-users');
+        }
+
         $query_param['order'] = 'users.id';
         $user = $this->db->getUsersList($query_param);
         $this->user = (is_array($user) && count($user) > 0) ? $user[0] : array();
@@ -402,13 +406,13 @@ class UsersController extends \Controller\BaseStalkerController {
         }
         $this->app['form'] = $form->createView();
         $this->app['userEdit'] = TRUE;
-        $this->app['userID'] = $id;
+        $this->app['userID'] = $this->user['id'];
         
         $users_tarif_plans = array_map(function($val){
             $val['optional'] = (int)$val['optional'];
             $val['subscribed'] = (int)$val['subscribed'];
             return $val;
-        }, $this->db->getTarifPlanByUserID($id));
+        }, $this->db->getTarifPlanByUserID($this->user['id']));
         
         $this->app['userTPs'] = $users_tarif_plans;
 
@@ -1171,7 +1175,7 @@ class UsersController extends \Controller\BaseStalkerController {
         $filds_for_select = array(
             'time' => "CAST(user_log.`time` AS CHAR) as `time`",
             'mac' => "user_log.`mac` as `mac`",
-            'uid' => "users.`id` as `uid`",
+            'uid' => "user_log.`uid` as `uid`",
             'action' => "user_log.`action` as `action`",
             'param' => "user_log.`param` as `param`"
         );
