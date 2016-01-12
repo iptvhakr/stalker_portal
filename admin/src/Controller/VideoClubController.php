@@ -1685,8 +1685,8 @@ class VideoClubController extends \Controller\BaseStalkerController {
         foreach ($this->app['videoGenres'] as $row) {
             $genres[$row['id']] = $row['title'];
         }
-        
-        $cat_genres = array(0 => '');
+
+        $cat_genres = array(''=>'');
         foreach ($this->app['catGenres'] as $row) {
             $cat_genres[$row['id']] = $row['category_name'];
         }
