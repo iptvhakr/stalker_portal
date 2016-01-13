@@ -914,3 +914,5 @@ _('Field "Channel name" cannot be empty');
 _('Field "Channel number" cannot be empty');
 _('Number "%number%" is already in use');
 _('Name "%name%" already exists');
+_('Number is unique');
+_('Number is not unique');
