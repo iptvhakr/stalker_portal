@@ -138,8 +138,14 @@ class RadioController extends \Controller\BaseStalkerController {
             $query_param['limit']['limit'] = FALSE;
         }
 
-        if (empty($query_param['order'])) {
-            
+        if (!empty($query_param['order']) && array_key_exists('monitoring_status', $query_param['order'])) {
+            $tmp = array(
+                'enable_monitoring' => $query_param['order']['monitoring_status'],
+                'monitoring_status' => $query_param['order']['monitoring_status'],
+                'monitoring_status_updated' => 'DESC'
+            );
+            unset($query_param['order']['monitoring_status']);
+            $query_param['order'] = array_merge($query_param['order'], $tmp);
         }
         
         $response['data'] = $this->db->getRadioList($query_param);
