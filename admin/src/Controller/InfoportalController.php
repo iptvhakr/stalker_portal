@@ -40,10 +40,13 @@ class InfoportalController extends \Controller\BaseStalkerController {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
-        
+
+        if (!empty($this->data['filters']['service']) && !in_array($this->data['filters']['service'], $this->getFieldFromArray($this->allServices, 'id'))) {
+            return $this->app->redirect($this->app['action_alias']);
+        }
+
         $this->app['allServices'] = $this->allServices;
-        
-        
+
         $list = $this->phone_book_list_json();
         
         $this->app['allPhone'] = $list['data'];
@@ -51,17 +54,19 @@ class InfoportalController extends \Controller\BaseStalkerController {
         $this->app['recordsFiltered'] = $list['recordsFiltered'];
         
         $attribute = $this->getPhoneBoockDropdownAttribute();
-        
+        $attribute_filter = FALSE;
         if (empty($this->data['filters']['service'])) {
             if (empty($this->data['filters'])) {
                 $this->data['filters'] = array('service' => 'main');
             } else {
                 $this->data['filters']['service'] = 'main';
             }
-            $this->checkDropdownAttribute($attribute);
         } else {
-            $this->checkDropdownAttribute($attribute, "-filters-{$this->data['filters']['service']}");
+            $attribute_filter = "-filters-{$this->data['filters']['service']}";
         }
+
+        call_user_func_array(array($this, 'checkDropdownAttribute'), array(&$attribute, $attribute_filter));
+
         $this->app['filters'] = $this->data['filters'];
         
         $this->app['dropdownAttribute'] = $attribute;
@@ -347,7 +352,7 @@ class InfoportalController extends \Controller\BaseStalkerController {
         $return = array();
 
         if (!empty($this->data['filters'])) {
-            if (array_key_exists('service', $this->data['filters']) && !empty($this->data['filters']['service'])) {
+            if (array_key_exists('service', $this->data['filters']) && !empty($this->data['filters']['service']) && in_array($this->data['filters']['service'], $this->getFieldFromArray($this->allServices, 'id'))) {
                 $return['service'] = $this->data['filters']['service'];
             } else {
                 $return['service'] = 'main';
