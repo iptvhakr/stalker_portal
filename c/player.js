@@ -1680,44 +1680,6 @@ player.prototype.event_callback = function(event, params){
         case 32: // HDMI on
         {
 
-            if (stb.type == 'MAG200'){
-                break;
-            }
-
-            if (!stb.hdmi_on){
-                window.clearTimeout(this.hdmi_reaction_timer);
-            }
-
-            _debug('stb.profile[hdmi_event_reaction]', stb.profile['hdmi_event_reaction']);
-            _debug('stb.power_off', stb.power_off);
-            _debug('module.blocking.on', module.blocking.on);
-            _debug('stb.hdmi_on', stb.hdmi_on);
-            _debug('stb.profile[standby_on_hdmi_off]', stb.profile['standby_on_hdmi_off']);
-
-            if (stb.profile['hdmi_event_reaction'] == 1 && !module.blocking.on && !stb.hdmi_on){
-
-                stb.hdmi_on = true;
-
-                if (stb.power_off){
-                    stb.power_off = false;
-                    stb.StandBy(0);
-                }
-
-                if (stb.cur_place == 'tv' && self.is_tv){
-
-                    _debug('module.tv.on', module.tv.on);
-
-                    if (module.tv.on) {
-                        module.tv.cur_page = 0;
-                        module.tv.load_data();
-                    } else {
-                        stb.player.play_last();
-                    }
-                }
-
-
-            }
-            break;
         }
         case 33: // HDMI off
         {
@@ -1736,7 +1698,7 @@ player.prototype.event_callback = function(event, params){
 
             if (stb.profile['hdmi_event_reaction'] == 1 && !module.blocking.on){
 
-                var hdmi_reaction_timeout = (stb.profile['hdmi_event_reaction'] == 1 ? 3 : stb.profile['hdmi_event_reaction']) * 1000;
+                var hdmi_reaction_timeout = (stb.profile['hdmi_event_reaction'] == 1 || !stb.hdmi_on ? 5 : stb.profile['hdmi_event_reaction']) * 1000;
 
                 _debug('hdmi_reaction_timeout', hdmi_reaction_timeout);
 
@@ -1759,6 +1721,26 @@ player.prototype.event_callback = function(event, params){
                         if (stb.profile['standby_on_hdmi_off'] && !stb.power_off){
                             stb.power_off = true;
                             stb.StandBy(1);
+                        }
+                    }else{
+
+                        stb.hdmi_on = true;
+
+                        if (stb.power_off) {
+                            stb.power_off = false;
+                            stb.StandBy(0);
+                        }
+
+                        if (stb.cur_place == 'tv' && self.is_tv) {
+
+                            _debug('module.tv.on', module.tv.on);
+
+                            if (module.tv.on) {
+                                module.tv.cur_page = 0;
+                                module.tv.load_data();
+                            } else {
+                                stb.player.play_last();
+                            }
                         }
                     }
 
