@@ -321,7 +321,7 @@
                 $("#modalbox_ad select option").removeAttr('selected');
                 $("#modalbox_ad select option").each(function () {
                     if ($(this).val().toString() == data.data[0]['stream_zone'].toString()) {
-                        $(this).attr('selected', 'selected');
+                        $(this).prop('selected', 'selected');
                     }
                 });
             }

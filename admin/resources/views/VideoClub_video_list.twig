@@ -264,8 +264,10 @@
                         data: $(this).data(),
                         success: function (data) {
                             if (data.success) {
-								notty('<span>{{ 'Finish'|trans }}!</span>','success');
-								$('#modalbox_ad').hide();
+                                if (typeof(data.nothing_to_do) == 'undefined' || !data.nothing_to_do) {
+                                    notty('<span>{{ 'Finish'|trans }}!</span>', 'success');
+                                }
+                                $('#modalbox_ad').hide();
 								$('#modalbox_ad').find('input[type="hidden"]').val('').next().text('');
 								$('#modalbox_ad').find('textarea').val('');
                                 for (var key in data) {
@@ -375,44 +377,6 @@
             });
         }
     };
-       
-    var videoremove = function (obj){
-        var cRow = $(obj).closest('tr');
-        $('#datatable-1').DataTable().row(cRow).remove().draw( false );
-
-    };
-    var videoenable = function (obj){
-        $(obj).removeData('video_on_date');
-        var cCeill = $(obj).closest('tr').find('td[data-filter="status"]');
-        if (cCeill.length > 0) {
-            $('#datatable-1').DataTable().cell( cCeill ).data($(obj).data('status')).draw();
-        } else {
-            dataTableSetData($(obj).data('videoid'), "tasks", $(obj).data('status'));
-        }
-        $(obj).attr('href', $(obj).attr('href').replace('enable-video', 'disable-video'));
-        $(obj).text($(obj).data('title'));
-    };
-    var videodisable = function (obj){
-        var cCeill = $(obj).closest('tr').find('td[data-filter="status"]');
-        if (cCeill.length > 0) {
-            $('#datatable-1').DataTable().cell( cCeill ).data('{{ 'Unpublished'|trans }}').draw();
-        } else {
-            dataTableSetData($(obj).data('videoid'), "tasks", '{{ 'Unpublished'|trans }}');
-        }
-        $(obj).attr('href', $(obj).attr('href').replace('disable-video', 'enable-video'));
-        $(obj).text($(obj).data('title'));
-    };
-    
-    var createtasks = function (obj){
-        $(obj).removeData('sendData');
-        var newTitle = "<a href='?"+ $(obj).data('task_id') +"'>№" + $(obj).data('task_id')+ "</a>";
-        var cCeill = $(obj).closest('tr').closest('tr').find('td[data-filter="tasks"]');
-        if (cCeill.length > 0) {
-            $('#datatable-1').DataTable().cell( cCeill ).data(newTitle).draw();
-        } else {
-            dataTableSetData($(obj).data('videoid'), "tasks", newTitle);
-        }
-    };
 
     function closeModalBox(){
         $("#modalbox").hide();
@@ -497,22 +461,6 @@
         $('#modalbox_ad').hide();
         $(obj).closest('div.open').removeClass('open');
     }
-    
-    function dataTableSetData(video_id, field, new_data){
-        return false; // bug
-        var rowNum = null, cellNum = null;
-        $.each($('#datatable-1').DataTable().context[0].aoData, function(index, tdData){
-            if (tdData._aData[0].display.search('data-videoid="'+video_id+'"') != -1) {
-                rowNum = index;
-                $.each(tdData.anCells, function(in_index, in_data){
-                    if ($(in_data).attr('data-filter') == field) {
-                        cellNum = in_index;
-                        return false;
-                    }
-                });
-                return false;
-            }
-        });
-    }
+
 </script>
 {% endblock %} 

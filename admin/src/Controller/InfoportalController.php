@@ -40,10 +40,13 @@ class InfoportalController extends \Controller\BaseStalkerController {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
-        
+
+        if (!empty($this->data['filters']['service']) && !in_array($this->data['filters']['service'], $this->getFieldFromArray($this->allServices, 'id'))) {
+            return $this->app->redirect($this->app['action_alias']);
+        }
+
         $this->app['allServices'] = $this->allServices;
-        
-        
+
         $list = $this->phone_book_list_json();
         
         $this->app['allPhone'] = $list['data'];
@@ -51,17 +54,19 @@ class InfoportalController extends \Controller\BaseStalkerController {
         $this->app['recordsFiltered'] = $list['recordsFiltered'];
         
         $attribute = $this->getPhoneBoockDropdownAttribute();
-        
+        $attribute_filter = FALSE;
         if (empty($this->data['filters']['service'])) {
             if (empty($this->data['filters'])) {
                 $this->data['filters'] = array('service' => 'main');
             } else {
                 $this->data['filters']['service'] = 'main';
             }
-            $this->checkDropdownAttribute($attribute);
         } else {
-            $this->checkDropdownAttribute($attribute, "-filters-{$this->data['filters']['service']}");
+            $attribute_filter = "-filters-{$this->data['filters']['service']}";
         }
+
+        call_user_func_array(array($this, 'checkDropdownAttribute'), array(&$attribute, $attribute_filter));
+
         $this->app['filters'] = $this->data['filters'];
         
         $this->app['dropdownAttribute'] = $attribute;
@@ -246,18 +251,25 @@ class InfoportalController extends \Controller\BaseStalkerController {
         if (count($item) != 0 && !empty($item[0]['num']) && ((int)$item[0]['num']) > 0) {
             if (empty($this->postData['id'])) {
                 $operation = 'insertPhoneBoock';
+                $available = !((bool) $this->db->getTotalRowsPhoneBoockList($this->postData['phoneboocksource'], array('num' => $this->postData['num'])));
             } else {
                 $operation = 'updatePhoneBoock';
+                $available = !((bool) $this->db->getTotalRowsPhoneBoockList($this->postData['phoneboocksource'], array('id<>' => $this->postData['id'],'num' => $this->postData['num'])));
                 $item['id'] = $this->postData['id'];
             }
             unset($item[0]['id']);
             unset($item[0]['phoneboocksource']);
 
-            $search = $this->db->getTotalRowsPhoneBoockList($this->postData['phoneboocksource'], array('num' => $this->postData['num']));
-            if ( ((int) $search) < 1 ){
-                if ($result = call_user_func_array(array($this->db, $operation), array($this->postData['phoneboocksource'], $item))) {
+            if ( $available ){
+                $result = call_user_func_array(array($this->db, $operation), array($this->postData['phoneboocksource'], $item));
+
+                if (is_numeric($result)) {
                     $error = '';
+                    if ($result === 0) {
+                        $data['nothing_to_do'] = TRUE;
+                    }
                 }
+
             } else {
                 $error = $this->setLocalization('This number is already in use') . '. ';
                 $error .= $this->setLocalization('Closest free number') . " - " . $this->db->getFirstFreeNumber($this->postData['phoneboocksource']);
@@ -313,8 +325,13 @@ class InfoportalController extends \Controller\BaseStalkerController {
         }
         unset($item[0]['id']);
 
-        if ($result = call_user_func_array(array($this->db, $operation), $item)) {
-            $error = '';    
+        $result = call_user_func_array(array($this->db, $operation), $item);
+
+        if (is_numeric($result)) {
+            $error = '';
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
         }
         
         $response = $this->generateAjaxResponse($data, $error);
@@ -347,7 +364,7 @@ class InfoportalController extends \Controller\BaseStalkerController {
         $return = array();
 
         if (!empty($this->data['filters'])) {
-            if (array_key_exists('service', $this->data['filters']) && !empty($this->data['filters']['service'])) {
+            if (array_key_exists('service', $this->data['filters']) && !empty($this->data['filters']['service']) && in_array($this->data['filters']['service'], $this->getFieldFromArray($this->allServices, 'id'))) {
                 $return['service'] = $this->data['filters']['service'];
             } else {
                 $return['service'] = 'main';

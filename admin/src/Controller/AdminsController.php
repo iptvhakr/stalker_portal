@@ -257,7 +257,7 @@ class AdminsController extends \Controller\BaseStalkerController {
             } else if (!empty($this->postData['login']) && $this->postData['login'] == 'admin') {
                 $data['msg'] = $error;
             } else {
-                $data['msg'] = $error = $this->setLocalization("Nothing to do");
+                $data['nothing_to_do'] = TRUE;
             }
         } else {
             $data['msg'] = $error = $this->setLocalization("Not all required fields are filled");
@@ -402,12 +402,14 @@ class AdminsController extends \Controller\BaseStalkerController {
         }
 
         unset($item[0]['id']);
-
-        if ($result = call_user_func_array(array($this->db, $operation), array($item))) {
-            $error = '';    
+        $result = call_user_func_array(array($this->db, $operation), array($item));
+        if (is_numeric($result)) {
+            $error = '';
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
         }
-        
-        
+
         $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
@@ -585,8 +587,12 @@ class AdminsController extends \Controller\BaseStalkerController {
 
         unset($item[0]['id']);
 
-        if ($result = call_user_func_array(array($this->db, $operation), array($item))) {
+        $result = call_user_func_array(array($this->db, $operation), array($item));
+        if (is_numeric($result)) {
             $error = '';
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
         }
 
         $response = $this->generateAjaxResponse($data, $error);

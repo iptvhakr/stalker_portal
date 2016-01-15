@@ -552,8 +552,12 @@ class VideoClubController extends \Controller\BaseStalkerController {
         
         $error = $this->setLocalization('Information not available');
         if ($this->db->videoLogWrite($video, 'video deleted')) {
-            if ($this->db->removeVideoById($media_id)){
-                $error='';    
+            $result = $this->db->removeVideoById($media_id);
+            if (is_numeric($result)) {
+                $error = '';
+                if ($result === 0) {
+                    $data['nothing_to_do'] = TRUE;
+                }
             }
         }
         
@@ -579,10 +583,15 @@ class VideoClubController extends \Controller\BaseStalkerController {
         
         $error = $this->setLocalization('Information not available');;
         if ($this->db->videoLogWrite($video, 'Unpublished')) {
+
             $this->db->deleteVideoTask(array("video_id" => $media_id));
-            if ($this->db->disableVideoById($media_id)){
+            $result = $this->db->disableVideoById($media_id);
+            if (is_numeric($result)) {
                 $this->db->toggleDisableForHDDevices($video, 0);
-                $error='';    
+                $error = '';
+                if ($result === 0) {
+                    $data['nothing_to_do'] = TRUE;
+                }
             }
         }
         
@@ -613,9 +622,15 @@ class VideoClubController extends \Controller\BaseStalkerController {
             $error = !((bool) $this->db->deleteVideoTask(array("video_id" => $media_id)));
             $video = $this->db->getVideoById($media_id);
             
-            if ($this->db->videoLogWrite($video, 'Published') && $this->db->enableVideoById($media_id)) {
-                $this->db->toggleDisableForHDDevices($video, 1);
-                $error = '';
+            if ($this->db->videoLogWrite($video, 'Published')) {
+                $result = $this->db->enableVideoById($media_id);
+                if (is_numeric($result)) {
+                    $this->db->toggleDisableForHDDevices($video, 1);
+                    $error = '';
+                    if ($result === 0) {
+                        $data['nothing_to_do'] = TRUE;
+                    }
+                }
             }
             $data['status'] = "<span class='txt-success'>" . $this->setlocalization('Published') . "<span>";
         } else {
@@ -1072,10 +1087,14 @@ class VideoClubController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'removeTasks';
         $error = $this->setlocalization('Failed');
-        
-        if ($this->db->deleteVideoTask(array('id'=>$this->postData['taskid']))) {
+
+        $result = $this->db->deleteVideoTask(array('id'=>$this->postData['taskid']));
+        if (is_numeric($result)) {
             $error = '';
-        } 
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
+        }
         $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
@@ -1095,9 +1114,13 @@ class VideoClubController extends \Controller\BaseStalkerController {
         $error = $this->setlocalization('Failed');
         $ad = new \VclubAdvertising();
         
-        if ($ad->delById($this->postData['adsid'])) {
+        $result = $ad->delById($this->postData['adsid']);
+        if (is_numeric($result)) {
             $error = '';
-        } 
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
+        }
         $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));

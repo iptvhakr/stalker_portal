@@ -1127,7 +1127,8 @@ class StatisticsController extends \Controller\BaseStalkerController {
                 $this->db->deleteClaimsLogs(array('id'=>$this->getFieldFromArray($log, 'id')));
                 $error = '';
             } else {
-                $data['msg'] = $error = $this->setLocalization("Nothing in this category");
+                $data['msg'] = $this->setLocalization("Nothing in this category");
+                $error = '';
             }
         }
 

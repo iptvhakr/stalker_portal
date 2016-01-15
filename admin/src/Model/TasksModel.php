@@ -80,7 +80,7 @@ class TasksModel extends \Model\BaseStalkerModel {
     }
     
     public function updateSimpleTasks($task_id, $table, $params) {
-        return $this->mysqlInstance->update($table, $params, array('id' => $task_id)) || 1;
+        return $this->mysqlInstance->update($table, $params, array('id' => $task_id))->total_rows();
     }
     
     public function getVideoById($id) {

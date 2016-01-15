@@ -148,11 +148,14 @@ class SettingsController extends \Controller\BaseStalkerController {
             $query_param['order']['id'] = 'asc';
         }
         $commonList = $this->db->getCommonList($query_param);
-        $response['data'] = array_map(function($val){
+        $convert = ($this->method == 'GET');
+        $response['data'] = array_map(function($val) use($convert){
             $val['enable'] = (int)$val['enable'];
-            $val['require_image_date'] = (int) strtotime($val['require_image_date']);
-            if ($val['require_image_date'] < 0) {
-                $val['require_image_date'] = 0;
+            if ($convert) {
+                $val['require_image_date'] = (int) strtotime($val['require_image_date']);
+                if ($val['require_image_date'] < 0) {
+                    $val['require_image_date'] = 0;
+                }
             }
             return $val;
         }, $commonList);
@@ -190,10 +193,13 @@ class SettingsController extends \Controller\BaseStalkerController {
         unset($item[0]['id']);
         $error = $this->setlocalization('Failed');
         
-        if ($result = call_user_func_array(array($this->db, $operation), $item)) {
-            $error = '';    
+        $result = call_user_func_array(array($this->db, $operation), $item);
+        if (is_numeric($result)) {
+            $error = '';
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
         }
-        
         $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));

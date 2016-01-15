@@ -736,7 +736,7 @@ class UsersController extends \Controller\BaseStalkerController {
             } else {
                 $event->sendCutOff();
             }
-            $data['title'] = ($this->postData['userstatus'] ? 'Отключить' : 'Включить');
+            $data['title'] = ($this->postData['userstatus'] ? $this->setLocalization("on") : $this->setLocalization("off"));
             $data['status'] = ($this->postData['userstatus'] ? '<span class="">' . $this->setLocalization("on") . '</span>' : '<span class="">' . $this->setLocalization("off") . '</span>');
             $data['userstatus'] = (int) !$this->postData['userstatus'];
         }
@@ -952,15 +952,20 @@ class UsersController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'manageList';
         $error = $this->setlocalization('Failed');
-        $check = $this->db->getConsoleGroup(array('where' => array('Sg.name' => $this->postData['name'])));
+        $check = $this->db->getConsoleGroup(array('where' => array('Sg.name' => $this->postData['name'], 'Sg.id<>' => $this->postData['id'])));
         if (empty($check)) {
-            $this->db->updateConsoleGroup(array('name' => $this->postData['name']), array('id' => $this->postData['id']));
-            $error = '';
-            $data['id'] = $this->postData['id'];
-            $data['name'] = $this->postData['name'];
-            $data['reseller_id'] = $this->admin->getResellerID();
+            $result = $this->db->updateConsoleGroup(array('name' => $this->postData['name']), array('id' => $this->postData['id']));
+            if (is_numeric($result)) {
+                $error = '';
+                $data['id'] = $this->postData['id'];
+                $data['name'] = $this->postData['name'];
+                $data['reseller_id'] = $this->admin->getResellerID();
+                if ($result === 0) {
+                    $data['nothing_to_do'] = TRUE;
+                }
+            }
         } else {
-            $data['msg'] = $error = $this->setLocalization("Name is busy or has been used old group name");
+            $data['msg'] = $error = $this->setLocalization("Name already used");
         }
 
         $response = $this->generateAjaxResponse($data, $error);
@@ -1146,7 +1151,7 @@ class UsersController extends \Controller\BaseStalkerController {
         }
         $data = array();
         $data['action'] = 'checkConsoleItem';
-        $error = $this->setlocalization($this->setlocalization('Name already used'));
+        $error = $this->setlocalization('Name already used');
         $mac = \Middleware::normalizeMac($this->postData['mac']);
         $data['jjj'] = $check_in_group = $this->db->getConsoleGroupList(array('where' => array('mac' => $mac), 'order' => 'mac', 'limit' => array('limit' => 1)));
         $check_in_users = $this->db->getUsersList(array('select' => array("*", "users.id as uid"), 'where' => array('mac' => $mac), 'order' => 'mac'));
@@ -1409,7 +1414,7 @@ class UsersController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'addFilter';
-        $error = $this->setlocalization($this->setlocalization('Not exists'));
+        $error = $this->setlocalization('Not exists');
 
         $filter_set = \Filters::getInstance();
         $filter_set->setResellerID($this->app['reseller']);
@@ -1448,7 +1453,7 @@ class UsersController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'saveFilterData';
-        $error = $this->setlocalization($this->setlocalization('Not enough data'));
+        $error = $this->setlocalization('Not enough data');
 
         $params = $this->postData['filter_set'];
 
@@ -1491,13 +1496,17 @@ class UsersController extends \Controller\BaseStalkerController {
                 $filter_data['params']['for_all'] = (int)(array_key_exists('for_all', $params) && !empty($params['for_all']));
 
                 $return_id = 0;
-                if ($return_id = call_user_func_array(array($this->db, $operation."FilterSet"), $filter_data)) {
+
+                $result = call_user_func_array(array($this->db, $operation."FilterSet"), $filter_data);
+                if (is_numeric($result)) {
                     $error = '';
-                     if ($operation == 'insert') {
-                         $data['return_id'] = $return_id;
-                     }
-                } else {
-                    $error = $this->setlocalization($this->setlocalization('Nothing to do'));
+                    if ($result === 0) {
+                        $data['nothing_to_do'] = TRUE;
+                        $data['msg'] = $this->setlocalization('Nothing to do');
+                    }
+                    if ($operation == 'insert') {
+                        $data['return_id'] = $result;
+                    }
                 }
             }
         }
@@ -1592,10 +1601,14 @@ class UsersController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'manageList';
-        $error = $this->setlocalization($this->setlocalization('Failed'));
+        $error = $this->setlocalization('Failed');
 
-        if ($error = $this->db->deleteFilter($this->postData['id'])) {
+        $result = $this->db->deleteFilter($this->postData['id']);
+        if (is_numeric($result)) {
             $error = '';
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
         }
 
         $response = $this->generateAjaxResponse($data, $error);
@@ -1614,10 +1627,14 @@ class UsersController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'manageList';
-        $error = $this->setlocalization($this->setlocalization('Failed'));
+        $error = $this->setlocalization('Failed');
 
-        if ($this->db->toggleFilterFavorite($this->postData['id'], (int) $this->postData['favorite'] == 1 ? 0: 1)) {
+        $result = $this->db->toggleFilterFavorite($this->postData['id'], (int) $this->postData['favorite'] == 1 ? 0: 1);
+        if (is_numeric($result)) {
             $error = '';
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
         }
 
         $response = $this->generateAjaxResponse($data, $error);

@@ -44,11 +44,10 @@
                 }
             
                 $(document).on('click', '#iptv_list_move_send', function(e){
-                    showModalBox();
                     e.stopPropagation();
                     e.preventDefault();
                     var dataForSend = new Array();
-                
+
                     $.each(channelList, function(){
                         if (this.number != this.old_number && !this.empty) {
                             dataForSend.push({'id': this.id, 'number': this.number, 'old_number': this.old_number});
@@ -56,7 +55,10 @@
                         this.old_number = this.number;
                     });
 
-                    ajaxPostSend('{{ app['controller_alias'] }}/move-apply', {data: dataForSend});
+                    if (dataForSend.length) {
+                        showModalBox();
+                        ajaxPostSend('{{ app['controller_alias'] }}/move-apply', {data: dataForSend});
+                    }
                     $("#modalbox").data('complete', 1);
                     return false;
                 });
@@ -161,7 +163,6 @@
         
         function showModalBox(){
             notty('<span>{{ 'Request is being processed'|trans }}...</span>','notification');
-            
         }
         
         var manageChannel = function (obj) {
@@ -169,8 +170,9 @@
         };
         
         var manageChannelError = function(data){
-            notty('<span>{{ 'Error'|trans }}! ' + (data.error? data.error: '') +  '</span>','error');
-           
+            if (typeof(data.nothing_to_do) == 'undefined' || !data.nothing_to_do) {
+                notty('<span>{{ 'Error'|trans }}! ' + (data.error ? data.error : '') + '</span>', 'error');
+            }
         };
         
         var checkChanges = function(){

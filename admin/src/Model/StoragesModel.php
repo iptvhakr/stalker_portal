@@ -71,7 +71,7 @@ class StoragesModel extends \Model\BaseStalkerModel {
     }
     
     public function updateStorageCache($param, $id = array()){
-        return $this->mysqlInstance->update('storage_cache', $param, $id)->total_rows() || 1;
+        return $this->mysqlInstance->update('storage_cache', $param, $id)->total_rows();
     }
     
     public function getNoCustomVideo() {
@@ -83,7 +83,7 @@ class StoragesModel extends \Model\BaseStalkerModel {
     }
     
     public function updateStorages($param, $id){
-        return $this->mysqlInstance->update('storages', $param, array('id'=>$id))->total_rows() || 1;
+        return $this->mysqlInstance->update('storages', $param, array('id'=>$id))->total_rows();
     }
     
     public function insertStorages($param){
@@ -134,79 +134,8 @@ class StoragesModel extends \Model\BaseStalkerModel {
             $result = $this->mysqlInstance->get()->all();
             return count($result);
         } 
-//        print_r($this->mysqlInstance->get());
-//        exit;
+
         return $this->mysqlInstance->get()->all();
-    }
-    
-    //------------------------------------------------
-    public function getContryByZoneId($id) {
-        return $this->mysqlInstance->from("countries_in_zone")->where(array('zone_id'=>$id))->get()->all('country_id');
-    }
-    
-    public function updateZone($param, $id){
-        return $this->mysqlInstance->update('stream_zones', $param, array('id'=>$id))->total_rows() || 1;
-    }
-    
-    public function insertZone($param){
-        return $this->mysqlInstance->insert('stream_zones', $param)->insert_id();
-    }
-    
-    public function deleteZone($id){
-        return $this->mysqlInstance->delete('stream_zones', array('id' => $id))->total_rows();
-    }
-    
-    public function deleteCountriesInZone($zone_id){
-        return $this->mysqlInstance->delete('countries_in_zone', array('zone_id' => $zone_id))->total_rows();
-    }
-    
-    public function insertCountriesInZone($param){
-        return $this->mysqlInstance->insert('countries_in_zone', $param)->insert_id();
-    }
-    
-    public function getServersTotalRows($where = array(), $like = array()) {
-        $params = array(
-            /*'select' => array("*"),*/
-            'where' => $where,
-            'like' => array(),
-            'order' => array()
-        );
-        if (!empty($like)) {
-            $params['like'] = $like;
-        }
-        return $this->getServersList($params, TRUE);
-    }
-    
-    public function getServersList($param, $counter = FALSE) {
-        if (!empty($param['select'])) {
-            $this->mysqlInstance->select($param['select']);
-        }
-        $this->mysqlInstance->from("`streaming_servers` as S_S")
-                        ->join("stream_zones as S_Z", "S_S.stream_zone", "S_Z.id", "LEFT")
-                        ->where($param['where']);
-        if (!empty($param['like'])) {
-            $this->mysqlInstance->like($param['like'], 'OR');
-        }
-        if (!empty($param['order'])) {
-            $this->mysqlInstance->orderby($param['order']);
-        }
-        if (!empty($param['limit']['limit'])) {
-            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
-        }
-        
-        return ($counter) ? $this->mysqlInstance->count()->get()->counter() : $this->mysqlInstance->get()->all();
-    }
-    
-    public function updateServers($param, $id){
-        return $this->mysqlInstance->update('streaming_servers', $param, array('id'=>$id))->total_rows() || 1;
-    }
-    
-    public function insertServers($param){
-        return $this->mysqlInstance->insert('streaming_servers', $param)->insert_id();
-    }
-    
-    public function deleteServers($id){
-        return $this->mysqlInstance->delete('streaming_servers', array('id' => $id))->total_rows();
     }
     
 }

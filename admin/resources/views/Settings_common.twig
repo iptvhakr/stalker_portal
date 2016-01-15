@@ -403,23 +403,25 @@
             $("#modalbox_ad input").removeAttr('disabled');
             $("select[id^='s2_']").select2("destroy").select2({minimumResultsForSearch: -1});
             $("#modalbox_ad").show();
-        }
+        };
         
         var manageCommon = function (obj) {
-            notty('<span>{{ 'Finish'|trans }}!</span>','success');
-			 $("#modalbox_ad").hide();
-            var msg_type = typeof(obj.msg);
-            msg_type = msg_type.toLowerCase();
-            if (msg_type != 'undefined'){
-                if (msg_type == 'string') {
-                    notty('<span>' + obj.msg + '</span>');
-                } else if (msg_type == 'array' || msg_type == 'object') {
-                    for (var i in obj.msg){
-                        notty('<br><span>' + obj.msg[i] + '</span>');
+            if (typeof(obj.nothing_to_do) == 'undefined' || !obj.nothing_to_do) {
+                notty('<span>{{ 'Finish'|trans }}!</span>', 'success');
+                var msg_type = typeof(obj.msg);
+                msg_type = msg_type.toLowerCase();
+                if (msg_type != 'undefined') {
+                    if (msg_type == 'string') {
+                        notty('<span>' + obj.msg + '</span>');
+                    } else if (msg_type == 'array' || msg_type == 'object') {
+                        for (var i in obj.msg) {
+                            notty('<br><span>' + obj.msg[i] + '</span>');
+                        }
                     }
                 }
+                $('#datatable-1').DataTable().ajax.reload();
             }
-            $('#datatable-1').DataTable().ajax.reload();
+            $("#modalbox_ad").hide();
         };
         
         function closeModalBox(){

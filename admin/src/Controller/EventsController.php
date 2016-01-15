@@ -493,7 +493,9 @@ class EventsController extends \Controller\BaseStalkerController {
                 $data['return_id'] = $return_id;
             }
         } else {
-            $data['msg'] = $error = $this->setlocalization($this->setlocalization('Nothing to do'));
+            $data['msg'] = $this->setlocalization($this->setlocalization('Nothing to do'));
+            $data['nothing_to_do'] = TRUE;
+            $error = '';
         }
 
         $response = $this->generateAjaxResponse($data, $error);
@@ -709,11 +711,15 @@ class EventsController extends \Controller\BaseStalkerController {
         }
         unset($params[0]['id']);
 
-        if (call_user_func_array(array($this->db, $operation."ScheduleEvents"), $params)) {
+        $result = call_user_func_array(array($this->db, $operation."ScheduleEvents"), $params);
+        if (is_numeric($result)) {
             $error = '';
-        } else {
-            $data['msg'] = $error = $this->setlocalization($this->setlocalization('Nothing to do'));
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+                $data['msg'] = $this->setlocalization($this->setlocalization('Nothing to do'));
+            }
         }
+
 
         $response = $this->generateAjaxResponse($data, $error);
 

@@ -334,21 +334,24 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
         
         $data = array();
         $data['action'] = 'manageServerList';
-        $karaoke = array($this->postData);
+        $item = array($this->postData);
         $error = 'error';
         if (empty($this->postData['id'])) {
             $operation = 'insertServers';
         } else {
             $operation = 'updateServers';
-            $karaoke['id'] = $this->postData['id'];
+            $item['id'] = $this->postData['id'];
         }
-        unset($karaoke[0]['id']);
+        unset($item[0]['id']);
 
-        if ($result = call_user_func_array(array($this->db, $operation), $karaoke)) {
-            $error = '';    
+        $result = call_user_func_array(array($this->db, $operation), $item);
+        if (is_numeric($result)) {
+            $error = '';
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
         }
-        
-        
+
         $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
