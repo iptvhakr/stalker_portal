@@ -1026,7 +1026,7 @@
                 return;
             }
 
-            if (parseInt(item.use_http_tmp_link) == 1 || parseInt(item.use_load_balancing) == 1){
+            if (parseInt(item.use_http_tmp_link) == 1 || parseInt(item.use_load_balancing) == 1 || stb.user['force_ch_link_check']){
 
                 stb.player.on_create_link = function(result){
                     _debug('tv.on_create_link', result);

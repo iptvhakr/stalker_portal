@@ -2402,7 +2402,7 @@ player.prototype.play = function(item){
                 stb.setFrontPanel(item.number);
             }
 
-            if (!this.active_time_shift && !this.active_local_time_shift && (parseInt(item.use_http_tmp_link) == 1 || parseInt(item.use_load_balancing) == 1)){
+            if (!this.active_time_shift && !this.active_local_time_shift && (parseInt(item.use_http_tmp_link) == 1 || parseInt(item.use_load_balancing) == 1 || stb.user['force_ch_link_check'])){
                 var self = this;
                 stb.player.on_create_link = function(result){
                     _debug('player.on_create_link', result);
@@ -3380,7 +3380,7 @@ player.prototype.switch_channel = function(dir, show_info, do_not_invert){
         return;
     }
 
-    if (parseInt(item.use_http_tmp_link) == 1 || parseInt(item.use_load_balancing) == 1){
+    if (parseInt(item.use_http_tmp_link) == 1 || parseInt(item.use_load_balancing) == 1 || stb.user['force_ch_link_check']){
         this.on_create_link = function(result){
             _debug('player.tv.on_create_link', result);
 

@@ -148,7 +148,7 @@ class RESTApiResourceTvChannels extends RESTApiCollection
 
             $urls = \Itv::getUrlsForChannel($channel['id']);
 
-            if (!empty($urls) && $urls[0]['use_http_tmp_link'] == 0 && $urls[0]['use_load_balancing'] == 0){
+            if (!empty($urls) && $urls[0]['use_http_tmp_link'] == 0 && $urls[0]['use_load_balancing'] == 0 && !\Config::getSafe('force_ch_link_check', false)){
                 $new_channel['url'] = $urls[0]['url'];
             }else{
                 $new_channel['url'] = "";

@@ -166,7 +166,7 @@
         this._get_link_for_channel = function(channel, callback){
             _debug('pvr_local._get_link_for_channel', channel);
 
-            if (parseInt(channel.use_http_tmp_link) == 1 || parseInt(channel.use_load_balancing) == 1){
+            if (parseInt(channel.use_http_tmp_link) == 1 || parseInt(channel.use_load_balancing) == 1 || stb.user['force_ch_link_check']){
 
                 stb.load(
                     {
@@ -202,7 +202,7 @@
 
             var url = channel.url;
 
-            if (parseInt(channel.use_http_tmp_link) != 1 && parseInt(channel.use_load_balancing) != 1
+            if (parseInt(channel.use_http_tmp_link) != 1 && parseInt(channel.use_load_balancing) != 1 && !stb.user['force_ch_link_check']
                 && (!url || url.indexOf('http://') == -1 && url.indexOf('rtp://') == -1 && url.indexOf('udp://') == -1)){
 
                 stb.notice.show(get_word('rec_not_supported_format'));
