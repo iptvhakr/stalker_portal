@@ -1123,7 +1123,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
             
             $this->response['data'][$i]['open'] = 1;
 
-            if($this->response['data'][$i]['use_http_tmp_link']){
+            if($this->response['data'][$i]['use_http_tmp_link'] || Config::getSafe('force_ch_link_check', false)){
                 $this->response['data'][$i]['cmd'] = 'ffrt http://'.Config::get('stream_proxy').'/ch/'.$this->response['data'][$i]['id'];
             }
 
@@ -1579,7 +1579,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
 
         $user_channel_links = array_map(function($link){
 
-            if ($link['use_http_tmp_link'] == 1 || $link['use_load_balancing'] == 1){
+            if ($link['use_http_tmp_link'] == 1 || $link['use_load_balancing'] == 1 || Config::getSafe('force_ch_link_check', false)){
                 if (preg_match("/(\w+)\s+http:/", $link['url'], $match)){
                     $solution = $match[1];
                 }else{
@@ -1657,7 +1657,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
 
         $user_channel_links = array_map(function($link){
 
-            if ($link['use_http_tmp_link'] == 1 || $link['use_load_balancing'] == 1){
+            if ($link['use_http_tmp_link'] == 1 || $link['use_load_balancing'] == 1 || Config::getSafe('force_ch_link_check', false)){
                 if (preg_match("/(\w+)\s+http:/", $link['url'], $match)){
                     $solution = $match[1];
                 }else{
