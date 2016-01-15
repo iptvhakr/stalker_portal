@@ -13,7 +13,7 @@ class SettingsModel extends \Model\BaseStalkerModel {
     }
     
     public function setCurrentTheme($theme) {
-        return $this->mysqlInstance->update('settings', array('default_template' => $theme)) || 1;
+        return $this->mysqlInstance->update('settings', array('default_template' => $theme))->total_rows();
     }
     
     public function getTotalRowsCommonList($where = array(), $like = array()) {
@@ -46,7 +46,7 @@ class SettingsModel extends \Model\BaseStalkerModel {
 
     public function updateCommon($param, $where) {
         $where = (is_array($where) ? $where : array('id' => $where));
-        return $this->mysqlInstance->update("image_update_settings", $param, $where)->total_rows() || 1;
+        return $this->mysqlInstance->update("image_update_settings", $param, $where)->total_rows();
     }
 
     public function insertCommon($param) {

@@ -319,7 +319,7 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
 
     public function updateEPG($param, $where) {
         $where = (is_array($where) ? $where : array('id' => $where));
-        return $this->mysqlInstance->update("epg_setting", $param, $where)->total_rows() || 1;
+        return $this->mysqlInstance->update("epg_setting", $param, $where)->total_rows();
     }
 
     public function insertEPG($param) {

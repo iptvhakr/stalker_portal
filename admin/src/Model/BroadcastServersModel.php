@@ -105,7 +105,7 @@ class BroadcastServersModel extends \Model\BaseStalkerModel {
     }
     
     public function updateServers($param, $id){
-        return $this->mysqlInstance->update('streaming_servers', $param, array('id'=>$id))->total_rows() || 1;
+        return $this->mysqlInstance->update('streaming_servers', $param, array('id'=>$id))->total_rows();
     }
     
     public function insertServers($param){

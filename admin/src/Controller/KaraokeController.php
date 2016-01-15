@@ -160,7 +160,7 @@ class KaraokeController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'manageKaraoke';
         $karaoke = array($this->postData);
-        $error = 'error';
+        $error = $this->setLocalization('error');
         if (empty($this->postData['id'])) {
             $operation = 'insertKaraoke';
             $karaoke[0]['added'] = 'NOW()';
@@ -176,10 +176,13 @@ class KaraokeController extends \Controller\BaseStalkerController {
         }
         unset($karaoke[0]['id']);
 
-        if ($result = call_user_func_array(array($this->db, $operation), $karaoke)) {
-            $error = '';    
+        $result = call_user_func_array(array($this->db, $operation), $karaoke);
+        if (is_numeric($result)) {
+            $error = '';
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
         }
-        
         
         $response = $this->generateAjaxResponse($data, $error);
 
@@ -252,12 +255,9 @@ class KaraokeController extends \Controller\BaseStalkerController {
         ob_start();
         if (($master = new \KaraokeMaster()) && $item[0]['protocol'] != 'custom'){
             $good_storages = $master->getAllGoodStoragesForMediaFromNet($media_id, true);
-
             $this->db->updateKaraoke(array('status' => (int)(count($good_storages) > 0)), $this->postData['karaokeid']);
-
         }
         ob_end_clean();
-
 
         if (!empty($good_storages) || $item[0]['protocol'] == 'custom') {
 

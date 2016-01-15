@@ -390,6 +390,9 @@ class AudioClubController extends \Controller\BaseStalkerController {
             $error = '';
             $data['id'] = $this->postData['id'];
             $data['name'] = $this->postData['name'];
+        } else {
+            $data['nothing_to_do'] = TRUE;
+            $error = '';
         }
 
         $response = $this->generateAjaxResponse($data, $error);
@@ -526,6 +529,9 @@ class AudioClubController extends \Controller\BaseStalkerController {
             $error = '';
             $data['id'] = $this->postData['id'];
             $data['name'] = $this->postData['name'];
+        } else {
+            $data['nothing_to_do'] = TRUE;
+            $error = '';
         }
 
         $response = $this->generateAjaxResponse($data, $error);
@@ -662,6 +668,9 @@ class AudioClubController extends \Controller\BaseStalkerController {
             $error = '';
             $data['id'] = $this->postData['id'];
             $data['name'] = $this->postData['name'];
+        } else {
+            $data['nothing_to_do'] = TRUE;
+            $error = '';
         }
 
         $response = $this->generateAjaxResponse($data, $error);
@@ -798,6 +807,9 @@ class AudioClubController extends \Controller\BaseStalkerController {
             $error = '';
             $data['id'] = $this->postData['id'];
             $data['name'] = $this->postData['name'];
+        } else {
+            $data['nothing_to_do'] = TRUE;
+            $error = '';
         }
 
         $response = $this->generateAjaxResponse($data, $error);
@@ -1063,7 +1075,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
     
-    public function audio_tracks_manage($param) {
+    public function audio_tracks_manage() {
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData)) {
             $this->app->abort(404, $this->setLocalization('Page not found'));
         }
@@ -1100,7 +1112,6 @@ class AudioClubController extends \Controller\BaseStalkerController {
         if ($result = call_user_func_array(array($this->db, $operation), $track)) {
             $error = '';    
         }
-        
         
         $response = $this->generateAjaxResponse($data, $error);
 

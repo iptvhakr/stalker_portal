@@ -360,6 +360,7 @@
                         var status = json.data[i].status;
                         var state = json.data[i].state;
                         var expire_billing_date = json.data[i].expire_billing_date;
+                        var mac = json.data[i].mac;
 
                         json.data[i].now_playing_type = (typeof (mediaTypeName[json.data[i].now_playing_type]) != 'undefined' ? mediaTypeName[json.data[i].now_playing_type]: '--');
                         json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
@@ -373,7 +374,7 @@
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/users-consoles-logs?id=" + id + "'>\n\
+                                                                <a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/users-consoles-logs?mac=" + mac + "'>\n\
                                                                     <span>{{ 'Details'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
@@ -446,7 +447,7 @@
                         } else {
                             json.data[i]['created'] = '---';
                         }
-                        var mac = json.data[i].mac;
+
                         json.data[i].mac = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-users?id='+ id +'" >'+ mac +'</a>';
                         {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
                         json.data[i].reseller_name = '<a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-user-to-reseller" data-id="' + id + '" data-reseller_id="' + reseller_id + '">'+ reseller_name +'</a>';
@@ -961,12 +962,12 @@
         {% if attribute(app, 'enableBilling') is defined and app.enableBilling %}
         function setExpireDateModal(obj){
             $('#modalbox').find('.modal-header-name span').text('{{ 'Expire billing date'|trans }}');
-            $('#modalbox').find('.devoops-modal-inner').append("<form class='form-horizontal' role='form' action='{{ app.request.baseUrl }}/{{ app.controller_alias }}/set-expire-billing-date'>");
+            $('#modalbox').find('.devoops-modal-inner').empty().append("<form class='form-horizontal' role='form' action='{{ app.request.baseUrl }}/{{ app.controller_alias }}/set-expire-billing-date'>");
             $('#modalbox').find('form')
                     .append("<input type='hidden' class='own_fields' name='setaction' value='set'>")
                     .append("<input type='hidden' class='own_fields' name='userid' value='" + obj.data('userid') + "'>")
                     .append("<input type='text' readonly='readonly' class='datepicker col-sm-11 own_fields' style='margin-left: 15px;' data-date-format='dd-mm-yy' name='expire_date' id='expire_date_datepicker'>");
-            $('#modalbox').find('.devoops-modal-bottom')
+            $('#modalbox').find('.devoops-modal-bottom').empty()
                     .append('<button class="btn btn-default col-sm-4 pull-left" type="reset" id="reset_enable_date">{{ 'Cancel'|trans }}</button>')
                     .append('<button class="btn btn-success col-sm-4 pull-right" type="submit" id="apply_enable_date">{{ 'Set date'|trans }}</button>');
             $('#modalbox').find('.devoops-modal').width(400);

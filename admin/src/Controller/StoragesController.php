@@ -179,9 +179,13 @@ class StoragesController extends \Controller\BaseStalkerController {
         } else {
             $names = array();
         }
-        if ($this->db->updateStorageCache(array('changed' => '0000-00-00 00:00:00'), $names)){
+        $result = $this->db->updateStorageCache(array('changed' => '0000-00-00 00:00:00'), $names);
+        if (is_numeric($result)) {
             $data['msg'] = $this->setlocalization('A cache has been reset') . (!empty($names)? ' ' . $this->setlocalization('for') . ' ' .implode(', ', $names): ' ' . $this->setlocalization('for all servers'));
             $error = '';
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
         }
 
         $response = $this->generateAjaxResponse($data, $error);
@@ -295,10 +299,15 @@ class StoragesController extends \Controller\BaseStalkerController {
             $storage[0]['wowza_dvr'] = (int)(!empty($storage[0]['wowza_dvr']) && $storage[0]['wowza_dvr'] != 'off' && !empty($storage[0]['for_records']));
             $storage[0]['fake_tv_archive'] = (int)(!empty($storage[0]['fake_tv_archive']) && $storage[0]['fake_tv_archive'] != 'off' && !empty($storage[0]['for_records']));
 
-            if ($result = call_user_func_array(array($this->db, $operation), $storage)) {
-                $error = '';    
+            $result = call_user_func_array(array($this->db, $operation), $storage);
+            if (is_numeric($result)) {
+                $error = '';
                 $data['msg'] = $this->setlocalization('Saved');
+                if ($result === 0) {
+                    $data['nothing_to_do'] = TRUE;
+                }
             }
+
         } else {
             $error = $data['msg'] = $this->setlocalization('Fill in the required fields');
         }

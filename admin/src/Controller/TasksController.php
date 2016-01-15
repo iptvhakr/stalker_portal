@@ -512,12 +512,16 @@ class TasksController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'manageTasks';
         $data['id'] = $this->postData['taskid'];
-        $error = 'Error';  
+        $error = $this->setLocalization('Error');
         
         $func = "changeState".implode('', array_map(function($val){return ucfirst($val);}, explode("_", $this->postData['task_type'])));
         
-        if ($result = call_user_func_array(array($this, $func), array($this->postData))) {
-            $error = '';                
+        $result = call_user_func_array(array($this, $func), array($this->postData));
+        if (is_numeric($result)) {
+            $error = '';
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
         }
         
         $response = $this->generateAjaxResponse($data, $error);
@@ -743,10 +747,11 @@ class TasksController extends \Controller\BaseStalkerController {
             $task_params['rejected'] = 1;
         }
 
-        if ($this->db->updateSimpleTasks($param['taskid'], 'moderator_tasks', $task_params) && $this->db->videoLogWrite($video, serialize($text), $moderator_id)) {
-            return TRUE;
+        $result = $this->db->updateSimpleTasks($param['taskid'], 'moderator_tasks', $task_params);
+        if (is_numeric($result)) {
+            $this->db->videoLogWrite($video, serialize($text), $moderator_id);
         }
-        return FALSE;
+        return $result;
     }
 
     private function getVideoTaskDetailInfoFields() {

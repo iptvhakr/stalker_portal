@@ -481,7 +481,7 @@ class StatisticsModel extends \Model\BaseStalkerModel {
         } else {
             return 0;
         }
-        return $this->mysqlInstance->delete('media_claims_log')->total_rows();
+        return $this->mysqlInstance->delete('media_claims_log', array())->total_rows();
     }
 
     public function cleanDailyClaims(){

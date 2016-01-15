@@ -47,7 +47,7 @@ class KaraokeModel extends \Model\BaseStalkerModel {
 
     public function updateKaraoke($param, $where){
         $where = (is_array($where)? $where: array('id'=>$where));
-        return $this->mysqlInstance->update('karaoke', $param, $where)->total_rows() || 1;
+        return $this->mysqlInstance->update('karaoke', $param, $where)->total_rows();
     }
     
     public function insertKaraoke($param){

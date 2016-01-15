@@ -46,7 +46,7 @@ class InfoportalModel extends \Model\BaseStalkerModel {
 
     public function updatePhoneBoock($table_prefix, $param) {
         $where = array('id' => $param['id']);
-        return $this->mysqlInstance->update("{$table_prefix}_city_info", $param[0], $where)->total_rows() || 1;
+        return $this->mysqlInstance->update("{$table_prefix}_city_info", $param[0], $where)->total_rows();
     }
 
     public function insertPhoneBoock($table_prefix, $param) {
@@ -95,7 +95,7 @@ class InfoportalModel extends \Model\BaseStalkerModel {
 
     public function updateHumor($param, $where) {
         $where = (is_array($where) ? $where : array('id' => $where));
-        return $this->mysqlInstance->update("anec", $param, $where)->total_rows() || 1;
+        return $this->mysqlInstance->update("anec", $param, $where)->total_rows();
     }
 
     public function insertHumor($param) {

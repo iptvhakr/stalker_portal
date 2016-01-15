@@ -974,13 +974,8 @@ function channelListRender(container){
             break;
         }
     }
-    
 
-    
      WinMove();
-     
-     JSSuccessModalBox();
-     JScloseModalBox();
 }
 
 function getChannelListItem(num, item){
@@ -1027,7 +1022,6 @@ function ajaxSuccess(data, alertMsg, consoleMsg){
     }
 }
 
-
 function notty(data,type){
     var msg = data;    
 	
@@ -1048,8 +1042,6 @@ function notty(data,type){
     }
 });
 }
-
-
 
 function ajaxError(data, alertMsg, consoleMsg){
     var alertMsg = typeof(alertMsg) != 'undefined'? alertMsg: true;
@@ -1087,7 +1079,11 @@ function ajaxPostSend(url, sendData, alertMsg, consoleMsg, async){
             ajaxSuccess(data, alertMsg, consoleMsg);
         },
         error: function (data) {
-            ajaxError(data, alertMsg, consoleMsg);
+            if (typeof(data.nothing_to_do) != 'undefined' && data.nothing_to_do) {
+                JScloseModalBox();
+            } else {
+                ajaxError(data, alertMsg, consoleMsg);
+            }
         },
         timeout: 0,
         dataType: "json",
@@ -1213,19 +1209,23 @@ function JSshowModalBox(){
 }
 
 function JSSuccessModalBox(data) {
-    var msg = (typeof(data)!= 'undefined' && typeof(data.msg)!= 'undefined'? data.msg: '');
-	notty('<span>' + words['Done'] + '!' + msg +'</span>','success');
+    if (typeof(data.nothing_to_do) == 'undefined' || !data.nothing_to_do) {
+        var msg = (typeof(data) != 'undefined' && typeof(data.msg) != 'undefined' ? data.msg : '');
+        notty('<span>' + words['Done'] + '!' + msg + '</span>', 'success');
+    }
     $("#modalbox").hide();
     $("#modalbox_ad").hide();
     $("#modalbox").data('complete', 1);
 }
 
 function JSErrorModalBox(data){
-    var msg = '';
-    if (typeof(data)!= 'undefined' ) {
-        msg = ( typeof(data.msg)!= 'undefined' ? data.msg: '');
-        msg = ( msg.length == 0 && typeof(data.error)!= 'undefined' ? data.error: msg);
+    if (typeof(data.nothing_to_do) == 'undefined' || !data.nothing_to_do) {
+        var msg = '';
+        if (typeof(data) != 'undefined') {
+            msg = ( typeof(data.msg) != 'undefined' ? data.msg : '');
+            msg = ( msg.length == 0 && typeof(data.error) != 'undefined' ? data.error : msg);
+        }
+        notty('<span>' + words['Failed'] + '!' + msg + '!</span>', 'error');
     }
-	notty('<span>' + words['Failed'] + '!' + msg + '!</span>','error');
     $("#modalbox").data('complete', 1);
 }

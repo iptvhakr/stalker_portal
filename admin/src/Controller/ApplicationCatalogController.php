@@ -235,8 +235,12 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             unset($postData['id']);
             $option = json_encode($postData);
 
-            if ($this->db->updateApplication(array('options' => $option), $app_id)) {
+            $result = $this->db->updateApplication(array('options' => $option), $app_id);
+            if (is_numeric($result)) {
                 $response['error'] = $error = '';
+                if ($result === 0) {
+                    $response['nothing_to_do'] = TRUE;
+                }
             } else {
                 $response['error'] = $error = $this->setLocalization('Failed to update the parameters of application launch');
             }
@@ -349,10 +353,14 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
 
         unset($postData['id']);
 
-        if ($this->db->updateApplication($postData, $id)) {
+        $result = $this->db->updateApplication($postData, $id);
+        if (is_numeric($result)) {
             $response['error'] = $error = '';
             if (!empty($postData['current_version'])) {
                 $response['msg'] = $this->setLocalization('Activated. Current version') . ' ' . $postData['current_version'];
+            }
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
             }
             $response['installed'] = !empty($postData['status']) && $postData['status'] != 'false' && $postData['status'] !== FALSE? 1: 0;;
         } else {

@@ -333,7 +333,8 @@ class RadioController extends \Controller\BaseStalkerController {
                         unset($param[0]['name']);
                     }
                 }
-                if (call_user_func_array(array($this->db, $action), $param)) {
+                $result = call_user_func_array(array($this->db, $action), $param);
+                if (is_numeric($result)) {
                     return TRUE;
                 }
             }

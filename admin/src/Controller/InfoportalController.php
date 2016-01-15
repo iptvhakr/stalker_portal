@@ -251,18 +251,25 @@ class InfoportalController extends \Controller\BaseStalkerController {
         if (count($item) != 0 && !empty($item[0]['num']) && ((int)$item[0]['num']) > 0) {
             if (empty($this->postData['id'])) {
                 $operation = 'insertPhoneBoock';
+                $available = !((bool) $this->db->getTotalRowsPhoneBoockList($this->postData['phoneboocksource'], array('num' => $this->postData['num'])));
             } else {
                 $operation = 'updatePhoneBoock';
+                $available = !((bool) $this->db->getTotalRowsPhoneBoockList($this->postData['phoneboocksource'], array('id<>' => $this->postData['id'],'num' => $this->postData['num'])));
                 $item['id'] = $this->postData['id'];
             }
             unset($item[0]['id']);
             unset($item[0]['phoneboocksource']);
 
-            $search = $this->db->getTotalRowsPhoneBoockList($this->postData['phoneboocksource'], array('num' => $this->postData['num']));
-            if ( ((int) $search) < 1 ){
-                if ($result = call_user_func_array(array($this->db, $operation), array($this->postData['phoneboocksource'], $item))) {
+            if ( $available ){
+                $result = call_user_func_array(array($this->db, $operation), array($this->postData['phoneboocksource'], $item));
+
+                if (is_numeric($result)) {
                     $error = '';
+                    if ($result === 0) {
+                        $data['nothing_to_do'] = TRUE;
+                    }
                 }
+
             } else {
                 $error = $this->setLocalization('This number is already in use') . '. ';
                 $error .= $this->setLocalization('Closest free number') . " - " . $this->db->getFirstFreeNumber($this->postData['phoneboocksource']);
@@ -318,8 +325,13 @@ class InfoportalController extends \Controller\BaseStalkerController {
         }
         unset($item[0]['id']);
 
-        if ($result = call_user_func_array(array($this->db, $operation), $item)) {
-            $error = '';    
+        $result = call_user_func_array(array($this->db, $operation), $item);
+
+        if (is_numeric($result)) {
+            $error = '';
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
         }
         
         $response = $this->generateAjaxResponse($data, $error);
