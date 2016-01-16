@@ -288,7 +288,10 @@ class RadioController extends \Controller\BaseStalkerController {
                 )
                 ->add('cmd', 'text', array(
                             'constraints' => array(
-                                new Assert\NotBlank()
+                                new Assert\NotBlank(),
+                                new Assert\Regex(array(
+                                    'pattern' => '/(^.*?\s?.*?\:\/\/.*$)/',
+                                ))
                             ),
                             'required' => TRUE)
                 )
