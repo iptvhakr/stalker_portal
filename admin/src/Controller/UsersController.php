@@ -1672,7 +1672,17 @@ class UsersController extends \Controller\BaseStalkerController {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
-        return new Response(json_encode(array()), 200);
+
+        $term = $this->data['term'];
+        $str_len_offset = ceil((20 - $this->data['term']) / 2);
+
+        $result = array_map(function($row) use ($term, $str_len_offset){
+            $pos = strpos($row, $term);
+            $begin = $pos !== FALSE ? $pos: 0;
+            return substr($row, $begin, strlen($term) + $str_len_offset * 2);
+        }, $this->db->getStbFirmwareVersion($this->data['term']));
+
+        return new Response(json_encode($result), 200);
     }
 
     //------------------------ service method ----------------------------------
