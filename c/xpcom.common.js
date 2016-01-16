@@ -2352,6 +2352,9 @@ var screensaver = {
             return;
         }
 
+        _debug('stb.IsVirtualKeyboardActive()', stb.IsVirtualKeyboardActive());
+        stb.HideVirtualKeyboard();
+
         this.dom_obj.show();
         this.on = true;
 
