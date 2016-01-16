@@ -401,6 +401,8 @@ if (!$error){
                 array('id' => intval(@$_GET['id']))
             );
 
+            Itv::invalidateCacheForChannel(intval(@$_GET['id']));
+
             if (!$enable_monitoring){
                 Mysql::getInstance()->update('itv', array('monitoring_status' => 1), array('id' => intval(@$_GET['id'])));
             }

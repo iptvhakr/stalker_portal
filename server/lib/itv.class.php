@@ -1345,6 +1345,12 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
         return $result;
     }
 
+    public static function invalidateCacheForChannel($id){
+        if (isset(self::$channels_cache[strval($id)])){
+            unset(self::$channels_cache[strval($id)]);
+        }
+    }
+
     public static function getById($id){
         if (isset(self::$channels_cache[strval($id)])){
             return self::$channels_cache[strval($id)];
