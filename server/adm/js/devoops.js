@@ -569,13 +569,13 @@ $(document).ready(function () {
     });
 
     $(document).on('click', "#attribute_set li:first-of-type label", function (e) {
-        var _input = $(this).find("input[type='checkbox']");
-        _input.prop('checked', !_input.is(":checked"));
-        $("#attribute_set li:not(first-of-type) input[type='checkbox']").prop('checked', _input.is(":checked"));
+        var is_checked = !$(this).find("input[type='checkbox']").is(":checked");
+        $(this).find("input[type='checkbox']").prop('checked', is_checked);
         var sendData = {};
-        $("#attribute_set input[type='checkbox']").each(function(index){
-            $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
-            sendData[$(this).val()] = $(this).prop('checked');
+        $("#attribute_set input[type='checkbox']:not(:first):not(:last)").each(function(index){
+            $(this).prop('checked', is_checked);
+            $("#datatable-1").dataTable().fnSetColumnVis( index, is_checked );
+            sendData[$(this).val()] = is_checked;
         });
         setDropdownAttribute(sendData);
         e.stopPropagation();
