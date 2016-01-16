@@ -390,12 +390,19 @@ class VideoClubModel extends \Model\BaseStalkerModel {
         return $this->mysqlInstance->delete('screenshots', array('media_id' => 0))->total_rows();
     }
     
-    public function updateScreenshotData($video_id, $id) {
-        return $this->mysqlInstance->update('screenshots', array('media_id' => $video_id), array('id' => $id))->total_rows();
+    public function updateScreenshotData($params, $where) {
+        if (!is_array($params)) {
+            $params = array('media_id' => $params);
+        }
+        if (!is_array($where)) {
+            $where = array('id' => $where);
+        }
+        return $this->mysqlInstance->update('screenshots', $params, $where)->total_rows();
     }
     
-    public function getScreenshotData($video_id) {
-        return $this->mysqlInstance->from('screenshots')->where(array('media_id' => $video_id))->orderby(array('id' => 'desc'))->get()->first('id');
+    public function getScreenshotData($params) {
+        $this->mysqlInstance->from('screenshots')->orderby(array('id' => 'desc'));
+        return !is_array($params) ? $this->mysqlInstance->where(array('media_id' => $params))->get()->first('id'): $this->mysqlInstance->where($params)->get()->all();
     }
     
     public function insertVideo($data) {
