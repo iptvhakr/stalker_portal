@@ -515,7 +515,11 @@
                 + '<span>' + word['vclub_director'] + ': </span>' + item.director;
 
             this.short_info_box.innerHTML = info;
-            this.screenshot_box.innerHTML = '<img src="' + item.screenshot_uri + '">';
+            if (item.screenshot_uri){
+                this.screenshot_box.innerHTML = '<img src="' + item.screenshot_uri + '">';
+            }else{
+                this.screenshot_box.innerHTML = '';
+            }
         };
 
         this.clear_short_info = function(){
