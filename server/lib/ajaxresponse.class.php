@@ -104,11 +104,21 @@ abstract class AjaxResponse
      * @return string
      */
     protected function getImgUri($id){
+
+        $cover = Mysql::getInstance()->from('screenshots')->where(array('id' => intval($id)))->get()->first();
+
+        if (empty($cover)){
+            return false;
+        }
     
         $dir_name = ceil($id/100);
-        //$dir_path = Config::get('portal_url').'screenshots/'.$dir_name;
+
         $dir_path = Config::get('screenshots_url').$dir_name;
-        $dir_path .= '/'.$id.'.jpg';
+        $ext = pathinfo($cover['name'], PATHINFO_EXTENSION);
+        if (!$ext){
+            $ext = 'jpg';
+        }
+        $dir_path .= '/'.$id.'.'.$ext;
         return $dir_path;
     }
     

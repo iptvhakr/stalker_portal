@@ -124,15 +124,19 @@ class Video
 
     private function getCoverUrl($video_id){
 
-        $cover_id = Mysql::getInstance()->from('screenshots')->where(array('media_id' => intval($video_id)))->get()->first('id');
+        $cover = Mysql::getInstance()->from('screenshots')->where(array('media_id' => intval($video_id)))->get()->first();
 
-        if (empty($cover_id)){
+        if (empty($cover)){
             return false;
         }
 
-        $dir_name = ceil($cover_id/100);
+        $dir_name = ceil($cover['id']/100);
         $dir_path = Config::get('screenshots_url').$dir_name;
-        $dir_path .= '/'.$cover_id.'.jpg';
+        $ext = pathinfo($cover['name'], PATHINFO_EXTENSION);
+        if (!$ext){
+            $ext = 'jpg';
+        }
+        $dir_path .= '/'.$cover['id'].'.'.$ext;
         return $dir_path;
     }
 

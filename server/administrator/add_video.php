@@ -130,11 +130,16 @@ if (count(@$_POST) > 0){
                     $img_path = get_save_folder($upload_id);
                     umask(0);
 
-                    if (!rename($_FILES['screenshot']['tmp_name'], $img_path.'/'.$upload_id.'.jpg')){
-                        $error = sprintf(_('Error during file moving from %s to %s'), $_FILES['screenshot']['tmp_name'], $img_path.'/'.$upload_id.'.jpg');
+                    $ext = pathinfo($_FILES['screenshot']['tmp_name'], PATHINFO_EXTENSION);
+                    if (!$ext){
+                        $ext = 'jpg';
+                    }
+
+                    if (!rename($_FILES['screenshot']['tmp_name'], $img_path.'/'.$upload_id.'.'.$ext)){
+                        $error = sprintf(_('Error during file moving from %s to %s'), $_FILES['screenshot']['tmp_name'], $img_path.'/'.$upload_id.'.'.$ext);
                         unset($_SESSION['upload']);
                     }else{
-                        chmod($img_path.'/'.$upload_id.'.jpg', 0644);
+                        chmod($img_path.'/'.$upload_id.'.'.$ext, 0644);
                     }
                 }
             }
@@ -171,7 +176,12 @@ if (count(@$_POST) > 0){
                 $img_path = get_save_folder($cover_id);
                 umask(0);
 
-                if (!$error && !$cover->writeImage($img_path.'/'.$cover_id.'.jpg')){
+                $ext = pathinfo($cover_filename, PATHINFO_EXTENSION);
+                if (!$ext){
+                    $ext = 'jpg';
+                }
+
+                if (!$error && !$cover->writeImage($img_path.'/'.$cover_id.'.'.$ext)){
                     $error = _('Error: could not save cover image');
                 }
 
@@ -969,12 +979,19 @@ if (@$_GET['edit']){
         $rating_mpaa = $arr['rating_mpaa'];
         $age = $arr['age'];
 
-        $cover_id = (int) Mysql::getInstance()->from('screenshots')->where(array('media_id' => $item['id']))->get()->first('id');
+        $cover = Mysql::getInstance()->from('screenshots')->where(array('media_id' => $item['id']))->get()->first();
 
-        if ($cover_id){
-            $dir_name = ceil($cover_id/100);
+        if (!empty($cover)){
+            $cover_id = $cover['id'];
+            $dir_name = ceil($cover['id']/100);
             $cover_big = Config::get('screenshots_url').$dir_name;
-            $cover_big .= '/'.$cover_id.'.jpg';
+
+            $ext = pathinfo($cover['name'], PATHINFO_EXTENSION);
+            if (!$ext){
+                $ext = 'jpg';
+            }
+
+            $cover_big .= '/'.$cover['id'].'.'.$ext;
         }
 
         $for_sd_stb = $arr['for_sd_stb'];
