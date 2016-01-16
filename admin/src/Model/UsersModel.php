@@ -401,11 +401,15 @@ class UsersModel extends \Model\BaseStalkerModel {
     }
 
     public function getTVChannelNames($param) {
-        return $this->mysqlInstance->from("itv")->like(array('name' => "$param%"), ' OR ')->orderby('name')->get()->all('name');
+        return $this->mysqlInstance->from("itv")->like(array('name' => "%$param%"), ' OR ')->orderby('name')->get()->all('name');
     }
 
     public function getMovieNames($param) {
-        return $this->mysqlInstance->from("video")->like(array('name' => "$param%"), ' OR ')->orderby('name')->get()->all('name');
+        return $this->mysqlInstance->from("video")->like(array('name' => "%$param%"), ' OR ')->orderby('name')->get()->all('name');
+    }
+
+    public function getStbFirmwareVersion($param){
+        return $this->mysqlInstance->from("users")->like(array('version' => "%$param%"), ' OR ')->orderby('version')->get()->all('version');
     }
 
 }

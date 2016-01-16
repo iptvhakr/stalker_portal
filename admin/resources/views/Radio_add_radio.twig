@@ -47,7 +47,7 @@
                             <label class="col-sm-2 control-label ">{{ 'URL'|trans }}<span class="icon-required">*</span></label>
                             <div class="col-xs-10 col-sm-8">
                                 <div class=" col-xs-10 col-sm-6">
-                                    {{ form_widget(app['form'].cmd, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
+                                    {{ form_widget(app['form'].cmd, {'attr': {'class': 'form-control', 'data-validation':'required', 'data-validation-regex' : '/(^.*?\s?.*?\:\/\/.*$)/igm'}}) }}
                                     </div><div><div class="bg-danger">
                                         {{ form_errors(app['form'].cmd) }}
                                     </div>

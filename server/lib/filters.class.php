@@ -321,7 +321,6 @@ class Filters {
 
     private function getUsersByUsingStreamServer($cond, $cond_value) {
         $this->cleanDataSet();
-        $this->db->where(array('now_playing_type' => 1));
         $this->db->where(array('now_playing_streamer_id' => $cond_value));
         $this->setTimeStampFilter('keep_alive', '>', $this->watchdog);
     }
@@ -351,7 +350,6 @@ class Filters {
     }
 
     private function getUsersBySTBFirmwareVersion($cond, $cond_value) {
-        $this->db->where(array('now_playing_type' => 1));
         $this->setStringFilter('version', "*=", $cond_value);
     }
 
