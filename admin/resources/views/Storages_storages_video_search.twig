@@ -20,15 +20,15 @@
                     </div>
 					
 					 <div class="col-sm-2">
-                        <label class="col-xs-8 col-sm-8 col-md-5">{{ 'Quantity of the storages'|trans }}</label>
-                        <div class="col-xs-4 col-sm-4 col-md-3 col-lg-3  no-padding">
+                        <label class="col-xs-8 col-sm-8 col-md-8">{{ 'Quantity of the storages'|trans }}</label>
+                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3  no-padding">
                             <input type="hidden" name="textview" value="0">
                             <input class="form-control" type="text" name="total_storages" id="total_storages">
                         </div>
                         <br><br>
                     </div>
 
-					<div class="col-sm-2 ">
+					<div class="col-sm-1 ">
                         {{ main_macro.get_dropdown_attribute(app['dropdownQuality'], 'quality', 'Video quality'|trans, 4, 0, 'true') }}
                     </div>
 					<div class="col-sm-1 ">
@@ -44,15 +44,13 @@
             </form>
         </div>
         
-        <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="row">           
                 <div class="box">
                     {% if attribute(app, 'dropdownAttribute') is defined %}
                     {{ main_macros.get_dropdown_attribute(app['dropdownAttribute']) }}
                     {% endif %}
                     <div class="box-content">
-                        <div class="box-content no-padding">
-                            <div class="row">
+                        <div class="box-content no-padding">                          
                                 <div class="dataTables_processing"></div>
                                 <table class="table  table-hover table-datatable" id="datatable-1">
                                     {% if attribute(app, 'dropdownAttribute') is defined %}
@@ -61,12 +59,10 @@
                                     <tbody>
 
                                     </tbody>
-                                </table>
-                            </div>
+                                </table>                           
                         </div>
                     </div>
-                </div>
-            </div>
+                </div>           
         </div>
     </div>
 

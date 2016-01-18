@@ -157,6 +157,9 @@
                     if (e.currentTarget != e.target) {
                         return;
                     }
+					if( !$('#audio_genres_name').val() ) {  $('#audio_genres_name').css('border','1px solid red');
+					} else {
+					$('#audio_genres_name').css('border','');
                     var sendData = {
                         id: $("#modalbox input[type='hidden']").val(),
                         name: $("#modalbox input[type='text']").val()
@@ -165,8 +168,10 @@
                     e.stopPropagation();
                     e.preventDefault();
                     ajaxPostSend($("#modalbox form").attr('action'), sendData, false);
+					notty('<span>{{ 'Done'|trans }}!</span>','success');
                     closeModalBox();
                     return false;
+					}
                 });
 
                 LoadDataTablesScripts(TestTable1);
@@ -198,9 +203,9 @@
         if ($('#modalbox').find('.devoops-modal-inner').find('input').length == 0) {
             $('#modalbox').find('.devoops-modal-inner').html('\n\
                 <div class="box-content">\n\
-                    <form class="form-horizontal" role="form">\n\
+                    <form class="form-horizontal" id="form" role="form">\n\
                         <div class="form-group">\n\
-                            <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Genre'|trans }}</label>\n\
+                            <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Genre'|trans }}<span class="icon-required">*</span></label>\n\
                             <div class="col-xs-10 col-sm-8">\n\
                                 <span class="col-xs-8 col-sm-8">\n\
                                     <input type="hidden" name="id">\n\

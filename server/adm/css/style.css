@@ -3055,6 +3055,8 @@ border-bottom:1px solid #E3E3E3;padding-left:6px !important; padding-right:5px;}
 #iptv_list .fa-cog {float:right !important;}
 #iptv_list .filter a:hover,#iptv_list .filter_s a:hover   { text-decoration:none; border: 1px solid #E3E3E3 !important;}
 #iptv_list .filter a:focus,#iptv_list .filter_s a:focus  { text-decoration:none; border: 1px solid #E3E3E3 !important; }
+#iptv_list .filter.open a { text-decoration:none; border: 1px solid #E3E3E3 !important; }
+#iptv_list .filter_s.open a { text-decoration:none; border: 1px solid #E3E3E3 !important; }
 #iptv_list .btn-success, #iptv_list .btn-danger { margin-left:5px;
 margin-top:5px !important; height:31px; padding-bottom:15px !important;}
 #iptv_list .btn-success {
@@ -3301,7 +3303,7 @@ color:#000; background-color:#FFF; border:1px solid #000; margin-top:5px !import
 #attribute_set .dropdown-menu, .attribute_set .dropdown-menu{
     border-color: #D7D7D7;
     border-radius: 2px;
-    min-height: 145px;
+    min-height: 105px;
 	
 	min-width:200px;
 	margin-top:1px;
@@ -3336,7 +3338,7 @@ margin-bottom:5px;
 	margin-bottom:15px;
 	
 }
-#datatable-1 {	margin-bottom:10px;margin-top:20px;}
+#datatable-1 {	margin-bottom:10px;margin-top:5px;}
 #datatable-1_wrapper > .row-fluid > .span6{
 /*    display: none;*/
     float: left;
