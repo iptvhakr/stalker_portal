@@ -76,7 +76,7 @@ class BaseStalkerModel {
         }
         $params[' 1=1 OR `hidden`='] = 1;
 
-        return $this->mysqlInstance->from("adm_grp_action_access")->where($params)->get()->all();
+        return $this->mysqlInstance->from("adm_grp_action_access")->where($params)->orderby(array('controller_name' => 'ASC', 'action_name' => 'ASC'))->get()->all();
     }
     
     public function getDropdownAttribute($param) {

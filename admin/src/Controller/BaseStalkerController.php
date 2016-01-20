@@ -81,7 +81,8 @@ class BaseStalkerController {
 
         $this->saveFiles = $app['saveFiles'];
         $this->setSideBarMenu();
-		$this->setTopBarMenu();
+        $this->setTopBarMenu();
+        
         if($this->app['userlogin'] == 'admin'){
             $this->access_level = 8;
         } else {
@@ -120,7 +121,7 @@ class BaseStalkerController {
         $this->app['side_bar'] = $side_bar;
     }
 
-	 private function setTopBarMenu() {
+    private function setTopBarMenu() {
         $top_bar  = json_decode(str_replace(array("_(", ")"), '', file_get_contents($this->baseDir . '/json_menu/top_menu.json')), TRUE);
         if (!empty($this->app['userlogin'])) {
             $top_bar[1]['add_params'] = '<span class="hidden-xs">"'. $this->app['userlogin'] .'"</span>';
@@ -208,7 +209,7 @@ class BaseStalkerController {
             }
 
             $parent_access = $this->getParentActionAccess();
-
+            
             if(
                 $this->access_level < 1 ||
                 (!empty($this->postData) && !$this->isAjax && $this->access_level < 2) ||
