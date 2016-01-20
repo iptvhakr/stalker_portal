@@ -60,7 +60,11 @@
                                                             </li>\n\
                                                         </ul>\n\
                                                     </div>";
-                        json.data[i].all_services = all_services != 0 ? "<span class=''>{{ 'complete'|trans }}</span>" : "<span>{{ 'Optional'|trans }}</span>";
+                        if (json.data[i].type != 'module') {
+                            json.data[i].all_services = all_services != 0 ? "<span class=''>{{ 'complete'|trans }}</span>" : "<span>{{ 'Optional'|trans }}</span>";
+                        } else {
+                            json.data[i].all_services = '';
+                        }
 
                         var name = json.data[i].name;
 
