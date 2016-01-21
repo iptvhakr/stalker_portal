@@ -217,7 +217,7 @@ class BaseStalkerController {
                 ($parent_access !== FALSE && !$parent_access)
             ) {
                 if ($this->isAjax) {
-                    $response = $this->generateAjaxResponse(array(), 'Access denied');
+                    $response = $this->generateAjaxResponse(array('msg' => $this->setLocalization('Access denied')), 'Access denied');
                     return new Response(json_encode($response), 403);
                 } else {
                     return $this->app['twig']->render("AccessDenied.twig");

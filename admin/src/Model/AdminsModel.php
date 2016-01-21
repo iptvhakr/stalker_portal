@@ -55,7 +55,9 @@ class AdminsModel extends \Model\BaseStalkerModel {
     }
     
     public function updateAdmin($param){
-        return $this->mysqlInstance->update('administrators', $param[0], array('id' => $param['id']))->total_rows();
+        $values = $param[0];
+        unset($param[0]);
+        return $this->mysqlInstance->update('administrators', $values, $param)->total_rows();
     }
     
     public function deleteAdmin($param){
@@ -77,14 +79,15 @@ class AdminsModel extends \Model\BaseStalkerModel {
     
     public function getAdminGropsList($param, $counter = FALSE) {
         $where = array();
-        if (!empty($this->reseller_id)) {
-            $where['A_G.reseller_id'] = $this->reseller_id;
-        }
         if (!empty($param['select'])) {
             $this->mysqlInstance->select($param['select']);
         }
         $this->mysqlInstance->from("admin_groups as A_G")
-                        ->join("reseller as R", "A_G.reseller_id", "R.id", 'LEFT');
+            ->join("reseller as R", "A_G.reseller_id", "R.id", 'LEFT');
+
+        if (!empty($this->reseller_id)) {
+            $where['A_G.reseller_id'] = $this->reseller_id;
+        }
         if (!empty($param['where'])) {
             $this->mysqlInstance->where($param['where']);
         }
@@ -98,9 +101,17 @@ class AdminsModel extends \Model\BaseStalkerModel {
             $this->mysqlInstance->orderby($param['order']);
         }
 
+        if ($counter === FALSE) {
+            $this->mysqlInstance->join("administrators as A", "A_G.id", "A.gid", 'LEFT')->groupby('A_G.id');
+        }
+
         if (!empty($param['limit']['limit'])) {
             $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
+
+ /*       if(!$counter) {
+            print_r($this->mysqlInstance->get());exit;
+        }*/
 
         return ($counter) ? $this->mysqlInstance->count()->get()->counter() : $this->mysqlInstance->get()->all();
     }

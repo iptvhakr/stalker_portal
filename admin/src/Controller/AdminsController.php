@@ -48,6 +48,10 @@ class AdminsController extends \Controller\BaseStalkerController {
             $resellers = array(array('id' => '-', 'name' => $this->setLocalization('Empty')));
             $this->app['allResellers'] = array_merge($resellers, $this->db->getAllFromTable('reseller'));
         }
+        $all_groups = $this->db->getAllFromTable('admin_groups ');
+        if (!empty($all_groups) && is_array($all_groups)) {
+            $this->app['allGroups'] = $all_groups;
+        }
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -65,6 +69,11 @@ class AdminsController extends \Controller\BaseStalkerController {
         if (empty($this->app['reseller'])) {
             $resellers = array(array('id' => '-', 'name' => $this->setLocalization('Empty')));
             $this->app['allResellers'] = array_merge($resellers, $this->db->getAllFromTable('reseller'));
+        }
+
+        $all_groups = $this->db->getAllFromTable('admin_groups ');
+        if (!empty($all_groups) && is_array($all_groups)) {
+            $this->app['allGroups'] = $all_groups;
         }
 
         $attribute = $this->getAdminGroupsDropdownAttribute();
@@ -303,7 +312,7 @@ class AdminsController extends \Controller\BaseStalkerController {
         
         $filds_for_select = $this->getAdminGroupsFields();
                 
-        $error = "Error";
+        $error = $this->setLocalization("Error");
         $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
@@ -393,7 +402,7 @@ class AdminsController extends \Controller\BaseStalkerController {
         $data['action'] = 'manageAdminGroupsList';
         $item = array($this->postData);
 
-        $error = 'error';
+        $error = $this->setLocalization('error');
         if (empty($this->postData['id'])) {
             $operation = 'insertAdminsGroup';
         } else {
@@ -427,10 +436,16 @@ class AdminsController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'manageAdminGroupsList';
         $data['id'] = $this->postData['id'];        
-        $error = '';    
-        $this->db->deleteAdminsGroup(array('id' => $this->postData['id']));
-        $this->db->deleteAdminGroupPermissions($this->postData['id']);
-        
+        $error = $this->setLocalization('Error');
+        $admin_count = $this->db->getAdminsTotalRows(array('gid' => $data['id']));
+        if (empty($admin_count)) {
+            $this->db->deleteAdminsGroup(array('id' => $this->postData['id']));
+            $this->db->deleteAdminGroupPermissions($this->postData['id']);
+            $error = '';
+        } else {
+            $error = $data['msg'] = $this->setLocalization('{admin_count} administrators to be moved to another group before deleting', '', FALSE, array('{admin_count}' => $admin_count));
+        }
+
         $response = $this->generateAjaxResponse($data);
         
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
@@ -725,7 +740,96 @@ class AdminsController extends \Controller\BaseStalkerController {
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
 
-    //------------------------ service method ----------------------------------
+    public function move_admin_to_group(){
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['id']) || empty($this->postData['source_id']) || empty($this->postData['target_id'])) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array();
+        $data['action'] = 'manageAdminsList';
+        $admin_id = $this->postData['id'];
+        $source_id = $this->postData['source_id'] !== '-' ? $this->postData['source_id']: NULL;
+        $target_id = $this->postData['target_id'] !== '-' ? $this->postData['target_id']: NULL;
+        $error = '';
+
+        if (!empty($target_id)) {
+            $count_admins = $this->db->getAdminGropsTotalRows(array('A_G.id' => $target_id));
+        } else{
+            $count_admins = 1;
+        }
+
+        if (!empty($count_admins) && $source_id !== $target_id) {
+            $result = $this->db->updateAdmin(array('id' => $admin_id, 0 => array('gid' => $target_id)));
+            if (is_numeric($result)) {
+                $error = '';
+                $data['msg'] = $this->setLocalization('Moved');
+                if ($result === 0) {
+                    $data['nothing_to_do'] = TRUE;
+                }
+            }
+        } else {
+            if (empty($count_admins)){
+                $error = $data['msg'] = $this->setLocalization('Not found admin-group for moving');
+            } else {
+                $error = $data['msg'] = $this->setLocalization('Nothing to do');
+                $data['nothing_to_do'] = TRUE;
+            }
+        }
+
+        $response = $this->generateAjaxResponse($data);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function move_all_admin_to_group(){
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['source_id']) || empty($this->postData['target_id'])) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array();
+        $data['action'] = 'manageAdminGroupsList';
+        $source_id = $this->postData['source_id'] !== '-' ? $this->postData['source_id']: NULL;
+        $target_id = $this->postData['target_id'] !== '-' ? $this->postData['target_id']: NULL;
+        $error = '';
+
+        if (!empty($target_id)) {
+            $count_admins = $this->db->getAdminGropsTotalRows(array('A_G.id' => $target_id));
+        } else{
+            $count_admins = 1;
+        }
+
+        if (!empty($count_admins) && $source_id !== $target_id) {
+            $result = $this->db->updateAdmin(array('gid' => $source_id, 0 => array('gid' => $target_id)));
+            if (is_numeric($result)) {
+                $error = '';
+                $data['msg'] = $this->setLocalization('Moved');
+                if ($result === 0) {
+                    $data['nothing_to_do'] = TRUE;
+                }
+            }
+        } else {
+            if (empty($count_admins)){
+                $error = $data['msg'] = $this->setLocalization('Not found admin-group for moving');
+            } else {
+                $error = $data['msg'] = $this->setLocalization('Nothing to do');
+                $data['nothing_to_do'] = TRUE;
+            }
+        }
+
+        $response = $this->generateAjaxResponse($data);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    //------------------------ service method ----------------------------------  move-all-admin-to-group
     
     private function getAdminsDropdownAttribute() {
         $return = array(
@@ -742,8 +846,9 @@ class AdminsController extends \Controller\BaseStalkerController {
     
     private function getAdminGroupsDropdownAttribute() {
         $return = array(
-            array('name' => 'id',           'title' => $this->setlocalization('ID'),       'checked' => TRUE),
-            array('name' => 'name',         'title' => $this->setlocalization('Title'),    'checked' => TRUE)
+            array('name' => 'id',           'title' => $this->setlocalization('ID'),            'checked' => TRUE),
+            array('name' => 'name',         'title' => $this->setlocalization('Title'),         'checked' => TRUE),
+            array('name' => 'admin_count',  'title' => $this->setlocalization('Admins in group'),'checked' => TRUE)
         );
         if (empty($this->app['reseller'])) {
             $return[] = array('name' => 'reseller_name','title' => $this->setlocalization('Reseller'),  'checked' => TRUE);
@@ -769,7 +874,8 @@ class AdminsController extends \Controller\BaseStalkerController {
     private function getAdminGroupsFields(){
         $return = array(
             'id' => 'A_G.`id` as `id`', 
-            'name' => 'A_G.`name` as `name`'
+            'name' => 'A_G.`name` as `name`',
+            'admin_count' => 'COUNT(A.id) as `admin_count`',
         );
         if (empty($this->app['reseller'])) {
             $return['reseller_id'] = 'R.`id` as `reseller_id`';
