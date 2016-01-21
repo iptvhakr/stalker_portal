@@ -61,7 +61,7 @@
                                     <div class=" col-xs-10 col-sm-10">
                                         <input type="hidden" name="id" id="adm_id" class="own_fields">
                                         <input type="text" required="required" name="login" data-validation=required  id="adm_login" class='form-control own_fields'>
-                                       
+                                        <div></div>
                                     </div>
                                 </div>
                             </div>
@@ -167,6 +167,13 @@
                                                             </li>";
                                 json.data[i].reseller_name = '<a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-admin-to-reseller" data-id="' + id + '" data-reseller_id="' + reseller_id + '">'+ reseller_name +'</a>';
                                                             {% endif %}
+                                                            {% if attribute(app,'userlogin') is defined and app.userlogin == 'admin' %}
+                                json.data[i].operations += "<li>\n\
+                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-admin-to-group' data-id='" + id +"' data-group_id='" + gid + "'>\n\
+                                                                    <span>{{ 'Change group for current admin'|trans }}</span>\n\
+                                                                </a>\n\
+                                                            </li>";
+                                                            {% endif %}
                                 json.data[i].operations += "<li>\n\
                                                                 <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-admin' data-id='" + id + "'>\n\
                                                                     <span> {{ 'Delete'|trans }} </span>\n\
@@ -212,7 +219,7 @@
 
         function yelp() {
             $(document).ready(function () {
-                $(document).on('click', "a.main_ajax:not([href*='move-admin-to-reseller'])", function (e) {
+                $(document).on('click', "a.main_ajax:not([href*='move-admin-to-reseller']):not([href*='move-admin-to-group'])", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
                     var sendData = $(this).data();
@@ -295,35 +302,12 @@
                     $("#modalbox").data('complete', 1);
                     $('#modalbox').find('.modal-header-name span').text("{{ 'Resellers'|trans }}");
                     var reseller_id = $(this).data('reseller_id');
-                    var formHtml = '\n\
-                <div class="box-content">\n\
-                    <form class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-admin-to-reseller">\n\
-                        <div class="form-group">\n\
-                            <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Reseller name'|trans }}</label>\n\
-                            <div class="col-xs-10 col-sm-8">\n\
-                                <span class="col-xs-12 col-sm-12">\n\
-                                    <input type="hidden" class="own_fields" name="id" value="'+ $(this).data('id') + '">\n\
-                                    <input type="hidden" class="own_fields" name="source_id" value="'+ reseller_id + '">\n\
-                                    <select class="own_fields" name="target_id" id="target_reseller">\n\
-                    {% if attribute(app, 'allResellers') is defined %}
-                            {% for row in app.allResellers %}
-                            <option value="{{ row.id }}" >{{ row.name }}</option>\n\
-                    {% endfor %}
-                    {% endif %}
-                                    </select>\n\
-                                </span>\n\
-                            </div>\n\
-                        </div>\n\
-                    </form>\n\
-                </div>';
-                    $('#modalbox').find('.devoops-modal-inner').html(formHtml);
+                    $('#modalbox').find('.devoops-modal-inner').html($("#modal_move_reseller_form_body").html());
+                    $('#modalbox').find('.devoops-modal-inner').find("input[name='id']").val($(this).data('id'));
+                    $('#modalbox').find('.devoops-modal-inner').find("input[name='source_id']").val(reseller_id);
                     $('#target_reseller option').removeAttr('selected');
                     $('#target_reseller option[value="'+ reseller_id +'"]').attr('selected', 'selected');
-                    $('#modalbox').find('.devoops-modal-bottom').html('<div class="pull-right no-padding">&nbsp;</div>\n\
-                        <div class="pull-right no-padding">\n\
-                            <button type="submit" class="btn btn-success pull-right">{{ 'Move'|trans }}</button>\n\
-                            <button type="reset" class="btn btn-default pull-right" >{{ 'Cancel'|trans }}</button>\n\
-                        </div>');
+                    $('#modalbox').find('.devoops-modal-bottom').html($("#modal_move_form_buttons").html());
 
                     $("#target_reseller").select2("destroy");
                     $("#target_reseller").select2({minimumResultsForSearch: -1});
@@ -332,6 +316,30 @@
                     $(this).closest('div.open').removeClass('open');
                     return false;
                 });
+                {% endif %}
+
+                {% if attribute(app,'userlogin') is defined and app.userlogin == 'admin' %}
+                $(document).on('click', "a[href*='move-admin-to-group']", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $("#modalbox").data('complete', 1);
+                    $('#modalbox').find('.modal-header-name span').text("{{ 'Groups'|trans }}");
+                    var group_id = $(this).data('group_id');
+                    $('#modalbox').find('.devoops-modal-inner').html($("#modal_move_group_form_body").html());
+                    $('#modalbox').find('.devoops-modal-inner').find("input[name='id']").val($(this).data('id'));
+                    $('#modalbox').find('.devoops-modal-inner').find("input[name='source_id']").val(group_id);
+                    $('#target_group option').removeAttr('selected');
+                    $('#target_group option[value="'+ group_id +'"]').attr('selected', 'selected');
+                    $('#modalbox').find('.devoops-modal-bottom').html($("#modal_move_form_buttons").html());
+
+                    $("#target_group").select2("destroy");
+                    $("#target_group").select2({minimumResultsForSearch: -1});
+
+                    $("#modalbox").show();
+                    $(this).closest('div.open').removeClass('open');
+                    return false;
+                });
+
                 {% endif %}
                 
                 $("#add_admin").on("click", function (e) {
@@ -463,4 +471,59 @@
         {% endif %}
 
     </script>
+    <script type="text/template" id="modal_move_reseller_form_body">
+        <div class="box-content">
+            <form class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-admin-to-reseller">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Reseller name'|trans }}</label>
+                    <div class="col-xs-10 col-sm-8">
+                        <span class="col-xs-12 col-sm-12">
+                            <input type="hidden" class="own_fields" name="id" value="">
+                            <input type="hidden" class="own_fields" name="source_id" value="">
+                            <select class="own_fields" name="target_id" id="target_reseller">
+                                {% if attribute(app, 'allResellers') is defined %}
+                                    {% for row in app.allResellers %}
+                                <option value="{{ row.id }}" >{{ row.name }}</option>
+                                    {% endfor %}
+                                {% endif %}
+                            </select>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </script>
+    {% if attribute(app,'userlogin') is defined and app.userlogin == 'admin' %}
+    <script type="text/template" id="modal_move_group_form_body">
+        <div class="box-content">
+            <form class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-admin-to-group">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Group'|trans }}</label>
+                    <div class="col-xs-10 col-sm-8">
+                        <span class="col-xs-12 col-sm-12">
+                            <input type="hidden" class="own_fields" name="id" value="">
+                            <input type="hidden" class="own_fields" name="source_id" value="">
+                            <select class="own_fields" name="target_id" id="target_group">
+                                {% if attribute(app, 'allGroups') is defined %}
+                                    {% for row in app.allGroups %}
+                                        <option value="{{ row.id }}" >{{ row.name }}</option>
+                                    {% endfor %}
+                                {% endif %}
+                            </select>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </script>
+    {% endif %}
+
+    <script type="text/template" id="modal_move_form_buttons">
+        <div class="pull-right no-padding">&nbsp;</div>
+        <div class="pull-right no-padding">
+            <button type="submit" class="btn btn-success pull-right">{{ 'Move'|trans }}</button>
+            <button type="reset" class="btn btn-default pull-right">{{ 'Cancel'|trans }}</button>
+        </div>
+    </script>
+
 {% endblock %}

@@ -1209,9 +1209,14 @@ function JSshowModalBox(){
 }
 
 function JSSuccessModalBox(data) {
+    var msg = '';
+    if (typeof(data) != 'undefined') {
+        msg = (typeof(data.msg) != 'undefined' ? data.msg : '');
+    } else {
+        data = {};
+    }
     if (typeof(data.nothing_to_do) == 'undefined' || !data.nothing_to_do) {
-        var msg = (typeof(data) != 'undefined' && typeof(data.msg) != 'undefined' ? data.msg : '');
-        notty('<span>' + words['Done'] + '!' + msg + '</span>', 'success');
+        notty('<span>' + words['Done'] + '! ' + msg + '</span>', 'success');
     }
     $("#modalbox").hide();
     $("#modalbox_ad").hide();
@@ -1219,13 +1224,15 @@ function JSSuccessModalBox(data) {
 }
 
 function JSErrorModalBox(data){
-    if (typeof(data.nothing_to_do) == 'undefined' || !data.nothing_to_do) {
         var msg = '';
         if (typeof(data) != 'undefined') {
             msg = ( typeof(data.msg) != 'undefined' ? data.msg : '');
             msg = ( msg.length == 0 && typeof(data.error) != 'undefined' ? data.error : msg);
+        } else {
+            data = {};
         }
-        notty('<span>' + words['Failed'] + '!' + msg + '!</span>', 'error');
+    if (typeof(data.nothing_to_do) == 'undefined' || !data.nothing_to_do) {
+        notty('<span>' + words['Failed'] + '! ' + msg + '!</span>', 'error');
     }
     $("#modalbox").data('complete', 1);
 }
