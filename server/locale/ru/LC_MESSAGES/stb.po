@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-22 10:38+0300\n"
-"PO-Revision-Date: 2016-01-22 10:38+0300\n"
+"POT-Creation-Date: 2016-01-22 12:39+0300\n"
+"PO-Revision-Date: 2016-01-22 12:40+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -4458,6 +4458,10 @@ msgstr "Сменить группу для всех администраторо
 #: ../../../tools/misctranslations.php:921
 msgid "Length, min"
 msgstr "Длительность, мин"
+
+#: ../../../tools/misctranslations.php:922
+msgid "Resetting password of user access control"
+msgstr "Сброс пароля контроля доступа пользователя"
 
 #: ../../../adm/js/js_translate.php:38
 msgid "Wait"
