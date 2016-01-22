@@ -1170,6 +1170,12 @@
                         }
                     });
 
+                    if ($("#modalbox_ad input[name*='use_http_tmp_link']").prop("checked")) {
+                        linkTypeFields.closest(".form-group").show();
+                    } else {
+                        linkTypeFields.val('off').prop('checked', false).closest(".form-group").hide();
+                    }
+
                     $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Edit streaming link'|trans }}');
                     $("#modalbox_ad").show();
                     $(this).closest('.open').removeClass('open');
@@ -1193,6 +1199,30 @@
                         showModalBox();
                         return false;
                     }
+                });
+
+                var linkTypeFields = $("#modalbox_ad input[name*='wowza_tmp_link'], #modalbox_ad input[name*='nginx_secure_link'], #modalbox_ad input[name*='flussonic_tmp_link']");
+
+                $("#modalbox_ad").on('change', "input[name*='use_http_tmp_link']", function(e){
+                    if ($(this).prop("checked")) {
+                        linkTypeFields.closest(".form-group").show();
+                    } else {
+                        linkTypeFields.val('off').prop('checked', false).closest(".form-group").hide();
+                    }
+                });
+
+                $("#modalbox_ad").on('click', "input[name*='wowza_tmp_link'] + i, input[name*='nginx_secure_link'] + i, input[name*='flussonic_tmp_link'] + i", function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var checkBox = $(this).prev('input');
+                    var currState = !checkBox.prop("checked");
+                    if (currState) {
+                        linkTypeFields.val('off').prop('checked', false);
+                        checkBox.val('on');
+                    } else {
+                        checkBox.val('off');
+                    }
+                    checkBox.prop("checked", currState);
                 });
 
             });
