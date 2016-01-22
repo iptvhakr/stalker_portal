@@ -918,3 +918,4 @@ _('Number is unique');
 _('Number is not unique');
 _('Admins in group');
 _('Change group for all admins from current group');
+_('Length, min');
