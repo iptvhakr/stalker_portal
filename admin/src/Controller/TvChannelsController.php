@@ -1132,6 +1132,37 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
 
+    public function epg_check_prefix(){
+        if (!$this->isAjax || $this->method != 'POST') {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+        $data = array();
+        $data['action'] = 'checkData';
+        $data['input_id'] = 'form_id_prefix';
+        $error = $this->setLocalization('Prefix already used');
+        $params = array(
+            'id_prefix' => $this->postData['prefix']
+        );
+        if (!empty($this->postData['epg_id'])) {
+            $params['id<>'] = $this->postData['epg_id'];
+        }
+        $result = $this->db->searchOneEPGParam($params);
+
+        if (!empty($this->postData['prefix']) && $result) {
+            $data['chk_rezult'] = $this->setLocalization('Prefix already used');
+        } else {
+            $data['chk_rezult'] = $this->setLocalization('Prefix is available');
+            $error = '';
+        }
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
     //------------------------ service method ----------------------------------
 
     private function getLogoUriById($id = FALSE, $row = FALSE, $resolution = 320) {

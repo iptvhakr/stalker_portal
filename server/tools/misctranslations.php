@@ -920,3 +920,4 @@ _('Admins in group');
 _('Change group for all admins from current group');
 _('Length, min');
 _('Resetting password of user access control');
+_('Check EPG-prefix for uniqueness');

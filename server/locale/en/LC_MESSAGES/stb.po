@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-25 13:26+0300\n"
-"PO-Revision-Date: 2016-01-25 13:26+0300\n"
+"POT-Creation-Date: 2016-01-25 16:59+0300\n"
+"PO-Revision-Date: 2016-01-25 16:59+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -52,21 +52,21 @@ msgid "monitoring off"
 msgstr "Monitoring off"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:51
-#: ../../../../admin/src/Controller/TvChannelsController.php:1917
+#: ../../../../admin/src/Controller/TvChannelsController.php:1948
 #: ../../../../admin/src/Controller/RadioController.php:24
 #: ../../../../admin/src/Controller/RadioController.php:403
 msgid "errors occurred"
 msgstr "Errors occurred"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:52
-#: ../../../../admin/src/Controller/TvChannelsController.php:1911
+#: ../../../../admin/src/Controller/TvChannelsController.php:1942
 #: ../../../../admin/src/Controller/RadioController.php:25
 #: ../../../../admin/src/Controller/RadioController.php:401
 msgid "no errors"
 msgstr "No errors"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:53
-#: ../../../../admin/src/Controller/TvChannelsController.php:1906
+#: ../../../../admin/src/Controller/TvChannelsController.php:1937
 msgid "there are some problems"
 msgstr "There are some problems"
 
@@ -147,6 +147,7 @@ msgstr "TV Archive has been restarted."
 #: ../../../../admin/src/Controller/TvChannelsController.php:951
 #: ../../../../admin/src/Controller/TvChannelsController.php:979
 #: ../../../../admin/src/Controller/TvChannelsController.php:1086
+#: ../../../../admin/src/Controller/TvChannelsController.php:1137
 #: ../../../../admin/src/Controller/EventsController.php:319
 #: ../../../../admin/src/Controller/EventsController.php:352
 #: ../../../../admin/src/Controller/EventsController.php:386
@@ -310,7 +311,16 @@ msgstr "Upload failed"
 msgid "Error m3u parse. Check the file encoding. Required UTF-8 encoding."
 msgstr "Error m3u parse. Check the file encoding. Required UTF-8 encoding."
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1604
+#: ../../../../admin/src/Controller/TvChannelsController.php:1146
+#: ../../../../admin/src/Controller/TvChannelsController.php:1156
+msgid "Prefix already used"
+msgstr "Prefix already used"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1158
+msgid "Prefix is available"
+msgstr "Prefix is available"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1635
 #: ../../../../admin/src/Controller/EventsController.php:826
 #: ../../../../admin/src/Controller/EventsController.php:852
 #: ../../../../admin/src/Controller/EventsController.php:870
@@ -320,8 +330,8 @@ msgstr "Error m3u parse. Check the file encoding. Required UTF-8 encoding."
 msgid "ID"
 msgstr "ID"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1605
-#: ../../../../admin/src/Controller/TvChannelsController.php:1697
+#: ../../../../admin/src/Controller/TvChannelsController.php:1636
+#: ../../../../admin/src/Controller/TvChannelsController.php:1728
 #: ../../../../admin/src/Controller/VideoClubController.php:2307
 #: ../../../administrator/other_city_info.php:151
 #: ../../../administrator/other_city_info.php:214
@@ -338,13 +348,13 @@ msgstr "ID"
 msgid "Number"
 msgstr "Number"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1606
+#: ../../../../admin/src/Controller/TvChannelsController.php:1637
 #: ../../../administrator/add_itv.php:1774
 msgid "Logo"
 msgstr "Logo"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1607
-#: ../../../../admin/src/Controller/TvChannelsController.php:1698
+#: ../../../../admin/src/Controller/TvChannelsController.php:1638
+#: ../../../../admin/src/Controller/TvChannelsController.php:1729
 #: ../../../../admin/src/Controller/EventsController.php:827
 #: ../../../../admin/src/Controller/VideoClubController.php:2308
 #: ../../../../admin/src/Controller/VideoClubController.php:2316
@@ -374,7 +384,7 @@ msgstr "Logo"
 msgid "Title"
 msgstr "Title"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1608
+#: ../../../../admin/src/Controller/TvChannelsController.php:1639
 #: ../../../administrator/audio_album.php:425
 #: ../../../administrator/add_itv.php:1076
 #: ../../../administrator/add_itv.php:1558
@@ -388,14 +398,14 @@ msgstr "Title"
 msgid "Genre"
 msgstr "Genre"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1609
+#: ../../../../admin/src/Controller/TvChannelsController.php:1640
 #: ../../../tools/misctranslations.php:554
 #: ../../../administrator/userlog.php:373
 #: ../../../administrator/add_itv.php:1077
 msgid "Archive"
 msgstr "Archive"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1610
+#: ../../../../admin/src/Controller/TvChannelsController.php:1641
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:407
 #: ../../../administrator/add_itv.php:1074
 #: ../../../administrator/audio_track.php:246
@@ -405,12 +415,12 @@ msgstr "Archive"
 msgid "URL"
 msgstr "URL"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1611
+#: ../../../../admin/src/Controller/TvChannelsController.php:1642
 #: ../../../../admin/src/Controller/RadioController.php:380
 msgid "Monitoring status"
 msgstr "Monitoring status"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1612
+#: ../../../../admin/src/Controller/TvChannelsController.php:1643
 #: ../../../../admin/src/Controller/VideoClubController.php:2354
 #: ../../../../admin/src/Controller/VideoClubController.php:2375
 #: ../../../../admin/src/Controller/UsersController.php:2047
@@ -420,7 +430,7 @@ msgstr "Monitoring status"
 msgid "Status"
 msgstr "Status"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1613
+#: ../../../../admin/src/Controller/TvChannelsController.php:1644
 #: ../../../../admin/src/Controller/EventsController.php:831
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:410
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:420
@@ -431,14 +441,14 @@ msgstr "Status"
 msgid "Operations"
 msgstr "Operations"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1699
+#: ../../../../admin/src/Controller/TvChannelsController.php:1730
 #: ../../../../admin/src/Controller/VideoClubController.php:2309
 #: ../../../../admin/src/Controller/VideoClubController.php:2317
 #: ../../../tools/misctranslations.php:594
 msgid "Localized title"
 msgstr "Localized title"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1700
+#: ../../../../admin/src/Controller/TvChannelsController.php:1731
 #: ../../../../admin/src/Controller/VideoClubController.php:2310
 #: ../../../../admin/src/Controller/VideoClubController.php:2319
 #: ../../../../admin/src/Controller/VideoClubController.php:2355
@@ -4459,6 +4469,10 @@ msgstr "Length, min"
 #: ../../../tools/misctranslations.php:922
 msgid "Resetting password of user access control"
 msgstr "Resetting password of user access control"
+
+#: ../../../tools/misctranslations.php:923
+msgid "Check EPG-prefix for uniqueness"
+msgstr "Check EPG-prefix for uniqueness"
 
 #: ../../../adm/js/js_translate.php:38
 msgid "Wait"
