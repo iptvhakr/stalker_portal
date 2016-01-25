@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-21 17:12+0300\n"
-"PO-Revision-Date: 2016-01-21 17:13+0300\n"
+"POT-Creation-Date: 2016-01-25 13:26+0300\n"
+"PO-Revision-Date: 2016-01-25 13:26+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -1113,6 +1113,11 @@ msgstr "Closest free number"
 #: ../../../../admin/src/Controller/LoginController.php:21
 msgid "User is undefined"
 msgstr "User is undefined"
+
+#: ../../../../admin/src/Controller/BaseStalkerController.php:220
+#: ../../../lang/stb.php:49 ../../../lang/stb.php:436
+msgid "Access denied"
+msgstr "Access denied"
 
 #: ../../../../admin/src/Controller/TariffsController.php:94
 #: ../../../../admin/src/Controller/TariffsController.php:144
@@ -4447,6 +4452,14 @@ msgstr "Admins in group"
 msgid "Change group for all admins from current group"
 msgstr "Change group for all admins from current group"
 
+#: ../../../tools/misctranslations.php:921
+msgid "Length, min"
+msgstr "Length, min"
+
+#: ../../../tools/misctranslations.php:922
+msgid "Resetting password of user access control"
+msgstr "Resetting password of user access control"
+
 #: ../../../adm/js/js_translate.php:38
 msgid "Wait"
 msgstr "Wait"
@@ -7697,10 +7710,6 @@ msgstr "The number of connections is limited. <br> Try again later"
 msgid "File missing"
 msgstr "File missing"
 
-#: ../../../lang/stb.php:49 ../../../lang/stb.php:436
-msgid "Access denied"
-msgstr "Access denied"
-
 #: ../../../lang/stb.php:50
 msgid "Server unavailable"
 msgstr "Server unavailable"
@@ -9427,6 +9436,9 @@ msgstr "Adress"
 msgid "Allow the user to record selected programs on the server repository"
 msgstr "Allow the user to record selected programs on the server repository"
 
+msgid "Allowed values from -720 to 840"
+msgstr "Allowed values from -720 to 840"
+
 msgid "Archive servers"
 msgstr "Archive servers"
 
@@ -10644,9 +10656,6 @@ msgstr "Administrator"
 
 #~ msgid "Swith on"
 #~ msgstr "Swith on"
-
-#~ msgid "Length, min"
-#~ msgstr "Length, min"
 
 #~ msgid "No scheduled publications"
 #~ msgstr "No scheduled publications"

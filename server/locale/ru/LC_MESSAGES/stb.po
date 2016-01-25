@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-21 17:13+0300\n"
-"PO-Revision-Date: 2016-01-21 17:14+0300\n"
+"POT-Creation-Date: 2016-01-25 13:25+0300\n"
+"PO-Revision-Date: 2016-01-25 13:26+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -1116,6 +1116,11 @@ msgstr "Ближайший свободный номер"
 #: ../../../../admin/src/Controller/LoginController.php:21
 msgid "User is undefined"
 msgstr "Пользователь не определен"
+
+#: ../../../../admin/src/Controller/BaseStalkerController.php:220
+#: ../../../lang/stb.php:49 ../../../lang/stb.php:436
+msgid "Access denied"
+msgstr "Доступ запрещен"
 
 #: ../../../../admin/src/Controller/TariffsController.php:94
 #: ../../../../admin/src/Controller/TariffsController.php:144
@@ -4450,6 +4455,14 @@ msgstr "Администраторов в группе"
 msgid "Change group for all admins from current group"
 msgstr "Сменить группу для всех администраторов из текущей группы"
 
+#: ../../../tools/misctranslations.php:921
+msgid "Length, min"
+msgstr "Длительность, мин"
+
+#: ../../../tools/misctranslations.php:922
+msgid "Resetting password of user access control"
+msgstr "Сброс пароля контроля доступа пользователя"
+
 #: ../../../adm/js/js_translate.php:38
 msgid "Wait"
 msgstr "Ожидайте"
@@ -7705,10 +7718,6 @@ msgstr "Количество подключений ограничено.<br>П�
 msgid "File missing"
 msgstr "Файл отсутствует"
 
-#: ../../../lang/stb.php:49 ../../../lang/stb.php:436
-msgid "Access denied"
-msgstr "Доступ запрещен"
-
 #: ../../../lang/stb.php:50
 msgid "Server unavailable"
 msgstr "Сервер недоступен"
@@ -9435,6 +9444,9 @@ msgid "Allow the user to record selected programs on the server repository"
 msgstr ""
 "Разрешить пользователю записывать выбранные программы в хранилище сервера"
 
+msgid "Allowed values from -720 to 840"
+msgstr "Допустимые значения от -720 до 840"
+
 msgid "Archive servers"
 msgstr "Сервера архивов"
 
@@ -10664,9 +10676,6 @@ msgstr "Администратор"
 
 #~ msgid "Swith on"
 #~ msgstr "Включить"
-
-#~ msgid "Length, min"
-#~ msgstr "Длительность, мин"
 
 #~ msgid "No scheduled publications"
 #~ msgstr "Нет запланированных публикаций"

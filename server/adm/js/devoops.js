@@ -702,7 +702,7 @@ $(document).ready(function () {
         $(this).closest('.box').children('.box-header').find("input[type='checkbox']").prop("checked", ($(this).find("input[type='checkbox']:checked").length != 0));
         return false;
     });
-    $(document).on('show hide', "#add_channel_temp_http_link, #add_channel_link_monitoring, #add_channel_load_balancing", function (e) {
+    $(document).on('show hide', "#add_channel_link_monitoring, #add_channel_load_balancing", function (e) {
         e.stopPropagation();
         e.preventDefault();
         $(this).closest('.box').children('.box-header').find("input[type='checkbox']").prop("checked", ($(this).find("input[type='radio']:checked").val() == 'on'));
