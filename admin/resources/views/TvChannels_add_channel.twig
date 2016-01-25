@@ -476,7 +476,7 @@
                             <label class="col-sm-2 control-label">{{ 'Time correction for EPG'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
-                                    {{ form_widget(app['form'].correct_time, {'attr': {'class': 'form-control populate placeholder' }}) }}
+                                    {{ form_widget(app['form'].correct_time, {'attr': {'class': 'form-control', 'data-validation':'number', 'data-validation-allowing':'range[-720;840],negative', 'data-validation-error-msg': "Allowed values from -720 to 840" | trans}}) }} {#{'attr': {'class': 'form-control populate placeholder', 'data-validation': 'number', 'data-validation-allowing': 'range[-720;840],negative' }}) }}#}
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].correct_time) }}
                                     </div>
@@ -1069,11 +1069,21 @@
                 $("#form_save").on('click', function (e) {
 
                     $.validate({
-
+                        validateOnBlur : true,
+                        showHelpOnFocus : true,
+                        addSuggestions : true,
                         onSuccess: function () {
                             e.stopPropagation();
                             e.preventDefault();
                             $('#form_save').closest('form').get(0).submit();
+                            return false;
+                        },
+                        onError: function (formNode) {
+                            $('#add_channel').find('span.form-error, div.bg-danger').each(function(){
+                                if ($.trim($(this).text()) && !$(this).is(":visible")) {
+                                    $(this).closest('div.box').find('a.collapse-link').trigger('click');
+                                }
+                            });
                             return false;
                         }
                     });
@@ -1223,6 +1233,13 @@
                         checkBox.val('off');
                     }
                     checkBox.prop("checked", currState);
+                });
+
+                $("#add_channel .form-group").each(function(i){
+                    var errorDiv = $(this).find('.bg-danger, .form-error');
+                    if (errorDiv.length && errorDiv.is(":visible") && $.trim(errorDiv.text()) != '') {
+                        $(this).closest('div.box').find('a.collapse-link').trigger('click');
+                    }
                 });
 
             });
