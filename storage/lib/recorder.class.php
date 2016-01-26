@@ -24,7 +24,7 @@ class Recorder extends Storage
 
         if (strpos($url, 'rtp://') !== false ||
             strpos($url, 'udp://') !== false ||
-            strpos($url, 'http://') !== false)
+            (strpos($url, 'http://') !== false && defined("ASTRA_RECORDER") && ASTRA_RECORDER))
         {
             if (defined("ASTRA_RECORDER") && ASTRA_RECORDER){
                 exec('astra '.PROJECT_PATH.'/dumpstream.lua'
