@@ -691,6 +691,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $profile['cas_type']   = Config::getSafe('cas_type', 0);
         $profile['cas_params'] = Config::getSafe('cas_params', null);
+        $profile['cas_web_params'] = Config::getSafe('cas_web_params', null);
         $profile['cas_additional_params'] = Config::getSafe('cas_additional_params', array());
         $profile['cas_hw_descrambling']   = Config::getSafe('cas_hw_descrambling', 0);
         $profile['cas_ini_file']          = Config::getSafe('cas_ini_file', "");
