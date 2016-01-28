@@ -1290,7 +1290,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                                 new Assert\Range(array('min' => -20, 'max' => 20)),
                                 new Assert\NotBlank()),
                             'required' => TRUE,
-                            'data' => (empty($data['volume_correction']) ? 0: $data['volume_correction'])
+                            'data' => (empty($data['volume_correction']) ? '0': $data['volume_correction'])
                         )
                     )
                 ->add('logo', 'hidden')
@@ -1361,9 +1361,9 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             if (is_array($row)) {
                 $this->dataPrepare($data[$key]);
 //                $data[$key] = $row;
-            } elseif ($row == 'on') {
+            } elseif ($row === 'on') {
                 $data[$key] = 1;
-            } elseif ($row == 'off') {
+            } elseif ($row === 'off') {
                 $data[$key] = 0;
             }
         }
