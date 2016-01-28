@@ -105,14 +105,47 @@
         {{ form_end(app['form']) }}  
     </div>
     <script type="text/javascript" defer>
+
+        var conf = {
+            form: '#form_',
+            lang : '{{ app.language }}',
+            showHelpOnFocus : true,
+            validateHiddenInputs: true,
+            ignore: ['.ignore'],
+            modules: 'jsconf',
+            onSuccess: function () {
+                $(this.form).get(0).submit();
+                return false;
+            },
+            onError: function () {
+                return false;
+            }
+        };
+
         function DemoSelect2() {
             $('#form_denied_categories').select2({minimumResultsForSearch: -1});
             $('#form_must_watch').select2({minimumResultsForSearch: -1});
         }
+
         function yelp() {
             $(document).ready(function () {
-			$.validate();
+
+                $.validate(conf);
+
                 LoadSelect2Script(DemoSelect2);
+
+                $(document).on("click", "#form_save", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+
+                    if ($(conf.form).isValid({}, conf, true)) {
+                        conf.onSuccess();
+                    } else {
+                        conf.onError();
+                    }
+                    return false;
+                });
+
             });
         }
         document.addEventListener("DOMContentLoaded", yelp, false);

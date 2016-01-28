@@ -16,7 +16,7 @@
     </div>
     {% endif %}
     <div id="add_channel">
-        {{ form_start(app['form'], {'method': 'POST', 'action': (app.request.baseUrl ~ '/' ~ app.controller_alias  ~ '/' ~ app.action_alias) | trans, 'attr': {'class': 'form-horizontal', 'role': 'form' }}) }}
+        {{ form_start(app['form'], {'method': 'POST', 'action': (app.request.baseUrl ~ '/' ~ app.controller_alias  ~ '/' ~ app.action_alias) | trans, 'attr': {'class': 'form-horizontal', 'role': 'form', 'id': 'form_' }}) }}
         <div class="bg-danger">
             <div class="bg-danger">
                 {{ form_errors(app['form']) }}
@@ -42,7 +42,7 @@
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].id) }}
-                                    {{ form_widget(app['form'].number, {'attr': {'class': 'form-control', 'data-validation':'number', 'data-validation-allowing':'range[0;9999]'}}) }}
+                                    {{ form_widget(app['form'].number, {'attr': {'class': 'form-control ignore', 'data-validation':'number', 'data-validation-allowing':'range[0;9999]'}}) }}
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].number) }}
                                         {% if attribute(app, 'error_local') is defined and attribute(app['error_local'], 'number') is defined %}<span> {{ app['error_local']['number'] }}</span> {% endif %}
@@ -380,7 +380,7 @@
                             <label class="col-sm-2 control-label">{{ 'TV archive address'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
-                                    {{ form_widget(app['form'].mc_cmd, {'attr': {'class': 'form-control' }}) }}
+                                    {{ form_widget(app['form'].mc_cmd, {'attr': {'class': 'form-control', 'data-validation': 'custom', 'data-validation-regexp': '^(http|udp|rtp)\:\/\/', 'data-validation-error-msg': "Valid protocols are http://, rtp:// and udp://." | trans }}) }}
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].mc_cmd) }}
                                         {% if attribute(app, 'error_local') is defined and attribute(app['error_local'], 'mc_cmd') is defined %}<span> {{ app['error_local']['mc_cmd'] }}</span> {% endif %}
@@ -476,7 +476,7 @@
                             <label class="col-sm-2 control-label">{{ 'Time correction for EPG'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
-                                    {{ form_widget(app['form'].correct_time, {'attr': {'class': 'form-control', 'data-validation':'number', 'data-validation-allowing':'range[-720;840],negative', 'data-validation-error-msg': "Allowed values from -720 to 840" | trans}}) }} {#{'attr': {'class': 'form-control populate placeholder', 'data-validation': 'number', 'data-validation-allowing': 'range[-720;840],negative' }}) }}#}
+                                    {{ form_widget(app['form'].correct_time, {'attr': {'class': 'form-control', 'data-validation':'number', 'data-validation-allowing':'range[-720;840],negative', 'data-validation-error-msg': "Allowed values from -720 to 840" | trans}}) }} {# {'attr': {'class': 'form-control populate placeholder', 'data-validation': 'number', 'data-validation-allowing': 'range[-720;840],negative' }}) }}#}
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].correct_time) }}
                                     </div>
@@ -1066,27 +1066,44 @@
                     return false;
                 });
 
+                var conf = {
+                    form: 'form_',
+                    lang : '{{ app.language }}',
+                    showHelpOnFocus : true,
+                    validateHiddenInputs: true,
+                    ignore: ['.ignore'],
+                    modules: 'jsconf',
+                    onSuccess: function () {
+                        $('#form_save').closest('form').get(0).submit();
+                        return false;
+                    },
+                    onError: function () {
+                        $('#add_channel').find('span.form-error, div.bg-danger').each(function(){
+                            if ($.trim($(this).text()) && !$(this).is(":visible")) {
+                                $(this).closest('div.box').find('a.collapse-link').trigger('click');
+                            }
+                        });
+                        return false;
+                    }
+                };
+                $.validate(conf);
                 $("#form_save").on('click', function (e) {
 
-                    $.validate({
-                        validateOnBlur : true,
-                        showHelpOnFocus : true,
-                        addSuggestions : true,
-                        onSuccess: function () {
-                            e.stopPropagation();
-                            e.preventDefault();
-                            $('#form_save').closest('form').get(0).submit();
-                            return false;
-                        },
-                        onError: function (formNode) {
-                            $('#add_channel').find('span.form-error, div.bg-danger').each(function(){
-                                if ($.trim($(this).text()) && !$(this).is(":visible")) {
-                                    $(this).closest('div.box').find('a.collapse-link').trigger('click');
-                                }
-                            });
-                            return false;
-                        }
-                    });
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var ignore = new Array();
+                    if (!$("#form_enable_tv_archive").prop('checked') && !$("#form_allow_pvr").prop('checked')) {
+                        ignore.push($("#form_mc_cmd").prop('name'));
+                    }
+
+                    conf.ignore = ignore;
+
+                    if ($("#form_").isValid({}, conf, true)) {
+                        conf.onSuccess();
+                    } else {
+                        conf.onError();
+                    }
+                    return false;
                 });
                 $("#form_reset").on('click', function(e){
                     e.stopPropagation();

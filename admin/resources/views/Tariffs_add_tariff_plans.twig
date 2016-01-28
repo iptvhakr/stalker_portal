@@ -114,7 +114,24 @@
         {{ form_end(app['form']) }}  
     </div>
     <script type="text/javascript" defer>
-        
+
+        var conf = {
+            form: '#form_',
+            lang : '{{ app.language }}',
+            showHelpOnFocus : true,
+            validateHiddenInputs: true,
+            ignore: ['.ignore'],
+            modules: 'jsconf',
+            onSuccess: function () {
+                $(conf.form).get(0).submit();
+                return true;
+            },
+            onError: function () {
+                return false;
+            }
+        };
+
+
         function DemoSelect2() {
             $.getScript("{{ app.request.baseUrl }}/plugins/select2/select2_locale_ru.js", function(){
                 $('#form_packages').select2({minimumResultsForSearch: -1});
@@ -123,7 +140,7 @@
         
         function yelp() {
             $(document).ready(function () {
-			$.validate();
+                $.validate(conf);
                 LoadSelect2Script(DemoSelect2);
                 
                 if ($("#form_packages_optional").val() != "[]") {
@@ -136,7 +153,7 @@
                     ajaxPostSend('{{app.request.baseUrl}}/{{app.controller_alias}}/check-external-id', {externalid: _this.val(), selfid: $('#form_id').val()}, false);
                 });
                 
-                $(document).on('click', '#form_save', function(){
+                $(document).on('click', '#form_save', function(e){
                 var sendData =[];
                     $('#form_disabled_services').find('option').each(function(index, val){
                         var _val = $(this);
@@ -153,6 +170,15 @@
                         }
                     });
                     $('#form_services_json').val(JSON.stringify(sendData));
+                    e.stopPropagation();
+                    e.preventDefault();
+
+                    if ($(conf.form).isValid({}, conf, true)) {
+                        conf.onSuccess();
+                    } else {
+                        conf.onError();
+                    }
+                    return false;
                 });
                 
                 //--------------------------------------------------------------------------------------------------------

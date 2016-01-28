@@ -133,6 +133,35 @@
                                     
     <script type="text/javascript" defer>
 
+        var conf = {
+            form: 'karaoke_form',
+            lang : '{{ app.language }}',
+            showHelpOnFocus : true,
+            validateHiddenInputs: true,
+            ignore: ['.ignore'],
+            modules: 'jsconf',
+            onSuccess: function () {
+                var sendData = new Object();
+                var lengthObj = 0;
+                var form_fields = $("#modalbox_ad input.own_fields:not(:disabled), #modalbox_ad select.own_fields:not(:disabled)");
+                form_fields.each(function () {
+                    sendData[this.name] = $(this).val();
+                    if($(this).data("validation")) {
+                        lengthObj++;
+                    }
+                });
+                if (lengthObj < form_fields.filter("data-validation").length) {
+                    notty('{{ 'Fill in the required fields'|trans }}','error');
+                    return false;
+                }
+                ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
+                return false;
+            },
+            onError: function () {
+                return false;
+            }
+        };
+
         function DemoSelect2() {
             $.getScript("{{ app.request.baseUrl }}/plugins/select2/select2_locale_ru.js", function () {
                 $('#s2_zone').select2({minimumResultsForSearch: -1});
@@ -205,7 +234,7 @@
 
         function yelp() {
             $(document).ready(function () {
-                
+                $.validate(conf);
                 $(document).on('click', "a.main_ajax[disabled!='disabled']", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
@@ -228,28 +257,15 @@
                 });
                 
                 $("#modalbox_ad button[type='submit']").on('click', function (e) {
-				
-                    $.validate({
-                        onSuccess : function() {
-                            e.stopPropagation();
-                            e.preventDefault();
-                            var sendData = new Object();
-                            var lengthObj = 0;
-                            var form_fields = $("#modalbox_ad input.own_fields:not(:disabled), #modalbox_ad select.own_fields:not(:disabled)");
-                            form_fields.each(function () {
-                                sendData[this.name] = $(this).val();
-                                if($(this).data("validation")) {
-                                    lengthObj++;
-                                }
-                            });
-                            if (lengthObj < form_fields.filter("data-validation").length) {
-                                notty('{{ 'Fill in the required fields'|trans }}','error');
-                                return false;
-                            }
-                            ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
-                            return false;
-                        }
-                    });
+                    e.stopPropagation();
+                    e.preventDefault();
+
+                    if ($("#karaoke_form").isValid({}, conf, true)) {
+                        conf.onSuccess();
+                    } else {
+                        conf.onError();
+                    }
+                    return false;
                 });
                 
                 $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
@@ -266,6 +282,8 @@
                 $("#add_server").on("click", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
+                    $.validate();
+                    $('#karaoke_form').get(0).reset();
                     var tmp_id = $('#datatable-1 tr:last').attr('id');
                     if (!tmp_id) {
                         tmp_id = "tr_" + $.randString();
@@ -280,6 +298,7 @@
                     $('#s2_zone option:first').prop('selected', 'selected');
                     $('#s2_zone').select2({minimumResultsForSearch: -1});
                     $("#modalbox_ad").show();
+
                     return false;
                 });
                                 
@@ -327,6 +346,7 @@
             }
             $("#modalbox_ad input").removeAttr('disabled');
             $('#s2_zone').select2({minimumResultsForSearch: -1});
+            $("#karaoke_form").isValid({}, conf, true)
             $("#modalbox_ad").show();
         };
 

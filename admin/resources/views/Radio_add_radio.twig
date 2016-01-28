@@ -19,7 +19,7 @@
                             <div class="col-xs-10 col-sm-8">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].id, {'attr': {'class': 'form-control'}}) }}
-                                    {{ form_widget(app['form'].number, {'attr': {'class': 'form-control', 'data-checkurl': 'radio-check-number', 'data-validation':'required', 'data-validation' : '[INTEGER]'}}) }}
+                                    {{ form_widget(app['form'].number, {'attr': {'class': 'form-control', 'data-checkurl': 'radio-check-number', 'data-validation':'number'}}) }}
 								</div>
                                 <div>
                                     <div class="bg-danger">
@@ -36,7 +36,9 @@
                             <div class="col-xs-10 col-sm-8">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].name, {'attr': {'class': 'form-control', 'data-checkurl': 'radio-check-name', 'data-validation':'required'}}) }}
-                                    </div><div><div class="bg-danger">
+                                </div>
+                                <div>
+                                    <div class="bg-danger">
                                         {{ form_errors(app['form'].name) }}
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
@@ -50,7 +52,9 @@
                             <div class="col-xs-10 col-sm-8">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].cmd, {'attr': {'class': 'form-control', 'data-validation':'required', 'data-validation-regex' : '/(^.*?\s?.*?\:\/\/.*$)/igm'}}) }}
-                                    </div><div><div class="bg-danger">
+                                </div>
+                                <div>
+                                    <div class="bg-danger">
                                         {{ form_errors(app['form'].cmd) }}
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
@@ -64,7 +68,9 @@
                             <div class="col-xs-10 col-sm-8">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].volume_correction, {'attr': {'class': 'populate placeholder'} }) }}
-                                    </div><div><div class="bg-danger">
+                                </div>
+                                <div>
+                                    <div class="bg-danger">
                                         {{ form_errors(app['form'].volume_correction) }}
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
@@ -109,17 +115,31 @@
         {{ form_end(app['form']) }}  
     </div>
     <script type="text/javascript" defer>
-        
+
+        var conf = {
+            form: '#form_',
+            lang : '{{ app.language }}',
+            showHelpOnFocus : true,
+            validateHiddenInputs: true,
+            ignore: ['.ignore'],
+            modules: 'jsconf',
+            onSuccess: function () {
+                return true;
+            },
+            onError: function () {
+                return false;
+            }
+        };
+
         function DemoSelect2() {
             $.getScript("{{ app.request.baseUrl }}/plugins/select2/select2_locale_ru.js", function () {
                 $('#form_volume_correction').select2({minimumResultsForSearch: -1});
-
             });
         }
         
         function yelp() {
             $(document).ready(function () {
-                $.validate();
+                $.validate(conf);
                 $(document).on('change', '#form_number, #form_name', function(e){
                     var _this = $(this);
                     _this.next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');

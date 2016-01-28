@@ -248,6 +248,63 @@
 
     <script type="text/javascript">
 
+        var conf = {
+            lang : '{{ app.language }}',
+            showHelpOnFocus : true,
+            validateHiddenInputs: true,
+            modules: 'jsconf',
+            onSuccess: function () {
+                if (this.form == '#track_form') {
+                    var sendData = {};
+                    $("#modalbox_ad input, #modalbox_ad select").each(function () {
+                        sendData[this.name] = $(this).val();
+                    });
+                    sendData['album_id'] = {{ app['audioAlbumID'] }};
+                    ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
+                } else {
+                    $("#form_").get(0).submit();
+                }
+                return false;
+            },
+            onError: function () {
+                var _this = this;
+                $(_this.form + " select").each(function(){
+                    if ($(this).hasClass('error')) {
+                        _this.highlight(this, _this.errorClass);
+                    } else {
+                        _this.unhighlight(this, _this.errorClass);
+                    }
+                });
+                return false;
+            },
+            onkeyup: false,
+            errorClass: "myErrorClass",
+
+            errorPlacement: function (error, element) {
+                var elem = $(element);
+                error.insertAfter(element);
+            },
+
+            highlight: function (element, errorClass, validClass) {
+                var elem = $(element);
+                if (elem.hasClass("select2-offscreen")) {
+                    $("#s2id_" + elem.attr("id") + " ul").addClass(errorClass);
+                } else {
+                    elem.addClass(errorClass);
+                }
+            },
+
+            unhighlight: function (element, errorClass, validClass) {
+                var elem = $(element);
+                if (elem.hasClass("select2-offscreen")) {
+                    $("#s2id_" + elem.attr("id") + " ul").removeClass(errorClass);
+                    $("#s2id_" + elem.attr("id") + " a").removeClass(errorClass);
+                } else {
+                    elem.removeClass(errorClass).removeAttr('style');
+                }
+            }
+        };
+
         function DemoSelect2() {
             $.getScript("{{ app.request.baseUrl }}/plugins/select2/select2_locale_ru.js", function () {
                 $('#form_performer_id').select2({minimumResultsForSearch: 1});
@@ -335,56 +392,6 @@
 
             $(document).ready(function () {
 
-                //Initialize the validation object which will be called on form submit.
-                var validobj = $("#form_").validate({
-                    onkeyup: false,
-                    errorClass: "myErrorClass",
-
-                    //put error message behind each form element
-                    errorPlacement: function (error, element) {
-                        var elem = $(element);
-                        error.insertAfter(element);
-                    },
-
-                    //When there is an error normally you just add the class to the element.
-                    // But in the case of select2s you must add it to a UL to make it visible.
-                    // The select element, which would otherwise get the class, is hidden from
-                    // view.
-                    highlight: function (element, errorClass, validClass) {
-                        var elem = $(element);
-                        if (elem.hasClass("select2-offscreen")) {
-                            $("#s2id_" + elem.attr("id") + " ul").addClass(errorClass);
-
-                        } else {
-                            elem.addClass(errorClass);
-                        }
-                    },
-
-                    //When removing make the same adjustments as when adding
-                    unhighlight: function (element, errorClass, validClass) {
-                        var elem = $(element);
-                        if (elem.hasClass("select2-offscreen")) {
-                            $("#s2id_" + elem.attr("id") + " ul").removeClass(errorClass);
-                            $("#s2id_" + elem.attr("id") + " a").removeClass(errorClass);
-                        } else {
-                            elem.removeClass(errorClass);
-                        }
-                    }
-                });
-
-                //If the change event fires we want to see if the form validates.
-                //But we don't want to check before the form has been submitted by the user
-                //initially.
-                $(document).on("change", ".select2-offscreen", function () {
-                    if (!$.isEmptyObject(validobj.submitted)) {
-                        validobj.form();
-                    }
-                });
-
-                //A select2 visually resembles a textbox and a dropdown.  A textbox when
-                //unselected (or searching) and a dropdown when selecting. This code makes
-                //the dropdown portion reflect an error if the textbox portion has the
-                //error class. If no error then it cleans itself up.
                 $(document).on("select2-opening", function (arg) {
                     var elem = $(arg.target);
 
@@ -396,8 +403,8 @@
                     }
                 });
 
+                $.validate(conf);
 
-                $.validate({form: '#form_'});
                 var uploader = $("#bootstrapped-fine-uploader").fineUploader({
                     element: $('#bootstrapped-fine-uploader'),
                     autoUpload: true,
@@ -460,6 +467,11 @@
                         $("#modalbox_ad input").prop("disabled", false).removeAttr('disabled').val('');
                         $("#modalbox_ad select").prop("disabled", false).removeAttr('disabled').find('option').removeAttr('selected');
                         $('#s2_track_lang').select2("destroy").select2({minimumResultsForSearch: -1});
+                        conf.form = '#track_form';
+                        $("#track_form").validate();
+                        $("#track_form").find('input, select').each(function(){
+                            conf.unhighlight(this, conf.errorClass);
+                        });
                         $("#modalbox_ad").show();
 
                         return false;
@@ -476,25 +488,23 @@
                     });
 
                     $("#modalbox_ad button[type='submit']").on('click', function (e) {
+                        e.stopPropagation();
+                        e.preventDefault();
 
-                        $.validate({
-                            form: '#track_form',
-                            onSuccess: function () {
+                        conf.form = '#track_form';
 
-                                e.stopPropagation();
-                                e.preventDefault();
-                                var sendData = {};
-                                $("#modalbox_ad input, #modalbox_ad select").each(function () {
-                                    sendData[this.name] = $(this).val();
-                                });
-                                sendData['album_id'] = {{ app['audioAlbumID'] }};
-                                ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
-                                return false;
-                            }
-                        });
+                        if ($("#track_form").isValid({}, conf, true)) {
+                            conf.onSuccess();
+                        } else {
+                            conf.onError();
+                        }
+                        return false;
                     });
 
                     $("#form_save").on('click', function (e) {
+                        e.stopPropagation();
+                        e.preventDefault();
+
                         var tracksId = [];
                         $("#datatable-1 tr:has(td)").each(function () {
                             if (typeof($(this).attr('id')) != "undefined") {
@@ -503,6 +513,14 @@
                         });
 
                         $("#form_").append("<input type='hidden' name='album_tracks' value='" + JSON.stringify(tracksId) + "'>");
+                        conf.form = '#form_';
+
+                        if ($("#form_").isValid({}, conf, true)) {
+                            conf.onSuccess();
+                        } else {
+                            conf.onError();
+                        }
+                        return false;
                     });
 
                     $("#cover_container").on('click', 'a', function(e){
@@ -534,6 +552,12 @@
                 }
                 $("#modalbox_ad input").removeAttr('disabled');
                 $('#s2_track_lang').select2("destroy").select2({minimumResultsForSearch: -1});
+                conf.form = '#track_form';
+                $("#track_form").validate();
+                $("#track_form").find('input, select').each(function(){
+                   conf.unhighlight(this, conf.errorClass);
+                });
+
                 $("#modalbox_ad").show();
             };
 

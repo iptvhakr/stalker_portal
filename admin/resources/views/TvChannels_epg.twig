@@ -239,7 +239,6 @@
 
         function yelp() {
             $(document).ready(function () {
-			$.validate();
                 $(document).on('click', "a.main_ajax[disabled!='disabled']", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
@@ -258,36 +257,52 @@
     {#                    $("#cmd_data").find("tr:visible").remove();#}
                     return false;
                 });
-                
-                $("#modalbox_ad button[type='submit']").on('click', function (e) {
 
-                    $.validate({
-                        onSuccess: function () {
-                            e.stopPropagation();
-                            e.preventDefault();
-                            var sendData = new Object();
-                            var lengthObj = 0;
-                            var arr = [];
-                            $("#s2_lang_code option").each(function(){
-                                arr.push($(this).val());
-                            });
-                            $("input[name='lang_code']").val(arr.join(','));
-                            var form_fields = $("#modalbox_ad input.own_fields:not(:disabled), #s2_status");
-                            form_fields.each(function () {
-                                sendData[this.name] = $(this).val();
-                                if ($(this).val() || !$(this).is("[required]")) {
-                                    lengthObj++;
-                                }
-                            });
-                            if (lengthObj < form_fields.length) {
-                                alert('{{ 'Fill in the required fields'|trans }}');
-                                return false;
+                var conf = {
+                    form: 'epg_form',
+                    lang : '{{ app.language }}',
+                    showHelpOnFocus : true,
+                    validateHiddenInputs: true,
+                    ignore: ['.ignore'],
+                    modules: 'jsconf',
+                    onSuccess: function () {
+                        var sendData = new Object();
+                        var lengthObj = 0;
+                        var arr = [];
+                        $("#s2_lang_code option").each(function(){
+                            arr.push($(this).val());
+                        });
+                        $("input[name='lang_code']").val(arr.join(','));
+                        var form_fields = $("#modalbox_ad input.own_fields:not(:disabled), #s2_status");
+                        form_fields.each(function () {
+                            sendData[this.name] = $(this).val();
+                            if ($(this).val() || !$(this).is("[required]")) {
+                                lengthObj++;
                             }
-                            showModalBox();
-                            ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
+                        });
+                        if (lengthObj < form_fields.length) {
+                            alert('{{ 'Fill in the required fields'|trans }}');
                             return false;
                         }
-                    });
+                        showModalBox();
+                        ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
+                        return false;
+                    },
+                    onError: function () {
+                        return false;
+                    }
+                };
+                $.validate(conf);
+
+                $("#modalbox_ad button[type='submit']").on('click', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    if ($("#epg_form").isValid({}, conf, true)) {
+                        conf.onSuccess();
+                    } else {
+                        conf.onError();
+                    }
+                    return false;
                 });
                 
                 $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){

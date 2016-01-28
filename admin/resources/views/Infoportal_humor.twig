@@ -80,6 +80,35 @@
                                     
     <script type="text/javascript" defer>
 
+        var conf = {
+            form: '#anek_form',
+            lang : '{{ app.language }}',
+            showHelpOnFocus : true,
+            validateHiddenInputs: true,
+            ignore: ['.ignore'],
+            modules: 'jsconf',
+            onSuccess: function () {
+                var sendData = new Object();
+                var lengthObj = 0;
+                var form_fields = $("#modalbox_ad .own_fields:not(:disabled)");
+                form_fields.each(function () {
+                    if ($(this).val()) {
+                        sendData[this.name] = $(this).val();
+                        lengthObj++;
+                    }
+                });
+                if (lengthObj < form_fields.length) {
+                    JSErrorModalBox({msg: '{{ 'All fields is required'|trans }}'});
+                    return false;
+                }
+                ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
+                return false;
+            },
+            onError: function () {
+                return false;
+            }
+        };
+
         function closeModalBox(){
             $("#modalbox").hide();
             $('#modalbox').find('.modal-header-name span').empty();
@@ -152,6 +181,9 @@
 
         function yelp() {
             $(document).ready(function () {
+
+                $.validate(conf);
+
                 $(document).on('click', "a.main_ajax[disabled!='disabled']", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
@@ -170,28 +202,15 @@
                 });
                 
                 $("#modalbox_ad button[type='submit']").on('click', function (e) { 
-				
-                    $.validate({
-                        onSuccess : function() {
-                            e.stopPropagation();
-                            e.preventDefault();
-                            var sendData = new Object();
-                            var lengthObj = 0;
-                            var form_fields = $("#modalbox_ad .own_fields:not(:disabled)");
-                                form_fields.each(function () {
-                                if ($(this).val()) {
-                                    sendData[this.name] = $(this).val();
-                                    lengthObj++;
-                                }
-                            });
-                            if (lengthObj < form_fields.length) {
-                                JSErrorModalBox({msg: '{{ 'All fields is required'|trans }}'});
-                                return false;
-                            }
-                            ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
-                            return false;
-                         }
-                    });
+                    e.stopPropagation();
+                    e.preventDefault();
+
+                    if ($("#anek_form").isValid({}, conf, true)) {
+                        conf.onSuccess();
+                    } else {
+                        conf.onError();
+                    }
+                    return false;
                 });
                 
                 $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
@@ -207,6 +226,8 @@
                 $("#add_humor_item").on("click", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
+                    $.validate();
+                    $('#anek_form').get(0).reset();
                     $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Adding'|trans }}');
                     $("#modalbox_ad .own_fields").prop("disabled", false).removeAttr('disabled').val('');
                     $("#modalbox_ad input[type='hidden']").attr('disabled', 'disabled').val('');

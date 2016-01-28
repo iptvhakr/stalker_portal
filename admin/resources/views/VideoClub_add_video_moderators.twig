@@ -73,9 +73,28 @@
         {{ form_end(app['form']) }}  
     </div>
     <script type="text/javascript" defer>
+
+        var conf = {
+            form: '#form_',
+            lang : '{{ app.language }}',
+            showHelpOnFocus : true,
+            validateHiddenInputs: true,
+            ignore: ['.ignore'],
+            modules: 'jsconf',
+            onSuccess: function () {
+                $(this.form).get(0).submit();
+                return false;
+            },
+            onError: function () {
+                return false;
+            }
+        };
+
         function yelp() {
             $(document).ready(function () {
-			    $.validate();
+
+                $.validate(conf);
+
                 $(document).on('change', '#form_mac', function (e) {
                     var _this = $(this);
                     _this.next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
@@ -94,7 +113,7 @@
                     $.ajax({
                         url: 'video-club/check-moderator-mac',
                         type: 'POST',
-                        data: {mac: _this.val()},
+                        data: {mac: _this.val(), id: $("#form_id").val()},
                         success: function (data) {
                             if (data.success) {
                                 _this.next('div').append('<i class="txt-success fa fa-check"></i> ' + data.chk_rezult).css('visibility', 'visible');
@@ -112,6 +131,18 @@
                         dataType: "json",
                         async: false
                     });
+                });
+
+                $(document).on("click", "#form_save", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+
+                    if ($(conf.form).isValid({}, conf, true)) {
+                        conf.onSuccess();
+                    } else {
+                        conf.onError();
+                    }
+                    return false;
                 });
             });
         }

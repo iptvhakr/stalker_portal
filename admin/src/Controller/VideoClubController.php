@@ -755,7 +755,11 @@ class VideoClubController extends \Controller\BaseStalkerController {
         $data['action'] = 'checkModMac';
         $error = $this->setlocalization("Address is busy");
         if (preg_match('/([0-9a-fA-F]{2}([:]|$)){6}$/', trim($this->postData['mac']))) {
-            if ($this->db->checkModMac(trim($this->postData['mac']))) {
+            $params = array('mac' => trim($this->postData['mac']));
+            if (!empty($this->postData['id'])) {
+                $params['id<>'] = $this->postData['id'];
+            }
+            if ($this->db->checkModMac($params)) {
                 $data['chk_rezult'] = $this->setlocalization("Address is busy");
             } else {
                 $data['chk_rezult'] = $this->setlocalization("Address is available");

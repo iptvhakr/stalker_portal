@@ -75,7 +75,7 @@
                     </a>
                 </div>
             </div>
-            <form class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/save-storage">
+            <form class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/save-storage" id="karaoke_form">
                 <div class="devoops-modal-inner">
                     <div class="box">
                         <a class="collapse-link">
@@ -310,6 +310,30 @@
                                     
     <script type="text/javascript" defer>
 
+        var conf = {
+            form: '#karaoke_form',
+            lang : '{{ app.language }}',
+            showHelpOnFocus : true,
+            validateHiddenInputs: true,
+            ignore: ['.ignore'],
+            modules: 'jsconf',
+            onSuccess: function () {
+                var sendData = {};
+
+                $("#modalbox_ad form input").each(function () {
+                    sendData[$(this).attr('name')] = $(this).is(':checkbox') ? ($(this).is(':checked') ? 1 : 0) : $(this).val();
+                });
+                hideAdModalBox();
+                $("#modalbox").data('complete', 0);
+                JSshowModalBox();
+                ajaxPostSend($('#modalbox_ad form').attr('action'), sendData, false, false, true);
+                return false;
+            },
+            onError: function () {
+                return false;
+            }
+        };
+
         function TestTable1() {
             $('#datatable-1').on('xhr.dt', function (e, settings, json) {
                 if (typeof (json.data) == 'object') {
@@ -384,6 +408,7 @@
 
         function yelp() {
             $(document).ready(function () {
+                $.validate(conf);
                 $(document).on('click', "a.main_ajax[disabled!='disabled']", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
@@ -444,24 +469,15 @@
                 });
                 $(document).off('click', '#modalbox_ad .save_storage button[type="submit"]');
                 $(document).on('click', '#modalbox_ad .save_storage button[type="submit"]', function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
 
-                    $.validate({
-                        onSuccess: function () {
-                            e.stopPropagation();
-                            e.preventDefault();
-
-                            var sendData = {};
-
-                            $("#modalbox_ad form input").each(function () {
-                                sendData[$(this).attr('name')] = $(this).is(':checkbox') ? ($(this).is(':checked') ? 1 : 0) : $(this).val();
-                            });
-                            hideAdModalBox();
-                            $("#modalbox").data('complete', 0);
-                            JSshowModalBox();
-                            ajaxPostSend($('#modalbox_ad form').attr('action'), sendData, false, false, true);
-                            return false;
-                        }
-                    });
+                    if ($(conf.form).isValid({}, conf, true)) {
+                        conf.onSuccess();
+                    } else {
+                        conf.onError();
+                    }
+                    return false;
                 });
                 LoadDataTablesScripts(TestTable1);
             });
@@ -489,9 +505,8 @@
             $("#modalbox_ad").find(".modal-header-name").children('span').text(title);
             $("#modalbox_ad").find("input, select").prop("disabled", false).removeAttr('disabled').val('').prop("checked", false).removeAttr('checked');
             $(":checkbox[name*='fake_tv_archive']").closest('.form-group').hide('fast');
-            $("#modalbox_ad").find('form').each(function(){
-                this.reset();
-            });
+            $.validate();
+            $(conf.form).get(0).reset();
             $("#modalbox_ad").show();
         }
         
@@ -499,9 +514,8 @@
             if (typeof(reset) != 'undefined' && reset) {
                 $("#modalbox_ad").find(".modal-header-name").children('span').text(title);
                 $("#modalbox_ad").find("input, select").prop("disabled", false).removeAttr('disabled');
-                $("#modalbox_ad").find('form').each(function(){
-                    this.reset();
-                });
+                $.validate();
+                $(conf.form).get(0).reset();
             }
             $("#modalbox_ad").hide();
         }
@@ -510,7 +524,8 @@
             if (typeof(data.storage) != 'undefined') {
                 $("#modalbox").data('complete') == 1
                 showAdModalBox('{{ 'Edit storage'|trans }}');
-                closeModalBox();
+                $.validate();
+                $(conf.form).get(0).reset();
                 $("#modalbox_ad form input").each(function(){
                    var name = $(this).attr('name').replace('form[', '').replace(']', ''); 
                    if (typeof(data.storage[name]) != 'undefined') {

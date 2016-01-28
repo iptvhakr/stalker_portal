@@ -59,8 +59,8 @@
                                 <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Login'|trans }}<span class="icon-required">*</span></label>
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-10">
-                                        <input type="hidden" name="id" id="adm_id" class="own_fields">
-                                        <input type="text" required="required" name="login" data-validation=required  id="adm_login" class='form-control own_fields'>
+                                        <input type="hidden" name="id" id="adm_id" class="own_fields" data-name="id">
+                                        <input type="text" required="required" name="login" data-name="login" data-validation=required  id="adm_login" class='form-control own_fields'>
                                         <div></div>
                                     </div>
                                 </div>
@@ -70,7 +70,7 @@
                                 <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Group'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-10 ">
-                                        <select class="populate placeholder own_fields" name="gid" id="gid" required="required">
+                                        <select class="populate placeholder own_fields" name="gid" data-name="gid" id="gid" required="required">
                                             {% if attribute(app, 'allAdminGroups') is defined %}
                                                 {% for item in app.allAdminGroups %}
                                                     <option value="{{item.id}}">{{item.name}}</option>
@@ -85,7 +85,7 @@
                                 <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Password'|trans }}<span class="icon-required">*</span></label>
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-10">
-                                        <input type="password" name="pass" id="adm_pass" data-validation=required class='form-control own_fields'>
+                                        <input type="password" name="pass_confirmation" data-name="pass" id="adm_pass" data-validation="required" class='form-control own_fields'>
                                     </div>
                                 </div>
                             </div>
@@ -93,7 +93,7 @@
                                 <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Repeat the password'|trans }}<span class="icon-required">*</span></label>
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-10">
-                                        <input type="password" name="re_pass" id="adm_re_pass" data-validation=required  class='form-control own_fields'>
+                                        <input type="password" name="pass" id="adm_re_pass" data-name="re_pass" data-validation=confirmation class='form-control own_fields'>
                                     </div>
                                 </div>
                             </div>
@@ -237,33 +237,51 @@
                     return false;
                 });
 
+                var conf = {
+                    form: 'karaoke_form',
+                    lang : '{{ app.language }}',
+                    showHelpOnFocus : true,
+                    validateHiddenInputs: true,
+                    ignore: ['.ignore'],
+                    modules: 'jsconf, security',
+                    onSuccess: function () {
+                        var sendData = new Object();
+                        var form_fields = $("#modalbox_ad input.own_fields:not(:disabled), #gid:not(:disabled)");
+                        form_fields.each(function () {
+                            if ($(this).val()) {
+                                sendData[$(this).data('name')] = $(this).val();
+                            }
+                        });
+
+                        ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
+                        return false;
+                    },
+                    onError: function () {
+                        return false;
+                    }
+                };
+                $.validate(conf);
+
                 $("#modalbox_ad button[type='submit']").on('click', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
 
-                    $.validate({
-                        onSuccess: function () {
-                            e.stopPropagation();
-                            e.preventDefault();
-                            var sendData = new Object();
-                            var form_fields = $("#modalbox_ad input.own_fields:not(:disabled), #gid:not(:disabled)");
-                            form_fields.each(function () {
-                                if ($(this).val()) {
-                                    sendData[this.name] = $(this).val();
-                                }
-                            });
+                    var ignore = new Array();
+                    if ($('#adm_id').val() && !$("#adm_pass").val() && !$("#adm_re_pass").val()) {
+                        ignore.push($("#adm_pass").prop('name'));
+                        ignore.push($("#adm_re_pass").prop('name'));
+                    }
 
-                            if (!$('#adm_login').val() && !$('#gid').val()) {
-                                notty("{{ 'The fields "Login" and "Group" are required'|trans }}",'error');
-                                return false;
-                            }
-                            if ($("#adm_pass").val() !== $("#adm_re_pass").val()) {
-                                notty("{{ 'Password mismatch'|trans }}",'error');
-                                return false;
-                            }
-                            ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
-                            return false;
+                    conf.ignore = ignore;
 
-                        }
-                    });
+                    console.log(conf.ignore);
+
+                    if ($("#karaoke_form").isValid({}, conf, true)) {
+                        conf.onSuccess();
+                    } else {
+                        conf.onError();
+                    }
+                    return false;
                 });
 
                 {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
@@ -350,8 +368,7 @@
                     $("#modalbox_ad input").prop("disabled", false).removeAttr('disabled').val('');
                     $("#modalbox_ad input[type='hidden']").attr('disabled', 'disabled').val('');
                     $("#modalbox_ad select[name='gid'] option").removeAttr('selected');
-                    $("#adm_pass").val('').attr('data-validation', 'required').removeAttr('current-error').removeAttr('style').next('span.form-error').remove();
-                    $("#adm_re_pass").val('').attr('data-validation', 'required').removeAttr('current-error').removeAttr('style').next('span.form-error').remove();
+
                     if ($("#adm_pass").closest(".form-group").children('label').find('span.icon-required').length == 0) {
                         $("#adm_pass").closest(".form-group").children('label').append('<span class="icon-required">*</span>');
                         $("#adm_re_pass").closest(".form-group").children('label').append('<span class="icon-required">*</span>');
@@ -436,10 +453,8 @@
             $('#gid').select2("destroy");
             $('#gid').select2({minimumResultsForSearch: -1});
 
-            $("#adm_pass").val('').removeAttr('data-validation').removeAttr('current-error').removeAttr('style').next('span.form-error').remove();
-            $("#adm_pass").closest(".form-group").children('label').find('span.icon-required').remove();
-            $("#adm_re_pass").val('').removeAttr('data-validation').removeAttr('current-error').removeAttr('style').next('span.form-error').remove();
-            $("#adm_re_pass").closest(".form-group").children('label').find('span.icon-required').remove();
+            $("#adm_pass").val('').closest(".form-group").children('label').find('span.icon-required').remove();
+            $("#adm_re_pass").val('').closest(".form-group").children('label').find('span.icon-required').remove();
 
             $('#modalbox_ad button[type="submit"]').removeAttr("disabled");
             $("#modalbox_ad").show();

@@ -387,6 +387,23 @@
     <script type="text/javascript" src="./plugins/scrollTo/jquery.scrollTo.min.js" defer=""></script>
     <script type="text/javascript" src="./plugins/placeholders/placeholders.min.js" defer=""></script>
     <script type="text/javascript">
+
+        var conf = {
+            form: '#form_',
+            lang : '{{ app.language }}',
+            showHelpOnFocus : true,
+            validateHiddenInputs: true,
+            ignore: ['.ignore'],
+            modules: 'jsconf',
+            onSuccess: function () {
+                $(this.form).get(0).submit();
+                return false;
+            },
+            onError: function () {
+                return false;
+            }
+        };
+
         function DemoSelect2() {
             $.getScript("{{ app.request.baseUrl }}/plugins/select2/select2_locale_ru.js", function(){
                 checkCatGenreList('#form_category_id', '#form_cat_genre_id');
@@ -402,7 +419,9 @@
 
         function yelp() {
             $(document).ready(function () {
-		
+
+                $.validate(conf);
+
                 if (typeof (channelListRender) == 'function') {
                     LoadSelect2Script(DemoSelect2);
                 }
@@ -456,24 +475,27 @@
                     e.preventDefault();
                     return false;
                 });
-                $.validate({
 
-                    onSuccess: function () {
-                        $("#form_save").on('click', function (e) {
-                            e.stopPropagation();
-                            e.preventDefault();
-                            if ($('#form_protocol').val() == 'custom' && $.trim($('#form_rtsp_url').val()) == '') {
-                                $(document).scrollTo('#form_protocol', 'slow');
-                                $('#form_rtsp_url').focus();
-                                $('#form_rtsp_url').attr('required', 'required');
-                                return false;
-                            }
-                            $(this).closest('form').get(0).submit();
-                            return false;
-                        });
+                $("#form_save").on('click', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    if ($('#form_protocol').val() == 'custom' && $.trim($('#form_rtsp_url').val()) == '') {
+                        $(document).scrollTo('#form_protocol', 'slow');
+                        $('#form_rtsp_url').focus();
+                        $('#form_rtsp_url').attr('required', 'required').data('validation', 'required');
+                        return false;
+                    } else {
+                        $('#form_rtsp_url').removeAttr('required').removeData('validation');
                     }
+
+                    if ($(conf.form).isValid({}, conf, true)) {
+                        conf.onSuccess();
+                    } else {
+                        conf.onError();
+                    }
+                    return false;
                 });
-                
+
                 $("#form_reset").on('click', function(e){
                     e.stopPropagation();
                     e.preventDefault();

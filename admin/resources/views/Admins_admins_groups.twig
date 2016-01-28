@@ -98,7 +98,7 @@
             $('#modalbox').find('.devoops-modal-bottom').empty();
         }
 
-        function TestTable1() { $.validate();
+        function TestTable1() {
             $('#datatable-1').on('xhr.dt', function (e, settings, json) {
                 if (typeof (json.data) == 'object') {
                     for (var i in json.data) {
@@ -198,31 +198,43 @@
     {#                    $("#cmd_data").find("tr:visible").remove();#}
                     return false;
                 });
-                $("#modalbox_ad button[type='submit']").on('click', function (e) {
-                    $.validate({
-                        onSuccess: function () {
 
-                            e.stopPropagation();
-                            e.preventDefault();
-                            var sendData = new Object();
-                            var lengthObj = 0;
-                            var form_fields = $("#modalbox_ad input.own_fields:not(:disabled)");
-                            form_fields.each(function () {
-                                if ($(this).val()) {
-                                    sendData[this.name] = $(this).val();
-                                    lengthObj++;
-                                }
-                            });
-                            if (lengthObj < form_fields.length) {
-                                alert('{{ 'Field "Group name" is required'|trans }}');
-                                $.validate();
-                                return false;
+                var conf = {
+                    form: 'karaoke_form',
+                    lang : '{{ app.language }}',
+                    showHelpOnFocus : true,
+                    validateHiddenInputs: true,
+                    ignore: ['.ignore'],
+                    modules: 'jsconf',
+                    onSuccess: function () {
+                        var sendData = new Object();
+                        var lengthObj = 0;
+                        var form_fields = $("#modalbox_ad input.own_fields:not(:disabled)");
+                        form_fields.each(function () {
+                            if ($(this).val()) {
+                                sendData[this.name] = $(this).val();
                             }
-                            ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
-                            return false;
+                        });
 
-                        }
-                    });
+                        ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
+                        return false;
+
+                    },
+                    onError: function () {
+                        return false;
+                    }
+                };
+                $.validate(conf);
+
+                $("#modalbox_ad button[type='submit']").on('click', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    if ($("#karaoke_form").isValid({}, conf, true)) {
+                        conf.onSuccess();
+                    } else {
+                        conf.onError();
+                    }
+                    return false;
                 });
 
                 $("#add_group").on("click", function (e) {
