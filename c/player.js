@@ -381,10 +381,6 @@ player.prototype.set_cas = function(profile){
     _debug('player.prototype.setup_cas', profile);
     try{
 
-        if (!profile['cas_type'] || profile['cas_type'] == 0){
-            return;
-        }
-
         if (profile['cas_ini_file']){
             _debug('stb.LoadCASIniFile', profile['cas_ini_file']);
             stb.LoadCASIniFile(profile['cas_ini_file']);
@@ -421,9 +417,16 @@ player.prototype.set_cas = function(profile){
             stb.SetCASDescrambling(profile['cas_hw_descrambling']);
         }
 
-        _debug('stb.SetCASType', parseInt(profile['cas_type'], 10));
+        if (!profile['cas_ini_file'] && profile['cas_web_params']){
+            _debug('stb.SetupWebCAS', profile['cas_web_params'].server_addr, profile['cas_web_params'].company_name);
+            stb.SetupWebCAS(profile['cas_web_params'].server_addr, profile['cas_web_params'].company_name);
+        }
 
-        stb.SetCASType(parseInt(profile['cas_type'], 10));
+        if (profile['cas_type']){
+            _debug('stb.SetCASType', parseInt(profile['cas_type'], 10));
+            stb.SetCASType(parseInt(profile['cas_type'], 10));
+        }
+
     }catch(e){
         _debug(e);
     }

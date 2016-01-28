@@ -30,8 +30,10 @@ class TvArchiveRecorder extends Storage
             }
         }
 
-        if (strpos($url, 'rtp://') !== false || strpos($url, 'udp://') !== false){
-
+        if (strpos($url, 'rtp://') !== false ||
+            strpos($url, 'udp://') !== false ||
+            (strpos($url, 'http://') !== false && defined("ASTRA_RECORDER") && ASTRA_RECORDER))
+        {
             $path = $this->getRecordsPath($task);
 
             if ($path && is_dir($path)){
