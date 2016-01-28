@@ -217,8 +217,11 @@ class VideoClubModel extends \Model\BaseStalkerModel {
         return $this->mysqlInstance->insert('moderators', $data)->insert_id();
     }
     
-    public function checkModMac($mac_adress){
-        return $this->mysqlInstance->count()->from('moderators')->where(array('mac' => $mac_adress))->get()->counter();
+    public function checkModMac($params){
+        if (!is_array($params)) {
+            $params = array('mac' => $params);
+        }
+        return $this->mysqlInstance->count()->from('moderators')->where($params)->get()->counter();
     }
     
     public function getAllModeratorTasks($moderator_id = FALSE) {

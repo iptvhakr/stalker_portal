@@ -49,7 +49,7 @@
                     </a>
                 </div>
             </div>
-            <form class="form-horizontal" role="form" action="{{app.request.baseUrl}}/{{app.controller_alias}}/save-common-item">
+            <form class="form-horizontal" role="form" action="{{app.request.baseUrl}}/{{app.controller_alias}}/save-common-item" id="karaoke_form">
                 <div class="devoops-modal-inner">
                     <div class="box">
                         <a class="collapse-link">
@@ -232,7 +232,33 @@
     </div>
                                                                            
     <script type="text/javascript" defer>
-        
+
+        var conf = {
+            form: '#karaoke_form',
+            lang : '{{ app.language }}',
+            showHelpOnFocus : true,
+            validateHiddenInputs: true,
+            ignore: ['.ignore'],
+            modules: 'jsconf',
+            onSuccess: function () {
+                var sendData = new Object();
+                var form_fields = $("#modalbox_ad input.own_fields:not(:disabled), #s2_stb_type,  #s2_update_type");
+                form_fields.each(function () {
+                    if (typeof($(this).attr('type')) != 'undefined' && $(this).attr('type').toLowerCase() == 'checkbox') {
+                        sendData[this.name] = $(this).prop('checked') ? 1: 0;
+                    } else {
+                        sendData[this.name] = $(this).val();
+                    }
+                });
+                showModalBox();
+                ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
+                return false;
+            },
+            onError: function () {
+                return false;
+            }
+        };
+
         function DemoSelect2() {
             $.getScript("{{ app.request.baseUrl }}/plugins/select2/select2_locale_ru.js", function () {
                 $('select[id^="s2_"]').select2({minimumResultsForSearch: -1});
@@ -305,6 +331,7 @@
 
         function yelp() {
             $(document).ready(function () {
+                $.validate(conf);
                 $(document).on('click', "a.main_ajax[disabled!='disabled']", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
@@ -324,32 +351,15 @@
                 });
                 
                 $("#modalbox_ad button[type='submit']").on('click', function (e) {
-				  $.validate({
-                      onSuccess: function () {
-                          e.stopPropagation();
-                          e.preventDefault();
-                          var sendData = new Object();
-                          var lengthObj = 0;
-                          var form_fields = $("#modalbox_ad input.own_fields:not(:disabled), #s2_stb_type,  #s2_update_type");
-                          form_fields.each(function () {
-                              if (typeof($(this).attr('type')) != 'undefined' && $(this).attr('type').toLowerCase() == 'checkbox') {
-                                  sendData[this.name] = $(this).prop('checked') ? 1: 0;
-                              } else {
-                                  sendData[this.name] = $(this).val();
-                              }
-                              if ($(this).val() || !$(this).is("[required]")) {
-                                  lengthObj++;
-                              }
-                          });
-                          if (lengthObj < form_fields.length) {
-                              alert('{{ 'Not all required fields are filled'|trans }}');
-                              return false;
-                          }
-                          showModalBox();
-                          ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
-                          return false;
-                      }
-                  });
+                    e.stopPropagation();
+                    e.preventDefault();
+
+                    if ($(conf.form).isValid({}, conf, true)) {
+                        conf.onSuccess();
+                    } else {
+                        conf.onError();
+                    }
+                    return false;
                 });
                 $("#Additional").hide('fast');
                 $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
@@ -372,6 +382,8 @@
                     e.stopPropagation();
                     e.preventDefault();
                     closeModalBox();
+                    $.validate();
+                    $(conf.form).get(0).reset();
                     $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Add update'|trans }}');
                     $("#modalbox_ad .own_fields").prop("disabled", false).removeAttr('disabled').val('');
                     $("#modalbox_ad input[type='hidden']").attr('disabled', 'disabled').val('');
@@ -389,6 +401,8 @@
         
         var setCommonModal = function (data) {
             closeModalBox();
+            $.validate();
+            $(conf.form).get(0).reset();
             $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Edit update'|trans }}');
             if (data.data.length == 1) {
                 var row = data.data[0];

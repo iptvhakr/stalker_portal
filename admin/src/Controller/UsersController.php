@@ -1002,7 +1002,13 @@ class UsersController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'checkLogin';
         $error = $this->setlocalization('Name already used');
-        if ($this->db->checkLogin(trim($this->postData['name']))) {
+        $params = array(
+            'login' => trim($this->postData['name'])
+        );
+        if (!empty($this->postData['id'])) {
+            $params['id<>'] = $this->postData['id'];
+        }
+        if ($this->db->checkLogin($params)) {
             $data['chk_rezult'] = $this->setlocalization('Name already used');
         } else {
             $data['chk_rezult'] = $this->setlocalization('Name is available');

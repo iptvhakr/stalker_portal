@@ -399,6 +399,23 @@
         {{ form_end(app['form']) }}
     </div>
     <script type="text/javascript" defer>
+
+        var conf = {
+            form: '#form_',
+            lang : '{{ app.language }}',
+            showHelpOnFocus : true,
+            validateHiddenInputs: true,
+            ignore: ['.ignore'],
+            modules: 'jsconf, date',
+            onSuccess: function () {
+                $(this.form).get(0).submit();
+                return false;
+            },
+            onError: function () {
+                return false;
+            }
+        };
+
         function DemoSelect2() {
             $('#form_group_id').select2({minimumResultsForSearch: -1});
             $('#form_tariff_plan_id').select2({minimumResultsForSearch: -1});
@@ -409,9 +426,12 @@
             $('#form_reseller_id').select2({minimumResultsForSearch: -1});
             {% endif %}
         }
+
         function yelp() {
             $(document).ready(function () {
-                $.validate();
+
+                $.validate(conf);
+
                 $('[data-toggle="tooltip"]').tooltip();
                 
                 LoadSelect2Script(DemoSelect2);
@@ -457,7 +477,7 @@
                     $.ajax({
                         url: 'users/check-login',
                         type: 'POST',
-                        data: {name: _this.val()},
+                        data: {name: _this.val(), id: $("#form_id").val()},
                         success: function (data) {
                             if (data.success) {
                                 _this.next('div').append('<i class="txt-success fa fa-check"></i> ' + data.chk_rezult).css('visibility', 'visible');
@@ -548,7 +568,17 @@
                     if (!$("#tariff_plan_table").is(':visible')) {
                         $("#tariff_plan_table input").attr('disabled', 'disabled');
                     }
-                })
+
+                    e.stopPropagation();
+                    e.preventDefault();
+
+                    if ($(conf.form).isValid({}, conf, true)) {
+                        conf.onSuccess();
+                    } else {
+                        conf.onError();
+                    }
+                    return false;
+                });
             });
         }
         document.addEventListener("DOMContentLoaded", yelp, false);

@@ -104,6 +104,31 @@
                                     
     <script type="text/javascript" defer>
 
+        var conf = {
+            form: '#karaoke_form',
+            lang : '{{ app.language }}',
+            showHelpOnFocus : true,
+            validateHiddenInputs: true,
+            ignore: ['.ignore'],
+            modules: 'jsconf',
+            onSuccess: function () {
+                var sendData = new Object();
+                var form_fields = $("#modalbox_ad input.own_fields:not(:disabled)");
+                form_fields.each(function () {
+                    if ($(this).val()) {
+                        sendData[this.name] = $(this).val();
+                    }
+                });
+
+                sendData["phoneboocksource"] = "{{ app['filters']['service'] }}";
+                ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
+                return false;
+            },
+            onError: function () {
+                return false;
+            }
+        };
+
         function closeModalBox(){
             $("#modalbox").hide();
             $('#modalbox').find('.modal-header-name span').empty();
@@ -171,6 +196,9 @@
 
         function yelp() {
             $(document).ready(function () {
+
+                $.validate(conf);
+
                 $(document).on('click', "a.main_ajax[disabled!='disabled']", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
@@ -189,28 +217,15 @@
                 });
 
                 $("#modalbox_ad button[type='submit']").on('click', function (e) {
-                    $.validate({
-                        onSuccess: function () {
-                            e.stopPropagation();
-                            e.preventDefault();
-                            var sendData = new Object();
-                            var lengthObj = 0;
-                            var form_fields = $("#modalbox_ad input.own_fields:not(:disabled)");
-                            form_fields.each(function () {
-                                if ($(this).val()) {
-                                    sendData[this.name] = $(this).val();
-                                    lengthObj++;
-                                }
-                            });
-                            if (lengthObj < form_fields.length) {
-                                alert('{{ 'All fields is required'|trans }}');
-                                return false;
-                            }
-                            sendData["phoneboocksource"] = "{{ app['filters']['service'] }}";
-                            ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
-                            return false;
-                        }
-                    });
+                    e.stopPropagation();
+                    e.preventDefault();
+
+                    if ($("#karaoke_form").isValid({}, conf, true)) {
+                        conf.onSuccess();
+                    } else {
+                        conf.onError();
+                    }
+                    return false;
                 });
                 
                 $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
@@ -226,6 +241,8 @@
                 $("#add_phone_book_item").on("click", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
+                    $.validate();
+                    $('#karaoke_form').get(0).reset();
                     $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Adding'|trans }}');
                     $("#modalbox_ad input").prop("disabled", false).removeAttr('disabled').val('');
                     $("#modalbox_ad input[type='hidden']").attr('disabled', 'disabled').val('');
@@ -242,6 +259,8 @@
         document.addEventListener("DOMContentLoaded", yelp, false);
         
         var setPhoneBookModal = function (data) {
+            $.validate();
+            $('#karaoke_form').get(0).reset();
             $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Edit'|trans }}');
             if (data.data.length == 1) {
                 var row = data.data[0];

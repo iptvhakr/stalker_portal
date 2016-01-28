@@ -224,8 +224,11 @@ class UsersModel extends \Model\BaseStalkerModel {
         return $this->mysqlInstance->delete('stb_groups', $param)->total_rows();
     }
     
-    public function checkLogin($name) {
-        return $this->mysqlInstance->count()->from('users')->where(array('login' => $name))->get()->counter();
+    public function checkLogin($params) {
+        if (!is_array($params)) {
+            $params = array('login' => $params);
+        }
+        return $this->mysqlInstance->count()->from('users')->where($params)->get()->counter();
     }
     
     public function checkConsoleName($name) {

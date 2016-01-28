@@ -617,10 +617,10 @@ table.no-border-bottom tr:last-child td {
 }
 
 
- ul.myErrorClass, a.myErrorClass , .select2-container .error, input.myErrorClass, textarea.myErrorClass, select.myErrorClass {
+ ul.myErrorClass, ul.select2-choices.myErrorClass, a.myErrorClass , .select2-container .error, input.myErrorClass, textarea.myErrorClass, select.myErrorClass {
     border-width: 1px !important;
     border-style: solid !important;
-    border-color: red !important;
+    border-color: #b94a48 !important;
 
 }
 ul.myErrorClass input {
@@ -3113,6 +3113,18 @@ color:#000; background-color:#FFF; border:1px solid #000; margin-top:5px !import
 #channels_container input[type=text] {
     border: 1px solid #ccc !important;
     border-radius: 4px !important;
+}
+
+#channels_container input[type=text].error {
+    border-color: rgb(185, 74, 72) !important;
+}
+
+
+#channels_container .form-group.has-error span.form-error{
+    display: block;
+    max-width: 100%;
+    padding: 0 15px;
+    text-align: center;
 }
 
 .m3u_item_error {

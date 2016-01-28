@@ -42,12 +42,37 @@
     </div>
 
     <script type="text/javascript" defer>
+
+        var conf = {
+            lang : '{{ app.language }}',
+            showHelpOnFocus : true,
+            validateHiddenInputs: true,
+            ignore: ['.ignore'],
+            modules: 'jsconf',
+            onSuccess: function () {
+                var sendData = { item_id: this.itemId };
+                $(this.form).find('.own_field:not(.select2-container)').each(function(){
+                    if (this.type && this.type.toLowerCase() == 'checkbox'){
+                        sendData[$(this).attr('name')] = $(this).prop('checked') ? 'on': 'off';
+                    } else {
+                        sendData[$(this).attr('name')] = $(this).val();
+                    }
+                });
+                ajaxPostSend("{{ app.controller_alias }}/save-m3u-item", sendData, false, false, true);
+                return false;
+            },
+            onError: function () {
+                return false;
+            }
+        };
+
         function DemoSelect2() {
         }
 
         function yelp() {
             $(document).ready(function () {
 
+                $.validate(conf);
                 $("#content, #main").css("background-color", "#f2f2f2");
 
                 LoadSelect2Script(DemoSelect2);
@@ -130,7 +155,10 @@
                 });
 
                 $(document).on("click", "[id^='channel_item_'] button[type='submit']", function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
                     saveChannelItem(this);
+                    return false;
                 });
 
                 $(document).on("click", "#save_channels", function (e) {
@@ -220,23 +248,14 @@
         };
 
         var saveChannelItem = function(obj){
-            var formId = $(obj).closest('form').attr('id');
-            var itemId = $(obj).closest('[id^="channel_item_"]').attr('id');
-            $.validate({
-                form: '#' + formId,
-                onSuccess: function () {
-                    var sendData = { item_id: itemId };
-                    $('#' + formId).find('.own_field:not(.select2-container)').each(function(){
-                        if (this.type && this.type.toLowerCase() == 'checkbox'){
-                            sendData[$(this).attr('name')] = $(this).prop('checked') ? 'on': 'off';
-                        } else {
-                            sendData[$(this).attr('name')] = $(this).val();
-                        }
-                    });
-                    ajaxPostSend("{{ app.controller_alias }}/save-m3u-item", sendData, false, false, true);
-                    return false;
-                }
-            });
+            conf.form = '#' + $(obj).closest('form').attr('id');
+            conf.itemId = $(obj).closest('[id^="channel_item_"]').attr('id');
+            if ($(conf.form).isValid({}, conf, true)) {
+                conf.onSuccess();
+            } else {
+                conf.onError();
+            }
+            return false;
         };
 
         var saveM3UItem = function(obj){

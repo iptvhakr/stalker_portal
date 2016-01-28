@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-25 13:25+0300\n"
-"PO-Revision-Date: 2016-01-25 13:26+0300\n"
+"POT-Creation-Date: 2016-01-28 12:27+0300\n"
+"PO-Revision-Date: 2016-01-28 12:27+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -47,27 +47,28 @@ msgid "Unpublished"
 msgstr "Не опубликован"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:50
+#: ../../../../admin/src/Controller/TvChannelsController.php:1920
 #: ../../../../admin/src/Controller/RadioController.php:23
 #: ../../../administrator/add_itv.php:1393
 msgid "monitoring off"
 msgstr "Не мониторится"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:51
-#: ../../../../admin/src/Controller/TvChannelsController.php:1917
+#: ../../../../admin/src/Controller/TvChannelsController.php:1952
 #: ../../../../admin/src/Controller/RadioController.php:24
 #: ../../../../admin/src/Controller/RadioController.php:403
 msgid "errors occurred"
 msgstr "Обнаружены ошибки"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:52
-#: ../../../../admin/src/Controller/TvChannelsController.php:1911
+#: ../../../../admin/src/Controller/TvChannelsController.php:1946
 #: ../../../../admin/src/Controller/RadioController.php:25
 #: ../../../../admin/src/Controller/RadioController.php:401
 msgid "no errors"
 msgstr "Ошибок нет"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:53
-#: ../../../../admin/src/Controller/TvChannelsController.php:1906
+#: ../../../../admin/src/Controller/TvChannelsController.php:1941
 msgid "there are some problems"
 msgstr "Есть проблемы"
 
@@ -88,8 +89,8 @@ msgstr "Опубликовать"
 #: ../../../../admin/src/Controller/TvChannelsController.php:874
 #: ../../../../admin/src/Controller/TvChannelsController.php:911
 #: ../../../../admin/src/Controller/TvChannelsController.php:940
-#: ../../../../admin/src/Controller/UsersController.php:1358
-#: ../../../../admin/src/Controller/UsersController.php:1397
+#: ../../../../admin/src/Controller/UsersController.php:1364
+#: ../../../../admin/src/Controller/UsersController.php:1403
 #: ../../../../admin/src/Controller/AdminsController.php:701
 #: ../../../../admin/src/Controller/AdminsController.php:735
 #: ../../../../admin/src/Controller/AdminsController.php:778
@@ -98,7 +99,7 @@ msgid "Nothing to do"
 msgstr "Нечего сохранять"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:385
-#: ../../../../admin/src/Controller/VideoClubController.php:1155
+#: ../../../../admin/src/Controller/VideoClubController.php:1159
 msgid "Unpublish"
 msgstr "Не публиковать"
 
@@ -110,7 +111,7 @@ msgid "The unexpected request"
 msgstr "Неожиданный запрос"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:453
-#: ../../../tools/misctranslations.php:586
+#: ../../../tools/misctranslations.php:581
 msgid "No moved items, nothing to do"
 msgstr "Нет перемещенных элементов, нечего сохранять"
 
@@ -119,6 +120,7 @@ msgstr "Нет перемещенных элементов, нечего сох�
 msgid "Failed to save, update the channel list"
 msgstr "Не удалось сохранить, обновить список каналов"
 
+#: ../../../../admin/src/Controller/TvChannelsController.php:664
 #: ../../../../admin/src/Controller/TvChannelsController.php:722
 #: ../../../../admin/src/Controller/TvChannelsController.php:725
 msgid "URL is busy"
@@ -142,12 +144,31 @@ msgstr "При перезапуска ТВ архива возникли неп�
 msgid "TV Archive has been restarted."
 msgstr "ТВ архив был успешно перезапущен."
 
+#: ../../../../admin/src/Controller/TvChannelsController.php:815
+#: ../../../../admin/src/Controller/TvChannelsController.php:988
+#: ../../../../admin/src/Controller/TvChannelsController.php:1094
+#: ../../../../admin/src/Controller/EventsController.php:416
+#: ../../../../admin/src/Controller/EventsController.php:541
+#: ../../../../admin/src/Controller/VideoClubController.php:992
+#: ../../../../admin/src/Controller/VideoClubController.php:1181
+#: ../../../../admin/src/Controller/StoragesController.php:175
+#: ../../../../admin/src/Controller/TasksController.php:515
+#: ../../../../admin/src/Controller/UsersController.php:851
+#: ../../../../admin/src/Controller/UsersController.php:1194
+#: ../../../../admin/src/Controller/UsersController.php:1536
+#: ../../../../admin/src/Controller/AdminsController.php:315
+#: ../../../../admin/src/Controller/AdminsController.php:439
+#: ../../../lang/stb.php:362
+msgid "Error"
+msgstr "Ошибка"
+
 #: ../../../../admin/src/Controller/TvChannelsController.php:859
 #: ../../../../admin/src/Controller/TvChannelsController.php:887
 #: ../../../../admin/src/Controller/TvChannelsController.php:925
 #: ../../../../admin/src/Controller/TvChannelsController.php:951
 #: ../../../../admin/src/Controller/TvChannelsController.php:979
 #: ../../../../admin/src/Controller/TvChannelsController.php:1086
+#: ../../../../admin/src/Controller/TvChannelsController.php:1137
 #: ../../../../admin/src/Controller/EventsController.php:319
 #: ../../../../admin/src/Controller/EventsController.php:352
 #: ../../../../admin/src/Controller/EventsController.php:386
@@ -158,14 +179,14 @@ msgstr "ТВ архив был успешно перезапущен."
 #: ../../../../admin/src/Controller/EventsController.php:754
 #: ../../../../admin/src/Controller/VideoClubController.php:545
 #: ../../../../admin/src/Controller/VideoClubController.php:575
-#: ../../../../admin/src/Controller/VideoClubController.php:828
-#: ../../../../admin/src/Controller/VideoClubController.php:1397
-#: ../../../../admin/src/Controller/VideoClubController.php:1420
-#: ../../../../admin/src/Controller/VideoClubController.php:1453
-#: ../../../../admin/src/Controller/VideoClubController.php:1491
-#: ../../../../admin/src/Controller/VideoClubController.php:1511
-#: ../../../../admin/src/Controller/VideoClubController.php:1609
-#: ../../../../admin/src/Controller/VideoClubController.php:1653
+#: ../../../../admin/src/Controller/VideoClubController.php:832
+#: ../../../../admin/src/Controller/VideoClubController.php:1401
+#: ../../../../admin/src/Controller/VideoClubController.php:1424
+#: ../../../../admin/src/Controller/VideoClubController.php:1457
+#: ../../../../admin/src/Controller/VideoClubController.php:1495
+#: ../../../../admin/src/Controller/VideoClubController.php:1515
+#: ../../../../admin/src/Controller/VideoClubController.php:1613
+#: ../../../../admin/src/Controller/VideoClubController.php:1657
 #: ../../../../admin/src/Controller/BroadcastServersController.php:267
 #: ../../../../admin/src/Controller/BroadcastServersController.php:287
 #: ../../../../admin/src/Controller/BroadcastServersController.php:308
@@ -230,20 +251,20 @@ msgstr "ТВ архив был успешно перезапущен."
 #: ../../../../admin/src/Controller/UsersController.php:945
 #: ../../../../admin/src/Controller/UsersController.php:978
 #: ../../../../admin/src/Controller/UsersController.php:996
-#: ../../../../admin/src/Controller/UsersController.php:1018
-#: ../../../../admin/src/Controller/UsersController.php:1086
-#: ../../../../admin/src/Controller/UsersController.php:1104
-#: ../../../../admin/src/Controller/UsersController.php:1146
-#: ../../../../admin/src/Controller/UsersController.php:1304
-#: ../../../../admin/src/Controller/UsersController.php:1334
-#: ../../../../admin/src/Controller/UsersController.php:1368
-#: ../../../../admin/src/Controller/UsersController.php:1408
-#: ../../../../admin/src/Controller/UsersController.php:1447
-#: ../../../../admin/src/Controller/UsersController.php:1595
-#: ../../../../admin/src/Controller/UsersController.php:1621
-#: ../../../../admin/src/Controller/UsersController.php:1647
-#: ../../../../admin/src/Controller/UsersController.php:1658
-#: ../../../../admin/src/Controller/UsersController.php:1669
+#: ../../../../admin/src/Controller/UsersController.php:1024
+#: ../../../../admin/src/Controller/UsersController.php:1092
+#: ../../../../admin/src/Controller/UsersController.php:1110
+#: ../../../../admin/src/Controller/UsersController.php:1152
+#: ../../../../admin/src/Controller/UsersController.php:1310
+#: ../../../../admin/src/Controller/UsersController.php:1340
+#: ../../../../admin/src/Controller/UsersController.php:1374
+#: ../../../../admin/src/Controller/UsersController.php:1414
+#: ../../../../admin/src/Controller/UsersController.php:1453
+#: ../../../../admin/src/Controller/UsersController.php:1601
+#: ../../../../admin/src/Controller/UsersController.php:1627
+#: ../../../../admin/src/Controller/UsersController.php:1653
+#: ../../../../admin/src/Controller/UsersController.php:1664
+#: ../../../../admin/src/Controller/UsersController.php:1675
 #: ../../../../admin/src/Controller/InfoportalController.php:239
 #: ../../../../admin/src/Controller/InfoportalController.php:287
 #: ../../../../admin/src/Controller/InfoportalController.php:307
@@ -269,6 +290,8 @@ msgstr "ТВ архив был успешно перезапущен."
 msgid "Page not found"
 msgstr "Страница не найдена"
 
+#: ../../../../admin/src/Controller/TvChannelsController.php:868
+#: ../../../../admin/src/Controller/TvChannelsController.php:896
 #: ../../../../admin/src/Controller/TvChannelsController.php:935
 #: ../../../../admin/src/Controller/IndexController.php:52
 #: ../../../../admin/src/Controller/IndexController.php:108
@@ -276,27 +299,23 @@ msgstr "Страница не найдена"
 #: ../../../../admin/src/Controller/IndexController.php:214
 #: ../../../../admin/src/Controller/IndexController.php:256
 #: ../../../../admin/src/Controller/IndexController.php:303
-#: ../../../../admin/src/Controller/VideoClubController.php:837
+#: ../../../../admin/src/Controller/VideoClubController.php:841
 #: ../../../../admin/src/Controller/AudioClubController.php:915
 #: ../../../adm/js/js_translate.php:41
 msgid "Failed"
 msgstr "Ошибка"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:988
-#: ../../../../admin/src/Controller/EventsController.php:416
-#: ../../../../admin/src/Controller/EventsController.php:541
-#: ../../../../admin/src/Controller/VideoClubController.php:988
-#: ../../../../admin/src/Controller/VideoClubController.php:1177
-#: ../../../../admin/src/Controller/StoragesController.php:175
-#: ../../../../admin/src/Controller/TasksController.php:515
-#: ../../../../admin/src/Controller/UsersController.php:851
-#: ../../../../admin/src/Controller/UsersController.php:1188
-#: ../../../../admin/src/Controller/UsersController.php:1530
-#: ../../../../admin/src/Controller/AdminsController.php:315
-#: ../../../../admin/src/Controller/AdminsController.php:439
-#: ../../../lang/stb.php:362
-msgid "Error"
-msgstr "Ошибка"
+#: ../../../../admin/src/Controller/TvChannelsController.php:877
+#: ../../../../admin/src/Controller/TvChannelsController.php:915
+#: ../../../../admin/src/Controller/TvChannelsController.php:959
+#: ../../../../admin/src/Controller/TvChannelsController.php:966
+#: ../../../../admin/src/Controller/UsersController.php:968
+msgid "Name already used"
+msgstr "Имя уже используется"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:968
+msgid "Name is available"
+msgstr "Имя доступно"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1011
 #: ../../../tools/misctranslations.php:551 ../../../adm/js/js_translate.php:40
@@ -313,19 +332,63 @@ msgstr ""
 "Ошибка парсинга m3u-файла. Проверте кодировку файла. Необходимая кодировка "
 "UTF-8."
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1604
+#: ../../../../admin/src/Controller/TvChannelsController.php:1106
+#: ../../../../admin/src/Controller/TvChannelsController.php:1423
+msgid "Requires at least one link of broadcast"
+msgstr "Требуется по крайней мере одна ссылка вещания"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1108
+msgid "Field \"Channel name\" cannot be empty"
+msgstr "Поле \"Название канала\" не может быть пустым"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1110
+msgid "Field \"Channel number\" cannot be empty"
+msgstr "Поле \"Номер канала\" не может быть пустым"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1124
+msgid "Number \"%number%\" is already in use"
+msgstr "Номер \"%number%\" уже используется"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1126
+msgid "Name \"%name%\" already exists"
+msgstr "Имя \"%name%\" уже существует"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1146
+#: ../../../../admin/src/Controller/TvChannelsController.php:1156
+msgid "Prefix already used"
+msgstr "Префикс уже используется"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1158
+msgid "Prefix is available"
+msgstr "Префикс доступен"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1415
+msgid "This field cannot be empty if enabled TV-archive or nPVR"
+msgstr "Поле не может быть пустым если включено TV-архив или nPVR"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1432
+msgid "This name already exists"
+msgstr "Это имя уже существует"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1433
+#: ../../../../admin/src/Controller/InfoportalController.php:274
+msgid "This number is already in use"
+msgstr "Такой номер уже используется"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1639
+#: ../../../../admin/src/Controller/TvChannelsController.php:1691
 #: ../../../../admin/src/Controller/EventsController.php:826
 #: ../../../../admin/src/Controller/EventsController.php:852
 #: ../../../../admin/src/Controller/EventsController.php:870
-#: ../../../../admin/src/Controller/VideoClubController.php:2371
+#: ../../../../admin/src/Controller/VideoClubController.php:2375
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:404
-#: ../../../../admin/src/Controller/UsersController.php:2074
+#: ../../../../admin/src/Controller/UsersController.php:2080
 msgid "ID"
 msgstr "ID"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1605
-#: ../../../../admin/src/Controller/TvChannelsController.php:1697
-#: ../../../../admin/src/Controller/VideoClubController.php:2307
+#: ../../../../admin/src/Controller/TvChannelsController.php:1640
+#: ../../../../admin/src/Controller/TvChannelsController.php:1732
+#: ../../../../admin/src/Controller/VideoClubController.php:2311
 #: ../../../administrator/other_city_info.php:151
 #: ../../../administrator/other_city_info.php:214
 #: ../../../administrator/help_city_info.php:141
@@ -341,19 +404,19 @@ msgstr "ID"
 msgid "Number"
 msgstr "Номер"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1606
+#: ../../../../admin/src/Controller/TvChannelsController.php:1641
 #: ../../../administrator/add_itv.php:1774
 msgid "Logo"
 msgstr "Логотип"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1607
-#: ../../../../admin/src/Controller/TvChannelsController.php:1698
+#: ../../../../admin/src/Controller/TvChannelsController.php:1642
+#: ../../../../admin/src/Controller/TvChannelsController.php:1733
 #: ../../../../admin/src/Controller/EventsController.php:827
-#: ../../../../admin/src/Controller/VideoClubController.php:2308
-#: ../../../../admin/src/Controller/VideoClubController.php:2316
-#: ../../../../admin/src/Controller/VideoClubController.php:2373
+#: ../../../../admin/src/Controller/VideoClubController.php:2312
+#: ../../../../admin/src/Controller/VideoClubController.php:2320
+#: ../../../../admin/src/Controller/VideoClubController.php:2377
 #: ../../../../admin/src/Controller/AudioClubController.php:1387
-#: ../../../../admin/src/Controller/UsersController.php:2076
+#: ../../../../admin/src/Controller/UsersController.php:2082
 #: ../../../administrator/tariffs.php:311
 #: ../../../administrator/tariffs.php:342
 #: ../../../administrator/audio_album.php:423
@@ -377,7 +440,7 @@ msgstr "Логотип"
 msgid "Title"
 msgstr "Название"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1608
+#: ../../../../admin/src/Controller/TvChannelsController.php:1643
 #: ../../../administrator/audio_album.php:425
 #: ../../../administrator/add_itv.php:1076
 #: ../../../administrator/add_itv.php:1558
@@ -391,14 +454,15 @@ msgstr "Название"
 msgid "Genre"
 msgstr "Жанр"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1609
+#: ../../../../admin/src/Controller/TvChannelsController.php:1644
 #: ../../../tools/misctranslations.php:554
 #: ../../../administrator/userlog.php:373
 #: ../../../administrator/add_itv.php:1077
 msgid "Archive"
 msgstr "Архив"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1610
+#: ../../../../admin/src/Controller/TvChannelsController.php:1645
+#: ../../../../admin/src/Controller/TvChannelsController.php:1693
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:407
 #: ../../../administrator/add_itv.php:1074
 #: ../../../administrator/audio_track.php:246
@@ -408,46 +472,781 @@ msgstr "Архив"
 msgid "URL"
 msgstr "URL"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1611
+#: ../../../../admin/src/Controller/TvChannelsController.php:1646
 #: ../../../../admin/src/Controller/RadioController.php:380
 msgid "Monitoring status"
 msgstr "Статус мониторинга"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1612
-#: ../../../../admin/src/Controller/VideoClubController.php:2354
-#: ../../../../admin/src/Controller/VideoClubController.php:2375
-#: ../../../../admin/src/Controller/UsersController.php:2047
-#: ../../../../admin/src/Controller/UsersController.php:2134
+#: ../../../../admin/src/Controller/TvChannelsController.php:1647
+#: ../../../../admin/src/Controller/VideoClubController.php:2358
+#: ../../../../admin/src/Controller/VideoClubController.php:2379
+#: ../../../../admin/src/Controller/UsersController.php:2053
+#: ../../../../admin/src/Controller/UsersController.php:2140
 #: ../../../administrator/events.php:500 ../../../administrator/tasks.php:132
 #: ../../../administrator/add_video.php:838
 msgid "Status"
 msgstr "Статус"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1613
+#: ../../../../admin/src/Controller/TvChannelsController.php:1648
+#: ../../../../admin/src/Controller/TvChannelsController.php:1697
 #: ../../../../admin/src/Controller/EventsController.php:831
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:410
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:420
-#: ../../../../admin/src/Controller/UsersController.php:2055
-#: ../../../../admin/src/Controller/UsersController.php:2068
-#: ../../../../admin/src/Controller/UsersController.php:2080
-#: ../../../../admin/src/Controller/UsersController.php:2104
+#: ../../../../admin/src/Controller/UsersController.php:2061
+#: ../../../../admin/src/Controller/UsersController.php:2074
+#: ../../../../admin/src/Controller/UsersController.php:2086
+#: ../../../../admin/src/Controller/UsersController.php:2110
 msgid "Operations"
 msgstr "Действия"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1699
-#: ../../../../admin/src/Controller/VideoClubController.php:2309
-#: ../../../../admin/src/Controller/VideoClubController.php:2317
-#: ../../../tools/misctranslations.php:594
+#: ../../../../admin/src/Controller/TvChannelsController.php:1692
+#: ../../../administrator/setting_common.php:191
+msgid "Prefix"
+msgstr "Префикс"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1694
+msgid "XMLTV file hash"
+msgstr "Хэш XMLTV файла"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1695
+msgid "Update date"
+msgstr "Дата обновления"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1696
+#: ../../../../admin/src/Controller/EventsController.php:880
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:409
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:419
+#: ../../../../admin/src/Controller/UsersController.php:2052
+msgid "State"
+msgstr "Состояние"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1734
+#: ../../../../admin/src/Controller/VideoClubController.php:2313
+#: ../../../../admin/src/Controller/VideoClubController.php:2321
+#: ../../../tools/misctranslations.php:589
 msgid "Localized title"
 msgstr "Переведенное название"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1700
-#: ../../../../admin/src/Controller/VideoClubController.php:2310
-#: ../../../../admin/src/Controller/VideoClubController.php:2319
-#: ../../../../admin/src/Controller/VideoClubController.php:2355
+#: ../../../../admin/src/Controller/TvChannelsController.php:1735
+#: ../../../../admin/src/Controller/VideoClubController.php:2314
+#: ../../../../admin/src/Controller/VideoClubController.php:2323
+#: ../../../../admin/src/Controller/VideoClubController.php:2359
 #: ../../../../admin/src/Controller/AudioClubController.php:1388
 msgid "Operation"
 msgstr "Действия"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1741
+msgid "Afar"
+msgstr "Афарский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1742
+msgid "Abkhazian"
+msgstr "Абхазский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1743
+msgid "Afrikaans"
+msgstr "Африкаанс"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1744
+msgid "Akan"
+msgstr "Акан"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1745
+msgid "Amharic"
+msgstr "Амхарский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1746
+msgid "Arabic"
+msgstr "Арабский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1747
+msgid "Assamese"
+msgstr "Ассамский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1748
+msgid "Avaric"
+msgstr "Аварский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1749
+msgid "Avestan"
+msgstr "Авестийский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1750
+msgid "Aymara"
+msgstr "Аймара"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1751
+msgid "Azerbaijani"
+msgstr "Азербайджанский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1752
+msgid "Bashkir"
+msgstr "Башкирский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1753
+msgid "Bambara"
+msgstr "Бамбара"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1754
+msgid "Basque"
+msgstr "Баскский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1755
+msgid "Belarusian"
+msgstr "Белорусский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1756
+msgid "Bengali"
+msgstr "Бенгальский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1757
+msgid "Bislama"
+msgstr "Бислама"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1758
+msgid "Tibetan"
+msgstr "Тибетский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1759
+msgid "Bosnian"
+msgstr "Боснийский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1760
+msgid "Breton"
+msgstr "Бретонский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1761
+msgid "Bulgarian"
+msgstr "Болгарский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1762
+msgid "Catalan"
+msgstr "Каталанский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1763
+msgid "Czech"
+msgstr "Чешский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1764
+msgid "Chamorro"
+msgstr "Чаморро"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1765
+msgid "Chechen"
+msgstr "Чеченский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1766
+msgid "Church Slavic"
+msgstr "Церковнославянский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1767
+msgid "Chuvash"
+msgstr "Чувашский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1768
+msgid "Cornish"
+msgstr "Корнский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1769
+msgid "Corsican"
+msgstr "Корсиканский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1770
+msgid "Welsh"
+msgstr "Валлийский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1771
+msgid "Danish"
+msgstr "Датский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1772
+#: ../../../tools/misctranslations.php:185
+msgid "German"
+msgstr "Немецкий"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1773
+msgid "Divehi"
+msgstr "Дивехи"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1774
+msgid "Dzongkha"
+msgstr "Дзонг-кэ"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1775
+msgid "Greek"
+msgstr "Греческий"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1776
+#: ../../../tools/misctranslations.php:183
+msgid "English"
+msgstr "Английский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1777
+msgid "Esperanto"
+msgstr "Эсперанто"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1778
+msgid "Estonian"
+msgstr "Эстонский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1779
+msgid "Ewe"
+msgstr "Эве"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1780
+msgid "Faroese"
+msgstr "Фарерский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1781
+msgid "Persian"
+msgstr "Персидский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1782
+msgid "Fijian"
+msgstr "Фиджи"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1783
+msgid "Finnish"
+msgstr "Финский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1784
+#: ../../../tools/misctranslations.php:188
+msgid "French"
+msgstr "Французский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1785
+msgid "Western Frisian"
+msgstr "Фризский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1786
+msgid "Fulah"
+msgstr "Фулах"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1787
+msgid "Georgian"
+msgstr "Грузинский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1788
+msgid "Gaelic"
+msgstr "Гэльский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1789
+msgid "Irish"
+msgstr "Ирландский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1790
+msgid "Galician"
+msgstr "Галисийский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1791
+msgid "Manx"
+msgstr "Мэнский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1792
+msgid "Guarani"
+msgstr "Гуарани"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1793
+msgid "Gujarati"
+msgstr "Гуджарати"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1794
+msgid "Hausa"
+msgstr "Хауса"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1795
+msgid "Hebrew"
+msgstr "Иврит"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1796
+msgid "Herero"
+msgstr "Гереро"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1797
+msgid "Hindi"
+msgstr "Хинди"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1798
+msgid "Hiri Motu"
+msgstr "Хиримоту"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1799
+msgid "Croatian"
+msgstr "Хорватский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1800
+msgid "Hungarian"
+msgstr "Венгерский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1801
+msgid "Armenian"
+msgstr "Армянский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1802
+msgid "Igbo"
+msgstr "Игбо"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1803
+msgid "Inuktitut"
+msgstr "Инуктитут"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1804
+msgid "Interlingue"
+msgstr "Интерлингве"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1805
+msgid "Interlingua"
+msgstr "Интерлингва"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1806
+msgid "Indonesian"
+msgstr "Индонезийский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1807
+msgid "Inupiaq"
+msgstr "Инупиак"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1808
+msgid "Icelandic"
+msgstr "Исландский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1809
+msgid "Italian"
+msgstr "Итальянский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1810
+msgid "Javanese"
+msgstr "Яванский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1811
+msgid "Japanese"
+msgstr "Японский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1812
+msgid "Kalaallisut"
+msgstr "Гренландский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1813
+msgid "Kannada"
+msgstr "Каннада"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1814
+msgid "Kashmiri"
+msgstr "Кашмири"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1815
+msgid "Kanuri"
+msgstr "Канури"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1816
+msgid "Kazakh"
+msgstr "Казахский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1817
+msgid "Central Khmer"
+msgstr "Кхмерский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1818
+msgid "Kikuyu"
+msgstr "Кикуйю"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1819
+msgid "Kinyarwanda"
+msgstr "Руанда"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1820
+msgid "Kirghiz"
+msgstr "Киргизский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1821
+msgid "Komi"
+msgstr "Коми"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1822
+msgid "Kongo"
+msgstr "Конго"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1823
+msgid "Korean"
+msgstr "Корейский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1824
+msgid "Kuanyama"
+msgstr "Киньяма"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1825
+msgid "Kurdish"
+msgstr "Курдский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1826
+msgid "Lao"
+msgstr "Лаосский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1827
+msgid "Latin"
+msgstr "Латинский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1828
+msgid "Latvian"
+msgstr "Латышский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1829
+msgid "Lingala"
+msgstr "Лингала"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1830
+msgid "Lithuanian"
+msgstr "Литовский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1831
+msgid "Luxembourgish"
+msgstr "Люксембургский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1832
+msgid "Luba-Katanga"
+msgstr "Луба-катанга"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1833
+msgid "Ganda"
+msgstr "Ганда"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1834
+msgid "Macedonian"
+msgstr "Македонский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1835
+msgid "Marshallese"
+msgstr "Маршалльский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1836
+msgid "Malayalam"
+msgstr "Малаялам"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1837
+msgid "Maori"
+msgstr "Маори"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1838
+msgid "Marathi"
+msgstr "Маратхи"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1839
+msgid "Malagasy"
+msgstr "Малагасийский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1840
+msgid "Maltese"
+msgstr "Мальтийский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1841
+msgid "Mongolian"
+msgstr "Монгольский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1842
+msgid "Malay"
+msgstr "Малайский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1843
+msgid "Burmese"
+msgstr "Бирманский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1844
+msgid "Nauru"
+msgstr "Науру"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1845
+msgid "Navajo"
+msgstr "Навахо"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1846
+msgid "Ndebele"
+msgstr "Ндебеле южный"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1847
+msgid "North Ndebele"
+msgstr "Ндебеле северный"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1848
+msgid "Ndonga"
+msgstr "Ндунга"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1849
+msgid "Nepali"
+msgstr "Непальский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1850
+msgid "Dutch"
+msgstr "Нидерландский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1851
+msgid "Norwegian"
+msgstr "Норвежский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1852
+msgid "Chichewa"
+msgstr "Ньянджа"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1853
+msgid "Occitan"
+msgstr "Окситанский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1854
+msgid "Ojibwa"
+msgstr "Оджибве"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1855
+msgid "Oriya"
+msgstr "Ория"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1856
+msgid "Oromo"
+msgstr "Оромо"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1857
+msgid "Ossetian"
+msgstr "Осетинский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1858
+msgid "Panjabi"
+msgstr "Пенджабский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1859
+msgid "Pali"
+msgstr "Пали"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1860
+msgid "Polish"
+msgstr "Польский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1861
+#: ../../../tools/misctranslations.php:189
+msgid "Portuguese"
+msgstr "Португальский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1862
+msgid "Pushto"
+msgstr "Пушту"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1863
+msgid "Quechua"
+msgstr "Кечуа"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1864
+msgid "Romansh"
+msgstr "Ретороманский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1865
+msgid "Romanian"
+msgstr "Румынский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1866
+msgid "Rundi"
+msgstr "Рунди"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1867
+#: ../../../tools/misctranslations.php:187
+msgid "Russian"
+msgstr "Русский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1868
+msgid "Sango"
+msgstr "Санго"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1869
+msgid "Sanskrit"
+msgstr "Санскрит"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1870
+msgid "Sinhala"
+msgstr "Сингальский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1871
+msgid "Slovak"
+msgstr "Словацкий"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1872
+msgid "Slovenian"
+msgstr "Словенский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1873
+msgid "Samoan"
+msgstr "Самоанский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1874
+msgid "Shona"
+msgstr "Шона"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1875
+msgid "Sindhi"
+msgstr "Синдхи"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1876
+msgid "Somali"
+msgstr "Сомали"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1877
+msgid "Southern Sotho"
+msgstr "Сото южный"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1878
+#: ../../../tools/misctranslations.php:184
+msgid "Spanish"
+msgstr "Испанский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1879
+msgid "Albanian"
+msgstr "Албанский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1880
+msgid "Sardinian"
+msgstr "Сардинский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1881
+msgid "Serbian"
+msgstr "Сербский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1882
+msgid "Swati"
+msgstr "Свази"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1883
+msgid "Sundanese"
+msgstr "Сунданский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1884
+msgid "Swahili"
+msgstr "Суахили"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1885
+msgid "Swedish"
+msgstr "Шведский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1886
+msgid "Tahitian"
+msgstr "Таитянский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1887
+msgid "Tamil"
+msgstr "Тамильский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1888
+msgid "Tatar"
+msgstr "Татарский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1889
+msgid "Telugu"
+msgstr "Телугу"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1890
+msgid "Tajik"
+msgstr "Таджикский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1891
+msgid "Tagalog"
+msgstr "Тагальский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1892
+msgid "Thai"
+msgstr "Тайский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1893
+msgid "Tigrinya"
+msgstr "Тигринья"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1894
+msgid "Tonga"
+msgstr "Тонганский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1895
+msgid "Tswana"
+msgstr "Тсвана"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1896
+msgid "Tsonga"
+msgstr "Тсонга"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1897
+msgid "Turkmen"
+msgstr "Туркменский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1898
+#: ../../../tools/misctranslations.php:190
+msgid "Turkish"
+msgstr "Турецкий"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1899
+msgid "Twi"
+msgstr "Тви"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1900
+msgid "Uighur"
+msgstr "Уйгурский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1901
+msgid "Ukrainian"
+msgstr "Украинский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1902
+msgid "Urdu"
+msgstr "Урду"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1903
+msgid "Uzbek"
+msgstr "Узбекский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1904
+msgid "Venda"
+msgstr "Венда"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1905
+msgid "Vietnamese"
+msgstr "Вьетнамский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1906
+msgid "Volap"
+msgstr "Волапюк"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1907
+msgid "Wolof"
+msgstr "Волоф"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1908
+msgid "Xhosa"
+msgstr "Коса"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1909
+msgid "Yiddish"
+msgstr "Идиш"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1910
+msgid "Yoruba"
+msgstr "Йоруба"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1911
+msgid "Zhuang"
+msgstr "Чжуанский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1912
+msgid "Chinese"
+msgstr "Китайский"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1913
+msgid "Zulu"
+msgstr "Зулу"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1924
+#: ../../../administrator/add_itv.php:1399
+msgid "more than an hour ago"
+msgstr "больше часа назад"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1926
+#: ../../../administrator/add_itv.php:1403
+msgid "less than a minute ago"
+msgstr "меньше минуты назад"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1928
+msgid "{{minute}} minutes ago"
+msgstr "{{minute}} минут назад"
 
 #: ../../../../admin/src/Controller/IndexController.php:113
 msgid "Users online"
@@ -479,7 +1278,7 @@ msgid "Installed applications"
 msgstr "Установленных приложений"
 
 #: ../../../../admin/src/Controller/EventsController.php:582
-#: ../../../tools/misctranslations.php:860
+#: ../../../tools/misctranslations.php:679
 msgid "deferred"
 msgstr "Приостановлено"
 
@@ -518,13 +1317,13 @@ msgid "Filter"
 msgstr "Фильтр"
 
 #: ../../../../admin/src/Controller/EventsController.php:828
-#: ../../../../admin/src/Controller/UsersController.php:2075
+#: ../../../../admin/src/Controller/UsersController.php:2081
 #: ../../../administrator/add_karaoke.php:813
 msgid "Author"
 msgstr "Автор"
 
 #: ../../../../admin/src/Controller/EventsController.php:829
-#: ../../../../admin/src/Controller/UsersController.php:2042
+#: ../../../../admin/src/Controller/UsersController.php:2048
 #: ../../../tools/misctranslations.php:547
 msgid "Created"
 msgstr "Создано"
@@ -542,9 +1341,9 @@ msgid "Expiration date"
 msgstr "Действительно до"
 
 #: ../../../../admin/src/Controller/EventsController.php:855
-#: ../../../../admin/src/Controller/UsersController.php:2098
-#: ../../../../admin/src/Controller/UsersController.php:2121
-#: ../../../../admin/src/Controller/UsersController.php:2133
+#: ../../../../admin/src/Controller/UsersController.php:2104
+#: ../../../../admin/src/Controller/UsersController.php:2127
+#: ../../../../admin/src/Controller/UsersController.php:2139
 #: ../../../administrator/user.php:154
 msgid "MAC"
 msgstr "Поиск по MAC"
@@ -586,8 +1385,8 @@ msgid "Recipient"
 msgstr "Получатель"
 
 #: ../../../../admin/src/Controller/EventsController.php:874
-#: ../../../../admin/src/Controller/UsersController.php:2043
-#: ../../../../admin/src/Controller/UsersController.php:2124
+#: ../../../../admin/src/Controller/UsersController.php:2049
+#: ../../../../admin/src/Controller/UsersController.php:2130
 #: ../../../administrator/claims_log.php:174
 #: ../../../administrator/users.php:580 ../../../lang/stb.php:396
 #: ../../../lang/stb.php:501
@@ -618,13 +1417,6 @@ msgstr "Следующий запуск"
 msgid "Last run"
 msgstr "Последний запуск"
 
-#: ../../../../admin/src/Controller/EventsController.php:880
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:409
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:419
-#: ../../../../admin/src/Controller/UsersController.php:2046
-msgid "State"
-msgstr "Состояние"
-
 #: ../../../../admin/src/Controller/VideoClubController.php:24
 #: ../../../../admin/src/Controller/VideoClubController.php:654
 msgid "Scheduled"
@@ -646,7 +1438,7 @@ msgstr "Редактировать фильм"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:198
 #: ../../../../admin/src/Controller/VideoClubController.php:233
-#: ../../../../admin/src/Controller/VideoClubController.php:2353
+#: ../../../../admin/src/Controller/VideoClubController.php:2357
 #: ../../../administrator/add_video.php:630
 #: ../../../../admin/json_menu/menu.json:53
 msgid "Advertising"
@@ -687,7 +1479,7 @@ msgstr "Информация недоступна"
 #: ../../../../admin/src/Controller/VideoClubController.php:619
 #: ../../../../admin/src/Controller/VideoClubController.php:673
 #: ../../../../admin/src/Controller/VideoClubController.php:703
-#: ../../../../admin/src/Controller/VideoClubController.php:783
+#: ../../../../admin/src/Controller/VideoClubController.php:787
 msgid "Information not available"
 msgstr "Информация недоступна"
 
@@ -695,49 +1487,49 @@ msgstr "Информация недоступна"
 #: ../../../../admin/src/Controller/BroadcastServersController.php:19
 #: ../../../../admin/src/Controller/UsersController.php:739
 #: ../../../../admin/src/Controller/UsersController.php:740
-#: ../../../../admin/src/Controller/UsersController.php:1733
-#: ../../../../admin/src/Controller/UsersController.php:1737
+#: ../../../../admin/src/Controller/UsersController.php:1739
+#: ../../../../admin/src/Controller/UsersController.php:1743
 #: ../../../lang/stb.php:369
 msgid "on"
 msgstr "Вкл"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:816
+#: ../../../../admin/src/Controller/VideoClubController.php:820
 #: ../../../administrator/add_video.php:139
 #, php-format
 msgid "Error during file moving from %s to %s"
 msgstr "Ошибка при перемещении файла из %s в %s"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:849
+#: ../../../../admin/src/Controller/VideoClubController.php:853
 #: ../../../../admin/src/Controller/AudioClubController.php:942
 msgid "image file has not been deleted"
 msgstr "Файл изображения не был удален"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:850
+#: ../../../../admin/src/Controller/VideoClubController.php:854
 #: ../../../../admin/src/Controller/AudioClubController.php:943
 msgid "image name"
 msgstr "Имя файла"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:851
+#: ../../../../admin/src/Controller/VideoClubController.php:855
 #: ../../../../admin/src/Controller/AudioClubController.php:944
 msgid "file can be deleted manually from screenshot directory"
 msgstr "Файл может быть удален из каталога скриншотов вручную"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:855
+#: ../../../../admin/src/Controller/VideoClubController.php:859
 msgid "No information about"
 msgstr "Нет информации о"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:855
+#: ../../../../admin/src/Controller/VideoClubController.php:859
 msgid "or file is not exists"
 msgstr "или файл не существует"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:873
-#: ../../../../admin/src/Controller/VideoClubController.php:900
-#: ../../../../admin/src/Controller/VideoClubController.php:930
-#: ../../../../admin/src/Controller/VideoClubController.php:960
+#: ../../../../admin/src/Controller/VideoClubController.php:877
+#: ../../../../admin/src/Controller/VideoClubController.php:904
+#: ../../../../admin/src/Controller/VideoClubController.php:934
+#: ../../../../admin/src/Controller/VideoClubController.php:964
 msgid "No data"
 msgstr "Нет данных"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:1406
+#: ../../../../admin/src/Controller/VideoClubController.php:1410
 #: ../../../../admin/src/Controller/KaraokeController.php:163
 #: ../../../../admin/src/Controller/InfoportalController.php:250
 #: ../../../../admin/src/Controller/AdminsController.php:241
@@ -750,27 +1542,27 @@ msgstr "Нет данных"
 msgid "error"
 msgstr "Ошибка"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:1641
+#: ../../../../admin/src/Controller/VideoClubController.php:1645
 msgid "Inserted"
 msgstr "Добавлен"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:1643
+#: ../../../../admin/src/Controller/VideoClubController.php:1647
 msgid "In this category already exists such a genre"
 msgstr "В этой категории уже существует такой жанр"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:1665
+#: ../../../../admin/src/Controller/VideoClubController.php:1669
 #: ../../../../admin/src/Controller/AdminsController.php:636
 msgid "Deleted"
 msgstr "Удалено"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:2318
+#: ../../../../admin/src/Controller/VideoClubController.php:2322
 #: ../../../administrator/add_video.php:2010 ../../../lang/stb.php:239
 msgid "Category"
 msgstr "Категория"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:2351
-#: ../../../../admin/src/Controller/UsersController.php:2041
-#: ../../../../admin/src/Controller/UsersController.php:2062
+#: ../../../../admin/src/Controller/VideoClubController.php:2355
+#: ../../../../admin/src/Controller/UsersController.php:2047
+#: ../../../../admin/src/Controller/UsersController.php:2068
 #: ../../../administrator/playlists.php:129
 #: ../../../administrator/playlists.php:153
 #: ../../../administrator/audio_year.php:183
@@ -798,11 +1590,11 @@ msgstr "Категория"
 msgid "Name"
 msgstr "Имя"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:2352
+#: ../../../../admin/src/Controller/VideoClubController.php:2356
 msgid "MAC address"
 msgstr "MAC-адрес"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:2372
+#: ../../../../admin/src/Controller/VideoClubController.php:2376
 #: ../../../administrator/userlog.php:410 ../../../administrator/msg.php:141
 #: ../../../administrator/videolog.php:127 ../../../administrator/msgs.php:114
 #: ../../../administrator/tasks.php:170 ../../../administrator/tasks.php:225
@@ -814,7 +1606,7 @@ msgstr "MAC-адрес"
 msgid "Date"
 msgstr "Дата"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:2374
+#: ../../../../admin/src/Controller/VideoClubController.php:2378
 #: ../../../administrator/videolog.php:129
 #: ../../../administrator/myvideolog.php:148
 msgid "Moderator"
@@ -944,7 +1736,7 @@ msgstr "Это поле может содержать только цифры"
 #: ../../../../admin/src/Controller/UsersController.php:254
 #: ../../../../admin/src/Controller/UsersController.php:680
 #: ../../../../admin/src/Controller/UsersController.php:893
-#: ../../../../admin/src/Controller/UsersController.php:1800
+#: ../../../../admin/src/Controller/UsersController.php:1806
 #: ../../../../admin/src/Controller/AdminsController.php:48
 #: ../../../../admin/src/Controller/AdminsController.php:70
 #: ../../../../admin/src/Controller/AdminsController.php:345
@@ -981,30 +1773,25 @@ msgstr "Приставки в группе"
 
 #: ../../../../admin/src/Controller/UsersController.php:739
 #: ../../../../admin/src/Controller/UsersController.php:740
-#: ../../../../admin/src/Controller/UsersController.php:1732
-#: ../../../../admin/src/Controller/UsersController.php:1736
+#: ../../../../admin/src/Controller/UsersController.php:1738
+#: ../../../../admin/src/Controller/UsersController.php:1742
 #: ../../../lang/stb.php:370
 msgid "off"
 msgstr "Выкл"
 
-#: ../../../../admin/src/Controller/UsersController.php:968
-#: ../../../tools/misctranslations.php:797
-msgid "Name already used"
-msgstr "Имя уже используется"
-
-#: ../../../../admin/src/Controller/UsersController.php:1134
-#: ../../../../admin/src/Controller/UsersController.php:1161
-#: ../../../../admin/src/Controller/UsersController.php:1162
+#: ../../../../admin/src/Controller/UsersController.php:1140
+#: ../../../../admin/src/Controller/UsersController.php:1167
+#: ../../../../admin/src/Controller/UsersController.php:1168
 msgid "This user is already connected to the group"
 msgstr "Пользователь уже подключен к группе"
 
-#: ../../../../admin/src/Controller/UsersController.php:1136
-#: ../../../../admin/src/Controller/UsersController.php:1164
+#: ../../../../admin/src/Controller/UsersController.php:1142
+#: ../../../../admin/src/Controller/UsersController.php:1170
 msgid "User with this MAC-address is not defined"
 msgstr "Пользователь с таким MAC-адресом не определен"
 
-#: ../../../../admin/src/Controller/UsersController.php:1356
-#: ../../../../admin/src/Controller/UsersController.php:1390
+#: ../../../../admin/src/Controller/UsersController.php:1362
+#: ../../../../admin/src/Controller/UsersController.php:1396
 #: ../../../../admin/src/Controller/AdminsController.php:665
 #: ../../../../admin/src/Controller/AdminsController.php:699
 #: ../../../../admin/src/Controller/AdminsController.php:733
@@ -1013,18 +1800,18 @@ msgstr "Пользователь с таким MAC-адресом не опре�
 msgid "Moved"
 msgstr "Перемещено"
 
-#: ../../../../admin/src/Controller/UsersController.php:1358
-#: ../../../../admin/src/Controller/UsersController.php:1397
+#: ../../../../admin/src/Controller/UsersController.php:1364
+#: ../../../../admin/src/Controller/UsersController.php:1403
 #: ../../../../admin/src/Controller/AdminsController.php:701
 #: ../../../../admin/src/Controller/AdminsController.php:735
 msgid "Not found reseller for moving"
 msgstr "Не найден реселлер для перемещения"
 
-#: ../../../../admin/src/Controller/UsersController.php:1435
+#: ../../../../admin/src/Controller/UsersController.php:1441
 msgid "No data for this filter"
 msgstr "Нет данных для построения фильтра"
 
-#: ../../../../admin/src/Controller/UsersController.php:2039
+#: ../../../../admin/src/Controller/UsersController.php:2045
 #: ../../../administrator/profile.php:433 ../../../administrator/user.php:138
 #: ../../../administrator/administrators.php:164
 #: ../../../administrator/administrators.php:191
@@ -1033,55 +1820,55 @@ msgstr "Нет данных для построения фильтра"
 msgid "Login"
 msgstr "Логин"
 
-#: ../../../../admin/src/Controller/UsersController.php:2040
+#: ../../../../admin/src/Controller/UsersController.php:2046
 msgid "Account"
 msgstr "Лицевой счет"
 
-#: ../../../../admin/src/Controller/UsersController.php:2044
+#: ../../../../admin/src/Controller/UsersController.php:2050
 #: ../../../administrator/msg.php:145
 #: ../../../administrator/claims_log.php:175
 #: ../../../administrator/users.php:581 ../../../administrator/msgs.php:116
 msgid "Media"
 msgstr "Медиа"
 
-#: ../../../../admin/src/Controller/UsersController.php:2045
+#: ../../../../admin/src/Controller/UsersController.php:2051
 msgid "Last modified"
 msgstr "Последнее изменение"
 
-#: ../../../../admin/src/Controller/UsersController.php:2050
-#: ../../../../admin/src/Controller/UsersController.php:2066
-#: ../../../../admin/src/Controller/UsersController.php:2102
+#: ../../../../admin/src/Controller/UsersController.php:2056
+#: ../../../../admin/src/Controller/UsersController.php:2072
+#: ../../../../admin/src/Controller/UsersController.php:2108
 msgid "Reseller"
 msgstr "Реселлер"
 
-#: ../../../../admin/src/Controller/UsersController.php:2053
+#: ../../../../admin/src/Controller/UsersController.php:2059
 #: ../../../administrator/profile.php:466
 msgid "Expire billing date"
 msgstr "Действительно до"
 
-#: ../../../../admin/src/Controller/UsersController.php:2063
+#: ../../../../admin/src/Controller/UsersController.php:2069
 msgid "Quantity of users"
 msgstr "Количество пользователей"
 
-#: ../../../../admin/src/Controller/UsersController.php:2077
+#: ../../../../admin/src/Controller/UsersController.php:2083
 msgid "Filter conditions"
 msgstr "Условия фильтра"
 
-#: ../../../../admin/src/Controller/UsersController.php:2078
+#: ../../../../admin/src/Controller/UsersController.php:2084
 msgid "Visibility"
 msgstr "Видимость"
 
-#: ../../../../admin/src/Controller/UsersController.php:2079
+#: ../../../../admin/src/Controller/UsersController.php:2085
 #: ../../../lang/stb.php:385
 msgid "Favorites"
 msgstr "Избранное"
 
-#: ../../../../admin/src/Controller/UsersController.php:2099
+#: ../../../../admin/src/Controller/UsersController.php:2105
 msgid "uid"
 msgstr "uid"
 
-#: ../../../../admin/src/Controller/UsersController.php:2120
-#: ../../../../admin/src/Controller/UsersController.php:2135
+#: ../../../../admin/src/Controller/UsersController.php:2126
+#: ../../../../admin/src/Controller/UsersController.php:2141
 #: ../../../administrator/userlog.php:427
 #: ../../../administrator/master_log.php:121
 #: ../../../administrator/all_userlog.php:275
@@ -1090,24 +1877,19 @@ msgstr "uid"
 msgid "Time"
 msgstr "Время"
 
-#: ../../../../admin/src/Controller/UsersController.php:2122
+#: ../../../../admin/src/Controller/UsersController.php:2128
 msgid "Actions"
 msgstr "Действие"
 
-#: ../../../../admin/src/Controller/UsersController.php:2123
+#: ../../../../admin/src/Controller/UsersController.php:2129
 msgid "Object"
 msgstr "Объект"
 
-#: ../../../../admin/src/Controller/UsersController.php:2125
+#: ../../../../admin/src/Controller/UsersController.php:2131
 #: ../../../administrator/userlog.php:429
 #: ../../../administrator/all_userlog.php:278
 msgid "Parameter"
 msgstr "Параметр"
-
-#: ../../../../admin/src/Controller/InfoportalController.php:274
-#: ../../../tools/misctranslations.php:559
-msgid "This number is already in use"
-msgstr "Такой номер уже используется"
 
 #: ../../../../admin/src/Controller/InfoportalController.php:275
 msgid "Closest free number"
@@ -1165,7 +1947,7 @@ msgid "Account \"admin\" is not editable. You may change only password."
 msgstr "Аккаунт \"admin \" не редактируется. Вы можете изменить только пароль."
 
 #: ../../../../admin/src/Controller/AdminsController.php:272
-#: ../../../tools/misctranslations.php:785
+#: ../../../tools/misctranslations.php:607
 msgid "Not all required fields are filled"
 msgstr "Не все обязательные поля заполнены"
 
@@ -1744,44 +2526,9 @@ msgstr "1990-е"
 msgid "2000s"
 msgstr "2000-е"
 
-#: ../../../tools/misctranslations.php:183
-#: ../../../tools/misctranslations.php:647
-msgid "English"
-msgstr "Английский"
-
-#: ../../../tools/misctranslations.php:184
-#: ../../../tools/misctranslations.php:749
-msgid "Spanish"
-msgstr "Испанский"
-
-#: ../../../tools/misctranslations.php:185
-#: ../../../tools/misctranslations.php:643
-msgid "German"
-msgstr "Немецкий"
-
 #: ../../../tools/misctranslations.php:186
 msgid "Italiano"
 msgstr "Итальянский"
-
-#: ../../../tools/misctranslations.php:187
-#: ../../../tools/misctranslations.php:738
-msgid "Russian"
-msgstr "Русский"
-
-#: ../../../tools/misctranslations.php:188
-#: ../../../tools/misctranslations.php:655
-msgid "French"
-msgstr "Французский"
-
-#: ../../../tools/misctranslations.php:189
-#: ../../../tools/misctranslations.php:732
-msgid "Portuguese"
-msgstr "Португальский"
-
-#: ../../../tools/misctranslations.php:190
-#: ../../../tools/misctranslations.php:769
-msgid "Turkish"
-msgstr "Турецкий"
 
 #: ../../../tools/misctranslations.php:197
 msgid "Chanson"
@@ -2199,7 +2946,7 @@ msgid "Removing an existing area"
 msgstr "Удаление существующей зоны"
 
 #: ../../../tools/misctranslations.php:318
-#: ../../../tools/misctranslations.php:819
+#: ../../../tools/misctranslations.php:639
 msgid "List of events"
 msgstr "Список событиий"
 
@@ -3090,915 +3837,231 @@ msgid "Conditions"
 msgstr "Состояние"
 
 #: ../../../tools/misctranslations.php:557
-msgid "XMLTV file hash"
-msgstr "Хэш XMLTV файла"
-
-#: ../../../tools/misctranslations.php:558
-msgid "Update date"
-msgstr "Дата обновления"
-
-#: ../../../tools/misctranslations.php:560
-msgid "This name already exists"
-msgstr "Это имя уже существует"
-
-#: ../../../tools/misctranslations.php:561
 msgid "Saved"
 msgstr "Сохранено"
 
-#: ../../../tools/misctranslations.php:562
+#: ../../../tools/misctranslations.php:558
 msgid "STB API version"
 msgstr "Версия STB API"
 
-#: ../../../tools/misctranslations.php:563
+#: ../../../tools/misctranslations.php:559
 msgid "Required STB API version"
 msgstr "Требуемая версия STB API"
 
-#: ../../../tools/misctranslations.php:564
+#: ../../../tools/misctranslations.php:560
 msgid "Quantity of countries"
 msgstr "Количество стран"
 
-#: ../../../tools/misctranslations.php:565
+#: ../../../tools/misctranslations.php:561
 msgid "Default"
 msgstr "По умолчанию"
 
-#: ../../../tools/misctranslations.php:566
+#: ../../../tools/misctranslations.php:562
 msgid "All views"
 msgstr "Всего просмотров"
 
-#: ../../../tools/misctranslations.php:567
+#: ../../../tools/misctranslations.php:563
 msgid "Views per month"
 msgstr "Просмотров за месяц"
 
-#: ../../../tools/misctranslations.php:568
+#: ../../../tools/misctranslations.php:564
 msgid "General"
 msgstr "Общая"
 
-#: ../../../tools/misctranslations.php:569
+#: ../../../tools/misctranslations.php:565
 msgid "Views lifetime"
 msgstr "Просмотров за все время"
 
-#: ../../../tools/misctranslations.php:570
+#: ../../../tools/misctranslations.php:566
 msgid "Views last month"
 msgstr "Просмотров за месяц"
 
-#: ../../../tools/misctranslations.php:571
+#: ../../../tools/misctranslations.php:567
 msgid "Last viewed date"
 msgstr "Последний просмотр"
 
-#: ../../../tools/misctranslations.php:572
+#: ../../../tools/misctranslations.php:568
 msgid "Number of copies"
 msgstr "Количество копий"
 
-#: ../../../tools/misctranslations.php:573
+#: ../../../tools/misctranslations.php:569
 msgid "Storage quantity"
 msgstr "Количество хранилищ"
 
-#: ../../../tools/misctranslations.php:574
+#: ../../../tools/misctranslations.php:570
 msgid "Image description"
 msgstr "Описание образа"
 
-#: ../../../tools/misctranslations.php:575
+#: ../../../tools/misctranslations.php:571
 msgid "Created by"
 msgstr "Создано"
 
-#: ../../../tools/misctranslations.php:576
+#: ../../../tools/misctranslations.php:572
 msgid "Name is busy"
 msgstr "Имя занято"
 
-#: ../../../tools/misctranslations.php:577
-msgid "Name is available"
-msgstr "Имя доступно"
-
-#: ../../../tools/misctranslations.php:578
+#: ../../../tools/misctranslations.php:573
 msgid "events"
 msgstr "событий"
 
-#: ../../../tools/misctranslations.php:579
+#: ../../../tools/misctranslations.php:574
 #: ../../../../admin/json_menu/menu.json:199
 msgid "Users events"
 msgstr "События пользователей"
 
-#: ../../../tools/misctranslations.php:580
+#: ../../../tools/misctranslations.php:575
 msgid "users"
 msgstr "пользователям"
 
-#: ../../../tools/misctranslations.php:581
+#: ../../../tools/misctranslations.php:576
 msgid "Sending a message with video"
 msgstr "Отправить сообщение с ссылкой на видео"
 
-#: ../../../tools/misctranslations.php:582
+#: ../../../tools/misctranslations.php:577
 msgid "for"
 msgstr "для"
 
-#: ../../../tools/misctranslations.php:583
+#: ../../../tools/misctranslations.php:578
 msgid "complete"
 msgstr "Полный"
 
-#: ../../../tools/misctranslations.php:584
+#: ../../../tools/misctranslations.php:579
 msgid "admin"
 msgstr "Администратор"
 
-#: ../../../tools/misctranslations.php:585
+#: ../../../tools/misctranslations.php:580
 msgid "Initiator role"
 msgstr "Роль инициатора в системе"
 
-#: ../../../tools/misctranslations.php:587
+#: ../../../tools/misctranslations.php:582
 msgid "List of tv genres"
 msgstr "Список ТВ жанров"
 
-#: ../../../tools/misctranslations.php:588
+#: ../../../tools/misctranslations.php:583
 msgid "List of tv genres by page + filters"
 msgstr "Список ТВ жанров постранично + фильтры"
 
-#: ../../../tools/misctranslations.php:589
+#: ../../../tools/misctranslations.php:584
 msgid "Add tv genre"
 msgstr "Добавить ТВ жанр"
 
-#: ../../../tools/misctranslations.php:590
+#: ../../../tools/misctranslations.php:585
 msgid "Edit tv genre"
 msgstr "Редактировать ТВ жанр"
 
-#: ../../../tools/misctranslations.php:591
+#: ../../../tools/misctranslations.php:586
 msgid "Remove the tv genre"
 msgstr "Удалить ТВ жанр"
 
-#: ../../../tools/misctranslations.php:592
+#: ../../../tools/misctranslations.php:587
 msgid "Validation names tv genre"
 msgstr "Проверка допустимости названия ТВ жанра"
 
-#: ../../../tools/misctranslations.php:593
+#: ../../../tools/misctranslations.php:588
 msgid "Change the order of genres"
 msgstr "Изменить порядок ТВ жанров"
 
-#: ../../../tools/misctranslations.php:595
+#: ../../../tools/misctranslations.php:590
 msgid "Object of complaint"
 msgstr "Объект жалобы"
 
-#: ../../../tools/misctranslations.php:596
+#: ../../../tools/misctranslations.php:591
 msgid "Last view movie"
 msgstr "Последний просмотр видео"
 
-#: ../../../tools/misctranslations.php:597
+#: ../../../tools/misctranslations.php:592
 msgid "By day"
 msgstr "По дням"
 
-#: ../../../tools/misctranslations.php:598
+#: ../../../tools/misctranslations.php:593
 msgid "Overall movies"
 msgstr "Всего фильмов"
 
-#: ../../../tools/misctranslations.php:599
+#: ../../../tools/misctranslations.php:594
 msgid "Genre popularity"
 msgstr "Популярность жанра"
 
-#: ../../../tools/misctranslations.php:600
+#: ../../../tools/misctranslations.php:595
 msgid "Resellers. List of resellers"
 msgstr "Реселлеры. Список реселлеров"
 
-#: ../../../tools/misctranslations.php:601
+#: ../../../tools/misctranslations.php:596
 msgid "Resellers. List of resellers  by page + filters"
 msgstr "Список реселлеров постранично + фильтры"
 
-#: ../../../tools/misctranslations.php:602
+#: ../../../tools/misctranslations.php:597
 msgid "Adding and editing resellers"
 msgstr "Добавление и редактирование реселлера"
 
-#: ../../../tools/misctranslations.php:603
+#: ../../../tools/misctranslations.php:598
 msgid "Deleting resellers"
 msgstr "Удаление реселлеров"
 
-#: ../../../tools/misctranslations.php:604
+#: ../../../tools/misctranslations.php:599
 msgid "Move all users of current reseller to another reseller"
 msgstr "Переместить все пользователей текущего реселлера другому реселлеру"
 
-#: ../../../tools/misctranslations.php:605
+#: ../../../tools/misctranslations.php:600
 msgid "Change reseller for current admin"
 msgstr "Сменить реселлера для текущего адиминистратора"
 
-#: ../../../tools/misctranslations.php:606
+#: ../../../tools/misctranslations.php:601
 msgid "Change reseller for current group of admin"
 msgstr "Сменить реселлера для текущей группы администраторов"
 
-#: ../../../tools/misctranslations.php:607
+#: ../../../tools/misctranslations.php:602
 msgid "Change reseller for current user"
 msgstr "Сменить реселлера для текущего пользователя"
 
-#: ../../../tools/misctranslations.php:608
+#: ../../../tools/misctranslations.php:603
 msgid "Change reseller for current group"
 msgstr "Сменить реселлера для текущей группы"
 
-#: ../../../tools/misctranslations.php:609
+#: ../../../tools/misctranslations.php:604
 msgid "Admins of reseller"
 msgstr "Администраторы реселлера"
 
-#: ../../../tools/misctranslations.php:610
+#: ../../../tools/misctranslations.php:605
 msgid "Users of reseller"
 msgstr "Пользователи реселлера"
 
-#: ../../../tools/misctranslations.php:611
+#: ../../../tools/misctranslations.php:606
 msgid "Set/unset expire billing date for user"
 msgstr "Установить/удалить срок действия аккаунта"
 
-#: ../../../tools/misctranslations.php:612
-msgid "Afar"
-msgstr "Афарский"
-
-#: ../../../tools/misctranslations.php:613
-msgid "Abkhazian"
-msgstr "Абхазский"
-
-#: ../../../tools/misctranslations.php:614
-msgid "Afrikaans"
-msgstr "Африкаанс"
-
-#: ../../../tools/misctranslations.php:615
-msgid "Akan"
-msgstr "Акан"
-
-#: ../../../tools/misctranslations.php:616
-msgid "Amharic"
-msgstr "Амхарский"
-
-#: ../../../tools/misctranslations.php:617
-msgid "Arabic"
-msgstr "Арабский"
-
-#: ../../../tools/misctranslations.php:618
-msgid "Assamese"
-msgstr "Ассамский"
-
-#: ../../../tools/misctranslations.php:619
-msgid "Avaric"
-msgstr "Аварский"
-
-#: ../../../tools/misctranslations.php:620
-msgid "Avestan"
-msgstr "Авестийский"
-
-#: ../../../tools/misctranslations.php:621
-msgid "Aymara"
-msgstr "Аймара"
-
-#: ../../../tools/misctranslations.php:622
-msgid "Azerbaijani"
-msgstr "Азербайджанский"
-
-#: ../../../tools/misctranslations.php:623
-msgid "Bashkir"
-msgstr "Башкирский"
-
-#: ../../../tools/misctranslations.php:624
-msgid "Bambara"
-msgstr "Бамбара"
-
-#: ../../../tools/misctranslations.php:625
-msgid "Basque"
-msgstr "Баскский"
-
-#: ../../../tools/misctranslations.php:626
-msgid "Belarusian"
-msgstr "Белорусский"
-
-#: ../../../tools/misctranslations.php:627
-msgid "Bengali"
-msgstr "Бенгальский"
-
-#: ../../../tools/misctranslations.php:628
-msgid "Bislama"
-msgstr "Бислама"
-
-#: ../../../tools/misctranslations.php:629
-msgid "Tibetan"
-msgstr "Тибетский"
-
-#: ../../../tools/misctranslations.php:630
-msgid "Bosnian"
-msgstr "Боснийский"
-
-#: ../../../tools/misctranslations.php:631
-msgid "Breton"
-msgstr "Бретонский"
-
-#: ../../../tools/misctranslations.php:632
-msgid "Bulgarian"
-msgstr "Болгарский"
-
-#: ../../../tools/misctranslations.php:633
-msgid "Catalan"
-msgstr "Каталанский"
-
-#: ../../../tools/misctranslations.php:634
-msgid "Czech"
-msgstr "Чешский"
-
-#: ../../../tools/misctranslations.php:635
-msgid "Chamorro"
-msgstr "Чаморро"
-
-#: ../../../tools/misctranslations.php:636
-msgid "Chechen"
-msgstr "Чеченский"
-
-#: ../../../tools/misctranslations.php:637
-msgid "Church Slavic"
-msgstr "Церковнославянский"
-
-#: ../../../tools/misctranslations.php:638
-msgid "Chuvash"
-msgstr "Чувашский"
-
-#: ../../../tools/misctranslations.php:639
-msgid "Cornish"
-msgstr "Корнский"
-
-#: ../../../tools/misctranslations.php:640
-msgid "Corsican"
-msgstr "Корсиканский"
-
-#: ../../../tools/misctranslations.php:641
-msgid "Welsh"
-msgstr "Валлийский"
-
-#: ../../../tools/misctranslations.php:642
-msgid "Danish"
-msgstr "Датский"
-
-#: ../../../tools/misctranslations.php:644
-msgid "Divehi"
-msgstr "Дивехи"
-
-#: ../../../tools/misctranslations.php:645
-msgid "Dzongkha"
-msgstr "Дзонг-кэ"
-
-#: ../../../tools/misctranslations.php:646
-msgid "Greek"
-msgstr "Греческий"
-
-#: ../../../tools/misctranslations.php:648
-msgid "Esperanto"
-msgstr "Эсперанто"
-
-#: ../../../tools/misctranslations.php:649
-msgid "Estonian"
-msgstr "Эстонский"
-
-#: ../../../tools/misctranslations.php:650
-msgid "Ewe"
-msgstr "Эве"
-
-#: ../../../tools/misctranslations.php:651
-msgid "Faroese"
-msgstr "Фарерский"
-
-#: ../../../tools/misctranslations.php:652
-msgid "Persian"
-msgstr "Персидский"
-
-#: ../../../tools/misctranslations.php:653
-msgid "Fijian"
-msgstr "Фиджи"
-
-#: ../../../tools/misctranslations.php:654
-msgid "Finnish"
-msgstr "Финский"
-
-#: ../../../tools/misctranslations.php:656
-msgid "Western Frisian"
-msgstr "Фризский"
-
-#: ../../../tools/misctranslations.php:657
-msgid "Fulah"
-msgstr "Фулах"
-
-#: ../../../tools/misctranslations.php:658
-msgid "Georgian"
-msgstr "Грузинский"
-
-#: ../../../tools/misctranslations.php:659
-msgid "Gaelic"
-msgstr "Гэльский"
-
-#: ../../../tools/misctranslations.php:660
-msgid "Irish"
-msgstr "Ирландский"
-
-#: ../../../tools/misctranslations.php:661
-msgid "Galician"
-msgstr "Галисийский"
-
-#: ../../../tools/misctranslations.php:662
-msgid "Manx"
-msgstr "Мэнский"
-
-#: ../../../tools/misctranslations.php:663
-msgid "Guarani"
-msgstr "Гуарани"
-
-#: ../../../tools/misctranslations.php:664
-msgid "Gujarati"
-msgstr "Гуджарати"
-
-#: ../../../tools/misctranslations.php:665
-msgid "Hausa"
-msgstr "Хауса"
-
-#: ../../../tools/misctranslations.php:666
-msgid "Hebrew"
-msgstr "Иврит"
-
-#: ../../../tools/misctranslations.php:667
-msgid "Herero"
-msgstr "Гереро"
-
-#: ../../../tools/misctranslations.php:668
-msgid "Hindi"
-msgstr "Хинди"
-
-#: ../../../tools/misctranslations.php:669
-msgid "Hiri Motu"
-msgstr "Хиримоту"
-
-#: ../../../tools/misctranslations.php:670
-msgid "Croatian"
-msgstr "Хорватский"
-
-#: ../../../tools/misctranslations.php:671
-msgid "Hungarian"
-msgstr "Венгерский"
-
-#: ../../../tools/misctranslations.php:672
-msgid "Armenian"
-msgstr "Армянский"
-
-#: ../../../tools/misctranslations.php:673
-msgid "Igbo"
-msgstr "Игбо"
-
-#: ../../../tools/misctranslations.php:674
-msgid "Inuktitut"
-msgstr "Инуктитут"
-
-#: ../../../tools/misctranslations.php:675
-msgid "Interlingue"
-msgstr "Интерлингве"
-
-#: ../../../tools/misctranslations.php:676
-msgid "Interlingua"
-msgstr "Интерлингва"
-
-#: ../../../tools/misctranslations.php:677
-msgid "Indonesian"
-msgstr "Индонезийский"
-
-#: ../../../tools/misctranslations.php:678
-msgid "Inupiaq"
-msgstr "Инупиак"
-
-#: ../../../tools/misctranslations.php:679
-msgid "Icelandic"
-msgstr "Исландский"
-
-#: ../../../tools/misctranslations.php:680
-msgid "Italian"
-msgstr "Итальянский"
-
-#: ../../../tools/misctranslations.php:681
-msgid "Javanese"
-msgstr "Яванский"
-
-#: ../../../tools/misctranslations.php:682
-msgid "Japanese"
-msgstr "Японский"
-
-#: ../../../tools/misctranslations.php:683
-msgid "Kalaallisut"
-msgstr "Гренландский"
-
-#: ../../../tools/misctranslations.php:684
-msgid "Kannada"
-msgstr "Каннада"
-
-#: ../../../tools/misctranslations.php:685
-msgid "Kashmiri"
-msgstr "Кашмири"
-
-#: ../../../tools/misctranslations.php:686
-msgid "Kanuri"
-msgstr "Канури"
-
-#: ../../../tools/misctranslations.php:687
-msgid "Kazakh"
-msgstr "Казахский"
-
-#: ../../../tools/misctranslations.php:688
-msgid "Central Khmer"
-msgstr "Кхмерский"
-
-#: ../../../tools/misctranslations.php:689
-msgid "Kikuyu"
-msgstr "Кикуйю"
-
-#: ../../../tools/misctranslations.php:690
-msgid "Kinyarwanda"
-msgstr "Руанда"
-
-#: ../../../tools/misctranslations.php:691
-msgid "Kirghiz"
-msgstr "Киргизский"
-
-#: ../../../tools/misctranslations.php:692
-msgid "Komi"
-msgstr "Коми"
-
-#: ../../../tools/misctranslations.php:693
-msgid "Kongo"
-msgstr "Конго"
-
-#: ../../../tools/misctranslations.php:694
-msgid "Korean"
-msgstr "Корейский"
-
-#: ../../../tools/misctranslations.php:695
-msgid "Kuanyama"
-msgstr "Киньяма"
-
-#: ../../../tools/misctranslations.php:696
-msgid "Kurdish"
-msgstr "Курдский"
-
-#: ../../../tools/misctranslations.php:697
-msgid "Lao"
-msgstr "Лаосский"
-
-#: ../../../tools/misctranslations.php:698
-msgid "Latin"
-msgstr "Латинский"
-
-#: ../../../tools/misctranslations.php:699
-msgid "Latvian"
-msgstr "Латышский"
-
-#: ../../../tools/misctranslations.php:700
-msgid "Lingala"
-msgstr "Лингала"
-
-#: ../../../tools/misctranslations.php:701
-msgid "Lithuanian"
-msgstr "Литовский"
-
-#: ../../../tools/misctranslations.php:702
-msgid "Luxembourgish"
-msgstr "Люксембургский"
-
-#: ../../../tools/misctranslations.php:703
-msgid "Luba-Katanga"
-msgstr "Луба-катанга"
-
-#: ../../../tools/misctranslations.php:704
-msgid "Ganda"
-msgstr "Ганда"
-
-#: ../../../tools/misctranslations.php:705
-msgid "Macedonian"
-msgstr "Македонский"
-
-#: ../../../tools/misctranslations.php:706
-msgid "Marshallese"
-msgstr "Маршалльский"
-
-#: ../../../tools/misctranslations.php:707
-msgid "Malayalam"
-msgstr "Малаялам"
-
-#: ../../../tools/misctranslations.php:708
-msgid "Maori"
-msgstr "Маори"
-
-#: ../../../tools/misctranslations.php:709
-msgid "Marathi"
-msgstr "Маратхи"
-
-#: ../../../tools/misctranslations.php:710
-msgid "Malagasy"
-msgstr "Малагасийский"
-
-#: ../../../tools/misctranslations.php:711
-msgid "Maltese"
-msgstr "Мальтийский"
-
-#: ../../../tools/misctranslations.php:712
-msgid "Mongolian"
-msgstr "Монгольский"
-
-#: ../../../tools/misctranslations.php:713
-msgid "Malay"
-msgstr "Малайский"
-
-#: ../../../tools/misctranslations.php:714
-msgid "Burmese"
-msgstr "Бирманский"
-
-#: ../../../tools/misctranslations.php:715
-msgid "Nauru"
-msgstr "Науру"
-
-#: ../../../tools/misctranslations.php:716
-msgid "Navajo"
-msgstr "Навахо"
-
-#: ../../../tools/misctranslations.php:717
-msgid "Ndebele"
-msgstr "Ндебеле южный"
-
-#: ../../../tools/misctranslations.php:718
-msgid "North Ndebele"
-msgstr "Ндебеле северный"
-
-#: ../../../tools/misctranslations.php:719
-msgid "Ndonga"
-msgstr "Ндунга"
-
-#: ../../../tools/misctranslations.php:720
-msgid "Nepali"
-msgstr "Непальский"
-
-#: ../../../tools/misctranslations.php:721
-msgid "Dutch"
-msgstr "Нидерландский"
-
-#: ../../../tools/misctranslations.php:722
-msgid "Norwegian"
-msgstr "Норвежский"
-
-#: ../../../tools/misctranslations.php:723
-msgid "Chichewa"
-msgstr "Ньянджа"
-
-#: ../../../tools/misctranslations.php:724
-msgid "Occitan"
-msgstr "Окситанский"
-
-#: ../../../tools/misctranslations.php:725
-msgid "Ojibwa"
-msgstr "Оджибве"
-
-#: ../../../tools/misctranslations.php:726
-msgid "Oriya"
-msgstr "Ория"
-
-#: ../../../tools/misctranslations.php:727
-msgid "Oromo"
-msgstr "Оромо"
-
-#: ../../../tools/misctranslations.php:728
-msgid "Ossetian"
-msgstr "Осетинский"
-
-#: ../../../tools/misctranslations.php:729
-msgid "Panjabi"
-msgstr "Пенджабский"
-
-#: ../../../tools/misctranslations.php:730
-msgid "Pali"
-msgstr "Пали"
-
-#: ../../../tools/misctranslations.php:731
-msgid "Polish"
-msgstr "Польский"
-
-#: ../../../tools/misctranslations.php:733
-msgid "Pushto"
-msgstr "Пушту"
-
-#: ../../../tools/misctranslations.php:734
-msgid "Quechua"
-msgstr "Кечуа"
-
-#: ../../../tools/misctranslations.php:735
-msgid "Romansh"
-msgstr "Ретороманский"
-
-#: ../../../tools/misctranslations.php:736
-msgid "Romanian"
-msgstr "Румынский"
-
-#: ../../../tools/misctranslations.php:737
-msgid "Rundi"
-msgstr "Рунди"
-
-#: ../../../tools/misctranslations.php:739
-msgid "Sango"
-msgstr "Санго"
-
-#: ../../../tools/misctranslations.php:740
-msgid "Sanskrit"
-msgstr "Санскрит"
-
-#: ../../../tools/misctranslations.php:741
-msgid "Sinhala"
-msgstr "Сингальский"
-
-#: ../../../tools/misctranslations.php:742
-msgid "Slovak"
-msgstr "Словацкий"
-
-#: ../../../tools/misctranslations.php:743
-msgid "Slovenian"
-msgstr "Словенский"
-
-#: ../../../tools/misctranslations.php:744
-msgid "Samoan"
-msgstr "Самоанский"
-
-#: ../../../tools/misctranslations.php:745
-msgid "Shona"
-msgstr "Шона"
-
-#: ../../../tools/misctranslations.php:746
-msgid "Sindhi"
-msgstr "Синдхи"
-
-#: ../../../tools/misctranslations.php:747
-msgid "Somali"
-msgstr "Сомали"
-
-#: ../../../tools/misctranslations.php:748
-msgid "Southern Sotho"
-msgstr "Сото южный"
-
-#: ../../../tools/misctranslations.php:750
-msgid "Albanian"
-msgstr "Албанский"
-
-#: ../../../tools/misctranslations.php:751
-msgid "Sardinian"
-msgstr "Сардинский"
-
-#: ../../../tools/misctranslations.php:752
-msgid "Serbian"
-msgstr "Сербский"
-
-#: ../../../tools/misctranslations.php:753
-msgid "Swati"
-msgstr "Свази"
-
-#: ../../../tools/misctranslations.php:754
-msgid "Sundanese"
-msgstr "Сунданский"
-
-#: ../../../tools/misctranslations.php:755
-msgid "Swahili"
-msgstr "Суахили"
-
-#: ../../../tools/misctranslations.php:756
-msgid "Swedish"
-msgstr "Шведский"
-
-#: ../../../tools/misctranslations.php:757
-msgid "Tahitian"
-msgstr "Таитянский"
-
-#: ../../../tools/misctranslations.php:758
-msgid "Tamil"
-msgstr "Тамильский"
-
-#: ../../../tools/misctranslations.php:759
-msgid "Tatar"
-msgstr "Татарский"
-
-#: ../../../tools/misctranslations.php:760
-msgid "Telugu"
-msgstr "Телугу"
-
-#: ../../../tools/misctranslations.php:761
-msgid "Tajik"
-msgstr "Таджикский"
-
-#: ../../../tools/misctranslations.php:762
-msgid "Tagalog"
-msgstr "Тагальский"
-
-#: ../../../tools/misctranslations.php:763
-msgid "Thai"
-msgstr "Тайский"
-
-#: ../../../tools/misctranslations.php:764
-msgid "Tigrinya"
-msgstr "Тигринья"
-
-#: ../../../tools/misctranslations.php:765
-msgid "Tonga"
-msgstr "Тонганский"
-
-#: ../../../tools/misctranslations.php:766
-msgid "Tswana"
-msgstr "Тсвана"
-
-#: ../../../tools/misctranslations.php:767
-msgid "Tsonga"
-msgstr "Тсонга"
-
-#: ../../../tools/misctranslations.php:768
-msgid "Turkmen"
-msgstr "Туркменский"
-
-#: ../../../tools/misctranslations.php:770
-msgid "Twi"
-msgstr "Тви"
-
-#: ../../../tools/misctranslations.php:771
-msgid "Uighur"
-msgstr "Уйгурский"
-
-#: ../../../tools/misctranslations.php:772
-msgid "Ukrainian"
-msgstr "Украинский"
-
-#: ../../../tools/misctranslations.php:773
-msgid "Urdu"
-msgstr "Урду"
-
-#: ../../../tools/misctranslations.php:774
-msgid "Uzbek"
-msgstr "Узбекский"
-
-#: ../../../tools/misctranslations.php:775
-msgid "Venda"
-msgstr "Венда"
-
-#: ../../../tools/misctranslations.php:776
-msgid "Vietnamese"
-msgstr "Вьетнамский"
-
-#: ../../../tools/misctranslations.php:777
-msgid "Volap"
-msgstr "Волапюк"
-
-#: ../../../tools/misctranslations.php:778
-msgid "Wolof"
-msgstr "Волоф"
-
-#: ../../../tools/misctranslations.php:779
-msgid "Xhosa"
-msgstr "Коса"
-
-#: ../../../tools/misctranslations.php:780
-msgid "Yiddish"
-msgstr "Идиш"
-
-#: ../../../tools/misctranslations.php:781
-msgid "Yoruba"
-msgstr "Йоруба"
-
-#: ../../../tools/misctranslations.php:782
-msgid "Zhuang"
-msgstr "Чжуанский"
-
-#: ../../../tools/misctranslations.php:783
-msgid "Chinese"
-msgstr "Китайский"
-
-#: ../../../tools/misctranslations.php:784
-msgid "Zulu"
-msgstr "Зулу"
-
-#: ../../../tools/misctranslations.php:786
-msgid "{{minute}} minutes ago"
-msgstr "{{minute}} минут назад"
-
-#: ../../../tools/misctranslations.php:787
+#: ../../../tools/misctranslations.php:608
 msgid "Add area"
 msgstr "Добавить зону"
 
-#: ../../../tools/misctranslations.php:788
+#: ../../../tools/misctranslations.php:609
 msgid "Edit area"
 msgstr "Редактировать зону"
 
-#: ../../../tools/misctranslations.php:789
+#: ../../../tools/misctranslations.php:610
 msgid "Views started"
 msgstr "Просмотр начат"
 
-#: ../../../tools/misctranslations.php:790
+#: ../../../tools/misctranslations.php:611
 msgid "Views counted"
 msgstr "Просмотр завершен"
 
-#: ../../../tools/misctranslations.php:791
+#: ../../../tools/misctranslations.php:612
 msgid "Necessary to view"
 msgstr "Необходимо просмотреть"
 
-#: ../../../tools/misctranslations.php:792
+#: ../../../tools/misctranslations.php:613
 msgid "Complaints"
 msgstr "Жалобы"
 
-#: ../../../tools/misctranslations.php:793
+#: ../../../tools/misctranslations.php:614
 msgid "Original"
 msgstr "Оригинальное название"
 
-#: ../../../tools/misctranslations.php:794
+#: ../../../tools/misctranslations.php:615
 msgid "title"
 msgstr "Название"
 
-#: ../../../tools/misctranslations.php:795
+#: ../../../tools/misctranslations.php:616
 #, php-format
 msgid ""
 "Dear Subscriber! Your payment term will expire in \"%s\" days. Please refill "
@@ -4007,7 +4070,7 @@ msgstr ""
 "Уважаемый абонент! Срок вашей оплаты истекает через \"%s\" дней. Просим "
 "пополнить лицевой счет во избежание отключения услуг."
 
-#: ../../../tools/misctranslations.php:796
+#: ../../../tools/misctranslations.php:617
 msgid ""
 "Dear Subscriber! Your payment term will expire today. Please refill a "
 "personal account in order to avoid tripping of services."
@@ -4015,117 +4078,113 @@ msgstr ""
 "Уважаемый абонент! Срок вашей оплаты истекает сегодня. Просим пополнить "
 "лицевой счет во избежание отключения услуг."
 
-#: ../../../tools/misctranslations.php:799
+#: ../../../tools/misctranslations.php:619
 msgid "Registration Date"
 msgstr "Дата регистрации"
 
-#: ../../../tools/misctranslations.php:800
+#: ../../../tools/misctranslations.php:620
 msgid "User country"
 msgstr "Страна пользователя"
 
-#: ../../../tools/misctranslations.php:801
+#: ../../../tools/misctranslations.php:621
 msgid "Last start"
 msgstr "Последний старт"
 
-#: ../../../tools/misctranslations.php:802
+#: ../../../tools/misctranslations.php:622
 msgid "Watched TV channel"
 msgstr "Просмотр ТВ канала"
 
-#: ../../../tools/misctranslations.php:803
+#: ../../../tools/misctranslations.php:623
 msgid "Watched movie"
 msgstr "Просмотр видео"
 
-#: ../../../tools/misctranslations.php:804
+#: ../../../tools/misctranslations.php:624
 msgid "Streaming server"
 msgstr "Стриминг сервер"
 
-#: ../../../tools/misctranslations.php:805
+#: ../../../tools/misctranslations.php:625
 msgid "Firmware version"
 msgstr "Версия прошивки"
 
-#: ../../../tools/misctranslations.php:806
+#: ../../../tools/misctranslations.php:626
 msgid "Media type"
 msgstr "Тип медиа"
 
-#: ../../../tools/misctranslations.php:808
+#: ../../../tools/misctranslations.php:628
 msgid "Auto-complete for watching-tv filter"
 msgstr "Авто-дополнение для фильтра Просмотр ТВ канала"
 
-#: ../../../tools/misctranslations.php:809
+#: ../../../tools/misctranslations.php:629
 msgid "Auto-complete for watching-movie filter"
 msgstr "Авто-дополнение для фильтра Просмотр видео"
 
-#: ../../../tools/misctranslations.php:810
+#: ../../../tools/misctranslations.php:630
 msgid "Auto-complete for stbfirmware-version filter"
 msgstr "Версия прошивки"
 
-#: ../../../tools/misctranslations.php:812
-#: ../../../tools/misctranslations.php:820
+#: ../../../tools/misctranslations.php:632
+#: ../../../tools/misctranslations.php:640
 msgid "List of templates of messages"
 msgstr "Список шаблонов сообщений"
 
-#: ../../../tools/misctranslations.php:813
+#: ../../../tools/misctranslations.php:633
 msgid "List of filters"
 msgstr "Список фильтров"
 
-#: ../../../tools/misctranslations.php:814
+#: ../../../tools/misctranslations.php:634
 msgid "List of filters by page + filters"
 msgstr "Список фильтров постранично + фильтры"
 
-#: ../../../tools/misctranslations.php:815
+#: ../../../tools/misctranslations.php:635
 msgid "Get data for filter construct"
 msgstr "Получение данных для построения фильтра"
 
-#: ../../../tools/misctranslations.php:816
+#: ../../../tools/misctranslations.php:636
 msgid "Save filters set"
 msgstr "Сохранить набор фильтров"
 
-#: ../../../tools/misctranslations.php:817
+#: ../../../tools/misctranslations.php:637
 msgid "Remove filters set"
 msgstr "Удалить набор фильтров"
 
-#: ../../../tools/misctranslations.php:818
+#: ../../../tools/misctranslations.php:638
 msgid "Toggle favorite status for current filter"
 msgstr "Переключение статуса избранного для текущего фильтра"
 
-#: ../../../tools/misctranslations.php:821
+#: ../../../tools/misctranslations.php:641
 msgid "List of templates of messages by page + filters"
 msgstr "Список шаблонов сообщений постранично + фильтры"
 
-#: ../../../tools/misctranslations.php:822
+#: ../../../tools/misctranslations.php:642
 msgid "Adding and editing the templates of messages"
 msgstr "Добавление и редактирование шаблонов сообщений"
 
-#: ../../../tools/misctranslations.php:823
+#: ../../../tools/misctranslations.php:643
 msgid "Removing the templates of messages"
 msgstr "Удаление шаблона сообщения"
 
-#: ../../../tools/misctranslations.php:824
+#: ../../../tools/misctranslations.php:644
 msgid "Send msg with video"
 msgstr "Отправика сообщения со ссылкой на видео"
 
-#: ../../../tools/misctranslations.php:825
+#: ../../../tools/misctranslations.php:645
 msgid "Run application"
 msgstr "Запуск приложения"
 
-#: ../../../tools/misctranslations.php:826
-msgid "Requires at least one link of broadcast"
-msgstr "Требуется по крайней мере одна ссылка вещания"
-
-#: ../../../tools/misctranslations.php:827
+#: ../../../tools/misctranslations.php:646
 msgid "Application catalog. List of applications"
 msgstr "Каталог приложений. Список приложений"
 
-#: ../../../tools/misctranslations.php:828
+#: ../../../tools/misctranslations.php:647
 msgid "Application catalog. List of applications  by page + filters"
 msgstr "Каталог приложений. Список приложений постранично + фильтры"
 
-#: ../../../tools/misctranslations.php:829
+#: ../../../tools/misctranslations.php:648
 msgid ""
 "Application catalog. Terms of use of  the catalog of applications Stalker"
 msgstr "Каталог приложений.  Условия использования каталога приложений Stalker"
 
-#: ../../../tools/misctranslations.php:830
+#: ../../../tools/misctranslations.php:649
 msgid ""
 "Application catalog. Application info and list of available application "
 "versions"
@@ -4133,335 +4192,323 @@ msgstr ""
 "Каталог приложений. Информация о приложений и список доступных версий "
 "приложения"
 
-#: ../../../tools/misctranslations.php:831
+#: ../../../tools/misctranslations.php:650
 msgid "Application catalog. Getting application info from repository"
 msgstr "Каталог приложений. Получение информации из хранилища приложений"
 
-#: ../../../tools/misctranslations.php:832
+#: ../../../tools/misctranslations.php:651
 msgid "Application catalog. Add new application by URL of the repository"
 msgstr "Каталог приложений. Добавление нового приложения по URL репозитория"
 
-#: ../../../tools/misctranslations.php:833
+#: ../../../tools/misctranslations.php:652
 msgid "Application catalog. List of application versions"
 msgstr "Каталог приложений. Список версий приложения"
 
-#: ../../../tools/misctranslations.php:834
+#: ../../../tools/misctranslations.php:653
 msgid "Application Catalog. Editing the options of application"
 msgstr "Каталог приложений. Редактирование опции приложения"
 
-#: ../../../tools/misctranslations.php:835
+#: ../../../tools/misctranslations.php:654
 msgid "Application catalog. Install available application version"
 msgstr "Каталог приложений. Установка доступной версии приложения"
 
-#: ../../../tools/misctranslations.php:836
+#: ../../../tools/misctranslations.php:655
 msgid "Application catalog. Delete installed application version"
 msgstr "Каталог приложений. Удаление установленной версии приложения"
 
-#: ../../../tools/misctranslations.php:837
+#: ../../../tools/misctranslations.php:656
 msgid "Application catalog. Enable and disable application"
 msgstr "Каталог приложений. Включение и отключение приложения"
 
-#: ../../../tools/misctranslations.php:838
+#: ../../../tools/misctranslations.php:657
 msgid "Application catalog. Delete application"
 msgstr "Каталог приложений. Удаление приложения"
 
-#: ../../../tools/misctranslations.php:840
+#: ../../../tools/misctranslations.php:659
 msgid "once"
 msgstr "разовое"
 
-#: ../../../tools/misctranslations.php:841
+#: ../../../tools/misctranslations.php:660
 msgid "every"
 msgstr "каждый"
 
-#: ../../../tools/misctranslations.php:842
+#: ../../../tools/misctranslations.php:661
 msgid "and"
 msgstr "и"
 
-#: ../../../tools/misctranslations.php:843
+#: ../../../tools/misctranslations.php:662
 msgid "minute"
 msgstr "минут"
 
-#: ../../../tools/misctranslations.php:844
+#: ../../../tools/misctranslations.php:663
 msgid "hour"
 msgstr "часов"
 
-#: ../../../tools/misctranslations.php:845
+#: ../../../tools/misctranslations.php:664
 msgid "day"
 msgstr "День"
 
-#: ../../../tools/misctranslations.php:846
+#: ../../../tools/misctranslations.php:665
 msgid "weekday"
 msgstr "День недели"
 
-#: ../../../tools/misctranslations.php:847
+#: ../../../tools/misctranslations.php:666
 msgid "Week"
 msgstr "Неделя"
 
-#: ../../../tools/misctranslations.php:848
+#: ../../../tools/misctranslations.php:667
 msgid "month"
 msgstr "Месяц"
 
-#: ../../../tools/misctranslations.php:849
+#: ../../../tools/misctranslations.php:668
 msgid "year"
 msgstr "Год"
 
-#: ../../../tools/misctranslations.php:850
+#: ../../../tools/misctranslations.php:669
 msgid "first"
 msgstr "Первый"
 
-#: ../../../tools/misctranslations.php:851
+#: ../../../tools/misctranslations.php:670
 msgid "last"
 msgstr "Последний"
 
-#: ../../../tools/misctranslations.php:852
+#: ../../../tools/misctranslations.php:671
 msgid "next"
 msgstr "Следующий"
 
-#: ../../../tools/misctranslations.php:853
+#: ../../../tools/misctranslations.php:672
 msgid "previous"
 msgstr "Предыдущий"
 
-#: ../../../tools/misctranslations.php:854
+#: ../../../tools/misctranslations.php:673
 msgid "of week"
 msgstr "недели"
 
-#: ../../../tools/misctranslations.php:855
+#: ../../../tools/misctranslations.php:674
 msgid "of month"
 msgstr "месяца"
 
-#: ../../../tools/misctranslations.php:856
+#: ../../../tools/misctranslations.php:675
 msgid "of year"
 msgstr "года"
 
-#: ../../../tools/misctranslations.php:857
+#: ../../../tools/misctranslations.php:676
 msgid "at"
 msgstr "в"
 
-#: ../../../tools/misctranslations.php:858
+#: ../../../tools/misctranslations.php:677
 msgid "from"
 msgstr "с"
 
-#: ../../../tools/misctranslations.php:859
+#: ../../../tools/misctranslations.php:678
 msgid "to"
 msgstr "по"
 
-#: ../../../tools/misctranslations.php:862
-#: ../../../tools/misctranslations.php:869
+#: ../../../tools/misctranslations.php:681
+#: ../../../tools/misctranslations.php:688
 msgid "Sunday"
 msgstr "Воскресенье"
 
-#: ../../../tools/misctranslations.php:863
+#: ../../../tools/misctranslations.php:682
 msgid "Monday"
 msgstr "Понедельник"
 
-#: ../../../tools/misctranslations.php:864
+#: ../../../tools/misctranslations.php:683
 msgid "Tuesday"
 msgstr "Вторник"
 
-#: ../../../tools/misctranslations.php:865
+#: ../../../tools/misctranslations.php:684
 msgid "Wednesday"
 msgstr "Среда"
 
-#: ../../../tools/misctranslations.php:866
+#: ../../../tools/misctranslations.php:685
 msgid "Thursday"
 msgstr "Черверг"
 
-#: ../../../tools/misctranslations.php:867
+#: ../../../tools/misctranslations.php:686
 msgid "Friday"
 msgstr "Пятница"
 
-#: ../../../tools/misctranslations.php:868
+#: ../../../tools/misctranslations.php:687
 msgid "Saturday"
 msgstr "Суббота"
 
-#: ../../../tools/misctranslations.php:871
-#: ../../../tools/misctranslations.php:883
+#: ../../../tools/misctranslations.php:690
+#: ../../../tools/misctranslations.php:702
 msgid "December_c"
 msgstr "Декабре"
 
-#: ../../../tools/misctranslations.php:872
+#: ../../../tools/misctranslations.php:691
 msgid "January_c"
 msgstr "Январе"
 
-#: ../../../tools/misctranslations.php:873
+#: ../../../tools/misctranslations.php:692
 msgid "February_c"
 msgstr "Феврале"
 
-#: ../../../tools/misctranslations.php:874
+#: ../../../tools/misctranslations.php:693
 msgid "March_c"
 msgstr "Марте"
 
-#: ../../../tools/misctranslations.php:875
+#: ../../../tools/misctranslations.php:694
 msgid "April_c"
 msgstr "Апреле"
 
-#: ../../../tools/misctranslations.php:876
+#: ../../../tools/misctranslations.php:695
 msgid "May_c"
 msgstr "Май"
 
-#: ../../../tools/misctranslations.php:877
+#: ../../../tools/misctranslations.php:696
 msgid "June_c"
 msgstr "Июне"
 
-#: ../../../tools/misctranslations.php:878
+#: ../../../tools/misctranslations.php:697
 msgid "July_c"
 msgstr "Июле"
 
-#: ../../../tools/misctranslations.php:879
+#: ../../../tools/misctranslations.php:698
 msgid "August_c"
 msgstr "Августе"
 
-#: ../../../tools/misctranslations.php:880
+#: ../../../tools/misctranslations.php:699
 msgid "September_c"
 msgstr "Сентябре"
 
-#: ../../../tools/misctranslations.php:881
+#: ../../../tools/misctranslations.php:700
 msgid "October_c"
 msgstr "Октябре"
 
-#: ../../../tools/misctranslations.php:882
+#: ../../../tools/misctranslations.php:701
 msgid "November_c"
 msgstr "Ноябре"
 
-#: ../../../tools/misctranslations.php:885
+#: ../../../tools/misctranslations.php:704
 msgid "List of scheduled events"
 msgstr "Список запланированных событий"
 
-#: ../../../tools/misctranslations.php:886
+#: ../../../tools/misctranslations.php:705
 msgid "List of scheduled events by page + filters"
 msgstr "Список запланированных событий постранично + фильтры"
 
-#: ../../../tools/misctranslations.php:887
+#: ../../../tools/misctranslations.php:706
 msgid "Adding and editing the scheduled events"
 msgstr "Добавление и редактирование запланированного события"
 
-#: ../../../tools/misctranslations.php:888
+#: ../../../tools/misctranslations.php:707
 msgid "Removing the scheduled events"
 msgstr "Удаление запланированного события"
 
-#: ../../../tools/misctranslations.php:889
+#: ../../../tools/misctranslations.php:708
 msgid "Stopping or starting the scheduled events"
 msgstr "Остановка или запуск запланированных событий"
 
-#: ../../../tools/misctranslations.php:891
+#: ../../../tools/misctranslations.php:710
 msgid "added"
 msgstr "Добавлено"
 
-#: ../../../tools/misctranslations.php:892
+#: ../../../tools/misctranslations.php:711
 msgid "edited"
 msgstr "Изменено"
 
-#: ../../../tools/misctranslations.php:893
+#: ../../../tools/misctranslations.php:712
 msgid "This value is not valid."
 msgstr "Недопустимое значение."
 
-#: ../../../tools/misctranslations.php:894
+#: ../../../tools/misctranslations.php:713
 msgid "task ended"
 msgstr "Задание завершено"
 
-#: ../../../tools/misctranslations.php:895
+#: ../../../tools/misctranslations.php:714
 msgid "edit"
 msgstr "Изменено"
 
-#: ../../../tools/misctranslations.php:896
+#: ../../../tools/misctranslations.php:715
 msgid "Advert"
 msgstr "Реклама"
 
-#: ../../../tools/misctranslations.php:897
+#: ../../../tools/misctranslations.php:716
 msgid "permanent"
 msgstr "Постоянный"
 
-#: ../../../tools/misctranslations.php:898
+#: ../../../tools/misctranslations.php:717
 msgid "once-only"
 msgstr "Разовый"
 
-#: ../../../tools/misctranslations.php:899
+#: ../../../tools/misctranslations.php:718
 msgid "ID is available"
 msgstr "ID доступнен"
 
-#: ../../../tools/misctranslations.php:900
+#: ../../../tools/misctranslations.php:719
 msgid "A cache has been reset"
 msgstr "Кэш был сброшен"
 
-#: ../../../tools/misctranslations.php:901
+#: ../../../tools/misctranslations.php:720
 msgid "for all servers"
 msgstr "для всех серверов"
 
-#: ../../../tools/misctranslations.php:903
+#: ../../../tools/misctranslations.php:722
 msgid "List of tv-channels by page + filters"
 msgstr "Список ТВ каналов постранично + фильтры"
 
-#: ../../../tools/misctranslations.php:904
+#: ../../../tools/misctranslations.php:723
 msgid "Schedule switch on of movie by page + filters"
 msgstr "Расписание включения видео постранично + фильтры"
 
-#: ../../../tools/misctranslations.php:905
+#: ../../../tools/misctranslations.php:724
 msgid "List of advertising blocks by page + filters"
 msgstr "Список рекламных блоков постранично + фильтры"
 
-#: ../../../tools/misctranslations.php:906
+#: ../../../tools/misctranslations.php:725
 msgid "List of STBs of video-moderators by page + filters"
 msgstr "Список приставок модераторов постранично + фильтры"
 
-#: ../../../tools/misctranslations.php:907
+#: ../../../tools/misctranslations.php:726
 msgid "List of STB by page + filters"
 msgstr "Список приставок постранично + фильтры"
 
-#: ../../../tools/misctranslations.php:908
+#: ../../../tools/misctranslations.php:727
 msgid "Application version"
 msgstr "Версия приложения"
 
-#: ../../../tools/misctranslations.php:910
+#: ../../../tools/misctranslations.php:729
 msgid "Import tv-channels from m3u-file"
 msgstr "Импорт телеканалов из m3u-файла"
 
-#: ../../../tools/misctranslations.php:911
+#: ../../../tools/misctranslations.php:730
 msgid "Parse m3u-file"
 msgstr "Разбор m3u-файла"
 
-#: ../../../tools/misctranslations.php:912
+#: ../../../tools/misctranslations.php:731
 msgid "Save one m3u-item as channel"
 msgstr "Сохранить один m3u-элемент как канал"
 
-#: ../../../tools/misctranslations.php:913
-msgid "Field \"Channel name\" cannot be empty"
-msgstr "Поле \"Название канала\" не может быть пустым"
-
-#: ../../../tools/misctranslations.php:914
-msgid "Field \"Channel number\" cannot be empty"
-msgstr "Поле \"Номер канала\" не может быть пустым"
-
-#: ../../../tools/misctranslations.php:915
-msgid "Number \"%number%\" is already in use"
-msgstr "Номер \"%number%\" уже используется"
-
-#: ../../../tools/misctranslations.php:916
-msgid "Name \"%name%\" already exists"
-msgstr "Имя \"%name%\" уже существует"
-
-#: ../../../tools/misctranslations.php:917
+#: ../../../tools/misctranslations.php:732
 msgid "Number is unique"
 msgstr "Номер уникален"
 
-#: ../../../tools/misctranslations.php:918
+#: ../../../tools/misctranslations.php:733
 msgid "Number is not unique"
 msgstr "Номер не уникален"
 
-#: ../../../tools/misctranslations.php:919
+#: ../../../tools/misctranslations.php:734
 msgid "Admins in group"
 msgstr "Администраторов в группе"
 
-#: ../../../tools/misctranslations.php:920
+#: ../../../tools/misctranslations.php:735
 msgid "Change group for all admins from current group"
 msgstr "Сменить группу для всех администраторов из текущей группы"
 
-#: ../../../tools/misctranslations.php:921
+#: ../../../tools/misctranslations.php:736
 msgid "Length, min"
 msgstr "Длительность, мин"
 
-#: ../../../tools/misctranslations.php:922
+#: ../../../tools/misctranslations.php:737
 msgid "Resetting password of user access control"
 msgstr "Сброс пароля контроля доступа пользователя"
+
+#: ../../../tools/misctranslations.php:738
+msgid "Check EPG-prefix for uniqueness"
+msgstr "Проверка EPG-префикса на уникальность"
 
 #: ../../../adm/js/js_translate.php:38
 msgid "Wait"
@@ -5444,10 +5491,6 @@ msgstr "Необходимый"
 msgid "Update type"
 msgstr "Вариант обновления"
 
-#: ../../../administrator/setting_common.php:191
-msgid "Prefix"
-msgstr "Префикс"
-
 #: ../../../administrator/setting_common.php:237
 msgid "Do you really want to delete this item?"
 msgstr "Вы действительно хотите удалить этот объект?"
@@ -6170,14 +6213,6 @@ msgstr "Жалобы на<br>видео/аудио/epg"
 #: ../../../administrator/add_karaoke.php:506
 msgid "Do you really want to reset claims counter?"
 msgstr "Вы действительно хотите сбросить счетчик жалоб?"
-
-#: ../../../administrator/add_itv.php:1399
-msgid "more than an hour ago"
-msgstr "больше часа назад"
-
-#: ../../../administrator/add_itv.php:1403
-msgid "less than a minute ago"
-msgstr "меньше минуты назад"
 
 #: ../../../administrator/add_itv.php:1406
 msgid "minutes ago"
@@ -8998,9 +9033,6 @@ msgstr "Введите имя либо номер канала"
 msgid "Favorite"
 msgstr "Избранное ТВ"
 
-msgid "Field \"Group name\" is required"
-msgstr "Поле \"Имя группы \" обязательно"
-
 msgid "File unavailable and cannot be published"
 msgstr "Файл недоступен и не может быть опубликован"
 
@@ -9688,9 +9720,6 @@ msgstr ""
 msgid "PVR to the USB-driver"
 msgstr "PVR на USB-носитель"
 
-msgid "Password mismatch"
-msgstr "Пароли не совпадают"
-
 msgid "Pay attention."
 msgstr "Обратите внимание."
 
@@ -9816,9 +9845,6 @@ msgstr "Временные HTTP-ссылки"
 msgid "Text"
 msgstr "Текст"
 
-msgid "The fields \"Login\" and \"Group\" are required"
-msgstr "Поля \"Логин\" и \"Группа\" обязательны"
-
 msgid "Time correction for EPG"
 msgstr "Коррекция времени для EPG"
 
@@ -9858,6 +9884,9 @@ msgid ""
 msgstr ""
 "Возможность пользователю осуществлять запись выбраных программ/передач на "
 "USB-носитель."
+
+msgid "Valid protocols are http://, rtp:// and udp://."
+msgstr "Допустимые протоколы http://, rtp:// и udp://."
 
 msgid "Video quality"
 msgstr "Качество видео"
@@ -10270,9 +10299,6 @@ msgstr "Добавить композицию"
 msgid "Adding"
 msgstr "Добавление"
 
-msgid "All fields is required"
-msgstr "Ошибка: необходимо заполнить все поля"
-
 msgid "Auto-update within 59 seconds"
 msgstr "Автообновление через 59 секунд"
 
@@ -10458,6 +10484,9 @@ msgstr "Добавить EPG"
 
 msgid "Add language"
 msgstr "Добавить язык"
+
+msgid "All fields is required"
+msgstr "Ошибка: необходимо заполнить все поля"
 
 msgid "Default area"
 msgstr "Зона по умолчанию"
@@ -10667,6 +10696,18 @@ msgstr "Внешний вид"
 #: ../../../../admin/json_menu/top_menu.json:3
 msgid "Administrator"
 msgstr "Администратор"
+
+#~ msgid "Failed. "
+#~ msgstr "Ошибка"
+
+#~ msgid "Field \"Group name\" is required"
+#~ msgstr "Поле \"Имя группы \" обязательно"
+
+#~ msgid "Password mismatch"
+#~ msgstr "Пароли не совпадают"
+
+#~ msgid "The fields \"Login\" and \"Group\" are required"
+#~ msgstr "Поля \"Логин\" и \"Группа\" обязательны"
 
 #~ msgid "Name is busy or has been used old group name"
 #~ msgstr "Имя занято или было использовано старое имя группы"
