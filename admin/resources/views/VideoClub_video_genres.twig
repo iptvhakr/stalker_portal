@@ -44,6 +44,7 @@
                 if (typeof (json.data) == 'object') {
                     for (var i in json.data) {
                         var id = json.data[i].id;
+                        var movie_in_genre = parseInt(json.data[i].movie_in_genre, 10);
                         json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
                                                         <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
@@ -55,7 +56,7 @@
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-video-genres' data-genresid='" + id + "'>\n\
+                                                                <a class='main_ajax' " + (movie_in_genre ? "disabled='disabled'" : "") + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-video-genres' data-genresid='" + id + "'>\n\
                                                                     <span>{{ 'Delete'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
@@ -92,8 +93,8 @@
                 "ordering": false,
                 "aoColumnDefs": [
                     { className: "action-menu", "targets": [ -1 ]},
-                    { "sortable": false, "targets": [-1, -2]},
-                    { "searchable": false, "targets": [-1, -2]}
+                    { "sortable": false, "targets": [-1]},
+                    { "searchable": false, "targets": [-1]}
                 ]
             }).prev('.dataTables_processing').hide('');
             $('#datatable-1').DataTable().ajax.reload();
@@ -105,7 +106,11 @@
                 $(document).on('click', "a.main_ajax", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
-                    ajaxPostSend($(this).attr('href'), $(this).data(), false);
+                    if ($(this).attr('disabled') && $(this).attr('href').search('remove-video-genres') != -1) {
+                        JSErrorModalBox({msg: "{{ 'You can\'t delete genre with movies'|trans }}"});
+                    } else {
+                        ajaxPostSend($(this).attr('href'), $(this).data(), false);
+                    }
                     $(this).closest('div.open').removeClass('open');
                     return false;
                 });

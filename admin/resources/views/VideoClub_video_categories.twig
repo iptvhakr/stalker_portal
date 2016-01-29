@@ -41,6 +41,8 @@
                     for (var i in json.data) {
                         var id = json.data[i].id;
                         var num = json.data[i].num;
+                        var genre_in_category = parseInt(json.data[i].genre_in_category, 10);
+                        var movie_in_category = parseInt(json.data[i].movie_in_category, 10);
                         json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
                                                         <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
@@ -52,7 +54,7 @@
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-video-categories' data-categoriesid='" + id + "' data-curr_pos='" + num + "'>\n\
+                                                                <a class='main_ajax' " + (genre_in_category || movie_in_category ? "disabled='disabled'" : "") + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-video-categories' data-categoriesid='" + id + "' data-curr_pos='" + num + "'>\n\
                                                                     <span>{{ 'Delete'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
@@ -86,8 +88,8 @@
                 "ordering": false,
                 "aoColumnDefs": [
                     { className: "action-menu", "targets": [ -1 ]},
-                    { "sortable": false, "targets": [-1, -2]},
-                    { "searchable": false, "targets": [-1, -2]}
+                    { "sortable": false, "targets": [-1]},
+                    { "searchable": false, "targets": [-1]}
                 ]
             }).rowReordering({
                 iIndexColumn: 0,
@@ -137,7 +139,11 @@
                 $(document).on('click', "a.main_ajax", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
-                    ajaxPostSend($(this).attr('href'), $(this).data(), false);
+                    if ($(this).attr('disabled') && $(this).attr('href').search('remove-video-categories') != -1) {
+                        JSErrorModalBox({msg: "{{ 'You can\'t delete category with movies or genres'|trans }}"});
+                    } else {
+                        ajaxPostSend($(this).attr('href'), $(this).data(), false);
+                    }
                     $(this).closest('div.open').removeClass('open');
                     return false;
                 });
