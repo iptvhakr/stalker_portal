@@ -77,13 +77,13 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         }else if (!empty($_COOKIE['mac']) && empty($_COOKIE['mac_emu'])){
             $this->mac = @htmlspecialchars(trim(urldecode($_COOKIE['mac'])));
 
-            if (!empty($_GET['action']) && $_GET['action'] != 'handshake' && $_GET['action'] != 'get_profile' && $_GET['action'] != 'get_localization' && $_GET['action'] != 'do_auth' && !$this->isValidAccessToken($this->access_token)){
+            if (!empty($_REQUEST['action']) && $_REQUEST['action'] != 'handshake' && $_REQUEST['action'] != 'get_profile' && $_REQUEST['action'] != 'get_localization' && $_REQUEST['action'] != 'do_auth' && !$this->isValidAccessToken($this->access_token)){
                 error_log("STB authorization failed. MAC: ".$this->mac.", token: ".$this->access_token);
                 echo 'Authorization failed.';
                 exit;
             }
 
-        }else if (!empty($_SERVER['TARGET']) && ($_SERVER['TARGET'] == 'API' || $_SERVER['TARGET'] == 'ADM') || !empty($_GET['type']) && $_GET['type'] == 'stb'){
+        }else if (!empty($_SERVER['TARGET']) && ($_SERVER['TARGET'] == 'API' || $_SERVER['TARGET'] == 'ADM') || !empty($_REQUEST['type']) && $_REQUEST['type'] == 'stb'){
 
         }else{
             $this->mac = '';
@@ -115,10 +115,16 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             return;
         }
 
+        if ((empty($this->id) || $this->params['status'] == 1) && !empty($_REQUEST['action']) && $_REQUEST['action'] != 'handshake' && $_REQUEST['action'] != 'get_profile' && $_REQUEST['action'] != 'get_localization' && $_REQUEST['action'] != 'do_auth'){
+            error_log("Access denied to ".$_REQUEST['type'].":".$_REQUEST['action']." for MAC: ".$this->mac);
+            echo 'Access denied.';
+            exit;
+        }
+
         if (empty($this->id)){
             $this->initLocale($this->stb_lang);
 
-            if (!empty($_GET['action']) && $_GET['action'] != 'handshake' && $_GET['action'] != 'get_profile' && $_GET['action'] != 'get_localization' && $_GET['action'] != 'do_auth' && $_GET['action'] != 'get_events'){
+            if (!empty($_REQUEST['action']) && $_REQUEST['action'] != 'handshake' && $_REQUEST['action'] != 'get_profile' && $_REQUEST['action'] != 'get_localization' && $_REQUEST['action'] != 'do_auth' && $_REQUEST['action'] != 'get_events'){
                 error_log("STB not found in the database, authorization failed. MAC: ".$this->mac.", token: ".$this->access_token);
                 echo 'Authorization failed.';
                 exit;
