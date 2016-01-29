@@ -281,7 +281,7 @@
                             }
                         });
                         if (lengthObj < form_fields.length) {
-                            alert('{{ 'Fill in the required fields'|trans }}');
+                            JSErrorModalBox({msg: '{{ 'Fill in the required fields'|trans }}'});
                             return false;
                         }
                         showModalBox();
@@ -392,10 +392,13 @@
 
         var resetAddOption = function(){
             if ( $('#s2_lang_code option').length > 5) {
-                alert("{{ 'Max count of languages 5'|trans }}");
-                var lastOption = $('#s2_lang_code option:last-of-type');
-                $('#s2_lang_code_available').append(lastOption);
-                $('#s2_lang_code_available').sortBoxes();
+                JSErrorModalBox({msg: "{{ 'Max count of languages 5'|trans }}"});
+                var lastOption;
+                while($('#s2_lang_code option').length > 5){
+                    lastOption = $('#s2_lang_code option:last-of-type');
+                    $('#s2_lang_code_available').append(lastOption);
+                    $('#s2_lang_code_available').sortBoxes();
+                }
             }
         };
 
