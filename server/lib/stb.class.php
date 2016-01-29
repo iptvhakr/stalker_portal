@@ -565,8 +565,17 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                 );
 
             }else{
-                $this->initProfile(null, null, $device_id, $device_id2);
-                $this->params['stb_type'] = $model;
+
+                if (!Config::getSafe('auto_add_stb', true)){
+                    return array(
+                        'status'    => 1,
+                        'block_msg' => str_replace('.', '!', _('Please contact your provider<br>to register this device.'))
+                    );
+                }else{
+                    $this->initProfile(null, null, $device_id, $device_id2);
+                    $this->params['stb_type'] = $model;
+                }
+
             }
         }else{
             Mysql::getInstance()->update('users', array('access_token' => $this->access_token), array('id' => $this->id));
