@@ -80,7 +80,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">{{ 'Volume'|trans }}</label>
+                            <label class="col-sm-2 control-label">{{ 'Volume correction'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-3">
                                     {{ form_widget(app['form'].volume_correction, {'attr': {'class': 'populate placeholder'} }) }}
@@ -1203,6 +1203,17 @@
                         linkTypeFields.val('off').prop('checked', false).closest(".form-group").hide();
                     }
 
+                    if (!$("#add_channel_load_balancing input[type='checkbox'][name*='use_load_balancing']").is(':checked')) {
+                        $("#s2_stream_server option").prop('selected', false).removeAttr('selected');
+                        $("#s2_stream_server").closest(".form-group").hide();
+                        $("#add_channel_load_balancing input[type='checkbox'][name*='enable_balancer_monitoring']").prop('checked', false).closest(".form-group").hide();
+                    } else {
+                        $("#s2_stream_server").select2('destroy');
+                        $('#s2_stream_server').select2({minimumResultsForSearch: -1});
+                        $("#s2_stream_server").closest(".form-group").show();
+                        $("#add_channel_load_balancing input[type='checkbox'][name*='enable_balancer_monitoring']").closest(".form-group").show();
+                    }
+
                     $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Edit streaming link'|trans }}');
                     $("#modalbox_ad").show();
                     $(this).closest('.open').removeClass('open');
@@ -1256,6 +1267,19 @@
                     var errorDiv = $(this).find('.bg-danger, .form-error');
                     if (errorDiv.length && errorDiv.is(":visible") && $.trim(errorDiv.text()) != '') {
                         $(this).closest('div.box').find('a.collapse-link').trigger('click');
+                    }
+                });
+
+                $("#add_channel_load_balancing").on("change", "input[type='checkbox'][name*='use_load_balancing']", function(e){
+                    if (!$(this).is(':checked')) {
+                        $("#s2_stream_server option").prop('selected', false).removeAttr('selected');
+                        $("#s2_stream_server").closest(".form-group").hide();
+                        $("#add_channel_load_balancing input[type='checkbox'][name*='enable_balancer_monitoring']").prop('checked', false).closest(".form-group").hide();
+                    } else {
+                        $("#s2_stream_server").select2('destroy');
+                        $('#s2_stream_server').select2({minimumResultsForSearch: -1});
+                        $("#s2_stream_server").closest(".form-group").show();
+                        $("#add_channel_load_balancing input[type='checkbox'][name*='enable_balancer_monitoring']").closest(".form-group").show();
                     }
                 });
 

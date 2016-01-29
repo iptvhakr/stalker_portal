@@ -1290,7 +1290,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                                 new Assert\Range(array('min' => -20, 'max' => 20)),
                                 new Assert\NotBlank()),
                             'required' => TRUE,
-                            'data' => (empty($data['volume_correction']) ? 0: $data['volume_correction'])
+                            'data' => (empty($data['volume_correction']) ? '0': $data['volume_correction'])
                         )
                     )
                 ->add('logo', 'hidden')
@@ -1319,7 +1319,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                 ->add('allow_pvr', 'checkbox', array('required' => false))
                 ->add('xmltv_id', 'text', array('required' => false))
                 ->add('correct_time', 'text', array(
-                    'constraints' => new Assert\Range(array('min' => -720, 'max' => 720))
+                    'constraints' => new Assert\Range(array('min' => -720, 'max' => 840))
                     ))
                 ->add('censored', 'checkbox', array('required' => false))
                 ->add('base_ch', 'checkbox', array('required' => false))
@@ -1361,9 +1361,9 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             if (is_array($row)) {
                 $this->dataPrepare($data[$key]);
 //                $data[$key] = $row;
-            } elseif ($row == 'on') {
+            } elseif ($row === 'on') {
                 $data[$key] = 1;
-            } elseif ($row == 'off') {
+            } elseif ($row === 'off') {
                 $data[$key] = 0;
             }
         }
