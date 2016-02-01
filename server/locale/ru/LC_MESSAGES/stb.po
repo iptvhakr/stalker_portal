@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-29 18:17+0300\n"
-"PO-Revision-Date: 2016-01-29 18:17+0300\n"
+"POT-Creation-Date: 2016-02-01 15:08+0300\n"
+"PO-Revision-Date: 2016-02-01 15:09+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -242,9 +242,9 @@ msgstr "Ошибка"
 #: ../../../../admin/src/Controller/AudioClubController.php:906
 #: ../../../../admin/src/Controller/AudioClubController.php:1030
 #: ../../../../admin/src/Controller/AudioClubController.php:1080
-#: ../../../../admin/src/Controller/AudioClubController.php:1124
-#: ../../../../admin/src/Controller/AudioClubController.php:1142
-#: ../../../../admin/src/Controller/AudioClubController.php:1160
+#: ../../../../admin/src/Controller/AudioClubController.php:1128
+#: ../../../../admin/src/Controller/AudioClubController.php:1146
+#: ../../../../admin/src/Controller/AudioClubController.php:1164
 #: ../../../../admin/src/Controller/StatisticsController.php:1043
 #: ../../../../admin/src/Controller/StoragesController.php:166
 #: ../../../../admin/src/Controller/StoragesController.php:198
@@ -455,7 +455,7 @@ msgstr "Логотип"
 #: ../../../../admin/src/Controller/VideoClubController.php:2324
 #: ../../../../admin/src/Controller/VideoClubController.php:2334
 #: ../../../../admin/src/Controller/VideoClubController.php:2392
-#: ../../../../admin/src/Controller/AudioClubController.php:1387
+#: ../../../../admin/src/Controller/AudioClubController.php:1391
 #: ../../../../admin/src/Controller/UsersController.php:2082
 #: ../../../administrator/tariffs.php:311
 #: ../../../administrator/tariffs.php:342
@@ -576,7 +576,7 @@ msgstr "Переведенное название"
 #: ../../../../admin/src/Controller/VideoClubController.php:2328
 #: ../../../../admin/src/Controller/VideoClubController.php:2338
 #: ../../../../admin/src/Controller/VideoClubController.php:2374
-#: ../../../../admin/src/Controller/AudioClubController.php:1388
+#: ../../../../admin/src/Controller/AudioClubController.php:1392
 msgid "Operation"
 msgstr "Действия"
 
@@ -1615,6 +1615,7 @@ msgid "Not published"
 msgstr "Не опубликовано"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:1416
+#: ../../../../admin/src/Controller/AudioClubController.php:1090
 #: ../../../../admin/src/Controller/KaraokeController.php:163
 #: ../../../../admin/src/Controller/InfoportalController.php:250
 #: ../../../../admin/src/Controller/AdminsController.php:241
@@ -1892,6 +1893,10 @@ msgstr "Добавить аудио альбом"
 #: ../../../../admin/src/Controller/AudioClubController.php:130
 msgid "Edit audio album"
 msgstr "Редактировать аудио альбом"
+
+#: ../../../../admin/src/Controller/AudioClubController.php:1117
+msgid "Invalid format links"
+msgstr "Неверный формат ссылки"
 
 #: ../../../../admin/src/Controller/StatisticsController.php:1130
 msgid "Nothing in this category"
@@ -2839,13 +2844,13 @@ msgid ""
 "Services are updated according to the subscription. The STB will be rebooted."
 msgstr "Услуги обновлены согласно подписке. Приставка будет перезагружена."
 
-#: ../../../tools/misctranslations.php:242 ../../../lib/stb.class.php:541
+#: ../../../tools/misctranslations.php:242 ../../../lib/stb.class.php:547
 #: ../../../lang/stb.php:565
 msgid "Firmware of your STB is outdated.<br>Please update it."
 msgstr "Прошивка вашей приставки устарела.<br>Пожалуйста обновите её."
 
-#: ../../../tools/misctranslations.php:243 ../../../lib/stb.class.php:509
-#: ../../../lib/stb.class.php:520
+#: ../../../tools/misctranslations.php:243 ../../../lib/stb.class.php:515
+#: ../../../lib/stb.class.php:526
 msgid "Your STB is damaged.<br/> Call the provider."
 msgstr "Для регистрации этого устройства<br>свяжитесь с провайдером."
 
@@ -5199,7 +5204,7 @@ msgstr "Года"
 msgid "Break in the program"
 msgstr "Разрыв в программе"
 
-#: ../../../lib/stb.class.php:399
+#: ../../../lib/stb.class.php:405
 msgid ""
 "The portal is temporarily unavailable.<br>Please try again later.<br>Sorry "
 "for the inconvenience."
@@ -5207,16 +5212,16 @@ msgstr ""
 "Портал временно недоступен.<br>Пожалуйста, повторите попытку позже."
 "<br>Приносим извинения за неудобства."
 
-#: ../../../lib/stb.class.php:564 ../../../lib/stb.class.php:592
+#: ../../../lib/stb.class.php:570 ../../../lib/stb.class.php:598
 #, php-format
 msgid "Use your username and password to login or register on %s"
 msgstr "Для входа используйте свой логин и пароль или зарегистрируйтесь на %s"
 
-#: ../../../lib/stb.class.php:572
+#: ../../../lib/stb.class.php:578
 msgid "Please contact your provider<br>to register this device."
 msgstr ""
 
-#: ../../../lib/stb.class.php:620
+#: ../../../lib/stb.class.php:626
 #, php-format
 msgid "Welcome %s<br>We are glad to see you on the Stalker portal!"
 msgstr "Добро пожаловать %s<br>Мы рады видеть Вас в портале Stalker!"
