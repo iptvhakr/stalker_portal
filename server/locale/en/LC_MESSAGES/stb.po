@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-01 15:08+0300\n"
-"PO-Revision-Date: 2016-02-01 15:08+0300\n"
+"POT-Creation-Date: 2016-02-01 16:04+0300\n"
+"PO-Revision-Date: 2016-02-01 16:04+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -251,10 +251,10 @@ msgstr "Error"
 #: ../../../../admin/src/Controller/StoragesController.php:277
 #: ../../../../admin/src/Controller/StoragesController.php:341
 #: ../../../../admin/src/Controller/KaraokeController.php:153
-#: ../../../../admin/src/Controller/KaraokeController.php:194
-#: ../../../../admin/src/Controller/KaraokeController.php:214
-#: ../../../../admin/src/Controller/KaraokeController.php:234
-#: ../../../../admin/src/Controller/KaraokeController.php:291
+#: ../../../../admin/src/Controller/KaraokeController.php:198
+#: ../../../../admin/src/Controller/KaraokeController.php:218
+#: ../../../../admin/src/Controller/KaraokeController.php:238
+#: ../../../../admin/src/Controller/KaraokeController.php:295
 #: ../../../../admin/src/Controller/TasksController.php:137
 #: ../../../../admin/src/Controller/TasksController.php:207
 #: ../../../../admin/src/Controller/TasksController.php:225
@@ -1892,6 +1892,7 @@ msgid "Edit audio album"
 msgstr "Edit audio album"
 
 #: ../../../../admin/src/Controller/AudioClubController.php:1117
+#: ../../../../admin/src/Controller/KaraokeController.php:188
 msgid "Invalid format links"
 msgstr "Invalid format links"
 

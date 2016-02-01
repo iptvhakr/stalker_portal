@@ -176,12 +176,16 @@ class KaraokeController extends \Controller\BaseStalkerController {
         }
         unset($karaoke[0]['id']);
 
-        $result = call_user_func_array(array($this->db, $operation), $karaoke);
-        if (is_numeric($result)) {
-            $error = '';
-            if ($result === 0) {
-                $data['nothing_to_do'] = TRUE;
+        if (!empty($this->postData['rtsp_url']) && preg_match('/^(\w+\s)?\w+\:\/\/.*$/i', $this->postData['rtsp_url'])) {
+            $result = call_user_func_array(array($this->db, $operation), $karaoke);
+            if (is_numeric($result)) {
+                $error = '';
+                if ($result === 0) {
+                    $data['nothing_to_do'] = TRUE;
+                }
             }
+        } else {
+            $data['msg'] = $this->setLocalization('Invalid format links');
         }
         
         $response = $this->generateAjaxResponse($data, $error);
