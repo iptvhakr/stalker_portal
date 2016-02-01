@@ -115,7 +115,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             return;
         }
 
-        if ((empty($this->id) || $this->params['status'] == 1) && !empty($_REQUEST['action']) && $_REQUEST['action'] != 'handshake' && $_REQUEST['action'] != 'get_profile' && $_REQUEST['action'] != 'get_localization' && $_REQUEST['action'] != 'do_auth'){
+        if (!empty($_COOKIE['mac']) && (empty($this->id) || $this->params['status'] == 1) && !empty($_REQUEST['action']) && $_REQUEST['action'] != 'handshake' && $_REQUEST['action'] != 'get_profile' && $_REQUEST['action'] != 'get_localization' && $_REQUEST['action'] != 'do_auth'){
             error_log("Access denied to ".$_REQUEST['type'].":".$_REQUEST['action']." for MAC: ".$this->mac);
             echo 'Access denied.';
             exit;
@@ -124,7 +124,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         if (empty($this->id)){
             $this->initLocale($this->stb_lang);
 
-            if (!empty($_REQUEST['action']) && $_REQUEST['action'] != 'handshake' && $_REQUEST['action'] != 'get_profile' && $_REQUEST['action'] != 'get_localization' && $_REQUEST['action'] != 'do_auth' && $_REQUEST['action'] != 'get_events'){
+            if (!empty($_COOKIE['mac']) && !empty($_REQUEST['action']) && $_REQUEST['action'] != 'handshake' && $_REQUEST['action'] != 'get_profile' && $_REQUEST['action'] != 'get_localization' && $_REQUEST['action'] != 'do_auth' && $_REQUEST['action'] != 'get_events'){
                 error_log("STB not found in the database, authorization failed. MAC: ".$this->mac.", token: ".$this->access_token);
                 echo 'Authorization failed.';
                 exit;
