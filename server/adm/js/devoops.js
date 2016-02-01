@@ -715,14 +715,31 @@ $(document).ready(function () {
         }
         e.stopPropagation();
         e.preventDefault();
+        if (typeof(conf) == 'object' && typeof(conf.form) != 'undefined' && typeof($.validate) == 'function' ) {
+            $.validate();
+            $(conf.form).get(0).reset();
+        }
         $("#modalbox_ad").find("input").prop("disabled", "disabled");
         $("#modalbox_ad").hide();
         return false;
     });
 
-    $(document).on('click', "#modalbox_ad .channel-form button[type='submit']", function (e) {
+    $(document).on('click submit', "#modalbox_ad .channel-form button[type='submit']", function (e) {
         e.stopPropagation();
         e.preventDefault();
+
+        if (typeof(conf) == 'object' && typeof(conf.form) != 'undefined') {
+            conf.form = '#add_channel_link_form';
+            conf.formContainer = '#modalbox_ad';
+            $(conf.form).prop('novalidate', 0).removeAttr('novalidate');
+            if ($(conf.form).isValid({}, conf, true)) {
+                conf.onSuccess();
+                $(conf.form).prop('novalidate', 1);
+            } else {
+                conf.onError();
+                return false;
+            }
+        }
 
         var tmp_id = $("#modalbox_ad").data('tr_id');
         var dataObj = {};
