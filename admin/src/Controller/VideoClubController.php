@@ -1992,6 +1992,11 @@ class VideoClubController extends \Controller\BaseStalkerController {
                             $error_local['rtsp_url'] = ($is_repeating_name ? $this->setLocalization('If the protocol') . " - '$data[protocol]', " . $this->setLocalization('then this field must be filled') : '');
                             $this->app['error_local'] = $error_local;
                             return FALSE;
+                        } elseif(!preg_match('/^(\w+\s)?\w+\:\/\/.*$/i', $this->postData['rtsp_url'])) {
+                            $error_local = array();
+                            $error_local['rtsp_url'] = ($is_repeating_name ? $this->setLocalization('Invalid format links') : '');
+                            $this->app['error_local'] = $error_local;
+                            return FALSE;
                         } else {
                             if (preg_match("/s\d+e(\d+).*$/i", $data['rtsp_url'], $tmp_arr)) {
                                 $series = range(1, (int)$tmp_arr[1], 1);
