@@ -920,6 +920,11 @@
                     }
                 });
 
+                $("#modalbox").on("click", "button[type='reset']", function(){
+                    $("#modalbox form").get(0).reset();
+                    JScloseModalBox();
+                });
+
                 LoadDataTablesScripts(TestTable1);
                 LoadSelect2Script(DemoSelect2);
             });
