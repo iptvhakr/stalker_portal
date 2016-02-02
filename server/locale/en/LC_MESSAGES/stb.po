@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-01 17:50+0300\n"
-"PO-Revision-Date: 2016-02-01 17:52+0300\n"
+"POT-Creation-Date: 2016-02-02 13:13+0300\n"
+"PO-Revision-Date: 2016-02-02 13:14+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -44,28 +44,28 @@ msgstr "Published"
 #: ../../../../admin/src/Controller/VideoClubController.php:618
 #: ../../../../admin/src/Controller/StoragesController.php:19
 #: ../../../../admin/src/Controller/KaraokeController.php:19
-#: ../../../../admin/src/Controller/RadioController.php:18
+#: ../../../../admin/src/Controller/RadioController.php:19
 msgid "Unpublished"
 msgstr "Unpublished"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:50
 #: ../../../../admin/src/Controller/TvChannelsController.php:1920
-#: ../../../../admin/src/Controller/RadioController.php:23
+#: ../../../../admin/src/Controller/RadioController.php:24
 #: ../../../administrator/add_itv.php:1393
 msgid "monitoring off"
 msgstr "Monitoring off"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:51
 #: ../../../../admin/src/Controller/TvChannelsController.php:1952
-#: ../../../../admin/src/Controller/RadioController.php:24
-#: ../../../../admin/src/Controller/RadioController.php:403
+#: ../../../../admin/src/Controller/RadioController.php:25
+#: ../../../../admin/src/Controller/RadioController.php:418
 msgid "errors occurred"
 msgstr "Errors occurred"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:52
 #: ../../../../admin/src/Controller/TvChannelsController.php:1946
-#: ../../../../admin/src/Controller/RadioController.php:25
-#: ../../../../admin/src/Controller/RadioController.php:401
+#: ../../../../admin/src/Controller/RadioController.php:26
+#: ../../../../admin/src/Controller/RadioController.php:416
 msgid "no errors"
 msgstr "No errors"
 
@@ -260,10 +260,10 @@ msgstr "Error"
 #: ../../../../admin/src/Controller/TasksController.php:225
 #: ../../../../admin/src/Controller/TasksController.php:274
 #: ../../../../admin/src/Controller/TasksController.php:505
-#: ../../../../admin/src/Controller/RadioController.php:175
-#: ../../../../admin/src/Controller/RadioController.php:200
-#: ../../../../admin/src/Controller/RadioController.php:219
-#: ../../../../admin/src/Controller/RadioController.php:242
+#: ../../../../admin/src/Controller/RadioController.php:176
+#: ../../../../admin/src/Controller/RadioController.php:201
+#: ../../../../admin/src/Controller/RadioController.php:220
+#: ../../../../admin/src/Controller/RadioController.php:243
 #: ../../../../admin/src/Controller/UsersController.php:719
 #: ../../../../admin/src/Controller/UsersController.php:751
 #: ../../../../admin/src/Controller/UsersController.php:782
@@ -511,7 +511,7 @@ msgid "URL"
 msgstr "URL"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1646
-#: ../../../../admin/src/Controller/RadioController.php:380
+#: ../../../../admin/src/Controller/RadioController.php:395
 msgid "Monitoring status"
 msgstr "Monitoring status"
 
@@ -1916,17 +1916,25 @@ msgstr "Karaoke"
 msgid "Tasks list"
 msgstr "Tasks list"
 
-#: ../../../../admin/src/Controller/RadioController.php:62
+#: ../../../../admin/src/Controller/RadioController.php:63
 msgid "Add radio"
 msgstr "Add radio"
 
-#: ../../../../admin/src/Controller/RadioController.php:101
+#: ../../../../admin/src/Controller/RadioController.php:102
 msgid "Edit radio"
 msgstr "Edit radio"
 
-#: ../../../../admin/src/Controller/RadioController.php:259
+#: ../../../../admin/src/Controller/RadioController.php:260
 msgid "This field can contain only numbers"
 msgstr "This field can contain only numbers"
+
+#: ../../../../admin/src/Controller/RadioController.php:333
+msgid "This number is not unique"
+msgstr "This number is not unique"
+
+#: ../../../../admin/src/Controller/RadioController.php:336
+msgid "This name is not unique"
+msgstr "This name is not unique"
 
 #: ../../../../admin/src/Controller/UsersController.php:228
 #: ../../../../admin/src/Controller/UsersController.php:254
@@ -9451,6 +9459,9 @@ msgstr "STB statuses report "
 msgid "Schedule of publishing"
 msgstr "Schedule of publishing"
 
+msgid "Should be unique"
+msgstr "Should be unique"
+
 msgid "Should be unique, can contain only numbers"
 msgstr "Should be unique, can contain only numbers"
 
@@ -10012,6 +10023,9 @@ msgid ""
 msgstr ""
 "You can use Latin letters, digits and symbols from the list ! @ # $ % ^ & * "
 "( ) _ - + : ; , ."
+
+msgid "You can use letters, digits and _ "
+msgstr "You can use letters, digits and _ "
 
 msgid "administrators list"
 msgstr "administrators list"
@@ -10814,9 +10828,6 @@ msgstr "Administrator"
 
 #~ msgid "Name is busy or has been used old group name"
 #~ msgstr "Name is busy or has been used old group name"
-
-#~ msgid "Should be unique"
-#~ msgstr "Should be unique"
 
 #~ msgid "Swith on"
 #~ msgstr "Swith on"

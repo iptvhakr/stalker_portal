@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-01 17:52+0300\n"
-"PO-Revision-Date: 2016-02-01 17:52+0300\n"
+"POT-Creation-Date: 2016-02-02 13:11+0300\n"
+"PO-Revision-Date: 2016-02-02 13:14+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -45,28 +45,28 @@ msgstr "Опубликован"
 #: ../../../../admin/src/Controller/VideoClubController.php:618
 #: ../../../../admin/src/Controller/StoragesController.php:19
 #: ../../../../admin/src/Controller/KaraokeController.php:19
-#: ../../../../admin/src/Controller/RadioController.php:18
+#: ../../../../admin/src/Controller/RadioController.php:19
 msgid "Unpublished"
 msgstr "Не опубликован"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:50
 #: ../../../../admin/src/Controller/TvChannelsController.php:1920
-#: ../../../../admin/src/Controller/RadioController.php:23
+#: ../../../../admin/src/Controller/RadioController.php:24
 #: ../../../administrator/add_itv.php:1393
 msgid "monitoring off"
 msgstr "Не мониторится"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:51
 #: ../../../../admin/src/Controller/TvChannelsController.php:1952
-#: ../../../../admin/src/Controller/RadioController.php:24
-#: ../../../../admin/src/Controller/RadioController.php:403
+#: ../../../../admin/src/Controller/RadioController.php:25
+#: ../../../../admin/src/Controller/RadioController.php:418
 msgid "errors occurred"
 msgstr "Обнаружены ошибки"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:52
 #: ../../../../admin/src/Controller/TvChannelsController.php:1946
-#: ../../../../admin/src/Controller/RadioController.php:25
-#: ../../../../admin/src/Controller/RadioController.php:401
+#: ../../../../admin/src/Controller/RadioController.php:26
+#: ../../../../admin/src/Controller/RadioController.php:416
 msgid "no errors"
 msgstr "Ошибок нет"
 
@@ -261,10 +261,10 @@ msgstr "Ошибка"
 #: ../../../../admin/src/Controller/TasksController.php:225
 #: ../../../../admin/src/Controller/TasksController.php:274
 #: ../../../../admin/src/Controller/TasksController.php:505
-#: ../../../../admin/src/Controller/RadioController.php:175
-#: ../../../../admin/src/Controller/RadioController.php:200
-#: ../../../../admin/src/Controller/RadioController.php:219
-#: ../../../../admin/src/Controller/RadioController.php:242
+#: ../../../../admin/src/Controller/RadioController.php:176
+#: ../../../../admin/src/Controller/RadioController.php:201
+#: ../../../../admin/src/Controller/RadioController.php:220
+#: ../../../../admin/src/Controller/RadioController.php:243
 #: ../../../../admin/src/Controller/UsersController.php:719
 #: ../../../../admin/src/Controller/UsersController.php:751
 #: ../../../../admin/src/Controller/UsersController.php:782
@@ -514,7 +514,7 @@ msgid "URL"
 msgstr "URL"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1646
-#: ../../../../admin/src/Controller/RadioController.php:380
+#: ../../../../admin/src/Controller/RadioController.php:395
 msgid "Monitoring status"
 msgstr "Статус мониторинга"
 
@@ -1919,17 +1919,25 @@ msgstr "Караоке"
 msgid "Tasks list"
 msgstr "Список заданий"
 
-#: ../../../../admin/src/Controller/RadioController.php:62
+#: ../../../../admin/src/Controller/RadioController.php:63
 msgid "Add radio"
 msgstr "Добавить радио"
 
-#: ../../../../admin/src/Controller/RadioController.php:101
+#: ../../../../admin/src/Controller/RadioController.php:102
 msgid "Edit radio"
 msgstr "Редактировать радио"
 
-#: ../../../../admin/src/Controller/RadioController.php:259
+#: ../../../../admin/src/Controller/RadioController.php:260
 msgid "This field can contain only numbers"
 msgstr "Это поле может содержать только цифры"
+
+#: ../../../../admin/src/Controller/RadioController.php:333
+msgid "This number is not unique"
+msgstr "Номер не уникален"
+
+#: ../../../../admin/src/Controller/RadioController.php:336
+msgid "This name is not unique"
+msgstr "Имя не уникально"
 
 #: ../../../../admin/src/Controller/UsersController.php:228
 #: ../../../../admin/src/Controller/UsersController.php:254
@@ -9458,6 +9466,9 @@ msgstr "Отчет по измененным статусам приставок
 msgid "Schedule of publishing"
 msgstr "Расписание публикации"
 
+msgid "Should be unique"
+msgstr "Должен быть уникальным"
+
 msgid "Should be unique, can contain only numbers"
 msgstr "Должен быть уникальным, может содержать только цифры"
 
@@ -10027,6 +10038,9 @@ msgid ""
 msgstr ""
 "Можно использовать латинские буквы, цифры и символы из списка: ! @ # $ % ^ & "
 "* ( ) _ - + : ; , ."
+
+msgid "You can use letters, digits and _ "
+msgstr "Можно использовать буквы, цифры и _"
 
 msgid "administrators list"
 msgstr "Список администраторов"
@@ -10834,9 +10848,6 @@ msgstr "Администратор"
 
 #~ msgid "Name is busy or has been used old group name"
 #~ msgstr "Имя занято или было использовано старое имя группы"
-
-#~ msgid "Should be unique"
-#~ msgstr "Должен быть уникальным"
 
 #~ msgid "Swith on"
 #~ msgstr "Включить"
