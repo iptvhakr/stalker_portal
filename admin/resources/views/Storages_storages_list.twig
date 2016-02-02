@@ -368,9 +368,9 @@
                                                         </ul>\n\
                                                     </div>";
                         if (json.data[i].status == 1) {
-                            json.data[i].status = '<span class="">{{ 'on'|trans }}</span>';
+                            json.data[i].status = '<span class="">{{ 'status on'|trans }}</span>';
                         } else {
-                            json.data[i].status = '<span>{{ 'off'|trans }}</span>';
+                            json.data[i].status = '<span>{{ 'status off'|trans }}</span>';
                         }
                         json.data[i].storage_name = "<a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-storage' data-id='"+ id +"'><span>"+json.data[i].storage_name+"</span></a>";
                     }

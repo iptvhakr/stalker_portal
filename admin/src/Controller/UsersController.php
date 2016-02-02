@@ -1739,8 +1739,8 @@ class UsersController extends \Controller\BaseStalkerController {
             1 => $this->setLocalization('on')
         );
         $status = array(
-            1 => $this->setLocalization('off'),
-            0 => $this->setLocalization('on')
+            1 => $this->setLocalization('status off'),
+            0 => $this->setLocalization('status on')
         );
 
 

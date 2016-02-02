@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-02 13:13+0300\n"
-"PO-Revision-Date: 2016-02-02 13:14+0300\n"
+"POT-Creation-Date: 2016-02-02 13:55+0300\n"
+"PO-Revision-Date: 2016-02-02 13:56+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -1532,7 +1532,6 @@ msgstr "Information not available"
 #: ../../../../admin/src/Controller/UsersController.php:739
 #: ../../../../admin/src/Controller/UsersController.php:740
 #: ../../../../admin/src/Controller/UsersController.php:1739
-#: ../../../../admin/src/Controller/UsersController.php:1743
 #: ../../../lang/stb.php:369
 msgid "on"
 msgstr "On"
@@ -1978,7 +1977,6 @@ msgstr "STB of group"
 #: ../../../../admin/src/Controller/UsersController.php:739
 #: ../../../../admin/src/Controller/UsersController.php:740
 #: ../../../../admin/src/Controller/UsersController.php:1738
-#: ../../../../admin/src/Controller/UsersController.php:1742
 #: ../../../lang/stb.php:370
 msgid "off"
 msgstr "Off"
@@ -2014,6 +2012,14 @@ msgstr "Not found reseller for moving"
 #: ../../../../admin/src/Controller/UsersController.php:1441
 msgid "No data for this filter"
 msgstr "No data for this filter"
+
+#: ../../../../admin/src/Controller/UsersController.php:1742
+msgid "status off"
+msgstr "off"
+
+#: ../../../../admin/src/Controller/UsersController.php:1743
+msgid "status on"
+msgstr "on"
 
 #: ../../../../admin/src/Controller/UsersController.php:2045
 #: ../../../administrator/profile.php:433 ../../../administrator/user.php:138
