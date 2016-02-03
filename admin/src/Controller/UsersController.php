@@ -1703,10 +1703,10 @@ class UsersController extends \Controller\BaseStalkerController {
         $now_timestamp = time() - $this->watchdog;
         $now_time = date("Y-m-d H:i:s", $now_timestamp);
         if (array_key_exists('filters', $this->data) && is_array($this->data['filters'])) {
-            if (array_key_exists('status', $this->data['filters']) && $this->data['filters']['status'] != 0 && $this->data['filters']['status'] != 'without') {
+            if (array_key_exists('status', $this->data['filters']) && is_numeric($this->data['filters']['status']) && $this->data['filters']['status'] != 0 && $this->data['filters']['status'] != 'without') {
                 $return['status'] = $this->data['filters']['status'] - 1;
             }
-            if (array_key_exists('state', $this->data['filters']) && $this->data['filters']['state'] != 0  && $this->data['filters']['state'] != 'without') {
+            if (array_key_exists('state', $this->data['filters']) && is_numeric($this->data['filters']['state']) && $this->data['filters']['state'] != 0  && $this->data['filters']['state'] != 'without') {
                 $return['keep_alive' . ((int)$this->data['filters']['state'] - 1 ? "<" : ">")] = "$now_time";
             }
             if (array_key_exists('interval_from', $this->data['filters']) && $this->data['filters']['interval_from']!= 0 && $this->data['filters']['interval_from'] != 'without') {
