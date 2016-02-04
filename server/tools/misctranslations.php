@@ -549,7 +549,6 @@ _('Rejected');
 _('Expired');
 _('Archive');
 _('Duration (min)');
-_('Conditions');
 _('Saved');
 _('STB API version');
 _('Required STB API version');

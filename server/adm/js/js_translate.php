@@ -41,5 +41,17 @@ $words['Done'] = _('Done');
 $words['Failed'] = _('Failed');
 $words['Clean'] = _('Clean');
 $words['CMD_Exists'] = _('This URL already exists');
+$words['Jan'] = _('Jan');
+$words['Feb'] = _('Feb');
+$words['Mar'] = _('Mar');
+$words['Apr'] = _('Apr');
+$words['May'] = _('May');
+$words['Jun'] = _('Jun');
+$words['Jul'] = _('Jul');
+$words['Aug'] = _('Aug');
+$words['Sep'] = _('Sep');
+$words['Oct'] = _('Oct');
+$words['Nov'] = _('Nov');
+$words['Dec'] = _('Dec');
 
 echo json_encode($words);

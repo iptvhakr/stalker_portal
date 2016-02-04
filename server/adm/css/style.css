@@ -617,7 +617,7 @@ table.no-border-bottom tr:last-child td {
 }
 
 
- ul.myErrorClass, ul.select2-choices.myErrorClass, a.myErrorClass , .select2-container .error, input.myErrorClass, textarea.myErrorClass, select.myErrorClass {
+ ul.myErrorClass, ul.select2-choices.myErrorClass, .has-error a.myErrorClass , .select2-container .error, input.myErrorClass, textarea.myErrorClass, select.myErrorClass {
     border-width: 1px !important;
     border-style: solid !important;
     border-color: #b94a48 !important;

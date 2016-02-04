@@ -1188,6 +1188,13 @@ if (!$.isFunction(d['toLocaleFormat'])) {
             month = (month.toString().length == 1) ? '0' + month: month;
         var monthNum = this.getMonth();
         var monthName = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        if (typeof (words) != 'undefined') {
+            for(var counter in monthName){
+                if (typeof words[monthName[counter]] != 'undefined') {
+                    monthName[counter] = words[monthName[counter]];
+                }
+            }
+        }
         var day = this.getDate();
             day = (day.toString().length == 1) ? '0' + day: day;
         var hour = this.getHours();
