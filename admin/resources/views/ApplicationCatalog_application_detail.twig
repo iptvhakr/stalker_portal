@@ -200,12 +200,12 @@
                 $(document).on('click', "a.main_ajax", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
-                    JSshowModalBox();
                     var _this = $(this);
 
                     if ($(this).attr("disabled")) {
                         JSErrorModalBox({msg: "{{ 'Action is not available'|trans }}"});
                     } else {
+                        JSshowModalBox();
                         ajaxPostSend(_this.attr('href'), _this.data(), false );
                     }
 
