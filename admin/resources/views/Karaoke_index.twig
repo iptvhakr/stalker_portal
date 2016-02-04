@@ -411,6 +411,10 @@
             }
 			
             $('#datatable-1').DataTable().ajax.reload();
-        }
+        };
+
+        var checkSourceKaraokeError = function(obj){
+            JSErrorModalBox(obj);
+        };
     </script>
 {% endblock %}
