@@ -17,7 +17,7 @@ class KaraokeController extends \Controller\BaseStalkerController {
         parent::__construct($app, __CLASS__);
         $this->allStatus = array(
             array('id' => 1, 'title' => $this->setLocalization('Unpublished')),
-            array('id' => 2, 'title' => $this->setlocalization('Published'))
+            array('id' => 2, 'title' => $this->setLocalization('Published'))
         );
     }
     
@@ -75,7 +75,7 @@ class KaraokeController extends \Controller\BaseStalkerController {
             "status" => "`karaoke`.`status` as `status`"
         );
                 
-        $error = $this->setlocalization("Error");
+        $error = $this->setLocalization("Error");
         $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
@@ -176,12 +176,16 @@ class KaraokeController extends \Controller\BaseStalkerController {
         }
         unset($karaoke[0]['id']);
 
-        $result = call_user_func_array(array($this->db, $operation), $karaoke);
-        if (is_numeric($result)) {
-            $error = '';
-            if ($result === 0) {
-                $data['nothing_to_do'] = TRUE;
+        if ((!empty($this->postData['protocol']) && $this->postData['protocol'] != 'custom') || (!empty($this->postData['rtsp_url']) && preg_match('/^(\w+\s)?\w+\:\/\/.*$/i', $this->postData['rtsp_url']))) {
+            $result = call_user_func_array(array($this->db, $operation), $karaoke);
+            if (is_numeric($result)) {
+                $error = '';
+                if ($result === 0) {
+                    $data['nothing_to_do'] = TRUE;
+                }
             }
+        } else {
+            $data['msg'] = $this->setLocalization('Invalid format links');
         }
         
         $response = $this->generateAjaxResponse($data, $error);
@@ -241,7 +245,7 @@ class KaraokeController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'manageKaraoke';
         $data['id'] = $this->postData['karaokeid'];
-        $error = $this->setlocalization('Failed');
+        $error = $this->setLocalization('Failed');
 
         $good_storages = array();
         $media_id = intval($this->postData['karaokeid']);
@@ -262,7 +266,7 @@ class KaraokeController extends \Controller\BaseStalkerController {
         if (!empty($good_storages) || $item[0]['protocol'] == 'custom') {
 
             if ($item[0]['protocol'] == 'custom' && empty($item[0]['rtsp_url'])){
-                $error = $this->setlocalization('You can not publishing record with protocol - "custom", and with empty field - URL');
+                $error = $this->setLocalization('You can not publishing record with protocol - "custom", and with empty field - URL');
             }else{
 
                 $this->db->updateKaraoke(array('accessed' => (int)(!((bool) $this->postData['accessed'])), 'added' => 'NOW()'), $this->postData['karaokeid']);
@@ -277,7 +281,7 @@ class KaraokeController extends \Controller\BaseStalkerController {
                 $error = '';
             }
         } else {
-            $error = $this->setlocalization('File unavailable and cannot be published');
+            $error = $this->setLocalization('File unavailable and cannot be published');
         }
 
         $response = $this->generateAjaxResponse($data, $error);
@@ -297,30 +301,36 @@ class KaraokeController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'checkSourceKaraoke';
         $data['id'] = $this->postData['karaokeid'];
-        $data['base_info'] = $this->setlocalization('Information not available');
-        $error = $this->setlocalization('Error');
+        $data['base_info'] = $this->setLocalization('Information not available');
+        $error = $this->setLocalization('Error');
         $media_id = intval($this->postData['karaokeid']);
-        if (empty($_SERVER['TARGET'])) {
-            $_SERVER['TARGET'] = 'ADM';
-        }
-        ob_start();
-        if ($master = new \KaraokeMaster()){
-            $good_storages = $master->getAllGoodStoragesForMediaFromNet($media_id, true);
 
-            $this->db->updateKaraoke(array('status' => (int)(count($good_storages) > 0)), $this->postData['karaokeid']);
-
-            $arr = array();
-
-            foreach ($good_storages as $name => $val){
-                $arr[] = array(
-                    'storage_name' => $name,
-                    'file'         => $media_id.'.mpg',
-                );
+        $karaoke_data = $this->db->getKaraokeList(array('where' => array('karaoke.id' => $media_id)));
+        if (!empty($karaoke_data) && $karaoke_data[0]['protocol'] != 'custom') {
+            if (empty($_SERVER['TARGET'])) {
+                $_SERVER['TARGET'] = 'ADM';
             }
-            $error = '';   
-            $data['base_info'] = $arr;
+            ob_start();
+            if ($master = new \KaraokeMaster()){
+                $good_storages = $master->getAllGoodStoragesForMediaFromNet($media_id, true);
+
+                $this->db->updateKaraoke(array('status' => (int)(count($good_storages) > 0)), $this->postData['karaokeid']);
+
+                $arr = array();
+
+                foreach ($good_storages as $name => $val){
+                    $arr[] = array(
+                        'storage_name' => $name,
+                        'file'         => $media_id.'.mpg',
+                    );
+                }
+                $error = '';
+                $data['base_info'] = $arr;
+            }
+            ob_end_clean();
+        } else {
+            $data['msg'] = $data['base_info'];
         }
-        ob_end_clean();
         $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
@@ -330,16 +340,16 @@ class KaraokeController extends \Controller\BaseStalkerController {
     
     private function getDropdownAttribute() {
         return array(
-            array('name'=>'id',             'title'=>$this->setlocalization('ID'),      'checked' => TRUE),
-            array('name'=>'name',           'title'=>$this->setlocalization('Title'),   'checked' => TRUE),
-            array('name'=>'singer',         'title'=>$this->setlocalization('Artist'),  'checked' => TRUE),
-            array('name'=>'added',          'title'=>$this->setlocalization('Added'),   'checked' => TRUE),
-            array('name'=>'protocol',       'title'=>$this->setlocalization('Protocol'),'checked' => TRUE),
-            array('name'=>'rtsp_url',       'title'=>$this->setlocalization('URL'),     'checked' => TRUE),
-            array('name'=>'media_claims',   'title'=>$this->setlocalization('Complaints'),'checked' => TRUE),
-            array('name'=>'done',           'title'=>$this->setlocalization('Tasks'),   'checked' => TRUE),
-            array('name'=>'accessed',       'title'=>$this->setlocalization('Conditions'),'checked' => TRUE),
-            array('name'=>'operations',     'title'=>$this->setlocalization('Operations'),'checked' => TRUE)
+            array('name'=>'id',             'title'=>$this->setLocalization('ID'),      'checked' => TRUE),
+            array('name'=>'name',           'title'=>$this->setLocalization('Title'),   'checked' => TRUE),
+            array('name'=>'singer',         'title'=>$this->setLocalization('Artist'),  'checked' => TRUE),
+            array('name'=>'added',          'title'=>$this->setLocalization('Added'),   'checked' => TRUE),
+            array('name'=>'protocol',       'title'=>$this->setLocalization('Protocol'),'checked' => TRUE),
+            array('name'=>'rtsp_url',       'title'=>$this->setLocalization('URL'),     'checked' => TRUE),
+            array('name'=>'media_claims',   'title'=>$this->setLocalization('Complaints'),'checked' => TRUE),
+            array('name'=>'done',           'title'=>$this->setLocalization('Tasks'),   'checked' => TRUE),
+            array('name'=>'accessed',       'title'=>$this->setLocalization('Conditions'),'checked' => TRUE),
+            array('name'=>'operations',     'title'=>$this->setLocalization('Operations'),'checked' => TRUE)
         );
     }
     

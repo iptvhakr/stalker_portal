@@ -20,6 +20,7 @@
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].id, {'attr': {'class': 'form-control'}}) }}
                                     {{ form_widget(app['form'].number, {'attr': {'class': 'form-control', 'data-checkurl': 'radio-check-number', 'data-validation':'number'}}) }}
+                                    <div></div>
 								</div>
                                 <div>
                                     <div class="bg-danger">
@@ -36,13 +37,14 @@
                             <div class="col-xs-10 col-sm-8">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].name, {'attr': {'class': 'form-control', 'data-checkurl': 'radio-check-name', 'data-validation':'required'}}) }}
+                                    <div></div>
                                 </div>
                                 <div>
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].name) }}
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">{{ 'You can use letters, digits and symbols from the list: ! @ # $ % ^ & * ( ) _ - + : ; , .'|trans }}</span>
+                                        <span class="small txt-default">{{ 'Should be unique'|trans }}. {{ 'You can use letters, digits and symbols from the list: ! @ # $ % ^ & * ( ) _ - + : ; , .'|trans }}</span>
                                     </span>
                                 </div>
                             </div>

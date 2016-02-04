@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response as Response;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
+use Symfony\Component\Form\FormError;
 
 class RadioController extends \Controller\BaseStalkerController {
 
@@ -315,11 +316,25 @@ class RadioController extends \Controller\BaseStalkerController {
             $form->handleRequest($this->request);
             $data = $form->getData();
             $action = (isset($this->radio) && $edit ? 'updateRadio' : 'insertRadio');
-            $radio_num = $this->db->searchOneRadioParam(array('number' => $data['number']));
-            $radio_name = $this->db->searchOneRadioParam(array('name' => $data['name']));
+            $param = array('number' => $data['number']);
+            if (!empty($data['id'])) {
+                $param['id<>'] = $data['id'];
+            }
+            $radio_num = $this->db->searchOneRadioParam($param);
+            $param = array('name' => $data['name']);
+            if (!empty($data['id'])) {
+                $param['id<>'] = $data['id'];
+            }
+            $radio_name = $this->db->searchOneRadioParam($param);
 
             $data['volume_correction'] = !empty($data['volume_correction'])? (int)str_replace('%', '', $data['volume_correction']): 0;
-            if (($edit && (empty($data['id']) || (!empty($radio_num) && $radio_num != $data['number'] ) || (!empty($radio_name) && $radio_name != $data['name'] ) ) ) || ( !$edit && ( !empty($radio_num) || !empty($radio_name)) ) ){
+            if (!empty($radio_num) || !empty($radio_name)){
+                if (!empty($radio_num)) {
+                    $form->get('number')->addError(new FormError($this->setLocalization("This number is not unique")));
+                }
+                if (!empty($radio_name)) {
+                    $form->get('name')->addError(new FormError($this->setLocalization("This name is not unique")));
+                }
                 return FALSE;
             }
             if ($form->isValid()) {
@@ -371,7 +386,7 @@ class RadioController extends \Controller\BaseStalkerController {
     
     private function getDropdownAttribute() {
         return array(
-            array('name'=>'id',                 'title'=>$this->setlocalization('ID'),                  'checked' => TRUE),
+            array('name'=>'id',                 'title'=>$this->setlocalization('ID'),                  'checked' => FALSE),
             array('name'=>'number',             'title'=>$this->setlocalization('Order'),               'checked' => TRUE),
             array('name'=>'name',               'title'=>$this->setlocalization('Title'),               'checked' => TRUE),
             array('name'=>'cmd',                'title'=>$this->setlocalization('URL'),                 'checked' => TRUE),
@@ -381,7 +396,6 @@ class RadioController extends \Controller\BaseStalkerController {
             array('name'=>'operations',         'title'=>$this->setlocalization('Operations'),          'checked' => TRUE),
         );
     }
-
 
     private function getMonitoringStatus($row) {
         $return = '';

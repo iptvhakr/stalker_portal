@@ -92,10 +92,10 @@
 
                             <!-- URL -->
                             <div class="form-group">
-                                <label class="col-sm-3 control-label ">RTSP/HTTP URL</label>
+                                <label class="col-sm-3 control-label ">RTSP/HTTP URL<span class="icon-required">*</span></label>
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-10">
-                                        <input type="text" name="rtsp_url" class='form-control own_fields'>
+                                        <input type="text" name="rtsp_url" class='form-control own_fields' data-validation = 'custom' data-validation-regexp = '^(\w+\s)?\w+\:\/\/.*$' data-validation-error-msg = "{{ 'Invalid format links'|trans }}">
                                     </div>
                                     <span class="help-inline col-xs-10 col-sm-10">
                                         <span class="small txt-default">{{ 'Format solution + URL. Example fmpeg http://anon.nasa.net/download_135_720p.wmv'|trans }}</span>
@@ -124,7 +124,7 @@
     <script type="text/javascript" defer>
 
         var conf = {
-            form: 'karaoke_form',
+            form: '#karaoke_form',
             lang : '{{ app.language }}',
             showHelpOnFocus : true,
             validateHiddenInputs: true,
@@ -186,7 +186,7 @@
                         var accessed = json.data[i].accessed;
                         var done  = json.data[i].done;
                         var name = json.data[i].name;
-                        json.data[i].rtsp_url = json.data[i].rtsp_url.length > 0?json.data[i].rtsp_url.slice(0, 30)+'...': (json.data[i].protocol != 'custom'? "<a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/check-karaoke-source' data-karaokeid='" + id + "'>{{ 'in storage'|trans }}</a>": '');
+                        json.data[i].rtsp_url = json.data[i].protocol != 'custom'? "<a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/check-karaoke-source' data-karaokeid='" + id + "'>{{ 'in storage'|trans }}</a>": (json.data[i].rtsp_url.length > 0 ? json.data[i].rtsp_url.slice(0, 30)+'...':'');
 
                         json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
                                                         <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
@@ -337,8 +337,9 @@
                     $("#modalbox_ad").find(".modal-header-name").children('span').text("{{ 'Add'|trans }}");
                     $("#modalbox_ad input").prop("disabled", false).removeAttr('disabled').val('');
                     $("#modalbox_ad input[type='hidden']").attr('disabled', 'disabled').val('');
-                    $("#modalbox_ad select").prop("disabled", false).removeAttr('disabled').find('option').removeAttr('selected');
-                    $('#s2_protokol').select2("destroy").select2({minimumResultsForSearch: -1});
+                    $("#modalbox_ad select").prop("disabled", false).removeAttr('disabled').find('option').prop("selected", false).removeAttr('selected');
+                    $('#s2_protocol').select2("destroy");
+                    $('#s2_protocol').select2({minimumResultsForSearch: -1});
                     checkModalProtocol();
                     $("#modalbox_ad").show();
                     return false;
@@ -361,11 +362,12 @@
                     $("#modalbox_ad input[name='" + field_name + "']").val(row[field_name]);
                 }
                 $("#modalbox_ad select[name='protocol'] option").each(function () {
-                    $(this).attr('selected', $(this).val().toString() == data.data[0]['protocol'].toString());
+                    $(this).prop('selected', $(this).val().toString() == data.data[0]['protocol'].toString());
                 })
             }
             $("#modalbox_ad input").removeAttr('disabled');
-            $('#s2_protocol').select2("destroy").select2({minimumResultsForSearch: -1});
+            $('#s2_protocol').select2("destroy");
+            $('#s2_protocol').select2({minimumResultsForSearch: -1});
             checkModalProtocol();
             $("#modalbox_ad").show();
         };
@@ -406,9 +408,13 @@
                     var trStr = '<tr><td>'+ value.storage_name +'</td><td>'+ value.file +'</td></tr>';
                     table.append(trStr);
                 });
-            };
+            }
 			
             $('#datatable-1').DataTable().ajax.reload();
-        }
+        };
+
+        var checkSourceKaraokeError = function(obj){
+            JSErrorModalBox(obj);
+        };
     </script>
 {% endblock %}

@@ -60,9 +60,12 @@
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-10">
                                         <input type="hidden" name="id" id="adm_id" class="own_fields" data-name="id">
-                                        <input type="text" required="required" name="login" data-name="login" data-validation=required  id="adm_login" class='form-control own_fields'>
-                                        <div></div>
+                                        <input type="text" required="required" name="login" data-name="login" data-validation="custom" data-validation-regexp="[A-Za-z0-9_]" id="adm_login" class='form-control own_fields'>
+                                        <div style="display: none;"></div>
                                     </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">{{ 'Should be unique'|trans }}. {{ 'You can use letters, digits and _ '|trans }}</span>
+                                    </span>
                                 </div>
                             </div>
                             <!-- name -->
@@ -117,6 +120,30 @@
     </div>
                                     
     <script type="text/javascript" defer>
+
+        var conf = {
+            form: '#karaoke_form',
+            lang : '{{ app.language }}',
+            showHelpOnFocus : true,
+            validateHiddenInputs: true,
+            ignore: ['.ignore'],
+            modules: 'jsconf, security',
+            onSuccess: function () {
+                var sendData = new Object();
+                var form_fields = $("#modalbox_ad input.own_fields:not(:disabled), #gid:not(:disabled)");
+                form_fields.each(function () {
+                    if ($(this).val()) {
+                        sendData[$(this).data('name')] = $(this).val();
+                    }
+                });
+
+                ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
+                return false;
+            },
+            onError: function () {
+                return false;
+            }
+        };
 
         function closeModalBox(){
             $("#modalbox").hide();
@@ -237,29 +264,6 @@
                     return false;
                 });
 
-                var conf = {
-                    form: 'karaoke_form',
-                    lang : '{{ app.language }}',
-                    showHelpOnFocus : true,
-                    validateHiddenInputs: true,
-                    ignore: ['.ignore'],
-                    modules: 'jsconf, security',
-                    onSuccess: function () {
-                        var sendData = new Object();
-                        var form_fields = $("#modalbox_ad input.own_fields:not(:disabled), #gid:not(:disabled)");
-                        form_fields.each(function () {
-                            if ($(this).val()) {
-                                sendData[$(this).data('name')] = $(this).val();
-                            }
-                        });
-
-                        ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
-                        return false;
-                    },
-                    onError: function () {
-                        return false;
-                    }
-                };
                 $.validate(conf);
 
                 $("#modalbox_ad button[type='submit']").on('click', function (e) {
@@ -273,8 +277,6 @@
                     }
 
                     conf.ignore = ignore;
-
-                    console.log(conf.ignore);
 
                     if ($("#karaoke_form").isValid({}, conf, true)) {
                         conf.onSuccess();
@@ -393,7 +395,7 @@
                             success: function (data) {
                                 if (data.success) {
                                     $('#modalbox_ad button[type="submit"]').removeAttr("disabled");
-                                    _this.next('div').append('<i class="txt-success fa fa-check"></i> ' + data.chk_rezult).css('visibility', 'visible');
+                                    _this.next('div').append('<i class="txt-success fa fa-check"></i> ' + data.chk_rezult).css({display:'block', visibility: 'visible'});
                                 } else if (data.error) {
                                     $('#modalbox_ad button[type="submit"]').attr("disabled", "disabled");
                                     console.log(data.error);
@@ -405,7 +407,7 @@
                             error: function (data) {
                                 if (typeof (data.responseJSON) != 'undefined' && typeof (data.responseJSON.error) != 'undefined') {
                                     $('#modalbox_ad button[type="submit"]').attr("disabled", "disabled");
-                                    _this.next('div').append('<i class="txt-danger fa fa-ban"></i> ' + data.responseJSON.error).css('visibility', 'visible');
+                                    _this.next('div').append('<i class="txt-danger fa fa-ban"></i> ' + data.responseJSON.error).css({display:'block', visibility: 'visible'});
                                 } else {
                                     $('#modalbox_ad button[type="submit"]').removeAttr("disabled");
                                     console.log("{{ 'Some network error or access denied'|trans }}");

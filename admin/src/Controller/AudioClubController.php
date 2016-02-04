@@ -1087,7 +1087,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'audioTracksManage';
         $track = array($this->postData);
-        $error = 'error';
+        $error = $this->setLocalization('error');
         if (empty($this->postData['id'])) {
             $params = array(
                     'select' => array(
@@ -1108,11 +1108,15 @@ class AudioClubController extends \Controller\BaseStalkerController {
             $track['id'] = $this->postData['id'];
         }
         unset($track[0]['id']);
-        
-        if ($result = call_user_func_array(array($this->db, $operation), $track)) {
-            $error = '';    
+
+        if (!empty($this->postData['url']) && preg_match('/^(\w+\s)?\w+\:\/\/.*$/i', $this->postData['url'])) {
+            if ($result = call_user_func_array(array($this->db, $operation), $track)) {
+                $error = '';
+            }
+        } else {
+            $data['msg'] = $this->setLocalization('Invalid format links');
         }
-        
+
         $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
