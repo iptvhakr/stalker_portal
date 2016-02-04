@@ -186,7 +186,7 @@
                         var accessed = json.data[i].accessed;
                         var done  = json.data[i].done;
                         var name = json.data[i].name;
-                        json.data[i].rtsp_url = json.data[i].rtsp_url.length > 0?json.data[i].rtsp_url.slice(0, 30)+'...': (json.data[i].protocol != 'custom'? "<a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/check-karaoke-source' data-karaokeid='" + id + "'>{{ 'in storage'|trans }}</a>": '');
+                        json.data[i].rtsp_url = json.data[i].protocol != 'custom'? "<a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/check-karaoke-source' data-karaokeid='" + id + "'>{{ 'in storage'|trans }}</a>": (json.data[i].rtsp_url.length > 0 ? json.data[i].rtsp_url.slice(0, 30)+'...':'');
 
                         json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
                                                         <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\

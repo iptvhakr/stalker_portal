@@ -176,7 +176,7 @@ class KaraokeController extends \Controller\BaseStalkerController {
         }
         unset($karaoke[0]['id']);
 
-        if (!empty($this->postData['rtsp_url']) && preg_match('/^(\w+\s)?\w+\:\/\/.*$/i', $this->postData['rtsp_url'])) {
+        if ((!empty($this->postData['protocol']) && $this->postData['protocol'] != 'custom') || (!empty($this->postData['rtsp_url']) && preg_match('/^(\w+\s)?\w+\:\/\/.*$/i', $this->postData['rtsp_url']))) {
             $result = call_user_func_array(array($this->db, $operation), $karaoke);
             if (is_numeric($result)) {
                 $error = '';
