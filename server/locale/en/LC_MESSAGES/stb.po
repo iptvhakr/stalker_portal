@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-03 16:49+0300\n"
-"PO-Revision-Date: 2016-02-03 16:50+0300\n"
+"POT-Creation-Date: 2016-02-04 12:39+0300\n"
+"PO-Revision-Date: 2016-02-04 12:39+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -4696,6 +4696,59 @@ msgstr "Clean"
 msgid "This URL already exists"
 msgstr "This URL already exists"
 
+#: ../../../adm/js/js_translate.php:44 ../../../lib/gismeteo.class.php:31
+msgid "Jan"
+msgstr "Jan"
+
+#: ../../../adm/js/js_translate.php:45 ../../../lib/gismeteo.class.php:31
+msgid "Feb"
+msgstr "Feb"
+
+#: ../../../adm/js/js_translate.php:46 ../../../lib/gismeteo.class.php:31
+msgid "Mar"
+msgstr "Mar"
+
+#: ../../../adm/js/js_translate.php:47 ../../../lib/gismeteo.class.php:31
+msgid "Apr"
+msgstr "Apr"
+
+#: ../../../adm/js/js_translate.php:48 ../../../lib/gismeteo.class.php:31
+#: ../../../administrator/userlog.php:169
+#: ../../../administrator/all_userlog.php:165
+#: ../../../administrator/users.php:206 ../../../administrator/profile.php:211
+#: ../../../administrator/add_video.php:547
+#: ../../../administrator/add_epg.php:144
+msgid "May"
+msgstr "May"
+
+#: ../../../adm/js/js_translate.php:49 ../../../lib/gismeteo.class.php:31
+msgid "Jun"
+msgstr "Jun"
+
+#: ../../../adm/js/js_translate.php:50 ../../../lib/gismeteo.class.php:31
+msgid "Jul"
+msgstr "Jul"
+
+#: ../../../adm/js/js_translate.php:51 ../../../lib/gismeteo.class.php:31
+msgid "Aug"
+msgstr "Aug"
+
+#: ../../../adm/js/js_translate.php:52 ../../../lib/gismeteo.class.php:31
+msgid "Sep"
+msgstr "Sep"
+
+#: ../../../adm/js/js_translate.php:53 ../../../lib/gismeteo.class.php:31
+msgid "Oct"
+msgstr "Oct"
+
+#: ../../../adm/js/js_translate.php:54 ../../../lib/gismeteo.class.php:31
+msgid "Nov"
+msgstr "Nov"
+
+#: ../../../adm/js/js_translate.php:55 ../../../lib/gismeteo.class.php:31
+msgid "Dec"
+msgstr "Dec"
+
 #: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_1l"
 msgstr "A"
@@ -5266,58 +5319,6 @@ msgstr "Day"
 #: ../../../lib/gismeteo.class.php:30
 msgid "Evening"
 msgstr "Evening"
-
-#: ../../../lib/gismeteo.class.php:31
-msgid "Jan"
-msgstr "Jan"
-
-#: ../../../lib/gismeteo.class.php:31
-msgid "Feb"
-msgstr "Feb"
-
-#: ../../../lib/gismeteo.class.php:31
-msgid "Mar"
-msgstr "Mar"
-
-#: ../../../lib/gismeteo.class.php:31
-msgid "Apr"
-msgstr "Apr"
-
-#: ../../../lib/gismeteo.class.php:31 ../../../administrator/userlog.php:169
-#: ../../../administrator/all_userlog.php:165
-#: ../../../administrator/users.php:206 ../../../administrator/profile.php:211
-#: ../../../administrator/add_video.php:547
-#: ../../../administrator/add_epg.php:144
-msgid "May"
-msgstr "May"
-
-#: ../../../lib/gismeteo.class.php:31
-msgid "Jun"
-msgstr "Jun"
-
-#: ../../../lib/gismeteo.class.php:31
-msgid "Jul"
-msgstr "Jul"
-
-#: ../../../lib/gismeteo.class.php:31
-msgid "Aug"
-msgstr "Aug"
-
-#: ../../../lib/gismeteo.class.php:31
-msgid "Sep"
-msgstr "Sep"
-
-#: ../../../lib/gismeteo.class.php:31
-msgid "Oct"
-msgstr "Oct"
-
-#: ../../../lib/gismeteo.class.php:31
-msgid "Nov"
-msgstr "Nov"
-
-#: ../../../lib/gismeteo.class.php:31
-msgid "Dec"
-msgstr "Dec"
 
 #: ../../../lib/gismeteo.class.php:32
 msgid "clear"
