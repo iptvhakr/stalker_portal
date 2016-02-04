@@ -11,6 +11,7 @@ class RESTApiRequest extends HTTPRequest
     protected $resource;
     protected $action;
     protected $authorization;
+    protected $user_id;
 
     /*public function __construct(){
 
@@ -106,6 +107,14 @@ class RESTApiRequest extends HTTPRequest
             return false;
         }*/
     //}
+
+    public final function setUserId($uid){
+        $this->user_id = $uid;
+    }
+
+    public final function getUserId(){
+        return $this->user_id;
+    }
 
     public final function getAction(){
         return $this->action;

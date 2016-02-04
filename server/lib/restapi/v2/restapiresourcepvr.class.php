@@ -42,16 +42,21 @@ class RESTApiResourcePvr extends RESTApiCollection
 
     public function filter($list){
 
-        $list = array_map(function($recording){
+        $user_id = $this->user_id;
+
+        $list = array_map(function($recording) use ($user_id){
+
+            $status = $recording['started'] ? ($recording['ended'] ? 2 : 1) : 0;
 
             return array(
-                'id'         => $recording['id'],
+                'id'         => (int) $recording['id'],
                 'name'       => $recording['program'],
                 'start_time' => strtotime($recording['t_start']),
                 'end_time'   => strtotime($recording['t_stop']),
                 'ch_id'      => (int) $recording['ch_id'],
                 'ch_name'    => $recording['ch_name'],
-                'status'     => $recording['started'] ? ($recording['ended'] ? 2 : 1) : 0
+                'status'     => $status,
+                'downloadable' => $status == 2 && in_array('downloads', \Stb::getAvailableModulesByUid($user_id)) ? 1 : 0
             );
         }, $list);
 

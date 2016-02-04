@@ -37,6 +37,8 @@ class RESTApiManager
 
             \User::getInstance($session['uid']);
 
+            $request->setUserId($session['uid']);
+
             $target_resolver = new RESTApiTargetResolver();
             $target = $target_resolver->getTarget($request);
 
