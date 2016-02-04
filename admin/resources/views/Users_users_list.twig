@@ -791,6 +791,7 @@
                 $(document).on("click", "#apply_filter_button", function(e){
                     e.stopPropagation();
                     e.preventDefault();
+                    $('div[data-tvfilter] button.filter_string').trigger("click");
                     $('#datatable-1').DataTable().ajax.reload();
                     return false;
                 });
