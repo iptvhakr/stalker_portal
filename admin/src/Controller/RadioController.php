@@ -386,7 +386,7 @@ class RadioController extends \Controller\BaseStalkerController {
     
     private function getDropdownAttribute() {
         return array(
-            array('name'=>'id',                 'title'=>$this->setlocalization('ID'),                  'checked' => TRUE),
+            array('name'=>'id',                 'title'=>$this->setlocalization('ID'),                  'checked' => FALSE),
             array('name'=>'number',             'title'=>$this->setlocalization('Order'),               'checked' => TRUE),
             array('name'=>'name',               'title'=>$this->setlocalization('Title'),               'checked' => TRUE),
             array('name'=>'cmd',                'title'=>$this->setlocalization('URL'),                 'checked' => TRUE),
@@ -396,7 +396,6 @@ class RadioController extends \Controller\BaseStalkerController {
             array('name'=>'operations',         'title'=>$this->setlocalization('Operations'),          'checked' => TRUE),
         );
     }
-
 
     private function getMonitoringStatus($row) {
         $return = '';
