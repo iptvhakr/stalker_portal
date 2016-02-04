@@ -134,7 +134,7 @@
                             json.data[i].operations += "\n\
                                                             <li>\n\
                                                                 <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-version-list-json' data-id='" + id + "' data-version='" + item.version + "'>\n\
-                                                                    <span> {{ 'Edit'|trans }} </span>\n\
+                                                                    <span> {{ 'More details'|trans }} </span>\n\
                                                                 </a>\n\
                                                             </li>";
                         }
@@ -295,11 +295,16 @@
             $("#modalbox").data('complete', 1);
             $('#modalbox').find('.modal-header-name span').text(obj.info.name);
             $('#modalbox').find('.devoops-modal-inner').html($("#modal_option_form_body").text());
-            fillModalForm(obj.data.length == 1 ? obj.data[0].options : false );
+            $('#modalbox').find('.devoops-modal-bottom').html($("#modal_form_buttons").text());
+            if (obj.data.length == 1 && obj.data[0].options.length > 0) {
+                fillModalForm(obj.data[0].options);
+            } else {
+                $('#modalbox .devoops-modal-bottom').find("button[type=submit]").hide();
+                $('#modalbox .devoops-modal-bottom').find("button[type=reset]").removeClass('pull-left').addClass('pull-right').text("{{ 'Close'|trans }}");
+            }
             $('#current_version').text(obj.data.length == 1 ? obj.data[0].version : '');
             $('#apps_id').val(obj.info.id);
             $('#description').text(obj.data.length == 1 ? obj.data[0].description : '');
-            $('#modalbox').find('.devoops-modal-bottom').html($("#modal_form_buttons").text());
             $('#modalbox').show();
         };
 
