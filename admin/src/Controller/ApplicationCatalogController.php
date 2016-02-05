@@ -405,7 +405,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             array('name' => 'name',             'title' => $this->setLocalization('Application'),       'checked' => TRUE),
             /*array('name' => 'publisher',        'title' => $this->setLocalization('Publisher'),     'checked' => TRUE),*/
             array('name' => 'url',              'title' => $this->setLocalization('URL'),               'checked' => TRUE),
-            array('name' => 'current_version',  'title' => $this->setLocalization('Installed version'), 'checked' => TRUE),
+            array('name' => 'current_version',  'title' => $this->setLocalization('Current version'), 'checked' => TRUE),
             array('name' => 'status',           'title' => $this->setLocalization('State'),             'checked' => TRUE),
             array('name' => 'operations',       'title' => $this->setLocalization('Operations'),        'checked' => TRUE)
         );
@@ -414,7 +414,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
 
     private function getApplicationDetailDropdownAttribute() {
         $attribute = array(
-            array('name' => 'version',      'title' => $this->setlocalization('Application version'),   'checked' => TRUE),
+            array('name' => 'version',      'title' => $this->setLocalization('Application version'),   'checked' => TRUE),
             array('name' => 'published',    'title' => $this->setLocalization('Release date'),          'checked' => TRUE),
             array('name' => 'status',       'title' => $this->setLocalization('State'),                 'checked' => TRUE),
             array('name' => 'operations',   'title' => $this->setLocalization('Operations'),            'checked' => TRUE)

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-04 17:36+0300\n"
-"PO-Revision-Date: 2016-02-04 17:37+0300\n"
+"POT-Creation-Date: 2016-02-05 13:34+0300\n"
+"PO-Revision-Date: 2016-02-05 13:34+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -1886,8 +1886,12 @@ msgid "Application"
 msgstr "Application"
 
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:408
-msgid "Installed version"
-msgstr "Installed version"
+msgid "Current version"
+msgstr "Current version"
+
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:417
+msgid "Application version"
+msgstr "Application version"
 
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:418
 msgid "Release date"
@@ -4667,51 +4671,47 @@ msgstr "List of STBs of video-moderators by page + filters"
 msgid "List of STB by page + filters"
 msgstr "List of STB by page + filters"
 
-#: ../../../tools/misctranslations.php:714
-msgid "Application version"
-msgstr "Application version"
-
-#: ../../../tools/misctranslations.php:716
+#: ../../../tools/misctranslations.php:715
 msgid "Import tv-channels from m3u-file"
 msgstr "Import tv-channels from m3u-file"
 
-#: ../../../tools/misctranslations.php:717
+#: ../../../tools/misctranslations.php:716
 msgid "Parse m3u-file"
 msgstr "Parse m3u-file"
 
-#: ../../../tools/misctranslations.php:718
+#: ../../../tools/misctranslations.php:717
 msgid "Save one m3u-item as channel"
 msgstr "Save one m3u-item as channel"
 
-#: ../../../tools/misctranslations.php:719
+#: ../../../tools/misctranslations.php:718
 msgid "Number is unique"
 msgstr "Number is unique"
 
-#: ../../../tools/misctranslations.php:720
+#: ../../../tools/misctranslations.php:719
 msgid "Number is not unique"
 msgstr "Number is not unique"
 
-#: ../../../tools/misctranslations.php:721
+#: ../../../tools/misctranslations.php:720
 msgid "Admins in group"
 msgstr "Admins in group"
 
-#: ../../../tools/misctranslations.php:722
+#: ../../../tools/misctranslations.php:721
 msgid "Change group for all admins from current group"
 msgstr "Change group for all admins from current group"
 
-#: ../../../tools/misctranslations.php:723
+#: ../../../tools/misctranslations.php:722
 msgid "Resetting password of user access control"
 msgstr "Resetting password of user access control"
 
-#: ../../../tools/misctranslations.php:724
+#: ../../../tools/misctranslations.php:723
 msgid "Check EPG-prefix for uniqueness"
 msgstr "Check EPG-prefix for uniqueness"
 
-#: ../../../tools/misctranslations.php:725
+#: ../../../tools/misctranslations.php:724
 msgid "Publish or add to schedule"
 msgstr "Publish or add to schedule"
 
-#: ../../../tools/misctranslations.php:726
+#: ../../../tools/misctranslations.php:725
 msgid "Unpublish video"
 msgstr "Unpublish video"
 
@@ -10843,6 +10843,9 @@ msgstr "Appearance"
 #: ../../../../admin/json_menu/top_menu.json:3
 msgid "Administrator"
 msgstr "Administrator"
+
+#~ msgid "Installed version"
+#~ msgstr "Installed version"
 
 #~ msgid "Switch off movie"
 #~ msgstr "Switch off movie"
