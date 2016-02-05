@@ -11,15 +11,15 @@
                     {% if attribute(app, 'app_info') is defined and app.app_info.info|length > 0 %}
                     <div class="form-horizontal">
                         <div class="form-group">
-                            <label class="col-sm-1 control-label col-sm-offset-1">{{ 'Application'|trans }}</label>
+                            <span class="col-sm-2 no-modified text-right"><b>{{ 'Application'|trans }}</b></span>
                             <div class="col-xs-10 col-sm-10">
                                 <span class="col-xs-12 col-sm-12">
-                                    <h5>{{ app.app_info.info.name }}</h5>
+                                    {{ app.app_info.info.name }}
                                 </span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-1 control-label col-sm-offset-1">{{ 'About app'|trans }}</label>
+                            <span class="col-sm-2 no-modified text-right"><b>{{ 'About app'|trans }}</b></span>
                             <div class="col-xs-10 col-sm-10">
                                 <span class="col-xs-6 col-sm-6">
                                     <p>{{ app.app_info.info.description }}</p>
@@ -27,41 +27,39 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-1 control-label col-sm-offset-1">{{ 'URL'|trans }}</label>
+                            <span class="col-sm-2 no-modified text-right"><b>{{ 'URL'|trans }}</b></span>
                             <div class="col-xs-10 col-sm-10">
                                 <span class="col-xs-12 col-sm-12">
-                                    <h5>{{ app.app_info.info.url }}</h5>
+                                    {{ app.app_info.info.url }}
                                 </span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-1 control-label col-sm-offset-1">{{ 'Active'|trans }}</label>
+                            <span class="col-sm-2 no-modified text-right"><b>{{ 'Active'|trans }}</b></span>
                             <div class="col-xs-10 col-sm-10">
-                                <div class="toggle-switch toggle-switch-success">
-                                    <label>
+                                <span class="col-xs-12 col-sm-12">
+                                    <div class="mswitch">
                                         <input type="checkbox" value="1" name="status" id="app_status" {% if app.app_info.info.status and app.app_info.info.installed %}checked="checked"{% endif %} {% if not app.app_info.info.installed %}disabled="disabled" readonly="readonly" {% endif %}>
-                                        <div class="toggle-switch-inner"></div>
-                                        <div class="toggle-switch-switch"></div>
-                                    </label>
-                                </div>
+                                        <label class="label-success" for="app_status"></label>
+                                    </div>
+                                </span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-1 control-label col-sm-offset-1">{{ 'Auto-update'|trans }}</label>
+                            <span class="col-sm-2 no-modified text-right"><b>{{ 'Auto-update'|trans }}</b></span>
                             <div class="col-xs-10 col-sm-10">
-                                <div class="toggle-switch toggle-switch-success">
-                                    <label>
-                                        <input type="checkbox" value="1" name="autoupdate" id="app_autoupdate" {% if app.app_info.info.autoupdate %}checked="checked"{% endif %}>
-                                        <div class="toggle-switch-inner"></div>
-                                        <div class="toggle-switch-switch"></div>
-                                    </label>
-                                </div>
+                                <span class="col-xs-12 col-sm-12">
+                                    <div class="mswitch">
+                                        <input type="checkbox" value="1" name="autoupdate" id="app_autoupdate" {% if app.app_info.info.autoupdate %}checked="checked"{% endif %} {% if not app.app_info.info.installed %}disabled="disabled" readonly="readonly" {% endif %}>
+                                        <label class="label-success" for="app_autoupdate"></label>
+                                    </div>
+                                </span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-1 control-label col-sm-offset-1">{{ 'Versions'|trans }}</label>
+                            <span class="col-sm-2 no-modified text-right"><b>{{ 'Versions'|trans }}</b></span>
                             <div class="col-xs-10 col-sm-10">
-                                <div class="dataTables_processing" style="z-index: 305; min-height: 200px;"></div>
+                                <div class="dataTables_processing" style="margin-top: 0; z-index: 321;"></div>
                                 <table class="table  table-hover table-datatable" id="datatable-1">
                                     {% if attribute(app, 'dropdownAttribute') is defined %}
                                         {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
@@ -74,20 +72,19 @@
                         </div>
                     </div>
                     {% else %}
-
-                            <div class="col-xs-10 col-sm-10">
-                                <h3 class="txt-danger">
-                                    {% if attribute(app,'app_info') is defined and attribute(app['app_info'], 'error') is defined %}
-                                        {{ app.app_info.error }}
-                                    {% endif %}
-                                </h3>
-                            </div>
-
+                    <div class="col-xs-10 col-sm-10">
+                        <h3 class="txt-danger">
+                            {% if attribute(app,'app_info') is defined and attribute(app['app_info'], 'error') is defined %}
+                                {{ app.app_info.error }}
+                            {% endif %}
+                        </h3>
+                    </div>
                     {% endif %}
                 </div>
             </div>
         </div>
     </div>
+
     <script type="text/javascript" defer="defer">
 
         function DemoSelect2() {
@@ -134,7 +131,7 @@
                             json.data[i].operations += "\n\
                                                             <li>\n\
                                                                 <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-version-list-json' data-id='" + id + "' data-version='" + item.version + "'>\n\
-                                                                    <span> {{ 'Edit'|trans }} </span>\n\
+                                                                    <span> {{ 'More details'|trans }} </span>\n\
                                                                 </a>\n\
                                                             </li>";
                         }
@@ -200,12 +197,12 @@
                 $(document).on('click', "a.main_ajax", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
-                    JSshowModalBox();
                     var _this = $(this);
 
                     if ($(this).attr("disabled")) {
                         JSErrorModalBox({msg: "{{ 'Action is not available'|trans }}"});
                     } else {
+                        JSshowModalBox();
                         ajaxPostSend(_this.attr('href'), _this.data(), false );
                     }
 
@@ -276,12 +273,11 @@
 
         var manageList = function (obj) {
             $('#datatable-1').DataTable().ajax.reload();
-            if ($("#modalbox").is(':visible')) {
-                JSSuccessModalBox(obj);
-            }
+            JSSuccessModalBox(obj);
             if (typeof (obj.installed) != 'undefined' ) {
                 if (obj.installed == '1') {
                     $("#app_status").removeAttr('disabled').removeAttr('readonly');
+                    $("#app_autoupdate").removeAttr('app_autoupdate').removeAttr('app_autoupdate');
                 }
             }
         };
@@ -295,11 +291,16 @@
             $("#modalbox").data('complete', 1);
             $('#modalbox').find('.modal-header-name span').text(obj.info.name);
             $('#modalbox').find('.devoops-modal-inner').html($("#modal_option_form_body").text());
-            fillModalForm(obj.data.length == 1 ? obj.data[0].options : false );
+            $('#modalbox').find('.devoops-modal-bottom').html($("#modal_form_buttons").text());
+            if (obj.data.length == 1 && obj.data[0].options.length > 0) {
+                fillModalForm(obj.data[0].options);
+            } else {
+                $('#modalbox .devoops-modal-bottom').find("button[type=submit]").hide();
+                $('#modalbox .devoops-modal-bottom').find("button[type=reset]").removeClass('pull-left').addClass('pull-right').text("{{ 'Close'|trans }}");
+            }
             $('#current_version').text(obj.data.length == 1 ? obj.data[0].version : '');
             $('#apps_id').val(obj.info.id);
             $('#description').text(obj.data.length == 1 ? obj.data[0].description : '');
-            $('#modalbox').find('.devoops-modal-bottom').html($("#modal_form_buttons").text());
             $('#modalbox').show();
         };
 
@@ -339,12 +340,21 @@
         };
 
         var changeStatus = function(obj){
-            manageList(obj);
+            if ( typeof(obj.field) != 'undefined' && obj.field == 'app_autoupdate') {
+                JSSuccessModalBox(obj);
+            } else {
+                manageList(obj);
+            }
+            if ( typeof(obj.field) != 'undefined') {
+                $('#' + obj.field).prop('checked', obj.installed ? true: false);
+            }
         };
 
         var changeStatusError = function(obj){
             JSErrorModalBox(obj);
-            $('#app_status').prop('checked', !$('#app_status').is(':checked'));
+            if ( typeof(obj.field) != 'undefined') {
+                $('#' + obj.field).prop('checked', obj.installed ? true: false);
+            }
         };
 
         document.addEventListener("DOMContentLoaded", yelp, false);

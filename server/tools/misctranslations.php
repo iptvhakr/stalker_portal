@@ -711,7 +711,6 @@ _('Schedule switch on of movie by page + filters');
 _('List of advertising blocks by page + filters');
 _('List of STBs of video-moderators by page + filters');
 _('List of STB by page + filters');
-_('Application version');
 
 _('Import tv-channels from m3u-file');
 _('Parse m3u-file');
