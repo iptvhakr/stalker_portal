@@ -161,11 +161,12 @@ class RESTApiResourceVideo extends RESTApiCollection
         $fields_map = $this->fields_map;
         $favorites  = $this->favorites;
         $not_ended  = $this->not_ended;
+        $user_id    = $this->nested_params['users.id'];
 
         $genre  = new \VideoGenre();
         $genres_map = $genre->getIdMap();
 
-        $videos = array_map(function($video) use ($fields_map, $favorites, $not_ended, $genres_map){
+        $videos = array_map(function($video) use ($fields_map, $favorites, $not_ended, $genres_map, $user_id){
 
             $new_video = array_intersect_key($video, $fields_map);
 
@@ -191,6 +192,8 @@ class RESTApiResourceVideo extends RESTApiCollection
             $new_video['favorite']  = in_array($video['id'], $favorites) ? 1 : 0;
 
             $new_video['not_ended'] = !empty($not_ended[$video['id']]) ? 1 : 0;
+
+            $new_video['downloadable'] = (int) in_array('downloads', \Stb::getAvailableModulesByUid($user_id));
 
             if ($new_video['not_ended']){
 

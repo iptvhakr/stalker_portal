@@ -115,7 +115,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             return;
         }
 
-        if (!empty($_COOKIE['mac']) && (empty($this->id) || $this->params['status'] == 1) && !empty($_REQUEST['action']) && $_REQUEST['action'] != 'handshake' && $_REQUEST['action'] != 'get_profile' && $_REQUEST['action'] != 'get_localization' && $_REQUEST['action'] != 'do_auth'){
+        if (!empty($_COOKIE['mac']) && (empty($this->id) || $this->params['status'] == 1) && !empty($_REQUEST['action']) && $_REQUEST['action'] != 'handshake' && $_REQUEST['action'] != 'get_profile' && $_REQUEST['action'] != 'get_localization' && $_REQUEST['action'] != 'do_auth' && $_REQUEST['action'] != 'get_events' && $_REQUEST['action'] != 'get_modules' && $_REQUEST['action'] != 'get_main_info'){
             error_log("Access denied to ".$_REQUEST['type'].":".$_REQUEST['action']." for MAC: ".$this->mac);
             echo 'Access denied.';
             exit;
