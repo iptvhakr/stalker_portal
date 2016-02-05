@@ -50,7 +50,7 @@
                             <div class="col-xs-10 col-sm-10">
                                 <span class="col-xs-12 col-sm-12">
                                     <div class="mswitch">
-                                        <input type="checkbox" value="1" name="autoupdate" id="app_autoupdate" {% if app.app_info.info.autoupdate %}checked="checked"{% endif %}>
+                                        <input type="checkbox" value="1" name="autoupdate" id="app_autoupdate" {% if app.app_info.info.autoupdate %}checked="checked"{% endif %} {% if not app.app_info.info.installed %}disabled="disabled" readonly="readonly" {% endif %}>
                                         <label class="label-success" for="app_autoupdate"></label>
                                     </div>
                                 </span>
@@ -72,20 +72,19 @@
                         </div>
                     </div>
                     {% else %}
-
-                            <div class="col-xs-10 col-sm-10">
-                                <h3 class="txt-danger">
-                                    {% if attribute(app,'app_info') is defined and attribute(app['app_info'], 'error') is defined %}
-                                        {{ app.app_info.error }}
-                                    {% endif %}
-                                </h3>
-                            </div>
-
+                    <div class="col-xs-10 col-sm-10">
+                        <h3 class="txt-danger">
+                            {% if attribute(app,'app_info') is defined and attribute(app['app_info'], 'error') is defined %}
+                                {{ app.app_info.error }}
+                            {% endif %}
+                        </h3>
+                    </div>
                     {% endif %}
                 </div>
             </div>
         </div>
     </div>
+
     <script type="text/javascript" defer="defer">
 
         function DemoSelect2() {
@@ -274,12 +273,11 @@
 
         var manageList = function (obj) {
             $('#datatable-1').DataTable().ajax.reload();
-            if ($("#modalbox").is(':visible')) {
-                JSSuccessModalBox(obj);
-            }
+            JSSuccessModalBox(obj);
             if (typeof (obj.installed) != 'undefined' ) {
                 if (obj.installed == '1') {
                     $("#app_status").removeAttr('disabled').removeAttr('readonly');
+                    $("#app_autoupdate").removeAttr('app_autoupdate').removeAttr('app_autoupdate');
                 }
             }
         };
@@ -342,12 +340,21 @@
         };
 
         var changeStatus = function(obj){
-            manageList(obj);
+            if ( typeof(obj.field) != 'undefined' && obj.field == 'app_autoupdate') {
+                JSSuccessModalBox(obj);
+            } else {
+                manageList(obj);
+            }
+            if ( typeof(obj.field) != 'undefined') {
+                $('#' + obj.field).prop('checked', obj.installed ? true: false);
+            }
         };
 
         var changeStatusError = function(obj){
             JSErrorModalBox(obj);
-            $('#app_status').prop('checked', !$('#app_status').is(':checked'));
+            if ( typeof(obj.field) != 'undefined') {
+                $('#' + obj.field).prop('checked', obj.installed ? true: false);
+            }
         };
 
         document.addEventListener("DOMContentLoaded", yelp, false);

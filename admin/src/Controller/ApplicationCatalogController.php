@@ -341,14 +341,19 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         }
 
         $response['action'] = 'changeStatus';
+        $response['field'] = 'app_status';
         $postData = $this->postData;
         $id = $postData['id'];
+        $key = '';
         if (array_key_exists('status', $postData)) {
-            $postData['status'] = !empty($postData['status']) && $postData['status'] != 'false' && $postData['status'] !== FALSE? 1: 0;
+            $postData['status'] = !empty($postData['status']) && $postData['status'] != 'false' && $postData['status'] !== FALSE ? 1: 0;
+            $key = 'status';
         }
 
         if (array_key_exists('autoupdate', $postData)) {
-            $postData['autoupdate'] = !empty($postData['autoupdate']) && $postData['autoupdate'] != 'false' && $postData['autoupdate'] !== FALSE? 1: 0;
+            $postData['autoupdate'] = !empty($postData['autoupdate']) && $postData['autoupdate'] != 'false' && $postData['autoupdate'] !== FALSE ? 1: 0;
+            $response['field'] = 'app_autoupdate';
+            $key = 'autoupdate';
         }
 
         unset($postData['id']);
@@ -362,13 +367,13 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             if ($result === 0) {
                 $data['nothing_to_do'] = TRUE;
             }
-            $response['installed'] = !empty($postData['status']) && $postData['status'] != 'false' && $postData['status'] !== FALSE? 1: 0;;
+            $response['installed'] = !empty($postData[$key]) && $postData[$key] != 'false' && $postData[$key] !== FALSE? 1: 0;;
         } else {
             $response['error'] = $error = $this->setLocalization('Failed to activated of application.');
             if (!empty($postData['current_version'])) {
                 $response['error'] = $error .= $this->setLocalization('Version') . ' ' . $postData['current_version'];
             }
-            $response['installed'] = (int)!(!empty($postData['status']) && $postData['status'] != 'false' && $postData['status'] !== FALSE? 1: 0);
+            $response['installed'] = (int)!(!empty($postData[$key]) && $postData[$key] != 'false' && $postData[$key] !== FALSE? 1: 0);
         }
 
         $response = $this->generateAjaxResponse($response);
