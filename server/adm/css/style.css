@@ -672,6 +672,12 @@ label.myErrorClass {
 
 #content .col-sm-2 {padding-right: 0px !important; margin-right: -15px;  width:200px;}
 
+#content .col-sm-2.no-modified{
+    margin-right: 0 !important;
+    padding-right: 15px !important;
+    width: 16.6667% !important;
+}
+
 .table-datatable .sorting {}
 
 
