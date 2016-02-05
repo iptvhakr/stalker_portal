@@ -3711,13 +3711,15 @@ left:10px;
     height: 100% !important;
     top: 10px !important;
     margin-top: 0 !important;
-	min-height: 200px;
+	min-height: 200px !important;
 }
 
 .dataTables_processing {  
     top: 0px !important;
     background: url("../img/preloader.gif") no-repeat center 70px rgba(255, 255, 255, 0.95) !important;
     height: 100% !important;
+    z-index: 1;
+    min-height: 200px !important;
 }
 
 .round-text{

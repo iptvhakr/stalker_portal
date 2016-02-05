@@ -76,6 +76,10 @@
                                                     </div>";
                     }
                 }
+                var wrapper = $("#" + $(this).attr('id') + "_wrapper");
+                if (wrapper.prev('.dataTables_processing').is(":visible")) {
+                    wrapper.prev('.dataTables_processing').hide('');
+                }
             }).dataTable({
                 "processing": true,
                 "serverSide": false,
@@ -103,7 +107,7 @@
                     {"searchable": false, "targets": [-1, -2, -3, -4]},
                     {"sortable": false, "targets": [-1]}
                 ]
-            }).prev('.dataTables_processing').hide('');
+            });
         }
 
         function yelp() {

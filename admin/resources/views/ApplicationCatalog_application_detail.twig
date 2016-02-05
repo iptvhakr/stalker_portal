@@ -11,7 +11,7 @@
                     {% if attribute(app, 'app_info') is defined and app.app_info.info|length > 0 %}
                     <div class="form-horizontal">
                         <div class="form-group">
-                            <label class="col-sm-1 control-label col-sm-offset-1">{{ 'Application'|trans }}</label>
+                            <span class="col-sm-1 col-sm-offset-1 text-right"><b>{{ 'Application'|trans }}</b></span>
                             <div class="col-xs-10 col-sm-10">
                                 <span class="col-xs-12 col-sm-12">
                                     <h5>{{ app.app_info.info.name }}</h5>
@@ -19,7 +19,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-1 control-label col-sm-offset-1">{{ 'About app'|trans }}</label>
+                            <span class="col-sm-1 col-sm-offset-1 text-right"><b>{{ 'About app'|trans }}</b></span>
                             <div class="col-xs-10 col-sm-10">
                                 <span class="col-xs-6 col-sm-6">
                                     <p>{{ app.app_info.info.description }}</p>
@@ -27,41 +27,39 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-1 control-label col-sm-offset-1">{{ 'URL'|trans }}</label>
+                            <span class="col-sm-1 col-sm-offset-1 text-right"><b>{{ 'URL'|trans }}</b></span>
                             <div class="col-xs-10 col-sm-10">
                                 <span class="col-xs-12 col-sm-12">
-                                    <h5>{{ app.app_info.info.url }}</h5>
+                                    {{ app.app_info.info.url }}
                                 </span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-1 control-label col-sm-offset-1">{{ 'Active'|trans }}</label>
+                            <span class="col-sm-1 col-sm-offset-1 text-right"><b>{{ 'Active'|trans }}</b></span>
                             <div class="col-xs-10 col-sm-10">
-                                <div class="toggle-switch toggle-switch-success">
-                                    <label>
+                                <span class="col-xs-12 col-sm-12">
+                                    <div class="mswitch">
                                         <input type="checkbox" value="1" name="status" id="app_status" {% if app.app_info.info.status and app.app_info.info.installed %}checked="checked"{% endif %} {% if not app.app_info.info.installed %}disabled="disabled" readonly="readonly" {% endif %}>
-                                        <div class="toggle-switch-inner"></div>
-                                        <div class="toggle-switch-switch"></div>
-                                    </label>
-                                </div>
+                                        <label class="label-success" for="app_status"></label>
+                                    </div>
+                                </span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-1 control-label col-sm-offset-1">{{ 'Auto-update'|trans }}</label>
+                            <span class="col-sm-1 col-sm-offset-1 text-right"><b>{{ 'Auto-update'|trans }}</b></span>
                             <div class="col-xs-10 col-sm-10">
-                                <div class="toggle-switch toggle-switch-success">
-                                    <label>
+                                <span class="col-xs-12 col-sm-12">
+                                    <div class="mswitch">
                                         <input type="checkbox" value="1" name="autoupdate" id="app_autoupdate" {% if app.app_info.info.autoupdate %}checked="checked"{% endif %}>
-                                        <div class="toggle-switch-inner"></div>
-                                        <div class="toggle-switch-switch"></div>
-                                    </label>
-                                </div>
+                                        <label class="label-success" for="app_autoupdate"></label>
+                                    </div>
+                                </span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-1 control-label col-sm-offset-1">{{ 'Versions'|trans }}</label>
+                            <span class="col-sm-1 col-sm-offset-1 text-right"><b>{{ 'Versions'|trans }}</b></span>
                             <div class="col-xs-10 col-sm-10">
-                                <div class="dataTables_processing" style="z-index: 305; min-height: 200px;"></div>
+                                <div class="dataTables_processing" style="margin-top: 0; z-index: 321;"></div>
                                 <table class="table  table-hover table-datatable" id="datatable-1">
                                     {% if attribute(app, 'dropdownAttribute') is defined %}
                                         {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
