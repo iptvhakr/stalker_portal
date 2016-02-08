@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-05 13:34+0300\n"
-"PO-Revision-Date: 2016-02-05 13:34+0300\n"
+"POT-Creation-Date: 2016-02-05 17:44+0300\n"
+"PO-Revision-Date: 2016-02-05 17:44+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -96,10 +96,10 @@ msgstr "Publish"
 #: ../../../../admin/src/Controller/TvChannelsController.php:940
 #: ../../../../admin/src/Controller/UsersController.php:1364
 #: ../../../../admin/src/Controller/UsersController.php:1403
-#: ../../../../admin/src/Controller/AdminsController.php:701
-#: ../../../../admin/src/Controller/AdminsController.php:735
-#: ../../../../admin/src/Controller/AdminsController.php:778
-#: ../../../../admin/src/Controller/AdminsController.php:822
+#: ../../../../admin/src/Controller/AdminsController.php:706
+#: ../../../../admin/src/Controller/AdminsController.php:740
+#: ../../../../admin/src/Controller/AdminsController.php:783
+#: ../../../../admin/src/Controller/AdminsController.php:827
 msgid "Nothing to do"
 msgstr "Nothing to do"
 
@@ -166,8 +166,8 @@ msgstr "TV Archive has been restarted."
 #: ../../../../admin/src/Controller/UsersController.php:851
 #: ../../../../admin/src/Controller/UsersController.php:1194
 #: ../../../../admin/src/Controller/UsersController.php:1536
-#: ../../../../admin/src/Controller/AdminsController.php:315
-#: ../../../../admin/src/Controller/AdminsController.php:439
+#: ../../../../admin/src/Controller/AdminsController.php:320
+#: ../../../../admin/src/Controller/AdminsController.php:444
 #: ../../../lang/stb.php:362
 msgid "Error"
 msgstr "Error"
@@ -222,7 +222,7 @@ msgstr "Error"
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:258
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:298
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:336
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:380
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:385
 #: ../../../../admin/src/Controller/AudioClubController.php:285
 #: ../../../../admin/src/Controller/AudioClubController.php:353
 #: ../../../../admin/src/Controller/AudioClubController.php:377
@@ -299,19 +299,19 @@ msgstr "Error"
 #: ../../../../admin/src/Controller/TariffsController.php:380
 #: ../../../../admin/src/Controller/TariffsController.php:474
 #: ../../../../admin/src/Controller/AdminsController.php:208
-#: ../../../../admin/src/Controller/AdminsController.php:231
-#: ../../../../admin/src/Controller/AdminsController.php:282
-#: ../../../../admin/src/Controller/AdminsController.php:371
-#: ../../../../admin/src/Controller/AdminsController.php:394
-#: ../../../../admin/src/Controller/AdminsController.php:429
-#: ../../../../admin/src/Controller/AdminsController.php:456
-#: ../../../../admin/src/Controller/AdminsController.php:584
-#: ../../../../admin/src/Controller/AdminsController.php:620
-#: ../../../../admin/src/Controller/AdminsController.php:648
-#: ../../../../admin/src/Controller/AdminsController.php:677
-#: ../../../../admin/src/Controller/AdminsController.php:711
-#: ../../../../admin/src/Controller/AdminsController.php:745
-#: ../../../../admin/src/Controller/AdminsController.php:790
+#: ../../../../admin/src/Controller/AdminsController.php:236
+#: ../../../../admin/src/Controller/AdminsController.php:287
+#: ../../../../admin/src/Controller/AdminsController.php:376
+#: ../../../../admin/src/Controller/AdminsController.php:399
+#: ../../../../admin/src/Controller/AdminsController.php:434
+#: ../../../../admin/src/Controller/AdminsController.php:461
+#: ../../../../admin/src/Controller/AdminsController.php:589
+#: ../../../../admin/src/Controller/AdminsController.php:625
+#: ../../../../admin/src/Controller/AdminsController.php:653
+#: ../../../../admin/src/Controller/AdminsController.php:682
+#: ../../../../admin/src/Controller/AdminsController.php:716
+#: ../../../../admin/src/Controller/AdminsController.php:750
+#: ../../../../admin/src/Controller/AdminsController.php:795
 msgid "Page not found"
 msgstr "Page not found"
 
@@ -419,7 +419,7 @@ msgstr "This number is already in use"
 #: ../../../../admin/src/Controller/EventsController.php:870
 #: ../../../../admin/src/Controller/VideoClubController.php:2267
 #: ../../../../admin/src/Controller/VideoClubController.php:2395
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:404
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:409
 #: ../../../../admin/src/Controller/KaraokeController.php:343
 #: ../../../../admin/src/Controller/UsersController.php:2080
 msgid "ID"
@@ -507,7 +507,7 @@ msgstr "Archive"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1645
 #: ../../../../admin/src/Controller/TvChannelsController.php:1693
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:407
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:412
 #: ../../../../admin/src/Controller/KaraokeController.php:348
 #: ../../../administrator/add_itv.php:1074
 #: ../../../administrator/audio_track.php:246
@@ -540,8 +540,8 @@ msgstr "Status"
 #: ../../../../admin/src/Controller/VideoClubController.php:2281
 #: ../../../../admin/src/Controller/VideoClubController.php:2294
 #: ../../../../admin/src/Controller/VideoClubController.php:2307
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:410
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:420
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:415
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:425
 #: ../../../../admin/src/Controller/KaraokeController.php:352
 #: ../../../../admin/src/Controller/UsersController.php:2061
 #: ../../../../admin/src/Controller/UsersController.php:2074
@@ -565,8 +565,8 @@ msgstr "Update date"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1696
 #: ../../../../admin/src/Controller/EventsController.php:880
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:409
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:419
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:414
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:424
 #: ../../../../admin/src/Controller/UsersController.php:2052
 msgid "State"
 msgstr "State"
@@ -1577,7 +1577,7 @@ msgstr "Error during file moving from %s to %s"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:851
 #: ../../../../admin/src/Controller/VideoClubController.php:1681
-#: ../../../../admin/src/Controller/AdminsController.php:636
+#: ../../../../admin/src/Controller/AdminsController.php:641
 msgid "Deleted"
 msgstr "Deleted"
 
@@ -1624,8 +1624,8 @@ msgstr "Not published"
 #: ../../../../admin/src/Controller/AudioClubController.php:1090
 #: ../../../../admin/src/Controller/KaraokeController.php:163
 #: ../../../../admin/src/Controller/InfoportalController.php:250
-#: ../../../../admin/src/Controller/AdminsController.php:241
-#: ../../../../admin/src/Controller/AdminsController.php:405
+#: ../../../../admin/src/Controller/AdminsController.php:246
+#: ../../../../admin/src/Controller/AdminsController.php:410
 #: ../../../administrator/subscribe.php:82
 #: ../../../administrator/unique_video.php:101
 #: ../../../administrator/add_video.php:1406
@@ -1861,39 +1861,39 @@ msgstr "Error of installing the application"
 msgid "Error of uninstalling the application."
 msgstr "Error of uninstalling the application."
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:360
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:365
 msgid "Activated. Current version"
 msgstr "Activated. Current version"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:367
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:372
 msgid "Failed to activated of application."
 msgstr "Failed to activated of application."
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:369
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:374
 msgid "Version"
 msgstr "Version"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:391
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:396
 msgid "Application has been deleted"
 msgstr "Application has been deleted"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:393
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:398
 msgid "Failed to delete application."
 msgstr "Failed to delete application."
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:405
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:410
 msgid "Application"
 msgstr "Application"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:408
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:413
 msgid "Current version"
 msgstr "Current version"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:417
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:422
 msgid "Application version"
 msgstr "Application version"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:418
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:423
 msgid "Release date"
 msgstr "Release date"
 
@@ -1985,8 +1985,8 @@ msgstr "This name is not unique"
 #: ../../../../admin/src/Controller/UsersController.php:1806
 #: ../../../../admin/src/Controller/AdminsController.php:48
 #: ../../../../admin/src/Controller/AdminsController.php:70
-#: ../../../../admin/src/Controller/AdminsController.php:345
-#: ../../../../admin/src/Controller/AdminsController.php:553
+#: ../../../../admin/src/Controller/AdminsController.php:350
+#: ../../../../admin/src/Controller/AdminsController.php:558
 msgid "Empty"
 msgstr "Empty"
 
@@ -2037,18 +2037,18 @@ msgstr "User with this MAC-address is not defined"
 
 #: ../../../../admin/src/Controller/UsersController.php:1362
 #: ../../../../admin/src/Controller/UsersController.php:1396
-#: ../../../../admin/src/Controller/AdminsController.php:665
-#: ../../../../admin/src/Controller/AdminsController.php:699
-#: ../../../../admin/src/Controller/AdminsController.php:733
-#: ../../../../admin/src/Controller/AdminsController.php:769
-#: ../../../../admin/src/Controller/AdminsController.php:813
+#: ../../../../admin/src/Controller/AdminsController.php:670
+#: ../../../../admin/src/Controller/AdminsController.php:704
+#: ../../../../admin/src/Controller/AdminsController.php:738
+#: ../../../../admin/src/Controller/AdminsController.php:774
+#: ../../../../admin/src/Controller/AdminsController.php:818
 msgid "Moved"
 msgstr "Moved"
 
 #: ../../../../admin/src/Controller/UsersController.php:1364
 #: ../../../../admin/src/Controller/UsersController.php:1403
-#: ../../../../admin/src/Controller/AdminsController.php:701
-#: ../../../../admin/src/Controller/AdminsController.php:735
+#: ../../../../admin/src/Controller/AdminsController.php:706
+#: ../../../../admin/src/Controller/AdminsController.php:740
 msgid "Not found reseller for moving"
 msgstr "Not found reseller for moving"
 
@@ -2187,48 +2187,52 @@ msgid "Groups"
 msgstr "Groups"
 
 #: ../../../../admin/src/Controller/AdminsController.php:216
-#: ../../../../admin/src/Controller/AdminsController.php:218
+#: ../../../../admin/src/Controller/AdminsController.php:220
 msgid "Login is already used"
 msgstr "Login is already used"
 
-#: ../../../../admin/src/Controller/AdminsController.php:220
+#: ../../../../admin/src/Controller/AdminsController.php:222
 msgid "Login is available"
 msgstr "Login is available"
 
-#: ../../../../admin/src/Controller/AdminsController.php:246
+#: ../../../../admin/src/Controller/AdminsController.php:226
+msgid "Login is incorrect"
+msgstr "Login is incorrect"
+
+#: ../../../../admin/src/Controller/AdminsController.php:251
 msgid "Account \"admin\" is not editable. You may change only password."
 msgstr "Account \"admin\" is not editable. You may change only password."
 
-#: ../../../../admin/src/Controller/AdminsController.php:272
+#: ../../../../admin/src/Controller/AdminsController.php:277
 #: ../../../tools/misctranslations.php:598
 msgid "Not all required fields are filled"
 msgstr "Not all required fields are filled"
 
-#: ../../../../admin/src/Controller/AdminsController.php:379
-#: ../../../../admin/src/Controller/AdminsController.php:381
+#: ../../../../admin/src/Controller/AdminsController.php:384
+#: ../../../../admin/src/Controller/AdminsController.php:386
 msgid "Group name is already used"
 msgstr "Group name is already used"
 
-#: ../../../../admin/src/Controller/AdminsController.php:383
+#: ../../../../admin/src/Controller/AdminsController.php:388
 msgid "Group name is available"
 msgstr "Group name is available"
 
-#: ../../../../admin/src/Controller/AdminsController.php:446
+#: ../../../../admin/src/Controller/AdminsController.php:451
 msgid ""
 "{admin_count} administrators to be moved to another group before deleting"
 msgstr ""
 "{admin_count} administrators to be moved to another group before deleting"
 
-#: ../../../../admin/src/Controller/AdminsController.php:638
+#: ../../../../admin/src/Controller/AdminsController.php:643
 msgid "Found members of this reseller. Deleting not possible."
 msgstr "Found members of this reseller. Deleting not possible."
 
-#: ../../../../admin/src/Controller/AdminsController.php:667
+#: ../../../../admin/src/Controller/AdminsController.php:672
 msgid "Not found members for moving. Nothing to do"
 msgstr "Not found members for moving. Nothing to do"
 
-#: ../../../../admin/src/Controller/AdminsController.php:776
-#: ../../../../admin/src/Controller/AdminsController.php:820
+#: ../../../../admin/src/Controller/AdminsController.php:781
+#: ../../../../admin/src/Controller/AdminsController.php:825
 msgid "Not found admin-group for moving"
 msgstr "Not found admin-group for moving"
 

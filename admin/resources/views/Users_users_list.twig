@@ -344,7 +344,7 @@
 
         function DemoSelect2() {
             $("[id^='s2_']").select2({minimumResultsForSearch: -1});
-            $("[id^='filter_s2_']").select2();
+            /*$("[id^='filter_s2_']").select2();*/
         }
 
         function TestTable1() {
@@ -760,6 +760,11 @@
                 });
 
                 $(document).on('change', 'select[id^="filter_s2_"]', function (e) {
+                    if ($(this).find('option:selected').length == 0) {
+                        $($(this).find('option').get(0)).prop('selected', 'selected');
+                        $(this).select2('destroy');
+                        $(this).select2();
+                    }
                     var filter_val = $(this).find('option:selected').map(function(){return this.value}).get().join('|');
                     var filter_str = $(this).find('option:selected').map(function(){return $(this).text()}).get().join('|');
                     $(this).closest('[data-filterval]').data('filterval', filter_val);
@@ -926,6 +931,12 @@
                     JScloseModalBox();
                 });
 
+/*                $("[id^='filter_s2_']").each(function(){
+                    if ($(this).find('option:selected').length == 0) {
+                        $($(this).find('option').get(0)).prop('selected', 'selected');
+                    }
+                });*/
+
                 LoadDataTablesScripts(TestTable1);
                 LoadSelect2Script(DemoSelect2);
             });
@@ -1010,7 +1021,7 @@
         }
 
         var addEvent = function(data){
-            alert(data.msg);
+            JSSuccessModalBox(data);
             $('#modalbox_ad').click();
         };
 
@@ -1074,6 +1085,11 @@
             for (var i in filter_data.values_set) {
                 list.append('<option value="' + filter_data.values_set[i].value + '">' + filter_data.values_set[i].title + '</option>');
             }
+
+            if ($("#filter_s2_"+ filter_data.text_id).find('option:selected').length == 0) {
+                $($("#filter_s2_"+ filter_data.text_id).find('option').get(0)).prop('selected', 'selected');
+            }
+
             $("#filter_s2_"+ filter_data.text_id).select2();
         }
 

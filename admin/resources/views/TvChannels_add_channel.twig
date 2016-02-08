@@ -380,7 +380,7 @@
                             <label class="col-sm-2 control-label">{{ 'TV archive address'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
-                                    {{ form_widget(app['form'].mc_cmd, {'attr': {'class': 'form-control', 'data-validation': 'custom', 'data-validation-regexp': '^(http|udp|rtp)\:\/\/', 'data-validation-error-msg': "Valid protocols are http://, rtp:// and udp://." | trans }}) }}
+                                    {{ form_widget(app['form'].mc_cmd, {'attr': {'class': 'form-control', 'data-validation': 'custom', 'data-validation-regexp': '^(http|udp|rtp)\\:\\/\\/', 'data-validation-error-msg': "Valid protocols are http://, rtp:// and udp://." | trans }}) }}
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].mc_cmd) }}
                                         {% if attribute(app, 'error_local') is defined and attribute(app['error_local'], 'mc_cmd') is defined %}<span> {{ app['error_local']['mc_cmd'] }}</span> {% endif %}

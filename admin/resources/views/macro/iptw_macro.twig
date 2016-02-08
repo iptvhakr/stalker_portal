@@ -102,14 +102,17 @@
             {% autoescape false %}
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="no-padding">{{ title }}:</span>
                 <span>
-                    {% if '0' in value or 0 in value %}
+                    {% if '0' in value %}
                         {{ 'All'|trans }}{% if value|length > 1 %}|{% endif %}
+                    {% else %}
+                        {% set value_str='' %}
+                        {% for item in list_all %}
+                            {% if item[id_field] in value %}
+                                {% set value_str=(value_str ~ item[title_field] ~ "|")|trans %}
+                            {% endif %}
+                        {% endfor %}
+                        {{ value_str|trim('|') }}
                     {% endif %}
-                    {% for item in list_all %}
-                        {% if item[id_field] in value %}
-                            {{ item[title_field] }}{% if not(loop.last)%}|{% endif %}
-                        {% endif %}
-                    {% endfor %}
                 </span>
                 <i class="fa fa-caret-down"></i>
                 {% if not default %}
