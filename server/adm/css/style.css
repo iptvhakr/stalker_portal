@@ -4072,5 +4072,8 @@ li[data-filter='operations']{
 
 #cover_container > a:last-of-type span{
     vertical-align: middle;
-}	
+}
 
+#cover_container > img[src=''] {
+    display: none;
+}

@@ -291,10 +291,9 @@ class RadioController extends \Controller\BaseStalkerController {
                             'constraints' => array(
                                 new Assert\NotBlank(),
                                 new Assert\Regex(array(
-                                    'pattern' => '/(^.*?\s?.*?\:\/\/.*$)/',
+                                    'pattern' => '/^(\w+\s)?\w+\:\/\/.+$/i',
                                 ))
-                            ),
-                            'required' => TRUE)
+                            ))
                 )
                 ->add('volume_correction', 'choice', array(
                             'choices' => array_combine(range(-20, 20, 1), range(-100, 100, 5)),

@@ -1729,7 +1729,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
 
     private function getGenresDropdownAttribute(){
         return array(
-            array('name'=>'number',         'title'=>$this->setLocalization('Number'),          'checked' => TRUE),
+            array('name'=>'number',         'title'=>$this->setLocalization('Order'),           'checked' => TRUE),
             array('name'=>'title',          'title'=>$this->setLocalization('Title'),           'checked' => TRUE),
             array('name'=>'localized_title','title'=>$this->setLocalization('Localized title'), 'checked' => TRUE),
             array('name'=>'operations',     'title'=>$this->setLocalization('Operation'),       'checked' => TRUE)
