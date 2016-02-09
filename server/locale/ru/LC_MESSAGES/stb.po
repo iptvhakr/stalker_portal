@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-09 13:38+0300\n"
-"PO-Revision-Date: 2016-02-09 13:39+0300\n"
+"POT-Creation-Date: 2016-02-09 16:18+0300\n"
+"PO-Revision-Date: 2016-02-09 16:18+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -429,7 +429,6 @@ msgid "ID"
 msgstr "ID"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1640
-#: ../../../../admin/src/Controller/TvChannelsController.php:1732
 #: ../../../../admin/src/Controller/VideoClubController.php:2328
 #: ../../../administrator/other_city_info.php:151
 #: ../../../administrator/other_city_info.php:214
@@ -573,6 +572,10 @@ msgstr "Дата обновления"
 #: ../../../../admin/src/Controller/UsersController.php:2052
 msgid "State"
 msgstr "Состояние"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1732
+msgid "Order"
+msgstr "Порядок"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1734
 #: ../../../../admin/src/Controller/VideoClubController.php:2330
@@ -9465,9 +9468,6 @@ msgstr "Не получено"
 
 msgid "Only for"
 msgstr "Только для "
-
-msgid "Order"
-msgstr "Порядок"
 
 msgid "Pause"
 msgstr "Пауза"
