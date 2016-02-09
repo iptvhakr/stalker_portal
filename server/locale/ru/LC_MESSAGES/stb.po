@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-05 17:45+0300\n"
-"PO-Revision-Date: 2016-02-05 17:45+0300\n"
+"POT-Creation-Date: 2016-02-09 13:38+0300\n"
+"PO-Revision-Date: 2016-02-09 13:39+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -60,14 +60,14 @@ msgstr "Не мониторится"
 #: ../../../../admin/src/Controller/TvChannelsController.php:51
 #: ../../../../admin/src/Controller/TvChannelsController.php:1952
 #: ../../../../admin/src/Controller/RadioController.php:25
-#: ../../../../admin/src/Controller/RadioController.php:417
+#: ../../../../admin/src/Controller/RadioController.php:416
 msgid "errors occurred"
 msgstr "Обнаружены ошибки"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:52
 #: ../../../../admin/src/Controller/TvChannelsController.php:1946
 #: ../../../../admin/src/Controller/RadioController.php:26
-#: ../../../../admin/src/Controller/RadioController.php:415
+#: ../../../../admin/src/Controller/RadioController.php:414
 msgid "no errors"
 msgstr "Ошибок нет"
 
@@ -521,7 +521,7 @@ msgid "URL"
 msgstr "URL"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1646
-#: ../../../../admin/src/Controller/RadioController.php:395
+#: ../../../../admin/src/Controller/RadioController.php:394
 msgid "Monitoring status"
 msgstr "Статус мониторинга"
 
@@ -1973,11 +1973,11 @@ msgstr "Редактировать радио"
 msgid "This field can contain only numbers"
 msgstr "Это поле может содержать только цифры"
 
-#: ../../../../admin/src/Controller/RadioController.php:333
+#: ../../../../admin/src/Controller/RadioController.php:332
 msgid "This number is not unique"
 msgstr "Номер не уникален"
 
-#: ../../../../admin/src/Controller/RadioController.php:336
+#: ../../../../admin/src/Controller/RadioController.php:335
 msgid "This name is not unique"
 msgstr "Имя не уникально"
 
@@ -9776,11 +9776,11 @@ msgstr ""
 "Для активации этой опции, вы должны включить \"Вести мониторинг\" в разделе "
 "\"Мониторинг\""
 
+msgid "Format: URL (without solution). Example: http://lpOfStream/test.js"
+msgstr "Формат:  URL (без solution). Например: http://lpOfStream/test.js"
+
 msgid "Format: solution+URL Example ffrt http://5.39.70.216/live/88.ts"
 msgstr "Формат:  solution+URL. Например ffrt http://5.39.70.216/live/88.ts"
-
-msgid "Format: solution+URL. Example: ffrt http://lpOfStream/test.js"
-msgstr "Формат:  solution+URL. Например ffrt http://lpOfStream/test.js"
 
 msgid "General information"
 msgstr "Базовая информация"
