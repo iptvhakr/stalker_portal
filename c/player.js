@@ -2405,7 +2405,7 @@ player.prototype.play = function(item){
                 stb.setFrontPanel(item.number);
             }
 
-            if (!this.active_time_shift && !this.active_local_time_shift && (parseInt(item.use_http_tmp_link) == 1 || parseInt(item.use_load_balancing) == 1 || stb.user['force_ch_link_check'])){
+            if (!this.active_time_shift && !this.active_local_time_shift && (parseInt(item.use_http_tmp_link) == 1 || parseInt(item.use_load_balancing) == 1 || stb.user['force_ch_link_check'] && stb.cur_place != 'radio' && stb.cur_place != 'karaoke')){
                 var self = this;
                 stb.player.on_create_link = function(result){
                     _debug('player.on_create_link', result);
