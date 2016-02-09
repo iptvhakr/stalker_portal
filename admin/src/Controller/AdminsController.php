@@ -214,11 +214,16 @@ class AdminsController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'checkAdminsLogin';
         $error = $this->setLocalization('Login is already used');
-        if ($this->db->getAdminsList(array('where' => array('login' => $this->postData['login']), 'order' => array('login' => 'ASC')))) {
-            $data['chk_rezult'] = $this->setLocalization('Login is already used');
+
+        if (preg_match('/^[A-Za-z0-9_]+$/i', $this->postData['login'])) {
+            if ($this->db->getAdminsList(array('where' => array('login' => $this->postData['login']), 'order' => array('login' => 'ASC')))) {
+                $data['chk_rezult'] = $this->setLocalization('Login is already used');
+            } else {
+                $data['chk_rezult'] = $this->setLocalization('Login is available');
+                $error = '';
+            }
         } else {
-            $data['chk_rezult'] = $this->setLocalization('Login is available');
-            $error = '';
+            $data['chk_rezult'] = $this->setLocalization('Login is incorrect');
         }
         $response = $this->generateAjaxResponse($data, $error);
 
@@ -260,7 +265,7 @@ class AdminsController extends \Controller\BaseStalkerController {
         unset($item[0]['id']);
         unset($item[0]['re_pass']);
 
-        if (!empty($item[0]['pass']) || $operation != 'insertAdmin') {
+        if (preg_match('/^[A-Za-z0-9_]+$/i', $this->postData['login']) && (!empty($item[0]['pass']) || $operation != 'insertAdmin')) {
             if ($result = call_user_func_array(array($this->db, $operation), array($item))) {
                 $error = '';
             } else if (!empty($this->postData['login']) && $this->postData['login'] == 'admin') {

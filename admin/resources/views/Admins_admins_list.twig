@@ -60,7 +60,7 @@
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-10">
                                         <input type="hidden" name="id" id="adm_id" class="own_fields" data-name="id">
-                                        <input type="text" required="required" name="login" data-name="login" data-validation="custom" data-validation-regexp="[A-Za-z0-9_]" id="adm_login" class='form-control own_fields'>
+                                        <input type="text" required="required" name="login" data-name="login" data-validation="custom" data-validation-regexp="^[A-Za-z0-9_]+$" id="adm_login" class='form-control own_fields'>
                                         <div style="display: none;"></div>
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
@@ -462,12 +462,12 @@
             $("#modalbox_ad").show();
         };
 
-       
         var manageAdminsList = function (obj) {
             JSSuccessModalBox(obj);
             $("#modalbox_ad").trigger("click");
             $('#datatable-1').DataTable().ajax.reload();
         };
+
         var manageAdminsListError = function (obj) {
             JSErrorModalBox(obj);
             $("#modalbox_ad").trigger("click");
@@ -488,6 +488,7 @@
         {% endif %}
 
     </script>
+
     <script type="text/template" id="modal_move_reseller_form_body">
         <div class="box-content">
             <form class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-admin-to-reseller">
