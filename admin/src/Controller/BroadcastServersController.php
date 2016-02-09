@@ -442,7 +442,7 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
             $countries = array_flip($this->db->getContryByZoneId($data["id"]));
         }
         $all_countries = $this->db->getAllFromTable('countries');
-        $all_countries = array_combine($this->getFieldFromArray($all_countries, 'id'), $this->getFieldFromArray($all_countries, 'name'));
+        $all_countries = array_combine($this->getFieldFromArray($all_countries, 'id'), $this->getFieldFromArray($all_countries, 'name' . ($this->app['language'] != 'ru' ? "_en": "")));
         $countries = array_intersect_key($all_countries, $countries);
         $disabled_countries = array_diff_key($all_countries, $countries);
 
