@@ -23,7 +23,8 @@
             </div>
         </div>
         <div class="row">
-                <div class="box"> <a class="collapse-link">
+            <div class="box">
+                <a class="collapse-link">
                     <div class="box-header">
                         <div class="box-name">
                             <div class="row">
@@ -35,106 +36,107 @@
                         <div class="box-icons">
                             <i class="fa fa-chevron-down"></i>
                         </div>
-                    </div></a>
-                    <div class="box-content" id="add_channel_base">
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">{{ 'Channel number'|trans }}<span class="icon-required">*</span></label>
-                            <div class="col-xs-10 col-sm-6">
-                                <div class=" col-xs-10 col-sm-6">
-                                    {{ form_widget(app['form'].id) }}
-                                    {{ form_widget(app['form'].number, {'attr': {'class': 'form-control ignore', 'data-validation':'number', 'data-validation-allowing':'range[0;9999]'}}) }}
-                                    <div class="bg-danger">
-                                        {{ form_errors(app['form'].number) }}
-                                        {% if attribute(app, 'error_local') is defined and attribute(app['error_local'], 'number') is defined %}<span> {{ app['error_local']['number'] }}</span> {% endif %}
-                                    </div>
-                                </div>
-                                <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">{{ 'Number in channel list must contain only numbers from 0 to 999'|trans }}</span>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">{{ 'Channel name'|trans }}<span class="icon-required">*</span></label>
-                            <div class="col-xs-10 col-sm-6">
-                                <div class=" col-xs-10 col-sm-6">
-                                    {{ form_widget(app['form'].name, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
-                                    <div class="bg-danger">
-                                        {{ form_errors(app['form'].name) }}
-                                        {% if attribute(app, 'error_local') is defined and attribute(app['error_local'], 'name') is defined %}<span> {{ app['error_local']['name'] }}</span> {% endif %}
-                                    </div>
-                                </div>
-                                <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">{{ 'You can use Latin letters, digits and symbols from the list ! @ # $ % ^ & * ( ) _ - + : ; , .'|trans }}</span>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">{{ 'Genre'|trans }}<span class="icon-required">*</span></label>
-                            <div class="col-xs-10 col-sm-6">
-                                <div class=" col-xs-10 col-sm-6">
-                                    {{ form_widget(app['form'].tv_genre_id, {'attr': {'class': 'populate placeholder'} }) }}
-                                    <div class="bg-danger">
-                                        {{ form_errors(app['form'].tv_genre_id) }}
-                                    </div>
+                    </div>
+                </a>
+                <div class="box-content" id="add_channel_base">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{{ 'Channel number'|trans }}<span class="icon-required">*</span></label>
+                        <div class="col-xs-10 col-sm-6">
+                            <div class=" col-xs-10 col-sm-6">
+                                {{ form_widget(app['form'].id) }}
+                                {{ form_widget(app['form'].number, {'attr': {'class': 'form-control ignore', 'data-validation':'number', 'data-validation-allowing':'range[0;9999]'}}) }}
+                                <div class="bg-danger">
+                                    {{ form_errors(app['form'].number) }}
+                                    {% if attribute(app, 'error_local') is defined and attribute(app['error_local'], 'number') is defined %}<span> {{ app['error_local']['number'] }}</span> {% endif %}
                                 </div>
                             </div>
+                            <span class="help-inline col-xs-12 col-sm-12">
+                                <span class="small txt-default">{{ 'Number in channel list must contain only numbers from 0 to 999'|trans }}</span>
+                            </span>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">{{ 'Volume correction'|trans }}</label>
-                            <div class="col-xs-10 col-sm-6">
-                                <div class=" col-xs-10 col-sm-3">
-                                    {{ form_widget(app['form'].volume_correction, {'attr': {'class': 'populate placeholder'} }) }}
-                                    <div class="bg-danger">
-                                        {{ form_errors(app['form'].volume_correction) }}
-                                    </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{{ 'Channel name'|trans }}<span class="icon-required">*</span></label>
+                        <div class="col-xs-10 col-sm-6">
+                            <div class=" col-xs-10 col-sm-6">
+                                {{ form_widget(app['form'].name, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
+                                <div class="bg-danger">
+                                    {{ form_errors(app['form'].name) }}
+                                    {% if attribute(app, 'error_local') is defined and attribute(app['error_local'], 'name') is defined %}<span> {{ app['error_local']['name'] }}</span> {% endif %}
                                 </div>
-                                <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">{{ 'Sets compulsory volume level for this channel'|trans }}</span>
-                                </span>
+                            </div>
+                            <span class="help-inline col-xs-12 col-sm-12">
+                                <span class="small txt-default">{{ 'You can use Latin letters, digits and symbols from the list ! @ # $ % ^ & * ( ) _ - + : ; , .'|trans }}</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{{ 'Genre'|trans }}<span class="icon-required">*</span></label>
+                        <div class="col-xs-10 col-sm-6">
+                            <div class=" col-xs-10 col-sm-6">
+                                {{ form_widget(app['form'].tv_genre_id, {'attr': {'class': 'populate placeholder'} }) }}
+                                <div class="bg-danger">
+                                    {{ form_errors(app['form'].tv_genre_id) }}
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">{{ 'Channel logo'|trans }}:</label>
-                            <div class="col-xs-10 col-sm-8">
-                                <div class=" col-xs-12 col-sm-8 pull-right" id="cover_container">
-                                    {{form_widget(app['form'].logo) }}
-                                    <img class="channel-logo" src="{% if app['form'].logo.vars.value %}{{ app.baseHost }}{{app['form'].logo.vars.value }}?{{ random(100000) }}{% endif %}" alt="" style="max-width: 100%;">
-                                    <div class="col-xs-2 col-sm-1 no-padding" id="deletelogolink">
-                                        <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/delete-logo" data-logo_id="{% if app['form'].id.vars.value %}{{app['form'].id.vars.value}}{% endif %}"><span class="txt-primary">{{ 'Delete logo'|trans }}</span></a>
-                                    </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{{ 'Volume correction'|trans }}</label>
+                        <div class="col-xs-10 col-sm-6">
+                            <div class=" col-xs-10 col-sm-3">
+                                {{ form_widget(app['form'].volume_correction, {'attr': {'class': 'populate placeholder'} }) }}
+                                <div class="bg-danger">
+                                    {{ form_errors(app['form'].volume_correction) }}
                                 </div>
-                               <div class="pull-left" id="bootstrapped-fine-uploader"></div>
-                                <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">{{ 'Recommended format – png, no smaller than 96*96 pixels, maximum size of the file – 1 MB.'|trans }}</span>
-                                </span>
                             </div>
+                            <span class="help-inline col-xs-12 col-sm-12">
+                                <span class="small txt-default">{{ 'Sets compulsory volume level for this channel'|trans }}</span>
+                            </span>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">{{ 'Streaming links'|trans }}:</label>
-                            <div class="col-xs-10 col-sm-8">
-                                <div class=" col-xs-10 col-sm-12">
-                                    <table class="table  table-hover" id="cmd_data">
-                                        <thead>
-                                            <tr>
-                                                <th>{{ 'Adress'|trans }}</th>
-                                                <th>{{ 'Priority'|trans }}</th>
-                                                <th>{{ 'Temporary HTTP–link'|trans }}</th>
-                                                <th>{{ 'Monitoring'|trans }}</th>
-                                                <th>{{ 'Monitoring status'|trans }}</th>
-                                                <th>{{ 'Loading balance'|trans }}</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <!-- Start: list_row -->
-                                            {% if attribute(app['form'], 'cmd') is defined and app['form']['cmd']|length >= 1 %}
-                                            {% for key in app['form'].cmd|keys %}
-                                                {% if attribute(app['form']['cmd'][key].vars, 'value') is defined %}
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{{ 'Channel logo'|trans }}:</label>
+                        <div class="col-xs-10 col-sm-8">
+                            <div class=" col-xs-12 col-sm-8 pull-right" id="cover_container">
+                                {{form_widget(app['form'].logo) }}
+                                <img class="channel-logo" src="{% if app['form'].logo.vars.value %}{{ app.baseHost }}{{app['form'].logo.vars.value }}?{{ random(100000) }}{% endif %}" alt="" style="max-width: 100%;">
+                                <div class="col-xs-2 col-sm-1 no-padding" id="deletelogolink">
+                                    <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/delete-logo" data-logo_id="{% if app['form'].id.vars.value %}{{app['form'].id.vars.value}}{% endif %}"><span class="txt-primary">{{ 'Delete logo'|trans }}</span></a>
+                                </div>
+                            </div>
+                            <div class="pull-left" id="bootstrapped-fine-uploader"></div>
+                            <span class="help-inline col-xs-12 col-sm-12">
+                                <span class="small txt-default">{{ 'Recommended format – png, no smaller than 96*96 pixels, maximum size of the file – 1 MB.'|trans }}</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{{ 'Streaming links'|trans }}:</label>
+                        <div class="col-xs-10 col-sm-8">
+                            <div class=" col-xs-10 col-sm-12">
+                                <table class="table  table-hover" id="cmd_data">
+                                    <thead>
+                                    <tr>
+                                        <th>{{ 'Adress'|trans }}</th>
+                                        <th>{{ 'Priority'|trans }}</th>
+                                        <th>{{ 'Temporary HTTP–link'|trans }}</th>
+                                        <th>{{ 'Monitoring'|trans }}</th>
+                                        <th>{{ 'Monitoring status'|trans }}</th>
+                                        <th>{{ 'Loading balance'|trans }}</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <!-- Start: list_row -->
+                                    {% if attribute(app['form'], 'cmd') is defined and app['form']['cmd']|length >= 1 %}
+                                        {% for key in app['form'].cmd|keys %}
+                                            {% if attribute(app['form']['cmd'][key].vars, 'value') is defined %}
                                                 <tr>
                                                     <td>
                                                         {{ main_macro.input_hidden(app['form']['cmd'], 'cmd', key, 1) }}
                                                         {{ main_macro.input_hidden(app['form']['user_agent_filter'], 'user_agent_filter', key, 0) }}
-                                                    </td>                                                
+                                                    </td>
                                                     <td>
                                                         {{ main_macro.input_hidden(app['form']['priority'], 'priority', key, 1) }}
                                                     </td>
@@ -156,7 +158,7 @@
                                                     <td>
                                                         <div class="col-sm-12">
                                                             {% if attribute(app['form']['monitoring_status'], key) is defined and attribute(app['form']['enable_monitoring'], key) is defined %}
-                                                            {{ main_macro.set_monitoring_status(app['form']['monitoring_status'], key, app['form']['enable_monitoring'][key].vars.data) }}
+                                                                {{ main_macro.set_monitoring_status(app['form']['monitoring_status'], key, app['form']['enable_monitoring'][key].vars.data) }}
                                                             {% else %}
                                                                 <div>
                                                                     <label> - </label>
@@ -178,7 +180,7 @@
                                                     </td>
                                                     <td>
                                                         <div class="col-xs-3 col-sm-8">
-                                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                                                 <i class="pull-right fa fa-cog"></i>
                                                             </a>
                                                             <ul class="dropdown-menu pull-right">
@@ -196,104 +198,96 @@
                                                         </div>
                                                     </td>
                                                 </tr>
-                                                {% endif %}
-                                            {% endfor %}
                                             {% endif %}
-                                                <tr>
-                                                    <td>
-                                                        <label data-field="form[cmd]"></label>
-                                                        <input type="hidden" disabled="disabled" name="form[cmd][0]" id="form_cmd_0">
-                                                        <input type="hidden" disabled="disabled" name="form[user_agent_filter][0]" id="form_user_agent_filter_0">
-                                                    </td>
-                                                    <td>
-                                                        <label data-field="form[priority]"></label>
-                                                        <input type="hidden" disabled="disabled" name="form[priority][0]" id="form_priority_0">
-                                                    </td>
-                                                    <td>
-                                                        <div class="col-sm-12">
-                                                            <div class="toggle-switch toggle-switch-success">
-                                                                <label>
-                                                                    <input type="checkbox" value="1" disabled="disabled" name="form[use_http_tmp_link][0]" id="form_use_http_tmp_link_0">
-                                                                    <div class="toggle-switch-inner"></div>
-                                                                    <div class="toggle-switch-switch"></div>
-                                                                </label>
-                                                            </div>
-                                                            <input type="hidden" disabled="disabled" name="form[wowza_tmp_link][0]" id="form_wowza_tmp_link_0">
-                                                            <input type="hidden" disabled="disabled" name="form[nginx_secure_link][0]" id="form_nginx_secure_link_0">
-                                                            <input type="hidden" disabled="disabled" name="form[flussonic_tmp_link][0]" id="form_flussonic_tmp_link_0">
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="col-sm-12">
-                                                            <div class="toggle-switch toggle-switch-success">
-                                                                <label>
-                                                                    <input type="checkbox" value="1" disabled="disabled" name="form[enable_monitoring][0]" id="form_enable_monitoring_0">
-                                                                    <div class="toggle-switch-inner"></div>
-                                                                    <div class="toggle-switch-switch"></div>
-                                                                </label>
-                                                                <input type="hidden" disabled="disabled" name="form[enable_balancer_monitoring][0]" id="form_enable_balancer_monitoring_0">
-                                                                <input type="hidden" disabled="disabled" name="form[monitoring_url][0]" id="form_monitoring_url_0">
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="col-sm-12">
-                                                            <div >
-                                                                <label>-</label>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="col-sm-12">
-                                                            <div class="toggle-switch toggle-switch-success">
-                                                                <label>
-                                                                    <input type="checkbox" value="1" disabled="disabled" name="form[use_load_balancing][0]" id="form_use_load_balancing_0">
-                                                                    <div class="toggle-switch-inner"></div>
-                                                                    <div class="toggle-switch-switch"></div>
-                                                                </label>
-                                                                <input type="hidden" disabled="disabled" name="form[stream_server][0]" id="form_stream_server_0">
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="col-xs-3 col-sm-8">
-                                                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">                    
-                                                                <i class="pull-right fa fa-cog"></i>
-                                                            </a>
-                                                            <ul class="dropdown-menu pull-right">
-                                                                <li>
-                                                                    <a class="channel_url_change_data" href="#">
-                                                                        <span>{{ 'Edit'|trans }}</span>
-                                                                    </a>
-                                                                </li>
-                                                                <li>
-                                                                    <a class="channel_url_remove_data" href="#">
-                                                                        <span>{{ 'Delete'|trans }}</span>
-                                                                    </a>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            <!-- End: list_row -->
-                                        </tbody>
-                                    </table>
-                                </div>
-                                {% if attribute(app, 'error_local') is defined and attribute(app['error_local'], 'cmd') is defined %}
+                                        {% endfor %}
+                                    {% endif %}
+                                    <tr>
+                                        <td>
+                                            <label data-field="form[cmd]"></label>
+                                            <input type="hidden" disabled="disabled" name="form[cmd][0]" id="form_cmd_0">
+                                            <input type="hidden" disabled="disabled" name="form[user_agent_filter][0]" id="form_user_agent_filter_0">
+                                        </td>
+                                        <td>
+                                            <label data-field="form[priority]"></label>
+                                            <input type="hidden" disabled="disabled" name="form[priority][0]" id="form_priority_0">
+                                        </td>
+                                        <td>
+                                            <div class="col-sm-12">
+                                                <div class="mswitch">
+                                                    <input type="checkbox" value="1" disabled="disabled" name="form[use_http_tmp_link][0]" id="form_use_http_tmp_link_0">
+                                                    <label for="form_use_http_tmp_link_0"  class="label-success"></label>
+                                                </div>
+                                                <input type="hidden" disabled="disabled" name="form[wowza_tmp_link][0]" id="form_wowza_tmp_link_0">
+                                                <input type="hidden" disabled="disabled" name="form[nginx_secure_link][0]" id="form_nginx_secure_link_0">
+                                                <input type="hidden" disabled="disabled" name="form[flussonic_tmp_link][0]" id="form_flussonic_tmp_link_0">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-sm-12">
+                                                <div class="mswitch">
+                                                    <input type="checkbox" value="1" disabled="disabled" name="form[enable_monitoring][0]" id="form_enable_monitoring_0">
+                                                    <label for="form_enable_monitoring_0"  class="label-success"></label>
+                                                </div>
+                                                <input type="hidden" disabled="disabled" name="form[enable_balancer_monitoring][0]" id="form_enable_balancer_monitoring_0">
+                                                <input type="hidden" disabled="disabled" name="form[monitoring_url][0]" id="form_monitoring_url_0">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-sm-12">
+                                                <div >
+                                                    <label>-</label>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-sm-12">
+                                                <div class="mswitch">
+                                                    <input type="checkbox" value="1" disabled="disabled" name="form[use_load_balancing][0]" id="form_use_load_balancing_0">
+                                                    <label for="form_use_load_balancing_0"  class="label-success"></label>
+                                                </div>
+                                                <input type="hidden" disabled="disabled" name="form[stream_server][0]" id="form_stream_server_0">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-xs-3 col-sm-8">
+                                                <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                                    <i class="pull-right fa fa-cog"></i>
+                                                </a>
+                                                <ul class="dropdown-menu pull-right">
+                                                    <li>
+                                                        <a class="channel_url_change_data" href="#">
+                                                            <span>{{ 'Edit'|trans }}</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="channel_url_remove_data" href="#">
+                                                            <span>{{ 'Delete'|trans }}</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <!-- End: list_row -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            {% if attribute(app, 'error_local') is defined and attribute(app['error_local'], 'cmd') is defined %}
                                 <div class=" col-xs-10 col-sm-12">
                                     <div class="bg-danger lead">
-                                        <span> {{ app['error_local']['cmd'] }}</span> 
+                                        <span> {{ app['error_local']['cmd'] }}</span>
                                     </div>
                                 </div>
-                                {% endif %}
-                                <div class="pull-left">
-                                    <a class="btn btn-success btn-block" id="add_broadcasting_link"><span>{{ 'Add link'|trans }}</span></a>
-                                </div>
+                            {% endif %}
+                            <div class="pull-left">
+                                <a class="btn btn-success btn-block" id="add_broadcasting_link"><span>{{ 'Add link'|trans }}</span></a>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="box"> <a class="collapse-link">
+            </div>
+            <div class="box">
+                <a class="collapse-link">
                     <div class="box-header">
                         <div class="box-name">
                             <div class="row">
@@ -315,126 +309,128 @@
                             <i class="fa fa-chevron-up"></i>
                         </div>
                         <div class="no-move"></div>
-                    </div> </a>
-                    <div class="box-content" id="add_channel_storage_save">
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">{{ 'Enable TV archive'|trans }}</label>
-                            <div class="col-xs-10 col-sm-6">
-                                <div class=" col-xs-10 col-sm-1">
-                                    <div class="checkbox">
-                                        <label>
-                                            {{ form_widget(app['form'].enable_tv_archive) }}
-                                            <i class="fa fa-square-o small"></i>
-                                        </label>
-                                        <div class="bg-danger">
-                                            {{ form_errors(app['form'].enable_tv_archive) }}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class=" col-xs-10 col-sm-3" id="wowza_dvr">
-                                    <label class="col-sm-8 control-label">{{ 'Wowza DVR'|trans }}</label>
-                                    <div class="checkbox">
-                                        <label>
-                                            {{ form_widget(app['form'].wowza_dvr) }}
-                                            <i class="fa fa-square-o small"></i>
-                                        </label>
-                                        <div class="bg-danger">
-                                            {{ form_errors(app['form'].wowza_dvr) }}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class=" col-xs-10 col-sm-3" id="flussonic_dvr">
-                                    <label class="col-sm-8 control-label">{{ 'Flussonic DVR'|trans }}</label>
-                                    <div class="checkbox">
-                                        <label>
-                                            {{ form_widget(app['form'].flussonic_dvr) }}
-                                            <i class="fa fa-square-o small"></i>
-                                        </label>
-                                        <div class="bg-danger">
-                                            {{ form_errors(app['form'].flussonic_dvr) }}
-                                        </div>
+                    </div>
+                </a>
+                <div class="box-content" id="add_channel_storage_save">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{{ 'Enable TV archive'|trans }}</label>
+                        <div class="col-xs-10 col-sm-6">
+                            <div class=" col-xs-10 col-sm-1">
+                                <div class="checkbox">
+                                    <label>
+                                        {{ form_widget(app['form'].enable_tv_archive) }}
+                                        <i class="fa fa-square-o small"></i>
+                                    </label>
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].enable_tv_archive) }}
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">{{ 'Archive servers'|trans }}</label>
-                            <div class="col-xs-10 col-sm-6">
-                                <div class=" col-xs-10 col-sm-6">
-                                    {{ form_widget(app['form'].storage_names, {'attr': {'class': 'populate placeholder'}}) }}
+                            <div class=" col-xs-10 col-sm-3" id="wowza_dvr">
+                                <label class="col-sm-8 control-label">{{ 'Wowza DVR'|trans }}</label>
+                                <div class="checkbox">
+                                    <label>
+                                        {{ form_widget(app['form'].wowza_dvr) }}
+                                        <i class="fa fa-square-o small"></i>
+                                    </label>
                                     <div class="bg-danger">
-                                        {{ form_errors(app['form'].storage_names) }}
-                                    </div>
-                                    {{ form_widget(app['form'].wowza_storage_names, {'attr': {'class': 'populate placeholder'}}) }}
-                                    <div class="bg-danger">
-                                        {{ form_errors(app['form'].wowza_storage_names) }}
-                                    </div>
-                                    {{ form_widget(app['form'].flussonic_storage_names, {'attr': {'class': 'populate placeholder'}}) }}
-                                    <div class="bg-danger">
-                                        {{ form_errors(app['form'].flussonic_storage_names) }}
+                                        {{ form_errors(app['form'].wowza_dvr) }}
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">{{ 'TV archive address'|trans }}</label>
-                            <div class="col-xs-10 col-sm-6">
-                                <div class=" col-xs-10 col-sm-6">
-                                    {{ form_widget(app['form'].mc_cmd, {'attr': {'class': 'form-control', 'data-validation': 'custom', 'data-validation-regexp': '^(http|udp|rtp)\\:\\/\\/.+', 'data-validation-error-msg': "Valid protocols are http://, rtp:// and udp://." | trans }}) }}
+                            <div class=" col-xs-10 col-sm-3" id="flussonic_dvr">
+                                <label class="col-sm-8 control-label">{{ 'Flussonic DVR'|trans }}</label>
+                                <div class="checkbox">
+                                    <label>
+                                        {{ form_widget(app['form'].flussonic_dvr) }}
+                                        <i class="fa fa-square-o small"></i>
+                                    </label>
                                     <div class="bg-danger">
-                                        {{ form_errors(app['form'].mc_cmd) }}
-                                        {% if attribute(app, 'error_local') is defined and attribute(app['error_local'], 'mc_cmd') is defined %}<span> {{ app['error_local']['mc_cmd'] }}</span> {% endif %}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">{{ 'TV archive length'|trans }}</label>
-                            <div class="col-xs-10 col-sm-6">
-                                <div class=" col-xs-10 col-sm-6">
-                                    {{ form_widget(app['form'].tv_archive_duration, {'attr': {'class': 'form-control populate placeholder' }}) }}
-                                    <div class="bg-danger">
-                                        {{ form_errors(app['form'].tv_archive_duration) }}
-                                    </div>
-                                </div>
-                                <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">{{ 'Measured in hours'|trans }}</span>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">{{ 'Allow nPVR'|trans }}</label>
-                            <div class="col-xs-10 col-sm-6">
-                                <div class=" col-xs-10 col-sm-2">
-                                    <div class="checkbox">
-                                        <label>
-                                         {{ form_widget(app['form'].allow_pvr) }}     
-                                            <i class="fa fa-square-o small"></i>
-                                        </label>
-                                        <div class="bg-danger">
-                                             {{ form_errors(app['form'].allow_pvr) }}
-                                        </div>
-                                    </div>
-                                </div>
-                                <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">{{ 'Allow the user to record selected programs on the server repository'|trans }}</span>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">{{ 'nPVR servers'|trans }}</label>
-                            <div class="col-xs-10 col-sm-6">
-                                <div class=" col-xs-10 col-sm-6">
-                                     {{ form_widget(app['form'].pvr_storage_names, {'attr': {'class': 'populate placeholder' }}) }}
-                                    <div class="bg-danger">
-                                        {{ form_errors(app['form'].pvr_storage_names) }}
+                                        {{ form_errors(app['form'].flussonic_dvr) }}
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{{ 'Archive servers'|trans }}</label>
+                        <div class="col-xs-10 col-sm-6">
+                            <div class=" col-xs-10 col-sm-6">
+                                {{ form_widget(app['form'].storage_names, {'attr': {'class': 'populate placeholder'}}) }}
+                                <div class="bg-danger">
+                                    {{ form_errors(app['form'].storage_names) }}
+                                </div>
+                                {{ form_widget(app['form'].wowza_storage_names, {'attr': {'class': 'populate placeholder'}}) }}
+                                <div class="bg-danger">
+                                    {{ form_errors(app['form'].wowza_storage_names) }}
+                                </div>
+                                {{ form_widget(app['form'].flussonic_storage_names, {'attr': {'class': 'populate placeholder'}}) }}
+                                <div class="bg-danger">
+                                    {{ form_errors(app['form'].flussonic_storage_names) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{{ 'TV archive address'|trans }}</label>
+                        <div class="col-xs-10 col-sm-6">
+                            <div class=" col-xs-10 col-sm-6">
+                                {{ form_widget(app['form'].mc_cmd, {'attr': {'class': 'form-control', 'data-validation': 'custom', 'data-validation-regexp': '^(http|udp|rtp)\\:\\/\\/', 'data-validation-error-msg': "Valid protocols are http://, rtp:// and udp://." | trans }}) }}
+                                <div class="bg-danger">
+                                    {{ form_errors(app['form'].mc_cmd) }}
+                                    {% if attribute(app, 'error_local') is defined and attribute(app['error_local'], 'mc_cmd') is defined %}<span> {{ app['error_local']['mc_cmd'] }}</span> {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{{ 'TV archive length'|trans }}</label>
+                        <div class="col-xs-10 col-sm-6">
+                            <div class=" col-xs-10 col-sm-6">
+                                {{ form_widget(app['form'].tv_archive_duration, {'attr': {'class': 'form-control populate placeholder', 'data-validation':'number', 'data-validation-allowing':'range[0;999]', 'data-validation-error-msg': "Allowed values from 0 to 999" | trans }}) }}
+                                <div class="bg-danger">
+                                    {{ form_errors(app['form'].tv_archive_duration) }}
+                                </div>
+                            </div>
+                            <span class="help-inline col-xs-12 col-sm-12">
+                                <span class="small txt-default">{{ 'Measured in hours'|trans }}</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{{ 'Allow nPVR'|trans }}</label>
+                        <div class="col-xs-10 col-sm-6">
+                            <div class=" col-xs-10 col-sm-2">
+                                <div class="checkbox">
+                                    <label>
+                                        {{ form_widget(app['form'].allow_pvr) }}
+                                        <i class="fa fa-square-o small"></i>
+                                    </label>
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].allow_pvr) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="help-inline col-xs-12 col-sm-12">
+                                <span class="small txt-default">{{ 'Allow the user to record selected programs on the server repository'|trans }}</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{{ 'nPVR servers'|trans }}</label>
+                        <div class="col-xs-10 col-sm-6">
+                            <div class=" col-xs-10 col-sm-6">
+                                {{ form_widget(app['form'].pvr_storage_names, {'attr': {'class': 'populate placeholder' }}) }}
+                                <div class="bg-danger">
+                                    {{ form_errors(app['form'].pvr_storage_names) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="box"> <a class="collapse-link">
+            </div>
+            <div class="box">
+                <a class="collapse-link">
                     <div class="box-header">
                         <div class="box-name">
                             <div class="row">
@@ -456,39 +452,41 @@
                             <i class="fa fa-chevron-up"></i>
                         </div>
                         <div class="no-move"></div>
-                    </div>  </a>
-                    <div class="box-content" id="add_channel_EPG">
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">{{ 'XMLTV ID'|trans }}</label>
-                            <div class="col-xs-10 col-sm-6">
-                                <div class=" col-xs-10 col-sm-6">
-                                    {{ form_widget(app['form'].xmltv_id, {'attr': {'class': 'form-control' }}) }}
-                                    <div class="bg-danger">
-                                        {{ form_errors(app['form'].xmltv_id) }}
-                                    </div>
+                    </div>
+                </a>
+                <div class="box-content" id="add_channel_EPG">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{{ 'XMLTV ID'|trans }}</label>
+                        <div class="col-xs-10 col-sm-6">
+                            <div class=" col-xs-10 col-sm-6">
+                                {{ form_widget(app['form'].xmltv_id, {'attr': {'class': 'form-control' }}) }}
+                                <div class="bg-danger">
+                                    {{ form_errors(app['form'].xmltv_id) }}
                                 </div>
-                                <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">{{ 'XMLTV ID of channel in EPG file. If the EPG source has the prefix state it in &lt;prefix&gt;_XMLTV ID format'|trans }}</span>
-                                </span>
                             </div>
+                            <span class="help-inline col-xs-12 col-sm-12">
+                                <span class="small txt-default">{{ 'XMLTV ID of channel in EPG file. If the EPG source has the prefix state it in &lt;prefix&gt;_XMLTV ID format'|trans }}</span>
+                            </span>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">{{ 'Time correction for EPG'|trans }}</label>
-                            <div class="col-xs-10 col-sm-6">
-                                <div class=" col-xs-10 col-sm-6">
-                                    {{ form_widget(app['form'].correct_time, {'attr': {'class': 'form-control', 'data-validation':'number', 'data-validation-allowing':'range[-720;840],negative', 'data-validation-error-msg': "Allowed values from -720 to 840" | trans}}) }} {# {'attr': {'class': 'form-control populate placeholder', 'data-validation': 'number', 'data-validation-allowing': 'range[-720;840],negative' }}) }}#}
-                                    <div class="bg-danger">
-                                        {{ form_errors(app['form'].correct_time) }}
-                                    </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{{ 'Time correction for EPG'|trans }}</label>
+                        <div class="col-xs-10 col-sm-6">
+                            <div class=" col-xs-10 col-sm-6">
+                                {{ form_widget(app['form'].correct_time, {'attr': {'class': 'form-control', 'data-validation':'number', 'data-validation-allowing':'range[-720;840],negative', 'data-validation-error-msg': "Allowed values from -720 to 840" | trans}}) }} {# {'attr': {'class': 'form-control populate placeholder', 'data-validation': 'number', 'data-validation-allowing': 'range[-720;840],negative' }}) }}#}
+                                <div class="bg-danger">
+                                    {{ form_errors(app['form'].correct_time) }}
                                 </div>
-                                <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">{{ 'Measured in minutes'|trans }}</span>
-                                </span>
                             </div>
+                            <span class="help-inline col-xs-12 col-sm-12">
+                                <span class="small txt-default">{{ 'Measured in minutes'|trans }}</span>
+                            </span>
                         </div>
                     </div>
                 </div>
-                <div class="box"> <a class="collapse-link">
+            </div>
+            <div class="box">
+                <a class="collapse-link">
                     <div class="box-header">
                         <div class="box-name">
                             <div class="row">
@@ -510,30 +508,32 @@
                             <i class="fa fa-chevron-up"></i>
                         </div>
                         <div class="no-move"></div>
-                    </div></a>
-                    <div class="box-content" id="add_channel_safety">
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">{{ 'Age restriction'|trans }}</label>
-                            <div class="col-xs-10 col-sm-6">
-                                <div class=" col-xs-10 col-sm-2">
-                                    <div class="checkbox">
-                                        <label>
-                                            {{ form_widget(app['form'].censored) }}    
-                                            <i class="fa fa-square-o small"></i>
-                                        </label>
-                                        <div class="bg-danger">
-                                            {{ form_errors(app['form'].censored) }}
-                                        </div>
+                    </div>
+                </a>
+                <div class="box-content" id="add_channel_safety">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{{ 'Age restriction'|trans }}</label>
+                        <div class="col-xs-10 col-sm-6">
+                            <div class=" col-xs-10 col-sm-2">
+                                <div class="checkbox">
+                                    <label>
+                                        {{ form_widget(app['form'].censored) }}
+                                        <i class="fa fa-square-o small"></i>
+                                    </label>
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].censored) }}
                                     </div>
                                 </div>
-                                <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">{{ 'Sets the password restriction on the channel Default password 0000'|trans }}</span>
-                                </span>
                             </div>
+                            <span class="help-inline col-xs-12 col-sm-12">
+                                <span class="small txt-default">{{ 'Sets the password restriction on the channel Default password 0000'|trans }}</span>
+                            </span>
                         </div>
                     </div>
                 </div>
-                <div class="box"><a class="collapse-link">
+            </div>
+            <div class="box">
+                <a class="collapse-link">
                     <div class="box-header">
                         <div class="box-name">
                             <div class="row">
@@ -555,30 +555,32 @@
                             <i class="fa fa-chevron-up"></i>
                         </div>
                         <div class="no-move"></div>
-                    </div></a>
-                    <div class="box-content" id="add_channel_type">
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">{{ 'Basic channel'|trans }}</label>
-                            <div class="col-xs-10 col-sm-6">
-                                <div class=" col-xs-10 col-sm-2">
-                                    <div class="checkbox">
-                                        <label>
-                                            {{ form_widget(app['form'].base_ch) }}    
-                                            <i class="fa fa-square-o small"></i>
-                                        </label>
-                                        <div class="bg-danger">
-                                            {{ form_errors(app['form'].base_ch) }}
-                                        </div>
+                    </div>
+                </a>
+                <div class="box-content" id="add_channel_type">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{{ 'Basic channel'|trans }}</label>
+                        <div class="col-xs-10 col-sm-6">
+                            <div class=" col-xs-10 col-sm-2">
+                                <div class="checkbox">
+                                    <label>
+                                        {{ form_widget(app['form'].base_ch) }}
+                                        <i class="fa fa-square-o small"></i>
+                                    </label>
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].base_ch) }}
                                     </div>
                                 </div>
-                                <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">{{ 'Ignore is Tariff plan functional is used'|trans }}</span>
-                                </span>
                             </div>
+                            <span class="help-inline col-xs-12 col-sm-12">
+                                <span class="small txt-default">{{ 'Ignore is Tariff plan functional is used'|trans }}</span>
+                            </span>
                         </div>
                     </div>
                 </div>
-                <div class="box">  <a class="collapse-link">
+            </div>
+            <div class="box">
+                <a class="collapse-link">
                     <div class="box-header">
                         <div class="box-name">
                             <div class="row">
@@ -600,49 +602,50 @@
                             <i class="fa fa-chevron-up"></i>
                         </div>
                         <div class="no-move"></div>
-                    </div> </a>
-                    <div class="box-content" id="add_channel_usb_store">
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">{{ 'TimeShift via USB devices'|trans }}</label>
-                            <div class="col-xs-10 col-sm-6">
-                                <div class=" col-xs-10 col-sm-2">
-                                    <div class="checkbox">
-                                        <label>
-                                            {{ form_widget(app['form'].allow_local_timeshift) }}    
-                                            <i class="fa fa-square-o small"></i>
-                                        </label>
-                                        <div class="bg-danger">
-                                            {{ form_errors(app['form'].allow_local_timeshift) }}
-                                        </div>
+                    </div>
+                </a>
+                <div class="box-content" id="add_channel_usb_store">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{{ 'TimeShift via USB devices'|trans }}</label>
+                        <div class="col-xs-10 col-sm-6">
+                            <div class=" col-xs-10 col-sm-2">
+                                <div class="checkbox">
+                                    <label>
+                                        {{ form_widget(app['form'].allow_local_timeshift) }}
+                                        <i class="fa fa-square-o small"></i>
+                                    </label>
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].allow_local_timeshift) }}
                                     </div>
                                 </div>
-                                <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">{{ 'User can perform TimeShift function using Flash drive, HDD or SSD.'|trans }}</span>
-                                </span>
                             </div>
+                            <span class="help-inline col-xs-12 col-sm-12">
+                                <span class="small txt-default">{{ 'User can perform TimeShift function using Flash drive, HDD or SSD.'|trans }}</span>
+                            </span>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">{{ 'PVR to the USB-driver'|trans }}</label>
-                            <div class="col-xs-10 col-sm-6">
-                                <div class=" col-xs-10 col-sm-2">
-                                    <div class="checkbox">
-                                        <label>
-                                            {{ form_widget(app['form'].allow_local_pvr) }}    
-                                            <i class="fa fa-square-o small"></i>
-                                        </label>
-                                        <div class="bg-danger">
-                                            {{ form_errors(app['form'].allow_local_pvr) }}
-                                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{{ 'PVR to the USB-driver'|trans }}</label>
+                        <div class="col-xs-10 col-sm-6">
+                            <div class=" col-xs-10 col-sm-2">
+                                <div class="checkbox">
+                                    <label>
+                                        {{ form_widget(app['form'].allow_local_pvr) }}
+                                        <i class="fa fa-square-o small"></i>
+                                    </label>
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].allow_local_pvr) }}
                                     </div>
                                 </div>
-                                <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">{{ 'User can record selected shows and programs to the Flash drive, HDD or SSD.'|trans }}</span>
-                                </span>
                             </div>
+                            <span class="help-inline col-xs-12 col-sm-12">
+                                <span class="small txt-default">{{ 'User can record selected shows and programs to the Flash drive, HDD or SSD.'|trans }}</span>
+                            </span>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="box">
                 <div class="box-content">
@@ -1097,8 +1100,11 @@
                     e.stopPropagation();
                     e.preventDefault();
                     var ignore = new Array();
-                    if (!$("#form_enable_tv_archive").prop('checked') && !$("#form_allow_pvr").prop('checked')) {
-                        ignore.push($("#form_mc_cmd").prop('name'));
+                    if (!$("#form_enable_tv_archive").prop('checked')) {
+                        ignore.push($("#form_tv_archive_duration").prop('name'));
+                        if (!$("#form_allow_pvr").prop('checked')) {
+                            ignore.push($("#form_mc_cmd").prop('name'));
+                        }
                     }
 
                     conf.ignore = ignore;
