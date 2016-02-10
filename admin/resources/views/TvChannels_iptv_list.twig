@@ -199,11 +199,33 @@
                 LoadSelect2Script(DemoSelect2);
 
                 $(".datepicker").datepicker({
-                            language    : 'ru',
-                            dateFormat  : 'dd-mm-yy',
-                            firstDay    : 1
-                        }
-                );
+                    language    : '{% if attribute(app, 'locale') is defined and app['locale']|length == 2 %}{{ app['locale'] }}{% else %}en{% endif %}',
+                    dateFormat  : 'dd-mm-yy',
+                    firstDay    : 1,
+                    dayNamesMin : [
+                        '{{ 'Sun'|trans }}',
+                        '{{ 'Mon'|trans }}',
+                        '{{ 'Tue'|trans }}',
+                        '{{ 'Wed'|trans }}',
+                        '{{ 'Thu'|trans }}',
+                        '{{ 'Fri'|trans }}',
+                        '{{ 'Sat'|trans }}'
+                    ],
+                    monthNames  : [
+                        '{{ 'January'|trans }}',
+                        '{{ 'February'|trans }}',
+                        '{{ 'March'|trans }}',
+                        '{{ 'April'|trans }}',
+                        '{{ 'May'|trans }}',
+                        '{{ 'June'|trans }}',
+                        '{{ 'July'|trans }}',
+                        '{{ 'August'|trans }}',
+                        '{{ 'September'|trans }}',
+                        '{{ 'October'|trans }}',
+                        '{{ 'November'|trans }}',
+                        '{{ 'December'|trans }}'
+                    ]
+                });
 
                 $(document).on('click', "a.main_ajax", function (e) {
                     e.stopPropagation();
@@ -252,7 +274,7 @@
                 $(document).on('click', "#get_epg_button", function(e){
                     e.stopPropagation();
                     e.preventDefault();
-                    ajaxPostSend("{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-channel-epg-item?id=" + $("#s2_channel").val(), {});
+                    ajaxPostSend("{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-channel-epg-item?id=" + $("#s2_channel").val(), {epg_date : $("#epg_date").val()});
                 });
 
                 $("#modalbox_ad").on('click', "button[type='submit']", function(e){
@@ -292,7 +314,7 @@
 
         function fillEPGForm(data){
             $( "#s2_channel").select2("val", data.ch_id );
-            $( "#epg_date" ).datepicker( "setDate", data.epg_date);
+            $( "#epg_date").removeAttr('disabled').datepicker( "setDate", data.epg_date);
             $( "#epg_body" ).val(data.epg_body);
         }
 

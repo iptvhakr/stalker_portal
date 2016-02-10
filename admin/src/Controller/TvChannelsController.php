@@ -75,7 +75,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         }
 
         $allChannels = $this->iptv_list_json();
-        $this->app['allChannels'] = $allChannels['data'];
+        $this->app['allChannels'] = $this->db->getAllFromTable('itv');
         $this->app['recordsFiltered'] = $allChannels['recordsFiltered'];
         $this->app['totalRecords'] = $allChannels['recordsTotal'];
         $this->app['allGenres'] = $this->getAllGenres();
