@@ -58,7 +58,7 @@
                         </div>
                         <div class="form-group">
                             <span class="col-sm-2 no-modified text-right"><b>{{ 'Versions'|trans }}</b></span>
-                            <div class="col-xs-10 col-sm-10">
+                            <div class="col-xs-10 col-sm-10" id="applications_version_table">
                                 <div class="dataTables_processing" style="margin-top: 0; z-index: 321;"></div>
                                 <table class="table  table-hover table-datatable" id="datatable-1">
                                     {% if attribute(app, 'dropdownAttribute') is defined %}

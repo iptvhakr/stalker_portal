@@ -8,7 +8,7 @@ $.extend(true, $.fn.dataTable.defaults, {
         var th_length=$('#datatable-1 th').length;
         var tr_width=$('#datatable-1 tr').width();
         var plus_width=tr_width;
-        if (tr_width==null || plus_width <=980 || plus_width >1280) {} else {$("body").css({width: 295+ plus_width});}
+        if (tr_width==null || plus_width <=980 || plus_width >1280 || $("#applications_version_table").length) {} else {$("body").css({width: 295+ plus_width});}
 
         $(oSettings.nTableWrapper).on("input keypress keyup", "input", function (e) {
             this.value = this.value.replace(/^\s+/ig, '').replace(/\s{2}/ig, ' ');
