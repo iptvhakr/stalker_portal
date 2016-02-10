@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-09 18:15+0300\n"
-"PO-Revision-Date: 2016-02-09 18:17+0300\n"
+"POT-Creation-Date: 2016-02-10 12:27+0300\n"
+"PO-Revision-Date: 2016-02-10 12:27+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -2202,8 +2202,8 @@ msgid "Login is available"
 msgstr "Логин доступен"
 
 #: ../../../../admin/src/Controller/AdminsController.php:226
-msgid "Login is incorrect"
-msgstr "Некорректный логин"
+msgid "Used illegal characters"
+msgstr "Использованы недопустимые символы"
 
 #: ../../../../admin/src/Controller/AdminsController.php:251
 msgid "Account \"admin\" is not editable. You may change only password."
@@ -10870,6 +10870,9 @@ msgstr "Внешний вид"
 #: ../../../../admin/json_menu/top_menu.json:3
 msgid "Administrator"
 msgstr "Администратор"
+
+#~ msgid "Login is incorrect"
+#~ msgstr "Некорректный логин"
 
 #~ msgid "Installed version"
 #~ msgstr "Установленная версия"
