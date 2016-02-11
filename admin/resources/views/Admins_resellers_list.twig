@@ -83,7 +83,7 @@
                         <div class="box-content">
                             <div class="row">
                                 <div class="col-xs-10 col-sm-6 pull-right">
-                                      <button type="submit" class="btn btn-success col-sm-5 pull-right">{{ 'Save'|trans }}</button>
+                                    <button type="submit" class="btn btn-success col-sm-5 pull-right">{{ 'Save'|trans }}</button>
                                     <button type="reset" class="btn btn-default col-sm-5 pull-left" > {{ 'Cancel'|trans }} </button>
                                 </div>
                             </div>
@@ -187,12 +187,13 @@
                     return false;
                 });
 
-                $("#form_reset").on('click', function (e) {
+                $(document).on('click', "#form_reset", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
                     if (!$(this).closest('form').find("input[type='hidden']").val()) {
-                        $(this).closest('form').get(0).reset();
+                        $('#modalbox form').get(0).reset();
                     }
+                    JScloseModalBox();
                     return false;
                 });
 
