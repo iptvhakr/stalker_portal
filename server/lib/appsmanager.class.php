@@ -2,12 +2,18 @@
 
 class AppsManager
 {
+    private $lang;
+
+    public function __construct($lang = null){
+        $this->lang = $lang ? $lang : 'en';
+    }
 
     public function getList($without_fetch = false){
 
         $db_apps = Mysql::getInstance()->from('apps')->orderby('id')->get()->all();
+        $lang = $this->lang;
 
-        $apps = array_map(function($app) use ($without_fetch){
+        $apps = array_map(function($app) use ($without_fetch, $lang){
 
             if (!$without_fetch) {
 
@@ -33,6 +39,15 @@ class AppsManager
                 $app['installed'] = false;
             }
 
+            if ($app['localization'] && ($localization = json_decode($app['localization'], true))){
+                if (!empty($localization[$lang]['name'])){
+                    $app['name'] = $localization[$lang]['name'];
+                }
+
+                if (!empty($localization[$lang]['description'])){
+                    $app['description'] = $localization[$lang]['description'];
+                }
+            }
 
             $app['app_url'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
                 .'://'.$_SERVER['HTTP_HOST']
@@ -233,6 +248,12 @@ class AppsManager
                 $update_data['icon_color'] = $info['config']['backgroundColor'];
             }
 
+            $localization = $this->getAppLocalization($app_id, $latest_release['tag_name']);
+
+            if (!empty($localization)){
+                $update_data['localization'] = json_encode($localization);
+            }
+
             Mysql::getInstance()->update('apps',
                 $update_data,
                 array('id' => $app_id)
@@ -240,6 +261,54 @@ class AppsManager
         }
 
         return $result;
+    }
+
+    private function getAppLocalization($app_id, $version = null){
+
+        $app = Mysql::getInstance()->from('apps')->where(array('id' => $app_id))->get()->first();
+
+        if (!$version){
+            $version = $app['current_version'];
+        }
+
+        if (empty($app)){
+            return false;
+        }
+
+        $path = PROJECT_PATH.'/../../'.Config::getSafe('apps_path', 'stalker_apps/').$app['alias'].'/'.$version.'/';
+
+        $app_localizations = array();
+
+        if (!is_dir($path.'/lang/')){
+            return false;
+        }
+
+        $scanned_directory = array_diff(scandir($path.'/lang/'), array('..', '.'));
+
+        $languages = array_map(function($file){
+            return str_replace('.json', '', $file);
+        }, $scanned_directory);
+
+        $languages = array_merge(array($this->lang, 'en'), array_diff($languages, array($this->lang, 'en')));
+
+        foreach ($languages as $lang){
+            if (is_readable($path.'/lang/'.$lang.'.json')){
+                $localization = json_decode(file_get_contents($path.'/lang/'.$lang.'.json'), true);
+                if (!empty($localization['data'][''])){
+                    $localization = $localization['data'][''];
+
+                    if (!empty($localization[$app['name']])){
+                        $app_localizations[$lang]['name'] = $localization[$app['name']];
+                    }
+
+                    if (!empty($localization[$app['description']])){
+                        $app_localizations[$lang]['description'] = $localization[$app['description']];
+                    }
+                }
+            }
+        }
+
+        return $app_localizations;
     }
 
     public function updateApp($app_id, $version = null){
@@ -309,6 +378,12 @@ class AppsManager
 
             if (!empty($info['config']['backgroundColor'])){
                 $update_data['icon_color'] = $info['config']['backgroundColor'];
+            }
+
+            $localization = $this->getAppLocalization($app_id, $version);
+
+            if (!empty($localization)){
+                $update_data['localization'] = json_encode($localization);
             }
 
             Mysql::getInstance()->update('apps', $update_data, array('id' => $app_id));

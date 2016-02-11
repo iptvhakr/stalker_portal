@@ -429,8 +429,8 @@ function common_xpcom(){
                         _debug('redirect to the new launcher');
                         window.stop();
                         document.body.hide();
-                        _debug('../new/launcher/?profile=' + encodeURIComponent('../../server/api/launcher_profile.php?uid=' + this.user['id']));
-                        window.location = '../new/launcher/?profile=' + encodeURIComponent('../../server/api/launcher_profile.php?uid=' + this.user['id']);
+                        _debug('../new/launcher/?profile=' + encodeURIComponent('../../server/api/launcher_profile.php?uid=' + this.user['id'] + '&language='+this.stb_lang));
+                        window.location = '../new/launcher/?profile=' + encodeURIComponent('../../server/api/launcher_profile.php?uid=' + this.user['id'] + '&language='+this.stb_lang);
                         return;
                     }else{
                         result.template = 'default';
@@ -1083,8 +1083,8 @@ function common_xpcom(){
                 _debug('redirect to the new launcher');
                 window.stop();
                 document.body.hide();
-                _debug('../new/launcher/?profile=' + encodeURIComponent('../../server/api/launcher_profile.php?uid=' + this.user['id']));
-                window.location = '../new/launcher/?profile=' + encodeURIComponent('../../server/api/launcher_profile.php?uid=' + this.user['id']);
+                _debug('../new/launcher/?profile=' + encodeURIComponent('../../server/api/launcher_profile.php?uid=' + this.user['id'] + '&language='+this.stb_lang));
+                window.location = '../new/launcher/?profile=' + encodeURIComponent('../../server/api/launcher_profile.php?uid=' + this.user['id'] + '&language='+this.stb_lang);
                 return;
             }
 
