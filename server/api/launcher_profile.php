@@ -11,7 +11,7 @@ $file = file_get_contents('../../new/launcher/profile.json');
 
 $profile = json_decode($file, true);
 
-$apps = new AppsManager();
+$apps = new AppsManager(isset($_GET['language']) ? $_GET['language'] : null);
 $external_apps = $apps->getList(true);
 
 $installed_apps = array_values(array_filter($external_apps, function($app){

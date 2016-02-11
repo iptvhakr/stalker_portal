@@ -429,8 +429,8 @@ function common_xpcom(){
                         _debug('redirect to the new launcher');
                         window.stop();
                         document.body.hide();
-                        _debug('../new/launcher/?profile=' + encodeURIComponent('../../server/api/launcher_profile.php?uid=' + this.user['id']));
-                        window.location = '../new/launcher/?profile=' + encodeURIComponent('../../server/api/launcher_profile.php?uid=' + this.user['id']);
+                        _debug('../new/launcher/?profile=' + encodeURIComponent('../../server/api/launcher_profile.php?uid=' + this.user['id'] + '&language='+this.stb_lang));
+                        window.location = '../new/launcher/?profile=' + encodeURIComponent('../../server/api/launcher_profile.php?uid=' + this.user['id'] + '&language='+this.stb_lang);
                         return;
                     }else{
                         result.template = 'default';
@@ -961,11 +961,6 @@ function common_xpcom(){
         _debug('this.image_date:', this.image_date);
         _debug('this.num_banks:', this.num_banks);
         _debug('this.hw_version:', this.hw_version);
-        //_debug('stb.user.image_version:', stb.user['image_version']);
-
-        if (this.image_version < 203 && this.image_version != 0){
-            return;
-        }
 
         _debug('checking conditions');
         _debug('typeof stb.user[autoupdate]', typeof(stb.user['autoupdate']));
@@ -1088,8 +1083,8 @@ function common_xpcom(){
                 _debug('redirect to the new launcher');
                 window.stop();
                 document.body.hide();
-                _debug('../new/launcher/?profile=' + encodeURIComponent('../../server/api/launcher_profile.php?uid=' + this.user['id']));
-                window.location = '../new/launcher/?profile=' + encodeURIComponent('../../server/api/launcher_profile.php?uid=' + this.user['id']);
+                _debug('../new/launcher/?profile=' + encodeURIComponent('../../server/api/launcher_profile.php?uid=' + this.user['id'] + '&language='+this.stb_lang));
+                window.location = '../new/launcher/?profile=' + encodeURIComponent('../../server/api/launcher_profile.php?uid=' + this.user['id'] + '&language='+this.stb_lang);
                 return;
             }
 
