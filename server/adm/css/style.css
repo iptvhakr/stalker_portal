@@ -1903,6 +1903,23 @@ border: 1px solid #F3E3AA;
   background-color: #fff;
  
 }
+
+.filter_s.open > .dropdown-menu ul {
+    border-radius: 0 !important;
+    border-color: transparent !important;
+    border-style: inset;
+    position: relative;
+    top: -1px;
+}
+
+.filter_s.open > .dropdown-menu .select2-container-multi .select2-choices{
+    margin-bottom: 0;
+}
+
+.filter_s.open > .dropdown-menu .select2-container-multi.select2-container-active.select2-dropdown-open .select2-choices{
+    border-bottom-color: #d3d3d3 !important;
+}
+
 .select2-container-multi .select2-choices .select2-search-field input {
   padding: 0;
   margin: 0;
@@ -3148,6 +3165,11 @@ color:#000; background-color:#FFF; border:1px solid #000; margin-top:5px !import
     border-radius: 0 !important;
     margin: 0 50px 0 5px !important;
     padding-right: 5px !important;
+    padding-left: 5px !important;
+}
+
+#iptv_list div[data-tvfilter] .datepicker:first-of-type{
+    margin-bottom: 5px !important;
 }
 
 #iptv_list .btn.filter_string {
@@ -3943,7 +3965,7 @@ table.dataTable tfoot td {
    border-bottom: 1px solid #E3E3E3 !important;
 }
 footer {width:100%; color:#000; background-color:#f2f2f2; border-top:1px solid #DDDDDD; position:fixed; height:30px; text-align:center; z-index:21;right:0;bottom:0px;padding-top:6px;font-size:13px;}
-footer .text { margin:0 auto; width:600px;}
+footer .text { margin:0 auto; width:640px;}
 footer a {color:#000; margin-right:5px;margin-left:5px;}
 .no-footer {border-bottom: 1px solid #E3E3E3 !important;}
 table.dataTable thead th,
@@ -4039,6 +4061,7 @@ li[data-filter='operations']{
 
 #cover_container{
     position: relative;
+    min-height: 0;
 }
 
 #cover_container > a:last-of-type, #deletelogolink{
@@ -4074,6 +4097,6 @@ li[data-filter='operations']{
     vertical-align: middle;
 }
 
-#cover_container > img[src=''] {
-    display: none;
+#cover_container > img[src=''], #cover_container > img[src=''] + a {
+    display: none !important;
 }

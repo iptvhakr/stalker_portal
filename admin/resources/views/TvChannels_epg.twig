@@ -97,7 +97,7 @@
                                         <input type="text" name="id_prefix" id="form_id_prefix" class='form-control own_fields'>
                                         <div></div>
                                     </div>
-                                    <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="help-inline col-xs-10 col-sm-10">
                                         <span class="small txt-default">{{ 'Prefix is necessary to distinguish the EPG source in case, if the following XNLTV ID is stated in several sources'|trans }}</span>
                                     </span>
                                 </div>
@@ -115,11 +115,11 @@
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Languages by priority'|trans }}</label>
-                                <div class="col-sm-12">
+                                <div class="col-sm-10" style="margin-left: 8% !important">
                                     <input type="hidden" class="own_fields" name="lang_code" value="">
                                     <fieldset id="letters" class="col-sm-12">
-                                        <div class="col-sm-4 col-xs-offset-1">
-                                            <label class="col-sm-12 control-label">{{ 'Available'|trans }}</label>
+                                        <div class="col-sm-5">
+                                            <label class="col-sm-12 text-center">{{ 'Available'|trans }}</label>
                                             <select size="9" class="left populate placeholder col-sm-12" multiple="multiple" name="s2_lang_code_available" id="s2_lang_code_available" >
                                                 {% if attribute(app, 'allLanguages') is defined %}
                                                     {% for code, lang in app.allLanguages %}
@@ -134,8 +134,8 @@
                                             <button type="button" class="remove btn btn-block btn-default"> &lt; </button>
                                             <button type="button" class="remove all btn btn-block btn-default"> &lt;&lt; {{ 'all'|trans }}</button>
                                         </div>
-                                        <div class="col-sm-4">
-                                            <label class="col-sm-12 control-label">{{ 'Selected'|trans }}</label>
+                                        <div class="col-sm-5">
+                                            <label class="col-sm-12 text-center">{{ 'Selected'|trans }}</label>
                                             <select size="9" class="right populate placeholder col-sm-12" multiple="multiple" name="s2_lang_code" id="s2_lang_code" >
                                             </select>
                                         </div>
@@ -152,9 +152,9 @@
                     <div class="box">
                         <div class="box-content">
                             <div class="row">
-                                <div class="col-xs-10 col-sm-6 pull-right">
-                                    <button type="submit" class="btn btn-success col-sm-5 pull-right">{{ 'Save'|trans }}</button>
-                                    <button type="reset" class="btn btn-default col-sm-5 pull-left" > {{ 'Cancel'|trans }} </button>
+                                <div class="col-xs-11 col-sm-11 col-sm-offset-1 col-xs-offset-1">
+                                    <button type="submit" class="btn btn-success col-sm-3 col-sm-offset-4">{{ 'Save'|trans }}</button>
+                                    <button type="reset" class="btn btn-default col-sm-3  col-sm-offset-1" > {{ 'Cancel'|trans }} </button>
                                 </div>
                             </div>
                         </div>
@@ -246,7 +246,6 @@
                     e.stopPropagation();
                     e.preventDefault();
                     $("#modalbox").data('complete', 0);
-                    showModalBox();
                     var sendData = $(this).data();
                     ajaxPostSend($(this).attr('href'), sendData, false, false);
                     $(this).closest('div.open').removeClass('open');
@@ -262,7 +261,7 @@
                 });
 
                 var conf = {
-                    form: 'epg_form',
+                    form: '#epg_form',
                     lang : '{{ app.language }}',
                     showHelpOnFocus : true,
                     validateHiddenInputs: true,
@@ -287,7 +286,6 @@
                             JSErrorModalBox({msg: '{{ 'Fill in the required fields'|trans }}'});
                             return false;
                         }
-                        showModalBox();
                         ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
                         return false;
                     },
@@ -409,6 +407,7 @@
             closeModalBox();
             $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Edit EPG'|trans }}');
             $('#form_id_prefix').next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
+            $('#form_uri').next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
             $('#epg_form').find('[type="submit"]').prop('disabled', false);
             if (data.data.length == 1) {
                 var row = data.data[0];
@@ -451,10 +450,6 @@
 
         function closeModalBox(){
             JScloseModalBox();
-        }
-        
-        function showModalBox(){
-            JSshowModalBox();
         }
 
         var checkData = function(obj){

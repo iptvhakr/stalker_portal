@@ -75,7 +75,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         }
 
         $allChannels = $this->iptv_list_json();
-        $this->app['allChannels'] = $allChannels['data'];
+        $this->app['allChannels'] = $this->db->getAllFromTable('itv');
         $this->app['recordsFiltered'] = $allChannels['recordsFiltered'];
         $this->app['totalRecords'] = $allChannels['recordsTotal'];
         $this->app['allGenres'] = $this->getAllGenres();
@@ -1479,15 +1479,15 @@ class TvChannelsController extends \Controller\BaseStalkerController {
 
     private function createTasks($id, $data) {
 
-        if (!empty($data['enable_tv_archive']) && $data['enable_tv_archive'] != 'off'){
+        if (!empty($data['enable_tv_archive']) && $data['enable_tv_archive'] !== 'off'){
 
             $storage_names = array();
-            if (!empty($data['flussonic_dvr']) && $data['flussonic_dvr'] != 'off'){
+            if (!empty($data['flussonic_dvr']) && $data['flussonic_dvr'] !== 'off'){
                 $archive = new \FlussonicTvArchive();
                 if (!empty($data['flussonic_storage_names'])) {
                     $storage_names = $data['flussonic_storage_names'];
                 }
-            } elseif (!empty($data['wowza_dvr']) && $data['wowza_dvr'] != 'off'){
+            } elseif (!empty($data['wowza_dvr']) && $data['wowza_dvr'] !== 'off'){
                 $archive = new \WowzaTvArchive();
                 if (!empty($data['wowza_storage_names'])) {
                     $storage_names = $data['wowza_storage_names'];

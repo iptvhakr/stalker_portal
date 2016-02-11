@@ -107,7 +107,7 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
                 reset($this->broadcasting_keys);
                 while (list($key, $value) = each($this->broadcasting_keys)) {
                     if (array_key_exists($key, $data) and array_key_exists($cmd_key, $data[$key])) {
-                        $this->broadcasting_keys[$key] |= (is_numeric($data[$key][$cmd_key])? (int) $data[$key][$cmd_key]: ($data[$key][$cmd_key] == 'on'));
+                        $this->broadcasting_keys[$key] |= (is_numeric($data[$key][$cmd_key])? (int) $data[$key][$cmd_key]: (!empty($data[$key][$cmd_key]) && $data[$key][$cmd_key] !== 'off'));
                     }
                 }
             }
@@ -159,7 +159,7 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
                 reset($this->broadcasting_keys);
                 while (list($key, $value) = each($this->broadcasting_keys)) {
                     if (array_key_exists($key, $data) and array_key_exists($cmd_key, $data[$key])) {
-                        $this->broadcasting_keys[$key] |= (bool)(is_numeric($data[$key][$cmd_key])? (int) $data[$key][$cmd_key]: ($data[$key][$cmd_key] == 'on'));
+                        $this->broadcasting_keys[$key] |= (bool)(is_numeric($data[$key][$cmd_key])? (int) $data[$key][$cmd_key]: (!empty($data[$key][$cmd_key]) && $data[$key][$cmd_key] !== 'off'));
                     }
                 }
             }

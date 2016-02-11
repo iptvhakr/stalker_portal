@@ -10,30 +10,10 @@
         <script src="{{app.request.baseUrl}}/plugins/bootstrap/bootstrap.min.js"></script>
         <script src="{{app.request.baseUrl}}/plugins/justified-gallery/jquery.justifiedgallery.min.js"></script>
         <script src="{{app.request.baseUrl}}/plugins/fineuploader/jquery.fineuploader-5.0.1.js"></script>
+        <script src="{{app.workHost}}c/version.js"></script>
 {#        <script src="{{app.request.baseUrl}}/plugins/tinymce/tinymce.min.js"></script>
         <script src="{{app.request.baseUrl}}/plugins/tinymce/jquery.tinymce.min.js"></script>#}
         <!-- All functions for this theme + document.ready processing -->
-        <script type="text/javascript" defer="defer">
-            var words = [];
-            var lang = $.cookies.get('language');
-            $.ajax({
-                type: "GET",
-                url: "./js/js_translate.php",
-                async: false,
-                data: {language: lang},
-                dataType: "json",
-                success: function(data){
-                    for (var key in data){
-                        words[key] = data[key];
-                    }
-                }
-            });
-
-            $('#datatable-1').on( 'draw.dt', function () {
-                $('#wrapper').css({minHeight: heightCalculate()});
-            } );
-
-        </script>
         <script src="{{app.request.baseUrl}}/plugins/form-validator/jquery.form-validator.min.js"></script>
         <script src="{{app.request.baseUrl}}/js/devoops.js"></script>
         <script src="{{app.request.baseUrl}}/plugins/multiselect_transfer/jquery.selso.js"></script>
@@ -54,7 +34,32 @@
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-locale="{{ item }}"><span class="lang-xs" lang="{{ item|slice(0,2) }}"></span>{{ key }}</a></li>
                 {% endfor %}
             </ul>
-        </div>
+        </div> -
         {% endif %}
+        <span id="portal_version_srt" class="text-default"></span>
     </div>
+    <script type="text/javascript" defer="defer">
+        var words = [];
+        var lang = $.cookies.get('language');
+        $.ajax({
+            type: "GET",
+            url: "./js/js_translate.php",
+            async: false,
+            data: {language: lang},
+            dataType: "json",
+            success: function(data){
+                for (var key in data){
+                    words[key] = data[key];
+                }
+            }
+        });
+
+        $('#datatable-1').on( 'draw.dt', function () {
+            $('#wrapper').css({minHeight: heightCalculate()});
+        } );
+        if (typeof (ver) != 'undefined') {
+            $("#portal_version_srt").text(" v " + ver);
+        }
+
+    </script>
 </footer>

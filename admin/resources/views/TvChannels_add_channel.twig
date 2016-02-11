@@ -607,7 +607,7 @@
                 <div class="box-content" id="add_channel_usb_store">
                     <div class="form-group">
                         <label class="col-sm-2 control-label">{{ 'TimeShift via USB devices'|trans }}</label>
-                        <div class="col-xs-10 col-sm-6">
+                        <div class="col-xs-10 col-sm-7">
                             <div class=" col-xs-10 col-sm-2">
                                 <div class="checkbox">
                                     <label>
@@ -620,13 +620,14 @@
                                 </div>
                             </div>
                             <span class="help-inline col-xs-12 col-sm-12">
-                                <span class="small txt-default">{{ 'User can perform TimeShift function using Flash drive, HDD or SSD.'|trans }}</span>
+                                <span class="small txt-default">{{ 'User can perform TimeShift function using Flash drive.'|trans }}</span>
+                                <span class="small txt-default">{{ 'TimeShift only works with solutions rtp and ffrt.'|trans }}</span>
                             </span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">{{ 'PVR to the USB-driver'|trans }}</label>
-                        <div class="col-xs-10 col-sm-6">
+                        <div class="col-xs-10 col-sm-7">
                             <div class=" col-xs-10 col-sm-2">
                                 <div class="checkbox">
                                     <label>
@@ -639,7 +640,8 @@
                                 </div>
                             </div>
                             <span class="help-inline col-xs-12 col-sm-12">
-                                <span class="small txt-default">{{ 'User can record selected shows and programs to the Flash drive, HDD or SSD.'|trans }}</span>
+                                <span class="small txt-default">{{ 'User can record selected shows and programs to the Flash drive.'|trans }}</span>
+                                <span class="small txt-default">{{ 'Can record only the channels, which is broadcasted in the transport stream (mpeg-ts),  from multicast and also from http-server.'|trans }}</span>
                             </span>
                         </div>
                     </div>
@@ -1127,8 +1129,8 @@
                 
                 $("#add_channel > form> .row > .box:not(:first-of-type), #modalbox_ad > div > form>.devoops-modal-inner > .box:not(:first-of-type)").children('div.box-content').hide('fast');
                 
-                $("#modalbox_ad > .channel-form .box-header .box-name .toggle-switch, #add_channel_base #cmd_data .toggle-switch").off('click');
-                $("#modalbox_ad > .channel-form .box-header .box-name .toggle-switch, #add_channel_base #cmd_data .toggle-switch").on('click', function(e){
+                $("#modalbox_ad > .channel-form .box-header .box-name .toggle-switch, #add_channel_base #cmd_data .label-success").off('click');
+                $("#modalbox_ad > .channel-form .box-header .box-name .toggle-switch, #add_channel_base #cmd_data .label-success").on('click', function(e){
                     e.stopPropagation();
                     e.preventDefault();
                     return false;

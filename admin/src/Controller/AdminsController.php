@@ -223,7 +223,7 @@ class AdminsController extends \Controller\BaseStalkerController {
                 $error = '';
             }
         } else {
-            $data['chk_rezult'] = $this->setLocalization('Login is incorrect');
+            $error = $data['chk_rezult'] = $this->setLocalization('Used illegal characters');
         }
         $response = $this->generateAjaxResponse($data, $error);
 

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-09 18:15+0300\n"
-"PO-Revision-Date: 2016-02-09 18:17+0300\n"
+"POT-Creation-Date: 2016-02-10 13:19+0300\n"
+"PO-Revision-Date: 2016-02-10 13:22+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -2202,8 +2202,8 @@ msgid "Login is available"
 msgstr "Логин доступен"
 
 #: ../../../../admin/src/Controller/AdminsController.php:226
-msgid "Login is incorrect"
-msgstr "Некорректный логин"
+msgid "Used illegal characters"
+msgstr "Использованы недопустимые символы"
 
 #: ../../../../admin/src/Controller/AdminsController.php:251
 msgid "Account \"admin\" is not editable. You may change only password."
@@ -9662,6 +9662,13 @@ msgstr "Основное"
 msgid "Basic channel"
 msgstr "Базовый канал"
 
+msgid ""
+"Can record only the channels, which is broadcasted in the transport stream "
+"(mpeg-ts),  from multicast and also from http-server."
+msgstr ""
+"Возможна запись только каналов, в которых вещается транспортный поток (mpeg-"
+"ts), как по мультикасту, так и с http сервера."
+
 msgid "Change group for current admin"
 msgstr "Сменить группу для текущего адиминистратора"
 
@@ -10010,6 +10017,9 @@ msgstr "Текст"
 msgid "Time correction for EPG"
 msgstr "Коррекция времени для EPG"
 
+msgid "TimeShift only works with solutions rtp and ffrt."
+msgstr "TimeShift работает только с солюшинами rtp и ffrt"
+
 msgid "TimeShift via USB devices"
 msgstr "TimeShift на USB-носитель"
 
@@ -10036,13 +10046,12 @@ msgstr ""
 "Используется только для совметсимости модели MAG100 с порталом. Можно "
 "выбрать до 4-х жанров"
 
-msgid "User can perform TimeShift function using Flash drive, HDD or SSD."
+msgid "User can perform TimeShift function using Flash drive."
 msgstr ""
 "Возможность пользователю осуществлять функцию TimeShift при помощи USB-"
-"носителя"
+"носителя."
 
-msgid ""
-"User can record selected shows and programs to the Flash drive, HDD or SSD."
+msgid "User can record selected shows and programs to the Flash drive."
 msgstr ""
 "Возможность пользователю осуществлять запись выбраных программ/передач на "
 "USB-носитель."
@@ -10870,6 +10879,9 @@ msgstr "Внешний вид"
 #: ../../../../admin/json_menu/top_menu.json:3
 msgid "Administrator"
 msgstr "Администратор"
+
+#~ msgid "Login is incorrect"
+#~ msgstr "Некорректный логин"
 
 #~ msgid "Installed version"
 #~ msgstr "Установленная версия"
