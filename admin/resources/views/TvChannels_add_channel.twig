@@ -213,66 +213,75 @@
                                         </td>
                                         <td>
                                             <div class="col-sm-12">
-                                                <div class="mswitch">
-                                                    <input type="checkbox" value="1" disabled="disabled" name="form[use_http_tmp_link][0]" id="form_use_http_tmp_link_0">
-                                                    <label for="form_use_http_tmp_link_0"  class="label-success"></label>
-                                                </div>
-                                                <input type="hidden" disabled="disabled" name="form[wowza_tmp_link][0]" id="form_wowza_tmp_link_0">
-                                                <input type="hidden" disabled="disabled" name="form[nginx_secure_link][0]" id="form_nginx_secure_link_0">
-                                                <input type="hidden" disabled="disabled" name="form[flussonic_tmp_link][0]" id="form_flussonic_tmp_link_0">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="col-sm-12">
-                                                <div class="mswitch">
-                                                    <input type="checkbox" value="1" disabled="disabled" name="form[enable_monitoring][0]" id="form_enable_monitoring_0">
-                                                    <label for="form_enable_monitoring_0"  class="label-success"></label>
-                                                </div>
-                                                <input type="hidden" disabled="disabled" name="form[enable_balancer_monitoring][0]" id="form_enable_balancer_monitoring_0">
-                                                <input type="hidden" disabled="disabled" name="form[monitoring_url][0]" id="form_monitoring_url_0">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="col-sm-12">
-                                                <div >
-                                                    <label>-</label>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="col-sm-12">
-                                                <div class="mswitch">
-                                                    <input type="checkbox" value="1" disabled="disabled" name="form[use_load_balancing][0]" id="form_use_load_balancing_0">
-                                                    <label for="form_use_load_balancing_0"  class="label-success"></label>
-                                                </div>
-                                                <input type="hidden" disabled="disabled" name="form[stream_server][0]" id="form_stream_server_0">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="col-xs-3 col-sm-8">
-                                                <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                                                    <i class="pull-right fa fa-cog"></i>
-                                                </a>
-                                                <ul class="dropdown-menu pull-right">
-                                                    <li>
-                                                        <a class="channel_url_change_data" href="#">
-                                                            <span>{{ 'Edit'|trans }}</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="channel_url_remove_data" href="#">
-                                                            <span>{{ 'Delete'|trans }}</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <!-- End: list_row -->
-                                    </tbody>
-                                </table>
-                            </div>
-                            {% if attribute(app, 'error_local') is defined and attribute(app['error_local'], 'cmd') is defined %}
+                                                            <div class="toggle-switch toggle-switch-success">
+                                                                <label>
+                                                                    <input type="checkbox" value="1" disabled="disabled" name="form[use_http_tmp_link][0]" id="form_use_http_tmp_link_0">
+                                                                    <div class="toggle-switch-inner"></div>
+                                                                    <div class="toggle-switch-switch"></div>
+                                                                </label>
+                                                            </div>
+                                                            <input type="hidden" disabled="disabled" name="form[wowza_tmp_link][0]" id="form_wowza_tmp_link_0">
+                                                            <input type="hidden" disabled="disabled" name="form[nginx_secure_link][0]" id="form_nginx_secure_link_0">
+                                                            <input type="hidden" disabled="disabled" name="form[flussonic_tmp_link][0]" id="form_flussonic_tmp_link_0">
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="col-sm-12">
+                                                            <div class="toggle-switch toggle-switch-success">
+                                                                <label>
+                                                                    <input type="checkbox" value="1" disabled="disabled" name="form[enable_monitoring][0]" id="form_enable_monitoring_0">
+                                                                    <div class="toggle-switch-inner"></div>
+                                                                    <div class="toggle-switch-switch"></div>
+                                                                </label>
+                                                                <input type="hidden" disabled="disabled" name="form[enable_balancer_monitoring][0]" id="form_enable_balancer_monitoring_0">
+                                                                <input type="hidden" disabled="disabled" name="form[monitoring_url][0]" id="form_monitoring_url_0">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="col-sm-12">
+                                                            <div >
+                                                                <label>-</label>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="col-sm-12">
+                                                            <div class="toggle-switch toggle-switch-success">
+                                                                <label>
+                                                                    <input type="checkbox" value="1" disabled="disabled" name="form[use_load_balancing][0]" id="form_use_load_balancing_0">
+                                                                    <div class="toggle-switch-inner"></div>
+                                                                    <div class="toggle-switch-switch"></div>
+                                                                </label>
+                                                                <input type="hidden" disabled="disabled" name="form[stream_server][0]" id="form_stream_server_0">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="col-xs-3 col-sm-8">
+                                                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                                                <i class="pull-right fa fa-cog"></i>
+                                                            </a>
+                                                            <ul class="dropdown-menu pull-right">
+                                                                <li>
+                                                                    <a class="channel_url_change_data" href="#">
+                                                                        <span>{{ 'Edit'|trans }}</span>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a class="channel_url_remove_data" href="#">
+                                                                        <span>{{ 'Delete'|trans }}</span>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            <!-- End: list_row -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                {% if attribute(app, 'error_local') is defined and attribute(app['error_local'], 'cmd') is defined %}
                                 <div class=" col-xs-10 col-sm-12">
                                     <div class="bg-danger lead">
                                         <span> {{ app['error_local']['cmd'] }}</span>
@@ -1129,8 +1138,8 @@
                 
                 $("#add_channel > form> .row > .box:not(:first-of-type), #modalbox_ad > div > form>.devoops-modal-inner > .box:not(:first-of-type)").children('div.box-content').hide('fast');
                 
-                $("#modalbox_ad > .channel-form .box-header .box-name .toggle-switch, #add_channel_base #cmd_data .label-success").off('click');
-                $("#modalbox_ad > .channel-form .box-header .box-name .toggle-switch, #add_channel_base #cmd_data .label-success").on('click', function(e){
+                $("#modalbox_ad > .channel-form .box-header .box-name .toggle-switch, #add_channel_base #cmd_data .toggle-switch").off('click');
+                $("#modalbox_ad > .channel-form .box-header .box-name .toggle-switch, #add_channel_base #cmd_data .toggle-switch").on('click', function(e){
                     e.stopPropagation();
                     e.preventDefault();
                     return false;
