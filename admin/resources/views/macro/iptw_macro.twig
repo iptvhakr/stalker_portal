@@ -4,17 +4,23 @@
 
     {% macro input_checkbox(value, name, key) %}
         {% if attribute(value, key) is defined %}
-            <div class="mswitch">
-                {{ form_widget(value[key]) }}
-                <label for="form_{{ name }}_{{ key }}"  class="label-success"></label>
-            </div>
-            <div class="bg-danger">
-                {{ form_errors(value[key]) }}
+            <div class="toggle-switch toggle-switch-success">
+                <label>
+                    {{ form_widget(value[key]) }}
+                    <div class="toggle-switch-inner"></div>
+                    <div class="toggle-switch-switch"></div>
+                    <div class="bg-danger">
+                        {{ form_errors(value[key]) }}
+                    </div>
+                </label>
             </div>
         {% else %}
-            <div class="mswitch">
-                <input type="checkbox" name="form[{{ name }}][{{ key }}]" id="form_{{ name }}_{{ key }}">
-                <label for="form_{{ name }}_{{ key }}"  class="label-success"></label>
+            <div class="toggle-switch toggle-switch-success">
+                <label>
+                    <input type="checkbox" name="form[{{ name }}][{{ key }}]" id="form_{{ name }}_{{ key }}">
+                    <div class="toggle-switch-inner"></div>
+                    <div class="toggle-switch-switch"></div>
+                </label>
             </div>
         {% endif %}
     {% endmacro %}

@@ -25,19 +25,19 @@ class TasksController extends \Controller\BaseStalkerController {
         parent::__construct($app, __CLASS__);
 
         $this->taskType = array(
-            array('id' => 'moderator_tasks', 'title' => $this->setlocalization('Movie')),
-            array('id' => 'karaoke', 'title' => $this->setlocalization('Karaoke'))
+            array('id' => 'moderator_tasks', 'title' => $this->setLocalization('Movie')),
+            array('id' => 'karaoke', 'title' => $this->setLocalization('Karaoke'))
         );
         $this->taskState = array(
-            0=>array('id' => '1', 'title' => $this->setlocalization('Open')),
-            3=>array('id' => '4', 'title' => $this->setlocalization('Expired'))
+            0=>array('id' => '1', 'title' => $this->setLocalization('Open')),
+            3=>array('id' => '4', 'title' => $this->setLocalization('Expired'))
         );
         $this->taskAllState = array(
-            0=>array('id' => '1', 'title' => $this->setlocalization('Open')),
-            1=>array('id' => '2', 'title' => $this->setlocalization('Done')),
-            2=>array('id' => '3', 'title' => $this->setlocalization('Rejected')),
-            3=>array('id' => '4', 'title' => $this->setlocalization('Expired')),
-            4=>array('id' => '5', 'title' => $this->setlocalization('Archive'))
+            0=>array('id' => '1', 'title' => $this->setLocalization('Open')),
+            1=>array('id' => '2', 'title' => $this->setLocalization('Done')),
+            2=>array('id' => '3', 'title' => $this->setLocalization('Rejected')),
+            3=>array('id' => '4', 'title' => $this->setLocalization('Expired')),
+            4=>array('id' => '5', 'title' => $this->setLocalization('Archive'))
         );
 
         $this->uid = $this->admin->getId();
@@ -86,7 +86,7 @@ class TasksController extends \Controller\BaseStalkerController {
         }
         
         $this->app['filters'] = $this->data['filters'];
-        $this->app['breadcrumbs']->addItem($this->setlocalization('List of tasks in the category') . " '{$this->app['task_type_title']}'");
+        $this->app['breadcrumbs']->addItem($this->setLocalization('List of tasks in the category') . " '{$this->app['task_type_title']}'");
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
     
@@ -139,14 +139,18 @@ class TasksController extends \Controller\BaseStalkerController {
         
         
         $task_id = empty($this->data['id']) ? $this->postData['taskid']: $this->data['id'];
-        
+        $values = array();
+        $values['type'] = $this->getTaskTitle('moderator_tasks');
+        $values = array_merge($values, $this->db->getVideoTaskDetailInfoValues($task_id));
+
+        if ($this->app['userlogin'] != 'admin' && ($values['from_usr_id'] != $this->uid && $values['to_usr_id'] != $this->uid )) {
+            return $this->app->redirect('tasks-list');
+        }
+
         $this->db->setReadedTaskMessage($task_id, $this->uid);
         $this->app['task_num'] = $task_id;
         $keys = $this->getVideoTaskDetailInfoFields();
-        $values = array();
-        $values['type'] = $this->getTaskTitle('moderator_tasks');
         $this->app['taskTypeTitle'] = $values['type'];
-        $values = array_merge($values, $this->db->getVideoTaskDetailInfoValues($task_id));
         $values['state'] = "<span class='txt-{$this->stateColor[$values['state']]}'>{$this->taskAllState[$values['state']]['title']}</span>";
         
         $this->app['creator'] = $values['from_usr'];
@@ -194,7 +198,7 @@ class TasksController extends \Controller\BaseStalkerController {
         $this->app['showInput'] = TRUE;
 
         $this->app['breadcrumbs']->addItem($this->setLocalization('Tasks list'), $this->app['controller_alias'] . '/tasks-list');
-        $this->app['breadcrumbs']->addItem($this->setlocalization('History of task') . " №{$this->app['task_num']} " . $this->setlocalization('in section') . " '{$this->app['taskTypeTitle']}'");
+        $this->app['breadcrumbs']->addItem($this->setLocalization('History of task') . " №{$this->app['task_num']} " . $this->setLocalization('in section') . " '{$this->app['taskTypeTitle']}'");
         
         return $this->app['twig']->render("Tasks_task_detail.twig");
     }
@@ -227,10 +231,14 @@ class TasksController extends \Controller\BaseStalkerController {
         
         
         $task_id = empty($this->data['id']) ? $this->postData['taskid']: $this->data['id'];
-        
-        $this->app['task_num'] = $task_id;
         $task = $this->db->getKaraokeTaskChatList($task_id);
-        
+
+        if ($this->app['userlogin'] != 'admin' && ($task[0]['from_usr_id'] != $this->uid)) {
+            return $this->app->redirect('tasks-list');
+        }
+
+        $this->app['task_num'] = $task_id;
+
         $keys = $this->getKaraokeTaskDetailInfoFields();
         $values = array();
         $values['type'] = $this->getTaskTitle('karaoke');
@@ -261,7 +269,7 @@ class TasksController extends \Controller\BaseStalkerController {
         $this->app['showInput'] = FALSE;
 
         $this->app['breadcrumbs']->addItem($this->setLocalization('Tasks list'), $this->app['controller_alias'] . '/tasks-list');
-        $this->app['breadcrumbs']->addItem($this->setlocalization('History of task') . " №{$this->app['task_num']} " . $this->setlocalization('in section') . " '{$this->app['taskTypeTitle']}'");
+        $this->app['breadcrumbs']->addItem($this->setLocalization('History of task') . " №{$this->app['task_num']} " . $this->setLocalization('in section') . " '{$this->app['taskTypeTitle']}'");
         
         return $this->app['twig']->render("Tasks_task_detail.twig");
     }
@@ -546,28 +554,28 @@ class TasksController extends \Controller\BaseStalkerController {
 
     private function getDropdownAttribute() {
         return array(
-            array('name'=>'id',             'title'=>$this->setlocalization('Number'),      'checked' => TRUE),
-            array('name'=>'type',           'title'=>$this->setlocalization('Type'),        'checked' => FALSE),
-            array('name'=>'name',           'title'=>$this->setlocalization('Title'),       'checked' => TRUE),
-            array('name'=>'to_user_name',   'title'=>$this->setlocalization('Assigned to'), 'checked' => TRUE),
-            array('name'=>'start_time',     'title'=>$this->setlocalization('Created'),     'checked' => TRUE),
-            array('name'=>'messages',       'title'=>$this->setlocalization('Modified'),    'checked' => TRUE),
-            array('name'=>'state',          'title'=>$this->setlocalization('State'),       'checked' => TRUE),
-            array('name'=>'operations',     'title'=>$this->setlocalization('Operation'),   'checked' => TRUE)
+            array('name'=>'id',             'title'=>$this->setLocalization('Number'),      'checked' => TRUE),
+            array('name'=>'type',           'title'=>$this->setLocalization('Type'),        'checked' => FALSE),
+            array('name'=>'name',           'title'=>$this->setLocalization('Title'),       'checked' => TRUE),
+            array('name'=>'to_user_name',   'title'=>$this->setLocalization('Assigned to'), 'checked' => TRUE),
+            array('name'=>'start_time',     'title'=>$this->setLocalization('Created'),     'checked' => TRUE),
+            array('name'=>'messages',       'title'=>$this->setLocalization('Modified'),    'checked' => TRUE),
+            array('name'=>'state',          'title'=>$this->setLocalization('State'),       'checked' => TRUE),
+            array('name'=>'operations',     'title'=>$this->setLocalization('Operation'),   'checked' => TRUE)
         );
     }
     
     private function getReportDropdownAttribute() {
         return array(
-            array('name'=>'id',             'title'=>$this->setlocalization('Number'),      'checked' => TRUE),
-            array('name'=>'type',           'title'=>$this->setlocalization('Type'),        'checked' => FALSE),
-            array('name'=>'start_time',     'title'=>$this->setlocalization('Created'),     'checked' => TRUE),
-            array('name'=>'end_time',       'title'=>$this->setlocalization('Done'),        'checked' => TRUE),
-            array('name'=>'name',           'title'=>$this->setlocalization('Title'),       'checked' => TRUE),
-            array('name'=>'video_quality',  'title'=>$this->setlocalization('Quality'),     'checked' => TRUE),
-            array('name'=>'duration',       'title'=>$this->setlocalization('Duration (min)'),'checked' => TRUE),
-            array('name'=>'to_user_name',   'title'=>$this->setlocalization('Assigned to'), 'checked' => TRUE),
-            array('name'=>'state',          'title'=>$this->setlocalization('State'),       'checked' => TRUE)
+            array('name'=>'id',             'title'=>$this->setLocalization('Number'),      'checked' => TRUE),
+            array('name'=>'type',           'title'=>$this->setLocalization('Type'),        'checked' => FALSE),
+            array('name'=>'start_time',     'title'=>$this->setLocalization('Created'),     'checked' => TRUE),
+            array('name'=>'end_time',       'title'=>$this->setLocalization('Done'),        'checked' => TRUE),
+            array('name'=>'name',           'title'=>$this->setLocalization('Title'),       'checked' => TRUE),
+            array('name'=>'video_quality',  'title'=>$this->setLocalization('Quality'),     'checked' => TRUE),
+            array('name'=>'duration',       'title'=>$this->setLocalization('Duration (min)'),'checked' => TRUE),
+            array('name'=>'to_user_name',   'title'=>$this->setLocalization('Assigned to'), 'checked' => TRUE),
+            array('name'=>'state',          'title'=>$this->setLocalization('State'),       'checked' => TRUE)
         );
     }
     
@@ -756,22 +764,22 @@ class TasksController extends \Controller\BaseStalkerController {
 
     private function getVideoTaskDetailInfoFields() {
         return array(
-            $this->setlocalization('Type'),
-            $this->setlocalization('Title'),
-            $this->setlocalization('Quality'),
-            $this->setlocalization('Created by'),
-            $this->setlocalization('Assigned to'),
-            $this->setlocalization('State')
+            $this->setLocalization('Type'),
+            $this->setLocalization('Title'),
+            $this->setLocalization('Quality'),
+            $this->setLocalization('Created by'),
+            $this->setLocalization('Assigned to'),
+            $this->setLocalization('State')
         );
     }
     
     private function getKaraokeTaskDetailInfoFields() {
         return array(
-            $this->setlocalization('Type'),
-            $this->setlocalization('Title'),
-            $this->setlocalization('Created by'),
-            $this->setlocalization('Assigned to'),
-            $this->setlocalization('State')
+            $this->setLocalization('Type'),
+            $this->setLocalization('Title'),
+            $this->setLocalization('Created by'),
+            $this->setLocalization('Assigned to'),
+            $this->setLocalization('State')
         );
     }
     

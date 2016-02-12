@@ -233,8 +233,6 @@ class Filters {
             array('value' => 3, 'title' => 'Karaoke'),
             array('value' => 4, 'title' => 'Audio'),
             array('value' => 5, 'title' => 'Radio'),
-            array('value' => 6, 'title' => 'My records'),
-            array('value' => 7, 'title' => 'Records'),
             array('value' => 9, 'title' => 'Advert'),
             array('value' => 10, 'title' => 'Media browser'),
             array('value' => 11, 'title' => 'Tv archive'),

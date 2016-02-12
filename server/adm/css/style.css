@@ -1647,6 +1647,11 @@ label > input {font-weight:400;}
 .mswitch > input[type="checkbox"]:disabled + label::before { 
  opacity: 0.3;
 }
+
+table#cmd_data .mswitch > input[type="checkbox"] + label::before {
+    opacity: 0.3;
+}
+
 .mswitch > input[type="checkbox"]:checked + label::after {
     background: #fff;
     left: 28px;

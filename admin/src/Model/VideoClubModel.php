@@ -225,9 +225,10 @@ class VideoClubModel extends \Model\BaseStalkerModel {
     }
     
     public function getAllModeratorTasks($moderator_id = FALSE) {
-        $add_where = ($moderator_id !== FALSE ? " and moderator_tasks.to_usr = $moderator_id": '');
+        $add_where = ($moderator_id !== FALSE ? " WHERE moderator_tasks.to_usr = $moderator_id": '');
         return $this->mysqlInstance->query("select moderator_tasks.*, unix_timestamp(end_time) as `end_time`
                                             from moderator_tasks
+                                            $add_where
                                             order by id")->all();
                                             /*where moderator_tasks.ended = 0 $add_where*/
     }

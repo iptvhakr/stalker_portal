@@ -40,6 +40,30 @@
 
     <script type="text/javascript" defer="defer">
 
+        var conf = {
+            form: '#save_message_template',
+            lang : '{{ app.language }}',
+            showHelpOnFocus : true,
+            validateHiddenInputs: true,
+            ignore: ['.ignore'],
+            modules: 'jsconf',
+            onSuccess: function () {
+                var sendData = new Object();
+                $("#modalbox").find('form').find(".own_fields:not(:disabled)").each(function () {
+                    if ($(this).val()) {
+                        if (this.type.toUpperCase() != 'CHECKBOX' || this.checked) {
+                            sendData[this.name] = $(this).val();
+                        }
+                    }
+                });
+                ajaxPostSend($("#modalbox").find('form').attr('action'), sendData, false, false);
+                return false;
+            },
+            onError: function () {
+                return false;
+            }
+        };
+
         function TestTable1() {
             $('#datatable-1').on('xhr.dt', function (e, settings, json) {
                 if (typeof (json.data) == 'object') {
@@ -110,11 +134,13 @@
 
         function yelp() {
             $(document).ready(function () {
+
+                $.validate(conf);
+
                 $(document).on('click', "a.main_ajax[disabled!='disabled']", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
                     $("#modalbox").data('complete', 0);
-                    showModalBox();
                     var sendData = $(this).data();
                     ajaxPostSend($(this).attr('href'), sendData, false, false, true);
                     $(this).closest('div.open').removeClass('open');
@@ -127,13 +153,7 @@
                     }
                     e.stopPropagation();
                     e.preventDefault();
-                    if ($("#modalbox").data('complete') && $("#modalbox").data('complete') == 1) {
-                        closeModalBox();
-                    } else {
-                        for(i=0;i<3;i++) {
-                            $('#modalbox > div').fadeTo('slow', 0.5).fadeTo('slow', 1.0);
-                        }
-                    }
+                    closeModalBox();
                     return false;
                 });
 
@@ -154,18 +174,12 @@
                 $(document).on('click', "#modalbox button[type='submit']", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
-                    var sendData = new Object();
-                    var form_fields = $("#modalbox").find('form').find(".own_fields:not(:disabled)");
-                    form_fields.each(function () {
-                        if ($(this).val()) {
-                            if (this.type.toUpperCase() != 'CHECKBOX' || this.checked) {
-                                sendData[this.name] = $(this).val();
-                            }
-                        }
-                    });
-                    var action = $("#modalbox").find('form').attr('action');
-                    JSshowModalBox();
-                    ajaxPostSend(action, sendData, false, false);
+                    if ($(conf.form).isValid({}, conf, true)) {
+                        conf.onSuccess();
+                    } else {
+                        conf.onError();
+                    }
+
                     return false;
                 });
 
@@ -194,10 +208,6 @@
             $('#modalbox').find('.modal-header-name span').empty();
             $('#modalbox').find('.devoops-modal-inner').empty();
             $('#modalbox').find('.devoops-modal-bottom').empty();
-        }
-        
-        function showModalBox(){
-            notty('<span>{{ 'Request is being processed'|trans }}...</span>','notification');
         }
 
         var manageListError = function(obj){
@@ -239,30 +249,30 @@
 
     <script type="text/template" id="modal_form_body">
         <div class="box-content">
-            <form class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/save-message-template">
+            <form class="form-horizontal" id="save_message_template" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/save-message-template">
                 <div class="form-group">
-                    <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Template name'|trans }}</label>
+                    <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Template name'|trans }}<span class="icon-required">*</span></label>
                     <div class="col-xs-10 col-sm-6">
                         <span class="col-xs-12 col-sm-12">
                             <input type="hidden" class="own_fields" name="msg_tpl[id]" value="">
                             <input type="hidden" class="own_fields" name="msg_tpl[admin_id]" value="{% if attribute(app, 'user_id') is defined %}{{ app.user_id }}{% endif %}">
-                            <input type="text" class="own_fields form-control" name="msg_tpl[title]" value="">
+                            <input type="text" class="own_fields form-control" name="msg_tpl[title]" value="" data-validation=required>
                         </span>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Header'|trans }}</label>
+                    <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Header'|trans }}<span class="icon-required">*</span></label>
                     <div class="col-xs-10 col-sm-6">
                         <span class="col-xs-12 col-sm-12">
-                            <input type="text" class="own_fields form-control" name="msg_tpl[header]" value="">
+                            <input type="text" class="own_fields form-control" name="msg_tpl[header]" value="" data-validation=required>
                         </span>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Text'|trans }}</label>
+                    <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Text'|trans }}<span class="icon-required">*</span></label>
                     <div class="col-xs-10 col-sm-6">
                         <span class="col-xs-12 col-sm-12">
-                            <textarea class="own_fields form-control" name="msg_tpl[body]"></textarea>
+                            <textarea class="own_fields form-control" name="msg_tpl[body]" data-validation=required ></textarea>
                         </span>
                     </div>
                 </div>

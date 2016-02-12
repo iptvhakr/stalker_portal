@@ -72,10 +72,10 @@
                                 <label class="col-sm-3 control-label col-xs-offset-1">{{ 'URL'|trans }}<span class="icon-required">*</span></label>
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-10">
-                                        <input type="text" name="address" data-validation=required  class='form-control own_fields'>
+                                        <input type="text" name="address" data-validation="custom" data-validation-regexp="^[a-z0-9\.\-]+(\:\d+)?$" class='form-control own_fields'>
                                     </div>
                                     <span class="help-inline col-xs-10 col-sm-10">
-                                        <span class="small txt-default">{{ 'Example: http://server.example:8080'|trans }}</span>
+                                        <span class="small txt-default">{{ 'Example: server.example:8080'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
@@ -85,7 +85,7 @@
                                 <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Maximum users'|trans }} <span class="icon-required">*</span></label>
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-10">
-                                        <input type="text" name="max_sessions" data-validation=required  class='form-control own_fields'>
+                                        <input type="text" name="max_sessions" data-validation="number"  class='form-control own_fields'>
                                     </div>
                                     <span class="help-inline col-xs-10 col-sm-10">
                                         <span class="small txt-default">{{ 'Maximum quantity of users(load) numeric value'|trans }}</span>
@@ -142,18 +142,10 @@
             modules: 'jsconf',
             onSuccess: function () {
                 var sendData = new Object();
-                var lengthObj = 0;
-                var form_fields = $("#modalbox_ad input.own_fields:not(:disabled), #modalbox_ad select.own_fields:not(:disabled)");
-                form_fields.each(function () {
+                $("#modalbox_ad input.own_fields:not(:disabled), #modalbox_ad select.own_fields:not(:disabled)").each(function () {
                     sendData[this.name] = $(this).val();
-                    if($(this).data("validation")) {
-                        lengthObj++;
-                    }
                 });
-                if (lengthObj < form_fields.filter("data-validation").length) {
-                    notty('{{ 'Fill in the required fields'|trans }}','error');
-                    return false;
-                }
+
                 ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
                 return false;
             },
