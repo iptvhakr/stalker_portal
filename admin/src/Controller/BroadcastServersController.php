@@ -335,7 +335,7 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'manageServerList';
         $item = array($this->postData);
-        $error = 'error';
+        $error = $this->setLocalization('error');
         if (empty($this->postData['id'])) {
             $operation = 'insertServers';
         } else {
@@ -344,12 +344,16 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
         }
         unset($item[0]['id']);
 
-        $result = call_user_func_array(array($this->db, $operation), $item);
-        if (is_numeric($result)) {
-            $error = '';
-            if ($result === 0) {
-                $data['nothing_to_do'] = TRUE;
+        if (preg_match('/^[a-z0-9\.\-]+(\:\d+)?$/i', $this->postData['address']) && is_numeric($this->postData['max_sessions'])) {
+            $result = call_user_func_array(array($this->db, $operation), $item);
+            if (is_numeric($result)) {
+                $error = '';
+                if ($result === 0) {
+                    $data['nothing_to_do'] = TRUE;
+                }
             }
+        } else {
+            $data['msg'] = $error = $this->setLocalization("Invalid data");
         }
 
         $response = $this->generateAjaxResponse($data, $error);
