@@ -22,76 +22,76 @@ class EventsController extends \Controller\BaseStalkerController {
     public function __construct(Application $app) {
         parent::__construct($app, __CLASS__);
         $this->formEvent = array(
-            array("id" => "send_msg",           "title" => $this->setlocalization('Sending a message') ),
-            array("id" => "reboot",             "title" => $this->setlocalization('Reboot') ),
-            array("id" => "reload_portal",      "title" => $this->setlocalization('Restart the portal') ),
-            array("id" => "update_channels",    "title" => $this->setlocalization('Update channel list') ),
-            array("id" => "play_channel",       "title" => $this->setlocalization('Playback channel') ),
-            array("id" => "play_radio_channel", "title" => $this->setlocalization('Playback radio channel') ),
-            array("id" => "mount_all_storages", "title" => $this->setlocalization('Mount all storages') ),
-            array("id" => "cut_off",            "title" => $this->setlocalization('Turn off') ),
-            array("id" => "update_image",       "title" => $this->setlocalization('Image update') )
+            array("id" => "send_msg",           "title" => $this->setLocalization('Sending a message') ),
+            array("id" => "reboot",             "title" => $this->setLocalization('Reboot') ),
+            array("id" => "reload_portal",      "title" => $this->setLocalization('Restart the portal') ),
+            array("id" => "update_channels",    "title" => $this->setLocalization('Update channel list') ),
+            array("id" => "play_channel",       "title" => $this->setLocalization('Playback channel') ),
+            array("id" => "play_radio_channel", "title" => $this->setLocalization('Playback radio channel') ),
+            array("id" => "mount_all_storages", "title" => $this->setLocalization('Mount all storages') ),
+            array("id" => "cut_off",            "title" => $this->setLocalization('Turn off') ),
+            array("id" => "update_image",       "title" => $this->setLocalization('Image update') )
         );
         $this->hiddenEvent = array(
-            /*array("id" => "send_msg_with_video",        "title" => $this->setlocalization('Sending a message with video') ),*/
-            array("id" => "update_epg",                 "title" => $this->setlocalization('EPG update') ),
-            array("id" => "update_subscription",        "title" => $this->setlocalization('Subscribe update') ),
-            array("id" => "update_modules",             "title" => $this->setlocalization('Modules update') ),
-            array("id" => "cut_on",                     "title" => $this->setlocalization('Turn on') ),
-            array("id" => "show_menu",                  "title" => $this->setlocalization('Show menu') ),
-            array("id" => "additional_services_status", "title" => $this->setlocalization('Status additional service') )
+            /*array("id" => "send_msg_with_video",        "title" => $this->setLocalization('Sending a message with video') ),*/
+            array("id" => "update_epg",                 "title" => $this->setLocalization('EPG update') ),
+            array("id" => "update_subscription",        "title" => $this->setLocalization('Subscribe update') ),
+            array("id" => "update_modules",             "title" => $this->setLocalization('Modules update') ),
+            array("id" => "cut_on",                     "title" => $this->setLocalization('Turn on') ),
+            array("id" => "show_menu",                  "title" => $this->setLocalization('Show menu') ),
+            array("id" => "additional_services_status", "title" => $this->setLocalization('Status additional service') )
         );
 
         $this->sendedStatus = array(
-            array("id" => 1 , "title" => $this->setlocalization('Not delivered')),
-            array("id" => 2 , "title" => $this->setlocalization('Delivered'))
+            array("id" => 1 , "title" => $this->setLocalization('Not delivered')),
+            array("id" => 2 , "title" => $this->setLocalization('Delivered'))
         );
 
         $this->receivingStatus = array(
-            array("id" => 1 , "title" => $this->setlocalization('Not received')),
-            array("id" => 2 , "title" => $this->setlocalization('Received'))
+            array("id" => 1 , "title" => $this->setLocalization('Not received')),
+            array("id" => 2 , "title" => $this->setLocalization('Received'))
         );
 
         $this->scheduleType = array(
-            array("id" => 1 , "title" => $this->setlocalization('One-time event')),
-            array("id" => 2 , "title" => $this->setlocalization('For a period'))
+            array("id" => 1 , "title" => $this->setLocalization('One-time event')),
+            array("id" => 2 , "title" => $this->setLocalization('For a period'))
         );
 
         $this->scheduleState = array(
-            array("id" => 2 , "title" => $this->setlocalization('Scheduled')),
-            array("id" => 1 , "title" => $this->setlocalization('Stopped'))
+            array("id" => 2 , "title" => $this->setLocalization('Scheduled')),
+            array("id" => 1 , "title" => $this->setLocalization('Stopped'))
         );
 
         $this->repeatingInterval = array(
-            array("id" => 1 , "title" => $this->setlocalization('Year')),
-            array("id" => 2 , "title" => $this->setlocalization('Month')),
-            array("id" => 3 , "title" => $this->setlocalization('Week')),
-            array("id" => 4 , "title" => $this->setlocalization('Day'))
+            array("id" => 1 , "title" => $this->setLocalization('Year')),
+            array("id" => 2 , "title" => $this->setLocalization('Month')),
+            array("id" => 3 , "title" => $this->setLocalization('Week')),
+            array("id" => 4 , "title" => $this->setLocalization('Day'))
         );
 
         $this->monthNames = array(
-            array("id" => 1 , "title" => $this->setlocalization('January')),
-            array("id" => 2 , "title" => $this->setlocalization('February')),
-            array("id" => 3 , "title" => $this->setlocalization('March')),
-            array("id" => 4 , "title" => $this->setlocalization('April')),
-            array("id" => 5 , "title" => $this->setlocalization('May')),
-            array("id" => 6 , "title" => $this->setlocalization('June')),
-            array("id" => 7 , "title" => $this->setlocalization('July')),
-            array("id" => 8 , "title" => $this->setlocalization('August')),
-            array("id" => 9 , "title" => $this->setlocalization('September')),
-            array("id" => 10 , "title" => $this->setlocalization('October')),
-            array("id" => 11 , "title" => $this->setlocalization('November')),
-            array("id" => 12 , "title" => $this->setlocalization('December'))
+            array("id" => 1 , "title" => $this->setLocalization('January')),
+            array("id" => 2 , "title" => $this->setLocalization('February')),
+            array("id" => 3 , "title" => $this->setLocalization('March')),
+            array("id" => 4 , "title" => $this->setLocalization('April')),
+            array("id" => 5 , "title" => $this->setLocalization('May')),
+            array("id" => 6 , "title" => $this->setLocalization('June')),
+            array("id" => 7 , "title" => $this->setLocalization('July')),
+            array("id" => 8 , "title" => $this->setLocalization('August')),
+            array("id" => 9 , "title" => $this->setLocalization('September')),
+            array("id" => 10 , "title" => $this->setLocalization('October')),
+            array("id" => 11 , "title" => $this->setLocalization('November')),
+            array("id" => 12 , "title" => $this->setLocalization('December'))
         );
 
         $this->dayNames = array(
-            array("id" => 1 , "title" => $this->setlocalization('Mon')),
-            array("id" => 2 , "title" => $this->setlocalization('Tue')),
-            array("id" => 3 , "title" => $this->setlocalization('Wed')),
-            array("id" => 4 , "title" => $this->setlocalization('Thu')),
-            array("id" => 5 , "title" => $this->setlocalization('Fri')),
-            array("id" => 6 , "title" => $this->setlocalization('Sat')),
-            array("id" => 7 , "title" => $this->setlocalization('Sun'))
+            array("id" => 1 , "title" => $this->setLocalization('Mon')),
+            array("id" => 2 , "title" => $this->setLocalization('Tue')),
+            array("id" => 3 , "title" => $this->setLocalization('Wed')),
+            array("id" => 4 , "title" => $this->setLocalization('Thu')),
+            array("id" => 5 , "title" => $this->setLocalization('Fri')),
+            array("id" => 6 , "title" => $this->setLocalization('Sat')),
+            array("id" => 7 , "title" => $this->setLocalization('Sun'))
         );
         $this->app['defTTL'] = array(
             'send_msg' => 7*24*3600,
@@ -154,7 +154,7 @@ class EventsController extends \Controller\BaseStalkerController {
         $this->app['dropdownAttribute'] = $attribute;
 
         if (!empty($this->app['currentUser'])) {
-            $this->app['breadcrumbs']->addItem($this->setlocalization('Users events') . " {$this->app['currentUser']['name']} ({$this->app['currentUser']['mac']})");
+            $this->app['breadcrumbs']->addItem($this->setLocalization('Users events') . " {$this->app['currentUser']['name']} ({$this->app['currentUser']['mac']})");
         }
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
@@ -325,8 +325,8 @@ class EventsController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'addEvent';
-        $data['msg'] = $this->setlocalization('Added') . ' ' . $this->setlocalization('for'). ' ';
-        $error = $this->setlocalization('Error. Event has not been added.');
+        $data['msg'] = $this->setLocalization('Added') . ' ' . $this->setLocalization('for'). ' ';
+        $error = $this->setLocalization('Error. Event has not been added.');
 
         $_SERVER['TARGET'] = 'ADM';
         $event = new \AdminPanelEvents($this->postData);
@@ -338,7 +338,7 @@ class EventsController extends \Controller\BaseStalkerController {
         $set_event_func_name = 'set_event_' . str_replace('to_', '', $this->postData['event']);
 
         if ($event->$get_list_func_name()->cleanAndSetUsers()->$set_event_func_name()){
-            $data['msg'] .= count($event->getUserList()). ' ' . $this->setlocalization('users');
+            $data['msg'] .= count($event->getUserList()). ' ' . $this->setLocalization('users');
             $error = '';
         }
 
@@ -358,9 +358,9 @@ class EventsController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'addAddressList';
-        $data['msg'] = $this->setlocalization('Added');
+        $data['msg'] = $this->setLocalization('Added');
         $data['fname'] = '';
-        $error = $this->setlocalization('Error. The file does not contain valid MAC-addresses.');
+        $error = $this->setLocalization('Error. The file does not contain valid MAC-addresses.');
 
         list($key, $tmp) = each($_FILES);
         $file_data = file_get_contents($tmp['tmp_name']);
@@ -372,7 +372,7 @@ class EventsController extends \Controller\BaseStalkerController {
             $data['fname'] = basename($file_name);
             $file_data = implode(';', $list[0]);
             file_put_contents($file_name, $file_data);
-            $data['msg'] .= count($list[0]) . ' ' . $this->setlocalization('addresses');
+            $data['msg'] .= count($list[0]) . ' ' . $this->setLocalization('addresses');
             $error = '';
         }
 
@@ -393,7 +393,7 @@ class EventsController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'cleanEvents';
         $result = $this->postData['uid'] == 'all' ? $this->db->deleteAllEvents() : $this->db->deleteEventsByUID($this->postData['uid']);
-        $data['msg'] = $this->setlocalization('Deleted') . ' ' . (is_numeric($result)? $result: $this->setLocalization($result)) . ' ' . $this->setlocalization('events');
+        $data['msg'] = $this->setLocalization('Deleted') . ' ' . (is_numeric($result)? $result: $this->setLocalization($result)) . ' ' . $this->setLocalization('events');
         $error = '';
 
         $response = $this->generateAjaxResponse($data, $error);
@@ -470,7 +470,7 @@ class EventsController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'manageList';
-        $error = $this->setlocalization($this->setlocalization('Not enough data'));
+        $error = $this->setLocalization('Not enough data');
 
         $tpl_data['params'] = $this->postData['msg_tpl'];
         $tpl_data['params']['author'] = $tpl_data['params']['admin_id'];
@@ -493,7 +493,7 @@ class EventsController extends \Controller\BaseStalkerController {
                 $data['return_id'] = $return_id;
             }
         } else {
-            $data['msg'] = $this->setlocalization($this->setlocalization('Nothing to do'));
+            $data['msg'] = $this->setLocalization('Nothing to do');
             $data['nothing_to_do'] = TRUE;
             $error = '';
         }
@@ -514,7 +514,7 @@ class EventsController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'manageList';
-        $error = $this->setlocalization($this->setlocalization('Failed'));
+        $error = $this->setLocalization('Failed');
 
         if ($error = $this->db->deleteMsgTemplate($this->postData['id'])) {
             $error = '';
@@ -661,7 +661,7 @@ class EventsController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'addEvent';
-        $error = $this->setlocalization($this->setlocalization('Not enough data'));
+        $error = $this->setLocalization('Not enough data');
 
         $from_db = array_flip($this->getFieldFromArray($this->db->getTableFields('schedule_events'), 'Field'));
         $form_post = $this->postData;
@@ -716,7 +716,7 @@ class EventsController extends \Controller\BaseStalkerController {
             $error = '';
             if ($result === 0) {
                 $data['nothing_to_do'] = TRUE;
-                $data['msg'] = $this->setlocalization($this->setlocalization('Nothing to do'));
+                $data['msg'] = $this->setLocalization('Nothing to do');
             }
         }
 
@@ -737,7 +737,7 @@ class EventsController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'addEvent';
-        $error = $this->setlocalization($this->setlocalization('Nothing to do'));
+        $error = $this->setLocalization('Nothing to do');
 
         if ($this->db->updateScheduleEvents(array('state' => !((int)$this->postData['state'])), $this->postData['id'])){
             $error = '';
@@ -760,7 +760,7 @@ class EventsController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'addEvent';
-        $error = $this->setlocalization($this->setlocalization('Not enough data'));
+        $error = $this->setLocalization('Not enough data');
 
         if ($this->db->deleteScheduleEvents($this->postData['id'])){
             $error = '';
@@ -878,7 +878,7 @@ class EventsController extends \Controller\BaseStalkerController {
             array('name'=>'next_run',       'title'=>$this->setLocalization('Next run'),    'checked' => TRUE),
             array('name'=>'last_run',       'title'=>$this->setLocalization('Last run'),    'checked' => TRUE),
             array('name'=>'state',          'title'=>$this->setLocalization('State'),       'checked' => TRUE),
-            array('name'=>'operations',     'title'=>$this->setlocalization('Operations'),  'checked' => TRUE)
+            array('name'=>'operations',     'title'=>$this->setLocalization('Operations'),  'checked' => TRUE)
         );
 
         return $attribute;

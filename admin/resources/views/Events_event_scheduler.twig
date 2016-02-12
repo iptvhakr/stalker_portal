@@ -144,6 +144,7 @@
                 LoadDataTablesScripts(TestTable1);
                     {{ main_macro.get_datepicker_js_script('notMinDate') }}
                     datePickerOpt.onClose = function(){};
+                    datePickerOpt.minDate = new Date();
                     $("#date_begin, #date_end").datepicker(datePickerOpt);
                     eventsMenuHandlers();
 
