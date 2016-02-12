@@ -436,7 +436,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
 
         $response['data'] = $this->db->getVideoList($query_param);
 
-        $tmp_allTasks = $this->db->getAllModeratorTasks();
+        $tmp_allTasks = $this->db->getAllModeratorTasks(($this->app['userlogin'] != 'admin' ? $this->app['user_id']: FALSE));
         $allTasks = array();
         if (is_array($tmp_allTasks)) {
             while (list($num, $row) = each($tmp_allTasks)) {
