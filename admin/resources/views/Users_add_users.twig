@@ -12,7 +12,6 @@
             </div>
         </div>
         <div class="row">
-           
                 <div class="box">
                     <a class="collapse-link">
                         <div class="box-header">
@@ -31,11 +30,11 @@
                     </a>
                     <div class="box-content">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label ">{{ 'Name'|trans }}<span class="icon-required">*</span></label>
+                            <label class="col-sm-2 control-label ">{{ 'Name'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].id, {'attr': {'class': 'form-control'}}) }}
-                                    {{ form_widget(app['form'].fname, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
+                                    {{ form_widget(app['form'].fname, {'attr': {'class': 'form-control'}}) }}
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].fname) }}
                                     </div>
@@ -468,8 +467,7 @@
                         }
                 );
                 {% endif %}
-                $("#Additional").hide('fast');
-                $("#Additional2").hide('fast');
+
                 $(document).on('change keyup', '#form_login', function (e) {
                     var _this = $(this);
                     _this.next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
