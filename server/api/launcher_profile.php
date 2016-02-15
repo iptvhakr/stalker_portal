@@ -78,6 +78,12 @@ foreach ($menu as $section){
         return in_array($item['name'], $available_modules);
     }));
 
+    $section['items'] = array_map(function($item){
+        $item['name'] = $item['name'] ? _($item['name']) : '';
+        $item['info'] = $item['info'] ? _($item['info']) : '';
+        return $item;
+    }, $section['items']);
+
     // add external apps
     if ($section['name'] == 'Apps') {
 
@@ -86,6 +92,7 @@ foreach ($menu as $section){
                 'name'  => $app['alias'],
                 'info'  => $app['description'],
                 'icon'  => $app['app_url'].'/img/{0}/'.$app['icons'].'/2015.png',
+                'focusIcon'  => $app['app_url'].'/img/{0}/'.$app['icons'].'/2015.focus.png',
                 'color' => $app['icon_color'],
                 'url'   => $app['app_url'],
                 'type'  => 'iframe'

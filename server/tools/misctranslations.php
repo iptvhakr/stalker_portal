@@ -691,3 +691,32 @@ _('Resetting password of user access control');
 _('Check EPG-prefix for uniqueness');
 _('Publish or add to schedule');
 _('Unpublish video');
+
+/* Launcher profile */
+_('tv');
+_('video club');
+_('audio club');
+_('radio');
+_('karaoke');
+_('explorer');
+_('browser');
+_('downloads');
+_('records');
+_('weather');
+_('settings');
+_('portal');
+_('exchange');
+_('Watch TV shows, movies, tv series, news and educational programs in digital quality.');
+_('Library of movies for any mood with easy search and sorting by genre that help to find what you need in seconds.');
+_('Audio club app allows creating a special atmosphere for any party of family event!');
+_('Easy and handy way of listening to music, news, talk shows and much more.');
+_('Sing your favourite songs with friends or improve your vocal skills.');
+_('Watch movies, listen to music or view the photos, saved on your removable storages or within the local network.');
+_('Download the files directly from the Internet network to the connected removable storage.');
+_('This app allows recording TV shows or watch the records made previously.');
+_('App will help you to stay up to date with the changes in rates of currencies from all over the world.');
+_('Weather forecast for three subsequent days in any city of the world.');
+_('Horoscope, city guide and many other things that can be useful for fun and useful pastime.');
+_('This menu allows setting up the parental control, region and language, remote control and network connection.');
+_('Surf the Internet via built-in browser! To make it easier, you can use the MAGic Remote mobile app or connect the keyboard or mouse via USB port.');
+/**/
