@@ -251,7 +251,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $error = "Error";
         $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
 
-        $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
+        $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_', 'claims'));
 
         if (!isset($query_param['where'])) {
             $query_param['where'] = array();
@@ -297,6 +297,10 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                 $allChannels[$num]['genres_name'] = $this->mb_ucfirst($allChannels[$num]['genres_name']);
                 $allChannels[$num]['enable_tv_archive'] = (int) $allChannels[$num]['enable_tv_archive'];
                 $allChannels[$num]['status'] = (int) $allChannels[$num]['status'];
+                settype($allChannels[$num]['sound_counter'], 'int');
+                settype($allChannels[$num]['video_counter'], 'int');
+                settype($allChannels[$num]['no_epg'], 'int');
+                settype($allChannels[$num]['wrong_epg'], 'int');
                 if (($monitoring_status = $this->getMonitoringStatus($row)) !== FALSE) {
                     $allChannels[$num]['monitoring_status'] = $monitoring_status;
                     $response["data"][] = $allChannels[$num];
@@ -1163,6 +1167,27 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
 
+    public function itv_reset_claims(){
+        if (!$this->isAjax || $this->method != 'POST') {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        $data['action'] = 'manageChannelTable';
+        $error = $this->setLocalization('Failed');
+        $result = $this->db->resetMediaClaims($this->postData['media_id']);
+        if (is_numeric($result)) {
+            $error = '';
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
+        } else {
+            $data['msg'] = $error;
+        }
+
+        $response = $this->generateAjaxResponse($data, $error);
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
     //------------------------ service method ----------------------------------
 
     private function getLogoUriById($id = FALSE, $row = FALSE, $resolution = 320) {
@@ -1636,16 +1661,18 @@ class TvChannelsController extends \Controller\BaseStalkerController {
 
     private function getIptvListDropdownAttribute(){
         return array(
-			array('name' => 'id',               'title' => $this->setLocalization('ID'),                'checked' => false),
-			array('name' => 'number',           'title' => $this->setLocalization('Number'),            'checked' => TRUE),
-			array('name' => 'logo',             'title' => $this->setLocalization('Logo'),              'checked' => TRUE),
-            array('name' => 'name',             'title' => $this->setLocalization('Title'),             'checked' => TRUE),
-            array('name' => 'genres_name',      'title' => $this->setLocalization('Genre'),             'checked' => TRUE),
-            array('name' => 'enable_tv_archive','title' => $this->setLocalization('Archive'),           'checked' => TRUE),
-            array('name' => 'cmd',              'title' => $this->setLocalization('URL'),               'checked' => TRUE),
-            array('name' => 'monitoring_status','title' => $this->setLocalization('Monitoring status'), 'checked' => TRUE),
-            array('name' => 'status',           'title' => $this->setLocalization('Status'),            'checked' => TRUE),
-            array('name' => 'operations',       'title' => $this->setLocalization('Operations'),        'checked' => TRUE)
+			array('name' => 'id',               'title' => $this->setLocalization('ID'),                                'checked' => FALSE),
+			array('name' => 'number',           'title' => $this->setLocalization('Number'),                            'checked' => TRUE),
+			array('name' => 'logo',             'title' => $this->setLocalization('Logo'),                              'checked' => TRUE),
+            array('name' => 'name',             'title' => $this->setLocalization('Title'),                             'checked' => TRUE),
+            array('name' => 'genres_name',      'title' => $this->setLocalization('Genre'),                             'checked' => TRUE),
+            array('name' => 'enable_tv_archive','title' => $this->setLocalization('Archive'),                           'checked' => TRUE),
+            array('name' => 'cmd',              'title' => $this->setLocalization('URL'),                               'checked' => TRUE),
+            array('name' => 'xmltv_id',         'title' => $this->setLocalization('XMLTV ID'),                          'checked' => FALSE),
+            array('name' => 'claims',           'title' => $this->setLocalization('Claims about<br>audio/video/epg'),   'checked' => FALSE),
+            array('name' => 'monitoring_status','title' => $this->setLocalization('Monitoring status'),                 'checked' => TRUE),
+            array('name' => 'status',           'title' => $this->setLocalization('Status'),                            'checked' => TRUE),
+            array('name' => 'operations',       'title' => $this->setLocalization('Operations'),                        'checked' => TRUE)
         );
 
     }
@@ -1983,7 +2010,8 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             'no_epg' => 'media_claims.no_epg',
             'wrong_epg' => 'media_claims.wrong_epg',
             'enable_monitoring' => 'itv.enable_monitoring',
-            'monitoring_status_updated' => 'itv.monitoring_status_updated'
+            'monitoring_status_updated' => 'itv.monitoring_status_updated',
+            'xmltv_id' => 'itv.xmltv_id'
         );
     }
 }

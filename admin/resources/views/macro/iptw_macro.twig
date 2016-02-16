@@ -224,6 +224,7 @@
     {% endmacro %}
                         
     {% macro get_dropdown_attribute_item(item, set_id) %}
+        {% autoescape false %}
         <li data-filter='{{ item.name }}'>
             <div class="checkbox">
                 <label>
@@ -232,14 +233,17 @@
                 </label>
             </div>
         </li>
+        {% endautoescape %}
     {% endmacro %}
     
     {% macro get_datatable_head(dropdownAttribute) %}
         <thead>
             <tr>
-        {% for item in dropdownAttribute %}
-            <th data-filter="{{ item.name }}">{{ item.title }}</th>
-        {% endfor %}
+        {% autoescape false %}
+            {% for item in dropdownAttribute %}
+                <th data-filter="{{ item.name }}">{{ item.title }}</th>
+            {% endfor %}
+        {% endautoescape %}
             </tr>
         </thead>
     {% endmacro %}

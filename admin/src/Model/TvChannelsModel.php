@@ -427,4 +427,15 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
             ->query("SELECT max(`itv`.`number`) as `last_number` FROM `itv`")
             ->first('last_number');
     }
+
+    public function resetMediaClaims($media_id){
+        return $this->mysqlInstance->update('media_claims',
+            array(
+                'sound_counter' => 0,
+                'video_counter' => 0,
+                'no_epg'        => 0,
+                'wrong_epg'     => 0
+            ),
+            array('media_id' => intval($media_id)))->total_rows();
+    }
 }
