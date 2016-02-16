@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-16 12:41+0300\n"
-"PO-Revision-Date: 2016-02-16 12:41+0300\n"
+"POT-Creation-Date: 2016-02-16 13:02+0300\n"
+"PO-Revision-Date: 2016-02-16 13:07+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -2264,6 +2264,7 @@ msgid "movies"
 msgstr "Movies"
 
 #: ../../../../admin/src/Controller/StoragesController.php:234
+#: ../../../tools/misctranslations.php:700
 #: ../../../administrator/tasks.php:164 ../../../administrator/index.php:275
 msgid "karaoke"
 msgstr "Karaoke"
@@ -5023,6 +5024,149 @@ msgstr "Publish or add to schedule"
 msgid "Unpublish video"
 msgstr "Unpublish video"
 
+#: ../../../tools/misctranslations.php:696
+#: ../../../administrator/index.php:234
+msgid "tv"
+msgstr "TV"
+
+#: ../../../tools/misctranslations.php:697
+msgid "video club"
+msgstr "video club"
+
+#: ../../../tools/misctranslations.php:698
+msgid "audio club"
+msgstr "audio club"
+
+#: ../../../tools/misctranslations.php:699
+#: ../../../administrator/index.php:279
+msgid "radio"
+msgstr "Radio"
+
+#: ../../../tools/misctranslations.php:701
+msgid "explorer"
+msgstr "explorer"
+
+#: ../../../tools/misctranslations.php:702
+msgid "browser"
+msgstr "browser"
+
+#: ../../../tools/misctranslations.php:703
+msgid "downloads"
+msgstr "downloads"
+
+#: ../../../tools/misctranslations.php:704
+#: ../../../administrator/index.php:363
+msgid "records"
+msgstr "Records"
+
+#: ../../../tools/misctranslations.php:705
+msgid "weather"
+msgstr "weather"
+
+#: ../../../tools/misctranslations.php:706
+msgid "settings"
+msgstr "settings"
+
+#: ../../../tools/misctranslations.php:707
+msgid "portal"
+msgstr "portal"
+
+#: ../../../tools/misctranslations.php:708
+msgid "exchange"
+msgstr "exchange"
+
+#: ../../../tools/misctranslations.php:709
+msgid ""
+"Watch TV shows, movies, tv series, news and educational programs in digital "
+"quality."
+msgstr ""
+"Watch TV shows, movies, tv series, news and educational programs in digital "
+"quality."
+
+#: ../../../tools/misctranslations.php:710
+msgid ""
+"Library of movies for any mood with easy search and sorting by genre that "
+"help to find what you need in seconds."
+msgstr ""
+"Library of movies for any mood with easy search and sorting by genre that "
+"help to find what you need in seconds."
+
+#: ../../../tools/misctranslations.php:711
+msgid ""
+"Audio club app allows creating a special atmosphere for any party of family "
+"event!"
+msgstr ""
+"Audio club app allows creating a special atmosphere for any party of family "
+"event!"
+
+#: ../../../tools/misctranslations.php:712
+msgid ""
+"Easy and handy way of listening to music, news, talk shows and much more."
+msgstr ""
+"Easy and handy way of listening to music, news, talk shows and much more."
+
+#: ../../../tools/misctranslations.php:713
+msgid "Sing your favourite songs with friends or improve your vocal skills."
+msgstr "Sing your favourite songs with friends or improve your vocal skills."
+
+#: ../../../tools/misctranslations.php:714
+msgid ""
+"Watch movies, listen to music or view the photos, saved on your removable "
+"storages or within the local network."
+msgstr ""
+"Watch movies, listen to music or view the photos, saved on your removable "
+"storages or within the local network."
+
+#: ../../../tools/misctranslations.php:715
+msgid ""
+"Download the files directly from the Internet network to the connected "
+"removable storage."
+msgstr ""
+"Download the files directly from the Internet network to the connected "
+"removable storage."
+
+#: ../../../tools/misctranslations.php:716
+msgid ""
+"This app allows recording TV shows or watch the records made previously."
+msgstr ""
+"This app allows recording TV shows or watch the records made previously."
+
+#: ../../../tools/misctranslations.php:717
+msgid ""
+"App will help you to stay up to date with the changes in rates of currencies "
+"from all over the world."
+msgstr ""
+"App will help you to stay up to date with the changes in rates of currencies "
+"from all over the world."
+
+#: ../../../tools/misctranslations.php:718
+msgid "Weather forecast for three subsequent days in any city of the world."
+msgstr "Weather forecast for three subsequent days in any city of the world."
+
+#: ../../../tools/misctranslations.php:719
+msgid ""
+"Horoscope, city guide and many other things that can be useful for fun and "
+"useful pastime."
+msgstr ""
+"Horoscope, city guide and many other things that can be useful for fun and "
+"useful pastime."
+
+#: ../../../tools/misctranslations.php:720
+msgid ""
+"This menu allows setting up the parental control, region and language, "
+"remote control and network connection."
+msgstr ""
+"This menu allows setting up the parental control, region and language, "
+"remote control and network connection."
+
+#: ../../../tools/misctranslations.php:721
+msgid ""
+"Surf the Internet via built-in browser! To make it easier, you can use the "
+"MAGic Remote mobile app or connect the keyboard or mouse via USB port."
+msgstr ""
+"Surf the Internet via built-in browser! To make it easier, you can use the "
+"MAGic Remote mobile app or connect the keyboard or mouse via USB port."
+
 #: ../../../adm/js/js_translate.php:38
 msgid "Wait"
 msgstr "Wait"
@@ -7492,10 +7636,6 @@ msgstr "TARIFFS"
 msgid "Tasks (new messages: %s)"
 msgstr "Tasks (new messages: %s)"
 
-#: ../../../administrator/index.php:234
-msgid "tv"
-msgstr "TV"
-
 #: ../../../administrator/index.php:238
 msgid "videoclub"
 msgstr "Videoclub"
@@ -7503,10 +7643,6 @@ msgstr "Videoclub"
 #: ../../../administrator/index.php:271
 msgid "audioclub"
 msgstr "Audioclub"
-
-#: ../../../administrator/index.php:279
-msgid "radio"
-msgstr "Radio"
 
 #: ../../../administrator/index.php:283
 msgid "infoportal"
@@ -7519,10 +7655,6 @@ msgstr "TV archive"
 #: ../../../administrator/index.php:330
 msgid "timeshift"
 msgstr "Timeshift"
-
-#: ../../../administrator/index.php:363
-msgid "records"
-msgstr "Records"
 
 #: ../../../administrator/index.php:382 ../../../administrator/index.php:489
 #: ../../../administrator/stream_servers.php:137
