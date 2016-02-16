@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-16 12:39+0300\n"
-"PO-Revision-Date: 2016-02-16 12:41+0300\n"
+"POT-Creation-Date: 2016-02-16 13:01+0300\n"
+"PO-Revision-Date: 2016-02-16 13:02+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -2267,6 +2267,7 @@ msgid "movies"
 msgstr "Видео"
 
 #: ../../../../admin/src/Controller/StoragesController.php:234
+#: ../../../tools/misctranslations.php:700
 #: ../../../administrator/tasks.php:164 ../../../administrator/index.php:275
 msgid "karaoke"
 msgstr "Караоке"
@@ -5026,6 +5027,148 @@ msgstr "Опубликовать или добавить в расписание
 msgid "Unpublish video"
 msgstr "Не публиковать видео"
 
+#: ../../../tools/misctranslations.php:696
+#: ../../../administrator/index.php:234
+msgid "tv"
+msgstr "ТВ"
+
+#: ../../../tools/misctranslations.php:697
+msgid "video club"
+msgstr "видео клуб"
+
+#: ../../../tools/misctranslations.php:698
+msgid "audio club"
+msgstr "аудио клуб"
+
+#: ../../../tools/misctranslations.php:699
+#: ../../../administrator/index.php:279
+msgid "radio"
+msgstr "Радио"
+
+#: ../../../tools/misctranslations.php:701
+msgid "explorer"
+msgstr "проводник"
+
+#: ../../../tools/misctranslations.php:702
+msgid "browser"
+msgstr "браузер"
+
+#: ../../../tools/misctranslations.php:703
+msgid "downloads"
+msgstr "загрузки"
+
+#: ../../../tools/misctranslations.php:704
+#: ../../../administrator/index.php:363
+msgid "records"
+msgstr "Записи"
+
+#: ../../../tools/misctranslations.php:705
+msgid "weather"
+msgstr "погода"
+
+#: ../../../tools/misctranslations.php:706
+msgid "settings"
+msgstr "настройки"
+
+#: ../../../tools/misctranslations.php:707
+msgid "portal"
+msgstr "портал"
+
+#: ../../../tools/misctranslations.php:708
+msgid "exchange"
+msgstr "курс валют"
+
+#: ../../../tools/misctranslations.php:709
+msgid ""
+"Watch TV shows, movies, tv series, news and educational programs in digital "
+"quality."
+msgstr ""
+"Смотрите телепередачи, фильмы, сериалы, новостные и познавательные программы "
+"в цифровом качестве."
+
+#: ../../../tools/misctranslations.php:710
+msgid ""
+"Library of movies for any mood with easy search and sorting by genre that "
+"help to find what you need in seconds."
+msgstr ""
+"Библиотека фильмов под любое настроение с удобным поиском и сортировкой по "
+"жанрам, которые позволят быстро найти то, что Вам нужно!"
+
+#: ../../../tools/misctranslations.php:711
+msgid ""
+"Audio club app allows creating a special atmosphere for any party of family "
+"event!"
+msgstr ""
+"Приложение Аудио клуб позволит создать особую атмосферу на любой вечеринке "
+"или семейном празднике!"
+
+#: ../../../tools/misctranslations.php:712
+msgid ""
+"Easy and handy way of listening to music, news, talk shows and much more."
+msgstr ""
+"Простой и удобный способ слушать музыку, новости, ток-шоу и многое другое."
+
+#: ../../../tools/misctranslations.php:713
+msgid "Sing your favourite songs with friends or improve your vocal skills."
+msgstr ""
+"Пойте любимые песни в компании друзей или развивайте свои вокальные навыки."
+
+#: ../../../tools/misctranslations.php:714
+msgid ""
+"Watch movies, listen to music or view the photos, saved on your removable "
+"storages or within the local network."
+msgstr ""
+"Смотрите фильмы, слушайте музыку, просматривайте фотографии, расположенные "
+"на съемных носителях или в локальной сети."
+
+#: ../../../tools/misctranslations.php:715
+msgid ""
+"Download the files directly from the Internet network to the connected "
+"removable storage."
+msgstr ""
+"Скачивайте файлы напрямую из сети Интернет на подключенный съемный носитель."
+
+#: ../../../tools/misctranslations.php:716
+msgid ""
+"This app allows recording TV shows or watch the records made previously."
+msgstr ""
+"Это приложение позволяет записывать ТВ программы или просматривать сделанные "
+"ранее записи."
+
+#: ../../../tools/misctranslations.php:717
+msgid ""
+"App will help you to stay up to date with the changes in rates of currencies "
+"from all over the world."
+msgstr ""
+"Приложение поможет Вам всегда оставаться в курсе информации о стоимости "
+"валют со всего мира."
+
+#: ../../../tools/misctranslations.php:718
+msgid "Weather forecast for three subsequent days in any city of the world."
+msgstr "Прогноз погоды на ближайшие три дня в любом городе мира"
+
+#: ../../../tools/misctranslations.php:719
+msgid ""
+"Horoscope, city guide and many other things that can be useful for fun and "
+"useful pastime."
+msgstr ""
+"Гороскоп, городской справочник и многое другое. Все что может пригодиться "
+"для веселого и полезного времяпрепровождения."
+
+#: ../../../tools/misctranslations.php:720
+msgid ""
+"This menu allows setting up the parental control, region and language, "
+"remote control and network connection."
+msgstr ""
+"Это меню позволит настроить родительский контроль, регион и язык,  "
+"дистанционное управление и подключение к Интернету."
+
+#: ../../../tools/misctranslations.php:721
+msgid ""
+"Surf the Internet via built-in browser! To make it easier, you can use the "
+"MAGic Remote mobile app or connect the keyboard or mouse via USB port."
+msgstr "Путешествуйте по просторам Интернета с помощью встроенного браузера!"
+
 #: ../../../adm/js/js_translate.php:38
 msgid "Wait"
 msgstr "Ожидайте"
@@ -7499,10 +7642,6 @@ msgstr "Тарифы"
 msgid "Tasks (new messages: %s)"
 msgstr "Задания (новые сообщения: %s)"
 
-#: ../../../administrator/index.php:234
-msgid "tv"
-msgstr "ТВ"
-
 #: ../../../administrator/index.php:238
 msgid "videoclub"
 msgstr "Видеоклуб"
@@ -7510,10 +7649,6 @@ msgstr "Видеоклуб"
 #: ../../../administrator/index.php:271
 msgid "audioclub"
 msgstr ""
-
-#: ../../../administrator/index.php:279
-msgid "radio"
-msgstr "Радио"
 
 #: ../../../administrator/index.php:283
 msgid "infoportal"
@@ -7526,10 +7661,6 @@ msgstr "ТВ архив"
 #: ../../../administrator/index.php:330
 msgid "timeshift"
 msgstr "TimeShift"
-
-#: ../../../administrator/index.php:363
-msgid "records"
-msgstr "Записи"
 
 #: ../../../administrator/index.php:382 ../../../administrator/index.php:489
 #: ../../../administrator/stream_servers.php:137
@@ -10805,7 +10936,7 @@ msgstr ""
 "ID присутствует в нескольких источниках"
 
 msgid "Reset claims counter?"
-msgstr "Сбросить счетчик жалоб?"
+msgstr "Вы действительно хотите сбросить счетчик жалоб?"
 
 msgid "Reset media-claims"
 msgstr "Сбросить счетчик жалоб"
