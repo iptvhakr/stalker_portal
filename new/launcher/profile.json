@@ -109,7 +109,7 @@
 					"type": "iframe"
 				},
 				{
-					"name": "system settings",
+					"name": "settings",
 					"info": "Surf the Internet via built-in browser! To make it easier, you can use the MAGic Remote mobile app or connect the keyboard or mouse via USB port.",
 					"icon": "img/{0}/icons/media/system.settings.png",
 					"focusIcon": "img/{0}/icons/media/system.settings.focus.png",
