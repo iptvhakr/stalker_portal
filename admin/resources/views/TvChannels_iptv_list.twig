@@ -119,12 +119,34 @@
                 if (typeof (json.data) == 'object') {
                     for (var i in json.data) {
                         var status = json.data[i].status;
-
+                        var claimsCount = json.data[i].sound_counter + json.data[i].video_counter + json.data[i].no_epg + json.data[i].wrong_epg;
                         json.data[i].logo = '<img class="img-rounded channel-logo" src="' + ( json.data[i].logo ? json.data[i].logo + "?" + $.random(100000) : '') + '" alt="">';
                         json.data[i].name = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-channel?id=' + json.data[i].id + '">' + json.data[i].name + '</a>';
                         json.data[i].enable_tv_archive = ( json.data[i].enable_tv_archive ? "{{ 'Yes'|trans }}" : "{{ 'No'|trans }}");
                         json.data[i].status = ( json.data[i].status ? "{{ 'Published'|trans }}" : "{{ 'Unpublished'|trans }}");
 
+                        if (claimsCount) {
+                            if(json.data[i].video_counter){
+                                json.data[i].claims = json.data[i].video_counter;
+                            }
+                            json.data[i].claims += '/';
+
+                            if(json.data[i].sound_counter){
+                                json.data[i].claims += json.data[i].sound_counter;
+                            }
+                            json.data[i].claims += '/';
+
+                            if(json.data[i].no_epg){
+                                json.data[i].claims += json.data[i].no_epg;
+                            }
+                            json.data[i].claims += '/';
+
+                            if(json.data[i].wrong_epg){
+                                json.data[i].claims += json.data[i].wrong_epg;
+                            }
+                        } else {
+                            json.data[i].claims = "///";
+                        }
                         json.data[i].operations = '<div class="col-xs-3 col-sm-8 ddd">\n\
                                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">\n\
                                                             <i class="pull-right fa fa-cog"></i>\n\
@@ -148,6 +170,11 @@
                                                             <li>\n\
                                                                 <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/' + (status ? 'disable' : 'enable') + '-channel?id=' + json.data[i].id  + '">\n\
                                                                     <span>' + (status ? "{{ 'Unublish'|trans }}" : "{{ 'Publish'|trans }}") + '</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                            <li>\n\
+                                                                <a class="main_ajax" ' + (claimsCount ? '': 'disabled="disabled"') + ' href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/itv-reset-claims" data-media_id="' + json.data[i].id  + '" data-media_type="' + json.data[i].media_type  + '">\n\
+                                                                    <span>{{ 'Reset media-claims'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
@@ -302,6 +329,43 @@
                     ajaxPostSend($(this).attr('href'), {});
                     return false;
                 });
+
+                $("#datatable-1").on('click', "a[href$='itv-reset-claims']", function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    if ($(this).attr("disabled")) {
+                        JSErrorModalBox({msg: "{{ 'This action is unavailable'|trans }}"})
+                    } else {
+                        $(this).closest('.open').removeClass("open");
+                        $("#modalbox").data('complete', 1);
+                        $('#modalbox').find('.devoops-modal-header').html("\n\
+                                    <div class='row'>\n\
+                                        <div class='col-xs-10 col-sm-10'>\n\
+                                            <span class='text-default'>{{ 'Reset claims counter?'|trans }}</span>\n\
+                                        </div>\n\
+                                    </div>");
+                        $('#modalbox').find('.devoops-modal-inner').html("\n\
+                                    <div class='row'>\n\
+                                        <div class='col-xs-10 col-sm-10'>\n\
+                                            <span>{{ 'Do you really want to reset claims counter?'|trans }}</span>\n\
+                                        </div>\n\
+                                    </div>");
+                        $('#modalbox').find('.devoops-modal-bottom').html("\n\
+                                    <div class='col-xs-10 col-sm-6 pull-right'>\n\
+                                        <button type='submit' id='reset_claims_counter' class='btn btn-success col-sm-5 pull-right'>{{ 'Reset'|trans }}</button>\n\
+                                        <button type='reset' class='btn btn-default col-sm-5 pull-left' >{{ 'Cancel'|trans }}</button>\n\
+                                    </div>");
+                        $("#reset_claims_counter").data($(this).data());
+                        $('#modalbox').show();
+                    }
+                    return false;
+                });
+
+                $(document).on('click', '#reset_claims_counter', function(e){
+                    $('#modalbox').hide();
+
+                    ajaxPostSend("{{ app.request.baseUrl }}/{{ app.controller_alias }}/itv-reset-claims", { media_id: $(this).data("media_id"), media_type: $(this).data("media_type")}, false, false);
+                });
             });
         }
 
@@ -335,5 +399,11 @@
             $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Error'|trans }}! ' + (data.error? data.error: '') +  '</span>');
             $("#modalbox").data('complete', 1);
         };
+
+        var manageChannelTable = function(obj){
+            JSSuccessModalBox(obj);
+            $('#datatable-1').DataTable().ajax.reload();
+        }
+
     </script>
 {% endblock %}

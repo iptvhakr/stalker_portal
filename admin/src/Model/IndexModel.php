@@ -39,7 +39,7 @@ class IndexModel extends \Model\BaseStalkerModel {
     }
 
     public function getStorages(){
-        return $this->mysqlInstance->from('storages')->get()->all();
+        return $this->mysqlInstance->from('storages')->where(array('status' => 1))->get()->all();
     }
 
     public function getStoragesRecords($storage_name, $total_storage_loading = FALSE)
