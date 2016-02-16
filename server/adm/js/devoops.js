@@ -100,6 +100,9 @@ function LoadDataTablesScripts(callback) {
                             } );
 							
                             $.fn.dataTable.defaults.sDom += "A";
+
+                            $.fn.dataTable.defaults.stateSave = true;
+
                             callback();
                         });
                     });
