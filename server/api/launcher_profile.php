@@ -49,7 +49,7 @@ $profile['authDomain'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'
 $profile['pingTimeout'] = Config::getSafe('watchdog_timeout', 120) * 1000;
 
 $available_modules = array_diff($all_modules, $disabled_modules);
-$available_modules[] = 'portal settings';
+$available_modules[] = 'personalization';
 
 $module_to_app_map = array(
     'vclub'         => 'video club',
@@ -61,7 +61,8 @@ $module_to_app_map = array(
     'game.memory'   => 'memory',
     'game.sudoku'   => 'sudoku',
     'internet'      => 'browser',
-    'game.2048'     => '2048'
+    'game.2048'     => '2048',
+    'settings'      => 'system settings'
 );
 
 $available_modules = array_map(function($module) use ($module_to_app_map){
