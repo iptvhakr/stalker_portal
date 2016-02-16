@@ -47,6 +47,7 @@
                     </div>
                 </div>
             </div>
+            {% if app.datatables['datatable-2'].data %}
             <div class="col-xs-12 col-sm-7">
                 <div class="box"><a class="collapse-link">
                     <div class="box-header">
@@ -89,6 +90,8 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
+            {% if app.datatables['datatable-3'].data %}
             <div class="col-xs-12 col-sm-5">
                 <div class="box">  <a class="collapse-link">
                     <div class="box-header">
@@ -127,6 +130,7 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
         </div>
         <div class="row">
             <div class="col-xs-12 col-sm-8">
@@ -245,16 +249,17 @@
             } );
 
             {% if attribute(app, 'datatables') is defined %}
-            {% for item in app.datatables %}
+                {% for item in app.datatables %}
+                    {% if item.data %}
             $('#{{ item.datatableID }}').dataTable({
                 "ajax": {
-                    "url": "{{ app.request.baseUrl }}/index/{{ item.json_action_alias }}",
+                    "url": "{{ app.request.baseUrl }}/index/{{ item.json_action_alias }}"
                 },
                 "deferLoading": {{ item.data|length }},
                 {% if item.data|length %}
                 "columns": [
                     {% for key,field in item.data.0 %}
-                    {"data": "{{ key }}"}{% if not loop.last %},{% endif %}
+                    {"data": "{{ key }}"}{% if not loop.last %}, {% endif %}
                     {% endfor %}
                 ],
                 {% endif %}
@@ -262,10 +267,10 @@
                     /*{"width": '20%', "targets": [-3]}*/
                 ]
             }).prev('.dataTables_processing').hide('');
-            $('#{{ item.datatableID }}').DataTable().order( [ 0, 'desc' ] ).draw();
-            {% endfor %}
+            $('#{{ item.datatableID }}').DataTable().order([0, 'desc']).draw();
+                    {% endif %}
+                {% endfor %}
             {% endif %}
-
         }
 
         function DrawFlot(){
