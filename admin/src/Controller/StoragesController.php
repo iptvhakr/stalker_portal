@@ -181,7 +181,7 @@ class StoragesController extends \Controller\BaseStalkerController {
         }
         $result = $this->db->updateStorageCache(array('changed' => '0000-00-00 00:00:00'), $names);
         if (is_numeric($result)) {
-            $data['msg'] = $this->setlocalization('A cache has been reset') . (!empty($names)? ' ' . $this->setlocalization('for') . ' ' .implode(', ', $names): ' ' . $this->setlocalization('for all servers'));
+            $data['msg'] = $this->setLocalization('A cache has been reset') . (!empty($names)? ' ' . $this->setLocalization('for') . ' ' .implode(', ', $names): ' ' . $this->setLocalization('for all servers'));
             $error = '';
             if ($result === 0) {
                 $data['nothing_to_do'] = TRUE;
@@ -214,7 +214,7 @@ class StoragesController extends \Controller\BaseStalkerController {
 
         $not_custom_video = $this->db->getNoCustomVideo();
 
-        $data['msg'] = $this->setlocalization('Updated') . ": " . count($not_custom_video) . " - " . $this->setLocalization('movies') . "; ";
+        $data['msg'] = $this->setLocalization('Updated') . ": " . count($not_custom_video) . " - " . $this->setLocalization('movies') . "; ";
         $_SERVER['TARGET'] = 'ADM';
         
         foreach($not_custom_video as $row){
@@ -302,14 +302,14 @@ class StoragesController extends \Controller\BaseStalkerController {
             $result = call_user_func_array(array($this->db, $operation), $storage);
             if (is_numeric($result)) {
                 $error = '';
-                $data['msg'] = $this->setlocalization('Saved');
+                $data['msg'] = $this->setLocalization('Saved');
                 if ($result === 0) {
                     $data['nothing_to_do'] = TRUE;
                 }
             }
 
         } else {
-            $error = $data['msg'] = $this->setlocalization('Fill in the required fields');
+            $error = $data['msg'] = $this->setLocalization('Fill in the required fields');
         }
         $response = $this->generateAjaxResponse($data, $error);
 
@@ -348,7 +348,7 @@ class StoragesController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'listMsg';
         $result = $this->db->deleteStorages($this->postData['id']);
-        $data['msg'] = $this->setlocalization('Deleted') . " " . (!empty($result)? $result: '');
+        $data['msg'] = $this->setLocalization('Deleted') . " " . (!empty($result)? $result: '');
 
         $error = '';
 
@@ -369,7 +369,7 @@ class StoragesController extends \Controller\BaseStalkerController {
         );
         
         $filds_for_select = $this->getSearchFields();
-        $error = "Error";
+        $error = $this->setLocalization("Error");
         $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
         
         $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
@@ -396,13 +396,12 @@ class StoragesController extends \Controller\BaseStalkerController {
         $query_param['select'] = array_values($filds_for_select);
 
         $this->cleanQueryParams($query_param, array_keys($filds_for_select), $filds_for_select);
-        
+
         if (!empty($query_param['like']["count(`storage_name`)"])) {
 //            $query_param['having']["on_storages like '" . $query_param['like']["count(`storage_name`)"] . "' and '1'"] = '1';
             unset($query_param['like']["count(`storage_name`)"]);
         }
-            
-        
+
         $response['recordsTotal'] = $this->db->getTotalRowsVideoList($query_param['select']);
         $response["recordsFiltered"] = $this->db->getTotalRowsVideoList($query_param['select'], $query_param['where'], $query_param['like'], $query_param['having']);
 
@@ -547,8 +546,8 @@ class StoragesController extends \Controller\BaseStalkerController {
 
     private function getLogsDropdownAttribute() {
         return array(
-            array('name' => 'added',    'title' => $this->setlocalization('Time'),  'checked' => TRUE),
-            array('name' => 'log_txt',  'title' => $this->setlocalization('Message'),'checked' => TRUE)
+            array('name' => 'added',    'title' => $this->setLocalization('Time'),  'checked' => TRUE),
+            array('name' => 'log_txt',  'title' => $this->setLocalization('Message'),'checked' => TRUE)
         );
     }
     
@@ -561,13 +560,13 @@ class StoragesController extends \Controller\BaseStalkerController {
     
     private function getListDropdownAttribute() {
         return array(
-            array('name' => 'id',           'title' => $this->setlocalization('ID'),            'checked' => TRUE),
-            array('name' => 'storage_name', 'title' => $this->setlocalization('Title'),         'checked' => TRUE),
-            array('name' => 'storage_ip',   'title' => $this->setlocalization('IP'),            'checked' => TRUE),
-            array('name' => 'nfs_home_path','title' => $this->setlocalization('Home directory'),'checked' => TRUE),
-            array('name' => 'max_online',   'title' => $this->setlocalization('Maximum users'), 'checked' => TRUE),
-            array('name' => 'status',       'title' => $this->setlocalization('Status'),        'checked' => TRUE),
-            array('name' => 'operations',   'title' => $this->setlocalization('Operation'),     'checked' => TRUE)
+            array('name' => 'id',           'title' => $this->setLocalization('ID'),            'checked' => TRUE),
+            array('name' => 'storage_name', 'title' => $this->setLocalization('Title'),         'checked' => TRUE),
+            array('name' => 'storage_ip',   'title' => $this->setLocalization('IP'),            'checked' => TRUE),
+            array('name' => 'nfs_home_path','title' => $this->setLocalization('Home directory'),'checked' => TRUE),
+            array('name' => 'max_online',   'title' => $this->setLocalization('Maximum users'), 'checked' => TRUE),
+            array('name' => 'status',       'title' => $this->setLocalization('Status'),        'checked' => TRUE),
+            array('name' => 'operations',   'title' => $this->setLocalization('Operation'),     'checked' => TRUE)
         );
     }
     
@@ -584,15 +583,15 @@ class StoragesController extends \Controller\BaseStalkerController {
     
     private function getSearchDropdownAttribute() {
         return array(
-            array('name' => 'id',           'title' => $this->setlocalization('ID'),            'checked' => TRUE),
-            array('name' => 'path',         'title' => $this->setlocalization('Catalogue'),     'checked' => TRUE),
-            array('name' => 'name',         'title' => $this->setlocalization('Title'),         'checked' => TRUE),
-            array('name' => 'hd',           'title' => $this->setlocalization('Video quality'), 'checked' => TRUE),
-            array('name' => 'on_storages',  'title' => $this->setlocalization('Storage quantity'),'checked' => TRUE),
-            array('name' => 'count',        'title' => $this->setlocalization('All views'),     'checked' => TRUE),
-            array('name' => 'month_counter','title' => $this->setlocalization('Views per month'),'checked' => TRUE),
-            array('name' => 'last_played',  'title' => $this->setlocalization('Last view'),     'checked' => TRUE),
-            array('name' => 'accessed',     'title' => $this->setlocalization('Status'),        'checked' => TRUE)
+            array('name' => 'id',           'title' => $this->setLocalization('ID'),            'checked' => TRUE),
+            array('name' => 'path',         'title' => $this->setLocalization('Catalogue'),     'checked' => TRUE),
+            array('name' => 'name',         'title' => $this->setLocalization('Title'),         'checked' => TRUE),
+            array('name' => 'hd',           'title' => $this->setLocalization('Video quality'), 'checked' => TRUE),
+            array('name' => 'on_storages',  'title' => $this->setLocalization('Storage quantity'),'checked' => TRUE),
+            array('name' => 'count',        'title' => $this->setLocalization('All views'),     'checked' => TRUE),
+            array('name' => 'month_counter','title' => $this->setLocalization('Views per month'),'checked' => TRUE),
+            array('name' => 'last_played',  'title' => $this->setLocalization('Last view'),     'checked' => TRUE),
+            array('name' => 'accessed',     'title' => $this->setLocalization('Status'),        'checked' => TRUE)
         );
     }
     
