@@ -1118,6 +1118,10 @@
                         }
                     }
 
+                    if($("#form_correct_time").val().length == 0) {
+                        $("#form_correct_time").val(0);
+                    }
+
                     conf.ignore = ignore;
                     conf.form = '#form_';
                     conf.formContainer = '#add_channel';
