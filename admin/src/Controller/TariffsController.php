@@ -24,23 +24,23 @@ class TariffsController extends \Controller\BaseStalkerController {
     public function __construct(Application $app) {
         parent::__construct($app, __CLASS__);
         $this->allServiceTypes = array(
-            array("id" => 'periodic', "title" => $this->setlocalization("permanent")),
-            array("id" => 'single', "title" => $this->setlocalization("once-only"))
+            array("id" => 'periodic', "title" => $this->setLocalization("permanent")),
+            array("id" => 'single', "title" => $this->setLocalization("once-only"))
         );
         $this->allServices = array(
-            array("id" => '1', "title" => $this->setlocalization("Complete")),
-            array("id" =>  '2', "title" => $this->setlocalization("Optional"))
+            array("id" => '1', "title" => $this->setLocalization("Complete")),
+            array("id" =>  '2', "title" => $this->setLocalization("Optional"))
         );
 
         $this->allInitiatorRoles = array(
-            array("id" =>   'user',     "title" => $this->setlocalization("User")),
-            array("id" =>   'admin',    "title" => $this->setlocalization("Administrator")),
-            array("id" =>   'api',      "title" => $this->setlocalization("API"))
+            array("id" =>   'user',     "title" => $this->setLocalization("User")),
+            array("id" =>   'admin',    "title" => $this->setLocalization("Administrator")),
+            array("id" =>   'api',      "title" => $this->setLocalization("API"))
         );
 
         $this->allPackageStates = array(
-            array("id" =>   '1',    "title" => $this->setlocalization("off")),
-            array("id" =>   '2',    "title" => $this->setlocalization("on"))
+            array("id" =>   '1',    "title" => $this->setLocalization("off")),
+            array("id" =>   '2',    "title" => $this->setLocalization("on"))
         );
     }
 
@@ -178,7 +178,7 @@ class TariffsController extends \Controller\BaseStalkerController {
         $this->app['form'] = $form->createView();
         $this->app['servicePlanEdit'] = FALSE;
         $this->app['breadcrumbs']->addItem($this->setLocalization('Tariff plans'), $this->app['controller_alias'] . '/tariff-plans');
-        $this->app['breadcrumbs']->addItem($this->setlocalization('Add tariff plan'));
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Add tariff plan'));
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
     
@@ -224,7 +224,7 @@ class TariffsController extends \Controller\BaseStalkerController {
         $this->app['servicePlanEdit'] = TRUE;
         $this->app['planName'] = $this->plan['name'];
         $this->app['breadcrumbs']->addItem($this->setLocalization('Tariff plans'), $this->app['controller_alias'] . '/tariff-plans');
-        $this->app['breadcrumbs']->addItem($this->setlocalization('Edit tariff plan'));
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Edit tariff plan'));
         return $this->app['twig']->render('Tariffs_add_tariff_plans.twig');
     }
 
@@ -259,7 +259,7 @@ class TariffsController extends \Controller\BaseStalkerController {
                 'mac' => $currentUser['mac'],
                 'uid' => $currentUser['id']
             );
-            $this->app['breadcrumbs']->addItem($this->setlocalization('Log of user') . " " . " {$this->app['currentUser']['name']} ({$this->app['currentUser']['mac']})");
+            $this->app['breadcrumbs']->addItem($this->setLocalization('Log of user') . " " . " {$this->app['currentUser']['name']} ({$this->app['currentUser']['mac']})");
         }
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
@@ -385,7 +385,7 @@ class TariffsController extends \Controller\BaseStalkerController {
         }
         $data = array();
         $data['action'] = 'checkExternalId';
-        $error = $this->setlocalization('ID already used');
+        $error = $this->setLocalization('ID already used');
         $param = array(
             'where' => array(
                 'external_id' => trim($this->postData['externalid'])
@@ -398,9 +398,9 @@ class TariffsController extends \Controller\BaseStalkerController {
         $result = $this->db->getTariffPlansList($param);
 
         if (!empty($result)) {
-            $data['chk_rezult'] = $this->setlocalization('ID already used');
+            $data['chk_rezult'] = $this->setLocalization('ID already used');
         } else {
-            $data['chk_rezult'] = $this->setlocalization('ID is available');
+            $data['chk_rezult'] = $this->setLocalization('ID is available');
             $error = '';
         }
         $response = $this->generateAjaxResponse($data, $error);
@@ -848,33 +848,33 @@ class TariffsController extends \Controller\BaseStalkerController {
     
     private function getServicePackagesDropdownAttribute() {
         return array(
-            array('name'=>'external_id',    'title'=>$this->setlocalization('External ID'), 'checked' => TRUE),
-            array('name'=>'name',           'title'=>$this->setlocalization('Package'),     'checked' => TRUE),
-            array('name'=>'users_count',    'title'=>$this->setlocalization('Users'),       'checked' => TRUE),
-            array('name'=>'type',           'title'=>$this->setlocalization('Service'),     'checked' => TRUE),
-            array('name'=>'all_services',   'title'=>$this->setlocalization('Access'),      'checked' => TRUE),
-            array('name'=>'operations',     'title'=>$this->setlocalization('Operations'),  'checked' => TRUE)
+            array('name'=>'external_id',    'title'=>$this->setLocalization('External ID'), 'checked' => TRUE),
+            array('name'=>'name',           'title'=>$this->setLocalization('Package'),     'checked' => TRUE),
+            array('name'=>'users_count',    'title'=>$this->setLocalization('Users'),       'checked' => TRUE),
+            array('name'=>'type',           'title'=>$this->setLocalization('Service'),     'checked' => TRUE),
+            array('name'=>'all_services',   'title'=>$this->setLocalization('Access'),      'checked' => TRUE),
+            array('name'=>'operations',     'title'=>$this->setLocalization('Operations'),  'checked' => TRUE)
         );
     }
     
     private function getTariffPlansDropdownAttribute() {
         return array(
-            array('name'=>'external_id',    'title'=>$this->setlocalization('External ID'), 'checked' => TRUE),
-            array('name'=>'name',           'title'=>$this->setlocalization('Package'),     'checked' => TRUE),
-            array('name'=>'users_count',    'title'=>$this->setlocalization('Users'),       'checked' => TRUE),
-            array('name'=>'operations',     'title'=>$this->setlocalization('Operations'),  'checked' => TRUE)
+            array('name'=>'external_id',    'title'=>$this->setLocalization('External ID'), 'checked' => TRUE),
+            array('name'=>'name',           'title'=>$this->setLocalization('Package'),     'checked' => TRUE),
+            array('name'=>'users_count',    'title'=>$this->setLocalization('Users'),       'checked' => TRUE),
+            array('name'=>'operations',     'title'=>$this->setLocalization('Operations'),  'checked' => TRUE)
         );
     }
 
     private function getLogsDropdownAttribute() {
         return array(
-            array('name'=>'id',             'title'=>$this->setlocalization('ID'),              'checked' => TRUE),
-            array('name'=>'mac',            'title'=>$this->setlocalization('MAC'),             'checked' => TRUE),
-            array('name'=>'package',        'title'=>$this->setlocalization('Package name'),    'checked' => TRUE),
-            array('name'=>'state',          'title'=>$this->setlocalization('State'),           'checked' => TRUE),
-            array('name'=>'initiator_name', 'title'=>$this->setlocalization('Initiator'),       'checked' => TRUE),
-            array('name'=>'initiator',      'title'=>$this->setlocalization('Initiator role'),  'checked' => TRUE),
-            array('name'=>'modified',       'title'=>$this->setlocalization('Modified'),        'checked' => TRUE)
+            array('name'=>'id',             'title'=>$this->setLocalization('ID'),              'checked' => TRUE),
+            array('name'=>'mac',            'title'=>$this->setLocalization('MAC'),             'checked' => TRUE),
+            array('name'=>'package',        'title'=>$this->setLocalization('Package name'),    'checked' => TRUE),
+            array('name'=>'state',          'title'=>$this->setLocalization('State'),           'checked' => TRUE),
+            array('name'=>'initiator_name', 'title'=>$this->setLocalization('Initiator'),       'checked' => TRUE),
+            array('name'=>'initiator',      'title'=>$this->setLocalization('Initiator role'),  'checked' => TRUE),
+            array('name'=>'modified',       'title'=>$this->setLocalization('Modified'),        'checked' => TRUE)
         );
     }
 }

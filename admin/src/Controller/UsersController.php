@@ -57,29 +57,29 @@ class UsersController extends \Controller\BaseStalkerController {
         $this->watchdog = \Config::get('watchdog_timeout') * 2;
         $this->userFields[] = "((UNIX_TIMESTAMP() - UNIX_TIMESTAMP(`keep_alive`)) <= $this->watchdog) as `state`";
         $this->allStatus = array(
-            array('id' => 1, 'title' => $this->setlocalization('on')),
-            array('id' => 2, 'title' => $this->setlocalization('off'))
+            array('id' => 1, 'title' => $this->setLocalization('on')),
+            array('id' => 2, 'title' => $this->setLocalization('off'))
         );
 
         $this->formEvent = array(
-            array("id" => "send_msg",           "title" => $this->setlocalization('Sending a message') ),
-            array("id" => "reboot",             "title" => $this->setlocalization('Reboot') ),
-            array("id" => "reload_portal",      "title" => $this->setlocalization('Restart the portal') ),
-            array("id" => "update_channels",    "title" => $this->setlocalization('Update channel list') ),
-            array("id" => "play_channel",       "title" => $this->setlocalization('Playback channel') ),
-            array("id" => "play_radio_channel", "title" => $this->setlocalization('Playback radio channel') ),
-            array("id" => "mount_all_storages", "title" => $this->setlocalization('Mount all storages') ),
-            array("id" => "cut_off",            "title" => $this->setlocalization('Turn off') ),
-            array("id" => "update_image",       "title" => $this->setlocalization('Image update') )
+            array("id" => "send_msg",           "title" => $this->setLocalization('Sending a message') ),
+            array("id" => "reboot",             "title" => $this->setLocalization('Reboot') ),
+            array("id" => "reload_portal",      "title" => $this->setLocalization('Restart the portal') ),
+            array("id" => "update_channels",    "title" => $this->setLocalization('Update channel list') ),
+            array("id" => "play_channel",       "title" => $this->setLocalization('Playback channel') ),
+            array("id" => "play_radio_channel", "title" => $this->setLocalization('Playback radio channel') ),
+            array("id" => "mount_all_storages", "title" => $this->setLocalization('Mount all storages') ),
+            array("id" => "cut_off",            "title" => $this->setLocalization('Turn off') ),
+            array("id" => "update_image",       "title" => $this->setLocalization('Image update') )
         );
         $this->hiddenEvent = array(
-            /*array("id" => "send_msg_with_video",        "title" => $this->setlocalization('Sending a message with video') ),*/
-            array("id" => "update_epg",                 "title" => $this->setlocalization('EPG update') ),
-            array("id" => "update_subscription",        "title" => $this->setlocalization('Subscribe update') ),
-            array("id" => "update_modules",             "title" => $this->setlocalization('Modules update') ),
-            array("id" => "cut_on",                     "title" => $this->setlocalization('Turn on') ),
-            array("id" => "show_menu",                  "title" => $this->setlocalization('Show menu') ),
-            array("id" => "additional_services_status", "title" => $this->setlocalization('Status additional service') )
+            /*array("id" => "send_msg_with_video",        "title" => $this->setLocalization('Sending a message with video') ),*/
+            array("id" => "update_epg",                 "title" => $this->setLocalization('EPG update') ),
+            array("id" => "update_subscription",        "title" => $this->setLocalization('Subscribe update') ),
+            array("id" => "update_modules",             "title" => $this->setLocalization('Modules update') ),
+            array("id" => "cut_on",                     "title" => $this->setLocalization('Turn on') ),
+            array("id" => "show_menu",                  "title" => $this->setLocalization('Show menu') ),
+            array("id" => "additional_services_status", "title" => $this->setLocalization('Status additional service') )
         );
 
         if (empty($this->app['reseller'])) {
@@ -355,7 +355,7 @@ class UsersController extends \Controller\BaseStalkerController {
             }
         }
         $this->app['breadcrumbs']->addItem($this->setLocalization('Users list'), $this->app['controller_alias'] . '/users-list');
-        $this->app['breadcrumbs']->addItem($this->setlocalization('Add user'));
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Add user'));
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
@@ -429,7 +429,7 @@ class UsersController extends \Controller\BaseStalkerController {
 
         $this->app['userName'] = $this->user['mac'];
         $this->app['breadcrumbs']->addItem($this->setLocalization('Users list'), $this->app['controller_alias'] . '/users-list');
-        $this->app['breadcrumbs']->addItem($this->setlocalization('Edit user'));
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Edit user'));
         return $this->app['twig']->render("Users_add_users.twig");
     }
 
@@ -725,7 +725,7 @@ class UsersController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'toggleUserStatus';
-        $error = $this->setlocalization('Failed');
+        $error = $this->setLocalization('Failed');
 
         $event = new \SysEvent();
         $event->setUserListById($this->postData['userid']);
@@ -926,7 +926,7 @@ class UsersController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'manageList';
-        $error = $this->setlocalization('Failed');
+        $error = $this->setLocalization('Failed');
         $check = $this->db->getConsoleGroup(array('where' => array('Sg.name' => $this->postData['name'])), 'COUNT');
         if (empty($check)) {
             $data['id'] = $this->db->insertConsoleGroup(array('name' => $this->postData['name']));
@@ -951,7 +951,7 @@ class UsersController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'manageList';
-        $error = $this->setlocalization('Failed');
+        $error = $this->setLocalization('Failed');
         $check = $this->db->getConsoleGroup(array('where' => array('Sg.name' => $this->postData['name'], 'Sg.id<>' => $this->postData['id'])));
         if (empty($check)) {
             $result = $this->db->updateConsoleGroup(array('name' => $this->postData['name']), array('id' => $this->postData['id']));
@@ -1001,7 +1001,7 @@ class UsersController extends \Controller\BaseStalkerController {
         }
         $data = array();
         $data['action'] = 'checkLogin';
-        $error = $this->setlocalization('Name already used');
+        $error = $this->setLocalization('Name already used');
         $params = array(
             'login' => trim($this->postData['name'])
         );
@@ -1009,9 +1009,9 @@ class UsersController extends \Controller\BaseStalkerController {
             $params['id<>'] = $this->postData['id'];
         }
         if ($this->db->checkLogin($params)) {
-            $data['chk_rezult'] = $this->setlocalization('Name already used');
+            $data['chk_rezult'] = $this->setLocalization('Name already used');
         } else {
-            $data['chk_rezult'] = $this->setlocalization('Name is available');
+            $data['chk_rezult'] = $this->setLocalization('Name is available');
             $error = '';
         }
         $response = $this->generateAjaxResponse($data, $error);
@@ -1029,11 +1029,11 @@ class UsersController extends \Controller\BaseStalkerController {
         }
         $data = array();
         $data['action'] = 'checkConsoleName';
-        $error = $this->setlocalization('Name already used');
+        $error = $this->setLocalization('Name already used');
         if ($this->db->checkConsoleName(trim($this->postData['name']))) {
-            $data['chk_rezult'] = $this->setlocalization('Name already used');
+            $data['chk_rezult'] = $this->setLocalization('Name already used');
         } else {
-            $data['chk_rezult'] = $this->setlocalization('Name is available');
+            $data['chk_rezult'] = $this->setLocalization('Name is available');
             $error = '';
         }
         $response = $this->generateAjaxResponse($data, $error);
@@ -1116,7 +1116,7 @@ class UsersController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'addConsoleItem';
-        $error = $this->setlocalization('Failed');
+        $error = $this->setLocalization('Failed');
         $mac = \Middleware::normalizeMac($this->postData['name']);
         if (!empty($mac)) {
             $check_in_group = $this->db->getConsoleGroupList(array('where' => array('mac' => $mac), 'order' => 'mac', 'limit' => array('limit' => 1)));
@@ -1157,7 +1157,7 @@ class UsersController extends \Controller\BaseStalkerController {
         }
         $data = array();
         $data['action'] = 'checkConsoleItem';
-        $error = $this->setlocalization('Name already used');
+        $error = $this->setLocalization('Name already used');
         $mac = \Middleware::normalizeMac($this->postData['mac']);
         $data['jjj'] = $check_in_group = $this->db->getConsoleGroupList(array('where' => array('mac' => $mac), 'order' => 'mac', 'limit' => array('limit' => 1)));
         $check_in_users = $this->db->getUsersList(array('select' => array("*", "users.id as uid"), 'where' => array('mac' => $mac), 'order' => 'mac'));
@@ -1169,7 +1169,7 @@ class UsersController extends \Controller\BaseStalkerController {
         } elseif (empty($check_in_users)) {
             $data['chk_rezult'] = $error = $this->setLocalization("User with this MAC-address is not defined");
         } else {
-            $data['chk_rezult'] = $this->setlocalization('The user can be connected to the group');
+            $data['chk_rezult'] = $this->setLocalization('The user can be connected to the group');
             $error = '';
         }
         $response = $this->generateAjaxResponse($data, $error);
@@ -1420,7 +1420,7 @@ class UsersController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'addFilter';
-        $error = $this->setlocalization('Not exists');
+        $error = $this->setLocalization('Not exists');
 
         $filter_set = \Filters::getInstance();
         $filter_set->setResellerID($this->app['reseller']);
@@ -1459,7 +1459,7 @@ class UsersController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'saveFilterData';
-        $error = $this->setlocalization('Not enough data');
+        $error = $this->setLocalization('Not enough data');
 
         $params = $this->postData['filter_set'];
 
@@ -1508,7 +1508,7 @@ class UsersController extends \Controller\BaseStalkerController {
                     $error = '';
                     if ($result === 0) {
                         $data['nothing_to_do'] = TRUE;
-                        $data['msg'] = $this->setlocalization('Nothing to do');
+                        $data['msg'] = $this->setLocalization('Nothing to do');
                     }
                     if ($operation == 'insert') {
                         $data['return_id'] = $result;
@@ -1607,7 +1607,7 @@ class UsersController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'manageList';
-        $error = $this->setlocalization('Failed');
+        $error = $this->setLocalization('Failed');
 
         $result = $this->db->deleteFilter($this->postData['id']);
         if (is_numeric($result)) {
@@ -1633,7 +1633,7 @@ class UsersController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'manageList';
-        $error = $this->setlocalization('Failed');
+        $error = $this->setLocalization('Failed');
 
         $result = $this->db->toggleFilterFavorite($this->postData['id'], (int) $this->postData['favorite'] == 1 ? 0: 1);
         if (is_numeric($result)) {

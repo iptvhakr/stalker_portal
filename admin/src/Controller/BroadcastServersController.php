@@ -15,7 +15,7 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
     public function __construct(Application $app) {
         parent::__construct($app, __CLASS__);
         $this->allServerStatus = array(
-            array('id' => 1, 'title' => $this->setlocalization('off')),
+            array('id' => 1, 'title' => $this->setLocalization('off')),
             array('id' => 2, 'title' => $this->setLocalization('on'))
         );
     }
@@ -93,8 +93,8 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
         }
         $this->app['form'] = $form->createView();
         $this->app['zoneEdit'] = FALSE;
-        $this->app['breadcrumbs']->addItem($this->setlocalization('Streaming area'), "{$this->workURL}/{$this->app['controller_alias']}/broadcast-zone-list");
-        $this->app['breadcrumbs']->addItem($this->setlocalization('Add area'));
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Streaming area'), "{$this->workURL}/{$this->app['controller_alias']}/broadcast-zone-list");
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Add area'));
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
     
@@ -133,8 +133,8 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
         $this->app['zoneName'] = $this->zone['name'];
         ob_end_clean();
         
-        $this->app['breadcrumbs']->addItem($this->setlocalization('Streaming area'), "{$this->workURL}/{$this->app["controller_alias"]}/broadcast-zone-list");
-        $this->app['breadcrumbs']->addItem($this->setlocalization('Edit area'));
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Streaming area'), "{$this->workURL}/{$this->app["controller_alias"]}/broadcast-zone-list");
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Edit area'));
         
         return $this->app['twig']->render('BroadcastServers_add_zone.twig');
     }
@@ -381,11 +381,11 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
     
     private function getZoneDropdownAttribute() {
         return array(
-            array('name' => 'id',           'title' => $this->setlocalization('ID'),                    'checked' => TRUE),
-            array('name' => 'name',         'title' => $this->setlocalization('Title'),                 'checked' => TRUE),
-            array('name' => 'country_count','title' => $this->setlocalization('Quantity of countries'), 'checked' => TRUE),
-            array('name' => 'default_flag', 'title' => $this->setlocalization('Default'),               'checked' => TRUE),
-            array('name' => 'operations',   'title' => $this->setlocalization('Operation'),             'checked' => TRUE)
+            array('name' => 'id',           'title' => $this->setLocalization('ID'),                    'checked' => TRUE),
+            array('name' => 'name',         'title' => $this->setLocalization('Title'),                 'checked' => TRUE),
+            array('name' => 'country_count','title' => $this->setLocalization('Quantity of countries'), 'checked' => TRUE),
+            array('name' => 'default_flag', 'title' => $this->setLocalization('Default'),               'checked' => TRUE),
+            array('name' => 'operations',   'title' => $this->setLocalization('Operation'),             'checked' => TRUE)
         );
     }
     
@@ -400,13 +400,13 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
     
     private function getServersDropdownAttribute() {
         return array(
-            array('name' => 'id',               'title' => $this->setlocalization('ID'),            'checked' => TRUE),
-            array('name' => 'name',             'title' => $this->setlocalization('Title'),         'checked' => TRUE),
-            array('name' => 'address',          'title' => $this->setlocalization('URL'),           'checked' => TRUE),
-            array('name' => 'max_sessions',     'title' => $this->setlocalization('Maximum users'), 'checked' => TRUE),
-            array('name' => 'stream_zone_name', 'title' => $this->setlocalization('Streaming area'),'checked' => TRUE),
-            array('name' => 'status',           'title' => $this->setlocalization('Status'),        'checked' => TRUE),
-            array('name' => 'operations',       'title' => $this->setlocalization('Operations'),    'checked' => TRUE)
+            array('name' => 'id',               'title' => $this->setLocalization('ID'),            'checked' => TRUE),
+            array('name' => 'name',             'title' => $this->setLocalization('Title'),         'checked' => TRUE),
+            array('name' => 'address',          'title' => $this->setLocalization('URL'),           'checked' => TRUE),
+            array('name' => 'max_sessions',     'title' => $this->setLocalization('Maximum users'), 'checked' => TRUE),
+            array('name' => 'stream_zone_name', 'title' => $this->setLocalization('Streaming area'),'checked' => TRUE),
+            array('name' => 'status',           'title' => $this->setLocalization('Status'),        'checked' => TRUE),
+            array('name' => 'operations',       'title' => $this->setLocalization('Operations'),    'checked' => TRUE)
         );
     }
     

@@ -15,9 +15,9 @@ class InfoportalController extends \Controller\BaseStalkerController {
     public function __construct(Application $app) {
         parent::__construct($app, __CLASS__);
         $this->allServices = array(
-            array('id' => 'main', 'title' => $this->setlocalization('Emergency services')),
-            array('id' => 'help', 'title' => $this->setlocalization('Reference services')),
-            array('id' => 'other', 'title' => $this->setlocalization('Other services'))
+            array('id' => 'main', 'title' => $this->setLocalization('Emergency services')),
+            array('id' => 'help', 'title' => $this->setLocalization('Reference services')),
+            array('id' => 'other', 'title' => $this->setLocalization('Other services'))
         );
     }
 
@@ -379,19 +379,19 @@ class InfoportalController extends \Controller\BaseStalkerController {
 
     private function getPhoneBoockDropdownAttribute() {
         return array(
-            array('name'=>'num',        'title'=>$this->setlocalization('Order'),       'checked' => TRUE),
-            array('name'=>'title',      'title'=>$this->setlocalization('Title'),       'checked' => TRUE),
-            array('name'=>'number',     'title'=>$this->setlocalization('Phone number'),'checked' => TRUE),
-            array('name'=>'operations', 'title'=>$this->setlocalization('Operations'),  'checked' => TRUE)
+            array('name'=>'num',        'title'=>$this->setLocalization('Order'),       'checked' => TRUE),
+            array('name'=>'title',      'title'=>$this->setLocalization('Title'),       'checked' => TRUE),
+            array('name'=>'number',     'title'=>$this->setLocalization('Phone number'),'checked' => TRUE),
+            array('name'=>'operations', 'title'=>$this->setLocalization('Operations'),  'checked' => TRUE)
         );
     }
     
     private function getHumorDropdownAttribute() {
         return array(
-            array('name'=>'id',         'title'=>$this->setlocalization('Order'),       'checked' => TRUE),
-            array('name'=>'added',      'title'=>$this->setlocalization('Date'),        'checked' => TRUE),
-            array('name'=>'anec_body',  'title'=>$this->setlocalization('Text'),        'checked' => TRUE),
-            array('name'=>'operations', 'title'=>$this->setlocalization('Operations'),  'checked' => TRUE)
+            array('name'=>'id',         'title'=>$this->setLocalization('Order'),       'checked' => TRUE),
+            array('name'=>'added',      'title'=>$this->setLocalization('Date'),        'checked' => TRUE),
+            array('name'=>'anec_body',  'title'=>$this->setLocalization('Text'),        'checked' => TRUE),
+            array('name'=>'operations', 'title'=>$this->setLocalization('Operations'),  'checked' => TRUE)
         );
     }
     

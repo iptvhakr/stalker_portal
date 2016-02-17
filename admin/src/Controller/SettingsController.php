@@ -83,7 +83,7 @@ class SettingsController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'manageTheme';
-        $error = $this->setlocalization('There is no such skin');
+        $error = $this->setLocalization('There is no such skin');
         $data['name'] = $data['title'] = $data['preview'] = '';
         $themes = \Middleware::getThemes();
         if (!empty($themes) && array_key_exists($this->postData['themename'], $themes) ) {
@@ -119,7 +119,7 @@ class SettingsController extends \Controller\BaseStalkerController {
             'action' => 'setCommonModal'
         );
         
-        $error = $this->setlocalization("Error");
+        $error = $this->setLocalization("Error");
         $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
@@ -191,7 +191,7 @@ class SettingsController extends \Controller\BaseStalkerController {
         }
 
         unset($item[0]['id']);
-        $error = $this->setlocalization('Failed');
+        $error = $this->setLocalization('Failed');
         
         $result = call_user_func_array(array($this->db, $operation), $item);
         if (is_numeric($result)) {
@@ -248,17 +248,17 @@ class SettingsController extends \Controller\BaseStalkerController {
 
     private function getCommonDropdownAttribute(){
         return array(
-            array('name'=>'id',                         'title'=>$this->setlocalization('ID'),                      'checked' => TRUE),
-            array('name'=>'stb_type',                   'title'=>$this->setlocalization('STB model'),               'checked' => TRUE),
-            array('name'=>'require_image_version',      'title'=>$this->setlocalization('STB API version'),         'checked' => TRUE),
-            array('name'=>'require_image_date',         'title'=>$this->setlocalization('Image date'),              'checked' => TRUE),
-            array('name'=>'update_type',                'title'=>$this->setlocalization('Update type'),             'checked' => TRUE),
-            array('name'=>'prefix',                     'title'=>$this->setlocalization('Prefix'),                  'checked' => TRUE),
-            array('name'=>'image_description_contains', 'title'=>$this->setlocalization('Image description'),       'checked' => TRUE),
-            array('name'=>'image_version_contains',     'title'=>$this->setlocalization('Required STB API version'),'checked' => TRUE),
-            array('name'=>'hardware_version_contains',  'title'=>$this->setlocalization('Hardware version'),        'checked' => TRUE),
-            array('name'=>'enable',                     'title'=>$this->setlocalization('Automatic update'),        'checked' => TRUE),
-            array('name'=>'operations',                 'title'=>$this->setlocalization('Operations'),              'checked' => TRUE)
+            array('name'=>'id',                         'title'=>$this->setLocalization('ID'),                      'checked' => TRUE),
+            array('name'=>'stb_type',                   'title'=>$this->setLocalization('STB model'),               'checked' => TRUE),
+            array('name'=>'require_image_version',      'title'=>$this->setLocalization('STB API version'),         'checked' => TRUE),
+            array('name'=>'require_image_date',         'title'=>$this->setLocalization('Image date'),              'checked' => TRUE),
+            array('name'=>'update_type',                'title'=>$this->setLocalization('Update type'),             'checked' => TRUE),
+            array('name'=>'prefix',                     'title'=>$this->setLocalization('Prefix'),                  'checked' => TRUE),
+            array('name'=>'image_description_contains', 'title'=>$this->setLocalization('Image description'),       'checked' => TRUE),
+            array('name'=>'image_version_contains',     'title'=>$this->setLocalization('Required STB API version'),'checked' => TRUE),
+            array('name'=>'hardware_version_contains',  'title'=>$this->setLocalization('Hardware version'),        'checked' => TRUE),
+            array('name'=>'enable',                     'title'=>$this->setLocalization('Automatic update'),        'checked' => TRUE),
+            array('name'=>'operations',                 'title'=>$this->setLocalization('Operations'),              'checked' => TRUE)
         );
     }
 }

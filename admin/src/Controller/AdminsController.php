@@ -111,11 +111,11 @@ class AdminsController extends \Controller\BaseStalkerController {
         
         $this->app['adminGropName'] = $group_name[0]['name'];
         $this->app['adminGropID'] = $this->data['id'];
-        $permissionMap = $this->setlocalization($permissionMap, 'description');
+        $permissionMap = $this->setLocalization($permissionMap, 'description');
         $this->app['permissionMap'] = $permissionMap;
 
         $this->app['breadcrumbs']->addItem($this->setLocalization('Groups'), $this->app['controller_alias'] . '/admins-groups');
-        $this->app['breadcrumbs']->addItem($this->setlocalization('permissions for group administrators ') . ": '{$group_name[0]['name']}'");
+        $this->app['breadcrumbs']->addItem($this->setLocalization('permissions for group administrators ') . ": '{$group_name[0]['name']}'");
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -469,7 +469,7 @@ class AdminsController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'managePermissions';
-        $data['msg'] = $this->setlocalization('Failed');
+        $data['msg'] = $this->setLocalization('Failed');
         $error = 'Ошибка';
         
         $write_data = array();
@@ -497,7 +497,7 @@ class AdminsController extends \Controller\BaseStalkerController {
         $this->db->deleteAdminGroupPermissions($adminGropID);
         if ($this->db->setAdminGroupPermissions($write_data)){
             $error = ''; 
-            $data['msg'] = $this->setlocalization('Saved');
+            $data['msg'] = $this->setLocalization('Saved');
         }
         
         $response = $this->generateAjaxResponse($data, $error);
@@ -838,27 +838,27 @@ class AdminsController extends \Controller\BaseStalkerController {
     
     private function getAdminsDropdownAttribute() {
         $return = array(
-            array('name' => 'id',           'title' => $this->setlocalization('ID'),        'checked' => TRUE),
-            array('name' => 'login',        'title' => $this->setlocalization('Login'),     'checked' => TRUE),
-            array('name' => 'group_name',   'title' => $this->setlocalization('Group'),     'checked' => TRUE)
+            array('name' => 'id',           'title' => $this->setLocalization('ID'),        'checked' => TRUE),
+            array('name' => 'login',        'title' => $this->setLocalization('Login'),     'checked' => TRUE),
+            array('name' => 'group_name',   'title' => $this->setLocalization('Group'),     'checked' => TRUE)
         );
         if (empty($this->app['reseller'])) {
-            $return[] = array('name' => 'reseller_name','title' => $this->setlocalization('Reseller'),  'checked' => TRUE);
+            $return[] = array('name' => 'reseller_name','title' => $this->setLocalization('Reseller'),  'checked' => TRUE);
         }
-        $return[] = array('name' => 'operations',   'title' => $this->setlocalization('Operations'),'checked' => TRUE);
+        $return[] = array('name' => 'operations',   'title' => $this->setLocalization('Operations'),'checked' => TRUE);
         return $return;
     }
     
     private function getAdminGroupsDropdownAttribute() {
         $return = array(
-            array('name' => 'id',           'title' => $this->setlocalization('ID'),            'checked' => TRUE),
-            array('name' => 'name',         'title' => $this->setlocalization('Title'),         'checked' => TRUE),
-            array('name' => 'admin_count',  'title' => $this->setlocalization('Admins in group'),'checked' => TRUE)
+            array('name' => 'id',           'title' => $this->setLocalization('ID'),            'checked' => TRUE),
+            array('name' => 'name',         'title' => $this->setLocalization('Title'),         'checked' => TRUE),
+            array('name' => 'admin_count',  'title' => $this->setLocalization('Admins in group'),'checked' => TRUE)
         );
         if (empty($this->app['reseller'])) {
-            $return[] = array('name' => 'reseller_name','title' => $this->setlocalization('Reseller'),  'checked' => TRUE);
+            $return[] = array('name' => 'reseller_name','title' => $this->setLocalization('Reseller'),  'checked' => TRUE);
         }
-        $return[] = array('name' => 'operations',   'title' => $this->setlocalization('Operations'),'checked' => TRUE);
+        $return[] = array('name' => 'operations',   'title' => $this->setLocalization('Operations'),'checked' => TRUE);
         return $return;
     }
     
@@ -902,14 +902,14 @@ class AdminsController extends \Controller\BaseStalkerController {
 
     private function getResellerDropdownAttribute() {
         return array(
-            array('name' => 'id',           'title' => $this->setlocalization('ID'),                    'checked' => TRUE),
-            array('name' => 'name',         'title' => $this->setlocalization('Name'),                  'checked' => TRUE),
-            array('name' => 'created',      'title' => $this->setlocalization('Created'),               'checked' => TRUE),
-            array('name' => 'modified',     'title' => $this->setlocalization('Modified'),              'checked' => TRUE),
-            array('name' => 'admins_count', 'title' => $this->setlocalization('Admins of reseller'),    'checked' => TRUE),
-            array('name' => 'users_count',  'title' => $this->setlocalization('Users of reseller'),     'checked' => TRUE),
-            array('name' => 'max_users',    'title' => $this->setlocalization('Maximum number of users'),'checked' => TRUE),
-            array('name' => 'operations',   'title' => $this->setlocalization('Operations'),        'checked' => TRUE)
+            array('name' => 'id',           'title' => $this->setLocalization('ID'),                    'checked' => TRUE),
+            array('name' => 'name',         'title' => $this->setLocalization('Name'),                  'checked' => TRUE),
+            array('name' => 'created',      'title' => $this->setLocalization('Created'),               'checked' => TRUE),
+            array('name' => 'modified',     'title' => $this->setLocalization('Modified'),              'checked' => TRUE),
+            array('name' => 'admins_count', 'title' => $this->setLocalization('Admins of reseller'),    'checked' => TRUE),
+            array('name' => 'users_count',  'title' => $this->setLocalization('Users of reseller'),     'checked' => TRUE),
+            array('name' => 'max_users',    'title' => $this->setLocalization('Maximum number of users'),'checked' => TRUE),
+            array('name' => 'operations',   'title' => $this->setLocalization('Operations'),        'checked' => TRUE)
         );
     }
 

@@ -16,8 +16,8 @@ class AudioClubController extends \Controller\BaseStalkerController {
     public function __construct(Application $app) {
         parent::__construct($app, __CLASS__);
         $this->allStatus = array(
-            array('id' => 1, 'title' => $this->setlocalization('Unpublished')),
-            array('id' => 2, 'title' => $this->setlocalization('Published'))
+            array('id' => 1, 'title' => $this->setLocalization('Unpublished')),
+            array('id' => 2, 'title' => $this->setLocalization('Published'))
         );
     }
 
@@ -41,7 +41,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
         $allGenre = $this->db->getAllFromTable('audio_genres');
         $allGenre = $this->getUCArray($this->setLocalization($allGenre, 'name'), 'name');
         $this->app['allAudioGenres'] = $allGenre;
-        $this->app['allAudioYears'] = $this->db->getAllFromTable('audio_years');
+        $this->app['allAudioYears'] = $this->setLocalization($this->db->getAllFromTable('audio_years'), 'name');
 
         $locale = substr($this->app["language"], 0, 2);
         $this->app['allCountries'] = ($locale != 'ru' ? array_map(function($row) use ($locale){ $row['name'] = $row['name_en']; return $row; }, $this->db->getAllFromTable('countries')): $this->db->getAllFromTable('countries'));
@@ -225,7 +225,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
             "language" => "0 as `language`",
             "status" => "`audio_albums`.`status` as `status`"
         );
-        $error = $this->setlocalization('Error');
+        $error = $this->setLocalization('Error');
         $param = (!empty($this->data) ? $this->data : array());
 
         $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
@@ -262,6 +262,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
         }
 
         $response['data'] = $this->db->getAudioAlbumsList($query_param);
+        $response['data'] = $this->setLocalization($response['data'], 'year');
         while (list($key, $row) = each($response['data'])){
             $response['data'][$key]['RowOrder'] = "dTRow_" . $row['id'];
         }        
@@ -312,7 +313,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
             'recordsTotal' => 0,
             'recordsFiltered' => 0
         );
-        $error = $this->setlocalization('Error');
+        $error = $this->setLocalization('Error');
         $param = (!empty($this->data) ? $this->data : array());
 
         $query_param = $this->prepareDataTableParams($param, array('operations', '_'));
@@ -359,7 +360,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'addAudioGenre';
-        $error = $this->setlocalization('Failed');
+        $error = $this->setLocalization('Failed');
         $check = $this->db->getAudioGenresList(array('where' => array('name' => $this->postData['name']), 'order' => array('name' => 'ASC')));
         if (empty($check)) {
             $data['id'] = $this->db->insertAudioGenres(array('name' => $this->postData['name']));
@@ -383,7 +384,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'editAudioGenre';
-        $error = $this->setlocalization('Failed');
+        $error = $this->setLocalization('Failed');
         $check = $this->db->getAudioGenresList(array('where' => array('name' => $this->postData['name']), 'order' => array('name' => 'ASC')));
         if (empty($check)) {
             $this->db->updateAudioGenres(array('name' => $this->postData['name']), array('id' => $this->postData['id']));
@@ -428,11 +429,11 @@ class AudioClubController extends \Controller\BaseStalkerController {
         }
         $data = array();
         $data['action'] = 'checkAudioGenre';
-        $error = $this->setlocalization('Name already used');
+        $error = $this->setLocalization('Name already used');
         if ($this->db->getAudioGenresList(array('where' => array('name' => $this->postData['name']), 'order' => array('name' => 'ASC')))) {
-            $data['chk_rezult'] = $this->setlocalization('Name already used');
+            $data['chk_rezult'] = $this->setLocalization('Name already used');
         } else {
-            $data['chk_rezult'] = $this->setlocalization('Name is available');
+            $data['chk_rezult'] = $this->setLocalization('Name is available');
             $error = '';
         }
         $response = $this->generateAjaxResponse($data, $error);
@@ -451,7 +452,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
             'recordsTotal' => 0,
             'recordsFiltered' => 0
         );
-        $error = $this->setlocalization('Error');
+        $error = $this->setLocalization('Error');
         $param = (!empty($this->data) ? $this->data : array());
 
         $query_param = $this->prepareDataTableParams($param, array('operations', '_'));
@@ -498,7 +499,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'addAudioArtist';
-        $error = $this->setlocalization('Failed');
+        $error = $this->setLocalization('Failed');
         $check = $this->db->getAudioArtistList(array('where' => array('name' => $this->postData['name']), 'order' => array('name' => 'ASC')));
         if (empty($check)) {
             $data['id'] = $this->db->insertAudioArtist(array('name' => $this->postData['name']));
@@ -522,7 +523,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'editAudioArtist';
-        $error = $this->setlocalization('Failed');
+        $error = $this->setLocalization('Failed');
         $check = $this->db->getAudioArtistList(array('where' => array('name' => $this->postData['name']), 'order' => array('name' => 'ASC')));
         if (empty($check)) {
             $this->db->updateAudioArtist(array('name' => $this->postData['name']), array('id' => $this->postData['id']));
@@ -567,11 +568,11 @@ class AudioClubController extends \Controller\BaseStalkerController {
         }
         $data = array();
         $data['action'] = 'checkAudioArtist';
-        $error = $this->setlocalization('Name already used');
+        $error = $this->setLocalization('Name already used');
         if ($this->db->getAudioArtistList(array('where' => array('name' => $this->postData['name']), 'order' => array('name' => 'ASC')))) {
-            $data['chk_rezult'] = $this->setlocalization('Name already used');
+            $data['chk_rezult'] = $this->setLocalization('Name already used');
         } else {
-            $data['chk_rezult'] = $this->setlocalization('Name is available');
+            $data['chk_rezult'] = $this->setLocalization('Name is available');
             $error = '';
         }
         $response = $this->generateAjaxResponse($data, $error);
@@ -590,7 +591,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
             'recordsTotal' => 0,
             'recordsFiltered' => 0
         );
-        $error = $this->setlocalization('Error');
+        $error = $this->setLocalization('Error');
         $param = (!empty($this->data) ? $this->data : array());
 
         $query_param = $this->prepareDataTableParams($param, array('operations', '_'));
@@ -637,7 +638,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'addAudioLanguage';
-        $error = $this->setlocalization('Failed');
+        $error = $this->setLocalization('Failed');
         $check = $this->db->getAudioLanguageList(array('where' => array('name' => $this->postData['name']), 'order' => array('name' => 'ASC')));
         if (empty($check)) {
             $data['id'] = $this->db->insertAudioLanguage(array('name' => $this->postData['name']));
@@ -661,7 +662,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'editAudioLanguage';
-        $error = $this->setlocalization('Failed');
+        $error = $this->setLocalization('Failed');
         $check = $this->db->getAudioLanguageList(array('where' => array('name' => $this->postData['name']), 'order' => array('name' => 'ASC')));
         if (empty($check)) {
             $this->db->updateAudioLanguage(array('name' => $this->postData['name']), array('id' => $this->postData['id']));
@@ -706,11 +707,11 @@ class AudioClubController extends \Controller\BaseStalkerController {
         }
         $data = array();
         $data['action'] = 'checkAudioLanguage';
-        $error = $this->setlocalization('Name already used');
+        $error = $this->setLocalization('Name already used');
         if ($this->db->getAudioLanguageList(array('where' => array('name' => $this->postData['name']), 'order' => array('name' => 'ASC')))) {
-            $data['chk_rezult'] = $this->setlocalization('Name already used');
+            $data['chk_rezult'] = $this->setLocalization('Name already used');
         } else {
-            $data['chk_rezult'] = $this->setlocalization('Name is available');
+            $data['chk_rezult'] = $this->setLocalization('Name is available');
             $error = '';
         }
         $response = $this->generateAjaxResponse($data, $error);
@@ -729,7 +730,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
             'recordsTotal' => 0,
             'recordsFiltered' => 0
         );
-        $error = $this->setlocalization('Error');
+        $error = $this->setLocalization('Error');
         $param = (!empty($this->data) ? $this->data : array());
 
         $query_param = $this->prepareDataTableParams($param, array('operations', '_'));
@@ -776,7 +777,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'addAudioYear';
-        $error = $this->setlocalization('Failed');
+        $error = $this->setLocalization('Failed');
         $check = $this->db->getAudioYearList(array('where' => array('name' => $this->postData['name']), 'order' => array('name' => 'ASC')));
         if (empty($check)) {
             $data['id'] = $this->db->insertAudioYear(array('name' => $this->postData['name']));
@@ -800,7 +801,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'editAudioYear';
-        $error = $this->setlocalization('Failed');
+        $error = $this->setLocalization('Failed');
         $check = $this->db->getAudioYearList(array('where' => array('name' => $this->postData['name']), 'order' => array('name' => 'ASC')));
         if (empty($check)) {
             $this->db->updateAudioYear(array('name' => $this->postData['name']), array('id' => $this->postData['id']));
@@ -845,11 +846,11 @@ class AudioClubController extends \Controller\BaseStalkerController {
         }
         $data = array();
         $data['action'] = 'checkAudioYear';
-        $error = $this->setlocalization('Name already used');
+        $error = $this->setLocalization('Name already used');
         if ($this->db->getAudioYearList(array('where' => array('name' => $this->postData['name']), 'order' => array('name' => 'ASC')))) {
-            $data['chk_rezult'] = $this->setlocalization('Name already used');
+            $data['chk_rezult'] = $this->setLocalization('Name already used');
         } else {
-            $data['chk_rezult'] = $this->setlocalization('Name available');
+            $data['chk_rezult'] = $this->setLocalization('Name available');
             $error = '';
         }
         $response = $this->generateAjaxResponse($data, $error);
@@ -866,7 +867,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
         $data = array();
-        $error = $this->setlocalization('No data');
+        $error = $this->setLocalization('No data');
         
         if (!empty($_FILES)) {
             reset($_FILES);
@@ -936,7 +937,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
             }
             try{
                 unlink($path . $file_name);
-                $data['msg'] = $this->setlocalization('Deleted');
+                $data['msg'] = $this->setLocalization('Deleted');
                 $error = '';
             } catch (\Exception $e){
                 $error = $this->setLocalization('image file has not been deleted') . ', ';
@@ -975,7 +976,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
             "status" => 'audio_compositions.status as `status`',
             "language_id" => 'audio_languages.id as `language_id`'
         );
-        $error = $this->setlocalization('Error');
+        $error = $this->setLocalization('Error');
         $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
@@ -1210,14 +1211,14 @@ class AudioClubController extends \Controller\BaseStalkerController {
     
     private function getDropdownAttributeAudioClub(){
         return array(
-            array('name'=>'name',           'title'=>$this->setlocalization('Title'),   'checked' => TRUE),
-            array('name'=>'tracks_count',   'title'=>$this->setlocalization('Tracks'),  'checked' => TRUE),
-            array('name'=>'ganre_name',     'title'=>$this->setlocalization('Genre'),   'checked' => TRUE),
-            array('name'=>'year',           'title'=>$this->setlocalization('Year'),    'checked' => TRUE),
-            array('name'=>'country',        'title'=>$this->setlocalization('Country'), 'checked' => TRUE),
-            array('name'=>'language',       'title'=>$this->setlocalization('Language'),'checked' => TRUE),
-            array('name'=>'status',         'title'=>$this->setlocalization('Status'),  'checked' => TRUE),
-            array('name'=>'operations',     'title'=>$this->setlocalization('Operation'),'checked' => TRUE)
+            array('name'=>'name',           'title'=>$this->setLocalization('Title'),   'checked' => TRUE),
+            array('name'=>'tracks_count',   'title'=>$this->setLocalization('Tracks'),  'checked' => TRUE),
+            array('name'=>'ganre_name',     'title'=>$this->setLocalization('Genre'),   'checked' => TRUE),
+            array('name'=>'year',           'title'=>$this->setLocalization('Year'),    'checked' => TRUE),
+            array('name'=>'country',        'title'=>$this->setLocalization('Country'), 'checked' => TRUE),
+            array('name'=>'language',       'title'=>$this->setLocalization('Language'),'checked' => TRUE),
+            array('name'=>'status',         'title'=>$this->setLocalization('Status'),  'checked' => TRUE),
+            array('name'=>'operations',     'title'=>$this->setLocalization('Operation'),'checked' => TRUE)
         );
     }
     
@@ -1377,12 +1378,12 @@ class AudioClubController extends \Controller\BaseStalkerController {
 
     private function getDropdownAttributeAudioComposition(){
         return array(
-            array('name'=>'number',         'title'=>$this->setlocalization('Order'),   'checked' => TRUE),
-            array('name'=>'name',           'title'=>$this->setlocalization('Title'),   'checked' => TRUE),
-            array('name'=>'url',            'title'=>$this->setlocalization('URL'),     'checked' => TRUE),
-            array('name'=>'language',       'title'=>$this->setlocalization('Language'),'checked' => TRUE),
-            array('name'=>'status',         'title'=>$this->setlocalization('Status'),  'checked' => TRUE),
-            array('name'=>'operations',     'title'=>$this->setlocalization('Operation'),'checked' => TRUE)
+            array('name'=>'number',         'title'=>$this->setLocalization('Order'),   'checked' => TRUE),
+            array('name'=>'name',           'title'=>$this->setLocalization('Title'),   'checked' => TRUE),
+            array('name'=>'url',            'title'=>$this->setLocalization('URL'),     'checked' => TRUE),
+            array('name'=>'language',       'title'=>$this->setLocalization('Language'),'checked' => TRUE),
+            array('name'=>'status',         'title'=>$this->setLocalization('Status'),  'checked' => TRUE),
+            array('name'=>'operations',     'title'=>$this->setLocalization('Operation'),'checked' => TRUE)
         );
     }
 
