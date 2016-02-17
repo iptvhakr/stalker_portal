@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-02-16 13:01+0300\n"
-"PO-Revision-Date: 2016-02-16 13:02+0300\n"
-"Last-Translator: Ivan <massiw@inbox.ru>\n"
+"PO-Revision-Date: 2016-02-17 15:18+0300\n"
+"Last-Translator: Aleksey Zhurbitsky <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -7575,8 +7575,8 @@ msgid "Director"
 msgstr "Режиссер"
 
 #: ../../../administrator/add_video.php:2088 ../../../lang/stb.php:241
-msgid "Actors"
-msgstr "Актеры"
+msgid "Stars"
+msgstr "В ролях"
 
 #: ../../../administrator/add_video.php:2096 ../../../lang/stb.php:242
 #: ../../../lang/stb.php:398
@@ -9321,8 +9321,7 @@ msgstr "ТВ каналы отсутствуют"
 msgid "You can configure DVB channels in the settings menu"
 msgstr "Вы можете настроить DVB каналы в меню настроек"
 
-#: ../../../lang/stb.php:530
-#: ../../../../admin/json_menu/menu.json:185
+#: ../../../lang/stb.php:530 ../../../../admin/json_menu/menu.json:185
 msgid "Applications"
 msgstr "Приложения"
 
@@ -9999,9 +9998,9 @@ msgid ""
 "(WiFi, Ethernet), by STB model (250, 275, ...), by country (UA, RU, ...). "
 "Field is case sensitive"
 msgstr ""
-"Фильтр по user-agent, возможно настроить фильтрацию по типу "
-"подключения(WiFi, Ethernet), по модели приставки(250, 275, ...), стране (UA, "
-"RU, ...). Поле регистрозависимое"
+"Фильтр по user-agent, возможно настроить фильтрацию по типу подключения"
+"(WiFi, Ethernet), по модели приставки(250, 275, ...), стране (UA, RU, ...). "
+"Поле регистрозависимое"
 
 msgid ""
 "Filter the STB by set parameters. Update will be installed on STB matching "

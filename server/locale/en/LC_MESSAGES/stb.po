@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-02-16 13:02+0300\n"
-"PO-Revision-Date: 2016-02-16 13:07+0300\n"
-"Last-Translator: Ivan <massiw@inbox.ru>\n"
+"PO-Revision-Date: 2016-02-17 15:17+0300\n"
+"Last-Translator: Aleksey Zhurbitsky <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
@@ -7571,8 +7571,8 @@ msgid "Director"
 msgstr "Director"
 
 #: ../../../administrator/add_video.php:2088 ../../../lang/stb.php:241
-msgid "Actors"
-msgstr "Actors"
+msgid "Stars"
+msgstr "Stars"
 
 #: ../../../administrator/add_video.php:2096 ../../../lang/stb.php:242
 #: ../../../lang/stb.php:398
@@ -9315,8 +9315,7 @@ msgstr "No channels available"
 msgid "You can configure DVB channels in the settings menu"
 msgstr "You can configure DVB channels in the settings menu"
 
-#: ../../../lang/stb.php:530
-#: ../../../../admin/json_menu/menu.json:185
+#: ../../../lang/stb.php:530 ../../../../admin/json_menu/menu.json:185
 msgid "Applications"
 msgstr "Applications"
 

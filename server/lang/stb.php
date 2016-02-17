@@ -238,7 +238,7 @@ $words['epg_started'] = _('started');
 $words['epg_more'] = _('MORE');
 $words['epg_category'] = _('Category');
 $words['epg_director'] = _('Director');
-$words['epg_actors'] = _('Actors');
+$words['epg_actors'] = _('Stars');
 $words['epg_desc'] = _('Description');
 
 /// TRANSLATORS: Search box languages. Comma separated without spaces.

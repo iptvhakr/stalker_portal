@@ -2085,7 +2085,7 @@ $(function(){
         </tr>
         <tr>
            <td align="right" valign="top">
-            <?= _('Actors')?>:
+            <?= _('Stars')?>:
            </td>
            <td>
             <textarea id="actors" name="actors" class="actors" rows="6" cols="39"><? echo @$actors ?></textarea>

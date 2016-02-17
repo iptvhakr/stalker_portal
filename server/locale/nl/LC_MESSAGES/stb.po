@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-11-24 11:36+0300\n"
-"PO-Revision-Date: 2014-11-24 11:36+0300\n"
+"PO-Revision-Date: 2016-02-17 15:18+0300\n"
 "Last-Translator: Aleksey Zhurbitsky <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -1754,7 +1754,7 @@ msgid "Director"
 msgstr "Directie"
 
 #: ../../../administrator/add_video.php:2061 ../../../lang/stb.php:232
-msgid "Actors"
+msgid "Stars"
 msgstr "Acteurs"
 
 #: ../../../administrator/add_video.php:2069 ../../../lang/stb.php:233
