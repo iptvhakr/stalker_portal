@@ -1715,10 +1715,12 @@ player.prototype.event_callback = function(event, params){
 
                         stb.hdmi_on = false;
 
-                        if (stb.cur_place == 'tv' && self.is_tv) {
-                            stb.player.stop();
-                        }else if (!self.pause.on){
-                            keydown_observer.emulate_key(key.PAUSE);
+                        if (self.on) {
+                            if (stb.cur_place == 'tv' && self.is_tv) {
+                                stb.player.stop();
+                            } else if (!self.pause.on) {
+                                keydown_observer.emulate_key(key.PAUSE);
+                            }
                         }
 
                         if (stb.profile['standby_on_hdmi_off'] && !stb.power_off){
