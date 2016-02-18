@@ -10,7 +10,7 @@
                 </a>
             </div>
         </div>
-        <form class="form-horizontal" role="form">
+        <form class="form-horizontal" role="form" id="form_">
             <div class="devoops-modal-inner">
                 <div class="box">
                     <div class="box-content">
@@ -271,7 +271,28 @@
 </div>
 
 <script type="text/javascript" defer>
+
+    var conf = {
+        form: '#form_',
+        lang : '{{ app.language }}',
+        showHelpOnFocus : true,
+        validateHiddenInputs: true,
+        ignore: ['.ignore'],
+        modules: 'jsconf, date',
+        onSuccess: function () {
+            var formData = $("#modalbox_ad form").serialize();
+            ajaxPostSend("{{app.request.baseUrl}}/events/add-event", formData);
+            $("#modalbox_ad form").get(0).reset();
+            return false;
+        },
+        onError: function () {
+            return false;
+        }
+    };
+
     function eventsMenuHandlers() {
+
+        $.validate(conf);
 
         LoadSelect2Script(DemoSelect2);
 
@@ -319,15 +340,15 @@
 
         $(document).on('click', "#modalbox_ad button[type='submit']", function (e) {
 
-            $.validate({
-                onSuccess: function () {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    var formData = $("#modalbox_ad form").serialize();
-                    ajaxPostSend("{{app.request.baseUrl}}/events/add-event", formData);
-                    return false;
-                }
-            });
+            e.stopPropagation();
+            e.preventDefault();
+
+            if ($(conf.form).isValid({}, conf, true)) {
+                conf.onSuccess();
+            } else {
+                conf.onError();
+            }
+            return false;
         });
 
         $(document).on('hide', "#add_post_function_container", function(e){
@@ -349,6 +370,50 @@
         $(document).on('change show', "#s2_post_function, #post_function_type", function(e){
             $("[data-event-type^='post_function']").filter("[data-event-type!='post_function_type']").hide().find('select, input').attr('disabled', 'disabled');
             $("#" + $("#s2_post_function").val()).show().find('select, input').removeAttr('disabled');
+        });
+
+        var uploader = $("#bootstrapped-fine-uploader").fineUploader({
+            element: $('#bootstrapped-fine-uploader'),
+            autoUpload: true,
+            debug: true,
+            multiple: false,
+            text: {
+                formatProgress: "{percent}% {{ 'from'|trans }} {total_size}",
+                failUpload: "{{ 'Upload failed'|trans }}",
+                waitingForResponse: "{{ 'Processing'|trans }}...",
+                paused: "{{ 'Pause'|trans }}"
+            },
+            request: {
+                endpoint: '{{ app.request.baseUrl }}/{{ app.controller_alias }}/upload-list-addresses'
+            },
+            {#validation: {
+                allowedExtensions: ['jpeg', 'jpg', 'gif', 'png'],
+                sizeLimit: 1048576 // 1Mb
+            },#}
+            template: 'qq-template-bootstrap',
+            classes: {
+                success: 'alert alert-success',
+                fail: 'alert alert-error'
+            }
+
+        }).on('complete', function (event, id, name, response) {
+            if (response.success) {
+                $('#file_name').val(response.fname);
+                if ($.isFunction(window[response.action]) && !response.error) {
+                    window[response.action](response);
+                }
+            } else if (response.error && $.isFunction(window[response.action + "Error"])) {
+                window[response.action + "Error"](response);
+            } else {
+                alert("{{ 'Some server error'|trans }}");
+            }
+            return false;
+        });
+
+        $("#bootstrapped-fine-uploader").on('click', ".qq-upload-cancel", function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            return false;
         });
     }
 
@@ -395,3 +460,32 @@
 </script>
     {% endfor %}
 {% endif %}
+<script type="text/template" id="qq-template-bootstrap">
+    <div class="qq-uploader-selector qq-uploader span12">
+        <div class="qq-upload-drop-area-selector qq-upload-drop-area span12" qq-hide-dropzone>
+            <!--<span>Drop files here to upload</span>-->
+        </div>
+        <div class="qq-upload-button-selector qq-upload-button btn btn-success" style="width: auto; margin: 0 auto; float: none; display: block;">
+            <div>
+                <i class="icon-upload icon-white"></i>{{ 'File'|trans }}
+            </div>
+        </div>
+        <span class="qq-drop-processing-selector qq-drop-processing">
+            <!--<span>Processing dropped files...</span>-->
+            <span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
+        </span>
+        <ul class="qq-upload-list-selector qq-upload-list" style="margin-top: 10px; text-align: center;">
+            <li>
+                <div class="qq-progress-bar-container-selector">
+                    <div class="qq-progress-bar-selector qq-progress-bar"></div>
+                </div>
+                <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
+                <span class="qq-upload-file-selector qq-upload-file"></span>
+                <span class="qq-upload-size-selector qq-upload-size"></span>
+                <!--<a class="qq-upload-cancel-selector qq-upload-cancel" href="#"> {{ 'Delete'|trans }} </a>-->
+                <span class="qq-upload-status-text-selector qq-upload-status-text"></span>
+            </li>
+        </ul>
+    </div>
+</script>
+

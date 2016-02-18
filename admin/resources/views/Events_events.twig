@@ -111,106 +111,35 @@
             $(document).ready(function () {
                 LoadDataTablesScripts(TestTable1);
 
-                var uploader = $("#bootstrapped-fine-uploader").fineUploader({
-                    element: $('#bootstrapped-fine-uploader'),
-                    autoUpload: true,
-                    debug: true,
-                    multiple: false,
-                    text: {
-                        formatProgress: "{percent}% {{ 'from'|trans }} {total_size}",
-                        failUpload: "{{ 'Upload failed'|trans }}",
-                        waitingForResponse: "{{ 'Processing'|trans }}...",
-                        paused: "{{ 'Pause'|trans }}"
-                    },
-                    request: {
-                        endpoint: '{{ app.request.baseUrl }}/{{ app.controller_alias }}/upload-list-addresses'
-                    },
-                    {#validation: {
-                        allowedExtensions: ['jpeg', 'jpg', 'gif', 'png'],
-                        sizeLimit: 1048576 // 1Mb
-                    },#}
-                    template: 'qq-template-bootstrap',
-                    classes: {
-                        success: 'alert alert-success',
-                        fail: 'alert alert-error'
-                    }
+                eventsMenuHandlers();
 
-                }).on('complete', function (event, id, name, response) {
-                    if (response.success) {
-                        $('#file_name').val(response.fname);
-                        if ($.isFunction(window[response.action]) && !response.error) {
-                            window[response.action](response);
-                        }
-                    } else if (response.error) {
-                        alert(response.error);
-                    } else {
-                        alert("{{ 'Some server error'|trans }}");
-                    }
-                        return false;
-                    });
-                    $("#bootstrapped-fine-uploader").on('click', ".qq-upload-cancel", function (e) {
-                        e.stopPropagation();
-                        e.preventDefault();
-                        return false;
-                    });
-
-                    eventsMenuHandlers();
-
-                    $(document).on('click', '#add_events', function (e) {
-                        e.stopPropagation();
-                        e.preventDefault();
-                        $("#modalbox_ad").show().find('input, select, textarea').removeAttr('disabled');
-                        checkFields('#s2_user_list_type', e);
-                        checkFields('#s2_event', e);
-                        return false;
-                    });
-
-                    $(document).on('click', "#clean_events", function (e) {
-                        e.stopPropagation();
-                        e.preventDefault();
-                        ajaxPostSend("{{app.request.baseUrl}}/{{app.controller_alias}}/clean-events", {uid: $(this).data('uid')});
-                        return false;
-                    });
-                    
+                $(document).on('click', '#add_events', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $("#modalbox_ad").show().find('input, select, textarea').removeAttr('disabled');
+                    checkFields('#s2_user_list_type', e);
+                    checkFields('#s2_event', e);
+                    return false;
                 });
-            }
-            document.addEventListener("DOMContentLoaded", yelp, false);
 
-            var cleanEvents = function(data){
-                JSSuccessModalBox(data);
-                $('#datatable-1').dataTable().fnReloadAjax();
-            };
-            var cleanEventsError = function(data){
-                JSErrorModalBox(data);
-                $('#datatable-1').dataTable().fnReloadAjax();
-            };
-    </script>
+                $(document).on('click', "#clean_events", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    ajaxPostSend("{{app.request.baseUrl}}/{{app.controller_alias}}/clean-events", {uid: $(this).data('uid')});
+                    return false;
+                });
 
-    <script type="text/template" id="qq-template-bootstrap">
-        <div class="qq-uploader-selector qq-uploader span12">
-            <div class="qq-upload-drop-area-selector qq-upload-drop-area span12" qq-hide-dropzone>
-                <!--<span>Drop files here to upload</span>-->
-            </div>
-            <div class="qq-upload-button-selector qq-upload-button btn btn-success"
-                 style="width: auto; margin: 0 auto; float: none; display: block;">
-                <div><i class="icon-upload icon-white"></i>{{ 'File'|trans }}</div>
-            </div>
-        <span class="qq-drop-processing-selector qq-drop-processing">
-        <!--<span>Processing dropped files...</span>-->
-        <span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
-        </span>
-            <ul class="qq-upload-list-selector qq-upload-list" style="margin-top: 10px; text-align: center;">
-                <li>
-                    <div class="qq-progress-bar-container-selector">
-                        <div class="qq-progress-bar-selector qq-progress-bar"></div>
-                    </div>
-                    <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
-                    <span class="qq-upload-file-selector qq-upload-file"></span>
-                    <span class="qq-upload-size-selector qq-upload-size"></span>
-                    <!--<a class="qq-upload-cancel-selector qq-upload-cancel" href="#"> {{ 'Delete'|trans }} </a>-->
-                    <span class="qq-upload-status-text-selector qq-upload-status-text"></span>
-                </li>
-            </ul>
-        </div>
+            });
+        }
+        document.addEventListener("DOMContentLoaded", yelp, false);
+
+        var cleanEvents = function(data){
+            JSSuccessModalBox(data);
+            $('#datatable-1').dataTable().fnReloadAjax();
+        };
+        var cleanEventsError = function(data){
+            JSErrorModalBox(data);
+            $('#datatable-1').dataTable().fnReloadAjax();
+        };
     </script>
 {% endblock %}
