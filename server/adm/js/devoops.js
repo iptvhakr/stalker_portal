@@ -790,7 +790,7 @@ $(document).ready(function () {
             }
             var type = typeof ($(this).attr('type')) != 'undefined' ? $(this).attr('type') : $(this).get(0).tagName.toLowerCase();
             var value = $(this).val() || '';
-            if (typeof (value) == 'array') {
+            if (value instanceof Array) {
                 value = value.join(';');
             }
             if (type == 'checkbox') {
