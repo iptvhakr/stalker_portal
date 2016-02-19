@@ -107,8 +107,8 @@
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-10 ">
                                         <select class="populate placeholder own_fields" data-validation=required   name="status" id="s2_status" >
-                                            <option value="0">{{ 'Unpublished'|trans }}</option>
                                             <option value="1">{{ 'Published'|trans }}</option>
+                                            <option value="0">{{ 'Unpublished'|trans }}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -330,7 +330,9 @@
                     $("#modalbox_ad .own_fields").prop("disabled", false).removeAttr('disabled').val('');
                     /*$("#modalbox_ad input[type='hidden']:not(.not_disabled)").attr('disabled', 'disabled').val('');*/
                     $("#form_id").attr('disabled', 'disabled').val('');
-                    $('#s2_status').select2("destroy").select2({minimumResultsForSearch: -1});
+                    $('#s2_status').val($('#s2_status option:first').val());
+                    $('#s2_status').select2("destroy");
+                    $('#s2_status').select2({minimumResultsForSearch: -1});
                     $('button.remove.all').click();
                     $('#s2_lang_code_available option.old').removeClass('old').addClass('new');
                     $('#form_uri').next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
@@ -416,7 +418,8 @@
                 }
             }
             $("#modalbox_ad input").removeAttr('disabled');
-            $('#s2_status').select2("destroy").select2({minimumResultsForSearch: -1});
+            $('#s2_status').select2("destroy");
+            $('#s2_status').select2({minimumResultsForSearch: -1});
             $('#s2_lang_code_available').append($('#s2_lang_code option'));
             $('#s2_lang_code').empty();
             $('#s2_lang_code_available').sortBoxes();
