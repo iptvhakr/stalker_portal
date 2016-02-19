@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-19 13:57+0300\n"
-"PO-Revision-Date: 2016-02-19 13:57+0300\n"
+"POT-Creation-Date: 2016-02-19 18:13+0300\n"
+"PO-Revision-Date: 2016-02-19 18:13+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -10897,9 +10897,6 @@ msgstr ""
 msgid "You can't delete category with movies or genres"
 msgstr "You can't delete category with movies or genres"
 
-msgid "and"
-msgstr "and"
-
 msgid "appearance"
 msgstr "appearance"
 
@@ -10911,9 +10908,6 @@ msgstr "artist"
 
 msgid "artists list"
 msgstr "artists list"
-
-msgid "between"
-msgstr "between"
 
 msgid "categories list"
 msgstr "categories list"
@@ -10941,6 +10935,9 @@ msgstr "tasks list in section"
 
 msgid "the category"
 msgstr "the category"
+
+msgid "to"
+msgstr "to"
 
 msgid "zone for"
 msgstr "zone for"
@@ -11310,9 +11307,6 @@ msgstr "The date of start event"
 msgid "month"
 msgstr "month"
 
-msgid "to"
-msgstr "to"
-
 #: ../../../../admin/json_menu/menu.json:9
 msgid "Channels"
 msgstr "Channels"
@@ -11368,6 +11362,12 @@ msgstr "Appearance"
 #: ../../../../admin/json_menu/menu.json:375
 msgid "Firmware update"
 msgstr "Firmware update"
+
+#~ msgid "and"
+#~ msgstr "and"
+
+#~ msgid "between"
+#~ msgstr "between"
 
 #~ msgid "Sending a message with video"
 #~ msgstr "Sending a message with video"

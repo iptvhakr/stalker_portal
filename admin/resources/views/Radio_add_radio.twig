@@ -169,14 +169,6 @@
                     });
                 });
 
-                $("#form_reset").on('click', function (e) {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    $.validate();
-                    $(conf.form).get(0).reset();
-                    return false;
-                });
-
                 $("#form_save").on('click', function (e) {
                     e.stopPropagation();
                     e.preventDefault();
