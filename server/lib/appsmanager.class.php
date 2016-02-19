@@ -215,7 +215,14 @@ class AppsManager
             $dir = substr($entry, 0, strpos($entry, '/'));
             $result = $archive->extractTo($path);
             $archive->close();
-            rename($path.'/'.$dir, $path.'/'.$latest_release['tag_name']);
+
+            $to_dir = $path.'/'.$latest_release['tag_name'];
+
+            if (is_dir($to_dir)){
+                self::delTree($to_dir);
+            }
+
+            rename($path.'/'.$dir, $to_dir);
         }else{
             return false;
         }
@@ -224,7 +231,7 @@ class AppsManager
 
         if (!empty($result)){
 
-            $update_data = array('current_version' => $latest_release['name']);
+            $update_data = array('current_version' => $latest_release['tag_name']);
             if (empty($app['alias'])){
 
                 $update_data['alias'] = self::safeFilename($info['name']);
