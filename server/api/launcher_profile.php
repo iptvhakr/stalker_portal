@@ -11,7 +11,28 @@ $file = file_get_contents('../../new/launcher/profile.json');
 
 $profile = json_decode($file, true);
 
-$apps = new AppsManager(isset($_GET['language']) ? $_GET['language'] : null);
+$language = isset($_GET['language']) ? $_GET['language'] : 'en';
+
+$allowed_languages = Config::get('allowed_locales');
+$allowed_languages_map = array();
+
+foreach ($allowed_languages as $loc){
+    $allowed_languages_map[substr($loc, 0, 2)] = $loc;
+}
+
+if (isset($allowed_languages_map[$language])){
+    $locale = $allowed_languages_map[$language];
+}elseif (count($allowed_languages_map) > 0){
+    reset($allowed_languages_map);
+    $locale = $allowed_languages_map[key($allowed_languages_map)];
+}else{
+    $locale = 'en_GB.utf8';
+}
+
+setlocale(LC_MESSAGES, $locale);
+putenv('LC_MESSAGES='.$locale);
+
+$apps = new AppsManager($language);
 $external_apps = $apps->getList(true);
 
 $installed_apps = array_values(array_filter($external_apps, function($app){

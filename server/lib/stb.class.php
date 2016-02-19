@@ -1913,7 +1913,11 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $result = array();
 
-        $timezones = Mysql::getInstance()->from('cities')->groupby('timezone')->orderby('timezone')->get()->all('timezone');
+        if (Config::getSafe('weather_provider', 'openweathermap') == 'openweathermap'){
+            $timezones = Mysql::getInstance()->from('all_cities')->groupby('timezone')->orderby('timezone')->get()->all('timezone');
+        }else{
+            $timezones = Mysql::getInstance()->from('cities')->groupby('timezone')->orderby('timezone')->get()->all('timezone');
+        }
 
         foreach ($timezones as $timezone){
 

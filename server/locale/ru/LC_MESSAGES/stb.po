@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-17 15:14+0300\n"
-"PO-Revision-Date: 2016-02-17 15:15+0300\n"
+"POT-Creation-Date: 2016-02-19 13:16+0300\n"
+"PO-Revision-Date: 2016-02-19 13:16+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -102,9 +102,9 @@ msgstr "Опубликовать"
 #: ../../../../admin/src/Controller/TvChannelsController.php:878
 #: ../../../../admin/src/Controller/TvChannelsController.php:915
 #: ../../../../admin/src/Controller/TvChannelsController.php:944
-#: ../../../../admin/src/Controller/EventsController.php:496
-#: ../../../../admin/src/Controller/EventsController.php:719
-#: ../../../../admin/src/Controller/EventsController.php:740
+#: ../../../../admin/src/Controller/EventsController.php:498
+#: ../../../../admin/src/Controller/EventsController.php:721
+#: ../../../../admin/src/Controller/EventsController.php:742
 #: ../../../../admin/src/Controller/UsersController.php:1364
 #: ../../../../admin/src/Controller/UsersController.php:1403
 #: ../../../../admin/src/Controller/UsersController.php:1511
@@ -164,8 +164,8 @@ msgstr "ТВ архив был успешно перезапущен."
 #: ../../../../admin/src/Controller/TvChannelsController.php:819
 #: ../../../../admin/src/Controller/TvChannelsController.php:992
 #: ../../../../admin/src/Controller/TvChannelsController.php:1098
-#: ../../../../admin/src/Controller/EventsController.php:416
-#: ../../../../admin/src/Controller/EventsController.php:541
+#: ../../../../admin/src/Controller/EventsController.php:418
+#: ../../../../admin/src/Controller/EventsController.php:543
 #: ../../../../admin/src/Controller/VideoClubController.php:397
 #: ../../../../admin/src/Controller/VideoClubController.php:992
 #: ../../../../admin/src/Controller/VideoClubController.php:1181
@@ -205,12 +205,12 @@ msgstr "Ошибка"
 #: ../../../../admin/src/Controller/TvChannelsController.php:1172
 #: ../../../../admin/src/Controller/EventsController.php:319
 #: ../../../../admin/src/Controller/EventsController.php:352
-#: ../../../../admin/src/Controller/EventsController.php:386
-#: ../../../../admin/src/Controller/EventsController.php:464
-#: ../../../../admin/src/Controller/EventsController.php:508
-#: ../../../../admin/src/Controller/EventsController.php:655
-#: ../../../../admin/src/Controller/EventsController.php:731
-#: ../../../../admin/src/Controller/EventsController.php:754
+#: ../../../../admin/src/Controller/EventsController.php:388
+#: ../../../../admin/src/Controller/EventsController.php:466
+#: ../../../../admin/src/Controller/EventsController.php:510
+#: ../../../../admin/src/Controller/EventsController.php:657
+#: ../../../../admin/src/Controller/EventsController.php:733
+#: ../../../../admin/src/Controller/EventsController.php:756
 #: ../../../../admin/src/Controller/VideoClubController.php:498
 #: ../../../../admin/src/Controller/VideoClubController.php:545
 #: ../../../../admin/src/Controller/VideoClubController.php:575
@@ -349,7 +349,7 @@ msgstr "Страница не найдена"
 #: ../../../../admin/src/Controller/IndexController.php:214
 #: ../../../../admin/src/Controller/IndexController.php:256
 #: ../../../../admin/src/Controller/IndexController.php:303
-#: ../../../../admin/src/Controller/EventsController.php:517
+#: ../../../../admin/src/Controller/EventsController.php:519
 #: ../../../../admin/src/Controller/VideoClubController.php:841
 #: ../../../../admin/src/Controller/VideoClubController.php:1103
 #: ../../../../admin/src/Controller/VideoClubController.php:1128
@@ -483,9 +483,9 @@ msgstr "Такой номер уже используется"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1664
 #: ../../../../admin/src/Controller/TvChannelsController.php:1718
-#: ../../../../admin/src/Controller/EventsController.php:826
-#: ../../../../admin/src/Controller/EventsController.php:852
-#: ../../../../admin/src/Controller/EventsController.php:870
+#: ../../../../admin/src/Controller/EventsController.php:828
+#: ../../../../admin/src/Controller/EventsController.php:854
+#: ../../../../admin/src/Controller/EventsController.php:872
 #: ../../../../admin/src/Controller/VideoClubController.php:2267
 #: ../../../../admin/src/Controller/VideoClubController.php:2395
 #: ../../../../admin/src/Controller/BroadcastServersController.php:384
@@ -540,7 +540,7 @@ msgstr "Логотип"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1667
 #: ../../../../admin/src/Controller/TvChannelsController.php:1760
-#: ../../../../admin/src/Controller/EventsController.php:827
+#: ../../../../admin/src/Controller/EventsController.php:829
 #: ../../../../admin/src/Controller/VideoClubController.php:2269
 #: ../../../../admin/src/Controller/VideoClubController.php:2289
 #: ../../../../admin/src/Controller/VideoClubController.php:2300
@@ -665,8 +665,8 @@ msgstr "Статус"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1675
 #: ../../../../admin/src/Controller/TvChannelsController.php:1724
-#: ../../../../admin/src/Controller/EventsController.php:831
-#: ../../../../admin/src/Controller/EventsController.php:881
+#: ../../../../admin/src/Controller/EventsController.php:833
+#: ../../../../admin/src/Controller/EventsController.php:883
 #: ../../../../admin/src/Controller/VideoClubController.php:2281
 #: ../../../../admin/src/Controller/VideoClubController.php:2294
 #: ../../../../admin/src/Controller/VideoClubController.php:2307
@@ -705,7 +705,7 @@ msgid "Update date"
 msgstr "Дата обновления"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1723
-#: ../../../../admin/src/Controller/EventsController.php:880
+#: ../../../../admin/src/Controller/EventsController.php:882
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:414
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:424
 #: ../../../../admin/src/Controller/StatisticsController.php:1418
@@ -1797,7 +1797,7 @@ msgstr "События пользователей"
 
 #: ../../../../admin/src/Controller/EventsController.php:328
 #: ../../../../admin/src/Controller/EventsController.php:361
-#: ../../../../admin/src/Controller/EventsController.php:853
+#: ../../../../admin/src/Controller/EventsController.php:855
 #: ../../../../admin/src/Controller/KaraokeController.php:346
 msgid "Added"
 msgstr "Добавлено"
@@ -1816,14 +1816,14 @@ msgid "users"
 msgstr "пользователям"
 
 #: ../../../../admin/src/Controller/EventsController.php:363
-msgid "Error. The file does not contain valid MAC-addresses."
-msgstr "Ошибка. Файл не содержит действительных MAC-адресов."
+msgid "The file does not contain valid MAC-addresses."
+msgstr "Файл не содержит действительных MAC-адресов."
 
 #: ../../../../admin/src/Controller/EventsController.php:375
 msgid "addresses"
 msgstr "адреса"
 
-#: ../../../../admin/src/Controller/EventsController.php:396
+#: ../../../../admin/src/Controller/EventsController.php:398
 #: ../../../../admin/src/Controller/VideoClubController.php:851
 #: ../../../../admin/src/Controller/VideoClubController.php:1681
 #: ../../../../admin/src/Controller/AudioClubController.php:940
@@ -1832,30 +1832,30 @@ msgstr "адреса"
 msgid "Deleted"
 msgstr "Удалено"
 
-#: ../../../../admin/src/Controller/EventsController.php:396
+#: ../../../../admin/src/Controller/EventsController.php:398
 msgid "events"
 msgstr "событий"
 
-#: ../../../../admin/src/Controller/EventsController.php:473
-#: ../../../../admin/src/Controller/EventsController.php:664
-#: ../../../../admin/src/Controller/EventsController.php:763
+#: ../../../../admin/src/Controller/EventsController.php:475
+#: ../../../../admin/src/Controller/EventsController.php:666
+#: ../../../../admin/src/Controller/EventsController.php:765
 #: ../../../../admin/src/Controller/UsersController.php:1462
 msgid "Not enough data"
 msgstr "Недостаточно данных"
 
-#: ../../../../admin/src/Controller/EventsController.php:582
+#: ../../../../admin/src/Controller/EventsController.php:584
 msgid "deferred"
 msgstr "Приостановлено"
 
-#: ../../../../admin/src/Controller/EventsController.php:583
+#: ../../../../admin/src/Controller/EventsController.php:585
 msgid "unlimited"
 msgstr "Неограниченно"
 
-#: ../../../../admin/src/Controller/EventsController.php:584
+#: ../../../../admin/src/Controller/EventsController.php:586
 msgid "do not yet running"
 msgstr "Еще не запускалось"
 
-#: ../../../../admin/src/Controller/EventsController.php:588
+#: ../../../../admin/src/Controller/EventsController.php:590
 #: ../../../../admin/src/Controller/VideoClubController.php:1878
 #: ../../../lib/ajaxresponse.class.php:44
 #: ../../../administrator/subscribe.php:360
@@ -1865,7 +1865,7 @@ msgstr "Еще не запускалось"
 msgid "All"
 msgstr "Все"
 
-#: ../../../../admin/src/Controller/EventsController.php:589
+#: ../../../../admin/src/Controller/EventsController.php:591
 #: ../../../../admin/src/Controller/AdminsController.php:843
 #: ../../../administrator/playlists.php:157
 #: ../../../administrator/events.php:418
@@ -1875,22 +1875,22 @@ msgstr "Все"
 msgid "Group"
 msgstr "Группа"
 
-#: ../../../../admin/src/Controller/EventsController.php:590
+#: ../../../../admin/src/Controller/EventsController.php:592
 msgid "One"
 msgstr "Один"
 
-#: ../../../../admin/src/Controller/EventsController.php:591
+#: ../../../../admin/src/Controller/EventsController.php:593
 msgid "Filter"
 msgstr "Фильтр"
 
-#: ../../../../admin/src/Controller/EventsController.php:828
+#: ../../../../admin/src/Controller/EventsController.php:830
 #: ../../../../admin/src/Controller/StatisticsController.php:1327
 #: ../../../../admin/src/Controller/UsersController.php:2081
 #: ../../../administrator/add_karaoke.php:813
 msgid "Author"
 msgstr "Автор"
 
-#: ../../../../admin/src/Controller/EventsController.php:829
+#: ../../../../admin/src/Controller/EventsController.php:831
 #: ../../../../admin/src/Controller/StatisticsController.php:1412
 #: ../../../../admin/src/Controller/TasksController.php:561
 #: ../../../../admin/src/Controller/TasksController.php:572
@@ -1899,15 +1899,15 @@ msgstr "Автор"
 msgid "Created"
 msgstr "Создано"
 
-#: ../../../../admin/src/Controller/EventsController.php:830
+#: ../../../../admin/src/Controller/EventsController.php:832
 msgid "Edited"
 msgstr "Изменено"
 
-#: ../../../../admin/src/Controller/EventsController.php:854
+#: ../../../../admin/src/Controller/EventsController.php:856
 msgid "Expiration date"
 msgstr "Действительно до"
 
-#: ../../../../admin/src/Controller/EventsController.php:855
+#: ../../../../admin/src/Controller/EventsController.php:857
 #: ../../../../admin/src/Controller/StatisticsController.php:1279
 #: ../../../../admin/src/Controller/StatisticsController.php:1287
 #: ../../../../admin/src/Controller/StatisticsController.php:1353
@@ -1921,44 +1921,44 @@ msgstr "Действительно до"
 msgid "MAC"
 msgstr "MAC"
 
-#: ../../../../admin/src/Controller/EventsController.php:856
-#: ../../../../admin/src/Controller/EventsController.php:871
+#: ../../../../admin/src/Controller/EventsController.php:858
+#: ../../../../admin/src/Controller/EventsController.php:873
 #: ../../../administrator/events.php:498
 msgid "Event"
 msgstr "Событие"
 
-#: ../../../../admin/src/Controller/EventsController.php:857
+#: ../../../../admin/src/Controller/EventsController.php:859
 #: ../../../../admin/src/Controller/StoragesController.php:550
 #: ../../../administrator/master_log.php:122
 #: ../../../administrator/events.php:499
 msgid "Message"
 msgstr "Сообщение"
 
-#: ../../../../admin/src/Controller/EventsController.php:858
+#: ../../../../admin/src/Controller/EventsController.php:860
 msgid "Post function"
 msgstr "Пост-функция"
 
-#: ../../../../admin/src/Controller/EventsController.php:859
+#: ../../../../admin/src/Controller/EventsController.php:861
 msgid "Post function parameter"
 msgstr "Параметр постфункции"
 
-#: ../../../../admin/src/Controller/EventsController.php:860
+#: ../../../../admin/src/Controller/EventsController.php:862
 msgid "Delivery status"
 msgstr "Состояние отправки"
 
-#: ../../../../admin/src/Controller/EventsController.php:861
+#: ../../../../admin/src/Controller/EventsController.php:863
 msgid "Receipt status"
 msgstr "Статус получения"
 
-#: ../../../../admin/src/Controller/EventsController.php:872
+#: ../../../../admin/src/Controller/EventsController.php:874
 msgid "Post-function"
 msgstr "Пост-функция"
 
-#: ../../../../admin/src/Controller/EventsController.php:873
+#: ../../../../admin/src/Controller/EventsController.php:875
 msgid "Recipient"
 msgstr "Получатель"
 
-#: ../../../../admin/src/Controller/EventsController.php:874
+#: ../../../../admin/src/Controller/EventsController.php:876
 #: ../../../../admin/src/Controller/StatisticsController.php:1326
 #: ../../../../admin/src/Controller/StatisticsController.php:1411
 #: ../../../../admin/src/Controller/TasksController.php:558
@@ -1973,27 +1973,27 @@ msgstr "Получатель"
 msgid "Type"
 msgstr "Тип"
 
-#: ../../../../admin/src/Controller/EventsController.php:875
+#: ../../../../admin/src/Controller/EventsController.php:877
 #: ../../../administrator/users_on_storage.php:136
 msgid "Begin"
 msgstr "Начало"
 
-#: ../../../../admin/src/Controller/EventsController.php:876
+#: ../../../../admin/src/Controller/EventsController.php:878
 msgid "End"
 msgstr "Окончание"
 
-#: ../../../../admin/src/Controller/EventsController.php:877
+#: ../../../../admin/src/Controller/EventsController.php:879
 #: ../../../administrator/add_video.php:630
 #: ../../../../admin/json_menu/menu.json:48
 #: ../../../../admin/json_menu/menu.json:204
 msgid "Schedule"
 msgstr "Расписание"
 
-#: ../../../../admin/src/Controller/EventsController.php:878
+#: ../../../../admin/src/Controller/EventsController.php:880
 msgid "Next run"
 msgstr "Следующий запуск"
 
-#: ../../../../admin/src/Controller/EventsController.php:879
+#: ../../../../admin/src/Controller/EventsController.php:881
 msgid "Last run"
 msgstr "Последний запуск"
 
@@ -7904,8 +7904,8 @@ msgid "Director"
 msgstr "Режиссер"
 
 #: ../../../administrator/add_video.php:2088 ../../../lang/stb.php:241
-msgid "Actors"
-msgstr "Актеры"
+msgid "Stars"
+msgstr "В ролях"
 
 #: ../../../administrator/add_video.php:2096 ../../../lang/stb.php:242
 #: ../../../lang/stb.php:398
@@ -10008,9 +10008,6 @@ msgstr "Не доступно в хранилищах"
 msgid "Only for"
 msgstr "Только для "
 
-msgid "Pause"
-msgstr "Пауза"
-
 msgid ""
 "Percentage of the total length of video that user has to watch to skip "
 "commercials."
@@ -10020,9 +10017,6 @@ msgstr ""
 
 msgid "Print"
 msgstr "Распечатать"
-
-msgid "Processing"
-msgstr "Обработка"
 
 msgid "Reject"
 msgstr "Отклонить"
@@ -10084,9 +10078,6 @@ msgstr "По умолчанию"
 
 msgid "ending"
 msgstr "Окончание"
-
-msgid "from"
-msgstr "с"
 
 msgid "genre"
 msgstr "Жанр"
@@ -10408,6 +10399,9 @@ msgstr ""
 msgid "PVR to the USB-driver"
 msgstr "PVR на USB-носитель"
 
+msgid "Pause"
+msgstr "Пауза"
+
 msgid "Pay attention."
 msgstr "Обратите внимание."
 
@@ -10416,6 +10410,9 @@ msgstr "Приоритет"
 
 msgid "Priority for channel URL, 0 – the highest priority"
 msgstr "Приоритет для URL канала, 0 - наивысший приоритет"
+
+msgid "Processing"
+msgstr "Обработка"
 
 msgid "Protect channel from unauthorized access"
 msgstr "Функция защиты каналов от несанкционированного доступа"
@@ -10606,6 +10603,9 @@ msgstr "Редактировать канал \""
 
 msgid "firmware update"
 msgstr "Обновление прошивки"
+
+msgid "from"
+msgstr "с"
 
 msgid "list of STB in group "
 msgstr "Список приставок в группе"
