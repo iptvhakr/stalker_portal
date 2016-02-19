@@ -32,9 +32,9 @@ class ItvSubscription
 
     public static function getSubscriptionChannelsIds($uid){
 
-        $mac = Mysql::getInstance()->from('users')->where(array('id' => (int) $uid))->get()->first('mac');
+        $user = Mysql::getInstance()->from('users')->where(array('id' => (int) $uid))->get()->first();
 
-        if (empty($mac)){
+        if (empty($user)){
             return array();
         }
 
