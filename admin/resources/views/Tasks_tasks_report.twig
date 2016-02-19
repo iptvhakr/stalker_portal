@@ -14,10 +14,10 @@
                         {{ 'Closed'|trans }}:
                     </div>
                     <div class="col-sm-3 filter no-padding leftbordercircle" data-tvfilter="time_period">
-                        <input class="col-xs-12 col-sm-12 filter" placeholder="{{ 'between'|trans }}" type="text" id="datepicker_from" name="interval_from" value="{% if attribute(app['filters'], 'interval_from') is defined %}{{ app['filters']['interval_from'] }}{% endif %}">
+                        <input class="col-xs-12 col-sm-12 filter" placeholder="{{ 'from'|trans }}" type="text" id="datepicker_from" name="interval_from" value="{% if attribute(app['filters'], 'interval_from') is defined %}{{ app['filters']['interval_from'] }}{% endif %}">
                     </div>
                     <div class="col-sm-3 filter no-padding" data-tvfilter="time_period">
-                        <input class="col-xs-12 col-sm-12 filter" placeholder="{{ 'and'|trans }}" type="text" id="datepicker_to" name="interval_to" value="{% if attribute(app['filters'], 'interval_to') is defined %}{{ app['filters']['interval_to'] }}{% endif %}">
+                        <input class="col-xs-12 col-sm-12 filter" placeholder="{{ 'to'|trans }}" type="text" id="datepicker_to" name="interval_to" value="{% if attribute(app['filters'], 'interval_to') is defined %}{{ app['filters']['interval_to'] }}{% endif %}">
                     </div>
                 </div>
             </div>

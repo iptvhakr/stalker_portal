@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-19 13:16+0300\n"
-"PO-Revision-Date: 2016-02-19 13:16+0300\n"
+"POT-Creation-Date: 2016-02-19 18:12+0300\n"
+"PO-Revision-Date: 2016-02-19 18:12+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -3193,7 +3193,6 @@ msgid "External ID"
 msgstr "Внешний ID"
 
 #: ../../../../admin/src/Controller/TariffsController.php:852
-#: ../../../../admin/src/Controller/TariffsController.php:863
 msgid "Package"
 msgstr "Пакет"
 
@@ -3213,6 +3212,10 @@ msgstr "Услуга"
 #: ../../../../admin/src/Controller/TariffsController.php:855
 msgid "Access"
 msgstr "Доступ"
+
+#: ../../../../admin/src/Controller/TariffsController.php:863
+msgid "Tariff name"
+msgstr "Название тарифа"
 
 #: ../../../../admin/src/Controller/TariffsController.php:873
 msgid "Package name"
@@ -10908,9 +10911,6 @@ msgstr ""
 msgid "You can't delete category with movies or genres"
 msgstr "Вы не можете удалить категорию с фильмами или жанрами"
 
-msgid "and"
-msgstr "и"
-
 msgid "appearance"
 msgstr "Внешний вид"
 
@@ -10922,9 +10922,6 @@ msgstr "Исполнитель"
 
 msgid "artists list"
 msgstr "Список исполнителей"
-
-msgid "between"
-msgstr "от"
 
 msgid "categories list"
 msgstr "Список категорий"
@@ -10952,6 +10949,9 @@ msgstr "Список заданий в категории"
 
 msgid "the category"
 msgstr "Категорию"
+
+msgid "to"
+msgstr "по"
 
 msgid "zone for"
 msgstr "Зон для"
@@ -11326,9 +11326,6 @@ msgstr "Дата начала события"
 msgid "month"
 msgstr "Месяц"
 
-msgid "to"
-msgstr "по"
-
 #: ../../../../admin/json_menu/menu.json:9
 msgid "Channels"
 msgstr "Каналы"
@@ -11384,6 +11381,12 @@ msgstr "Внешний вид"
 #: ../../../../admin/json_menu/menu.json:375
 msgid "Firmware update"
 msgstr "Обновление прошивки"
+
+#~ msgid "and"
+#~ msgstr "и"
+
+#~ msgid "between"
+#~ msgstr "от"
 
 #~ msgid "Sending a message with video"
 #~ msgstr "Отправить сообщение с ссылкой на видео"
