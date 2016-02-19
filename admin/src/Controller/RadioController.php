@@ -17,7 +17,7 @@ class RadioController extends \Controller\BaseStalkerController {
         parent::__construct($app, __CLASS__);
         $this->allStatus = array(
             array('id' => 1, 'title' => $this->setLocalization('Unpublished')),
-            array('id' => 2, 'title' => $this->setlocalization('Published'))
+            array('id' => 2, 'title' => $this->setLocalization('Published'))
         );
 
         $this->app['allMonitoringStatus'] = array(
@@ -182,12 +182,12 @@ class RadioController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'toggleRadioStatus';
-        $error = $this->setlocalization('Failed');
+        $error = $this->setLocalization('Failed');
 
         if ($this->db->toggleRadioStatus($this->postData['radioid'], (int) (!$this->postData['radiostatus']))) {
             $error = '';
-            $data['title'] = (!$this->postData['radiostatus'] ? $this->setlocalization('Unpublish') : $this->setlocalization('Publish'));
-            $data['status'] = (!$this->postData['radiostatus'] ? '<span class="txt-success">' . $this->setlocalization('Published') . '</span>' : '<span class="txt-danger">' . $this->setlocalization('Unpublished') . '</span>');
+            $data['title'] = (!$this->postData['radiostatus'] ? $this->setLocalization('Unpublish') : $this->setLocalization('Publish'));
+            $data['status'] = (!$this->postData['radiostatus'] ? '<span class="txt-success">' . $this->setLocalization('Published') . '</span>' : '<span class="txt-danger">' . $this->setLocalization('Unpublished') . '</span>');
             $data['radiostatus'] = (int) !$this->postData['radiostatus'];
         }
 
@@ -225,12 +225,12 @@ class RadioController extends \Controller\BaseStalkerController {
         }
         $data = array();
         $data['action'] = 'checkRadioName';
-        $error = $this->setlocalization('Name already used');
+        $error = $this->setLocalization('Name already used');
         
         if ($this->db->searchOneRadioParam(array('name' => trim($this->postData['param']), 'id<>' => trim($this->postData['radioid'])))) {
-            $data['chk_rezult'] = $this->setlocalization('Name already used');
+            $data['chk_rezult'] = $this->setLocalization('Name already used');
         } else {
-            $data['chk_rezult'] = $this->setlocalization('Name is available');
+            $data['chk_rezult'] = $this->setLocalization('Name is available');
             $error = '';
         }
         $response = $this->generateAjaxResponse($data, $error);
@@ -249,11 +249,11 @@ class RadioController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'checkRadioNumber';
         if (is_numeric($this->postData['param'])) {
-            $error = $this->setlocalization('Number is not unique');
+            $error = $this->setLocalization('Number is not unique');
             if ($this->db->searchOneRadioParam(array('number' => trim($this->postData['param']), 'id<>' => trim($this->postData['radioid'])))) {
-                $data['chk_rezult'] = $this->setlocalization('Number is not unique');
+                $data['chk_rezult'] = $this->setLocalization('Number is not unique');
             } else {
-                $data['chk_rezult'] = $this->setlocalization('Number is unique');
+                $data['chk_rezult'] = $this->setLocalization('Number is unique');
                 $error = '';
             }
         } else {
@@ -385,29 +385,29 @@ class RadioController extends \Controller\BaseStalkerController {
     
     private function getDropdownAttribute() {
         return array(
-            array('name'=>'id',                 'title'=>$this->setlocalization('ID'),                  'checked' => FALSE),
-            array('name'=>'number',             'title'=>$this->setlocalization('Order'),               'checked' => TRUE),
-            array('name'=>'name',               'title'=>$this->setlocalization('Title'),               'checked' => TRUE),
-            array('name'=>'cmd',                'title'=>$this->setlocalization('URL'),                 'checked' => TRUE),
-            array('name'=>'volume_correction',  'title'=>$this->setlocalization('Volume'),              'checked' => TRUE),
-            array('name'=>'status',             'title'=>$this->setlocalization('Status'),              'checked' => TRUE),
+            array('name'=>'id',                 'title'=>$this->setLocalization('ID'),                  'checked' => FALSE),
+            array('name'=>'number',             'title'=>$this->setLocalization('Order'),               'checked' => TRUE),
+            array('name'=>'name',               'title'=>$this->setLocalization('Title'),               'checked' => TRUE),
+            array('name'=>'cmd',                'title'=>$this->setLocalization('URL'),                 'checked' => TRUE),
+            array('name'=>'volume_correction',  'title'=>$this->setLocalization('Volume'),              'checked' => TRUE),
+            array('name'=>'status',             'title'=>$this->setLocalization('Status'),              'checked' => TRUE),
             array('name'=>'monitoring_status','title' => $this->setLocalization('Monitoring status'),   'checked' => TRUE),
-            array('name'=>'operations',         'title'=>$this->setlocalization('Operations'),          'checked' => TRUE),
+            array('name'=>'operations',         'title'=>$this->setLocalization('Operations'),          'checked' => TRUE),
         );
     }
 
     private function getMonitoringStatus($row) {
         $return = '';
         if (!$row['enable_monitoring']) {
-            $return .= $this->setlocalization('monitoring off');
+            $return .= $this->setLocalization('monitoring off');
         } else {
             $diff = time() - strtotime($row['monitoring_status_updated']);
             if ($diff > 3600) {
-                $return .= $this->setlocalization('more than an hour ago');
+                $return .= $this->setLocalization('more than an hour ago');
             } else if ($diff < 60) {
-                $return .= $this->setlocalization('less than a minute ago');
+                $return .= $this->setLocalization('less than a minute ago');
             } else {
-                $return .= $this->setlocalization('{{minute}} minutes ago', '', 0, array('{{minute}}' => round($diff / 60)));
+                $return .= $this->setLocalization('{{minute}} minutes ago', '', 0, array('{{minute}}' => round($diff / 60)));
             }
             $return .= '<br><span style="color: ';
             if ($row['monitoring_status'] == 1) {

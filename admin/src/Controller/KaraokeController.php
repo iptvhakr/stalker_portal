@@ -128,7 +128,7 @@ class KaraokeController extends \Controller\BaseStalkerController {
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }
-        
+
         $response['data'] = $this->db->getKaraokeList($query_param);
         
         $response['data'] = array_map(function($row){
@@ -358,7 +358,7 @@ class KaraokeController extends \Controller\BaseStalkerController {
 
         if (!empty($this->data['filters'])){
             if (array_key_exists('status', $this->data['filters']) && $this->data['filters']['status']!= 0) {
-                $return['`karaoke`.`status`'] = $this->data['filters']['status'] - 1;
+                $return['`karaoke`.`accessed`'] = $this->data['filters']['status'] - 1;
             }
                        
             if (array_key_exists('protocol', $this->data['filters']) && !empty($this->data['filters']['protocol'])) {

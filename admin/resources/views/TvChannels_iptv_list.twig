@@ -205,18 +205,17 @@
                 "bFilter": true,
                 "bPaginate": true,
                 "bInfo":     true,
-                "order": [[ 1, "asc" ]],
                 "deferLoading": [{{ app.recordsFiltered }}, {{ app.totalRecords }}],
                 {% if attribute(app, 'dropdownAttribute') is defined %}
                 {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
                 {% endif %}
                 "aoColumnDefs": [ 
-                    { "targets": [ -1 ], "orderable": false},
+                    { "targets": [ -1 ], "sortable": false},
                     {#{ "searchable": false, "targets": [ 2, 5, 7, 8] },#}
                     { className: "action-menu", "targets": [ -1 ] }
                 ]
             }).prev('.dataTables_processing').hide('');
-            $('#datatable-1').DataTable().order( [ 0, 'asc' ] ).draw();
+            $('#datatable-1').DataTable().ajax.reload();
         }
 
         function yelp() {
@@ -263,17 +262,7 @@
                         type: 'GET',
                         success: function (data) {
                             if (data.success) {
-                                if (data.action == 'remove') {
-                                    $('#datatable-1').DataTable()
-                                            .row( _this.closest('tr') )
-                                            .remove()
-                                            .draw();
-                                } else {
-                                    _this.closest('td').prev('td').text(data.status);
-                                    _this.text(data.action);
-                                    _this.attr('href', _this.attr('href').replace(data.urlactfrom, data.urlactto))
-                                }
-                                JSSuccessModalBox(data);
+                                manageChannelTable(data);
                             } else {
                                 JSErrorModalBox(data);
                             }

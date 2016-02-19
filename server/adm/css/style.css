@@ -3027,6 +3027,11 @@ border-bottom:1px solid #E3E3E3;padding-left:6px !important; padding-right:5px;}
     z-index: 1000;
 	margin-top:-5px;
 }
+
+#filter_param .dropdown-menu {
+    max-width:200px;
+}
+
 .filter .dropdown-menu {max-height:360px;}
 .tfilter {min-width:80px; margin-top:10px !important;}
 #iptv_list .filter, #iptv_list .filter_s  {
@@ -3326,14 +3331,16 @@ color:#000; background-color:#FFF; border:1px solid #000; margin-top:5px !import
 
 #attribute_set .checkbox, .attribute_set .checkbox{
     min-width:90px;
-    margin: 4px 0 4px 0px;
+    margin: 4px 0 4px 0;
     padding-left: 15px;
 }
 
 #attribute_set .checkbox label, .attribute_set .checkbox label{
-    padding-left: 15px;
-	width:100%;
-	padding-right: 10px;
+    padding: 0 10px 0 15px !important;
+    width: 100%;
+    min-width: 100%;
+    display: inline-block;
+    margin: 0 5px !important;
 }
 
 #attribute_set .checkbox i, #attribute_set .checkbox-inline i, 

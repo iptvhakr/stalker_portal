@@ -360,7 +360,7 @@ class EventsController extends \Controller\BaseStalkerController {
         $data['action'] = 'addAddressList';
         $data['msg'] = $this->setLocalization('Added');
         $data['fname'] = '';
-        $error = $this->setLocalization('Error. The file does not contain valid MAC-addresses.');
+        $error = $this->setLocalization('The file does not contain valid MAC-addresses.');
 
         list($key, $tmp) = each($_FILES);
         $file_data = file_get_contents($tmp['tmp_name']);
@@ -374,6 +374,8 @@ class EventsController extends \Controller\BaseStalkerController {
             file_put_contents($file_name, $file_data);
             $data['msg'] .= count($list[0]) . ' ' . $this->setLocalization('addresses');
             $error = '';
+        } else {
+            $data['msg'] = $error;
         }
 
         $response = $this->generateAjaxResponse($data, $error);

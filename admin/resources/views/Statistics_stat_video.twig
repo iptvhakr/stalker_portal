@@ -102,8 +102,7 @@
                 "bFilter": true,
                 "bPaginate": true,
                 "bInfo": true,
-				"columnDefs": [     ],
-                "order": [[ colNum, "desc" ]]
+				"columnDefs": [     ]
             }).prev('.dataTables_processing').hide('');
             {% if app['filters']['stat_to'] != 'genre' %}
             $('#datatable-1').DataTable().ajax.reload();

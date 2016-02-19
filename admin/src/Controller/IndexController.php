@@ -30,7 +30,7 @@ class IndexController extends \Controller\BaseStalkerController {
 
         $this->app['datatables'] = $datatables;
 
-        $this->app['breadcrumbs']->addItem($this->setlocalization('Dashboard'));
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Dashboard'));
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
