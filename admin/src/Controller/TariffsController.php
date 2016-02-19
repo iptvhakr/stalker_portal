@@ -860,7 +860,7 @@ class TariffsController extends \Controller\BaseStalkerController {
     private function getTariffPlansDropdownAttribute() {
         return array(
             array('name'=>'external_id',    'title'=>$this->setLocalization('External ID'), 'checked' => TRUE),
-            array('name'=>'name',           'title'=>$this->setLocalization('Package'),     'checked' => TRUE),
+            array('name'=>'name',           'title'=>$this->setLocalization('Tariff name'), 'checked' => TRUE),
             array('name'=>'users_count',    'title'=>$this->setLocalization('Users'),       'checked' => TRUE),
             array('name'=>'operations',     'title'=>$this->setLocalization('Operations'),  'checked' => TRUE)
         );

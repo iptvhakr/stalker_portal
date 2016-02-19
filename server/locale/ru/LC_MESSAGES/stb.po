@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-19 13:16+0300\n"
-"PO-Revision-Date: 2016-02-19 13:16+0300\n"
+"POT-Creation-Date: 2016-02-19 13:56+0300\n"
+"PO-Revision-Date: 2016-02-19 13:57+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -3193,7 +3193,6 @@ msgid "External ID"
 msgstr "Внешний ID"
 
 #: ../../../../admin/src/Controller/TariffsController.php:852
-#: ../../../../admin/src/Controller/TariffsController.php:863
 msgid "Package"
 msgstr "Пакет"
 
@@ -3213,6 +3212,10 @@ msgstr "Услуга"
 #: ../../../../admin/src/Controller/TariffsController.php:855
 msgid "Access"
 msgstr "Доступ"
+
+#: ../../../../admin/src/Controller/TariffsController.php:863
+msgid "Tariff name"
+msgstr "Название тарифа"
 
 #: ../../../../admin/src/Controller/TariffsController.php:873
 msgid "Package name"
