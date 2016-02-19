@@ -7,7 +7,7 @@
     <div id="iptv_list">
         <div class="row">
             <form class="form-horizontal" role="form" id="video_search_form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/storages-video-search-json" method="POST" target="_blank">
-                <div class="col-sm-12 col-xs-12 col-md-12">
+                <div class="col-sm-12 col-xs-12 col-md-12 no-padding">
                     <div class="col-sm-2">
                         {% if attribute(app, 'dropdownStorages') is defined %}
                             {{ main_macro.get_dropdown_attribute(app['dropdownStorages'], 'on_storages', 'Available on the serves'|trans, 6, 1, 'true') }}
@@ -28,14 +28,14 @@
                         <br><br>
                     </div>
 
-					<div class="col-sm-1 ">
+					<div class="col-sm-2 no-modified set-ceil col-md-2">
                         {{ main_macro.get_dropdown_attribute(app['dropdownQuality'], 'quality', 'Video quality'|trans, 4, 0, 'true') }}
                     </div>
-					<div class="col-sm-1 ">
+					<div class="col-sm-1 no-modified set-ceil">
                      {{ main_macro.get_dropdown_attribute(app['dropdownStatus'], 'status', 'Status'|trans, 4, 0, 'true') }}
 					</div>
 					
-				    <div class="col-sm-3  pull-right">
+				    <div class="pull-right">
                         <a class="btn btn-default pull-right" id="video_search_submit">{{ 'Search'|trans }}</a>
                         <button class="btn btn-default pull-right" id="textshow" type="submit" form="video_search_form">{{ 'In text format'|trans }}</button>
                     </div>

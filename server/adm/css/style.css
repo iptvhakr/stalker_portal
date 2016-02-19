@@ -670,12 +670,16 @@ label.myErrorClass {
   
 }
 
-#content .col-sm-2 {padding-right: 0px !important; margin-right: -15px;  width:200px;}
+.content .col-sm-2 {padding-right: 0px !important; margin-right: -15px;  width:200px;}
 
-#content .col-sm-2.no-modified{
-    margin-right: 0 !important;
-    padding-right: 15px !important;
-    width: 16.6667% !important;
+.col-sm-2.no-modified{
+    margin-right: 0;
+    padding-right: 15px;
+    width: 16.6667%;
+}
+
+.set-ceil{
+    min-height: 47px;
 }
 
 .table-datatable .sorting {}
@@ -3230,9 +3234,11 @@ color:#000; background-color:#FFF; border:1px solid #000; margin-top:5px !import
 	padding-top:1px;
 	height:24px;
 	line-height:22px;
-    z-index: 301;
+    z-index: 325;
+}
 
-	
+#attribute_set{
+    z-index: 301;
 }
 
 #attribute_set a {
