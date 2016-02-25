@@ -51,6 +51,11 @@ class RESTApiRequest extends HTTPRequest
 
         $params = explode ("/", $requested_uri);
 
+        if (empty($params[0])){
+            unset($params[0]);
+            $params = array_values($params);
+        }
+
         if (empty($params[count($params)-1])){
             unset($params[count($params)-1]);
         }
