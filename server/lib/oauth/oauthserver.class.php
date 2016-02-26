@@ -221,7 +221,8 @@ class OAuthRequest
     protected $password;
     protected $mac;
     protected $serial_number;
-    protected $stb_type;
+    protected $client_type;
+    protected $model;
     protected $version;
     protected $device_id;
     protected $device_id2;
@@ -301,7 +302,14 @@ class OAuthRequest
         }
 
         if (isset($_POST['stb_type'])){
-            $this->stb_type = $_POST['stb_type'];
+            $this->model = $_POST['stb_type'];
+            $this->client_type = 'STB';
+        }elseif(isset($_POST['model'])){
+            $this->model = $_POST['model'];
+        }
+
+        if (isset($_POST['client_type'])){
+            $this->client_type = $_POST['client_type'];
         }
 
         if (isset($_POST['version'])){
@@ -354,8 +362,12 @@ class OAuthRequest
         return $this->serial_number;
     }
 
-    public function getStbType(){
-        return $this->stb_type;
+    public function getClientType(){
+        return $this->client_type;
+    }
+
+    public function getModel(){
+        return $this->model;
     }
 
     public function getVersion(){

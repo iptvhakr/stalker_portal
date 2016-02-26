@@ -423,6 +423,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         $device_id     = isset($_REQUEST['device_id']) ? $_REQUEST['device_id'] : '';
         $device_id2    = isset($_REQUEST['device_id2']) ? $_REQUEST['device_id2'] : '';
         $signature     = isset($_REQUEST['signature']) ? $_REQUEST['signature'] : '';
+        $client_type   = isset($_REQUEST['client_type']) ? $_REQUEST['client_type'] : '';
 
         $force_auth = null;
 
@@ -606,6 +607,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                 'version'       => @$_REQUEST['ver'],
                 'hd'            => @$_REQUEST['hd'],
                 'stb_type'      => $model,
+                'client_type'   => $client_type,
                 'video_out'     => isset($_REQUEST['video_out']) ? $_REQUEST['video_out'] : '',
                 'serial_number' => isset($_REQUEST['sn']) ? $_REQUEST['sn'] : '',
                 'num_banks'     => isset($_REQUEST['num_banks']) ? (int) $_REQUEST['num_banks'] : 0,

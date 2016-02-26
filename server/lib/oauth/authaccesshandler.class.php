@@ -34,6 +34,14 @@ class AuthAccessHandler extends AccessHandler
                 $_REQUEST['signature'] =  $request->getSignature();
             }
 
+            if ($request->getModel()){
+                $_REQUEST['stb_type'] = $request->getModel();
+            }
+
+            if ($request->getClientType()){
+                $_REQUEST['client_type'] = $request->getClientType();
+            }
+
             // init user as STB
             \Stb::getInstance()->getProfile();
             $user = \User::getByMac(\Stb::getInstance()->mac);
