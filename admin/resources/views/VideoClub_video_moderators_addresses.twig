@@ -53,7 +53,7 @@
                     status = json.data[i].status;
 
                     json.data[i]['name'] = '<a href="{{ app.controller_alias }}/edit-video-moderators?id='+id+'">'+name+'</a>';
-                    json.data[i]['disable_vclub_ad'] = ( json.data[i]['disable_vclub_ad'] ? "<span class=''>{{ 'Switched on'|trans }}</span>" : "<span class=''>{{ 'Switched off'|trans }}</span>");
+                    json.data[i]['disable_vclub_ad'] = ( json.data[i]['disable_vclub_ad'] ? "<span class=''>{{ 'Yes'|trans }}</span>" : "<span class=''>{{ 'No'|trans }}</span>");
                     json.data[i]['status'] = ( status ? "<span class=''>{{ 'Switched on'|trans }}</span>" : "<span class=''>{{ 'Switched off'|trans }}</span>");
 
                     json.data[i].operations = '<div class="col-xs-3 col-sm-8 ddd">\n\

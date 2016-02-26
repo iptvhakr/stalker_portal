@@ -1669,7 +1669,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             array('name' => 'enable_tv_archive','title' => $this->setLocalization('Archive'),                           'checked' => TRUE),
             array('name' => 'cmd',              'title' => $this->setLocalization('URL'),                               'checked' => TRUE),
             array('name' => 'xmltv_id',         'title' => $this->setLocalization('XMLTV ID'),                          'checked' => FALSE),
-            array('name' => 'claims',           'title' => $this->setLocalization('Claims about<br>audio/video/epg'),   'checked' => FALSE),
+            array('name' => 'claims',           'title' => $this->setLocalization('Claims about audio/video/epg'),      'checked' => FALSE),
             array('name' => 'monitoring_status','title' => $this->setLocalization('Monitoring status'),                 'checked' => TRUE),
             array('name' => 'status',           'title' => $this->setLocalization('Status'),                            'checked' => TRUE),
             array('name' => 'operations',       'title' => $this->setLocalization('Operations'),                        'checked' => TRUE)

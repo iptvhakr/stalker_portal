@@ -1039,7 +1039,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
                 if ($allTasks[$num]['task_added'] < 0) {
                     $allTasks[$num]['task_added'] = 0;
                 }
-                $allTasks[$num]['tasks'] = "№ {$row['id']} (<span data-task-state=1>$scheduled_on " . strftime('%d-%m-%Y', $allTasks[$num]['date_on']) . "</span>)";
+                $allTasks[$num]['tasks'] = "<span data-task-state=1>$scheduled_on " . strftime('%d-%m-%Y', $allTasks[$num]['date_on']) . "</span>";
             }
             $response["data"] = $allTasks;
         }
@@ -2372,11 +2372,11 @@ class VideoClubController extends \Controller\BaseStalkerController {
 
     private function getVideoModeratorsAddressesDropdownAttribute(){
         return array(
-            array('name'=>'name',           'title'=>$this->setLocalization('Name'),        'checked' => TRUE),
-            array('name'=>'mac',            'title'=>$this->setLocalization('MAC address'), 'checked' => TRUE),
-            array('name'=>'disable_vclub_ad','title'=>$this->setLocalization('Advertising'),'checked' => TRUE),
-            array('name'=>'status',         'title'=>$this->setLocalization('Status'),      'checked' => TRUE),
-            array('name'=>'operations',     'title'=>$this->setLocalization('Operation'),   'checked' => TRUE)
+            array('name'=>'name',           'title'=>$this->setLocalization('Name'),                    'checked' => TRUE),
+            array('name'=>'mac',            'title'=>$this->setLocalization('MAC address'),             'checked' => TRUE),
+            array('name'=>'disable_vclub_ad','title'=>$this->setLocalization('Advertising is disabled'),'checked' => TRUE),
+            array('name'=>'status',         'title'=>$this->setLocalization('Status'),                  'checked' => TRUE),
+            array('name'=>'operations',     'title'=>$this->setLocalization('Operation'),               'checked' => TRUE)
         );
     }
 
