@@ -2285,13 +2285,13 @@ class VideoClubController extends \Controller\BaseStalkerController {
 
     private function getVideoScheduleDropdownAttribute(){
         return array(
-            array('name' => 'task_added',   'title' => $this->setLocalization('Date'),          'checked' => TRUE),
-            array('name' => 'name',         'title' => $this->setLocalization('Title'),         'checked' => TRUE),
-            array('name' => 'o_name',       'title' => $this->setLocalization('Original title'),'checked' => TRUE),
-            array('name' => 'time',         'title' => $this->setLocalization('Length, min'),   'checked' => TRUE),
-            array('name' => 'tasks',        'title' => $this->setLocalization('Tasks'),         'checked' => TRUE),
-            array('name' => 'year',         'title' => $this->setLocalization('Year'),          'checked' => TRUE),
-            array('name' => 'operations',   'title' => $this->setLocalization('Operations'),    'checked' => TRUE)
+            array('name' => 'task_added',   'title' => $this->setLocalization('Date'),              'checked' => TRUE),
+            array('name' => 'name',         'title' => $this->setLocalization('Title'),             'checked' => TRUE),
+            array('name' => 'o_name',       'title' => $this->setLocalization('Original title'),    'checked' => TRUE),
+            array('name' => 'time',         'title' => $this->setLocalization('Length, min'),       'checked' => TRUE),
+            array('name' => 'tasks',        'title' => $this->setLocalization('Date of publication'),'checked' => TRUE),
+            array('name' => 'year',         'title' => $this->setLocalization('Year'),              'checked' => TRUE),
+            array('name' => 'operations',   'title' => $this->setLocalization('Operations'),        'checked' => TRUE)
         );
     }
 
