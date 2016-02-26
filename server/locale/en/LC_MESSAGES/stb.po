@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-19 18:13+0300\n"
-"PO-Revision-Date: 2016-02-19 18:13+0300\n"
+"POT-Creation-Date: 2016-02-26 16:50+0300\n"
+"PO-Revision-Date: 2016-02-26 16:50+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -633,9 +633,8 @@ msgid "XMLTV ID"
 msgstr "XMLTV ID"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1672
-#: ../../../administrator/add_itv.php:1079
-msgid "Claims about<br>audio/video/epg"
-msgstr "Claims about<br>audio/video/epg"
+msgid "Claims about audio/video/epg"
+msgstr "Claims about audio/video/epg"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1673
 #: ../../../../admin/src/Controller/RadioController.php:394
@@ -2010,7 +2009,6 @@ msgstr "Edit movie"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:198
 #: ../../../../admin/src/Controller/VideoClubController.php:233
-#: ../../../../admin/src/Controller/VideoClubController.php:2377
 #: ../../../administrator/add_video.php:630
 #: ../../../../admin/json_menu/menu.json:53
 msgid "Advertising"
@@ -2329,6 +2327,10 @@ msgstr "Name"
 #: ../../../../admin/src/Controller/VideoClubController.php:2376
 msgid "MAC address"
 msgstr "MAC address"
+
+#: ../../../../admin/src/Controller/VideoClubController.php:2377
+msgid "Advertising is disabled"
+msgstr "Advertising is disabled"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:2398
 #: ../../../../admin/src/Controller/StatisticsController.php:1417
@@ -7030,6 +7032,10 @@ msgstr "xmltv id"
 msgid "Volume correction"
 msgstr "Volume correction"
 
+#: ../../../administrator/add_itv.php:1079
+msgid "Claims about<br>audio/video/epg"
+msgstr "Claims about<br>audio/video/epg"
+
 #: ../../../administrator/add_itv.php:1130
 #: ../../../administrator/add_video.php:894
 #: ../../../administrator/add_karaoke.php:506
@@ -10435,9 +10441,6 @@ msgstr "Requested channel not found"
 msgid "Required version of STB API"
 msgstr "Required version of STB API"
 
-msgid "Security"
-msgstr "Security"
-
 msgid ""
 "Select the content delivery type (http,custom url, nfs). When using HTTP NFS "
 "the link to the content is not used, but the content is stored on the server."
@@ -11362,6 +11365,9 @@ msgstr "Appearance"
 #: ../../../../admin/json_menu/menu.json:375
 msgid "Firmware update"
 msgstr "Firmware update"
+
+#~ msgid "Security"
+#~ msgstr "Security"
 
 #~ msgid "and"
 #~ msgstr "and"

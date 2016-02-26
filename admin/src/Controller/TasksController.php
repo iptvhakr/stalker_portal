@@ -705,11 +705,13 @@ class TasksController extends \Controller\BaseStalkerController {
             if (array_key_exists('interval_from', $this->data['filters']) && $this->data['filters']['interval_from']!= 0) {
                 $time_end = (!empty($return['task_type']) && $return['task_type'] == 'karaoke')? 'done_time': 'end_time';
                 $date = \DateTime::createFromFormat('d/m/Y', $this->data['filters']['interval_from']);
+                $date->modify('today');
                 $return["UNIX_TIMESTAMP($time_end)>="] = $date->getTimestamp();
             }
             if (array_key_exists('interval_to', $this->data['filters']) && $this->data['filters']['interval_to']!= 0) {
                 $time_end = (!empty($return['task_type']) && $return['task_type'] == 'karaoke')? 'done_time': 'end_time';
                 $date = \DateTime::createFromFormat('d/m/Y', $this->data['filters']['interval_to']);
+                $date->modify('tomorrow');
                 $return["UNIX_TIMESTAMP($time_end)<="] = $date->getTimestamp();
             }
             
