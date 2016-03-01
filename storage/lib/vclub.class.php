@@ -69,6 +69,10 @@ class Vclub extends Storage
 
             while (false !== ($file = readdir($handle))) {
 
+                if ($file != "." && $file != ".." && preg_match("/([\S\s]+)\.(".$this->media_ext_str."|srt|sub|ass)$/i", $file)) {
+                    $result['all_files'][] = $relative_path.$file;
+                }
+
                 if ($file != "." && $file != ".." && preg_match("/([\S\s]+)\.(".$this->media_ext_str.")$/i", $file)) {
 
                     array_key_exists($relative_path.$file, $md5_sum) ? $sum = $md5_sum[$relative_path.$file] : $sum='';
