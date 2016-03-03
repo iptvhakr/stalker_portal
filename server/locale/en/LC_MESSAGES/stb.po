@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-26 18:15+0300\n"
-"PO-Revision-Date: 2016-02-26 18:15+0300\n"
+"POT-Creation-Date: 2016-03-03 18:19+0300\n"
+"PO-Revision-Date: 2016-03-03 18:20+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -107,10 +107,10 @@ msgstr "Publish"
 #: ../../../../admin/src/Controller/UsersController.php:1364
 #: ../../../../admin/src/Controller/UsersController.php:1403
 #: ../../../../admin/src/Controller/UsersController.php:1511
-#: ../../../../admin/src/Controller/AdminsController.php:706
-#: ../../../../admin/src/Controller/AdminsController.php:740
-#: ../../../../admin/src/Controller/AdminsController.php:783
-#: ../../../../admin/src/Controller/AdminsController.php:827
+#: ../../../../admin/src/Controller/AdminsController.php:721
+#: ../../../../admin/src/Controller/AdminsController.php:755
+#: ../../../../admin/src/Controller/AdminsController.php:798
+#: ../../../../admin/src/Controller/AdminsController.php:842
 msgid "Nothing to do"
 msgstr "Nothing to do"
 
@@ -188,8 +188,8 @@ msgstr "TV Archive has been restarted."
 #: ../../../../admin/src/Controller/UsersController.php:851
 #: ../../../../admin/src/Controller/UsersController.php:1194
 #: ../../../../admin/src/Controller/UsersController.php:1536
-#: ../../../../admin/src/Controller/AdminsController.php:320
-#: ../../../../admin/src/Controller/AdminsController.php:444
+#: ../../../../admin/src/Controller/AdminsController.php:335
+#: ../../../../admin/src/Controller/AdminsController.php:459
 #: ../../../lang/stb.php:362
 msgid "Error"
 msgstr "Error"
@@ -323,18 +323,18 @@ msgstr "Error"
 #: ../../../../admin/src/Controller/TariffsController.php:474
 #: ../../../../admin/src/Controller/AdminsController.php:208
 #: ../../../../admin/src/Controller/AdminsController.php:236
-#: ../../../../admin/src/Controller/AdminsController.php:287
-#: ../../../../admin/src/Controller/AdminsController.php:376
-#: ../../../../admin/src/Controller/AdminsController.php:399
-#: ../../../../admin/src/Controller/AdminsController.php:434
-#: ../../../../admin/src/Controller/AdminsController.php:461
-#: ../../../../admin/src/Controller/AdminsController.php:589
-#: ../../../../admin/src/Controller/AdminsController.php:625
-#: ../../../../admin/src/Controller/AdminsController.php:653
-#: ../../../../admin/src/Controller/AdminsController.php:682
-#: ../../../../admin/src/Controller/AdminsController.php:716
-#: ../../../../admin/src/Controller/AdminsController.php:750
-#: ../../../../admin/src/Controller/AdminsController.php:795
+#: ../../../../admin/src/Controller/AdminsController.php:302
+#: ../../../../admin/src/Controller/AdminsController.php:391
+#: ../../../../admin/src/Controller/AdminsController.php:414
+#: ../../../../admin/src/Controller/AdminsController.php:449
+#: ../../../../admin/src/Controller/AdminsController.php:476
+#: ../../../../admin/src/Controller/AdminsController.php:604
+#: ../../../../admin/src/Controller/AdminsController.php:640
+#: ../../../../admin/src/Controller/AdminsController.php:668
+#: ../../../../admin/src/Controller/AdminsController.php:697
+#: ../../../../admin/src/Controller/AdminsController.php:731
+#: ../../../../admin/src/Controller/AdminsController.php:765
+#: ../../../../admin/src/Controller/AdminsController.php:810
 msgid "Page not found"
 msgstr "Page not found"
 
@@ -376,7 +376,7 @@ msgstr "Page not found"
 #: ../../../../admin/src/Controller/UsersController.php:1119
 #: ../../../../admin/src/Controller/UsersController.php:1610
 #: ../../../../admin/src/Controller/UsersController.php:1636
-#: ../../../../admin/src/Controller/AdminsController.php:472
+#: ../../../../admin/src/Controller/AdminsController.php:487
 #: ../../../adm/js/js_translate.php:41
 msgid "Failed"
 msgstr "Failed"
@@ -505,9 +505,9 @@ msgstr "This number is already in use"
 #: ../../../../admin/src/Controller/RadioController.php:388
 #: ../../../../admin/src/Controller/UsersController.php:2080
 #: ../../../../admin/src/Controller/TariffsController.php:871
-#: ../../../../admin/src/Controller/AdminsController.php:841
-#: ../../../../admin/src/Controller/AdminsController.php:854
-#: ../../../../admin/src/Controller/AdminsController.php:905
+#: ../../../../admin/src/Controller/AdminsController.php:856
+#: ../../../../admin/src/Controller/AdminsController.php:869
+#: ../../../../admin/src/Controller/AdminsController.php:920
 msgid "ID"
 msgstr "ID"
 
@@ -564,7 +564,7 @@ msgstr "Logo"
 #: ../../../../admin/src/Controller/RadioController.php:390
 #: ../../../../admin/src/Controller/UsersController.php:2082
 #: ../../../../admin/src/Controller/InfoportalController.php:383
-#: ../../../../admin/src/Controller/AdminsController.php:855
+#: ../../../../admin/src/Controller/AdminsController.php:870
 #: ../../../administrator/tariffs.php:311
 #: ../../../administrator/tariffs.php:342
 #: ../../../administrator/audio_album.php:423
@@ -680,9 +680,9 @@ msgstr "Status"
 #: ../../../../admin/src/Controller/InfoportalController.php:394
 #: ../../../../admin/src/Controller/TariffsController.php:856
 #: ../../../../admin/src/Controller/TariffsController.php:865
-#: ../../../../admin/src/Controller/AdminsController.php:848
-#: ../../../../admin/src/Controller/AdminsController.php:861
-#: ../../../../admin/src/Controller/AdminsController.php:912
+#: ../../../../admin/src/Controller/AdminsController.php:863
+#: ../../../../admin/src/Controller/AdminsController.php:876
+#: ../../../../admin/src/Controller/AdminsController.php:927
 msgid "Operations"
 msgstr "Operations"
 
@@ -1824,7 +1824,7 @@ msgstr "addresses"
 #: ../../../../admin/src/Controller/VideoClubController.php:1681
 #: ../../../../admin/src/Controller/AudioClubController.php:940
 #: ../../../../admin/src/Controller/StoragesController.php:351
-#: ../../../../admin/src/Controller/AdminsController.php:641
+#: ../../../../admin/src/Controller/AdminsController.php:656
 msgid "Deleted"
 msgstr "Deleted"
 
@@ -1862,7 +1862,7 @@ msgid "All"
 msgstr "All"
 
 #: ../../../../admin/src/Controller/EventsController.php:591
-#: ../../../../admin/src/Controller/AdminsController.php:843
+#: ../../../../admin/src/Controller/AdminsController.php:858
 #: ../../../administrator/playlists.php:157
 #: ../../../administrator/events.php:418
 #: ../../../administrator/profile.php:489
@@ -1891,7 +1891,7 @@ msgstr "Author"
 #: ../../../../admin/src/Controller/TasksController.php:561
 #: ../../../../admin/src/Controller/TasksController.php:572
 #: ../../../../admin/src/Controller/UsersController.php:2048
-#: ../../../../admin/src/Controller/AdminsController.php:907
+#: ../../../../admin/src/Controller/AdminsController.php:922
 msgid "Created"
 msgstr "Created"
 
@@ -2141,7 +2141,7 @@ msgstr "Not published"
 #: ../../../../admin/src/Controller/KaraokeController.php:163
 #: ../../../../admin/src/Controller/InfoportalController.php:250
 #: ../../../../admin/src/Controller/AdminsController.php:246
-#: ../../../../admin/src/Controller/AdminsController.php:410
+#: ../../../../admin/src/Controller/AdminsController.php:425
 #: ../../../administrator/subscribe.php:82
 #: ../../../administrator/unique_video.php:101
 #: ../../../administrator/add_video.php:1406
@@ -2299,7 +2299,7 @@ msgstr "Movies in genre"
 #: ../../../../admin/src/Controller/VideoClubController.php:2375
 #: ../../../../admin/src/Controller/UsersController.php:2047
 #: ../../../../admin/src/Controller/UsersController.php:2068
-#: ../../../../admin/src/Controller/AdminsController.php:906
+#: ../../../../admin/src/Controller/AdminsController.php:921
 #: ../../../administrator/playlists.php:129
 #: ../../../administrator/playlists.php:153
 #: ../../../administrator/audio_year.php:183
@@ -2739,7 +2739,7 @@ msgid "karaoke"
 msgstr "Karaoke"
 
 #: ../../../../admin/src/Controller/StoragesController.php:305
-#: ../../../../admin/src/Controller/AdminsController.php:500
+#: ../../../../admin/src/Controller/AdminsController.php:515
 msgid "Saved"
 msgstr "Saved"
 
@@ -2856,7 +2856,7 @@ msgstr "Assigned to"
 
 #: ../../../../admin/src/Controller/TasksController.php:562
 #: ../../../../admin/src/Controller/TariffsController.php:877
-#: ../../../../admin/src/Controller/AdminsController.php:908
+#: ../../../../admin/src/Controller/AdminsController.php:923
 msgid "Modified"
 msgstr "Modified"
 
@@ -2909,8 +2909,8 @@ msgstr "Volume"
 #: ../../../../admin/src/Controller/UsersController.php:1806
 #: ../../../../admin/src/Controller/AdminsController.php:48
 #: ../../../../admin/src/Controller/AdminsController.php:70
-#: ../../../../admin/src/Controller/AdminsController.php:350
-#: ../../../../admin/src/Controller/AdminsController.php:558
+#: ../../../../admin/src/Controller/AdminsController.php:365
+#: ../../../../admin/src/Controller/AdminsController.php:573
 msgid "Empty"
 msgstr "Empty"
 
@@ -2967,18 +2967,18 @@ msgstr "The user can be connected to the group"
 
 #: ../../../../admin/src/Controller/UsersController.php:1362
 #: ../../../../admin/src/Controller/UsersController.php:1396
-#: ../../../../admin/src/Controller/AdminsController.php:670
-#: ../../../../admin/src/Controller/AdminsController.php:704
-#: ../../../../admin/src/Controller/AdminsController.php:738
-#: ../../../../admin/src/Controller/AdminsController.php:774
-#: ../../../../admin/src/Controller/AdminsController.php:818
+#: ../../../../admin/src/Controller/AdminsController.php:685
+#: ../../../../admin/src/Controller/AdminsController.php:719
+#: ../../../../admin/src/Controller/AdminsController.php:753
+#: ../../../../admin/src/Controller/AdminsController.php:789
+#: ../../../../admin/src/Controller/AdminsController.php:833
 msgid "Moved"
 msgstr "Moved"
 
 #: ../../../../admin/src/Controller/UsersController.php:1364
 #: ../../../../admin/src/Controller/UsersController.php:1403
-#: ../../../../admin/src/Controller/AdminsController.php:706
-#: ../../../../admin/src/Controller/AdminsController.php:740
+#: ../../../../admin/src/Controller/AdminsController.php:721
+#: ../../../../admin/src/Controller/AdminsController.php:755
 msgid "Not found reseller for moving"
 msgstr "Not found reseller for moving"
 
@@ -2999,7 +2999,7 @@ msgid "status on"
 msgstr "on"
 
 #: ../../../../admin/src/Controller/UsersController.php:2045
-#: ../../../../admin/src/Controller/AdminsController.php:842
+#: ../../../../admin/src/Controller/AdminsController.php:857
 #: ../../../administrator/profile.php:433 ../../../administrator/user.php:138
 #: ../../../administrator/administrators.php:164
 #: ../../../administrator/administrators.php:191
@@ -3026,8 +3026,8 @@ msgstr "Last modified"
 #: ../../../../admin/src/Controller/UsersController.php:2056
 #: ../../../../admin/src/Controller/UsersController.php:2072
 #: ../../../../admin/src/Controller/UsersController.php:2108
-#: ../../../../admin/src/Controller/AdminsController.php:846
-#: ../../../../admin/src/Controller/AdminsController.php:859
+#: ../../../../admin/src/Controller/AdminsController.php:861
+#: ../../../../admin/src/Controller/AdminsController.php:874
 msgid "Reseller"
 msgstr "Reseller"
 
@@ -3257,51 +3257,59 @@ msgstr "Used illegal characters"
 msgid "Account \"admin\" is not editable. You may change only password."
 msgstr "Account \"admin\" is not editable. You may change only password."
 
-#: ../../../../admin/src/Controller/AdminsController.php:277
+#: ../../../../admin/src/Controller/AdminsController.php:276
+msgid "You can not change your own login"
+msgstr "You can not change your own login"
+
+#: ../../../../admin/src/Controller/AdminsController.php:281
+msgid "Your password has been changed"
+msgstr "Your password has been changed"
+
+#: ../../../../admin/src/Controller/AdminsController.php:292
 msgid "Not all required fields are filled"
 msgstr "Not all required fields are filled"
 
-#: ../../../../admin/src/Controller/AdminsController.php:384
-#: ../../../../admin/src/Controller/AdminsController.php:386
+#: ../../../../admin/src/Controller/AdminsController.php:399
+#: ../../../../admin/src/Controller/AdminsController.php:401
 msgid "Group name is already used"
 msgstr "Group name is already used"
 
-#: ../../../../admin/src/Controller/AdminsController.php:388
+#: ../../../../admin/src/Controller/AdminsController.php:403
 msgid "Group name is available"
 msgstr "Group name is available"
 
-#: ../../../../admin/src/Controller/AdminsController.php:451
+#: ../../../../admin/src/Controller/AdminsController.php:466
 msgid ""
 "{admin_count} administrators to be moved to another group before deleting"
 msgstr ""
 "{admin_count} administrators to be moved to another group before deleting"
 
-#: ../../../../admin/src/Controller/AdminsController.php:643
+#: ../../../../admin/src/Controller/AdminsController.php:658
 msgid "Found members of this reseller. Deleting not possible."
 msgstr "Found members of this reseller. Deleting not possible."
 
-#: ../../../../admin/src/Controller/AdminsController.php:672
+#: ../../../../admin/src/Controller/AdminsController.php:687
 msgid "Not found members for moving. Nothing to do"
 msgstr "Not found members for moving. Nothing to do"
 
-#: ../../../../admin/src/Controller/AdminsController.php:781
-#: ../../../../admin/src/Controller/AdminsController.php:825
+#: ../../../../admin/src/Controller/AdminsController.php:796
+#: ../../../../admin/src/Controller/AdminsController.php:840
 msgid "Not found admin-group for moving"
 msgstr "Not found admin-group for moving"
 
-#: ../../../../admin/src/Controller/AdminsController.php:856
+#: ../../../../admin/src/Controller/AdminsController.php:871
 msgid "Admins in group"
 msgstr "Admins in group"
 
-#: ../../../../admin/src/Controller/AdminsController.php:909
+#: ../../../../admin/src/Controller/AdminsController.php:924
 msgid "Admins of reseller"
 msgstr "Admins of reseller"
 
-#: ../../../../admin/src/Controller/AdminsController.php:910
+#: ../../../../admin/src/Controller/AdminsController.php:925
 msgid "Users of reseller"
 msgstr "Users of reseller"
 
-#: ../../../../admin/src/Controller/AdminsController.php:911
+#: ../../../../admin/src/Controller/AdminsController.php:926
 msgid "Maximum number of users"
 msgstr "Maximum number of users"
 

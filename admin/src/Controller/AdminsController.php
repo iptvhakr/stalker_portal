@@ -251,23 +251,38 @@ class AdminsController extends \Controller\BaseStalkerController {
             $error = $this->setLocalization('Account "admin" is not editable. You may change only password.');
         }
 
-        if (empty($this->postData['id'])) {
+        if (empty($item[0]['id']) && !empty($item[0]['login']) && !empty($item[0]['gid']) && !empty($item[0]['pass'])) {
             $operation = 'insertAdmin';
         } else {
             $operation = 'updateAdmin';
             $item['id'] = $this->postData['id'];
         }
+
+
+        $new_pass = FALSE;
+
         if (empty($item[0]['pass']) || $item[0]['pass'] != $item[0]['re_pass']) {
             unset($item[0]['pass']);
         } else {
+            $new_pass = $item[0]['pass'];
             $item[0]['pass'] = md5($item[0]['pass']);
         }
+
         unset($item[0]['id']);
         unset($item[0]['re_pass']);
 
-        if (preg_match('/^[A-Za-z0-9_]+$/i', $this->postData['login']) && (!empty($item[0]['pass']) || $operation != 'insertAdmin')) {
-            if ($result = call_user_func_array(array($this->db, $operation), array($item))) {
+        if (((!empty($item[0]['login']) && preg_match('/^[A-Za-z0-9_]+$/i', $item[0]['login'])) || $operation != 'insertAdmin') && !empty($item[0])) {
+            if (!empty($item[0]['login']) && $item[0]['login'] != $this->admin->getLogin() && !empty($item['id']) && $item['id'] == $this->admin->getId()){
+                $data['msg'] = $error = $this->setLocalization('You can not change your own login');
+            } elseif ($result = call_user_func_array(array($this->db, $operation), array($item))) {
                 $error = '';
+                if ($operation == 'updateAdmin' && $new_pass && !empty($item['id']) && $item['id'] == $this->admin->getId()) {
+                    if (\Admin::checkAuthorization($this->admin->getLogin(), $new_pass)){
+                        $data['msg'] = $this->setLocalization('Your password has been changed');
+                    } else {
+                        $data['msg'] = $data['error'] = 'Need authorization';
+                    }
+                }
             } else if (!empty($this->postData['login']) && $this->postData['login'] == 'admin') {
                 $data['msg'] = $error;
             } else {
