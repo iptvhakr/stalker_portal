@@ -147,7 +147,7 @@ class Kinopoisk implements \Stalker\Lib\StbApi\vclubinfo
         if ($node_list !== false && $node_list->length != 0){
             $class = $node_list->item(0)->attributes->getNamedItem('class')->nodeValue;
             $movie_info['age'] = substr($class, strrpos($class, 'age')+3);
-            if ($movie_info['age']){
+            if (is_numeric($movie_info['age'])){
                 $movie_info['age'] .= '+';
             }
         }

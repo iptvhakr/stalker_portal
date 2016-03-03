@@ -626,7 +626,7 @@
                         $("#modalbox > div").hide();
                     }    
                     $("#modalbox").show();
-                    JSshowModalBox()
+                    JSshowModalBox();
                     $.ajax({
                         url: 'video-club/get-kinopoisk-info-by-'+ $(this).attr('id').replace('autocomplete_', ''),
                         type: 'POST',
@@ -647,7 +647,7 @@
 
                                 if (data.result.hasOwnProperty('age')){
                                     $('#form_age').select2("destroy");
-                                    $('#form_age option[value="'+data.result.age+'"]').attr('selected', 'selected');
+                                    $('#form_age option[value="'+data.result.age+'"]').prop('selected', 'selected');
                                     $('#form_age').select2({minimumResultsForSearch: -1});
                                 }
 
