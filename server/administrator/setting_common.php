@@ -148,6 +148,8 @@ h3{
                             <option value="MAG250" {{if stb_type==="MAG250"}}selected{{/if}} >MAG250</option>
                             <option value="MAG254" {{if stb_type==="MAG254"}}selected{{/if}} >MAG254</option>
                             <option value="MAG255" {{if stb_type==="MAG255"}}selected{{/if}} >MAG255</option>
+                            <option value="MAG256" {{if stb_type==="MAG256"}}selected{{/if}} >MAG256</option>
+                            <option value="MAG257" {{if stb_type==="MAG257"}}selected{{/if}} >MAG257</option>
                             <option value="MAG270" {{if stb_type==="MAG270"}}selected{{/if}} >MAG270</option>
                             <option value="MAG275" {{if stb_type==="MAG275"}}selected{{/if}} >MAG275</option>
                             <option value="WR320" {{if stb_type==="WR320"}}selected{{/if}} >WR320</option>
