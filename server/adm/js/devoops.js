@@ -101,20 +101,22 @@ function LoadDataTablesScripts(callback) {
 							
                             $.fn.dataTable.defaults.sDom += "A";
 
-                            $.fn.dataTable.defaults.stateSave = true;
-                            $.fn.dataTable.defaults.stateDuration = 0;
-                            $.fn.dataTable.defaults.stateSaveCallback = function(settings,data) {
-                                var page = window.location.href.split("/");
-                                page = (page[page.length - 1] ? page[page.length - 1] : page[page.length - 2]).replace(/[^\w]/ig, '');
-                                console.log(page + " dataTable save settings");
-                                localStorage.setItem( page + 'DataTables_' + settings.sInstance, JSON.stringify(data) )
-                            };
-                            $.fn.dataTable.defaults.stateLoadCallback = function(settings) {
-                                var page = window.location.href.split("/");
-                                page = (page[page.length - 1] ? page[page.length - 1] : page[page.length - 2]).replace(/[^\w]/ig, '');
-                                console.log(page + " dataTable load settings");
-                                return JSON.parse( localStorage.getItem( page + 'DataTables_' + settings.sInstance ) )
-                            };
+                            if (typeof (window.stateSaveReject) == 'undefined' || !window.stateSaveReject) {
+                                $.fn.dataTable.defaults.stateSave = true;
+                                $.fn.dataTable.defaults.stateDuration = 0;
+                                $.fn.dataTable.defaults.stateSaveCallback = function(settings,data) {
+                                    var page = window.location.href.split("/");
+                                    page = (page[page.length - 1] ? page[page.length - 1] : page[page.length - 2]).replace(/[^\w]/ig, '');
+                                    console.log(page + " dataTable save settings");
+                                    localStorage.setItem( page + 'DataTables_' + settings.sInstance, JSON.stringify(data) )
+                                };
+                                $.fn.dataTable.defaults.stateLoadCallback = function(settings) {
+                                    var page = window.location.href.split("/");
+                                    page = (page[page.length - 1] ? page[page.length - 1] : page[page.length - 2]).replace(/[^\w]/ig, '');
+                                    console.log(page + " dataTable load settings");
+                                    return JSON.parse( localStorage.getItem( page + 'DataTables_' + settings.sInstance ) )
+                                };
+                            }
                             callback();
                         });
                     });

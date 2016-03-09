@@ -1014,6 +1014,9 @@ class VideoClubController extends \Controller\BaseStalkerController {
 
         if (!isset($query_param['like'])) {
             $query_param['like'] = array();
+        } elseif (array_key_exists('video_on_tasks.added', $query_param['like'])) {
+            $query_param['like']['CAST(`video_on_tasks`.`added` as CHAR)'] = $query_param['like']['video_on_tasks.added'];
+            unset($query_param['like']['video_on_tasks.added']);
         }
 
         $response['recordsTotal'] = $this->db->getTotalRowsAllVideoTasks();
@@ -1315,7 +1318,12 @@ class VideoClubController extends \Controller\BaseStalkerController {
         }
         
         $this->cleanQueryParams($query_param, array_keys($fields), $fields);
-        
+
+        if (!empty($query_param['like']) && array_key_exists('`actiontime`', $query_param['like'])) {
+            $query_param['like']['CAST(`actiontime` as CHAR)'] = $query_param['like']['`actiontime`'];
+            unset($query_param['like']['`actiontime`']);
+        }
+
         $response['recordsTotal'] = $this->db->getTotalRowsVideoLog($query_param['where']);
         $response["recordsFiltered"] = $this->db->getTotalRowsVideoLog($query_param['where'], $query_param['like']);
         

@@ -573,6 +573,15 @@ class EventsController extends \Controller\BaseStalkerController {
             $response['action'] = 'fillModalForm';
         }
 
+        if (!empty($query_param['like'])) {
+            foreach (array('S_E.last_run', 'TIMESTAMP(S_E.date_begin)', 'TIMESTAMP(S_E.date_end)') as $field_d) {
+                if (array_key_exists($field_d, $query_param['like'])) {
+                    $query_param['like']["CAST($field_d as CHAR)"] = $query_param['like'][$field_d];
+                    unset($query_param['like'][$field_d]);
+                }
+            }
+        }
+
         $response['recordsTotal'] = $this->db->getTotalRowsScheduleEvents();
         $response["recordsFiltered"] = $this->db->getTotalRowsScheduleEvents($query_param['where'], $query_param['like']);
 

@@ -588,7 +588,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             'action' => 'setEPGModal'
         );
 
-        $error = "Error";
+        $error = $this->setLocalization("Error");
         $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
@@ -603,6 +603,9 @@ class TvChannelsController extends \Controller\BaseStalkerController {
 
         if (!isset($query_param['like'])) {
             $query_param['like'] = array();
+        } elseif (array_key_exists('updated', $query_param['like'])) {
+            $query_param['like']['CAST(`updated` as CHAR)'] = $query_param['like']['updated'];
+            unset($query_param['like']['updated']);
         }
 
         $response['recordsTotal'] = $this->db->getTotalRowsEPGList();
