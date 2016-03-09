@@ -817,7 +817,7 @@ class EventsController extends \Controller\BaseStalkerController {
         if (!empty($this->data['filters']) && !empty($this->data['filters']['date_to'])) {
             $date = \DateTime::createFromFormat("d/m/Y", $this->data['filters']['date_to']);
             $date->modify('1 second ago tomorrow');
-            $this->data['filters']['interval_to'] = $return['UNIX_TIMESTAMP(`date_end`) <='] = $date->getTimestamp();// $date->format('Y-m-d H:i:s');
+            $this->data['filters']['interval_to'] = $return['UNIX_TIMESTAMP(`date_end`) > 0 AND UNIX_TIMESTAMP(`date_end`) <='] = $date->getTimestamp();// $date->format('Y-m-d H:i:s');
         }
 
         if (!empty($this->data['filters']) && !empty($this->data['filters']['type']) && (int)$this->data['filters']['type']) {
