@@ -86,7 +86,9 @@
                 "bPaginate": true,
 				"columnDefs": [     ], 
                 "bInfo": true
-            }).prev('.dataTables_processing').hide('');
+            }).prev('.dataTables_processing').hide('', function(){
+                $('.dataTables_filter').hide('');
+            });
             $('#datatable-1').DataTable().ajax.reload();
         }
 
@@ -101,8 +103,9 @@
                     $(this).closest(".open").removeClass("open");
                     return false;
                 });
-
+                window.stateSaveReject = true;
                 LoadDataTablesScripts(TestTable1);
+
             });
         }
 

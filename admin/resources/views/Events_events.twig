@@ -104,7 +104,7 @@
                     {"searchable": false, "targets": [0, -1]}
                 ]
             }).prev('.dataTables_processing').hide('');
-            $('#datatable-1').DataTable().order( [ 0, 'desc' ] ).draw();
+            $('#datatable-1').DataTable().ajax.reload();
         }
 
         function yelp() {

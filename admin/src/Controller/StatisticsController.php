@@ -551,7 +551,12 @@ class StatisticsController extends \Controller\BaseStalkerController {
         if (($search = array_search('date', $query_param['select'])) !== FALSE) {
             $query_param['select'][$search] = 'CAST(`date` as CHAR) as `date`';
         }
-                
+
+        if (!empty($query_param['like']) && array_key_exists('date', $query_param['like'])) {
+            $query_param['like']['CAST(`date` as CHAR)'] = $query_param['like']['date'];
+            unset($query_param['like']['date']);
+        }
+
         $response['recordsTotal'] = $this->db->getDailyClaimsTotalRows();
         $response["recordsFiltered"] = $this->db->getDailyClaimsTotalRows($query_param['where'], $query_param['like']);
 
@@ -631,7 +636,15 @@ class StatisticsController extends \Controller\BaseStalkerController {
             $query_param['select'][$search] = 'CAST(M_C_L.`added` as CHAR) as `added`';
         }
         $query_param['select'][] = "M_C_L.uid";
-        
+
+        if (!empty($query_param['like']) && array_key_exists('added', $query_param['like'])) {
+            $query_param['like']['CAST(M_C_L.`added` as CHAR)'] = $query_param['like']['added'];
+            unset($query_param['like']['added']);
+        }
+        if (!empty($query_param['like']) && array_key_exists('name', $query_param['like'])) {
+            $query_param['like']["(I.`name` LIKE '{$query_param['like']['name']}' OR K.`name` LIKE '{$query_param['like']['name']}' OR V.`name` LIKE '{$query_param['like']['name']}') OR '1'"] = 1;
+            unset($query_param['like']['name']);
+        }
         $response['recordsTotal'] = $this->db->getClaimsLogsTotalRows();
         $response["recordsFiltered"] = $this->db->getClaimsLogsTotalRows($query_param['where'], $query_param['like']);
 
@@ -705,7 +718,15 @@ class StatisticsController extends \Controller\BaseStalkerController {
         if (($search = array_search('total_duration', $query_param['select'])) !== FALSE) {
             $query_param['select'][$search] = 'SUM(`length`) as `total_duration`';
         }
-                
+
+        if (!empty($query_param['like']) && array_key_exists('counter', $query_param['like'])) {
+            unset($query_param['like']['counter']);
+        }
+
+        if (!empty($query_param['like']) && array_key_exists('total_duration', $query_param['like'])) {
+            unset($query_param['like']['total_duration']);
+        }
+
         $response['recordsTotal'] = $this->db->getTvArchiveTotalRows();
         $response["recordsFiltered"] = $this->db->getTvArchiveTotalRows($query_param['where'], $query_param['like']);
 
@@ -774,7 +795,15 @@ class StatisticsController extends \Controller\BaseStalkerController {
         if (($search = array_search('total_duration', $query_param['select'])) !== FALSE) {
             $query_param['select'][$search] = 'SUM(`length`) as `total_duration`';
         }
-                
+
+        if (!empty($query_param['like']) && array_key_exists('counter', $query_param['like'])) {
+            unset($query_param['like']['counter']);
+        }
+
+        if (!empty($query_param['like']) && array_key_exists('total_duration', $query_param['like'])) {
+            unset($query_param['like']['total_duration']);
+        }
+
         $response['recordsTotal'] = $this->db->getTimeShiftTotalRows();
         $response["recordsFiltered"] = $this->db->getTimeShiftTotalRows($query_param['where'], $query_param['like']);
 
@@ -837,7 +866,11 @@ class StatisticsController extends \Controller\BaseStalkerController {
 //            $query_param['select'][] = 'id';
         }
         $this->cleanQueryParams($query_param, array_keys($filds_for_select), $filds_for_select);
-                
+
+        if (!empty($query_param['like']) && array_key_exists('count(`played_itv`.`id`)', $query_param['like'])) {
+            unset($query_param['like']['count(`played_itv`.`id`)']);
+        }
+
         $response['recordsTotal'] = $this->db->getAbonentStatTotalRows($func_alias);
         $response["recordsFiltered"] = $this->db->getAbonentStatTotalRows($func_alias, $query_param['where'], $query_param['like']);
 
@@ -883,7 +916,7 @@ class StatisticsController extends \Controller\BaseStalkerController {
                
         $filds_for_select = $this->getFieldFromArray($this->getTvDropdownAttribute(), 'name');
                 
-        $error = "Error";
+        $error = $this->setLocalization("Error");
         $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
@@ -907,10 +940,13 @@ class StatisticsController extends \Controller\BaseStalkerController {
         if (($search = array_search('counter', $query_param['select'])) !== FALSE) {
             $query_param['select'][$search] = 'count(`played_itv`.id) as `counter`';
         }
+
+        if (!empty($query_param['like']) && array_key_exists('counter', $query_param['like'])) {
+            unset($query_param['like']['counter']);
+        }
                        
         $response['recordsTotal'] = $this->db->getTvTotalRows();
         $response["recordsFiltered"] = $this->db->getTvTotalRows($query_param['where'], $query_param['like']);
-
         if (empty($query_param['limit']['limit'])) {
             $query_param['limit']['limit'] = 50;
         } elseif ($query_param['limit']['limit'] == -1) {
@@ -962,14 +998,12 @@ class StatisticsController extends \Controller\BaseStalkerController {
 
         $func = "getFieldsReport" . ucfirst($response['table']);
         $filds_for_select = $this->$func($response['table']);
-        
 
         $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
 
         if (!isset($query_param['where'])) {
             $query_param['where'] = array();
         }
-        /*$query_param['where'] = array_merge($query_param['where'], $filter);*/
 
         if (empty($query_param['like']) && !empty($like_filter)) {
             $query_param['like'] = $like_filter;
@@ -998,10 +1032,6 @@ class StatisticsController extends \Controller\BaseStalkerController {
         }
         $this->cleanQueryParams($query_param, array_keys($filds_for_select), $filds_for_select);
 
-//        if (!Admin::isPageActionAllowed()){
-//            $query_param['where']['A.`id`'] = $this->uid;
-//        }
-        
         $func = "getJoinedReport" . ucfirst($response['table']);
         $query_param['joined'] = $this->$func();
         
@@ -1010,7 +1040,7 @@ class StatisticsController extends \Controller\BaseStalkerController {
         
         $query_param['from'] = "$response[table] as $prefix";
         $query_param['groupby'][] = "$prefix.`id`";
-        
+
         $response['recordsTotal'] = $this->db->getModeratorsStatRowsList($query_param, TRUE);
         $response["recordsFiltered"] = $this->db->getModeratorsStatRowsList($query_param);
         

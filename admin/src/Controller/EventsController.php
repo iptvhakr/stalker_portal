@@ -573,6 +573,15 @@ class EventsController extends \Controller\BaseStalkerController {
             $response['action'] = 'fillModalForm';
         }
 
+        if (!empty($query_param['like'])) {
+            foreach (array('S_E.last_run', 'TIMESTAMP(S_E.date_begin)', 'TIMESTAMP(S_E.date_end)') as $field_d) {
+                if (array_key_exists($field_d, $query_param['like'])) {
+                    $query_param['like']["CAST($field_d as CHAR)"] = $query_param['like'][$field_d];
+                    unset($query_param['like'][$field_d]);
+                }
+            }
+        }
+
         $response['recordsTotal'] = $this->db->getTotalRowsScheduleEvents();
         $response["recordsFiltered"] = $this->db->getTotalRowsScheduleEvents($query_param['where'], $query_param['like']);
 
@@ -808,7 +817,7 @@ class EventsController extends \Controller\BaseStalkerController {
         if (!empty($this->data['filters']) && !empty($this->data['filters']['date_to'])) {
             $date = \DateTime::createFromFormat("d/m/Y", $this->data['filters']['date_to']);
             $date->modify('1 second ago tomorrow');
-            $this->data['filters']['interval_to'] = $return['UNIX_TIMESTAMP(`date_end`) <='] = $date->getTimestamp();// $date->format('Y-m-d H:i:s');
+            $this->data['filters']['interval_to'] = $return['UNIX_TIMESTAMP(`date_end`) > 0 AND UNIX_TIMESTAMP(`date_end`) <='] = $date->getTimestamp();// $date->format('Y-m-d H:i:s');
         }
 
         if (!empty($this->data['filters']) && !empty($this->data['filters']['type']) && (int)$this->data['filters']['type']) {

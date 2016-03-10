@@ -135,12 +135,15 @@
                     { className: "action-menu", "targets": [ -1 ] },
                     {"searchable": false, "targets": [0, -1]}
                 ]
-            }).prev('.dataTables_processing').hide('');
-            $('#datatable-1').DataTable().order( [ 0, 'desc' ] ).draw();
+            }).prev('.dataTables_processing').hide('', function(){
+                $('.dataTables_filter').hide('');
+            });
+            $('#datatable-1').DataTable().ajax.reload();
         }
 
         function yelp() {
             $(document).ready(function () {
+                window.stateSaveReject = true;
                 LoadDataTablesScripts(TestTable1);
                     {{ main_macro.get_datepicker_js_script('notMinDate') }}
                     datePickerOpt.onClose = function(){};

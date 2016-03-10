@@ -255,12 +255,12 @@
                     return false;
                 });
 
-                $("#form_reset").on('click', function (e) {
+                $("#modalbox_ad, #modalbox ").on('click', " button[type='reset']", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
-                    if (!$(this).closest('form').find("input[type='hidden']").val()) {
-                        $(this).closest('form').get(0).reset();
-                    }
+                    $.validate();
+                    $(this).closest("div[id^='modalbox").find('form').get(0).reset();
+                    $(this).closest("div[id^='modalbox").hide();
                     return false;
                 });
 
