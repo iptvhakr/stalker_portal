@@ -1,15 +1,15 @@
 /*!
 * Fine Uploader
 *
-* Copyright 2013, Widen Enterprises, Inc. info@fineuploader.com
+* Copyright 2015, Widen Enterprises, Inc. info@fineuploader.com
 *
-* Version: 5.0.1
+* Version: 5.5.2
 *
 * Homepage: http://fineuploader.com
 *
-* Repository: git://github.com/Widen/fine-uploader.git
+* Repository: git://github.com/FineUploader/fine-uploader.git
 *
-* Licensed under GNU GPL v3, see LICENSE
+* Licensed only under the Widen Commercial License (http://fineuploader.com/licensing).
 */ 
 
 
@@ -200,12 +200,42 @@ INPUT.qq-edit-filename.qq-editing {
     margin-right: 5px;
 }
 
-INPUT.qq-edit-filename.qq-editing ~ .qq-upload-cancel {
-    display: none;
-}
-
 .qq-hide {
     display: none;
 }
 
-/*! 2014-06-08 */
+/* <dialog> element styles */
+.qq-uploader DIALOG {
+    display: none;
+}
+
+.qq-uploader DIALOG[open] {
+    display: block;
+}
+
+.qq-uploader DIALOG {
+    display: none;
+}
+
+.qq-uploader DIALOG[open] {
+    display: block;
+}
+
+.qq-uploader DIALOG .qq-dialog-buttons {
+    text-align: center;
+    padding-top: 10px;
+}
+
+.qq-uploader DIALOG .qq-dialog-buttons BUTTON {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.qq-uploader DIALOG .qq-dialog-message-selector {
+    padding-bottom: 10px;
+}
+
+.qq-uploader DIALOG::backdrop {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+/*! 2016-03-07 */
