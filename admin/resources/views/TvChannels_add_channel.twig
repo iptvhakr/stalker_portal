@@ -1016,16 +1016,20 @@
         };
 
         function DemoSelect2() {
-            $('#form_tv_genre_id').select2({minimumResultsForSearch: -1});
-            $('#form_volume_correction').select2({minimumResultsForSearch: -1});
-            $('#s2_priority').select2({minimumResultsForSearch: -1});
-            $('#s2_stream_server').select2({minimumResultsForSearch: -1});
-            $('#form_pvr_storage_names').select2({minimumResultsForSearch: -1});
-            $('#form_storage_names').select2({minimumResultsForSearch: -1});
-            $('#form_flussonic_storage_names').select2({minimumResultsForSearch: -1});
-            $('#form_wowza_storage_names').select2({minimumResultsForSearch: -1});
-            $("#form_enable_tv_archive, #form_allow_pvr").each(function () {
-                checkEnableChkBox($(this).attr('id'));
+            $.getScript("{{ app.request.baseUrl }}/plugins/select2/i18n/{% if app["language"] %}{{ app["language"] }}{% else %}en{% endif %}.js", function() {
+                $.fn.select2.defaults.set('dropdownAutoWidth', 'false');
+                $.fn.select2.defaults.set('width', '100%');
+                $('#form_tv_genre_id').select2({minimumResultsForSearch: -1});
+                $('#form_volume_correction').select2({minimumResultsForSearch: -1});
+                $('#s2_priority').select2({minimumResultsForSearch: -1});
+                $('#s2_stream_server').select2({minimumResultsForSearch: -1});
+                $('#form_pvr_storage_names').select2({minimumResultsForSearch: -1});
+                $('#form_storage_names').select2({minimumResultsForSearch: -1});
+                $('#form_flussonic_storage_names').select2({minimumResultsForSearch: -1});
+                $('#form_wowza_storage_names').select2({minimumResultsForSearch: -1});
+                $("#form_enable_tv_archive, #form_allow_pvr").each(function () {
+                    checkEnableChkBox($(this).attr('id'));
+                });
             });
         }
 
@@ -1214,7 +1218,6 @@
                                 lSelect.find("option[value='" + lValue + "']").prop('selected', 'selected');
                             });
                             if (lSelect.attr('id').search('s2') != -1) {
-                                lSelect.select2("destroy");
                                 lSelect.select2({minimumResultsForSearch: -1});
                             }
                         } else if (type == 'checkbox') {
@@ -1243,7 +1246,6 @@
                         $("#add_channel_load_balancing input[type='checkbox'][name*='enable_balancer_monitoring']").prop('checked', false).closest(".form-group").hide();
                     } else {
                         $("#s2_stream_server").prop('disabled', false).removeAttr('disabled');
-                        $("#s2_stream_server").select2('destroy');
                         $('#s2_stream_server').select2({minimumResultsForSearch: -1});
                         $("#s2_stream_server").closest(".form-group").show();
                         $("#add_channel_load_balancing input[type='checkbox'][name*='enable_balancer_monitoring']").closest(".form-group").show();
@@ -1319,7 +1321,6 @@
                         $("#add_channel_load_balancing input[type='checkbox'][name*='enable_balancer_monitoring']").prop('checked', false).closest(".form-group").hide();
                     } else {
                         $("#s2_stream_server").prop('disabled', false).removeAttr('disabled');
-                        $("#s2_stream_server").select2('destroy');
                         $('#s2_stream_server').select2({minimumResultsForSearch: -1});
                         $("#s2_stream_server").closest(".form-group").show();
                         $("#add_channel_load_balancing input[type='checkbox'][name*='enable_balancer_monitoring']").closest(".form-group").show();

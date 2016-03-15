@@ -432,7 +432,9 @@
         };
 
         function DemoSelect2() {
-            $.getScript("{{ app.request.baseUrl }}/plugins/select2/select2_locale_ru.js", function(){
+            $.getScript("{{ app.request.baseUrl }}/plugins/select2/i18n/{% if app["language"] %}{{ app["language"] }}{% else %}en{% endif %}.js", function(){
+                $.fn.select2.defaults.set('dropdownAutoWidth', 'false');
+                $.fn.select2.defaults.set('width', '100%');
                 checkCatGenreList('#form_category_id', '#form_cat_genre_id');
                 $('#form_category_id').select2({minimumResultsForSearch: -1, placeholder: ""});
                 $('#form_cat_genre_id').select2({minimumResultsForSearch: -1, maximumSelectionSize: 4});
@@ -646,15 +648,11 @@
                                 }
 
                                 if (data.result.hasOwnProperty('age')){
-                                    $('#form_age').select2("destroy");
                                     $('#form_age option[value="'+data.result.age+'"]').prop('selected', 'selected');
-                                    $('#form_age').select2({minimumResultsForSearch: -1});
                                 }
 
                                 if (data.result.hasOwnProperty('rating_mpaa')){
-                                    $('#form_rating_mpaa').select2("destroy");
                                     $('#form_rating_mpaa option[value="'+data.result.rating_mpaa+'"]').attr('selected', 'selected');
-                                    $('#form_rating_mpaa').select2({minimumResultsForSearch: -1});
                                 }
 
                                 for (var id in data.result){
@@ -685,7 +683,7 @@
                         dataType: "json",
                         async: false
                     });
-                    
+
                 });
 
                 $("#cover_container").on('click', 'a', function(e){
@@ -709,18 +707,17 @@
                 '{{ key }}' : [{% for g_in_item in g_item %}{'id': '{{ g_in_item['id'] }}', 'title':'{{ g_in_item['title'] }}'}{% if not loop.last %},{% endif %}{% endfor %}]{% if not loop.last %},{% endif %}
             {% endfor %}
             };
-            
+
             var category_list = {
             {% for g_item in app['catGenres'] %}
                 '{{ g_item['id'] }}' : '{{ g_item['category_alias'] }}'{% if not loop.last %},{% endif %}
             {% endfor %}
             };
-            
+
             function checkCatGenreList(parent, child){
                 var selAlias = category_list[$(parent).val()];
                 var selChildData = $(child).val();
                 $(child).empty();
-                $(child).select2("destroy");
                 if (typeof(cat_genre_list[selAlias]) != 'undefined') {
                     $.each(cat_genre_list[selAlias], function(index, value){
                         $(child).append('<option value="'+value.id+'" '+($.inArray(value.id, selChildData) != -1? 'selected="selected"': '')+'>'+value.title+'</option>');    

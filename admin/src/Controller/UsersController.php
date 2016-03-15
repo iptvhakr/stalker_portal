@@ -1735,12 +1735,12 @@ class UsersController extends \Controller\BaseStalkerController {
 
         $builder = $this->app['form.factory'];
         $additional_services = array(
-            0 => $this->setLocalization('off'),
-            1 => $this->setLocalization('on')
+            "0" => $this->setLocalization('off'),
+            "1" => $this->setLocalization('on')
         );
         $status = array(
-            1 => $this->setLocalization('status off'),
-            0 => $this->setLocalization('status on')
+            "1" => $this->setLocalization('status off'),
+            "0" => $this->setLocalization('status on')
         );
 
 
@@ -1753,7 +1753,7 @@ class UsersController extends \Controller\BaseStalkerController {
         if (is_array($group_keys) && is_array($group_names) && count($group_keys) == count($group_names) && count($group_keys) > 0) {
             $all_groups = array_combine($group_keys, $group_names);
         } else {
-            $all_groups = array(NULL);
+            $all_groups = array();
         }
 
         if (!empty($data['id'])) {
@@ -1786,7 +1786,7 @@ class UsersController extends \Controller\BaseStalkerController {
                     $tariff_plans[0] = '---';
                 }
             } else {
-                $tariff_plans = array(NULL);
+                $tariff_plans = array();
             }
             if (!empty($data) && is_array($data) && array_key_exists('tariff_plan_id', $data) && (int)$data['tariff_plan_id'] == 0) {
                 $user_default = array_filter(array_combine($plan_keys, $this->getFieldFromArray($tarif_plans, 'user_default')));
@@ -1836,14 +1836,14 @@ class UsersController extends \Controller\BaseStalkerController {
                 ->add('mac', 'text', ($edit ? array('required' => FALSE, 'read_only' => TRUE, 'disabled' => TRUE) : array('required' => FALSE)))
                 ->add('status', 'choice', array(
                     'choices' => $status,
-                    'constraints' => array(new Assert\Choice(array('choices' => array_keys($status)))),
-                    'required' => FALSE
+                    'constraints' => array(new Assert\Choice(array('choices' => array_keys($status))), 'required' => !empty($status)),
+                    'required' => !empty($status)
                         )
                 )
                 ->add('theme', 'choice', array(
                         'choices' => $themes,
-                        'constraints' => array(new Assert\Choice(array('choices' => array_keys($themes)))),
-                        'required' => FALSE
+                        'constraints' => array(new Assert\Choice(array('choices' => array_keys($themes))), 'required' => !empty($themes)),
+                        'required' => !empty($themes)
                     )
                 )
                 ->add('comment', 'textarea', array('required' => FALSE))
@@ -1861,15 +1861,15 @@ class UsersController extends \Controller\BaseStalkerController {
         if ($this->app['tarifPlanFlag']){
             $form->add('tariff_plan_id', 'choice', array(
                     'choices' => $tariff_plans,
-                    'constraints' => array(new Assert\Choice(array('choices' => array_keys($tariff_plans)))),
-                    'required' => FALSE
+                    'constraints' => array(new Assert\Choice(array('choices' => array_keys($tariff_plans))), 'required' => !empty($tariff_plans)),
+                    'required' => !empty($tariff_plans)
                         )
                 );
         } else {
             $form->add('additional_services_on', 'choice', array(
                     'choices' => $additional_services,
-                    'constraints' => array(new Assert\Choice(array('choices' => array_keys($additional_services)))),
-                    'required' => FALSE
+                    'constraints' => array(new Assert\Choice(array('choices' => array_keys($additional_services))), 'required' => !empty($additional_services)),
+                    'required' => !empty($additional_services)
                         )
                 );
         }
@@ -1880,8 +1880,8 @@ class UsersController extends \Controller\BaseStalkerController {
         if (empty($this->app['reseller'])) {
             $form->add('reseller_id', 'choice', array(
                     'choices' => $resellers,
-                    'constraints' => array(new Assert\Choice(array('choices' => array_keys($resellers)))),
-                    'required' => FALSE
+                    'constraints' => array(new Assert\Choice(array('choices' => array_keys($resellers))), 'required' => !empty($resellers)),
+                    'required' => !empty($resellers)
                 )
             );
         }
