@@ -2,6 +2,8 @@
 
 include "../common.php";
 
+use Stalker\Lib\Core\Cache;
+
 array_shift($argv);
 
 if (!empty($argv)){

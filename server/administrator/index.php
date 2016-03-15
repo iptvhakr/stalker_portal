@@ -6,6 +6,9 @@ ob_start();
 include "./common.php";
 include "./lib/tasks.php";
 
+use Stalker\Lib\Core\Mysql;
+use Stalker\Lib\Core\Config;
+
 Admin::checkAuth();
 
 ?>

@@ -4,6 +4,8 @@ ob_start();
 session_start();
 include "./common.php";
 
+use Stalker\Lib\Core\Mysql;
+
 $error = '';
 $action_name = 'add';
 $action_value = _('Add');

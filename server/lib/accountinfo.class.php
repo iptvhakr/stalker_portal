@@ -1,5 +1,8 @@
 <?php
 
+use Stalker\Lib\Core\Config;
+use Stalker\Lib\Core\Stb;
+
 class AccountInfo implements \Stalker\Lib\StbApi\AccountInfo
 {
     private $stb;

@@ -7,6 +7,9 @@ if (empty($_GET['uid'])){
     exit;
 }
 
+use Stalker\Lib\Core\Config;
+use Stalker\Lib\Core\Stb;
+
 $file = file_get_contents('../../new/launcher/profile.json');
 
 $profile = json_decode($file, true);

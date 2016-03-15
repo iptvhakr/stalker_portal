@@ -6,6 +6,8 @@ error_reporting(E_ALL);
 
 include "./common.php";
 
+use Stalker\Lib\Core\Mysql;
+
 $uid_arr = Mysql::getInstance()
     ->from('vclub_paused')
     ->where(array(
@@ -24,3 +26,7 @@ if (count($uid_arr) > 0){
 }
 
 echo count($uid_arr);
+
+sleep(rand(0, 600));
+
+\Stalker\Lib\Core\Middleware::checkUpdates();

@@ -5,6 +5,9 @@ ob_start();
 
 include "./common.php";
 
+use Stalker\Lib\Core\Mysql;
+use Stalker\Lib\Core\Middleware;
+
 $error = '';
 $action_name = 'add';
 $action_value = _('Add');

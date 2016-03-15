@@ -12,6 +12,10 @@ require_once "common.php";
 
 set_error_handler(array($debug = Debug::getInstance(), 'parsePHPError'));
 
+use Stalker\Lib\Core\Stb;
+use Stalker\Lib\Core\Mysql;
+use Stalker\Lib\Core\DataLoader;
+
 $response = new AjaxBackend();
 Stb::getInstance();
 $loader = new DataLoader($_REQUEST['type'], $_REQUEST['action']);

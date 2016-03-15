@@ -2,6 +2,8 @@
 
 session_start();
 
+use Stalker\Lib\Core\Mysql;
+
 function get_data(){
     $get = @$_GET['get'];
     $data = @$_POST['data'];

@@ -1,5 +1,8 @@
 <?php
 
+use Stalker\Lib\Core\Mysql;
+use Stalker\Lib\Core\Stb;
+
 class Account implements \Stalker\Lib\StbApi\Account
 {
     public function subscribeToPackage(){

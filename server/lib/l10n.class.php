@@ -1,5 +1,7 @@
 <?php
 
+use Stalker\Lib\Core\Mysql;
+
 class L10n {
 
     public static $api_key = 'ABQIAAAA8gol0t00IMl-GLDtPLoQnRT2RNzrSW75x_tEA63PvQHiSnPv7BQnFyZpHgybA9POm2hOwqHdf4JatA';

@@ -1,5 +1,7 @@
 <?php
 
+use Stalker\Lib\Core\Mysql;
+
 function get_media_name_by_id($id){
 
     $video = Video::getById($id);

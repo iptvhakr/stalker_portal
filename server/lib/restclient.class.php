@@ -1,5 +1,7 @@
 <?php
 
+use Stalker\Lib\Core\Config;
+
 class RESTClient
 {
     private $resource;
@@ -149,5 +151,3 @@ class RESTClientConnectionFailure extends RESTClientException{}
 class RESTClientUnknownFormat extends RESTClientException{}
 class RESTClientConnectException extends RESTClientException{}
 class RESTClientRemoteError extends RESTClientException{}
-
-?>

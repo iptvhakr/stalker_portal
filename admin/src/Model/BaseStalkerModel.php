@@ -2,6 +2,9 @@
 
 namespace Model;
 
+use Stalker\Lib\Core\Mysql;
+use Stalker\Lib\Core\MysqlException;
+
 class BaseStalkerModel {
 
     protected $mysqlInstance;
@@ -10,7 +13,7 @@ class BaseStalkerModel {
     protected $admin_login;
 
     public function __construct() {
-        $this->mysqlInstance = \Mysql::getInstance();
+        $this->mysqlInstance = Mysql::getInstance();
         $this->reseller_id = NULL;
         $this->admin_id = NULL;
         $this->admin_login = NULL;
@@ -55,7 +58,7 @@ class BaseStalkerModel {
             try{
                 $this->mysqlInstance->query("SELECT count(*) FROM $tablename")->first();
                 return TRUE;
-            } catch (\MysqlException $ex) {
+            } catch (MysqlException $ex) {
                 return FALSE;
             }
         }

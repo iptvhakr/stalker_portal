@@ -2,6 +2,8 @@
 
 namespace Stalker\Lib\RESTAPI\v2;
 
+use Stalker\Lib\Core\Mysql;
+
 class RESTApiUserMessageHistory extends RESTApiController
 {
 
@@ -11,7 +13,7 @@ class RESTApiUserMessageHistory extends RESTApiController
 
     public function get(RESTApiRequest $request, $parent_id){
 
-        $events = \Mysql::getInstance()->from('events')
+        $events = Mysql::getInstance()->from('events')
             ->where(array('uid' => $parent_id))
             ->orderby('addtime', 'DESC')
             ->get()->all();

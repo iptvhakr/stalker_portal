@@ -1,5 +1,8 @@
 <?php
 
+use Stalker\Lib\Core\Config;
+use Stalker\Lib\Core\Mysql;
+
 function get_save_folder($id){
     
     $dir_name = ceil($id/100);

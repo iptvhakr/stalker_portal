@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response as Response;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
 use \Cron as Cron;
+use Stalker\Lib\Core\Config;
 
 class EventsController extends \Controller\BaseStalkerController {
 
@@ -96,7 +97,7 @@ class EventsController extends \Controller\BaseStalkerController {
         $this->app['defTTL'] = array(
             'send_msg' => 7*24*3600,
             'send_msg_with_video' => 7*24*3600,
-            'other' => \Config::get('watchdog_timeout') * 2
+            'other' => Config::get('watchdog_timeout') * 2
         );
     }
 

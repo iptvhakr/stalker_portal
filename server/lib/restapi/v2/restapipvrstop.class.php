@@ -2,6 +2,8 @@
 
 namespace Stalker\Lib\RESTAPI\v2;
 
+use Stalker\Lib\Core\Stb;
+
 class RESTApiPvrStop extends RESTApiController
 {
     protected $name = 'stop';
@@ -21,7 +23,7 @@ class RESTApiPvrStop extends RESTApiController
 
         $user_id = $this->params['users.id'];
 
-        $user = \Stb::getById($user_id);
+        $user = Stb::getById($user_id);
 
         if (empty($user)){
             throw new RESTNotFound("User not found");

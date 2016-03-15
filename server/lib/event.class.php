@@ -1,4 +1,9 @@
 <?php
+
+use Stalker\Lib\Core\Mysql;
+use Stalker\Lib\Core\Middleware;
+use Stalker\Lib\Core\Config;
+
 /**
  * Events sender from server to client
  *

@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response as Response;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Stalker\Lib\Core\Config;
 
 class BaseStalkerController {
 
@@ -103,7 +104,7 @@ class BaseStalkerController {
         $this->app['controller_alias'] = $tmp[0];
         $this->app['action_alias'] = (count($tmp) == 2) ? $tmp[1] : '';
         $this->baseHost = $this->request->getSchemeAndHttpHost();
-        $this->workHost = $this->baseHost . \Config::getSafe('portal_url', '/stalker_portal/');
+        $this->workHost = $this->baseHost . Config::getSafe('portal_url', '/stalker_portal/');
         $this->app['workHost'] = $this->workHost;
         $this->Uri = $this->app['request']->getUri();
         $controller = (!empty($this->app['controller_alias']) ? "/" . $this->app['controller_alias'] : '');
@@ -229,7 +230,7 @@ class BaseStalkerController {
     protected function getCoverFolder($id) {
 
         $dir_name = ceil($id / 100);
-        $dir_path = realpath(PROJECT_PATH . '/../' . \Config::getSafe('screenshots_path', 'screenshots/')) . '/' . $dir_name;
+        $dir_path = realpath(PROJECT_PATH . '/../' . Config::getSafe('screenshots_path', 'screenshots/')) . '/' . $dir_name;
         if (!is_dir($dir_path)) {
             umask(0);
             if (!mkdir($dir_path, 0777)) {

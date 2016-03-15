@@ -39,11 +39,7 @@
             "Lib": "../admin/src/Lib"
         },
         "classmap": [
-            "../server/lib/",
-            "../server/lib/mysql.class.php",
-            "../server/lib/mysqlresult.class.php",
-            "../server/lib/config.class.php",
-            "../server/lib/databaseresult.class.php"
+            "../server/lib/"
         ]
     }
 }

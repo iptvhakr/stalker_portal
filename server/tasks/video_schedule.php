@@ -2,6 +2,8 @@
 
 include "./common.php";
 
+use Stalker\Lib\Core\Mysql;
+
 $today_tasks = Mysql::getInstance()->from('video_on_tasks')->where(array('date_on<=' => 'CURDATE()'))->get()->all();
 
 foreach ($today_tasks as $task){

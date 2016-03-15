@@ -122,6 +122,7 @@ class SplClassLoader
      * Loads the given class or interface.
      *
      * @param string $className The name of the class to load.
+     * @throws ClassNotExistException
      * @return void
      */
     public function loadClass($className)
@@ -146,10 +147,13 @@ class SplClassLoader
             $full = ($this->_includePath !== null ? $this->_includePath . DIRECTORY_SEPARATOR : '') . $fileName;
 
             if (!file_exists($full)){
-                throw new Exception('Class file for "'.$className.'" not found');
+                //error_log(var_export(debug_backtrace(), true));
+                throw new ClassNotExistException('Class file for "'.$className.'" not found');
             }
 
             require $full;
         }
     }
 }
+
+class ClassNotExistException extends Exception{};

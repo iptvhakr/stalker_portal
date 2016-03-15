@@ -1,5 +1,9 @@
 <?php
 
+use Stalker\Lib\Core\Mysql;
+use Stalker\Lib\Core\Stb;
+use Stalker\Lib\Core\Config;
+
 class Downloads implements \Stalker\Lib\StbApi\Downloads
 {
 

@@ -1,5 +1,8 @@
 <?php
 
+use Stalker\Lib\Core\Mysql;
+use Stalker\Lib\Core\Stb;
+
 class VclubAdvertising implements \Stalker\Lib\StbApi\VclubAdvertising
 {
     private $allowed_fields = array('title', 'url', 'must_watch', 'weight', 'status');

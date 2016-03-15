@@ -4,6 +4,9 @@
 */
 include "./common.php";
 
+use Stalker\Lib\Core\Mysql;
+use Stalker\Lib\Core\Config;
+
 $from_date = date(Mysql::DATETIME_FORMAT, time() - Config::getSafe("events_messages_ttl", 14)*24*60*60);
 
 $from_id = Mysql::getInstance()

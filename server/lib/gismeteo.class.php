@@ -1,4 +1,7 @@
 <?php
+
+use Stalker\Lib\Core\Mysql;
+
 /**
  * Gismeteo weather
  * 

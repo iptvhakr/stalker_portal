@@ -3,6 +3,8 @@ session_start();
 
 include "./common.php";
 
+use Stalker\Lib\Core\Config;
+
 Admin::checkAuth();
 
 ob_start();

@@ -2,6 +2,8 @@
 
 include "../common.php";
 
+use Stalker\Lib\Core\Mysql;
+
 $mac = $argv[1];
 $ch  = $argv[2];
 

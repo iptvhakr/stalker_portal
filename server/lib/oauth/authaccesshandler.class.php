@@ -2,9 +2,10 @@
 
 namespace Stalker\Lib\OAuth;
 
-use \Mysql;
-use \Stalker\Lib\RESTAPI\v2\RESTApiRequest;
-use \Stalker\Lib\HTTP\HTTPRequest;
+use Stalker\Lib\Core\Stb;
+use Stalker\Lib\Core\Config;
+use Stalker\Lib\Core\Mysql;
+use Stalker\Lib\HTTP\HTTPRequest;
 
 class AuthAccessHandler extends AccessHandler
 {
@@ -43,19 +44,19 @@ class AuthAccessHandler extends AccessHandler
             }
 
             // init user as STB
-            \Stb::getInstance()->getProfile();
-            $user = \User::getByMac(\Stb::getInstance()->mac);
+            Stb::getInstance()->getProfile();
+            $user = \User::getByMac(Stb::getInstance()->mac);
 
             if ($user){
                 $request->setUsername($user->getLogin());
             }
         }
 
-        if (\Config::exist('auth_url') && strpos(\Config::get('auth_url'), 'auth_every_load') && empty($username) && empty($password)){
+        if (Config::exist('auth_url') && strpos(Config::get('auth_url'), 'auth_every_load') && empty($username) && empty($password)){
             return false;
         }
 
-        if (!$user || !empty($username) && !empty($password) && \Config::getSafe('oss_url', '')){
+        if (!$user || !empty($username) && !empty($password) && Config::getSafe('oss_url', '')){
             $user = \User::authorizeFromOss($username, $password, $mac);
         }
 
@@ -69,20 +70,20 @@ class AuthAccessHandler extends AccessHandler
             $request->setUsername($user->getLogin());
         }
 
-        if(!$password && $mac || \Config::getSafe('oss_url', '') && $username && $password){
+        if(!$password && $mac || Config::getSafe('oss_url', '') && $username && $password){
             $verified_user = $possible_user;
         }elseif ((strlen($possible_user['password']) == 32 && md5(md5($password).$possible_user['id']) == $possible_user['password'])
             || (strlen($possible_user['password']) < 32 && $password == $possible_user['password'])){
 
-            if (\Config::getSafe('oauth_force_mac_check', false) && \Config::getSafe('oauth_force_serial_number_check', false)){
+            if (Config::getSafe('oauth_force_mac_check', false) && Config::getSafe('oauth_force_serial_number_check', false)){
                 if ($mac == $possible_user['mac'] && ($serial_number == $possible_user['serial_number'] || $possible_user['serial_number'] == '')){
                     $verified_user = $possible_user;
                 }
-            }else if (\Config::getSafe('oauth_force_mac_check', false)){
+            }else if (Config::getSafe('oauth_force_mac_check', false)){
                 if ($mac == $possible_user['mac']){
                     $verified_user = $possible_user;
                 }
-            }else  if (\Config::getSafe('oauth_force_serial_number_check', false)){
+            }else  if (Config::getSafe('oauth_force_serial_number_check', false)){
                 if ($serial_number == $possible_user['serial_number'] || $possible_user['serial_number'] == ''){
                     $verified_user = $possible_user;
                 }
@@ -95,7 +96,7 @@ class AuthAccessHandler extends AccessHandler
             $user->setSerialNumber($serial_number);
             $user->updateUserInfoFromOSS();
 
-            if (\Config::getSafe('bind_stb_auth_and_oauth', true)){
+            if (Config::getSafe('bind_stb_auth_and_oauth', true)){
                 // invalidate stb access_token
                 $user->resetAccessToken();
             }
@@ -158,7 +159,7 @@ class AuthAccessHandler extends AccessHandler
         return array(
             'user_id'    => $this->getUserId($username),
             'expires_in' => $this->token_expire,
-            'portal_url' => \Config::getSafe('portal_url', '/stalker_portal/')
+            'portal_url' => Config::getSafe('portal_url', '/stalker_portal/')
         );
     }
 
@@ -186,9 +187,9 @@ class AuthAccessHandler extends AccessHandler
             throw new AuthUnauthorized("Authorization required");
         }
 
-        if (strpos($auth_header, "MAC ") === 0 && \Config::getSafe('api_v2_access_type', 'bearer') == 'mac'){
+        if (strpos($auth_header, "MAC ") === 0 && Config::getSafe('api_v2_access_type', 'bearer') == 'mac'){
             return new MACAccessType($request, new self);
-        }else if (strpos($auth_header, "Bearer ") === 0 && \Config::getSafe('api_v2_access_type', 'bearer') == 'bearer'){
+        }else if (strpos($auth_header, "Bearer ") === 0 && Config::getSafe('api_v2_access_type', 'bearer') == 'bearer'){
             return new BearerAccessType($request, new self);
         }else if ($request->getParam('api_key') !== null){
             return new DeveloperAccessType($request, new self);

@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request as Request;
 use Symfony\Component\HttpFoundation\Response as Response;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
+use Stalker\Lib\Core\Middleware;
 
 class SettingsController extends \Controller\BaseStalkerController {
 
@@ -37,7 +38,7 @@ class SettingsController extends \Controller\BaseStalkerController {
         }
         $current = $this->db->getCurrentTheme();
         $this->app['current_theme'] = array('name'=> $current);
-        $themes = \Middleware::getThemes();
+        $themes = Middleware::getThemes();
         if (is_array($themes)) {
             $themes = array_map(function($theme){
                 return array(
@@ -85,7 +86,7 @@ class SettingsController extends \Controller\BaseStalkerController {
         $data['action'] = 'manageTheme';
         $error = $this->setLocalization('There is no such skin');
         $data['name'] = $data['title'] = $data['preview'] = '';
-        $themes = \Middleware::getThemes();
+        $themes = Middleware::getThemes();
         if (!empty($themes) && array_key_exists($this->postData['themename'], $themes) ) {
             $this->db->setCurrentTheme($this->postData['themename']);
             $error = '';

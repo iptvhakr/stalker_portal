@@ -1,4 +1,10 @@
 <?php
+
+use Stalker\Lib\Core\Mysql;
+use Stalker\Lib\Core\Stb;
+use Stalker\Lib\Core\Config;
+use Stalker\Lib\Core\Cache;
+
 /**
  * Master for storages.
  * 

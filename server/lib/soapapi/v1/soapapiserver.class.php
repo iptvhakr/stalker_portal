@@ -2,6 +2,8 @@
 
 namespace Stalker\Lib\SOAPApi\v1;
 
+use Stalker\Lib\Core\Config;
+
 class SoapApiServer
 {
     private $server;
@@ -9,11 +11,11 @@ class SoapApiServer
 
     public function __construct(){
         ini_set("soap.wsdl_cache_enabled", "0");
-        //$this->server = new \SoapServer(\Config::get('wsdl_uri'), array('cache_wsdl' => WSDL_CACHE_NONE));
+        //$this->server = new \SoapServer(Config::get('wsdl_uri'), array('cache_wsdl' => WSDL_CACHE_NONE));
     }
 
     public function handleRequest(){
-        $this->server = new \SoapServer(\Config::get('wsdl_uri'), array('cache_wsdl' => WSDL_CACHE_NONE));
+        $this->server = new \SoapServer(Config::get('wsdl_uri'), array('cache_wsdl' => WSDL_CACHE_NONE));
         $this->server->setClass($this->handler);
         $this->server->handle();
     }

@@ -19,6 +19,7 @@ function common_xpcom(){
     this.additional_services_on = 0;
     this.header_ua_ext = [];
     this.access_token = '';
+    this.random = '';
 
     this.aspect_idx = 0;
     this.aspect_array = [
@@ -887,6 +888,7 @@ function common_xpcom(){
             function(result){
                 _debug('on handshake', result);
                 this.access_token = result.token || '';
+                this.random       = result.random || '';
 
                 this.not_valid_token = result.not_valid || 0;
 
@@ -909,6 +911,12 @@ function common_xpcom(){
     this.get_user_profile = function(auth_second_step){
         _debug('this.get_user_profile', auth_second_step);
 
+        var device_id2 = stb.GetUID ? (stb.GetUID(this.access_token) == stb.GetUID(this.access_token, this.access_token) ? '' : stb.GetUID('device_id', this.access_token)) : '';
+
+        var metrics = {mac:this.mac, sn:this.serial_number, type:"stb", model:this.type, uid:device_id2};
+
+        _debug('metrics', JSON.stringify(metrics));
+
         this.load(
 
             {
@@ -919,14 +927,17 @@ function common_xpcom(){
                 'num_banks'        : this.num_banks,
                 'sn'               : this.serial_number,
                 'stb_type'         : this.type,
+                'client_type'      : 'STB',
                 'image_version'    : this.image_version,
                 'video_out'        : (stb.GetHDMIConnectionState ? (stb.GetHDMIConnectionState() == 0 && window.innerHeight <= 576 ? "rca" : "hdmi") : ""),
                 'device_id'        : stb.GetUID ? stb.GetUID() : '',
-                'device_id2'       : stb.GetUID ? (stb.GetUID(this.access_token) == stb.GetUID(this.access_token, this.access_token) ? '' : stb.GetUID('device_id', this.access_token)) : '',
+                'device_id2'       : device_id2,
                 'signature'        : stb.GetUID ? stb.GetUID(this.access_token) : '',
                 'auth_second_step' : auth_second_step ? 1 : 0,
                 'hw_version'       : this.hw_version,
-                'not_valid_token'  : this.not_valid_token ? 1 : 0
+                'not_valid_token'  : this.not_valid_token ? 1 : 0,
+                'metrics'          : encodeURIComponent(JSON.stringify(metrics)),
+                'hw_version_2'     : stb.GetHashVersion1 ? stb.GetHashVersion1(JSON.stringify(metrics), this.random) : ''
             },
 
             function(result){

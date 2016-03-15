@@ -1,5 +1,7 @@
 <?php
 
+use Stalker\Lib\Core\Mysql;
+
 class FlussonicTvArchive extends TvArchive
 {
     public function __construct(){

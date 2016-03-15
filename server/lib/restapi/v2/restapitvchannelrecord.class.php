@@ -2,6 +2,8 @@
 
 namespace Stalker\Lib\RESTAPI\v2;
 
+use Stalker\Lib\Core\Stb;
+
 class RESTApiTvChannelRecord extends RESTApiController
 {
     protected $name = 'record';
@@ -19,7 +21,7 @@ class RESTApiTvChannelRecord extends RESTApiController
 
         $user_id = $this->params['users.id'];
 
-        $user = \Stb::getById($user_id);
+        $user = Stb::getById($user_id);
 
         if (empty($user)){
             throw new RESTNotFound("User not found");

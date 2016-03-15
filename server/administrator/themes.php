@@ -6,6 +6,9 @@ ob_start();
 
 include "./common.php";
 
+use Stalker\Lib\Core\Mysql;
+use Stalker\Lib\Core\Middleware;
+
 $error = '';
 
 Admin::checkAuth();

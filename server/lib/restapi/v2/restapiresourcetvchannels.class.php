@@ -2,6 +2,9 @@
 
 namespace Stalker\Lib\RESTAPI\v2;
 
+use Stalker\Lib\Core\Stb;
+use Stalker\Lib\Core\Config;
+
 class RESTApiResourceTvChannels extends RESTApiCollection
 {
     protected $manager;
@@ -29,7 +32,7 @@ class RESTApiResourceTvChannels extends RESTApiCollection
         if (!empty($this->nested_params['users.id'])){
             $user_id = $this->nested_params['users.id'];
 
-            $user = \Stb::getById($user_id);
+            $user = Stb::getById($user_id);
 
             if (empty($user)){
                 throw new RESTNotFound("User not found");
@@ -148,7 +151,7 @@ class RESTApiResourceTvChannels extends RESTApiCollection
 
             $urls = \Itv::getUrlsForChannel($channel['id']);
 
-            if (!empty($urls) && $urls[0]['use_http_tmp_link'] == 0 && $urls[0]['use_load_balancing'] == 0 && !\Config::getSafe('force_ch_link_check', false)){
+            if (!empty($urls) && $urls[0]['use_http_tmp_link'] == 0 && $urls[0]['use_load_balancing'] == 0 && !Config::getSafe('force_ch_link_check', false)){
                 $new_channel['url'] = $urls[0]['url'];
             }else{
                 $new_channel['url'] = "";

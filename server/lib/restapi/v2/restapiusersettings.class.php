@@ -2,6 +2,10 @@
 
 namespace Stalker\Lib\RESTAPI\v2;
 
+use Stalker\Lib\Core\Stb;
+use Stalker\Lib\Core\Middleware;
+use Stalker\Lib\Core\Mysql;
+
 class RESTApiUserSettings extends RESTApiController
 {
 
@@ -14,7 +18,7 @@ class RESTApiUserSettings extends RESTApiController
 
     public function get(RESTApiRequest $request, $parent_id){
 
-        $user = \Stb::getById($parent_id);
+        $user = Stb::getById($parent_id);
 
         return $this->filter($user);
     }
@@ -36,14 +40,14 @@ class RESTApiUserSettings extends RESTApiController
         }
 
         if (!empty($data['theme'])){
-            $themes = \Middleware::getThemes();
+            $themes = Middleware::getThemes();
 
             if (!isset($themes[$data['theme']])){
                 throw new RESTBadRequest("Theme '".$data['theme']."' is not supported");
             }
         }
 
-        return \Stb::updateById($parent_id, $data);
+        return Stb::updateById($parent_id, $data);
     }
 
     private function filter($profile){
@@ -54,10 +58,10 @@ class RESTApiUserSettings extends RESTApiController
 
         $profile = array_intersect_key($profile, $this->fields_map);
 
-        $themes = \Middleware::getThemes();
+        $themes = Middleware::getThemes();
 
         $profile['theme'] = empty($profile['theme']) || !array_key_exists($profile['theme'], $themes)
-            ? \Mysql::getInstance()->from('settings')->get()->first('default_template')
+            ? Mysql::getInstance()->from('settings')->get()->first('default_template')
             : $profile['theme'];
 
         $profile['themes'] = $themes;

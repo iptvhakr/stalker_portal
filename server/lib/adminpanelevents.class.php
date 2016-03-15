@@ -1,5 +1,8 @@
 <?php
 
+use Stalker\Lib\Core\Mysql;
+use Stalker\Lib\Core\Middleware;
+
 class AdminPanelEvents extends SysEvent {
 
     private $postData = array();
@@ -17,9 +20,9 @@ class AdminPanelEvents extends SysEvent {
 
     public function get_userlist_all() {
         if (array_key_exists('event', $this->postData) && $this->postData['event'] == 'send_msg' || $this->postData['event'] == 'send_msg_with_video') {
-            $this->user_list = \Middleware::getAllUsersId();
+            $this->user_list = Middleware::getAllUsersId();
         } else {
-            $this->user_list = \Middleware::getOnlineUsersId();
+            $this->user_list = Middleware::getOnlineUsersId();
         }
         return $this;
     }
@@ -30,7 +33,7 @@ class AdminPanelEvents extends SysEvent {
             if (is_writable($file_name)) {
                 $file_data = explode(';', file_get_contents($file_name));
                 foreach ($file_data as $mac) {
-                    $uid = \Middleware::getUidByMac($mac);
+                    $uid = Middleware::getUidByMac($mac);
                     if ($uid) {
                         $this->user_list[] = $uid;
                     }
@@ -57,7 +60,7 @@ class AdminPanelEvents extends SysEvent {
             } else {
                 $param['stb_type'] = $this->postData['pattern'];
             }
-            $this->user_list = \Middleware::getUidsByPattern($param);
+            $this->user_list = Middleware::getUidsByPattern($param);
         }
         return $this;
     }
@@ -70,7 +73,7 @@ class AdminPanelEvents extends SysEvent {
             $filter_set->setResellerID(array_key_exists('reseller', $this->postData) ? $this->postData['reseller'] : 0);
             $filter_set->initData('users', 'id');
 
-            $curr_filter_set = \Mysql::getInstance()->from('filter_set')->where(array('id' => $this->postData['filter_set']))->get()->first();
+            $curr_filter_set = Mysql::getInstance()->from('filter_set')->where(array('id' => $this->postData['filter_set']))->get()->first();
             if (!empty($curr_filter_set) && $unserialize_data = @unserialize($curr_filter_set['filter_set'])) {
                 $filter_data = array();
                 foreach ($unserialize_data as $row) {
@@ -95,12 +98,12 @@ class AdminPanelEvents extends SysEvent {
     }
 
     public function get_userlist_single() {
-        $this->user_list = array(\Middleware::getUidByMac($this->postData['mac']));
+        $this->user_list = array(Middleware::getUidByMac($this->postData['mac']));
         return $this;
     }
 
     public function cleanAndSetUsers(){
-        $all_users = \Mysql::getInstance()->from('users')->get()->all('id');
+        $all_users = Mysql::getInstance()->from('users')->get()->all('id');
         if (!empty($all_users)) {
             $this->user_list = array_intersect($this->user_list, $all_users);
         }
@@ -160,7 +163,7 @@ class AdminPanelEvents extends SysEvent {
         if (!is_array($this->user_list)) {
             $this->user_list = array($this->user_list);
         }
-        \Mysql::getInstance()->where( "id in (" . implode(",", $this->user_list) . ")")->update('users',  array("status" => 1, "last_change_status" => "NOW()" ));
+        Mysql::getInstance()->where( "id in (" . implode(",", $this->user_list) . ")")->update('users',  array("status" => 1, "last_change_status" => "NOW()" ));
         $this->sendCutOff();
         return TRUE;
     }

@@ -1,5 +1,7 @@
 <?php
 
+use Stalker\Lib\Core\Config;
+
 class Kinopoisk implements \Stalker\Lib\StbApi\vclubinfo
 {
     public static function getInfoById($id){

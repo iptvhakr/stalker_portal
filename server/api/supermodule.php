@@ -2,6 +2,11 @@
 
 include "./common.php";
 
+use Stalker\Lib\Core\Config;
+use Stalker\Lib\Core\Cache;
+use Stalker\Lib\Core\Stb;
+use Stalker\Lib\Core\Mysql;
+use Stalker\Lib\Core\Middleware;
 
 if (!isset($_GET['key']) || !isset($_GET['mac']) || !isset($_GET['uid']) || !isset($_GET['type'])){
     return false;

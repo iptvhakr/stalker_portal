@@ -2,6 +2,9 @@
 
 namespace Stalker\Lib\RESTAPI\v2;
 
+use Stalker\Lib\Core\Config;
+use Stalker\Lib\Core\Stb;
+
 class RESTApiUserModules extends RESTApiController
 {
 
@@ -11,8 +14,8 @@ class RESTApiUserModules extends RESTApiController
 
     public function get(RESTApiRequest $request, $parent_id){
 
-        $all_modules = \Config::get('all_modules');
-        $disabled_modules = \Stb::getDisabledModulesByUid((int) $parent_id);
+        $all_modules = Config::get('all_modules');
+        $disabled_modules = Stb::getDisabledModulesByUid((int) $parent_id);
 
         return array_values(array_diff($all_modules, $disabled_modules));
     }

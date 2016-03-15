@@ -1,4 +1,9 @@
 <?php
+
+use Stalker\Lib\Core\Middleware;
+use Stalker\Lib\Core\Stb;
+use Stalker\Lib\Core\Config;
+
 /**
  * Watchdog class.
  * 

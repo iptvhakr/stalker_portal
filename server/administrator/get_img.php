@@ -2,6 +2,9 @@
 
 session_start();
 include "./common.php";
+
+use Stalker\Lib\Core\Config;
+
 Admin::checkAuth();
 
 $image_url = Config::getSafe('vclub_info_provider', 'kinopoisk') == 'kinopoisk' ? 'kinopoisk.ru/' : 'image.tmdb.org/';
