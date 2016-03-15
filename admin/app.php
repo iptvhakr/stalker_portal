@@ -2,11 +2,18 @@
 
 use Symfony\Component\Translation\Loader\PoFileLoader;
 use Neutron\Silex\Provider\ImagineServiceProvider;
-use Stalker\Lib\Core\Config;
+//use Stalker\Lib\Core\Config;
 
 require_once __DIR__ . '/vendor/autoload.php';
 define('PROJECT_PATH', realpath(dirname(__FILE__) . '/../server/'));
+
 require_once PROJECT_PATH . '/../storage/config.php';
+require_once PROJECT_PATH . '/../server/lib/core/config.class.php';
+require_once PROJECT_PATH . '/../server/lib/core/mysql.class.php';
+require_once PROJECT_PATH . '/../server/lib/core/databaseresult.class.php';
+require_once PROJECT_PATH . '/../server/lib/core/mysqlresult.class.php';
+
+use Stalker\Lib\Core\Config;
 
 $_SERVER['TARGET'] = 'ADM';
 
