@@ -1,5 +1,7 @@
 <?php
 
+use Stalker\Lib\Core\Mysql;
+
 class Admin
 {
     private $profile;

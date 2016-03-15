@@ -2,6 +2,8 @@
 
 namespace Stalker\Lib\RESTAPI\v2;
 
+use Stalker\Lib\Core\Stb;
+
 class RESTApiResourceUsers extends RESTApiCollection
 {
 
@@ -24,7 +26,7 @@ class RESTApiResourceUsers extends RESTApiCollection
     }
 
     public function getCount(RESTApiRequest $request){
-        return (int) \Stb::getRawAll()->count()->get()->counter();
+        return (int) Stb::getRawAll()->count()->get()->counter();
     }
 
     public function filter($collection){

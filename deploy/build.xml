@@ -191,6 +191,57 @@
             </then>
         </if>
 
+        <php expression="ini_get('extension_dir');" returnProperty="extension_dir"/>
+
+        <echo msg="PHP extension dir: ${extension_dir}" level="info"/>
+
+        <php expression="PHP_INT_SIZE === 8 ? 64 : 32" returnProperty="os_bit"/>
+
+        <echo msg="OS: ${os_bit} bit" level="info"/>
+
+        <php expression="substr(phpversion(), 0, 3);" returnProperty="php_version"/>
+
+        <echo msg="PHP version: ${php_version}" level="info"/>
+
+        <copy file="${project_path}/deploy/src/ioncube/${os_bit}/ioncube_loader_lin_${php_version}.so" tofile="${extension_dir}/ioncube_loader_lin_${php_version}.so" overwrite="true"/>
+
+        <chmod file="${extension_dir}/ioncube_loader_lin_${php_version}.so" mode="0644" />
+
+        <if>
+            <available file="/etc/php5/apache2/php.ini" property="apache_ini_path" type="file" />
+            <then>
+                <exec command="cat /etc/php5/apache2/php.ini | grep '^zend_extension' | wc -l" outputProperty="zend_extension_available" level="info" />
+                <echo level="info" msg="Zend extensions available: ${zend_extension_available}" />
+                <if>
+                    <not>
+                        <equals arg1="${zend_extension_available}" arg2="0"/>
+                    </not>
+                    <then>
+                        <echo message="Please add the following line to your php.ini file as first Zend extension and restart apache" level="warning"/>
+                        <echo message="zend_extension=${extension_dir}/ioncube_loader_lin_${php_version}.so" level="warning"/>
+                    </then>
+                    <else>
+                        <if>
+                            <available file="/etc/php5/conf.d" property="extension_ini_path" type="dir" />
+                            <then>
+                                <touch file="/etc/php5/conf.d/00-ioncube.ini" />
+                                <chmod file="/etc/php5/conf.d/00-ioncube.ini" mode="0644" />
+                                <echo file="/etc/php5/conf.d/00-ioncube.ini" message="zend_extension=${extension_dir}/ioncube_loader_lin_${php_version}.so" />
+                            </then>
+                            <else>
+                                <echo message="Please add the following line to your php.ini file as first Zend extension and restart apache" level="warning"/>
+                                <echo message="zend_extension=${extension_dir}/ioncube_loader_lin_${php_version}.so" level="warning"/>
+                            </else>
+                        </if>
+                    </else>
+                </if>
+            </then>
+            <else>
+                <echo message="Please add the following line to your php.ini file as first Zend extension and restart apache" level="warning"/>
+                <echo message="zend_extension=${extension_dir}/ioncube_loader_lin_${php_version}.so" level="warning"/>
+            </else>
+        </if>
+
         <chmod file="${project_path}/screenshots" mode="0777" />
         <chmod file="${project_path}/misc/logos" mode="0777" />
         <chmod file="${project_path}/misc/audio_covers" mode="0777" />

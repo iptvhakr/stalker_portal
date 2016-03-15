@@ -1,5 +1,7 @@
 <?php
 
+use Stalker\Lib\Core\Config;
+
 class Weather implements \Stalker\Lib\StbApi\Weather
 {
     protected $provider;

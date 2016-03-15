@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response as Response;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
+use Stalker\Lib\Core\Config;
 
 class UsersController extends \Controller\BaseStalkerController {
 
@@ -54,7 +55,7 @@ class UsersController extends \Controller\BaseStalkerController {
 
     public function __construct(Application $app) {
         parent::__construct($app, __CLASS__);
-        $this->watchdog = \Config::get('watchdog_timeout') * 2;
+        $this->watchdog = Config::get('watchdog_timeout') * 2;
         $this->userFields[] = "((UNIX_TIMESTAMP() - UNIX_TIMESTAMP(`keep_alive`)) <= $this->watchdog) as `state`";
         $this->allStatus = array(
             array('id' => 1, 'title' => $this->setLocalization('on')),
@@ -217,11 +218,11 @@ class UsersController extends \Controller\BaseStalkerController {
         $attribute = $this->getUsersListDropdownAttribute();
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
-        if (\Config::getSafe('enable_internal_billing', 'false')) {
+        if (Config::getSafe('enable_internal_billing', 'false')) {
             $this->app['enableBilling'] = TRUE;
         }
 
-        $this->app['hide_media_info'] = \Config::getSafe('hide_media_info_for_offline_stb', false);
+        $this->app['hide_media_info'] = Config::getSafe('hide_media_info_for_offline_stb', false);
         $this->app['mediaTypeName'] = $this->setLocalization($this->mediaTypeName);
 
         if (empty($this->app['reseller'])) {
@@ -339,7 +340,7 @@ class UsersController extends \Controller\BaseStalkerController {
         }
 
         if ($this->app['resellerUserLimit']) {
-            $this->app['tarifPlanFlag'] = \Config::getSafe('enable_tariff_plans', false);
+            $this->app['tarifPlanFlag'] = Config::getSafe('enable_tariff_plans', false);
             $form = $this->buildUserForm();
 
             if ($this->saveUsersData($form)) {
@@ -347,10 +348,10 @@ class UsersController extends \Controller\BaseStalkerController {
             }
             $this->app['form'] = $form->createView();
 
-            if (\Config::getSafe('enable_tv_subscription_for_tariff_plans', false)) {
+            if (Config::getSafe('enable_tv_subscription_for_tariff_plans', false)) {
                 $this->app['channelsCost'] = "0.00"; //$this->getCostSubChannels();
             }
-            if (\Config::getSafe('enable_internal_billing', 'false')) {
+            if (Config::getSafe('enable_internal_billing', 'false')) {
                 $this->app['enableBilling'] = TRUE;
             }
         }
@@ -389,7 +390,7 @@ class UsersController extends \Controller\BaseStalkerController {
         if (empty($this->user)) {
             return $this->app->redirect('add-users');
         }
-        $this->app['tarifPlanFlag'] = \Config::getSafe('enable_tariff_plans', false);
+        $this->app['tarifPlanFlag'] = Config::getSafe('enable_tariff_plans', false);
         if (!empty($this->user['expire_billing_date']) && preg_match("/(19|20\d\d)[- \/\.](0[1-9]|1[012])[- \/\.](0[1-9]|[12][0-9]|3[01])/im", $this->user['expire_billing_date'], $match)) {
             unset($match[0]);
             $this->user['expire_billing_date'] = implode('-', array_reverse($match));
@@ -418,10 +419,10 @@ class UsersController extends \Controller\BaseStalkerController {
 
         $this->app['state'] = (int) $this->user['state'];
 
-        if (\Config::getSafe('enable_tv_subscription_for_tariff_plans', false)) {
+        if (Config::getSafe('enable_tv_subscription_for_tariff_plans', false)) {
             $this->app['channelsCost'] = "0.00"; //$this->getCostSubChannels();    
         }
-        if (\Config::getSafe('enable_internal_billing', 'false')) {
+        if (Config::getSafe('enable_internal_billing', 'false')) {
             $this->app['enableBilling'] = TRUE;
         }
 
@@ -1874,7 +1875,7 @@ class UsersController extends \Controller\BaseStalkerController {
                 );
         }
 
-        if (\Config::getSafe('enable_internal_billing', 'false')) {
+        if (Config::getSafe('enable_internal_billing', 'false')) {
             $form->add('expire_billing_date', 'text', array('required' => FALSE));
         }
         if (empty($this->app['reseller'])) {
@@ -2055,7 +2056,7 @@ class UsersController extends \Controller\BaseStalkerController {
         if (empty($this->app['reseller'])) {
             $attribute[] = array('name'=>'reseller_name',      'title'=>$this->setLocalization('Reseller'),    'checked' => TRUE);
         }
-        if (\Config::getSafe('enable_internal_billing', 'false')) {
+        if (Config::getSafe('enable_internal_billing', 'false')) {
             $attribute[] = array('name'=>'expire_billing_date', 'title'=>$this->setLocalization('Expire billing date'),'checked' => TRUE);
         }
         $attribute[] = array('name'=>'operations',         'title'=>$this->setLocalization('Operations'),  'checked' => TRUE);

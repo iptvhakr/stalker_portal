@@ -2,6 +2,9 @@
 
 namespace Stalker\Lib\RESTAPI\v2;
 
+use Stalker\Lib\Core\Mysql;
+use Stalker\Lib\Core\Cache;
+
 class RESTApiUserMediaInfo extends RESTApiController
 {
 
@@ -48,7 +51,7 @@ class RESTApiUserMediaInfo extends RESTApiController
             throw new RESTBadRequest("Type is not supported");
         }
 
-        $media = \Mysql::getInstance()->from($this->types_map[$type]['target'])
+        $media = Mysql::getInstance()->from($this->types_map[$type]['target'])
             ->where(array('id' => $media_id))
             ->get()->first();
 
@@ -56,7 +59,7 @@ class RESTApiUserMediaInfo extends RESTApiController
             throw new RESTNotFound("Media not found");
         }
 
-        $cache = \Cache::getInstance();
+        $cache = Cache::getInstance();
         $playback_session = $cache->get($parent_id.'_playback');
 
         if (!empty($playback_session) && is_array($playback_session)){
@@ -87,7 +90,7 @@ class RESTApiUserMediaInfo extends RESTApiController
             $now_playing_content = $media[$this->types_map[$type]['title_field']];
         }
 
-        \Mysql::getInstance()->insert('user_log', array(
+        Mysql::getInstance()->insert('user_log', array(
             'uid'    => $parent_id,
             'action' => 'play',
             'param'  => $now_playing_content,
@@ -95,7 +98,7 @@ class RESTApiUserMediaInfo extends RESTApiController
             'type'   => $this->types_map[$type]['code']
         ));
 
-        return \Mysql::getInstance()->update('users',
+        return Mysql::getInstance()->update('users',
             array(
                  'now_playing_type'    => $this->types_map[$type]['code'],
                  'now_playing_link_id' => $media_id,
@@ -111,9 +114,9 @@ class RESTApiUserMediaInfo extends RESTApiController
 
     public function delete(RESTApiRequest $request, $parent_id){
 
-        $user = \Mysql::getInstance()->from('users')->where(array('id' => $parent_id))->get()->first();
+        $user = Mysql::getInstance()->from('users')->where(array('id' => $parent_id))->get()->first();
 
-        \Mysql::getInstance()->insert('user_log', array(
+        Mysql::getInstance()->insert('user_log', array(
             'uid'    => $parent_id,
             'action' => 'stop',
             'time'   => 'NOW()'
@@ -124,7 +127,7 @@ class RESTApiUserMediaInfo extends RESTApiController
                 case 1: // tv
 
                     if (time() - strtotime($user['now_playing_start']) > 30*60){ // more then 30 min
-                        \Mysql::getInstance()->insert('played_itv', array(
+                        Mysql::getInstance()->insert('played_itv', array(
                             'itv_id'      => $user['now_playing_link_id'],
                             'uid'         => $parent_id,
                             'playtime'    => 'NOW()',
@@ -136,7 +139,7 @@ class RESTApiUserMediaInfo extends RESTApiController
                 case 2: // video
 
                     if (time() - strtotime($user['now_playing_start']) > 60*60){ // more then 1 hour (70% can't be counted)
-                        \Mysql::getInstance()->insert('played_video', array(
+                        Mysql::getInstance()->insert('played_video', array(
                             'video_id' => $user['now_playing_link_id'],
                             'uid'      => $parent_id,
                             'playtime' => 'NOW()'
@@ -149,10 +152,10 @@ class RESTApiUserMediaInfo extends RESTApiController
 
                     if (time() - strtotime($user['now_playing_start']) > 60) { // more then 1 min
 
-                        $program = \Mysql::getInstance()->from('epg')->where(array('id' => $user['now_playing_link_id']))->get()->first();
+                        $program = Mysql::getInstance()->from('epg')->where(array('id' => $user['now_playing_link_id']))->get()->first();
 
                         if (!empty($program)){
-                            \Mysql::getInstance()->insert('played_tv_archive', array(
+                            Mysql::getInstance()->insert('played_tv_archive', array(
                                 'ch_id'    => $program['ch_id'],
                                 'uid'      => $parent_id,
                                 'playtime' => 'NOW()',
@@ -165,7 +168,7 @@ class RESTApiUserMediaInfo extends RESTApiController
             }
         }
 
-        return \Mysql::getInstance()->update('users',
+        return Mysql::getInstance()->update('users',
             array(
                  'now_playing_type'    => '',
                  'now_playing_content' => '',

@@ -1,4 +1,9 @@
 <?php
+
+use Stalker\Lib\Core\Config;
+use Stalker\Lib\Core\Mysql;
+use Stalker\Lib\Core\Stb;
+
 /**
  * Prepare raw data to AJAX response.
  * 

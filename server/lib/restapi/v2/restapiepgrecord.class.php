@@ -2,6 +2,8 @@
 
 namespace Stalker\Lib\RESTAPI\v2;
 
+use Stalker\Lib\Core\Stb;
+
 class RESTApiEpgRecord extends RESTApiController
 {
     protected $name = 'record';
@@ -25,7 +27,7 @@ class RESTApiEpgRecord extends RESTApiController
         $ch_id      = (int) $this->params['ch_id'];
         $program_id = (int) $parent_id;
 
-        $user = \Stb::getById($user_id);
+        $user = Stb::getById($user_id);
 
         if (empty($user)){
             throw new RESTNotFound("User not found");

@@ -6,6 +6,8 @@ ob_start();
 
 include "./common.php";
 
+use Stalker\Lib\Core\Mysql;
+
 Admin::checkAuth();
 
 Admin::checkAccess(AdminAccess::ACCESS_VIEW);

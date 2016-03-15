@@ -2,6 +2,7 @@
 
 use Symfony\Component\Translation\Loader\PoFileLoader;
 use Neutron\Silex\Provider\ImagineServiceProvider;
+use Stalker\Lib\Core\Config;
 
 require_once __DIR__ . '/vendor/autoload.php';
 define('PROJECT_PATH', realpath(dirname(__FILE__) . '/../server/'));
@@ -11,7 +12,7 @@ $_SERVER['TARGET'] = 'ADM';
 
 $locales = array();
 
-$allowed_locales = \Config::get("allowed_locales");
+$allowed_locales = Config::get("allowed_locales");
 
 foreach ($allowed_locales as $lang => $locale){
     $locales[substr($locale, 0, 2)] = $locale;

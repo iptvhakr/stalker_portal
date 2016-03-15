@@ -4,6 +4,9 @@
 */
 include "./common.php";
 
+use Stalker\Lib\Core\Mysql;
+use Stalker\Lib\Core\Config;
+
 $from_date = date("Y-m-d H:i:s", time() - 7*24*60*60);
 
 $from_id = Mysql::getInstance()

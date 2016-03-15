@@ -1,5 +1,9 @@
 <?php
 
+use Stalker\Lib\Core\Config;
+use Stalker\Lib\Core\Mysql;
+use Stalker\Lib\Core\Stb;
+
 class SimpleOssWrapper implements OssWrapperInterface
 {
     public function getUserInfo(User $user){

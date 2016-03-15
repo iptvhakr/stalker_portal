@@ -1,6 +1,7 @@
 <?php
 
-//namespace Stalker\Lib;
+use Stalker\Lib\Core\Mysql;
+use Stalker\Lib\Core\Config;
 
 class Storage
 {

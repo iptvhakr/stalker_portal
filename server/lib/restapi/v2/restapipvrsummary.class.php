@@ -2,6 +2,8 @@
 
 namespace Stalker\Lib\RESTAPI\v2;
 
+use Stalker\Lib\Core\Config;
+
 class RESTApiPvrSummary extends RESTApiController
 {
     protected $name = 'pvr-summary';
@@ -12,7 +14,7 @@ class RESTApiPvrSummary extends RESTApiController
 
         $recorder = new \StreamRecorder();
         $free = ceil($recorder->checkTotalUserRecordsLength($user_id)/60);
-        $total = \Config::getSafe('total_records_length', 600);
+        $total = Config::getSafe('total_records_length', 600);
 
         return array('total' => $total, 'free' => $free);
     }

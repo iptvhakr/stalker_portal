@@ -2,6 +2,8 @@
 
 include "../common.php";
 
+use Stalker\Lib\Core\Mysql;
+
 if (empty($_REQUEST['login']) || empty($_REQUEST['password'])){
     echo '{"status":"ERROR","results":false,"error":"Login and password required"}';
     exit;

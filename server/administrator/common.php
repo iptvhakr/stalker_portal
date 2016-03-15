@@ -4,6 +4,8 @@ $_SERVER['TARGET'] = 'ADM';
 
 include "../common.php";
 
+use Stalker\Lib\Core\Config;
+
 $locales = array();
 
 $allowed_locales = Config::get("allowed_locales");

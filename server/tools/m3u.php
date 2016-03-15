@@ -5,6 +5,9 @@ ob_start();
 
 include "../common.php";
 
+use Stalker\Lib\Core\Config;
+use Stalker\Lib\Core\Mysql;
+
 if (!Config::getSafe('enable_m3u_file', false)){
     header("HTTP/1.0 404 Not Found");
     exit;

@@ -1,4 +1,7 @@
 <?php
+
+use Stalker\Lib\Core\Mysql;
+
 /**
  * Advertising for main menu & hot offer;
  * 

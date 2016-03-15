@@ -1,5 +1,7 @@
 <?php
 
+use Stalker\Lib\Core\Config;
+
 class OssWrapper
 {
     private static $instance = null;

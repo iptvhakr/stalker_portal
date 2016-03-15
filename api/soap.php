@@ -2,6 +2,8 @@
 
 require_once "../server/common.php";
 
+use Stalker\Lib\Core\Config;
+
 if (!Config::getSafe('enable_soap_api', false)){
     header($_SERVER["SERVER_PROTOCOL"]." 403 Forbidden");
     echo "SOAP API is not enabled";

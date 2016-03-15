@@ -12,8 +12,16 @@ abstract class AccessHandler
 
     public function getAdditionalParams($username){}
 
+    /**
+     * @param $token
+     * @return array|null
+     */
     public function getAccessSessionByToken($token){}
 
+    /**
+     * @param $key
+     * @return array|null
+     */
     public function getAccessSessionByDeveloperApiKey($key){}
 
     public function getSecretKey($username){}

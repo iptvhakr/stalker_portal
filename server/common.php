@@ -15,6 +15,8 @@ define('PROJECT_PATH', dirname(__FILE__));
 
 ini_set("include_path", ini_get("include_path").PATH_SEPARATOR.PROJECT_PATH);
 
+use Stalker\Lib\Core\Config;
+
 /*function __autoload($class_name) {
 
     $class = PROJECT_PATH.'/lib/'.strtolower($class_name).'.class.php';
@@ -53,5 +55,3 @@ if (Config::exist('http_proxy')){
     stream_context_set_default($default_context);
     libxml_set_streams_context(stream_context_create($default_context));
 }
-
-?>

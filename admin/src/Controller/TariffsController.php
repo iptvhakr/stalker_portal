@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response as Response;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
 use Symfony\Component\Form\FormError;
+use Stalker\Lib\Core\Config;
 
 class TariffsController extends \Controller\BaseStalkerController {
 
@@ -741,7 +742,7 @@ class TariffsController extends \Controller\BaseStalkerController {
     }
 
     private function get_option_services() {
-        $option_services = \Config::getSafe('option_services', array());
+        $option_services = Config::getSafe('option_services', array());
 
         $result = array_map(function($item) {
             return array(

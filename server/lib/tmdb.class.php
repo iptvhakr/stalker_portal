@@ -1,5 +1,7 @@
 <?php
 
+use Stalker\Lib\Core\Config;
+
 class Tmdb {
 
     public static function getInfoById($id, $type = 'movie') {

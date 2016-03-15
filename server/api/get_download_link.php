@@ -2,6 +2,9 @@
 
 include "./common.php";
 
+use Stalker\Lib\Core\Mysql;
+use Stalker\Lib\Core\Stb;
+
 if (empty($_GET['lid'])){
     header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found");
     exit;

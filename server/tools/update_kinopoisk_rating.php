@@ -2,6 +2,9 @@
 
 include "../common.php";
 
+use Stalker\Lib\Core\Mysql;
+use Stalker\Lib\Core\Config;
+
 if (!Config::getSafe('kinopoisk_rating', true)){
     _log('Notice: kinopoisk rating disabled');
     return;

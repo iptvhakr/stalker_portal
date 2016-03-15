@@ -1,4 +1,10 @@
 <?php
+
+use Stalker\Lib\Core\Config;
+use Stalker\Lib\Core\Mysql;
+use Stalker\Lib\Core\Cache;
+use Stalker\Lib\Core\Stb;
+
 /**
  * Main ITV class.
  * 
@@ -867,7 +873,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
             ->where($where)
             ->limit(self::max_page_items, $offset);
 
-        if (\Config::getSafe('enable_numbering_in_order', false) && \Config::getSafe('order_itv_channel_as_adding', false) &&
+        if (Config::getSafe('enable_numbering_in_order', false) && Config::getSafe('order_itv_channel_as_adding', false) &&
             (empty($_REQUEST['sortby']) || (!empty($_REQUEST['sortby']) && $_REQUEST['sortby'] == 'number'))) {
             $this->db
                 ->select(array('itv.*'))
