@@ -1,5 +1,8 @@
 <?php
 
+use Stalker\Lib\Core\Mysql;
+use Stalker\Lib\Core\Stb;
+
 class RemotePvr extends AjaxResponse implements \Stalker\Lib\StbApi\RemotePvr
 {
     public function __construct(){

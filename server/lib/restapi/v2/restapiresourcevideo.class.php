@@ -2,6 +2,8 @@
 
 namespace Stalker\Lib\RESTAPI\v2;
 
+use Stalker\Lib\Core\Stb;
+
 class RESTApiResourceVideo extends RESTApiCollection
 {
     protected $document;
@@ -28,7 +30,7 @@ class RESTApiResourceVideo extends RESTApiCollection
         if (!empty($this->nested_params['users.id'])){
             $user_id = $this->nested_params['users.id'];
 
-            $user = \Stb::getById($user_id);
+            $user = Stb::getById($user_id);
 
             if (empty($user)){
                 throw new RESTNotFound("User nor found");

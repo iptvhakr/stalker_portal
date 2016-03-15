@@ -1,5 +1,8 @@
 <?php
 
+use Stalker\Lib\Core\Mysql;
+use Stalker\Lib\Core\Config;
+
 class Audioclub extends AjaxResponse implements \Stalker\Lib\StbApi\Audioclub
 
 {

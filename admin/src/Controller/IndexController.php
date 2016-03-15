@@ -7,12 +7,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response as Response;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
+use Stalker\Lib\Core\Config;
 
 class IndexController extends \Controller\BaseStalkerController {
 
     public function __construct(Application $app) {
         parent::__construct($app, __CLASS__);
-        $this->logoHost = $this->baseHost . \Config::getSafe('portal_url', '/stalker_portal/') . "misc/logos";
+        $this->logoHost = $this->baseHost . Config::getSafe('portal_url', '/stalker_portal/') . "misc/logos";
         $this->logoDir = str_replace('/admin', '', $this->baseDir) . "/misc/logos";
         $this->app['error_local'] = array();
         $this->app['baseHost'] = $this->baseHost;

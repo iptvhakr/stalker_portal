@@ -2,6 +2,8 @@
 
 include "./common.php";
 
+use Stalker\Lib\Core\Mysql;
+
 $from_id = Mysql::getInstance()
     ->select('max(id) as max_id')
     ->from('vclub_not_ended')

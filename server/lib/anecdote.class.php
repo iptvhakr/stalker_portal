@@ -1,5 +1,8 @@
 <?php
 
+use Stalker\Lib\Core\Mysql;
+use Stalker\Lib\Core\Stb;
+
 class Anecdote implements \Stalker\Lib\StbApi\Anecdote
 {
     private $db;

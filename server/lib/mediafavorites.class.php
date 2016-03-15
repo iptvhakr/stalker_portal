@@ -1,5 +1,8 @@
 <?php
 
+use Stalker\Lib\Core\Mysql;
+use Stalker\Lib\Core\Stb;
+
 class MediaFavorites implements \Stalker\Lib\StbApi\MediaFavorites
 {
     public function getAll(){

@@ -4,6 +4,8 @@
 */
 include "./common.php";
 
+use Stalker\Lib\Core\Mysql;
+
 $day = date("j");
 
 if ($day <= 15){

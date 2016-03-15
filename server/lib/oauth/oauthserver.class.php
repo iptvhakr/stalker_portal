@@ -6,6 +6,8 @@
 
 namespace Stalker\Lib\OAuth;
 
+use Stalker\Lib\Core\Mysql;
+
 class OAuthServer
 {
     private $access_handler;
@@ -68,7 +70,7 @@ class OAuthServer
 
                 }else if ($this->access_handler->checkUserAuth($request->getUsername(), $request->getPassword(), $request->getMacAddress(), $request->getSerialNumber(), $request)){
 
-                    $user  = \Mysql::getInstance()->from('users')->where(array('login' => $request->getUsername()))->get()->first();
+                    $user  = Mysql::getInstance()->from('users')->where(array('login' => $request->getUsername()))->get()->first();
 
                     if ($user['status'] == 1){
                         throw new OAuthAccessDenied("Account is disabled");

@@ -3,9 +3,12 @@
     
 */
 
+
 set_time_limit(0);
 
 include "./common.php";
+
+use Stalker\Lib\Core\Mysql;
 
 $updated_video = 0;
 $updated_karaoke = 0;

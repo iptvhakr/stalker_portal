@@ -2,6 +2,9 @@
 
 include "./common.php";
 
+use Stalker\Lib\Core\Mysql;
+use Stalker\Lib\Core\Middleware;
+
 if (empty($_GET['name']) || empty($_GET['mac'])){
     exit;
 }

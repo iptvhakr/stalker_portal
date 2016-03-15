@@ -2,6 +2,9 @@
 
 include "./common.php";
 
+use Stalker\Lib\Core\Mysql;
+use Stalker\Lib\Core\Config;
+
 
 $enable_internal_billing = Config::getSafe('enable_internal_billing', false);
 $end_billing_interval = Config::getSafe('number_of_days_to_send_message', false);

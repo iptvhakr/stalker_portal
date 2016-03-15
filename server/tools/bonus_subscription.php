@@ -2,6 +2,8 @@
 
 include "../common.php";
 
+use Stalker\Lib\Core\Mysql;
+
 $all_channels = Mysql::getInstance()->from('itv')->where(array('status' => 1))->get()->all('id');
 
 $all_channels = System::base64_encode(serialize($all_channels));

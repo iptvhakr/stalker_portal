@@ -2,6 +2,9 @@
 
 namespace Model;
 
+use Stalker\Lib\Core\Config;
+use Stalker\Lib\Core\Mysql;
+
 class IndexModel extends \Model\BaseStalkerModel {
 
     public function __construct() {
@@ -19,7 +22,7 @@ class IndexModel extends \Model\BaseStalkerModel {
     public function get_users($state = 'online'){
         $this->mysqlInstance->from('users')->count()
             ->where(array(
-                'UNIX_TIMESTAMP(keep_alive)'.($state == 'online'?'>':'<=') => time()-\Config::get('watchdog_timeout')*2
+                'UNIX_TIMESTAMP(keep_alive)'.($state == 'online'?'>':'<=') => time()-Config::get('watchdog_timeout')*2
             ));
         if (!empty($this->reseller_id)) {
             $this->mysqlInstance->where(array('reseller_id' => $this->reseller_id));
@@ -47,7 +50,7 @@ class IndexModel extends \Model\BaseStalkerModel {
         $this->mysqlInstance->select(array('storage_name', 'now_playing_type', 'count(now_playing_type) as `count`'))
             ->from('users')
             ->where(array(
-                'UNIX_TIMESTAMP(keep_alive)>' => time() - \Config::get('watchdog_timeout') * 2,
+                'UNIX_TIMESTAMP(keep_alive)>' => time() - Config::get('watchdog_timeout') * 2,
                 'storage_name' => $storage_name,
             ));
         if (!empty($this->reseller_id) && !$total_storage_loading) {
@@ -75,7 +78,7 @@ class IndexModel extends \Model\BaseStalkerModel {
             ->from('users')
             ->where(array(
                 'now_playing_streamer_id' => $server_id,
-                'keep_alive>' => date(\Mysql::DATETIME_FORMAT, time() - \Config::get('watchdog_timeout') * 2),
+                'keep_alive>' => date(Mysql::DATETIME_FORMAT, time() - Config::get('watchdog_timeout') * 2),
                 'now_playing_type' => 1
             ));
         if (!empty($this->reseller_id) && $total_server_loading) {
@@ -94,7 +97,7 @@ class IndexModel extends \Model\BaseStalkerModel {
             ->count()
             ->where(array(
                 'now_playing_type' => $type,
-                'keep_alive>'      => date(\Mysql::DATETIME_FORMAT, time() - \Config::get('watchdog_timeout')*2)
+                'keep_alive>'      => date(Mysql::DATETIME_FORMAT, time() - Config::get('watchdog_timeout')*2)
             ));
         if (!empty($this->reseller_id)) {
             $this->mysqlInstance->where(array('reseller_id' => $this->reseller_id));

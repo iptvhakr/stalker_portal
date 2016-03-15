@@ -8,12 +8,13 @@ use Symfony\Component\HttpFoundation\Response as Response;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
 use Imagine\Image\Box;
+use Stalker\Lib\Core\Config;
 
 class VideoClubController extends \Controller\BaseStalkerController {
 
     public function __construct(Application $app) {
         parent::__construct($app, __CLASS__);
-        $this->logoHost = $this->baseHost . \Config::getSafe('portal_url', '/stalker_portal/') . "misc/logos";
+        $this->logoHost = $this->baseHost . Config::getSafe('portal_url', '/stalker_portal/') . "misc/logos";
         $this->logoDir = str_replace('/admin', '', $this->baseDir) . "/misc/logos";
         $this->app['error_local'] = array();
         $this->app['baseHost'] = $this->baseHost;
@@ -85,7 +86,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         $this->app['form'] = $form->createView();
         $data = $form->getData();
         if (!empty($data['cover_id'])) {
-            $this->app['curr_cover_dir'] = $this->baseHost . \Config::getSafe('portal_url', '/stalker_portal/') . "screenshots/" . ceil(intval(str_replace('.jpg', '', $data['cover_id'])) / 100);
+            $this->app['curr_cover_dir'] = $this->baseHost . Config::getSafe('portal_url', '/stalker_portal/') . "screenshots/" . ceil(intval(str_replace('.jpg', '', $data['cover_id'])) / 100);
         } else {
             $this->app['curr_cover_dir'] = '';
         }
@@ -117,7 +118,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         $screenshot = $this->db->getScreenshotData(array('media_id' => $this->oneVideo['id']));
         if(!empty($screenshot)){
             $this->oneVideo['cover_id'] = $screenshot[0]['id'];
-            $this->app['curr_cover_dir'] = $this->baseHost . \Config::getSafe('portal_url', '/stalker_portal/') . "screenshots/" .  ceil(intval($this->oneVideo['cover_id']) / 100);
+            $this->app['curr_cover_dir'] = $this->baseHost . Config::getSafe('portal_url', '/stalker_portal/') . "screenshots/" .  ceil(intval($this->oneVideo['cover_id']) / 100);
             $this->app['cover_ext'] = '.' . end(explode('.', $screenshot[0]['name']));
         } else {
             $this->app['curr_cover_dir'] = '';
@@ -797,7 +798,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
                         $this->db->removeScreenshotData($this->data['id']);
                         $img_path = $this->getCoverFolder($this->data['id']);
                         $img_path = str_replace(str_replace('/admin', '', $this->baseDir), "", $img_path);
-                        @unlink($this->baseDir. rtrim(\Config::getSafe('portal_url', '/stalker_portal/'), "/") . $img_path.'/'.$this->data['id'].'.'.$file_info['extension']);
+                        @unlink($this->baseDir. rtrim(Config::getSafe('portal_url', '/stalker_portal/'), "/") . $img_path.'/'.$this->data['id'].'.'.$file_info['extension']);
                     }
                 }
 
@@ -822,7 +823,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
             }
         }
         $img_path = str_replace(str_replace('/admin', '', $this->baseDir), "", $img_path);
-        $response = $this->generateAjaxResponse(array('pic' => $this->baseHost . rtrim(\Config::getSafe('portal_url', '/stalker_portal/')) . $img_path."/$upload_id.$ext"), $error);
+        $response = $this->generateAjaxResponse(array('pic' => $this->baseHost . rtrim(Config::getSafe('portal_url', '/stalker_portal/')) . $img_path."/$upload_id.$ext"), $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -1971,7 +1972,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
             'type' => 'hidden',
             'option' => array()
         );
-        if (\Config::getSafe($config_option, false)){
+        if (Config::getSafe($config_option, false)){
             $return_opt['type'] = 'checkbox';
             $return_opt['option'] = array('required' => false);
         }

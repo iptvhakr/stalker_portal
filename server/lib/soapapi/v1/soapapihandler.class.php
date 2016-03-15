@@ -1,6 +1,9 @@
 <?php
 namespace Stalker\Lib\SOAPApi\v1;
 
+use Stalker\Lib\Core\Stb;
+use Stalker\Lib\Core\Middleware;
+
 /**
  * @service Stalker
  */
@@ -153,7 +156,7 @@ class SoapApiHandler
         }
 
         if (!empty($params['stb_mac'])){
-            $params['stb_mac'] = \Middleware::normalizeMac($params['stb_mac']);
+            $params['stb_mac'] = Middleware::normalizeMac($params['stb_mac']);
             if (empty($params['stb_mac'])){
                 throw new SoapWrongMacFormat(__METHOD__, __FILE__.':'.__FILE__);
             }
@@ -162,7 +165,7 @@ class SoapApiHandler
 
             if (empty($user) || $user->getMac() != $params['stb_mac']){
 
-                $stb = \Stb::getByMac($params['stb_mac']);
+                $stb = Stb::getByMac($params['stb_mac']);
 
                 if (!empty($stb)){
                     throw new SoapMacAddressInUse(__METHOD__, __FILE__.':'.__FILE__);

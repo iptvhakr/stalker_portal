@@ -1,5 +1,7 @@
 <?php
 
+use Stalker\Lib\Core\Config;
+
 class Vclubinfo implements \Stalker\Lib\StbApi\vclubinfo {
 
     private static function getProvider(){

@@ -9,7 +9,7 @@ class Registry{
     }
 
     public static function set($key, $value){
-        self::$data[$key] = $value
+        self::$data[$key] = $value;
     }
 }
 
