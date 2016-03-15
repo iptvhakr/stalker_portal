@@ -1,7 +1,7 @@
 <?php
 
-use Stalker\Lib\Core\Mysql;
-use Stalker\Lib\Core\Config;
+use \Stalker\Lib\Core\Mysql as Mysql;
+use \Stalker\Lib\Core\Config as Config;
 
 class Filters {
 
@@ -33,14 +33,14 @@ class Filters {
     }
 
     public function __construct(){
-        $this->db = Mysql::getInstance();
+        $this->db = \Stalker\Lib\Core\Mysql::getInstance();
         $this->getDBFilters();
         $this->watchdog = Config::get('watchdog_timeout') * 2;
     }
 
     private function getDBFilters() {
         $this->filters = array();
-        if (class_exists('Mysql') && $this->db instanceof Mysql && $this->db) {
+        if (class_exists('Stalker\Lib\Core\Mysql') && $this->db instanceof \Stalker\Lib\Core\Mysql && $this->db) {
             foreach ($this->db->from(self::FILTERS_TABLE)->get()->all() as $row) {
                 $filter_text_id = $row['method'];
                 $filter_text_id = preg_replace('/([a-z]+)([A-Z]+)/', '$1_$2', $filter_text_id);

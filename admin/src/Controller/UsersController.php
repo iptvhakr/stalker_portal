@@ -173,6 +173,8 @@ class UsersController extends \Controller\BaseStalkerController {
                 }
                 return $row;
             }, array_combine($this->getFieldFromArray($filters, 'text_id'), array_values($filters)));
+        } else {
+            $this->app['filters_set'] = array();
         }
 
         reset($users_filter);
