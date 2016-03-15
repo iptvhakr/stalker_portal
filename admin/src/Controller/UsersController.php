@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response as Response;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
 use Stalker\Lib\Core\Config;
+use Stalker\Lib\Core\Middleware;
 
 class UsersController extends \Controller\BaseStalkerController {
 
@@ -1118,7 +1119,7 @@ class UsersController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'addConsoleItem';
         $error = $this->setLocalization('Failed');
-        $mac = \Middleware::normalizeMac($this->postData['name']);
+        $mac = Middleware::normalizeMac($this->postData['name']);
         if (!empty($mac)) {
             $check_in_group = $this->db->getConsoleGroupList(array('where' => array('mac' => $mac), 'order' => 'mac', 'limit' => array('limit' => 1)));
 
@@ -1159,7 +1160,7 @@ class UsersController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'checkConsoleItem';
         $error = $this->setLocalization('Name already used');
-        $mac = \Middleware::normalizeMac($this->postData['mac']);
+        $mac = Middleware::normalizeMac($this->postData['mac']);
         $data['jjj'] = $check_in_group = $this->db->getConsoleGroupList(array('where' => array('mac' => $mac), 'order' => 'mac', 'limit' => array('limit' => 1)));
         $check_in_users = $this->db->getUsersList(array('select' => array("*", "users.id as uid"), 'where' => array('mac' => $mac), 'order' => 'mac'));
 
@@ -1813,7 +1814,7 @@ class UsersController extends \Controller\BaseStalkerController {
             }
         }
 
-        $all_themes = \Middleware::getThemes();
+        $all_themes = Middleware::getThemes();
 
         $themes = array();
 
@@ -1917,7 +1918,7 @@ class UsersController extends \Controller\BaseStalkerController {
                 $id = $data['id'];
 
                 if (empty($member)) {
-                    $stb_groups->addMember(array('mac' => \Middleware::normalizeMac($data['mac']), 'uid' => \Middleware::getUidByMac($data['mac']), 'stb_group_id' => $data['group_id']));
+                    $stb_groups->addMember(array('mac' => Middleware::normalizeMac($data['mac']), 'uid' => Middleware::getUidByMac($data['mac']), 'stb_group_id' => $data['group_id']));
                 } else {
                     $stb_groups->setMember(array('stb_group_id' => $data['group_id']), $member['id']);
                 }
