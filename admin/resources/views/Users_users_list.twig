@@ -343,8 +343,12 @@
         ];
 
         function DemoSelect2() {
-            $("[id^='s2_']").select2({minimumResultsForSearch: -1});
-            $("[id^='filter_s2_']").select2();
+            $.getScript("{{ app.request.baseUrl }}/plugins/select2/i18n/{% if app["language"] %}{{ app["language"] }}{% else %}en{% endif %}.js", function() {
+                $.fn.select2.defaults.set('dropdownAutoWidth', 'false');
+                $.fn.select2.defaults.set('width', '100%');
+                $("[id^='s2_']").select2({minimumResultsForSearch: -1});
+                $("[id^='filter_s2_']").select2();
+            });
         }
 
         function TestTable1() {
@@ -684,7 +688,6 @@
                             <button type="reset" class="btn btn-default pull-right" >{{ 'Cancel'|trans }}</button>\n\
                         </div>');
 
-                    $("#target_reseller").select2("destroy");
                     $("#target_reseller").select2({minimumResultsForSearch: -1});
 
                     $("#modalbox").show();
@@ -762,7 +765,6 @@
                 $(document).on('change', 'select[id^="filter_s2_"]', function (e) {
                     if ($(this).find('option:selected').length == 0) {
                         $($(this).find('option').get(0)).prop('selected', 'selected');
-                        $(this).select2('destroy');
                         $(this).select2();
                     }
                     var filter_val = $(this).find('option:selected').map(function(){return this.value}).get().join('|');

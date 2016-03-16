@@ -36,7 +36,11 @@
     <script type="text/javascript" defer>
 
         function DemoSelect2() {
-            $('#category_id').select2({minimumResultsForSearch: -1});
+            $.getScript("{{ app.request.baseUrl }}/plugins/select2/i18n/{% if app["language"] %}{{ app["language"] }}{% else %}en{% endif %}.js", function() {
+                $.fn.select2.defaults.set('dropdownAutoWidth', 'false');
+                $.fn.select2.defaults.set('width', '100%');
+                $('#category_id').select2({minimumResultsForSearch: -1});
+            });
         }
 
         function TestTable1() {
@@ -224,7 +228,6 @@
                 $('#category_id').val(obj.data[0].category_alias);
             }
 
-            $('#category_id').select2('destroy');
             $('#category_id').select2({minimumResultsForSearch: -1});
 
             $('#modalbox button[type="submit"]').removeAttr("disabled");

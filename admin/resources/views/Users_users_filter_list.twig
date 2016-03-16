@@ -157,9 +157,8 @@
                     $("#modalbox_ad").show().find('input, select, textarea').removeAttr('disabled');
                     $("#s2_user_list_type option[value='by_filter']").attr('selected', 'selected');
                     $("#s2_user_list_type").closest(".form-group").hide();
-                    $("#s2_filter option[value='"+$(this).data('filter_set')+"']").attr('selected', 'selected');
+                    $("#s2_filter option[value='"+$(this).data('filter_set')+"']").prop('selected', 'selected');
                     $("#s2_filter").change();
-                    $("#s2_filter").select2('destroy');
                     $("#s2_filter").select2({minimumResultsForSearch: -1});
                     checkFields('#s2_user_list_type', e);
                     checkFields('#s2_event', e);

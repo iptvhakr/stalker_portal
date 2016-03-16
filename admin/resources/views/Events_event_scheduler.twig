@@ -157,7 +157,6 @@
                         $("#modalbox_ad .devoops-modal-header span").text("{{ 'Add event into the schedule'|trans }}");
                         $("#modalbox_ad form").get(0).reset();
                         $("#modalbox_ad form input[type='hidden'][id='id']").val('');
-                        $('select[id^="s2_"]').select2("destroy");
                         $('select[id^="s2_"]').select2({minimumResultsForSearch: -1});
                         $("#modalbox_ad").show().find('input, select, textarea').removeAttr('disabled');
                         checkFields('#s2_user_list_type', e);
@@ -211,7 +210,6 @@
                                     $(this).prop('selected', true);
                                 }
                             });
-                            $(this).select2("destroy");
                             $(this).select2({minimumResultsForSearch: -1});
                             if (getField == 'filter_set' || getField == 'event'){
                                 $(this).change();
