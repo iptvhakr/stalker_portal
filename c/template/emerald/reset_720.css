@@ -36,6 +36,8 @@ input {
     vertical-align: middle
 }
 
+:focus { outline: none; }
+
 .connection_problem_container, .authentication_problem_container {
     position: absolute;
     z-index: 1;
