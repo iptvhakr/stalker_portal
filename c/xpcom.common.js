@@ -2108,7 +2108,7 @@ function common_xpcom(){
                 module.tv.clock_box.innerHTML = get_word('time_format').format(this.hours, this.minutes, this.ap_hours, this.ap_mark);
             }
 
-            if (!stb.player.on || (stb.player.on && !stb.player.is_tv)){
+            if (stb.type == 'MAG200' && (!stb.player.on || (stb.player.on && !stb.player.is_tv))){
                 stb.setFrontPanel(this.hours + '' + this.minutes, true);
             }
 
