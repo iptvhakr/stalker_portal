@@ -56,9 +56,11 @@ $('.filter').removeClass('dropup');
 for (var f = document.forms, i = f.length; i--;)f[i].setAttribute("novalidate", i)
 function LoadSelect2Script(callback) {
     if (!$.fn.select2) {
-        $.getScript('plugins/select2/select2.min.js', callback);
+        $.getScript('plugins/select2/select2.full.min.js', callback);
     }
     else {
+        $.fn.select2.defaults.set({dropdownAutoWidth: 'false', width: 'auto'});
+
         if (callback && typeof (callback) === "function") {
             callback();
         }

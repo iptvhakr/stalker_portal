@@ -309,7 +309,9 @@
         };
 
         function DemoSelect2() {
-            $.getScript("{{ app.request.baseUrl }}/plugins/select2/select2_locale_ru.js", function () {
+            $.getScript("{{ app.request.baseUrl }}/plugins/select2/i18n/{% if app["language"] %}{{ app["language"] }}{% else %}en{% endif %}.js", function () {
+                $.fn.select2.defaults.set('dropdownAutoWidth', 'false');
+                $.fn.select2.defaults.set('width', '100%');
                 $('#form_performer_id').select2({minimumResultsForSearch: 1});
                 $('#form_year_id').select2({minimumResultsForSearch: 1});
                 $('#form_country_id').select2({minimumResultsForSearch: 1});
@@ -469,7 +471,7 @@
                         $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Add track'|trans }}');
                         $("#modalbox_ad input").prop("disabled", false).removeAttr('disabled').val('');
                         $("#modalbox_ad select").prop("disabled", false).removeAttr('disabled').find('option').removeAttr('selected');
-                        $('#s2_track_lang').select2("destroy").select2({minimumResultsForSearch: -1});
+                        $('#s2_track_lang').select2({minimumResultsForSearch: -1});
                         conf.form = '#track_form';
                         $("#track_form").validate();
                         $("#track_form").find('input, select').each(function(){
@@ -554,7 +556,7 @@
                     })
                 }
                 $("#modalbox_ad input").removeAttr('disabled');
-                $('#s2_track_lang').select2("destroy").select2({minimumResultsForSearch: -1});
+                $('#s2_track_lang').select2({minimumResultsForSearch: -1});
                 conf.form = '#track_form';
                 $("#track_form").validate();
                 $("#track_form").find('input, select').each(function(){

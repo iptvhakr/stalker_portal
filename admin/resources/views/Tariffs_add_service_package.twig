@@ -210,7 +210,9 @@
         };
 
         function DemoSelect2() {
-            $.getScript("{{ app.request.baseUrl }}/plugins/select2/select2_locale_ru.js", function(){
+            $.getScript("{{ app.request.baseUrl }}/plugins/select2/i18n/{% if app["language"] %}{{ app["language"] }}{% else %}en{% endif %}.js", function(){
+                $.fn.select2.defaults.set('dropdownAutoWidth', 'false');
+                $.fn.select2.defaults.set('width', '100%');
                 $('#form_service_type, #form_type').select2({minimumResultsForSearch: -1});
             });
         }
