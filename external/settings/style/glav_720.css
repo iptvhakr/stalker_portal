@@ -2,6 +2,7 @@
 * {margin:0;padding:0;}
 html, body {overflow: hidden;  font-family:"Myriad Pro"; color:#FFF;widht:1144;height:584;}
 a {outline:none; text-decoration:none;}
+:focus { outline: none; }
 #center {background:url(720/bg.png) no-repeat;}
 .header_text {position:absolute; margin-top:7px;max-width:1000px;overflow: hidden;white-space:nowrap;text-overflow: ellipsis; margin-left:30px; font-family:"Trebuchet MS"; font-size:40px; text-shadow:-1px -2px 0 #0f2240;}
 .header_icon {position:absolute; margin-top:5px; right:70px; height:68px; width:68px;z-index: 110;}
