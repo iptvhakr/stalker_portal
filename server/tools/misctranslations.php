@@ -659,3 +659,8 @@ _('Horoscope, city guide and many other things that can be useful for fun and us
 _('This menu allows setting up the parental control, region and language, remote control and network connection.');
 _('Surf the Internet via built-in browser! To make it easier, you can use the MAGic Remote mobile app or connect the keyboard or mouse via USB port.');
 /**/
+
+_('The portal is temporarily unavailable.<br>Please try again later.<br>Sorry for the inconvenience.');
+_('Use your username and password to login or register on %s');
+_('Please contact your provider<br>to register this device.');
+_('Welcome %s<br>We are glad to see you on the Stalker portal!');
