@@ -1,0 +1,96 @@
+<!-- The template to display files available for upload -->
+<script id="template-upload-base" type="text/x-tmpl">
+[% for (var i=0, file; file=o.files[i]; i++) { %]
+    <tr class="template-upload fade">
+        <td>
+            <span class="preview"></span>
+        </td>
+        <td>
+            <p class="name">[%=file.name%]</p>
+            <strong class="error"></strong>
+        </td>
+        <td>
+            <p class="size">Processing...</p>
+            <div class="progress"></div>
+        </td>
+        <td>
+            [% if (!i && !o.options.autoUpload) { %]
+                <button class="start" disabled>Start</button>
+            [% } %]
+            [% if (!i) { %]
+                <button class="cancel">Cancel</button>
+            [% } %]
+        </td>
+    </tr>
+[% } %]
+</script>
+<!-- The template to display files available for download -->
+<script id="template-download" type="text/x-tmpl">
+[% for (var i=0, file; file=o.files[i]; i++) { %]
+    <tr class="template-download fade">
+        <td>
+            <span class="preview">
+                [% if (file.thumbnailUrl) { %]
+                    <a href="[%=file.url%]" title="[%=file.name%]" download="[%=file.name%]" data-gallery><img src="[%=file.thumbnailUrl%]"></a>
+                [% } %]
+            </span>
+        </td>
+        <td>
+            <p class="name">
+                <a href="[%=file.url%]" title="[%=file.name%]" download="[%=file.name%]" [%=file.thumbnailUrl?'data-gallery':''%]>[%=file.name%]</a>
+            </p>
+            [% if (file.error) { %]
+                <div><span class="error">Error</span> [%=file.error%]</div>
+            [% } %]
+        </td>
+        <td>
+            <span class="size">[%=o.formatFileSize(file.size)%]</span>
+        </td>
+        <td>
+            <button class="delete" data-type="[%=file.deleteType%]" data-url="[%=file.deleteUrl%]"[% if (file.deleteWithCredentials) { %] data-xhr-fields='{"withCredentials":true}'[% } %]>Delete</button>
+            <input type="checkbox" name="delete" value="1" class="toggle">
+        </td>
+    </tr>
+[% } %]
+</script>
+<script defer="">
+    function loadFileUploadScripts(callbackFileUpload){
+        $.each([
+            "//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/themes/vader/jquery-ui.css",
+            "//blueimp.github.io/Gallery/css/blueimp-gallery.min.css",
+            "{{app.request.baseUrl}}/plugins/jquery-file-upload/css/jquery.fileupload.css",
+            "{{app.request.baseUrl}}/plugins/jquery-file-upload/css/jquery.fileupload-ui.css"
+        ], function(){
+            $("head").append($("<link rel='stylesheet' href='"+this+"' type='text/css' />"));
+        });
+
+        var tempAsync = $.ajaxSettings.async;
+        $.each([
+            'load-image.all.min.js',
+            'canvas-to-blob.min.js',
+            'jquery.blueimp-gallery.min.js',
+            'jquery.iframe-transport.js',
+            'jquery.fileupload.js',
+            'jquery.fileupload-process.js',
+            'jquery.fileupload-image.js',
+            'jquery.fileupload-validate.js',
+            'jquery.fileupload-ui.js',
+            'jquery.fileupload-jquery-ui.js',
+            'cors/jquery.xdr-transport.js'
+        ], function(){
+            $.ajaxSetup({'async': false});
+            $.getScript("{{app.request.baseUrl}}/plugins/jquery-file-upload/js/" + this);
+        });
+        $.ajaxSetup({'async': tempAsync});
+        if (!$.fn.fileupload) {
+            return false;
+        } else  if (typeof (callbackFileUpload) === "function") {
+            return callbackFileUpload();
+        }
+    }
+</script>
+
+<style>
+
+
+</style>

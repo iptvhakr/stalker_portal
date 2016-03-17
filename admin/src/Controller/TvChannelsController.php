@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
 use M3uParser;
 use Stalker\Lib\Core\Config;
+use Imagine\Image\Box;
 
 class TvChannelsController extends \Controller\BaseStalkerController {
 
@@ -28,6 +29,12 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         'monitoring_url' => array(''),
         'use_load_balancing' => array(FALSE),
         'stream_server' => array('')
+    );
+    private $logoResolutions = array(
+        '320' => array('height' => 96, 'width' => 96),
+        '240' => array('height' => 72, 'width' => 72),
+        '160' => array('height' => 48, 'width' => 48),
+        '120' => array('height' => 36, 'width' => 36)
     );
 
     public function __construct(Application $app) {
@@ -415,10 +422,30 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             $this->data['id'] .= rand(0, 100000);
         }
 
-        $this->saveFiles->handleUpload($this->logoDir, $this->data['id']);
+        $response = array();
+        $error = $this->setLocalization('Error');
+        if (!empty($_FILES)) {
+            list($f_key, $tmp) = each($_FILES);
+            if (is_uploaded_file($tmp['tmp_name']) && preg_match("/jpeg|jpg|png/", $tmp['type'])) {
 
-        $error = $this->saveFiles->getError();
-        $response = $this->generateAjaxResponse(array('pic' => $this->logoHost . "/320/" . $this->saveFiles->getFileName()), $error);
+                $upload_id = $this->data['id'];
+                $img_path = $this->logoDir;
+                umask(0);
+                try{
+                    $uploaded = $this->request->files->get($f_key)->getPathname();
+                    $ext = end(explode('.', $tmp['name']));
+                    $this->app['imagine']->open($uploaded)->save($img_path."/original/$upload_id.$ext");
+                    foreach($this->logoResolutions as $res => $param){
+                        $this->app['imagine']->open($uploaded)->resize(new Box($param['width'], $param['height']))->save($img_path."/$res/$upload_id.$ext");
+                        chmod($img_path."/$res/$upload_id.$ext", 0644);
+                    }
+                    $error = '';
+                    $response = $this->generateAjaxResponse(array('pic' => $this->logoHost . "/320/$upload_id.$ext"), $error);
+                } catch (\ImagickException $e) {
+                    $error = sprintf(_('Error save file %s'), $tmp['tmp_name']);
+                }
+            }
+        }
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -433,13 +460,30 @@ class TvChannelsController extends \Controller\BaseStalkerController {
 
         $channel = $this->db->getChannelById($this->postData['logo_id']);
 
+        $logo_id = FALSE;
+        $error = array();
+
         if (!empty($channel) && array_key_exists('id', $channel)) {
             $this->db->updateITVChannelLogo($channel['id'], '');
-            $this->saveFiles->removeFile($this->logoDir, $channel['logo']);
+            $logo_id = $channel['logo'];
         } else {
-            $this->saveFiles->removeFile($this->logoDir, $this->postData['logo_id']);
+            $logo_id = $this->postData['logo_id'];
         }
-        $error = $this->saveFiles->getError();
+
+        $folders = array_keys($this->logoResolutions);
+        $folders[] = "original";
+        foreach ($folders as $folder) {
+            $full_path = "$this->logoDir/$folder";
+            if (is_dir($full_path)) {
+                foreach (glob("$full_path/$logo_id") as $logo_id) {
+                    if (!@unlink($logo_id)){
+                        $error[] = "Error delete file $logo_id";
+                    }
+                }
+            }
+        }
+
+        $error = implode('. ', $error);
         $response = $this->generateAjaxResponse(array('data' => 0, 'action'=>'deleteLogo'), $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
@@ -1047,7 +1091,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $error = $this->setLocalization('Upload failed');
 
         $storage = new \Upload\Storage\FileSystem('/tmp', TRUE);
-        $file = new \Upload\File('qqfile', $storage);
+        $file = new \Upload\File('files', $storage);
 
         try {
             // Success!
