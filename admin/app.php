@@ -13,6 +13,9 @@ require_once PROJECT_PATH . '/../server/lib/core/mysql.class.php';
 require_once PROJECT_PATH . '/../server/lib/core/databaseresult.class.php';
 require_once PROJECT_PATH . '/../server/lib/core/mysqlresult.class.php';
 require_once PROJECT_PATH . '/../server/lib/core/middleware.class.php';
+require_once PROJECT_PATH . '/../server/lib/core/stb.class.php';
+require_once PROJECT_PATH . '/../server/lib/core/cacheresult.class.php';
+require_once PROJECT_PATH . '/../server/lib/core/cache.class.php';
 
 use Stalker\Lib\Core\Config;
 
