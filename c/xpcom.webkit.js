@@ -34,6 +34,10 @@ function webkit_xpcom(){
             return;
         }
 
+        if (stb.type != 'MAG200'){
+            return;
+        }
+
         num = num.toString();
 
         var panel = ['.','.','.','.'].map(function(val, idx, arr){

@@ -10,6 +10,7 @@ use Stalker\Lib\Core\Mysql;
 
 class OAuthServer
 {
+    /** @var AuthAccessHandler $access_handler */
     private $access_handler;
     private $token_type;
 
@@ -35,15 +36,21 @@ class OAuthServer
 
                 if ($request->getRefreshToken()){
 
-                    $username = $this->access_handler->getUsernameByRefreshToken($request->getRefreshToken());
+                    $user = $this->access_handler->getUserByRefreshToken($request->getRefreshToken());
 
-                    if (empty($username)){
+                    if (empty($user)){
                         throw new OAuthInvalidClient("request_token not valid");
                     }
 
-                    $request->setUsername($username);
+                    $options = $user->getServicesByType('option');
 
-                    $token = $this->access_handler->generateUniqueToken($request->getUsername());
+                    if ($options && array_search('disable_apiv2_for_'.strtolower($user->getProfileParam('client_type')), $options) !== false){
+                        throw new OAuthAccessDenied("Access for this client_type is disabled");
+                    }
+
+                    $request->setUsername($user->getLogin());
+
+                    $token = $this->access_handler->generateUniqueToken($user);
 
                     if (!$token){
                         throw new OAuthServerError("Token making failed");
@@ -58,11 +65,11 @@ class OAuthServer
                     }
 
                     if ($this->token_type == "mac"){
-                        $key = $this->access_handler->getSecretKey($request->getUsername());
+                        $key = $this->access_handler->getSecretKey($user);
                         $response->setMacKey($key);
                     }
 
-                    $additional_params = $this->access_handler->getAdditionalParams($request->getUsername());
+                    $additional_params = $this->access_handler->getAdditionalParams($user);
 
                     if (!empty($additional_params)){
                         $response->setAdditionalParams($additional_params);
@@ -70,13 +77,29 @@ class OAuthServer
 
                 }else if ($this->access_handler->checkUserAuth($request->getUsername(), $request->getPassword(), $request->getMacAddress(), $request->getSerialNumber(), $request)){
 
-                    $user  = Mysql::getInstance()->from('users')->where(array('login' => $request->getUsername()))->get()->first();
+                    if ($request->getUsername()){
+                        $profile = Mysql::getInstance()->from('users')->where(array('login' => $request->getUsername()))->get()->first();
+                    }elseif($request->getMacAddress()){
+                        $profile = Mysql::getInstance()->from('users')->where(array('mac' => $request->getMacAddress()))->get()->first();
+                    }
 
-                    if ($user['status'] == 1){
+                    if (empty($profile)){
+                        throw new OAuthServerError("Account not found");
+                    }
+
+                    $user = \User::getInstance($profile['id']);
+
+                    if ($user->getProfileParam('status') == 1){
                         throw new OAuthAccessDenied("Account is disabled");
                     }
 
-                    $token = $this->access_handler->generateUniqueToken($request->getUsername());
+                    $options = $user->getServicesByType('option');
+
+                    if ($options && array_search('disable_apiv2_for_'.strtolower($request->getClientType()), $options) !== false){
+                        throw new OAuthAccessDenied("Access for this client_type is disabled");
+                    }
+
+                    $token = $this->access_handler->generateUniqueToken($user);
 
                     if (!$token){
                         throw new OAuthServerError("Token making failed");
@@ -91,11 +114,11 @@ class OAuthServer
                     }
 
                     if ($this->token_type == "mac"){
-                        $key = $this->access_handler->getSecretKey($request->getUsername());
+                        $key = $this->access_handler->getSecretKey($user);
                         $response->setMacKey($key);
                     }
 
-                    $additional_params = $this->access_handler->getAdditionalParams($request->getUsername());
+                    $additional_params = $this->access_handler->getAdditionalParams($user);
 
                     if (!empty($additional_params)){
                         $response->setAdditionalParams($additional_params);

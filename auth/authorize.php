@@ -5,6 +5,8 @@ ob_start();
 require_once "../server/common.php";
 
 use Stalker\Lib\OAuth\AuthAccessHandler as AuthAccessHandler;
+use Stalker\Lib\Core\Config;
+use Stalker\Lib\Core\Mysql;
 
 $error = false;
 
@@ -18,8 +20,12 @@ if (empty($_GET['response_type']) || empty($_GET['client_id']) || $_GET['respons
 }else if (!empty($_POST)){
     if ($access_handler->checkUserAuth($_POST['username'], $_POST['password'])){
 
+        $profile = Mysql::getInstance()->from('users')->where(array('login' => $_POST['username']))->get()->first();
+
+        $user = \User::getInstance($profile['id']);
+
         $auth = array(
-            "access_token"  => $access_handler->generateUniqueToken($_POST['username']),
+            "access_token"  => $access_handler->generateUniqueToken($user),
         );
 
         if (Config::getSafe("api_v2_access_type", "bearer") == "bearer"){
