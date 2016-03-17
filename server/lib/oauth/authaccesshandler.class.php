@@ -11,7 +11,7 @@ class AuthAccessHandler extends AccessHandler
 {
     private $token_expire = 86400;
 
-    public function checkUserAuth($username, $password, $mac = null, $serial_number = null, OAuthRequest $request){
+    public function checkUserAuth($username, $password, $mac = null, $serial_number = null, OAuthRequest $request = null){
         sleep(1); // anti brute-force delay
 
         $user = null;
@@ -107,14 +107,14 @@ class AuthAccessHandler extends AccessHandler
         return !empty($verified_user);
     }
 
-    public function generateUniqueToken($username){
-        $user  = Mysql::getInstance()->from('users')->where(array('login' => $username))->get()->first();
-        $token = $user['id'].'.'.md5(microtime(1));
+    public function generateUniqueToken(\User $user){
 
-        $token_record = Mysql::getInstance()->from('access_tokens')->where(array('uid' => $user['id']))->get()->first();
+        $token = $user->getId().'.'.md5(microtime(1));
+
+        $token_record = Mysql::getInstance()->from('access_tokens')->where(array('uid' => $user->getId()))->get()->first();
 
         $data = array(
-            'uid'     => $user['id'],
+            'uid'     => $user->getId(),
             'token'   => $token,
             'refresh_token' => md5($token.''.uniqid()),
             'secret_key'    => md5($token.microtime(1)),
@@ -125,7 +125,7 @@ class AuthAccessHandler extends AccessHandler
         if (empty($token_record)){
             $result = Mysql::getInstance()->insert('access_tokens', $data)->insert_id();
         }else{
-            $result = Mysql::getInstance()->update('access_tokens', $data, array('uid' => $user['id']));
+            $result = Mysql::getInstance()->update('access_tokens', $data, array('uid' => $user->getId()));
         }
 
         if (!$result){
@@ -135,10 +135,9 @@ class AuthAccessHandler extends AccessHandler
         return $token;
     }
 
-    public function getSecretKey($username){
-        $user  = Mysql::getInstance()->from('users')->where(array('login' => $username))->get()->first();
+    public function getSecretKey(\User $user){
 
-        return Mysql::getInstance()->from('access_tokens')->where(array('uid' => $user['id']))->get()->first('secret_key');
+        return Mysql::getInstance()->from('access_tokens')->where(array('uid' => $user->getId()))->get()->first('secret_key');
     }
 
     public function isValidClient($client_id, $client_secret){
@@ -155,9 +154,9 @@ class AuthAccessHandler extends AccessHandler
         return (int) Mysql::getInstance()->from('users')->where(array('login' => $username))->get()->first('id');
     }
 
-    public function getAdditionalParams($username){
+    public function getAdditionalParams(\User $user){
         return array(
-            'user_id'    => $this->getUserId($username),
+            'user_id'    => $user->getId(),
             'expires_in' => $this->token_expire,
             'portal_url' => Config::getSafe('portal_url', '/stalker_portal/')
         );
@@ -201,6 +200,21 @@ class AuthAccessHandler extends AccessHandler
     public function getRefreshToken($token){
 
         return Mysql::getInstance()->from('access_tokens')->where(array('token' => $token))->get()->first('refresh_token');
+    }
+
+    public function getUserByRefreshToken($refresh_token){
+
+        if (empty($refresh_token)){
+            return null;
+        }
+
+        $profile = Mysql::getInstance()->from('access_tokens')->where(array('refresh_token' => $refresh_token))->get()->first();
+
+        if (empty($profile)){
+            return null;
+        }
+
+        return \User::getInstance($profile['id']);
     }
 
     public function getUsernameByRefreshToken($refresh_token){
