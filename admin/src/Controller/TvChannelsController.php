@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\Request as Request;
 use Symfony\Component\HttpFoundation\Response as Response;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
-use M3uParser;
 use Stalker\Lib\Core\Config;
 use Imagine\Image\Box;
 
@@ -1097,8 +1096,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             // Success!
             $file->upload();
 
-            $obj = new M3uParser\M3uParser();
-            $m3u_data = $obj->parseFile($file->getPath() . '/' .$file->getNameWithExtension());
+            $m3u_data = $this->parseM3UFile($file->getPath() . '/' .$file->getNameWithExtension());
             @unlink($file->getPath() . '/' .$file->getNameWithExtension());
 
             $data['data']['last_channel_number'] = (int) $this->db->getLastChannelNumber();
@@ -1107,14 +1105,14 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                 $data['data']['free_number_exists'] = (int)(($this->db->getAllChannels(array(), 'COUNT') + count($m3u_data)) <= 9999);
             }
 
-            foreach ($m3u_data as $entry) {
-                $name = trim($entry->getName());
+            foreach ($m3u_data as $item) {
+                $name = trim($item['name']);
                 if (!mb_check_encoding($name, 'UTF-8')) {
                     $name = mb_convert_encoding($name, 'UTF-8', array('CP1251'));
                 }
                 $data['data']['channels'][] = array(
                     'name' => $name,
-                    'cmd' => trim($entry->getPath())
+                    'cmd' => trim($item['path'])
                 );
             }
             $error = '';
@@ -2061,5 +2059,60 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             'monitoring_status_updated' => 'itv.monitoring_status_updated',
             'xmltv_id' => 'itv.xmltv_id'
         );
+    }
+
+    private function parseM3UFile($file){
+        $str = @file_get_contents($file);
+        $data = array();
+        if ($str !== FALSE) {
+            if (substr($str, 0, 3) === "\xEF\xBB\xBF") {
+                $str = substr($str, 3);
+            }
+
+            $lines = explode("\n", $str);
+
+            while (list($num, $line) = each($lines)) {
+                $line = trim($line);
+                if ($line === '' || strtoupper(substr($line, 0, 7)) === '#EXTM3U') {
+                    continue;
+                }
+
+                if (strtoupper(substr($line, 0, 8)) === '#EXTINF:') {
+                    $tmp = substr($line, 8);
+
+                    $data[$num]['name'] = end(explode(',', $tmp, 2));
+
+                    while (list(, $line) = each($lines)) {
+                        $line = trim($line);
+                        if ($line !== '') {
+                            $data[$num]['path'] = $line;
+                            break;
+                        }
+                    }
+                } else if (substr($line, 0, 1) === '#') {
+                    $tmp = trim(substr($line, 1));
+                    if ($tmp !== '') {
+                        $data[$num]['name'] = $tmp;
+                    }
+
+                    while (list(, $line) = each($lines)) {
+                        $line = trim($line);
+                        if ($line !== '') {
+                            $data[$num]['path'] = $line;
+                            break;
+                        }
+                    }
+                } else {
+                    while (list(, $line) = each($lines)) {
+                        $line = trim($line);
+                        if ($line !== '') {
+                            $data[$num]['path'] = $line;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return $data;
     }
 }
