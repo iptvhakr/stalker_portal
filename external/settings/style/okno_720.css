@@ -2,6 +2,7 @@
 * {margin:0; padding:0;}
 html, body {overflow: hidden; font-family:"Myriad Pro"; color:#fff;width:1144px; height:580px;}
 a {outline:none; text-decoration:none;}
+:focus { outline: none; }
 .menu_container {position:absolute; margin-top:85px; margin-left:32px; width:1000px; height:476px;}
 .menutrans_top {height:68px; width:1000px;position:absolute; top:0px; background:-webkit-gradient(linear, left bottom, left top, color-stop(1, rgba(37,83,155,1)), color-stop(0, rgba(35,78,146,0.3))); z-index:100;}
 .menutrans_bottom {height:68px; width:1000px;position:absolute; bottom:0px; background:-webkit-gradient(linear, left bottom, left top, color-stop(1, rgba(21,48,90,0.3)), color-stop(0, rgba(19,44,83,1))); z-index:100;}
