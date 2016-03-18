@@ -1811,6 +1811,8 @@ class UsersController extends \Controller\BaseStalkerController {
             $resellers = array_merge($resellers, $this->db->getAllFromTable('reseller'));
             $resellers = array_combine($this->getFieldFromArray($resellers, 'id'), $this->getFieldFromArray($resellers, 'name'));
 
+            $this->app['allResellers'] = $resellers;
+
             if (empty($data['reseller_id'])) {
                 $data['reseller_id'] = '-';
             }
@@ -1862,7 +1864,14 @@ class UsersController extends \Controller\BaseStalkerController {
                     ->add('account_balance', 'text', array('required' => FALSE, 'read_only' => TRUE, 'disabled' => TRUE))
                     ->add('video_out', 'text', array('required' => FALSE, 'read_only' => TRUE, 'disabled' => TRUE));
         }
+        if (array_key_exists('tariff-and-service-control', $tariff_and_service_control = $this->app['controllerAccessMap']['users']['action'])){
+            $this->app['tariff_and_service_control'] = $this->app['controllerAccessMap']['users']['action']['tariff-and-service-control']['access'];
+        } else {
+            $this->app['tariff_and_service_control'] = 0;
+        }
+
         if ($this->app['tarifPlanFlag']){
+            $this->app['allTariffPlans'] = $tariff_plans;
             $form->add('tariff_plan_id', 'choice', array(
                     'choices' => $tariff_plans,
                     'constraints' => array(new Assert\Choice(array('choices' => array_keys($tariff_plans)))),
@@ -1870,6 +1879,7 @@ class UsersController extends \Controller\BaseStalkerController {
                         )
                 );
         } else {
+            $this->app['additionalServices'] = $additional_services;
             $form->add('additional_services_on', 'choice', array(
                     'choices' => $additional_services,
                     'constraints' => array(new Assert\Choice(array('choices' => array_keys($additional_services)))),
@@ -1879,9 +1889,19 @@ class UsersController extends \Controller\BaseStalkerController {
         }
 
         if (Config::getSafe('enable_internal_billing', 'false')) {
+            if (array_key_exists('billing-date-control', $tariff_and_service_control = $this->app['controllerAccessMap']['users']['action'])){
+                $this->app['billing_date_control'] = $this->app['controllerAccessMap']['users']['action']['billing-date-control']['access'];
+            } else {
+                $this->app['billing_date_control'] = 0;
+            }
             $form->add('expire_billing_date', 'text', array('required' => FALSE));
         }
         if (empty($this->app['reseller'])) {
+            if (array_key_exists('user-reseller-control', $tariff_and_service_control = $this->app['controllerAccessMap']['users']['action'])){
+                $this->app['user_reseller_control'] = $this->app['controllerAccessMap']['users']['action']['user-reseller-control']['access'];
+            } else {
+                $this->app['user_reseller_control'] = 0;
+            }
             $form->add('reseller_id', 'choice', array(
                     'choices' => $resellers,
                     'constraints' => array(new Assert\Choice(array('choices' => array_keys($resellers)))),

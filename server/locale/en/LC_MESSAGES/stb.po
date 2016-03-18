@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-18 10:57+0300\n"
-"PO-Revision-Date: 2016-03-18 10:58+0300\n"
+"POT-Creation-Date: 2016-03-18 15:38+0300\n"
+"PO-Revision-Date: 2016-03-18 15:39+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -511,7 +511,7 @@ msgstr "This number is already in use"
 #: ../../../../admin/src/Controller/StoragesController.php:586
 #: ../../../../admin/src/Controller/KaraokeController.php:343
 #: ../../../../admin/src/Controller/RadioController.php:388
-#: ../../../../admin/src/Controller/UsersController.php:2084
+#: ../../../../admin/src/Controller/UsersController.php:2104
 #: ../../../../admin/src/Controller/TariffsController.php:872
 #: ../../../../admin/src/Controller/AdminsController.php:856
 #: ../../../../admin/src/Controller/AdminsController.php:869
@@ -570,7 +570,7 @@ msgstr "Logo"
 #: ../../../../admin/src/Controller/TasksController.php:770
 #: ../../../../admin/src/Controller/TasksController.php:781
 #: ../../../../admin/src/Controller/RadioController.php:390
-#: ../../../../admin/src/Controller/UsersController.php:2086
+#: ../../../../admin/src/Controller/UsersController.php:2106
 #: ../../../../admin/src/Controller/InfoportalController.php:383
 #: ../../../../admin/src/Controller/AdminsController.php:870
 #: ../../../administrator/tariffs.php:314
@@ -660,8 +660,8 @@ msgstr "Monitoring status"
 #: ../../../../admin/src/Controller/StoragesController.php:568
 #: ../../../../admin/src/Controller/StoragesController.php:594
 #: ../../../../admin/src/Controller/RadioController.php:393
-#: ../../../../admin/src/Controller/UsersController.php:2057
-#: ../../../../admin/src/Controller/UsersController.php:2144
+#: ../../../../admin/src/Controller/UsersController.php:2077
+#: ../../../../admin/src/Controller/UsersController.php:2164
 #: ../../../administrator/events.php:510 ../../../administrator/tasks.php:134
 #: ../../../administrator/add_video.php:841
 msgid "Status"
@@ -680,10 +680,10 @@ msgstr "Status"
 #: ../../../../admin/src/Controller/SettingsController.php:262
 #: ../../../../admin/src/Controller/KaraokeController.php:352
 #: ../../../../admin/src/Controller/RadioController.php:395
-#: ../../../../admin/src/Controller/UsersController.php:2065
-#: ../../../../admin/src/Controller/UsersController.php:2078
-#: ../../../../admin/src/Controller/UsersController.php:2090
-#: ../../../../admin/src/Controller/UsersController.php:2114
+#: ../../../../admin/src/Controller/UsersController.php:2085
+#: ../../../../admin/src/Controller/UsersController.php:2098
+#: ../../../../admin/src/Controller/UsersController.php:2110
+#: ../../../../admin/src/Controller/UsersController.php:2134
 #: ../../../../admin/src/Controller/InfoportalController.php:385
 #: ../../../../admin/src/Controller/InfoportalController.php:394
 #: ../../../../admin/src/Controller/TariffsController.php:857
@@ -717,7 +717,7 @@ msgstr "Update date"
 #: ../../../../admin/src/Controller/TasksController.php:578
 #: ../../../../admin/src/Controller/TasksController.php:774
 #: ../../../../admin/src/Controller/TasksController.php:784
-#: ../../../../admin/src/Controller/UsersController.php:2056
+#: ../../../../admin/src/Controller/UsersController.php:2076
 #: ../../../../admin/src/Controller/TariffsController.php:875
 msgid "State"
 msgstr "State"
@@ -1889,7 +1889,7 @@ msgstr "Filter"
 
 #: ../../../../admin/src/Controller/EventsController.php:840
 #: ../../../../admin/src/Controller/StatisticsController.php:1357
-#: ../../../../admin/src/Controller/UsersController.php:2085
+#: ../../../../admin/src/Controller/UsersController.php:2105
 #: ../../../administrator/add_karaoke.php:815
 msgid "Author"
 msgstr "Author"
@@ -1898,7 +1898,7 @@ msgstr "Author"
 #: ../../../../admin/src/Controller/StatisticsController.php:1442
 #: ../../../../admin/src/Controller/TasksController.php:561
 #: ../../../../admin/src/Controller/TasksController.php:572
-#: ../../../../admin/src/Controller/UsersController.php:2052
+#: ../../../../admin/src/Controller/UsersController.php:2072
 #: ../../../../admin/src/Controller/AdminsController.php:922
 msgid "Created"
 msgstr "Created"
@@ -1917,9 +1917,9 @@ msgstr "Expiration date"
 #: ../../../../admin/src/Controller/StatisticsController.php:1383
 #: ../../../../admin/src/Controller/StatisticsController.php:1391
 #: ../../../../admin/src/Controller/StatisticsController.php:1399
-#: ../../../../admin/src/Controller/UsersController.php:2108
-#: ../../../../admin/src/Controller/UsersController.php:2131
-#: ../../../../admin/src/Controller/UsersController.php:2143
+#: ../../../../admin/src/Controller/UsersController.php:2128
+#: ../../../../admin/src/Controller/UsersController.php:2151
+#: ../../../../admin/src/Controller/UsersController.php:2163
 #: ../../../../admin/src/Controller/TariffsController.php:873
 #: ../../../administrator/user.php:157
 msgid "MAC"
@@ -1969,8 +1969,8 @@ msgstr "Recipient"
 #: ../../../../admin/src/Controller/TasksController.php:571
 #: ../../../../admin/src/Controller/TasksController.php:769
 #: ../../../../admin/src/Controller/TasksController.php:780
-#: ../../../../admin/src/Controller/UsersController.php:2053
-#: ../../../../admin/src/Controller/UsersController.php:2134
+#: ../../../../admin/src/Controller/UsersController.php:2073
+#: ../../../../admin/src/Controller/UsersController.php:2154
 #: ../../../administrator/claims_log.php:176
 #: ../../../administrator/users.php:584 ../../../lang/stb.php:396
 #: ../../../lang/stb.php:501
@@ -2305,8 +2305,8 @@ msgid "Movies in genre"
 msgstr "Movies in genre"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:2384
-#: ../../../../admin/src/Controller/UsersController.php:2051
-#: ../../../../admin/src/Controller/UsersController.php:2072
+#: ../../../../admin/src/Controller/UsersController.php:2071
+#: ../../../../admin/src/Controller/UsersController.php:2092
 #: ../../../../admin/src/Controller/AdminsController.php:921
 #: ../../../administrator/playlists.php:129
 #: ../../../administrator/playlists.php:153
@@ -2756,8 +2756,8 @@ msgid "Fill in the required fields"
 msgstr "Fill in the required fields"
 
 #: ../../../../admin/src/Controller/StoragesController.php:549
-#: ../../../../admin/src/Controller/UsersController.php:2130
-#: ../../../../admin/src/Controller/UsersController.php:2145
+#: ../../../../admin/src/Controller/UsersController.php:2150
+#: ../../../../admin/src/Controller/UsersController.php:2165
 #: ../../../administrator/userlog.php:430
 #: ../../../administrator/master_log.php:123
 #: ../../../administrator/all_userlog.php:277
@@ -3006,7 +3006,7 @@ msgstr "off"
 msgid "status on"
 msgstr "on"
 
-#: ../../../../admin/src/Controller/UsersController.php:2049
+#: ../../../../admin/src/Controller/UsersController.php:2069
 #: ../../../../admin/src/Controller/AdminsController.php:857
 #: ../../../administrator/profile.php:438 ../../../administrator/user.php:141
 #: ../../../administrator/administrators.php:166
@@ -3016,64 +3016,64 @@ msgstr "on"
 msgid "Login"
 msgstr "Login"
 
-#: ../../../../admin/src/Controller/UsersController.php:2050
+#: ../../../../admin/src/Controller/UsersController.php:2070
 msgid "Account"
 msgstr "Account"
 
-#: ../../../../admin/src/Controller/UsersController.php:2054
+#: ../../../../admin/src/Controller/UsersController.php:2074
 #: ../../../administrator/msg.php:147
 #: ../../../administrator/claims_log.php:177
 #: ../../../administrator/users.php:585 ../../../administrator/msgs.php:118
 msgid "Media"
 msgstr "Media"
 
-#: ../../../../admin/src/Controller/UsersController.php:2055
+#: ../../../../admin/src/Controller/UsersController.php:2075
 msgid "Last modified"
 msgstr "Last modified"
 
-#: ../../../../admin/src/Controller/UsersController.php:2060
-#: ../../../../admin/src/Controller/UsersController.php:2076
-#: ../../../../admin/src/Controller/UsersController.php:2112
+#: ../../../../admin/src/Controller/UsersController.php:2080
+#: ../../../../admin/src/Controller/UsersController.php:2096
+#: ../../../../admin/src/Controller/UsersController.php:2132
 #: ../../../../admin/src/Controller/AdminsController.php:861
 #: ../../../../admin/src/Controller/AdminsController.php:874
 msgid "Reseller"
 msgstr "Reseller"
 
-#: ../../../../admin/src/Controller/UsersController.php:2063
+#: ../../../../admin/src/Controller/UsersController.php:2083
 #: ../../../administrator/profile.php:471
 msgid "Expire billing date"
 msgstr "Expire billing date"
 
-#: ../../../../admin/src/Controller/UsersController.php:2073
+#: ../../../../admin/src/Controller/UsersController.php:2093
 msgid "Quantity of users"
 msgstr "Quantity of users"
 
-#: ../../../../admin/src/Controller/UsersController.php:2087
+#: ../../../../admin/src/Controller/UsersController.php:2107
 msgid "Filter conditions"
 msgstr "Filter conditions"
 
-#: ../../../../admin/src/Controller/UsersController.php:2088
+#: ../../../../admin/src/Controller/UsersController.php:2108
 msgid "Visibility"
 msgstr "Visibility"
 
-#: ../../../../admin/src/Controller/UsersController.php:2089
+#: ../../../../admin/src/Controller/UsersController.php:2109
 #: ../../../lang/stb.php:385
 msgid "Favorites"
 msgstr "Favorites"
 
-#: ../../../../admin/src/Controller/UsersController.php:2109
+#: ../../../../admin/src/Controller/UsersController.php:2129
 msgid "uid"
 msgstr "Uid"
 
-#: ../../../../admin/src/Controller/UsersController.php:2132
+#: ../../../../admin/src/Controller/UsersController.php:2152
 msgid "Actions"
 msgstr "Actions"
 
-#: ../../../../admin/src/Controller/UsersController.php:2133
+#: ../../../../admin/src/Controller/UsersController.php:2153
 msgid "Object"
 msgstr "Object"
 
-#: ../../../../admin/src/Controller/UsersController.php:2135
+#: ../../../../admin/src/Controller/UsersController.php:2155
 #: ../../../administrator/userlog.php:432
 #: ../../../administrator/all_userlog.php:280
 msgid "Parameter"
@@ -5604,6 +5604,19 @@ msgstr "Please contact your provider<br>to register this device."
 #, php-format
 msgid "Welcome %s<br>We are glad to see you on the Stalker portal!"
 msgstr "Welcome %s<br>We are glad to see you on the Stalker portal!"
+
+#: ../../../tools/misctranslations.php:668
+msgid "Setting the tariff plans and additional services for users on edit page"
+msgstr ""
+"Setting the tariff plans and additional services for users on edit page"
+
+#: ../../../tools/misctranslations.php:669
+msgid "Managing of billing date for users on edit page"
+msgstr "Managing of billing date for users on edit page"
+
+#: ../../../tools/misctranslations.php:670
+msgid "Managing of users reseller on edit page"
+msgstr "Managing of users reseller on edit page"
 
 #: ../../../adm/js/js_translate.php:40
 msgid "Wait"
@@ -9810,6 +9823,9 @@ msgstr "Move"
 msgid "Move all admins to another group"
 msgstr "Move all admins to another group"
 
+msgid "None"
+msgstr "None"
+
 msgid "Not installed"
 msgstr "Not installed"
 
@@ -9875,6 +9891,9 @@ msgstr "Storage"
 #: ../../../../admin/json_menu/menu.json:145
 msgid "Subscribe log"
 msgstr "Subscribe log"
+
+msgid "Unlimited"
+msgstr "Unlimited"
 
 msgid "User group"
 msgstr "User group"
@@ -10871,9 +10890,6 @@ msgstr "The function to be executed when pressing the \"OK\" button"
 
 msgid "Time to live, measured in seconds"
 msgstr "Time to live, measured in seconds"
-
-msgid "Unlimited"
-msgstr "Unlimited"
 
 msgid "Unset expires billing date"
 msgstr "Unset expires billing date"

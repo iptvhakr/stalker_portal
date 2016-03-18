@@ -664,3 +664,7 @@ _('The portal is temporarily unavailable.<br>Please try again later.<br>Sorry fo
 _('Use your username and password to login or register on %s');
 _('Please contact your provider<br>to register this device.');
 _('Welcome %s<br>We are glad to see you on the Stalker portal!');
+
+_('Setting the tariff plans and additional services for users on edit page');
+_('Managing of billing date for users on edit page');
+_('Managing of users reseller on edit page');
