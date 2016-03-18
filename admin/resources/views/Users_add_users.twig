@@ -149,7 +149,7 @@
                             <label class="col-sm-2 control-label ">{{ 'Expire billing date'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
-                                    {{ form_widget(app['form'].expire_billing_date, {'attr': {'class': 'form-control'}}) }}
+                                    <label class="control-label ">{% if app['form'].expire_billing_date.vars.value %}{{ app['form'].expire_billing_date.vars.value }}{% else %}{{ 'Unlimited'|trans }}{% endif %}</label>
                                 </div>
                             </div>
                         </div>
