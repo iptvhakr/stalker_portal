@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-17 17:20+0300\n"
-"PO-Revision-Date: 2016-03-17 17:21+0300\n"
+"POT-Creation-Date: 2016-03-18 10:57+0300\n"
+"PO-Revision-Date: 2016-03-18 10:57+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -3122,7 +3122,7 @@ msgstr "Текст"
 msgid "User is undefined"
 msgstr "Пользователь не определен"
 
-#: ../../../../admin/src/Controller/BaseStalkerController.php:221
+#: ../../../../admin/src/Controller/BaseStalkerController.php:236
 #: ../../../lang/stb.php:49 ../../../lang/stb.php:436
 msgid "Access denied"
 msgstr "Доступ запрещен"
@@ -11291,6 +11291,9 @@ msgstr "Логи"
 
 msgid "Attributes"
 msgstr "Атрибуты"
+
+msgid "Available new version"
+msgstr "Доступна новая версия"
 
 msgid "Date type"
 msgstr "Тип даты"

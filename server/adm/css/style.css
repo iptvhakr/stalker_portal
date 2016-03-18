@@ -3983,7 +3983,7 @@ table.dataTable tfoot td {
    border-bottom: 1px solid #E3E3E3 !important;
 }
 footer {width:100%; color:#000; background-color:#f2f2f2; border-top:1px solid #DDDDDD; position:fixed; height:30px; text-align:center; z-index:21;right:0;bottom:0px;padding-top:6px;font-size:13px;}
-footer .text { margin:0 auto; width:640px;}
+footer .text { margin:0 auto; min-width:640px;}
 footer a {color:#000; margin-right:5px;margin-left:5px;}
 .no-footer {border-bottom: 1px solid #E3E3E3 !important;}
 table.dataTable thead th,

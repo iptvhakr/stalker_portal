@@ -43,23 +43,23 @@ class BaseStalkerController {
     public function __construct(Application $app, $modelName = '') {
         $this->app = $app;
         $this->request = $app['request'];
-        
+
         if (session_id()) {
             session_write_close();
             $this->app['request']->getSession()->save();
         }
         $this->app['request']->getSession()->start();
         $this->admin = \Admin::getInstance();
-        
+
         $this->app['userlogin'] = $this->admin->getLogin();
-                
+
         $this->baseDir = rtrim(str_replace(array("src", "Controller"), '', __DIR__), '//');
         $this->getPathInfo();
         $this->setRequestMethod();
         $this->setAjaxFlag();
         $this->getData();
         $this->setDataTablePluginSettings();
-        
+
         $modelName = "Model\\" . (empty($modelName) ? 'BaseStalker' : str_replace(array("\\", "Controller"), '', $modelName)) . 'Model';
         $this->db = FALSE;
         $modelName = (class_exists($modelName)? $modelName: 'Model\BaseStalkerModel');
@@ -69,7 +69,7 @@ class BaseStalkerController {
                 $this->db = FALSE;
             }
         }
-        $uid = $this->admin->getId(); 
+        $uid = $this->admin->getId();
         if ($this->db !== FALSE && !empty($uid)) {
             $this->app['userTaskMsgs'] = $this->db->getCountUnreadedMsgsByUid($uid);
         }
@@ -83,7 +83,22 @@ class BaseStalkerController {
         $this->saveFiles = $app['saveFiles'];
         $this->setSideBarMenu();
         $this->setTopBarMenu();
-        
+
+        $update = $this->db->getAllFromTable('updates', 'id');
+        if ( !empty($update) ){
+            $this->app['new_version'] = end($update);
+        } else {
+            $this->app['new_version'] = FALSE;
+        }
+        if (is_file($this->baseDir . '/../c/version.js')) {
+            $tmp = file_get_contents($this->baseDir . '/../c/version.js');
+            if (preg_match('/[\d\.]+/i', $tmp, $ver) && !empty($ver)){
+                $this->app['current_version'] = $ver[0];
+            } else {
+                $this->app['current_version'] = FALSE;
+            }
+        }
+
         if($this->app['userlogin'] == 'admin'){
             $this->access_level = 8;
         } else {

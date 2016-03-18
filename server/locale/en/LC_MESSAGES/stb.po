@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-17 17:17+0300\n"
-"PO-Revision-Date: 2016-03-17 17:17+0300\n"
+"POT-Creation-Date: 2016-03-18 10:57+0300\n"
+"PO-Revision-Date: 2016-03-18 10:58+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -3119,7 +3119,7 @@ msgstr "Text"
 msgid "User is undefined"
 msgstr "User is undefined"
 
-#: ../../../../admin/src/Controller/BaseStalkerController.php:221
+#: ../../../../admin/src/Controller/BaseStalkerController.php:236
 #: ../../../lang/stb.php:49 ../../../lang/stb.php:436
 msgid "Access denied"
 msgstr "Access denied"
@@ -11271,6 +11271,9 @@ msgstr "logs"
 
 msgid "Attributes"
 msgstr "Attributes"
+
+msgid "Available new version"
+msgstr "Available new version"
 
 msgid "Date type"
 msgstr "Date type"
