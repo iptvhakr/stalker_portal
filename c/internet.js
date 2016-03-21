@@ -28,7 +28,27 @@
         _debug('stbWindowMgr.openWebFace', !!stbWindowMgr.openWebFace);
 
         if (stbWindowMgr.openWebFace){
-            stbWindowMgr.openWebFace('/home/web/public/app/ibman/index.html?mode=2&url='+encodeURIComponent('http://google.com')+'&view=1');
+
+            if (gSTB.GetSystemPaths){
+                var system_paths = gSTB.GetSystemPaths();
+                _debug('system_paths', system_paths);
+
+                try{
+                    system_paths = JSON.parse(system_paths);
+                }catch (e){
+                    _debug(e);
+                }
+
+                if (system_paths && system_paths.result && system_paths.result.root){
+                    var path = system_paths.result.root;
+                }
+            }else{
+                path = '/home/web/';
+            }
+
+            path = path[path.length-1] != '/' ? path+'/' : path;
+            _debug('path', path);
+            stbWindowMgr.openWebFace(path+'public/app/ibman/index.html?mode=2&url='+encodeURIComponent('http://google.com')+'&view=1');
             module.internet.win_inited = true;
         }else if (module.internet.win_inited && stbWindowMgr.IsWebWindowExist && stbWindowMgr.IsWebWindowExist()){
             stbWindowMgr.raiseWebWindow();
