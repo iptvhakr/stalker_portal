@@ -16,9 +16,9 @@ class AuthAccessHandler extends AccessHandler
 
         $user = null;
 
-        if ($username){
+        if ($username && $password){
             $user = \User::getByLogin($username);
-        }elseif(!$password && $mac){
+        }elseif($mac){
 
             $_COOKIE['mac'] = $mac;
 
@@ -44,19 +44,26 @@ class AuthAccessHandler extends AccessHandler
             }
 
             // init user as STB
-            Stb::getInstance()->getProfile();
+            $stb_profile = Stb::getInstance()->getProfile();
+
+            if (empty($stb_profile) || !isset($stb_profile['status']) || $stb_profile['status'] != 0){
+                throw new OAuthInvalidClient(!empty($stb_profile['msg']) ? $stb_profile['msg'] : "Undefined error");
+            }
+
             $user = \User::getByMac(Stb::getInstance()->mac);
 
             if ($user){
                 $request->setUsername($user->getLogin());
             }
+        }else{
+            return false;
         }
 
         if (Config::exist('auth_url') && strpos(Config::get('auth_url'), 'auth_every_load') && empty($username) && empty($password)){
             return false;
         }
 
-        if (!$user || !empty($username) && !empty($password) && Config::getSafe('oss_url', '')){
+        if ((!$user || !empty($username) && !empty($password)) && Config::getSafe('oss_url', '')){
             $user = \User::authorizeFromOss($username, $password, $mac);
         }
 
