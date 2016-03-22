@@ -2160,38 +2160,7 @@ border: 1px solid #F3E3AA;
 #simple_gallery a.fancybox img:hover, .simple_gallery a.fancybox img:hover  {
   box-shadow: 0 0 10px #C7C7C7;
 }
-.justifiedGallery {
-  overflow: hidden;
-  width: 100%;
-}
-.jg-row {
-  position: relative;
-  white-space: nowrap;
-}
-.justifiedGallery .jg-image {
-  position: absolute;
-  display: inline-block;
-  vertical-align: top;
-  margin-left: 0;
-}
-.justifiedGallery .jg-image a {
-  text-decoration: none;
-}
-.justifiedGallery .jg-image img {
-  border: none;
-}
-.justifiedGallery .jg-image-label {
-  white-space: normal;
-  font: normal 12px arial;
-  background: #000;
-  color: #fff;
-  position: absolute;
-  left: 0;
-  right: 0;
-  padding: 5px 5px 10px 8px;
-  text-align: left;
-  opacity: 0;
-}
+
 .ex-tooltip {
   position: absolute;
   display: none;
@@ -3983,7 +3952,7 @@ table.dataTable tfoot td {
    border-bottom: 1px solid #E3E3E3 !important;
 }
 footer {width:100%; color:#000; background-color:#f2f2f2; border-top:1px solid #DDDDDD; position:fixed; height:30px; text-align:center; z-index:21;right:0;bottom:0px;padding-top:6px;font-size:13px;}
-footer .text { margin:0 auto; width:640px;}
+footer .text { margin:0 auto; min-width:640px;}
 footer a {color:#000; margin-right:5px;margin-left:5px;}
 .no-footer {border-bottom: 1px solid #E3E3E3 !important;}
 table.dataTable thead th,

@@ -1080,8 +1080,8 @@ function notty(data,type){
 }
 
 function ajaxError(data, alertMsg, consoleMsg){
-    var alertMsg = typeof(alertMsg) != 'undefined'? alertMsg: true;
-    var consoleMsg = typeof(consoleMsg) != 'undefined'? consoleMsg: true;
+    var alertMsg = typeof(alertMsg) != 'undefined'? alertMsg: false;
+    var consoleMsg = typeof(consoleMsg) != 'undefined'? consoleMsg: false;
     var errAction = '';
     if (typeof (data.responseJSON) == 'object') {
         errAction += data.responseJSON.action + 'Error';
@@ -1098,14 +1098,20 @@ function ajaxError(data, alertMsg, consoleMsg){
         if ($.isFunction(window['errAction'])) {
             window['errAction']();
         } else {
-            JSErrorModalBox();
+            var msg = '';
+            if (typeof (data.responseJSON.msg) != 'undefined') {
+                msg = data.responseJSON.msg;
+            } else if (typeof (data.responseJSON.error) != 'undefined') {
+                msg = data.responseJSON.error;
+            }
+            JSErrorModalBox({msg: msg});
         }
     }
 }
 
 function ajaxPostSend(url, sendData, alertMsg, consoleMsg, async){
-    var alertMsg = typeof(alertMsg) != 'undefined'? alertMsg: true;
-    var consoleMsg = typeof(consoleMsg) != 'undefined'? consoleMsg: true;
+    var alertMsg = typeof(alertMsg) != 'undefined'? alertMsg: false;
+    var consoleMsg = typeof(consoleMsg) != 'undefined'? consoleMsg: false;
     var async = typeof(async) != 'undefined' ? async: false;
     $.ajax({
         url: url,

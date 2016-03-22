@@ -7,8 +7,8 @@ use Symfony\Component\HttpFoundation\Request as Request;
 use Symfony\Component\HttpFoundation\Response as Response;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
-use M3uParser;
 use Stalker\Lib\Core\Config;
+use Imagine\Image\Box;
 
 class TvChannelsController extends \Controller\BaseStalkerController {
 
@@ -28,6 +28,12 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         'monitoring_url' => array(''),
         'use_load_balancing' => array(FALSE),
         'stream_server' => array('')
+    );
+    private $logoResolutions = array(
+        '320' => array('height' => 96, 'width' => 96),
+        '240' => array('height' => 72, 'width' => 72),
+        '160' => array('height' => 48, 'width' => 48),
+        '120' => array('height' => 36, 'width' => 36)
     );
 
     public function __construct(Application $app) {
@@ -415,10 +421,30 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             $this->data['id'] .= rand(0, 100000);
         }
 
-        $this->saveFiles->handleUpload($this->logoDir, $this->data['id']);
+        $response = array();
+        $error = $this->setLocalization('Error');
+        if (!empty($_FILES)) {
+            list($f_key, $tmp) = each($_FILES);
+            if (is_uploaded_file($tmp['tmp_name']) && preg_match("/jpeg|jpg|png/", $tmp['type'])) {
 
-        $error = $this->saveFiles->getError();
-        $response = $this->generateAjaxResponse(array('pic' => $this->logoHost . "/320/" . $this->saveFiles->getFileName()), $error);
+                $upload_id = $this->data['id'];
+                $img_path = $this->logoDir;
+                umask(0);
+                try{
+                    $uploaded = $this->request->files->get($f_key)->getPathname();
+                    $ext = end(explode('.', $tmp['name']));
+                    $this->app['imagine']->open($uploaded)->save($img_path."/original/$upload_id.$ext");
+                    foreach($this->logoResolutions as $res => $param){
+                        $this->app['imagine']->open($uploaded)->resize(new Box($param['width'], $param['height']))->save($img_path."/$res/$upload_id.$ext");
+                        chmod($img_path."/$res/$upload_id.$ext", 0644);
+                    }
+                    $error = '';
+                    $response = $this->generateAjaxResponse(array('pic' => $this->logoHost . "/320/$upload_id.$ext"), $error);
+                } catch (\ImagickException $e) {
+                    $error = sprintf(_('Error save file %s'), $tmp['tmp_name']);
+                }
+            }
+        }
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -433,13 +459,30 @@ class TvChannelsController extends \Controller\BaseStalkerController {
 
         $channel = $this->db->getChannelById($this->postData['logo_id']);
 
+        $logo_id = FALSE;
+        $error = array();
+
         if (!empty($channel) && array_key_exists('id', $channel)) {
             $this->db->updateITVChannelLogo($channel['id'], '');
-            $this->saveFiles->removeFile($this->logoDir, $channel['logo']);
+            $logo_id = $channel['logo'];
         } else {
-            $this->saveFiles->removeFile($this->logoDir, $this->postData['logo_id']);
+            $logo_id = $this->postData['logo_id'];
         }
-        $error = $this->saveFiles->getError();
+
+        $folders = array_keys($this->logoResolutions);
+        $folders[] = "original";
+        foreach ($folders as $folder) {
+            $full_path = "$this->logoDir/$folder";
+            if (is_dir($full_path)) {
+                foreach (glob("$full_path/$logo_id") as $logo_id) {
+                    if (!@unlink($logo_id)){
+                        $error[] = "Error delete file $logo_id";
+                    }
+                }
+            }
+        }
+
+        $error = implode('. ', $error);
         $response = $this->generateAjaxResponse(array('data' => 0, 'action'=>'deleteLogo'), $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
@@ -1047,14 +1090,13 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $error = $this->setLocalization('Upload failed');
 
         $storage = new \Upload\Storage\FileSystem('/tmp', TRUE);
-        $file = new \Upload\File('qqfile', $storage);
+        $file = new \Upload\File('files', $storage);
 
         try {
             // Success!
             $file->upload();
 
-            $obj = new M3uParser\M3uParser();
-            $m3u_data = $obj->parseFile($file->getPath() . '/' .$file->getNameWithExtension());
+            $m3u_data = $this->parseM3UFile($file->getPath() . '/' .$file->getNameWithExtension());
             @unlink($file->getPath() . '/' .$file->getNameWithExtension());
 
             $data['data']['last_channel_number'] = (int) $this->db->getLastChannelNumber();
@@ -1063,14 +1105,14 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                 $data['data']['free_number_exists'] = (int)(($this->db->getAllChannels(array(), 'COUNT') + count($m3u_data)) <= 9999);
             }
 
-            foreach ($m3u_data as $entry) {
-                $name = trim($entry->getName());
+            foreach ($m3u_data as $item) {
+                $name = trim($item['name']);
                 if (!mb_check_encoding($name, 'UTF-8')) {
                     $name = mb_convert_encoding($name, 'UTF-8', array('CP1251'));
                 }
                 $data['data']['channels'][] = array(
                     'name' => $name,
-                    'cmd' => trim($entry->getPath())
+                    'cmd' => trim($item['path'])
                 );
             }
             $error = '';
@@ -2017,5 +2059,60 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             'monitoring_status_updated' => 'itv.monitoring_status_updated',
             'xmltv_id' => 'itv.xmltv_id'
         );
+    }
+
+    private function parseM3UFile($file){
+        $str = @file_get_contents($file);
+        $data = array();
+        if ($str !== FALSE) {
+            if (substr($str, 0, 3) === "\xEF\xBB\xBF") {
+                $str = substr($str, 3);
+            }
+
+            $lines = explode("\n", $str);
+
+            while (list($num, $line) = each($lines)) {
+                $line = trim($line);
+                if ($line === '' || strtoupper(substr($line, 0, 7)) === '#EXTM3U') {
+                    continue;
+                }
+
+                if (strtoupper(substr($line, 0, 8)) === '#EXTINF:') {
+                    $tmp = substr($line, 8);
+
+                    $data[$num]['name'] = end(explode(',', $tmp, 2));
+
+                    while (list(, $line) = each($lines)) {
+                        $line = trim($line);
+                        if ($line !== '') {
+                            $data[$num]['path'] = $line;
+                            break;
+                        }
+                    }
+                } else if (substr($line, 0, 1) === '#') {
+                    $tmp = trim(substr($line, 1));
+                    if ($tmp !== '') {
+                        $data[$num]['name'] = $tmp;
+                    }
+
+                    while (list(, $line) = each($lines)) {
+                        $line = trim($line);
+                        if ($line !== '') {
+                            $data[$num]['path'] = $line;
+                            break;
+                        }
+                    }
+                } else {
+                    while (list(, $line) = each($lines)) {
+                        $line = trim($line);
+                        if ($line !== '') {
+                            $data[$num]['path'] = $line;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return $data;
     }
 }

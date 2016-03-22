@@ -28,7 +28,6 @@
         "nymo/silex-twig-breadcrumb-extension":"~1.1",
         "umpirsky/twig-gettext-extractor": "1.1.*",
         "mtdowling/cron-expression": "1.0.*",
-        "gemorroj/m3u-parser": "dev-master",
         "codeguy/upload": ">=1"
     },
     "autoload": {

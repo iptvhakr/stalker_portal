@@ -36,7 +36,19 @@
                             <label class="col-sm-3 control-label col-sm-offset-1">{{ 'List of MAC-addresses'|trans }}</label>
                             <div class="col-xs-10 col-sm-8">
                                 <input type="hidden" name="file_name" id="file_name">
-                                <div class=" col-xs-10 col-sm-3" id="bootstrapped-fine-uploader"></div>
+                                <!-- The file upload form used as target for the file upload widget -->
+                                <div id="fileupload" class="pull-left">
+                                    <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+                                    <div class="fileupload-buttonbar">
+                                        <div class="fileupload-buttons">
+                                            <!-- The fileinput-button span is used to style the file input field as button -->
+                                            <span class="fileinput-button btn btn-success">
+                                                <span>{{ 'File'|trans }}</span>
+                                                <input type="file" name="files" style="opacity: 0;">
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
                                 <span class="help-inline col-xs-12 col-sm-12">
                                     <span class="small txt-default">{{ 'The file must contain pre-compiled list of MAC-addresses in the txt extension or another text format'|trans }}</span>
                                 </span>
@@ -292,6 +304,39 @@
         }
     };
 
+    function initFileUploader(){
+        $('#fileupload').fileupload({
+            url: '{{ app.request.baseUrl }}/{{ app.controller_alias }}/upload-list-addresses',
+            type: 'POST',
+            autoUpload: true,
+            multipart: true,
+            /*acceptFileTypes: /(\.|\/)(jpe?g|png)$/i,*/
+            maxFileSize: 1000000,
+            maxNumberOfFiles: 1
+        }).bind('fileuploaddone', function (e, data) {
+            var response;
+            if (data && data.jqXHR && data.jqXHR.status && data.jqXHR.status == 200 && data.jqXHR.responseJSON) {
+                response = data.jqXHR.responseJSON;
+            } else {
+                JSErrorModalBox();
+                return false;
+            }
+
+            if (response.success) {
+                $('#file_name').val(response.fname);
+                if ($.isFunction(window[response.action]) && !response.error) {
+                    window[response.action](response);
+                }
+            } else if (response.error && $.isFunction(window[response.action + "Error"])) {
+                window[response.action + "Error"](response);
+            } else {
+                alert("{{ 'Some server error'|trans }}");
+            }
+            return false;
+        });
+        return true;
+    }
+
     function eventsMenuHandlers() {
 
         $.validate(conf);
@@ -374,7 +419,7 @@
             $("#" + $("#s2_post_function").val()).show().find('select, input').removeAttr('disabled');
         });
 
-        var uploader = $("#bootstrapped-fine-uploader").fineUploader({
+/*        var uploader = $("#bootstrapped-fine-uploader").fineUploader({
             element: $('#bootstrapped-fine-uploader'),
             autoUpload: true,
             debug: true,
@@ -410,13 +455,12 @@
                 alert("{{ 'Some server error'|trans }}");
             }
             return false;
-        });
+        });*/
 
-        $("#bootstrapped-fine-uploader").on('click', ".qq-upload-cancel", function (e) {
-            e.stopPropagation();
-            e.preventDefault();
-            return false;
-        });
+        if (typeof (loadFileUploadScripts) != 'function' || !loadFileUploadScripts(initFileUploader)){
+            JSErrorModalBox({msg: "{{ 'Cannot load File Upload plugin'|trans }}"})
+        }
+
     }
 
     function DemoSelect2() {
@@ -453,7 +497,11 @@
         $('#modalbox_ad').click();
     };
     var addAddressList = function (data) {
-        JSSuccessModalBox(data);
+        var msg = '';
+        if (typeof(data) != 'undefined') {
+            msg = (typeof(data.msg) != 'undefined' ? data.msg : '');
+        }
+        notty('<span>' + words['Done'] + '! ' + msg + '</span>', 'success');
     };
     var addAddressListError = function (data) {
         JSErrorModalBox(data);
@@ -466,32 +514,5 @@
 </script>
     {% endfor %}
 {% endif %}
-<script type="text/template" id="qq-template-bootstrap">
-    <div class="qq-uploader-selector qq-uploader span12">
-        <div class="qq-upload-drop-area-selector qq-upload-drop-area span12" qq-hide-dropzone>
-            <!--<span>Drop files here to upload</span>-->
-        </div>
-        <div class="qq-upload-button-selector qq-upload-button btn btn-success" style="width: auto; margin: 0 auto; float: none; display: block;">
-            <div>
-                <i class="icon-upload icon-white"></i>{{ 'File'|trans }}
-            </div>
-        </div>
-        <span class="qq-drop-processing-selector qq-drop-processing">
-            <!--<span>Processing dropped files...</span>-->
-            <span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
-        </span>
-        <ul class="qq-upload-list-selector qq-upload-list" style="margin-top: 10px; text-align: center;">
-            <li>
-                <div class="qq-progress-bar-container-selector">
-                    <div class="qq-progress-bar-selector qq-progress-bar"></div>
-                </div>
-                <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
-                <span class="qq-upload-file-selector qq-upload-file"></span>
-                <span class="qq-upload-size-selector qq-upload-size"></span>
-                <!--<a class="qq-upload-cancel-selector qq-upload-cancel" href="#"> {{ 'Delete'|trans }} </a>-->
-                <span class="qq-upload-status-text-selector qq-upload-status-text"></span>
-            </li>
-        </ul>
-    </div>
-</script>
 
+{% include "basic_templates/file-uploader-scripts.twig" %}

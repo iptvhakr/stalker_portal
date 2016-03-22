@@ -88,7 +88,19 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">{{ 'Cover'|trans }}</label>
                            <div class="col-xs-10 col-sm-6" >
-                                <div class="pull-left" id="bootstrapped-fine-uploader"></div>
+                               <!-- The file upload form used as target for the file upload widget -->
+                               <div id="fileupload" class="pull-left">
+                                   <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+                                   <div class="fileupload-buttonbar">
+                                       <div class="fileupload-buttons">
+                                           <!-- The fileinput-button span is used to style the file input field as button -->
+                                        <span class="fileinput-button btn btn-success">
+                                            <span>{{ 'Add a picture'|trans }}</span>
+                                            <input type="file" name="files" style="opacity: 0;">
+                                        </span>
+                                       </div>
+                                   </div>
+                               </div>
 								<div class=" col-xs-10 col-sm-4 pull-right" id="cover_container">
                                     {{form_widget(app['form'].cover) }}
                                     <img class="img-rounded channel-logo" src="{% if app['form'].cover.vars.value%}{{app.workHost}}{{app['curr_cover_dir']}}{{app['form'].cover.vars.value}}?ver=000000{% endif %}" alt="" style="max-width: 100%;">
@@ -393,6 +405,37 @@
             }).prev('.dataTables_processing').hide('');
         }
 
+        function initFileUploader(){
+            $('#fileupload').fileupload({
+                url: '{{ app.controller_alias }}/edit-audio-cover?cover=' + ($('#form_cover').val() ? $('#form_cover').val() : 'new'),
+                type: 'POST',
+                autoUpload: true,
+                multipart: true,
+                acceptFileTypes: /(\.|\/)(jpe?g|png)$/i,
+                maxFileSize: 1000000,
+                maxNumberOfFiles: 1
+            }).bind('fileuploaddone', function (e, data) {
+                var response;
+                if (data && data.jqXHR && data.jqXHR.status && data.jqXHR.status == 200 && data.jqXHR.responseJSON) {
+                    response = data.jqXHR.responseJSON;
+                } else {
+                    JSErrorModalBox();
+                    return false;
+                }
+                var newSrc = "{{app.workHost}}" + response.path + '/' + response.name + '?ver=' + $.random(100000);
+                $('#cover_container img').attr('src', newSrc).css('max-width', '100%');
+                $('#form_cover').val(response.name);
+
+                $('#cover_container a').data('file_name', (typeof (response.name) != 'undefined' && response.name != '' ? response.name : 'new'));
+
+                var postUrl = '{{ app.controller_alias }}/edit-audio-cover?cover=' + (typeof (response.name) != 'undefined' && response.name != '' ? response.name : 'new');
+                $(this).fileupload('option', {url: postUrl});
+                return false;
+
+            });
+            return true;
+        }
+
         function yelp() {
 
             $(document).ready(function () {
@@ -410,212 +453,150 @@
 
                 $.validate(conf);
 
-                var uploader = $("#bootstrapped-fine-uploader").fineUploader({
-                    element: $('#bootstrapped-fine-uploader'),
-                    autoUpload: true,
-                    debug: true,
-                    multiple: false,
-                    text: {
-                        formatProgress: "{percent}% {{ 'from'|trans }} {total_size}", //из
-                        failUpload: "{{ 'Upload failed'|trans }}", //Сбой при загрузке
-                        waitingForResponse: "{{ 'Processing'|trans }}...", //Обработка
-                        paused: "{{ 'Pause'|trans }}" //Пауза
-                    },
-                    request: {
-                        endpoint: '{{ app.controller_alias }}/edit-audio-cover?cover=' + ($('#form_cover').val() ? $('#form_cover').val() : 'new')
-                    },
-                    validation: {
-                        allowedExtensions: ['jpeg', 'jpg', 'png'],
-                        sizeLimit: 1048576 // 1Mb
-                    },
-                    template: 'qq-template-bootstrap',
-                    classes: {
-                        success: 'alert alert-success',
-                        fail: 'alert alert-error'
-                    }
+                if (typeof (loadFileUploadScripts) != 'function' || !loadFileUploadScripts(initFileUploader)){
+                    JSErrorModalBox({msg: "{{ 'Cannot load File Upload plugin'|trans }}"})
+                }
 
-                }).on('complete', function (event, id, name, response) {
-                    var newSrc = "{{app.workHost}}" + response.path + '/' + response.name + '?ver=' + $.random(100000);
-                    $('#cover_container img').attr('src', newSrc).css('max-width', '100%');
-                    $('#form_cover').val(response.name);
 
-                    $('#cover_container a').data('file_name', (typeof (response.name) != 'undefined' && response.name != '' ? response.name : 'new'));
-
-                    var postUrl = '{{ app.controller_alias }}/edit-audio-cover?cover=' + (typeof (response.name) != 'undefined' && response.name != '' ? response.name : 'new');
-                    $(this).fineUploader('setEndpoint', postUrl);
-                    return false;
-                });
-                $("#bootstrapped-fine-uploader").on('click', ".qq-upload-cancel", function (e) {
+                $("#form_reset").on('click', function (e) {
                     e.stopPropagation();
                     e.preventDefault();
+                    $(this).closest('form').get(0).reset();
                     return false;
                 });
 
-                    $("#form_reset").on('click', function (e) {
-                        e.stopPropagation();
-                        e.preventDefault();
-                        $(this).closest('form').get(0).reset();
-                        return false;
-                    });
-
-                    $("#add_track").on("click", function (e) {
-                        e.stopPropagation();
-                        e.preventDefault();
-                        var tmp_id = $('#datatable-1 tr:last').attr('id');
-                        if (!tmp_id) {
-                            tmp_id = "tr_" + $.randString();
-                            $('#datatable-1 tr:last').attr('id', tmp_id);
-                        }
-                        $("#modalbox_ad").data('tr_id', tmp_id);
-
-                        $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Add track'|trans }}');
-                        $("#modalbox_ad input").prop("disabled", false).removeAttr('disabled').val('');
-                        $("#modalbox_ad select").prop("disabled", false).removeAttr('disabled').find('option').removeAttr('selected');
-                        $('#s2_track_lang').select2({minimumResultsForSearch: -1});
-                        conf.form = '#track_form';
-                        $("#track_form").validate();
-                        $("#track_form").find('input, select').each(function(){
-                            conf.unhighlight(this, conf.errorClass);
-                        });
-                        $("#modalbox_ad").show();
-
-                        return false;
-                    });
-
-                    $(document).on('click', "a.main_ajax", function (e) {
-                        e.stopPropagation();
-                        e.preventDefault();
-                        var sendData = $(this).data();
-                        sendData['album_id'] = {{ app['audioAlbumID'] }};
-                        ajaxPostSend($(this).attr('href'), sendData, false, false);
-                        $(this).closest('div.open').removeClass('open');
-                        return false;
-                    });
-
-                    $("#modalbox_ad button[type='submit']").on('click', function (e) {
-                        e.stopPropagation();
-                        e.preventDefault();
-
-                        conf.form = '#track_form';
-
-                        if ($("#track_form").isValid({}, conf, true)) {
-                            conf.onSuccess();
-                        } else {
-                            conf.onError();
-                        }
-                        return false;
-                    });
-
-                    $("#form_save").on('click', function (e) {
-                        e.stopPropagation();
-                        e.preventDefault();
-
-                        var tracksId = [];
-                        $("#datatable-1 tr:has(td)").each(function () {
-                            if (typeof($(this).attr('id')) != "undefined") {
-                                tracksId.push($(this).attr('id').replace(/[^\d]/ig, ''));
-                            }
-                        });
-
-                        $("#form_").append("<input type='hidden' name='album_tracks' value='" + JSON.stringify(tracksId) + "'>");
-                        conf.form = '#form_';
-
-                        if ($("#form_").isValid({}, conf, true)) {
-                            conf.onSuccess();
-                        } else {
-                            conf.onError();
-                        }
-                        return false;
-                    });
-
-                    $("#cover_container").on('click', 'a', function(e){
-                        e.stopPropagation();
-                        e.preventDefault();
-                        JSshowModalBox();
-                        ajaxPostSend($(this).attr('href'), $(this).data());
-                        return false;
-                    });
-
-                    LoadSelect2Script(DemoSelect2);
-                    LoadDataTablesScripts(TestTable1);
-		
-                });
-            }
-
-            document.addEventListener("DOMContentLoaded", yelp, false);
-
-            var setCompositionModal = function (data) {
-                $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Edit track'|trans }}');
-                if (data.data.length == 1) {
-                    var row = data.data[0];
-                    for (var field_name in row) {
-                        $("#modalbox_ad input[name='" + field_name + "']").val(row[field_name]);
+                $("#add_track").on("click", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var tmp_id = $('#datatable-1 tr:last').attr('id');
+                    if (!tmp_id) {
+                        tmp_id = "tr_" + $.randString();
+                        $('#datatable-1 tr:last').attr('id', tmp_id);
                     }
-                    $("#modalbox_ad select[name='language_id'] option").each(function () {
-                        $(this).attr('selected', $(this).val().toString() == data.data[0]['language_id'].toString());
-                    })
-                }
-                $("#modalbox_ad input").removeAttr('disabled');
-                $('#s2_track_lang').select2({minimumResultsForSearch: -1});
-                conf.form = '#track_form';
-                $("#track_form").validate();
-                $("#track_form").find('input, select').each(function(){
-                   conf.unhighlight(this, conf.errorClass);
+                    $("#modalbox_ad").data('tr_id', tmp_id);
+
+                    $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Add track'|trans }}');
+                    $("#modalbox_ad input").prop("disabled", false).removeAttr('disabled').val('');
+                    $("#modalbox_ad select").prop("disabled", false).removeAttr('disabled').find('option').removeAttr('selected');
+                    $('#s2_track_lang').select2({minimumResultsForSearch: -1});
+                    conf.form = '#track_form';
+                    $("#track_form").validate();
+                    $("#track_form").find('input, select').each(function(){
+                        conf.unhighlight(this, conf.errorClass);
+                    });
+                    $("#modalbox_ad").show();
+
+                    return false;
                 });
 
-                $("#modalbox_ad").show();
-            };
+                $(document).on('click', "a.main_ajax", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var sendData = $(this).data();
+                    sendData['album_id'] = {{ app['audioAlbumID'] }};
+                    ajaxPostSend($(this).attr('href'), sendData, false, false);
+                    $(this).closest('div.open').removeClass('open');
+                    return false;
+                });
 
-            var setCompositionModalError = function (data) {
-                alert('Error no data');
-            };
+                $("#modalbox_ad button[type='submit']").on('click', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
 
-            var audioTracksManage = function () {
-                $("#modalbox_ad").click();
-                $('#datatable-1').DataTable().ajax.reload();
-            };
+                    conf.form = '#track_form';
 
-            var deleteCover = function(data){
-                $('#form_cover').val('');
-                $('#cover_container a').data('file_name', '');
-                $('#cover_container img').attr('src', '');
-                $('#bootstrapped-fine-uploader ul.qq-upload-list').empty();
-                JSSuccessModalBox(data);
-            };
+                    if ($("#track_form").isValid({}, conf, true)) {
+                        conf.onSuccess();
+                    } else {
+                        conf.onError();
+                    }
+                    return false;
+                });
 
-            var deleteCoverError = function(data){
-                JSErrorModalBox(data);
-            };
+                $("#form_save").on('click', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
 
-            var closeModalBox = function(){
-                JScloseModalBox();
-            };
+                    var tracksId = [];
+                    $("#datatable-1 tr:has(td)").each(function () {
+                        if (typeof($(this).attr('id')) != "undefined") {
+                            tracksId.push($(this).attr('id').replace(/[^\d]/ig, ''));
+                        }
+                    });
+
+                    $("#form_").append("<input type='hidden' name='album_tracks' value='" + JSON.stringify(tracksId) + "'>");
+                    conf.form = '#form_';
+
+                    if ($("#form_").isValid({}, conf, true)) {
+                        conf.onSuccess();
+                    } else {
+                        conf.onError();
+                    }
+                    return false;
+                });
+
+                $("#cover_container").on('click', 'a', function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    JSshowModalBox();
+                    ajaxPostSend($(this).attr('href'), $(this).data());
+                    return false;
+                });
+
+                LoadSelect2Script(DemoSelect2);
+                LoadDataTablesScripts(TestTable1);
+		
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", yelp, false);
+
+        var setCompositionModal = function (data) {
+            $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Edit track'|trans }}');
+            if (data.data.length == 1) {
+                var row = data.data[0];
+                for (var field_name in row) {
+                    $("#modalbox_ad input[name='" + field_name + "']").val(row[field_name]);
+                }
+                $("#modalbox_ad select[name='language_id'] option").each(function () {
+                    $(this).attr('selected', $(this).val().toString() == data.data[0]['language_id'].toString());
+                })
+            }
+            $("#modalbox_ad input").removeAttr('disabled');
+            $('#s2_track_lang').select2({minimumResultsForSearch: -1});
+            conf.form = '#track_form';
+            $("#track_form").validate();
+            $("#track_form").find('input, select').each(function(){
+                conf.unhighlight(this, conf.errorClass);
+            });
+
+            $("#modalbox_ad").show();
+        };
+
+        var setCompositionModalError = function (data) {
+            alert('Error no data');
+        };
+
+        var audioTracksManage = function () {
+            $("#modalbox_ad").click();
+            $('#datatable-1').DataTable().ajax.reload();
+        };
+
+        var deleteCover = function(data){
+            $('#form_cover').val('');
+            $('#cover_container a').data('file_name', '');
+            $('#cover_container img').attr('src', '');
+            JSSuccessModalBox(data);
+        };
+
+        var deleteCoverError = function(data){
+            JSErrorModalBox(data);
+        };
+
+        var closeModalBox = function(){
+            JScloseModalBox();
+        };
     </script>
 
-    <script type="text/template" id="qq-template-bootstrap">
-        <div class="qq-uploader-selector qq-uploader span12">
-            <div class="qq-upload-drop-area-selector qq-upload-drop-area span12" qq-hide-dropzone>
-                <!--<span>Drop files here to upload</span>-->
-            </div>
-            <div class="qq-upload-button-selector qq-upload-button btn btn-success"style="width: auto; margin: 0 auto; float: none; display: block;">
-                <div><i class="icon-upload icon-white"></i>{{ 'Add cover'|trans }}</div>
-            </div>
-        <span class="qq-drop-processing-selector qq-drop-processing">
-        <!--<span>Processing dropped files...</span>-->
-        <span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
-        </span>
-            <ul class="qq-upload-list-selector qq-upload-list" style="margin-top: 10px; text-align: center;">
-                <li>
-                    <div class="qq-progress-bar-container-selector">
-                        <div class="qq-progress-bar-selector qq-progress-bar"></div>
-                    </div>
-                    <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
-                    <span class="qq-upload-file-selector qq-upload-file"></span>
-                    <span class="qq-upload-size-selector qq-upload-size"></span>
-                    <!--<a class="qq-upload-cancel-selector qq-upload-cancel" href="#"> {{ 'Delete'|trans }} </a>-->
-                    <span class="qq-upload-status-text-selector qq-upload-status-text"></span>
-                </li>
-            </ul>
-        </div>
-    </script>
+    {% include "basic_templates/file-uploader-scripts.twig" %}
 {% endblock %}
