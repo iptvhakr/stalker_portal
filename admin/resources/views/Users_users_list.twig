@@ -102,7 +102,19 @@
                                 <label class="col-sm-3 control-label col-sm-offset-1">{{ 'List of MAC-addresses'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <input type="hidden" name="file_name" id="file_name">
-                                    <div class=" col-xs-10 col-sm-3" id="bootstrapped-fine-uploader"></div>
+                                    <!-- The file upload form used as target for the file upload widget -->
+                                    <div id="fileupload" class="pull-left">
+                                        <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+                                        <div class="fileupload-buttonbar">
+                                            <div class="fileupload-buttons">
+                                                <!-- The fileinput-button span is used to style the file input field as button -->
+                                                <span class="fileinput-button btn btn-success">
+                                                    <span>{{ 'File'|trans }}</span>
+                                                    <input type="file" name="files" style="opacity: 0;">
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
                                         <span class="small txt-default">{{ 'The file must contain pre-compiled list of MAC-addresses in the txt extension or another text format'|trans }}</span>
                                     </span>
