@@ -19,12 +19,12 @@
 
 <footer>
     <div class="text">
-        
+
         <a href="http://www.infomir.eu/eng/about/profile/" target=_blank>{{ 'Powered by'|trans }} Infomir</a> -
         <a href="http://www.infomir.eu/eng/products/iptv-stb/" target=_blank>{{ 'IPTV/OTT Set-Top Boxes'|trans }}</a> -
-        <a href="http://www.infomir.eu/eng/support/form/index.php" target=_blank>{{ 'Report a bug'|trans }}</a> -
+        <a href="#" id="contact_support" class="contact_support" target=_blank>{{ 'Contact support'|trans }}</a> -
         <a href="http://www.infomir.eu/eng/press-center/" target=_blank>{{ 'Infomir News'|trans }}</a> -
-		 {% if attribute(app, 'allowed_locales') is defined %}        
+		 {% if attribute(app, 'allowed_locales') is defined %}
         <div class="dropup">
             <a id="dropdownMenu2" data-toggle="dropdown"><span class="lang-xs" lang="{{ app.language }}"></span> {{ 'Language'|trans }}</a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2" id="allowed_locales">
@@ -61,14 +61,41 @@
 
         {% if attribute(app, 'new_version') is defined and app['new_version']%}
         var update = {
-        {% for key, val in app['new_version'] %}
+            {% for key, val in app['new_version'] %}
             '{{ key }}': '{{ val }}'{% if not loop.last %},{% endif %}
-        {% endfor %}
+            {% endfor %}
         };
 
         if (typeof(update.version) != 'undefined' && ver != update.version) {
             $("#portal_version_srt").after('<span id="new_version" class="text-default"><a class="text-primary" href="' + update.url + '">{{ 'Available new version'|trans }} ' + update.version + '</a></span>').after(' - ');
         }
         {% endif %}
+
+        $(document).on('click', '#contact_support', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            footer_modal($(this));
+            return false
+        });
+
+        function footer_modal(obj){
+            var modalContainer;
+            if ($('#modalbox_clone').length) {
+                modalContainer = $('#modalbox_clone');
+            } else {
+                modalContainer = $('#modalbox').clone(true);
+                modalContainer.attr('id', 'modalbox_clone');
+                $('#modalbox').after(modalContainer);
+            }
+            modalContainer.find('.modal-header-name span').text('{{ 'Technical questions form'|trans }}');
+            modalContainer.find('.devoops-modal-inner').html('\n\
+                <div class="box-content">\n\
+                     <iframe src="http://www.infomir.eu/eng/support/form/stalker.php?lang={{ app.language }}" width="734" height="400" frameborder="0" allowtransparency="true"></iframe>  \n\
+                </div>');
+            modalContainer.find('.devoops-modal-bottom').empty();
+            modalContainer.show();
+            obj.closest('div.open').removeClass('open');
+        }
+
     </script>
 </footer>
