@@ -58,7 +58,7 @@ class RESTApiResourcePvr extends RESTApiCollection
                 'ch_id'      => (int) $recording['ch_id'],
                 'ch_name'    => $recording['ch_name'],
                 'status'     => $status,
-                'downloadable' => $status == 2 && in_array('downloads', \Stb::getAvailableModulesByUid($user_id)) ? 1 : 0
+                'downloadable' => $status == 2 && in_array('downloads', Stb::getAvailableModulesByUid($user_id)) ? 1 : 0
             );
         }, $list);
 

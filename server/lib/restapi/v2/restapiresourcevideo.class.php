@@ -195,7 +195,7 @@ class RESTApiResourceVideo extends RESTApiCollection
 
             $new_video['not_ended'] = !empty($not_ended[$video['id']]) ? 1 : 0;
 
-            $new_video['downloadable'] = (int) in_array('downloads', \Stb::getAvailableModulesByUid($user_id));
+            $new_video['downloadable'] = (int) in_array('downloads', Stb::getAvailableModulesByUid($user_id));
 
             if ($new_video['not_ended']){
 
