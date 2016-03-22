@@ -1663,7 +1663,7 @@ table#cmd_data .mswitch > input[type="checkbox"] + label::before {
 
 .select2-highlighted, .select2-container--default .select2-results__option--highlighted[aria-selected]  {  background: #FFF5D2 !important; color: #000 !important;}
 .select2-container {
-  width: 100%;
+  /*width: 100%;*/
 }
 .select2-container .select2-choice {
   height: 30px;
