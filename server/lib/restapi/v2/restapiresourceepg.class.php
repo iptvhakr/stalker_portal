@@ -2,6 +2,8 @@
 
 namespace Stalker\Lib\RESTAPI\v2;
 
+use Stalker\Lib\Core\Stb;
+
 class RESTApiResourceEpg extends RESTApiCollection
 {
     protected $params_map = array("tv-channels" => "ch_id", "users" => "users.id");
@@ -82,8 +84,8 @@ class RESTApiResourceEpg extends RESTApiCollection
             $new_program = array_intersect_key($program, $fields_map);
             $new_program['start']      = (int) $program['start_timestamp'];
             $new_program['end']        = (int) $program['stop_timestamp'];
-            $new_program['in_archive'] = $program['mark_archive'] && in_array('tv_archive', \Stb::getAvailableModulesByUid($user_id)) ? 1 : 0;
-            $new_program['downloadable'] = $new_program['in_archive'] && in_array('downloads', \Stb::getAvailableModulesByUid($user_id)) ? 1 : 0;
+            $new_program['in_archive'] = $program['mark_archive'] && in_array('tv_archive', Stb::getAvailableModulesByUid($user_id)) ? 1 : 0;
+            $new_program['downloadable'] = $new_program['in_archive'] && in_array('downloads', Stb::getAvailableModulesByUid($user_id)) ? 1 : 0;
 
             return $new_program;
         }, $epg);
