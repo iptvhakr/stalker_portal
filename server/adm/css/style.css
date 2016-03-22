@@ -1661,9 +1661,7 @@ table#cmd_data .mswitch > input[type="checkbox"] + label::before {
     left: 28px;
 }
 
-
-
-.select2-highlighted {  background: #FFF5D2 !important; color: #000 !important;}
+.select2-highlighted, .select2-container--default .select2-results__option--highlighted[aria-selected]  {  background: #FFF5D2 !important; color: #000 !important;}
 .select2-container {
   width: 100%;
 }
