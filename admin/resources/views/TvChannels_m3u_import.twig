@@ -11,7 +11,18 @@
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <div class="form-group">
                             <div class="col-xs-5 col-sm-5">
-                                <div class="pull-left" id="bootstrapped-fine-uploader"></div>
+                                <div id="fileupload" class="pull-left">
+                                    <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+                                    <div class="fileupload-buttonbar">
+                                        <div class="fileupload-buttons">
+                                            <!-- The fileinput-button span is used to style the file input field as button -->
+                                            <span class="fileinput-button btn btn-success">
+                                                <span>{{ 'Add a file'|trans }}</span>
+                                                <input type="file" name="files" style="opacity: 0;">
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -73,6 +84,37 @@
             });
         }
 
+        function initFileUploader(){
+            $('#fileupload').fileupload({
+                url: '{{ app.controller_alias }}/get-m3u-data',
+                type: 'POST',
+                autoUpload: true,
+                multipart: true,
+                acceptFileTypes: /(\.|\/)(m3u)$/i,
+                maxFileSize: 1000000,
+                maxNumberOfFiles: 1
+            }).bind('fileuploaddone', function (e, data) {
+                var response;
+                if (data && data.jqXHR && data.jqXHR.status && data.jqXHR.status == 200 && data.jqXHR.responseJSON) {
+                    response = data.jqXHR.responseJSON;
+                } else {
+                    JSErrorModalBox();
+                    return false;
+                }
+                if (response.success) {
+                    ajaxSuccess(response, false);
+                }
+                return false;
+            }).bind('fileuploadfail', function (e, data) {
+                if (data && data.jqXHR && data.jqXHR.status && data.jqXHR.status == 200 && data.jqXHR.responseJSON) {
+                    JSErrorModalBox(JSON.parse(data.jqXHR.responseJSON));
+                } else {
+                    JSErrorModalBox();
+                }
+            });
+            return true;
+        }
+
         function yelp() {
             $(document).ready(function () {
 
@@ -81,50 +123,9 @@
 
                 LoadSelect2Script(DemoSelect2);
 
-                var uploader = $("#bootstrapped-fine-uploader").fineUploader({
-                    element: $('#bootstrapped-fine-uploader'),
-                    autoUpload: true,
-                    debug: false,
-                    multiple: false,
-                    text: {
-                        formatProgress: "{percent}% {{ 'from'|trans }} {total_size}", //из
-                        failUpload: "{{ 'Upload failed'|trans }}", //Сбой при загрузке
-                        waitingForResponse: "{{ 'Processing'|trans }}...", //Обработка
-                        paused: "{{ 'Pause'|trans }}" //Пауза
-                    },
-                    request: {
-                        endpoint: '{{ app.controller_alias }}/get-m3u-data'
-                    },
-                    validation: {
-                        allowedExtensions: ['m3u'],
-                        sizeLimit: 1048576 // 1Mb
-                    },
-                    callbacks: {
-                        onError: function(id, name, errorReason, xhrOrXdr) {
-                            if (typeof (xhrOrXdr) != 'undefined' && typeof(xhrOrXdr.responseText)  != 'undefined') {
-                                JSErrorModalBox(JSON.parse(xhrOrXdr.responseText));
-                            } else {
-                                alert(qq.format("Error on file number {} - {}.  Reason: {}", id, name, errorReason));
-                            }
-                        }
-                    },
-                    template: 'qq-template-bootstrap',
-                    classes: {
-                        success: 'alert alert-success',
-                        fail: 'alert alert-error'
-                    }
-
-                }).on('complete', function (event, id, name, response) {
-                    if (response.success) {
-                        ajaxSuccess(response, false);
-                    }
-                    return false;
-                });
-                $("#bootstrapped-fine-uploader").on('click', ".qq-upload-cancel", function (e) {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    return false;
-                });
+                if (typeof (loadFileUploadScripts) != 'function' || !loadFileUploadScripts(initFileUploader)){
+                    JSErrorModalBox({msg: "{{ 'Cannot load File Upload plugin'|trans }}"})
+                }
 
                 $(document).on('click', "a.main_ajax", function (e) {
                     e.stopPropagation();
@@ -246,7 +247,6 @@
                 $(this).remove();
                 if ($('#channels_container').children().length == 0) {
                     $("#warning_message").closest('.row').slideUp("100", function(){ $("#warning_message").text('');} );
-                    $("#bootstrapped-fine-uploader ul.qq-upload-list li").slideUp("100", function(){ $(this).remove() });
                 }
             });
         };
@@ -278,32 +278,7 @@
 
     </script>
 
-    <script type="text/template" id="qq-template-bootstrap">
-        <div class="qq-uploader-selector qq-uploader span12">
-            <div class="qq-upload-drop-area-selector qq-upload-drop-area span12" qq-hide-dropzone>
-                <!--<span>Drop files here to upload</span>-->
-            </div>
-            <div class="qq-upload-button-selector qq-upload-button btn btn-success" style="width: auto; margin: 0 auto; float: none; display: block;">
-                <div><i class="icon-upload icon-white"></i>{{ 'Add a file'|trans }}</div>
-            </div>
-        <span class="qq-drop-processing-selector qq-drop-processing">
-        <!--<span>Processing dropped files...</span>-->
-        <span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
-        </span>
-            <ul class="qq-upload-list-selector qq-upload-list" style="margin-top: 10px; text-align: center;">
-                <li>
-                    <div class="qq-progress-bar-container-selector">
-                        <div class="qq-progress-bar-selector qq-progress-bar"></div>
-                    </div>
-                    <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
-                    <span class="qq-upload-file-selector qq-upload-file"></span>
-                    <span class="qq-upload-size-selector qq-upload-size"></span>
-                    <!--<a class="qq-upload-cancel-selector qq-upload-cancel" href="#"> {{ 'Delete'|trans }} </a>-->
-                    <span class="qq-upload-status-text-selector qq-upload-status-text"></span>
-                </li>
-            </ul>
-        </div>
-    </script>
+    {% include "basic_templates/file-uploader-scripts.twig" %}
 
     <script type="text/template" id="channel-template" >
         <div class="box" style="display: none;">
