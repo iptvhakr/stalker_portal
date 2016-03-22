@@ -546,7 +546,7 @@ class Epg implements \Stalker\Lib\StbApi\Epg
             }
 
             if (array_key_exists($epg[$i]['ch_id'], $archived_recs) &&
-                $epg[$i]['start_timestamp'] > $archived_recs[$epg[$i]['ch_id']]['start_timestamp'] &&
+                $epg[$i]['start_timestamp'] > time() - $archived_recs[$epg[$i]['ch_id']]['parts_number'] * 3600 &&
                 $epg[$i]['stop_timestamp'] < time()){
 
                 $epg[$i]['mark_archive'] = 1;
