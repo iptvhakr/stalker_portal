@@ -90,15 +90,15 @@ class CronExpression extends \Cron\CronExpression {
 
     public function __get($prop_name) {
         $class_vars = array();
-        if ($class_vars = get_class_vars('\CronExpression') && !array_key_exists($prop_name, $class_vars)) {
-            $myClassReflection = new \ReflectionClass('\Cron\CronExpression');
+        if ($class_vars = get_class_vars('CronExpression') && !array_key_exists($prop_name, $class_vars)) {
+            $myClassReflection = new ReflectionClass('Cron\CronExpression');
             try {
                 $secret = $myClassReflection->getProperty($prop_name);
                 $secret->setAccessible(true);
                 return $secret->getValue($this);
-            } catch (\ReflectionException $e) {}
+            } catch (ReflectionException $e) {}
         }
-        throw new \InvalidArgumentException($prop_name . ' is not a valid CRON property');
+        throw new InvalidArgumentException($prop_name . ' is not a valid CRON property');
         return null;
     }
 

@@ -69,7 +69,7 @@ class AdminPanelEvents extends SysEvent {
 
         if (!empty($this->postData['filter_set'])) {
 
-            $filter_set = \Filters::getInstance();
+            $filter_set = Filters::getInstance();
             $filter_set->setResellerID(array_key_exists('reseller', $this->postData) ? $this->postData['reseller'] : 0);
             $filter_set->initData('users', 'id');
 
