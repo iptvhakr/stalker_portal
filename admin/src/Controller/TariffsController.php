@@ -29,8 +29,8 @@ class TariffsController extends \Controller\BaseStalkerController {
             array("id" => 'single', "title" => $this->setLocalization("once-only"))
         );
         $this->allServices = array(
-            array("id" => '1', "title" => $this->setLocalization("Complete")),
-            array("id" =>  '2', "title" => $this->setLocalization("Optional"))
+            array("id" => '2', "title" => $this->setLocalization("complete")),
+            array("id" =>  '1', "title" => $this->setLocalization("Optional"))
         );
 
         $this->allInitiatorRoles = array(
