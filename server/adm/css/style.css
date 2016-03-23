@@ -2687,14 +2687,14 @@ div.google-visualization-tooltip span{
   color:#D15E5E;
 }
 
-#modalbox .box-icons, #modalbox_ad .box-icons { 
+#modalbox .box-icons, #modalbox_clone .box-icons,#modalbox_ad .box-icons {
   top: 5px;
   right:10px;
 }
-#modalbox .box-icons a, #modalbox_ad .box-icons a{ 
+#modalbox .box-icons a, #modalbox_clone .box-icons a, #modalbox_ad .box-icons a{
   padding-left:10px;
 }
-#modalbox, #modalbox_ad {
+#modalbox, #modalbox_clone, #modalbox_ad {
   display:none;
   position: fixed;
   overflow: auto;
@@ -2708,7 +2708,7 @@ div.google-visualization-tooltip span{
  
 }
 
-#modalbox  .devoops-modal , #modalbox_ad  .devoops-modal {
+#modalbox  .devoops-modal , #modalbox_clone  .devoops-modal ,#modalbox_ad  .devoops-modal {
   position:absolute;top:70px;margin-left: -300px;left: 50%;
   border: 1px solid #f8f8f8;
   box-shadow: 0 0 20px #6AA6D6;
@@ -2730,7 +2730,7 @@ div.google-visualization-tooltip span{
     box-shadow: none;*/
 }
 
-#modalbox  .devoops-modal-header , #modalbox_ad  .devoops-modal-header {
+#modalbox  .devoops-modal-header , #modalbox_clone  .devoops-modal-header , #modalbox_ad  .devoops-modal-header {
   color: #000;
   font-size: 16px;
   position:relative;
@@ -2753,7 +2753,7 @@ div.google-visualization-tooltip span{
     /*line-height: 36px;*/
 }
 
-#modalbox .devoops-modal-header .box-icons a, #modalbox_ad .devoops-modal-header .box-icons a{
+#modalbox .devoops-modal-header .box-icons a, #modalbox_clone .devoops-modal-header .box-icons a, #modalbox_ad .devoops-modal-header .box-icons a{
   background-color:#FFF;
 	margin:6px;
 	padding-left:0px;
@@ -2779,7 +2779,7 @@ div.google-visualization-tooltip span{
 }
 
 
-#modalbox .devoops-modal-inner .box-header .box-icons, #modalbox_ad .devoops-modal-inner .box-header .box-icons {
+#modalbox .devoops-modal-inner .box-header .box-icons, #modalbox_clone .devoops-modal-inner .box-header .box-icons, #modalbox_ad .devoops-modal-inner .box-header .box-icons {
   background-color:#FFF;
 	margin:6px;
 	padding-left:4px;
@@ -2799,7 +2799,7 @@ div.google-visualization-tooltip span{
     margin-bottom: 0;
 }
 
-#modalbox  .devoops-modal-inner , #modalbox_ad  .devoops-modal-inner {
+#modalbox  .devoops-modal-inner , #modalbox_clone  .devoops-modal-inner , #modalbox_ad  .devoops-modal-inner {
   position: relative;
   overflow: hidden;
   padding: 25px 0px;
@@ -2808,7 +2808,7 @@ div.google-visualization-tooltip span{
 #modalbox_ad  .devoops-modal-inner {
     background-color: #FFF;
 }
-#modalbox  .devoops-modal-bottom , #modalbox_ad  .devoops-modal-bottom {
+#modalbox  .devoops-modal-bottom , #modalbox_clone .devoops-modal-bottom , #modalbox_ad  .devoops-modal-bottom {
   position: relative;
   overflow: hidden;
   padding: 15px;
@@ -3469,7 +3469,8 @@ z-index:10;
 
 #add_channel input, #add_channel select, #add_channel textarea,
 #modalbox_ad input, #modalbox_ad select, #modalbox_ad textarea,
-#modalbox input, #modalbox select, #modalbox textarea{
+#modalbox input, #modalbox select, #modalbox textarea,
+#modalbox_clone input, #modalbox_clone select, #modalbox_clone textarea{
     border-radius: 5px;
     border-color: #D3D3D3;
     resize: none;

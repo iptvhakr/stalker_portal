@@ -35,7 +35,7 @@ $(document).on("click", "div.dropdown-menu *", function(e){
     e.stopPropagation();
 });
 
-$("#modalbox").on("show", function () {
+$("#modalbox, #modalbox_clone, #modalbox_ad").on("show", function () {
     $("body").addClass("modal-open");
 }).on("hide", function () {
     $("body").removeClass("modal-open");
@@ -45,11 +45,6 @@ $('#modalbox').appendTo("#wrapper");
 
 $("#ui-datepicker-div").css("z-index:5050;")
 
-$("#modalbox_ad").on("show", function () {
-    $("body").addClass("modal-open");
-}).on("hide", function () {
-    $("body").removeClass("modal-open");
-});
 $('#attribute_set').removeClass('dropup');
 $('#status').removeClass('dropup');
 $('.filter').removeClass('dropup'); 
@@ -893,6 +888,18 @@ $(document).ready(function () {
                 $('#modalbox > div').fadeTo('slow', 0.5).fadeTo('slow', 1.0);
             }
         }
+        return false;
+    });
+
+    $(document).on('click', "#modalbox_clone, #modalbox_clone a.close-link, #modalbox_clone a.close-link *", function(e){
+        if (e.currentTarget != e.target) {
+            return;
+        }
+        e.stopPropagation();
+        e.preventDefault();
+        $('#modalbox_clone').hide();
+        $('#modalbox_clone').find('.devoops-modal-inner').empty();
+        $('#modalbox_clone').find('.devoops-modal-bottom').empty();
         return false;
     });
     
