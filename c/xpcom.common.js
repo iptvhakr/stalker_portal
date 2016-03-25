@@ -2336,10 +2336,16 @@ var screensaver = {
 
         _debug('stb.player.on', stb.player.on);
 
-        var video_info = {};
+        var is_playing = false;
 
-        if (stb.GetVideoInfo){
-            video_info = stb.GetVideoInfo();
+        if (stb.IsPlaying){
+
+            is_playing = stb.IsPlaying();
+
+            _debug('stb.IsPlaying', is_playing);
+
+        }else if (stb.GetVideoInfo){
+            var video_info = stb.GetVideoInfo();
             _debug('video_info', video_info);
 
             try{
@@ -2349,11 +2355,15 @@ var screensaver = {
             }
 
             video_info = video_info || {};
+
+            _debug('video_info', video_info);
+
+            is_playing = video_info.frameRate != 0;
         }
 
-        _debug('video_info', video_info);
+        _debug('is_playing', is_playing);
 
-        if (stb.player.on && video_info.frameRate != 0){
+        if (stb.player.on && is_playing){
             this.restart_timer();
             return;
         }
