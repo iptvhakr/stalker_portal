@@ -434,6 +434,7 @@
     }
 
     function checkFields(obj, e) {
+        $(obj).select2({minimumResultsForSearch: -1});
         var dataName = $(obj).attr('id') == 's2_user_list_type' ? 'data-list-type' : 'data-event-type';
         $("[" + dataName + "]").hide().find('input, select, textarea').attr('disabled', 'disabled');
         $(obj).find('option:selected').each(function () {

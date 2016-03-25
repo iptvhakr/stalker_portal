@@ -2,7 +2,7 @@
 
 
 require_once __DIR__ . '/../../admin/vendor/autoload.php';
-define('PROJECT_PATH', realpath(dirname(__FILE__) . '/../'));
+include "./common.php";
 require_once PROJECT_PATH . '/../storage/config.php';
 
 use Stalker\Lib\Core\Mysql;
@@ -23,8 +23,8 @@ $schedule_events = Mysql::getInstance()->from("`schedule_events`")->where(array(
 ), 'OR ')->get()->all();
 $update_data = array();
 
-$event = new \AdminPanelEvents();
-$cronTab = new \CronExpression('* * * * *', new Cron\FieldFactory());
+$event = new AdminPanelEvents();
+$cronTab = new CronExpression('* * * * *', new Cron\FieldFactory());
 $cronTab->setCurrentTime('now');
 
 foreach ($schedule_events as $row) {
@@ -61,7 +61,7 @@ foreach ($schedule_events as $row) {
 }
 
 if (!empty($update_data)) {
-    $last_run = new \DateTime();
+    $last_run = new DateTime();
     $last_run->setTimestamp($run_start_time);
     Mysql::getInstance()->update("`schedule_events`", array('state = IF(periodic=1, state, 0), last_run' => $last_run->format('Y-m-d H:i:s')), array(" `id` IN ('" . implode("', '", $update_data) . "') AND 1=" => 1));
 }
