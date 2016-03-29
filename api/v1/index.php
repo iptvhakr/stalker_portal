@@ -2,6 +2,8 @@
 
 require_once "../../server/common.php";
 
+use Stalker\Lib\Core\Config;
+
 if (!Config::getSafe('enable_api', false) &&
       strpos($_SERVER['QUERY_STRING'], 'tv_archive') != 2 &&
       strpos($_SERVER['QUERY_STRING'], 'stream_recorder') != 2 &&
