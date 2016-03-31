@@ -1278,9 +1278,10 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             $this->oneChannel['stream_server'] = array();
         }
         $server = array();
+        reset($this->streamServers);
         while (list($key, $row) = each($this->streamServers)) {
-            if (!empty($this->streamers_map[$num][$this->streamServers[$key]['id']])) {
-                $server[] = $this->streamers_map[$num][$this->streamServers[$key]['id']]['streamer_id'];
+            if (!empty($this->streamers_map[$num][$row['id']])) {
+                $server[] = $this->streamers_map[$num][$row['id']]['streamer_id'];
             }
         }
 
@@ -1508,7 +1509,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
 
                 if ($operation == 'updateITVChannel') {
                     $this->deleteChannelTasks($data, $this->oneChannel);
-                    $this->deleteDBLinks($data);
+                    $this->deleteDBLinks($data['cmd']);
                 }
                 if (!empty($data['logo'])) {
                     $ext = explode('.', $data['logo']);
@@ -1580,12 +1581,13 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         }
     }
 
-    private function deleteDBLinks($data) {
+    private function deleteDBLinks($urls, $id = FALSE) {
+        $ch_id = ($id !== FALSE ? $id : $this->oneChannel['id']);
         if (!isset($this->channeLinks)) {
-            $this->channeLinks = $this->db->getChannelLinksById($this->oneChannel['id']);
+            $this->channeLinks = $this->db->getChannelLinksById($ch_id);
         }
 
-        $need_to_delete_links = $this->db->getUnnecessaryLinks($this->oneChannel['id'], $data['cmd']);
+        $need_to_delete_links = $this->db->getUnnecessaryLinks($ch_id, $urls);
 
         if ($need_to_delete_links) {
             $this->db->deleteCHLink($need_to_delete_links);
@@ -1595,7 +1597,10 @@ class TvChannelsController extends \Controller\BaseStalkerController {
 
     private function setDBLincs($ch_id, $data) {
 
-        $current_urls = (!empty($this->channeLinks) ? $this->getFieldFromArray($this->channeLinks, 'url') : array());
+        if (empty($this->channeLinks)) {
+            $this->channeLinks = $this->db->getChannelLinksById($ch_id);
+        }
+        $current_urls = $this->getFieldFromArray($this->channeLinks, 'url');
         foreach ($this->getLinks($data) as $link) {
             $link['ch_id'] = $ch_id;
             if (is_array($link['stream_servers']) && !empty($link['stream_servers'])) {
@@ -1626,13 +1631,10 @@ class TvChannelsController extends \Controller\BaseStalkerController {
 
                 if ($link_id) {
                     $this->db->updateCHLink($ch_id, $link);
-
-                    if (empty($this->streamers_map)) {
-                        $this->streamers_map[$link_id] = $this->db->getStreamersIdMapForLink($link_id);
-                    }
+                    $streamers_map = $this->db->getStreamersIdMapForLink($link_id);
                     $on_streamers = array();
-                    if (is_array($this->streamers_map) && array_key_exists($link_id, $this->streamers_map)) {
-                        $on_streamers = array_keys($this->streamers_map[$link_id]);
+                    if (is_array($streamers_map)) {
+                        $on_streamers = array_keys($streamers_map);
                     }
 
                     if ($on_streamers) {
@@ -1644,7 +1646,9 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                         }
                     }
                     foreach ($links_on_server as $streamer_id) {
-                        $this->db->insertCHLinkOnStreamer($link_id, $streamer_id);
+                        if (!empty($link_id) && !empty($streamer_id)) {
+                            $this->db->insertCHLinkOnStreamer($link_id, $streamer_id);
+                        }
                     }
                 }
             }
