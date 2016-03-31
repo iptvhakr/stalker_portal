@@ -59,6 +59,9 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
             $this->app['allZones'] = array_combine($allZoneID, $allZoneNames);
         }
 
+        $default_zone = $this->db->getZoneList(array('select'=>array('S_Z.*'), 'where'=>array('S_Z.default_zone' => 1)));
+        $this->app['default_zone'] = (!empty($default_zone) ? $default_zone[0]: FALSE);
+
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
@@ -158,7 +161,7 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
                
         $filds_for_select = $this->getServersFields();
                 
-        $error = "Error";
+        $error = $this->setLocalization("Error");
         $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
 
         $like_filter = array();
@@ -186,7 +189,7 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
         if (!empty($param['id'])) {
             $query_param['where']['S_S.`id`'] = $param['id'];
         }
-        
+
         $response['recordsTotal'] = $this->db->getServersTotalRows();
         $response["recordsFiltered"] = $this->db->getServersTotalRows($query_param['where'], $query_param['like']);
 
