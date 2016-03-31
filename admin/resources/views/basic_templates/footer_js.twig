@@ -1,16 +1,14 @@
 
 {# empty Twig template #}
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <!--<script src="http://code.jquery.com/jquery.js"></script>-->
+        <!--<script src="//code.jquery.com/jquery.js"></script>-->
         <script src="{{app.request.baseUrl}}/plugins/jquery/jquery-2.1.0.min.js"></script>
 		 <script src="{{app.request.baseUrl}}/plugins/noty/packaged/jquery.noty.packaged.js"></script>
         <script src="{{app.request.baseUrl}}/js/jquery.cookies.2.2.0.js"></script>
         <script src="{{app.request.baseUrl}}/plugins/jquery-ui/jquery-ui.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="{{app.request.baseUrl}}/plugins/bootstrap/bootstrap.min.js"></script>
-        <script src="{{app.workHost}}c/version.js"></script>
-{#        <script src="{{app.request.baseUrl}}/plugins/tinymce/tinymce.min.js"></script>
-        <script src="{{app.request.baseUrl}}/plugins/tinymce/jquery.tinymce.min.js"></script>#}
+        <script src="{{app.relativePath}}c/version.js"></script>
         <!-- All functions for this theme + document.ready processing -->
         <script src="{{app.request.baseUrl}}/plugins/form-validator/jquery.form-validator.min.js"></script>
         <script src="{{app.request.baseUrl}}/js/devoops.js{% if attribute(app, 'current_version') is defined and app['current_version']%}?ver={{ app['current_version'] }}{% endif %}"></script>
@@ -90,7 +88,7 @@
             modalContainer.find('.modal-header-name span').text('{{ 'Technical questions form'|trans }}');
             modalContainer.find('.devoops-modal-inner').html('\n\
                 <div class="box-content">\n\
-                     <iframe src="http://www.infomir.eu/eng/support/form/stalker.php?lang={{ app.language }}" width="734" height="400" frameborder="0" allowtransparency="true"></iframe>  \n\
+                     <iframe src="//www.infomir.eu/eng/support/form/stalker.php?lang={{ app.language }}" width="734" height="400" frameborder="0" allowtransparency="true"></iframe>  \n\
                 </div>');
             modalContainer.find('.devoops-modal-bottom').empty();
             modalContainer.show();

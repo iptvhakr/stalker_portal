@@ -424,7 +424,7 @@
                 });
                 $('#datatable-1 > thead').hide();
 
-                $.getScript('http://www.google.com/jsapi?autoload=' + JSON.stringify({"modules":[{"name":"visualization","version":"1","packages":["corechart"],"callback":"load_page_data"}]}));
+                $.getScript('//www.google.com/jsapi?autoload=' + JSON.stringify({"modules":[{"name":"visualization","version":"1","packages":["corechart"],"callback":"load_page_data"}]}));
 
                 $.getScript('{{app.request.baseUrl}}/plugins/flot/jquery.flot.js', function(){
                     $.getScript('{{app.request.baseUrl}}/plugins/flot/jquery.flot.time.js', function(){
