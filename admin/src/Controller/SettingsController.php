@@ -39,12 +39,13 @@ class SettingsController extends \Controller\BaseStalkerController {
         $current = $this->db->getCurrentTheme();
         $this->app['current_theme'] = array('name'=> $current);
         $themes = Middleware::getThemes();
+        $host = $this->baseHost;
         if (is_array($themes)) {
-            $themes = array_map(function($theme){
+            $themes = array_map(function($theme) use ($host){
                 return array(
                     'name'     => $theme['id'],
                     'title'    => $theme['name'],
-                    'previews' => array($theme['preview']),
+                    'previews' => str_replace($host, '', array($theme['preview'])),
                 );
             }, $themes);
         }

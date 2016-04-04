@@ -193,6 +193,7 @@
                                                         </ul>\n\
                                                     </div>";
                         json.data[i].status = '<span ' + ( status == 1 ? 'class="">{{ 'On'|trans }}': '>{{ 'Off'|trans }}') +'</span>';
+                        json.data[i].stream_zone_name = json.data[i].stream_zone_name && json.data[i].stream_zone_name.length ? json.data[i].stream_zone_name : '{% if app['default_zone'] %}{{ 'Using default zone'|trans }} "{{ app['default_zone']['name'] }}"{% endif %}';
                     }
                 }
             }).dataTable({
