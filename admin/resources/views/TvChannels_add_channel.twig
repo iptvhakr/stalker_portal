@@ -1355,11 +1355,14 @@
             $.each(relations, function(key, val){
                 var currObj = $("#" + val);
                 if (key !== objId) {
+                    currObj.next('span').hide();
                     currObj.prop("disabled", 'disabled').attr('disabled', "disabled");
-                    currObj.prev('div[id*="' + val + '"]').hide('fast').find('input').prop("disabled", "disabled").attr('disabled', "disabled");
+                    /*currObj.prev('div[id*="' + val + '"]').hide('fast').find('input').prop("disabled", "disabled").attr('disabled', "disabled");*/
                 } else {
+                    currObj.next('span').show();
+                    currObj.select2({minimumResultsForSearch: -1});
                     currObj.prop("disabled", false).removeAttr('disabled');
-                    currObj.prev('div[id*="' + val + '"]').show('fast').find('input').prop("disabled", false).removeAttr('disabled');
+                    /*currObj.prev('div[id*="' + val + '"]').show('fast').find('input').prop("disabled", false).removeAttr('disabled');*/
                 }
             });
         }
