@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
 use Stalker\Lib\Core\Config;
 use Stalker\Lib\Core\Middleware;
+use Stalker\Lib\Core\Stb;
 
 class UsersController extends \Controller\BaseStalkerController {
 
@@ -278,14 +279,14 @@ class UsersController extends \Controller\BaseStalkerController {
 
         $list = $this->users_consoles_logs_json();
         
-        if (!empty($this->data['id'])) {
+        if (!empty($this->data['id']) || !empty($this->data['mac'])) {
             $this->app['user'] = $this->db->getUsersList(array(
                 'select' => array(
                     '`users`.`name`',
                     '`users`.`fname`',
                     '`users`.`mac`'
                 ),
-                'where' => array('`users`.id' => $this->data['id'])
+                'where' => !empty($this->data['id']) ? array('`users`.id' => $this->data['id']): array('`users`.mac' => $this->data['mac'])
             ));
         }
         
@@ -1221,7 +1222,10 @@ class UsersController extends \Controller\BaseStalkerController {
         $this->cleanQueryParams($query_param, array_keys($filds_for_select), $filds_for_select);
         
         if (!empty($this->data['id'])) {
-            $query_param['where']['users.`id`'] = $this->data['id'];
+            $mac = Stb::getById((int) $this->data['id']);
+            $query_param['where']['user_log.`mac`'] = $mac;
+        } else if (!empty($this->data['mac'])) {
+            $query_param['where']['user_log.`mac`'] = $this->data['mac'];
         }
         
         $response['recordsTotal'] = $this->db->getTotalRowsLogList($query_param['where']);
