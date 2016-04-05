@@ -3,6 +3,7 @@
 require_once "../../server/common.php";
 
 use Stalker\Lib\Core\Config;
+use Stalker\Lib\RESTAPI\v1\RESTManager;
 
 if (!Config::getSafe('enable_api', false) &&
       strpos($_SERVER['QUERY_STRING'], 'tv_archive') != 2 &&
@@ -15,8 +16,7 @@ if (!Config::getSafe('enable_api', false) &&
     exit;
 }
 
+
 RESTManager::setAuthParams(Config::getSafe('api_auth_login', ''), Config::getSafe('api_auth_password', ''));
 RESTManager::enableLogger(Config::getSafe('enable_api_log', false));
 RESTManager::handleRequest();
-
-?>
