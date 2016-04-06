@@ -281,13 +281,22 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             }
         }
 
+        $limit_off = !empty($filter['enable_monitoring']);
+        if (!empty($query_param['order']) && array_key_exists('itv.monitoring_status', $query_param['order'])) {
+            $order = $query_param['order']['itv.monitoring_status'];
+            $query_param['order'] = array(
+                'itv.enable_monitoring' => $order,
+                'itv.monitoring_status' => $order
+            );
+        }
+
         if (!isset($query_param['like'])) {
             $query_param['like'] = array();
         }
 
         $response['recordsTotal'] = $this->db->getTotalRowsAllChannels();
         $response["recordsFiltered"] = $this->db->getTotalRowsAllChannels($query_param['where'], $query_param['like']);
-        if (empty($query_param['limit']['limit'])) {
+        if (empty($query_param['limit']['limit']) && $limit_off) {
             $query_param['limit']['limit'] = 50;
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
@@ -319,6 +328,12 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                 }
             }
         }
+
+        if ($limit_off) {
+            $count = count($response["data"]);
+            $response["recordsFiltered"] = $count;// < 50 ? $count: $response["recordsFiltered"];
+        }
+
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         $error = "";
 
