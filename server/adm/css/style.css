@@ -3647,29 +3647,24 @@ table.dataTable th.action-menu, table.dataTable td.action-menu{
     overflow: visible;
 }
 
-table.dataTable .highlight, table.dataTable .backlight {
-    z-index: auto;
-    background: none !important;
-}
-
-table.dataTable .highlight{
+table.dataTable .DThighlight{
     background-color: rgba(255, 245, 210, 0.2) !important;
     box-shadow: 10px 0 10px -10px rgba(255, 245, 210, 0.8) inset, -10px 0 10px -10px rgba(255, 245, 210, 0.8) inset;
 }
 
-table.dataTable thead th.highlight{
+table.dataTable thead th.DThighlight{
     box-shadow: 10px 0 10px -10px rgba(255, 245, 210, 0.8) inset, -10px 0 10px -10px rgba(255, 245, 210, 0.8) inset, 0 10px 10px -10px rgba(255, 245, 210, 0.8) inset ;
 }
 
-table.dataTable tbody tr:last-of-type .highlight{
+table.dataTable tbody tr:last-of-type .DThighlight{
     box-shadow: 10px 0 10px -10px rgba(255, 245, 210, 0.8) inset, -10px 0 10px -10px rgba(255, 245, 210, 0.8) inset, 0 -10px 10px -10px rgba(255, 245, 210, 0.8) inset ;
 }
 
-table.dataTable .backlight{
+table.dataTable .DTbacklight{
     opacity: 0.6;
 }
 
-table.dataTable tr .backlight:last-of-type {
+table.dataTable tr .DTbacklight:last-of-type, table.dataTable tr .DThighlight:last-of-type {
     opacity: 1;
 }
 
@@ -4049,7 +4044,7 @@ border-top: medium none currentColor;
     }
 
 th[data-filter='operations']{
-    /*visibility: hidden;*/
+    visibility: hidden;
 }
 li[data-filter='operations']{
     display: none;

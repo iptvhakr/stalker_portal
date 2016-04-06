@@ -62,9 +62,9 @@ $.extend(true, $.fn.dataTable.defaults, {
         $.each(oSettings.aoColumns, function(){
             var header = table.column(this.idx).header();
             if (this.bSearchable) {
-                $(header)[classOperation]('highlight');
+                $(header)[classOperation]('DThighlight');
             } else {
-                $(header)[classOperation]('backlight');
+                $(header)[classOperation]('DTbacklight');
             }
         });
     },
@@ -83,9 +83,9 @@ $.extend(true, $.fn.dataTable.defaults.column, {
         var colSettings = oSettings.aoColumns[col];
         if (oSearch.sSearch) {
             if (colSettings.bSearchable) {
-                $(td).addClass('highlight');
+                $(td).addClass('DThighlight');
             } else {
-                $(td).addClass('backlight');
+                $(td).addClass('DTbacklight');
             }
         }
     }
