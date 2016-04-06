@@ -3363,7 +3363,7 @@ margin-bottom:5px;
 	margin-bottom:15px;
 	
 }
-#datatable-1 {	margin-bottom:10px;margin-top:5px;}
+table.dataTable {	margin-bottom:10px;margin-top:5px;}
 #datatable-1_wrapper > .row-fluid > .span6{
 /*    display: none;*/
     float: left;
@@ -3616,13 +3616,9 @@ width: 40px;
 }
 
 .highlight{
-
-      background: url("../img/bs.png") no-repeat top right transparent;
-    /*border: 1px solid rgba(221, 100, 168, 0.3) !important;*/
-
-  /*  box-shadow: 0 -12px 2px 0 #F2CF53, 0 -22px 2px 0 #F inset !important;*/
-	z-index:400 !important;
-	position:relative;
+    background: url("../img/bs.png") no-repeat top right transparent;
+    z-index:400 !important;
+    position:relative;
 }
 
 .empty{
@@ -3633,8 +3629,8 @@ width: 40px;
 .box_v2 .box.shining{
     box-shadow: 0 0 5px rgba(120, 221, 100, 1) !important;
 }
-#datatable-1 th:hover {  background-color: #FFF5D2 !important;}
-#datatable-1 th, #datatable-1 td{
+table.dataTable th:hover {  background-color: #FFF5D2 !important;}
+table.dataTable th, table.dataTable td{
     max-width: 20% !important;
 	min-width:20px;
     word-wrap: break-word;
@@ -3642,22 +3638,53 @@ width: 40px;
     text-overflow: clip;
 	height:34px;
 }
-#datatable-1 th.action-menu {width:20px !important;font-size:1px;}
-#datatable-1 th.action-menu, #datatable-1 td.action-menu{
+table.dataTable th.action-menu {
+    width:20px !important;
+    font-size:1px;
+    content: ' ';
+}
+table.dataTable th.action-menu, table.dataTable td.action-menu{
     overflow: visible;
 }
-#datatable-1 a.dropdown-toggle {display:none; float:right;}
-#datatable-1 tr:hover a.dropdown-toggle,#datatable-1 td:hover a.dropdown-toggle {
+
+table.dataTable .highlight, table.dataTable .backlight {
+    z-index: auto;
+    background: none !important;
+}
+
+table.dataTable .highlight{
+    background-color: rgba(255, 245, 210, 0.2) !important;
+    box-shadow: 10px 0 10px -10px rgba(255, 245, 210, 0.8) inset, -10px 0 10px -10px rgba(255, 245, 210, 0.8) inset;
+}
+
+table.dataTable thead th.highlight{
+    box-shadow: 10px 0 10px -10px rgba(255, 245, 210, 0.8) inset, -10px 0 10px -10px rgba(255, 245, 210, 0.8) inset, 0 10px 10px -10px rgba(255, 245, 210, 0.8) inset ;
+}
+
+table.dataTable tbody tr:last-of-type .highlight{
+    box-shadow: 10px 0 10px -10px rgba(255, 245, 210, 0.8) inset, -10px 0 10px -10px rgba(255, 245, 210, 0.8) inset, 0 -10px 10px -10px rgba(255, 245, 210, 0.8) inset ;
+}
+
+table.dataTable .backlight{
+    opacity: 0.6;
+}
+
+table.dataTable tr .backlight:last-of-type {
+    opacity: 1;
+}
+
+table.dataTable a.dropdown-toggle {display:none; float:right;}
+table.dataTable tr:hover a.dropdown-toggle,table.dataTable td:hover a.dropdown-toggle {
     display:    block; 
 }
-#datatable-1 tr:focus a.dropdown-toggle,#datatable-1 td:focus a.dropdown-toggle {
+table.dataTable tr:focus a.dropdown-toggle,table.dataTable td:focus a.dropdown-toggle {
     display:   block; 
 }
-#datatable-1 tr:target a.dropdown-toggle,#datatable-1 td:target a.dropdown-toggle {
+table.dataTable tr:target a.dropdown-toggle,table.dataTable td:target a.dropdown-toggle {
     display:    block; 
 }
 
-#datatable-1 tr .open a,#datatable-1 td .open a{
+table.dataTable tr .open a,table.dataTable td .open a{
     display:    block !important; 
 }
 #ui-datepicker-div.dp_white{
@@ -4022,7 +4049,7 @@ border-top: medium none currentColor;
     }
 
 th[data-filter='operations']{
-    visibility: hidden;
+    /*visibility: hidden;*/
 }
 li[data-filter='operations']{
     display: none;

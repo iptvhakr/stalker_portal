@@ -241,7 +241,7 @@
             <tr>
         {% autoescape false %}
             {% for item in dropdownAttribute %}
-                <th data-filter="{{ item.name }}">{{ item.title }}</th>
+                <th data-filter="{{ item.name }}">{% if not(item.name == 'operations') %}{{ item.title }}{% endif %}</th>
             {% endfor %}
         {% endautoescape %}
             </tr>

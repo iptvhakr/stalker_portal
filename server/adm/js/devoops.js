@@ -95,7 +95,6 @@ function LoadDataTablesScripts(callback) {
                                 },
                                 "cFeature": "A"
                             } );
-							
                             $.fn.dataTable.defaults.sDom += "A";
 
                             if (typeof (window.stateSaveReject) == 'undefined' || !window.stateSaveReject) {
