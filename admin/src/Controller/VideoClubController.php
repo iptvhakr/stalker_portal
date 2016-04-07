@@ -1066,23 +1066,49 @@ class VideoClubController extends \Controller\BaseStalkerController {
             }
         }
 
-        $response = array(
-            'data' => array(),
-            'recordsTotal' => 0,
-            'recordsFiltered' => 0
-        );
+        $error = $this->setLocalization("Error");
+        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
 
-        $ad = new \VclubAdvertising();
-        $self = $this;
-        $response["data"] = array_map(function($row) use ($self){
+        $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
+
+        if (!isset($query_param['where'])) {
+            $query_param['where'] = array();
+        }
+
+        $filds_for_select = $this->getVideoAdvertiseFields();
+
+        $query_param['select'] = array_values($filds_for_select);
+
+        if (!empty($query_param['like'])) {
+            if (array_key_exists('started', $query_param['like'])) {
+                unset($query_param['like']['started']);
+            }
+            if (array_key_exists('ended', $query_param['like'])) {
+                unset($query_param['like']['ended']);
+            }
+        }
+        $this->cleanQueryParams($query_param, array_keys($filds_for_select), $filds_for_select);
+
+        foreach($query_param['order'] as $key => $val){
+            if (array_key_exists($key, $filds_for_select )){
+                $new_key = preg_replace('/\s+as\s+`?' . $key . '`?', '', $filds_for_select[$key]);
+                unset($query_param['order'][$key]);
+                $query_param['order'][$new_key] = $val;
+            }
+        }
+
+        $response['recordsTotal'] = $this->db->getAdsTotalRows();
+        $response["recordsFiltered"] = $this->db->getAdsTotalRows($query_param['where'], $query_param['like']);
+
+        $must_watch = $this->setLocalization('all');
+        $response["data"] = array_map(function($row) use ($must_watch){
             if (!is_numeric($row['must_watch'])) {
-                $row['must_watch'] = $self->setLocalization($row['must_watch']);
+                $row['must_watch'] = $must_watch;
             }
             settype($row['status'], 'int');
             return $row;
-        }, $ad->getAllWithStatForMonth());
+        }, $this->db->getAdsList($query_param));
 
-        $response["recordsFiltered"] = $response["recordsTotal"] = (string) count($response["data"]);
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         $error = "";
 
@@ -2314,6 +2340,19 @@ class VideoClubController extends \Controller\BaseStalkerController {
             array('name' => 'must_watch',   'title' => $this->setLocalization("Necessary to view")." (%)",  'checked' => TRUE),
             array('name' => 'status',       'title' => $this->setLocalization("Status"),                    'checked' => TRUE),
             array('name' => 'operations',   'title' => $this->setLocalization("Operations"),                'checked' => TRUE)
+        );
+    }
+
+    private function getVideoAdvertiseFields(){
+        return array(
+            'id'         => 'V_A.`id` as `id`',
+            'title'         => 'V_A.`title` as `title`',
+            'url'           => 'V_A.`url` as `url`',
+            'weight'        => 'V_A.`weight` as `weight`',
+            'started'       => 'CAST(SUM(V_A_L.`watch_complete`) as UNSIGNED) as `started`',
+            'ended'         => 'CAST(COUNT(V_A_L.`vclub_ad_id`) as UNSIGNED) as `ended`',
+            'must_watch'    => 'V_A.`must_watch` as `must_watch`',
+            'status'        => 'V_A.`status` as `status`'
         );
     }
 
