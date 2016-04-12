@@ -1595,7 +1595,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         $error = $this->setLocalization('Error');
         $param = (!empty($this->data) ? $this->data : array());
 
-        $query_param = $this->prepareDataTableParams($param, array('operations', '_', 'localized_title', 'category','RowOrder'));
+        $query_param = $this->prepareDataTableParams($param, array('operations', '_', 'localized_title', 'category_name', 'RowOrder'));
 
         if (!isset($query_param['where'])) {
             $query_param['where'] = array();
@@ -1613,6 +1613,15 @@ class VideoClubController extends \Controller\BaseStalkerController {
 
         $query_param['select'] = array_values($filds_for_select);
 
+        $order = array();
+        if (!empty($query_param['order']['movie_in_genre'])) {
+            $order = $query_param['order'];
+        }
+
+        if (!empty($query_param['like']['movie_in_genre'])) {
+            unset($query_param['like']['movie_in_genre']);
+        }
+
         $this->cleanQueryParams($query_param, array_keys($filds_for_select), $filds_for_select);
 
         $response['recordsTotal'] = $this->db->getTotalRowsVideoCatGenresList();
@@ -1627,19 +1636,20 @@ class VideoClubController extends \Controller\BaseStalkerController {
         if (empty($query_param['select'])) {
             $query_param['select'][] = '*';
         }
-        $query_param['select'][] = 'cat_genre.id as id';
-        $query_param['select'][] = 'media_category.id as category_id';
 
-        if (!in_array('category_name', $query_param['select'])){
-            $query_param['select'][] = 'category_name';
+        if (!empty($order)) {
+            $query_param['order'] = $order;
         }
 
-        $query_param['order']['title'] = 'ASC';
+        $cat_genre = $this->setLocalization($this->db->getAllFromTable('cat_genre', 'id'), 'title');
+        $cat_genre_localised = array_combine($this->getFieldFromArray($cat_genre, 'id'), $this->getFieldFromArray($cat_genre, 'title'));
 
-        $self = $this;
-        $response['data'] = array_map(function($row) use ($self){
-            $row['localized_title'] = $self->setLocalization($row['title']);
-            $row['category'] = $self->setLocalization($row['category_name']);
+        $media_category = $this->setLocalization($this->db->getAllFromTable('media_category', 'id'), 'category_name');
+        $media_category_localised = array_combine($this->getFieldFromArray($media_category, 'id'), $this->getFieldFromArray($media_category, 'category_name'));
+
+        $response['data'] = array_map(function($row) use ($cat_genre_localised, $media_category_localised){
+            $row['localized_title'] = $cat_genre_localised[$row['id']];
+            $row['category'] = $media_category_localised[$row['category_id']];
             $row['RowOrder'] = "dTRow_" . $row['id'];
             return $row;
         }, $this->db->getVideoCatGenres($query_param));
@@ -2461,7 +2471,10 @@ class VideoClubController extends \Controller\BaseStalkerController {
         return array(
             'title' => '`cat_genre`.`title` as `title`',
             'category' => '`media_category`.`category_name` as `category`',
-            'movie_in_genre' => 'CAST((SELECT  COUNT(*) FROM `video` WHERE `video`.`category_id` = `media_category`.`id` AND (`cat_genre`.`id` = `video`.`cat_genre_id_1` || `cat_genre`.`id` = `video`.`cat_genre_id_2` || `cat_genre`.`id` = `video`.`cat_genre_id_3` || `cat_genre`.`id` = `video`.`cat_genre_id_4`)) as CHAR) as `movie_in_genre`',
+            'movie_in_genre' => '(SELECT  COUNT(*) FROM `video` WHERE `video`.`category_id` = `media_category`.`id` AND (`cat_genre`.`id` = `video`.`cat_genre_id_1` || `cat_genre`.`id` = `video`.`cat_genre_id_2` || `cat_genre`.`id` = `video`.`cat_genre_id_3` || `cat_genre`.`id` = `video`.`cat_genre_id_4`)) as `movie_in_genre`',
+            'id' => '`cat_genre`.`id` as `id`',
+            'category_id' => '`media_category`.`id` as `category_id`',
+            'category_name' =>  '`media_category`.`category_name` as `category_name`'
         );
     }
 }

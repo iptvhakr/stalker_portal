@@ -82,9 +82,7 @@
                 "bFilter": true,
                 "bPaginate": true,
                 "bInfo": true,
-                "columnDefs": [
-                    { className: "", "targets": [ -1 ] }
-                ]
+                "columnDefs": [{"searchable": false, "targets": [2]}]
             }).prev('.dataTables_processing').hide('');
             $('#datatable-1').DataTable().ajax.reload();
         }

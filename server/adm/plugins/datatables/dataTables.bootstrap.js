@@ -14,7 +14,6 @@ $.extend(true, $.fn.dataTable.defaults, {
         $(oSettings.nTableWrapper).on("input keypress keyup", "input", function (e) {
             this.value = this.value.replace(/^\s+/ig, '').replace(/\s{2}/ig, ' ');
         });
-
 	},
     "fnDrawCallback": function (oSettings) {
         var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
@@ -63,8 +62,10 @@ $.extend(true, $.fn.dataTable.defaults, {
             var header = table.column(this.idx).header();
             if (this.bSearchable) {
                 $(header)[classOperation]('DThighlight');
+                table.columns( this.idx ).nodes().flatten().to$()[classOperation]( 'DThighlight' );
             } else {
                 $(header)[classOperation]('DTbacklight');
+                table.columns( this.idx ).nodes().flatten().to$()[classOperation]( 'DTbacklight' );
             }
         });
     },

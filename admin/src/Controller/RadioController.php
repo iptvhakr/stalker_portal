@@ -130,6 +130,10 @@ class RadioController extends \Controller\BaseStalkerController {
 
         $query_param['where'] = array_merge($query_param['where'], $filter);
 
+        if (!empty($query_param['like']) && array_key_exists('volume_correction', $query_param['like'])) {
+            $query_param['like']['volume_correction'] = '%' . ((int) trim($query_param['like']['volume_correction'], '%')) / 5 . '%';
+        }
+
         $response['recordsTotal'] = $this->db->getTotalRowsRadioList();
         $response["recordsFiltered"] = $this->db->getTotalRowsRadioList($query_param['where'], $query_param['like']);
 

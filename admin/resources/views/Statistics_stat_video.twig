@@ -102,7 +102,7 @@
                 "bFilter": true,
                 "bPaginate": true,
                 "bInfo": true,
-				"columnDefs": [     ]
+				"columnDefs": [ {"searchable": false, "targets": [{% if app['filters']['stat_to'] == 'all' %}4{% elseif app['filters']['stat_to'] == 'daily' %}1{% endif %}]} ]
             }).prev('.dataTables_processing').hide('');
             {% if app['filters']['stat_to'] != 'genre' %}
             $('#datatable-1').DataTable().ajax.reload();

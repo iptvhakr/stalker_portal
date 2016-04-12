@@ -77,7 +77,7 @@
                 "bFilter": true,
                 "bPaginate": true,
                 "bInfo": true,
-				"columnDefs": [     ], 
+				"columnDefs": [ {"searchable": false, "targets": [2]} ]
             }).prev('.dataTables_processing').hide('');
             $('#datatable-1').DataTable().ajax.reload();
         }

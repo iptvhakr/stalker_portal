@@ -87,7 +87,7 @@
                 "bPaginate": true,
                 "bInfo": true,
                 "aoColumnDefs": [
-                    {"searchable": false, "targets": [0]},
+                    {"searchable": false, "targets": [0, -2]},
                     {"sortable": false, "targets": [0]}
                 ]
             }).prev('.dataTables_processing').hide('');
@@ -100,7 +100,7 @@
                 $('head').append('<link href="{{ app.request.baseUrl }}/css/dataTables.tableTools.css" type="text/css" rel="stylesheet" />');
                 $(document).on('click', '.btn.DTTT_button_print', function(){
                     $("#table_container").removeClass('col-sm-offset-2');{#.parents().map(function(){$(this).css('padding-left', 0);});#}
-                })
+                });
                 $(document).on('click', "a.main_ajax", function (e) {
                     e.stopPropagation();
                     e.preventDefault();

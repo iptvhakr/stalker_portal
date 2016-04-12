@@ -1223,7 +1223,7 @@ color: #5F5F5F !important;     height: 34px; padding: 4px 1px 4px 12px !importan
 }
 .table{display:none;}
 #cmd_data, #tariff_plan_table{display:inline-table;}
-#datatable-1_wrapper .table,#datatable-2_wrapper .table,#datatable-3_wrapper .table {display:inline-table;}
+.dataTables_wrapper .table {display:inline-table;}
 
 .table > tbody > th, .table > tbody  > td {padding:5px 0px 5px 12px !important;}
 .table > thead > th,
@@ -3356,25 +3356,25 @@ margin-bottom:5px;
 .action-menu .dropdown-menu >li:last-child  ul{ /* ...or use a class on the last link for IE */
  background-color: #FFF5D2; border-radius: 2px;
 }
-#datatable-1_wrapper { position:relative; min-height:100px;}
-#datatable-1_wrapper > .row-fluid{
+.dataTables_wrapper { position:relative; min-height:100px;}
+.dataTables_wrapper > .row-fluid{
     overflow: hidden;
     min-height: 10px;
 	margin-bottom:15px;
 	
 }
 table.dataTable {	margin-bottom:10px;margin-top:5px;}
-#datatable-1_wrapper > .row-fluid > .span6{
+.dataTables_wrapper > .row-fluid > .span6{
 /*    display: none;*/
     float: left;
     min-width: 50%;
 }
 
-#datatable-1_wrapper .row-fluid:nth-of-type(2) > .span6:nth-of-type(1){
+.dataTables_wrapper .row-fluid:nth-of-type(2) > .span6:nth-of-type(1){
     padding-top: 20px;
 }
 
-#datatable-1_wrapper .row-fluid:nth-of-type(2) > .span6:nth-of-type(2){
+.dataTables_wrapper .row-fluid:nth-of-type(2) > .span6:nth-of-type(2){
     float: right;
 }
 
@@ -3664,7 +3664,7 @@ table.dataTable .DTbacklight{
     opacity: 0.6;
 }
 
-table.dataTable tr .DTbacklight:last-of-type, table.dataTable tr .DThighlight:last-of-type {
+table.dataTable tr .action-menu.DTbacklight:last-of-type, table.dataTable tr .action-menu.DThighlight:last-of-type {
     opacity: 1;
 }
 

@@ -19,23 +19,23 @@
 
         <div class="row">
             <div class="">
-                    <div class="box">
-                        {% if attribute(app, 'dropdownAttribute') is defined %}
+                <div class="box">
+                    {% if attribute(app, 'dropdownAttribute') is defined %}
                         {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
-                        {% endif %}
-                        <div class="box-content">
-                            <div class="box-content no-padding">
-                                <div class="dataTables_processing"></div>
-                                <table class="table table-hover table-datatable" id="datatable-1">
-                                    {% if attribute(app, 'dropdownAttribute') is defined %}
-                                        {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
-                                    {% endif %}
-                                    <tbody>
-                                     </tbody>
-                                </table>
-                            </div>
+                    {% endif %}
+                    <div class="box-content">
+                        <div class="box-content no-padding">
+                            <div class="dataTables_processing"></div>
+                            <table class="table table-hover table-datatable" id="datatable-1">
+                                {% if attribute(app, 'dropdownAttribute') is defined %}
+                                    {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                                {% endif %}
+                                <tbody>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
+                </div>
             </div>
         </div>
     </div>
@@ -130,24 +130,7 @@
                         json.data[i].status = ( json.data[i].status ? "{{ 'Published'|trans }}" : "{{ 'Unpublished'|trans }}");
 
                         if (claimsCount) {
-                            if(json.data[i].video_counter){
-                                json.data[i].claims = json.data[i].video_counter;
-                            }
-                            json.data[i].claims += '/';
-
-                            if(json.data[i].sound_counter){
-                                json.data[i].claims += json.data[i].sound_counter;
-                            }
-                            json.data[i].claims += '/';
-
-                            if(json.data[i].no_epg){
-                                json.data[i].claims += json.data[i].no_epg;
-                            }
-                            json.data[i].claims += '/';
-
-                            if(json.data[i].wrong_epg){
-                                json.data[i].claims += json.data[i].wrong_epg;
-                            }
+                            json.data[i].claims = [json.data[i].video_counter, json.data[i].sound_counter, json.data[i].no_epg, json.data[i].wrong_epg].join('/');
                         } else {
                             json.data[i].claims = "///";
                         }
@@ -215,7 +198,8 @@
                 {% endif %}
                 "aoColumnDefs": [ 
                     { "targets": [ -1 ], "sortable": false},
-                    {#{ "searchable": false, "targets": [ 2, 5, 7, 8] },#}
+                    { "searchable": false, "targets": [ 2, 4, 5, 8, 9, 10, 11] },
+                    { "sortable": false, "targets": [8, 11] },
                     { className: "action-menu", "targets": [ -1 ] }
                 ]
             }).prev('.dataTables_processing').hide('');
@@ -374,9 +358,10 @@
         }
 
         function fillEPGForm(data){
-            $( "#s2_channel option[value='"+data.ch_id+"']").prop('selected', 'selected');
-            $( "#epg_date").removeAttr('disabled').datepicker( "setDate", data.epg_date);
-            $( "#epg_body" ).val(data.epg_body);
+            $('#s2_channel option[value="'+data.ch_id+'"]').prop('selected', 'selected');
+            $('#s2_channel').select2({minimumResultsForSearch: -1});
+            $("#epg_date").removeAttr('disabled').datepicker( "setDate", data.epg_date);
+            $("#epg_body").val(data.epg_body);
         }
 
         var saveEPGSuccess = function(){

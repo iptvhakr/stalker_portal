@@ -86,9 +86,7 @@
                 "bPaginate": true,
 				"columnDefs": [     ], 
                 "bInfo": true
-            }).prev('.dataTables_processing').hide('', function(){
-                $('.dataTables_filter').hide('');
-            });
+            }).prev('.dataTables_processing').hide('');
             $('#datatable-1').DataTable().ajax.reload();
         }
 

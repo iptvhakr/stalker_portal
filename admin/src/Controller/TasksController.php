@@ -425,7 +425,6 @@ class TasksController extends \Controller\BaseStalkerController {
         
         $func = "getFieldsReport" . ucfirst($response['table']);
         $filds_for_select = $this->$func($response['table']);
-        
 
         $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
 
@@ -613,7 +612,7 @@ class TasksController extends \Controller\BaseStalkerController {
         
         $return["end_time"] = "CAST(M_T.`end_time` as CHAR ) as `end_time`";
         $return["video_quality"] = "if(V.hd = 0, 'SD', 'HD') as `video_quality`";
-        $return["duration"] = "V.`time` as `duration`";
+        $return["duration"] = "CAST(V.`time` as UNSIGNED) as `duration`";
         $return["archived"] = "(archived<>0) as `archived`";
         
         return $return;

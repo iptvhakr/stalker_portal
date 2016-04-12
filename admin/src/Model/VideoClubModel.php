@@ -337,6 +337,9 @@ class VideoClubModel extends \Model\BaseStalkerModel {
         if (!empty($param['like'])) {
             $this->mysqlInstance->like($param['like'], 'OR');
         }
+        if (!empty($param['having'])) {
+            $this->mysqlInstance->having($param['having']);
+        }
         if (!empty($param['order'])) {
             $this->mysqlInstance->orderby($param['order']);
         } else {

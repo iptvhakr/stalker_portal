@@ -43,26 +43,26 @@
       
             </form>
         </div>
-        
-        <div class="row">           
-                <div class="box">
-                    {% if attribute(app, 'dropdownAttribute') is defined %}
-                    {{ main_macros.get_dropdown_attribute(app['dropdownAttribute']) }}
-                    {% endif %}
-                    <div class="box-content">
-                        <div class="box-content no-padding">                          
-                                <div class="dataTables_processing"></div>
-                                <table class="table  table-hover table-datatable" id="datatable-1">
-                                    {% if attribute(app, 'dropdownAttribute') is defined %}
-                                        {{ main_macros.get_datatable_head(app['dropdownAttribute']) }}
-                                    {% endif %}
-                                    <tbody>
 
-                                    </tbody>
-                                </table>                           
-                        </div>
+        <div class="row">
+            <div class="box">
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                    {{ main_macros.get_dropdown_attribute(app['dropdownAttribute']) }}
+                {% endif %}
+                <div class="box-content">
+                    <div class="box-content no-padding">
+                        <div class="dataTables_processing"></div>
+                        <table class="table  table-hover table-datatable" id="datatable-1">
+                            {% if attribute(app, 'dropdownAttribute') is defined %}
+                                {{ main_macros.get_datatable_head(app['dropdownAttribute']) }}
+                            {% endif %}
+                            <tbody>
+
+                            </tbody>
+                        </table>
                     </div>
-                </div>           
+                </div>
+            </div>
         </div>
     </div>
 
@@ -126,9 +126,7 @@
                 "bFilter": true,
                 "bPaginate": true,
                 "bInfo": true,
-                "columnDefs": [
-               
-                ]
+                "columnDefs": [ {"searchable": false, "targets": [-1, -2, -5]}]
             }).prev('.dataTables_processing').hide('');
             $('#datatable-1').DataTable().ajax.reload();
         }

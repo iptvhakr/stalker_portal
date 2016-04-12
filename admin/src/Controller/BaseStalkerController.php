@@ -326,7 +326,7 @@ class BaseStalkerController {
                 }
                 $query_param['select'][] = $col_name;
                 if (!empty($column['searchable']) && $column['searchable'] == 'true' && !empty($params['search']['value']) && $params['search']['value'] != "false") {
-                    $query_param['like'][$col_name] = "%" . $params['search']['value'] . "%";
+                    $query_param['like'][$col_name] = "%" . addslashes($params['search']['value']) . "%";
                 }
             }
         }

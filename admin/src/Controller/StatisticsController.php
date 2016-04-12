@@ -565,7 +565,7 @@ class StatisticsController extends \Controller\BaseStalkerController {
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }
-        
+
         $response["data"] = $this->db->getDailyClaimsList($query_param);
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
                
@@ -622,7 +622,7 @@ class StatisticsController extends \Controller\BaseStalkerController {
             $query_param['like'] = array();
         }
         if (!empty($param['date'])) {
-            $query_param['like']['M_C_L.`added`'] = $param['date']."%";
+            $query_param['where']['M_C_L.`added` LIKE "' . $param['date'].'%" AND 1'] = 1;
         }
 
         if (empty($query_param['select'])) {
@@ -637,15 +637,15 @@ class StatisticsController extends \Controller\BaseStalkerController {
         }
         $query_param['select'][] = "M_C_L.uid";
 
-        if (!empty($query_param['like']) && array_key_exists('added', $query_param['like'])) {
+        /*if (!empty($query_param['like']) && array_key_exists('added', $query_param['like'])) {
             $query_param['like']['CAST(M_C_L.`added` as CHAR)'] = $query_param['like']['added'];
             unset($query_param['like']['added']);
-        }
+        }*/
         if (!empty($query_param['like']) && array_key_exists('name', $query_param['like'])) {
-            $query_param['like']["(I.`name` LIKE '{$query_param['like']['name']}' OR K.`name` LIKE '{$query_param['like']['name']}' OR V.`name` LIKE '{$query_param['like']['name']}') OR '1'"] = 1;
+            $query_param['like']["(I.`name` LIKE '{$query_param['like']['name']}' OR K.`name` LIKE '{$query_param['like']['name']}' OR V.`name` LIKE '{$query_param['like']['name']}') AND '1'"] = 1;
             unset($query_param['like']['name']);
         }
-        $response['recordsTotal'] = $this->db->getClaimsLogsTotalRows();
+        $response['recordsTotal'] = $this->db->getClaimsLogsTotalRows($query_param['where']);
         $response["recordsFiltered"] = $this->db->getClaimsLogsTotalRows($query_param['where'], $query_param['like']);
 
         if (empty($query_param['limit']['limit'])) {
@@ -653,7 +653,7 @@ class StatisticsController extends \Controller\BaseStalkerController {
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }
-        
+
         $response["data"] = $this->db->getClaimsLogsList($query_param);
         
         $response["data"] = array_map(function($row){
@@ -952,7 +952,7 @@ class StatisticsController extends \Controller\BaseStalkerController {
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }
-        
+
         $response["data"] = $this->db->getTvList($query_param);
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
                
@@ -1461,7 +1461,7 @@ class StatisticsController extends \Controller\BaseStalkerController {
             "state"         => "if(ended=0 and archived=0 and (UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(start_time))>864000, 3, M_T.`ended` + M_T.rejected) as `state`",
             "end_time"      => "CAST(M_T.`end_time` as CHAR ) as `end_time`",
             "video_quality" => "if(V.hd = 0, 'SD', 'HD') as `video_quality`",
-            "duration"      => "V.`time` as `duration`",
+            "duration"      => "CAST(V.`time` as UNSIGNED) as `duration`",
             "archived"      => "(archived<>0) as `archived`"
                     
         );

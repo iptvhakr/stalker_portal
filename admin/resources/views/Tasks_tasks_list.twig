@@ -11,25 +11,22 @@
                     {{ main_macro.get_filter('to_user', 'Assigned to'|trans, 'id', 'login', app['taskAdmin'], 3, 6) }}
             </div>
         </div>
-        
-        <div class="row">
-            
-                <div class="box">
-                    {% if attribute(app, 'dropdownAttribute') is defined %}
-                    {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
-                    {% endif %}
-                    <div class="box-content">
-                        <div class="box-content no-padding">
-                        <div class="dataTables_processing"></div>
-                            <table class="table  table-hover table-datatable" id="datatable-1">
-                                {% if attribute(app, 'dropdownAttribute') is defined %}
-                                {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
-                                {% endif %}
-                                <tbody>
 
-                                </tbody>
-                            </table>
-                        </div>
+        <div class="row">
+            <div class="box">
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                    {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
+                {% endif %}
+                <div class="box-content">
+                    <div class="box-content no-padding">
+                        <div class="dataTables_processing"></div>
+                        <table class="table  table-hover table-datatable" id="datatable-1">
+                            {% if attribute(app, 'dropdownAttribute') is defined %}
+                                {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                            {% endif %}
+                            <tbody>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -115,7 +112,7 @@
                 "order": [[ 4, "desc" ]],
                 "columnDefs": [
                     { className: "action-menu", "targets": [ -1 ] },
-                    {"searchable": false, "targets": [-1, -2, 1]},
+                    {"searchable": false, "targets": [-1, -2, -3, -4, 1]},
                     {"sortable": false, "targets": [-1, 1]}
                 ]
             }).prev('.dataTables_processing').hide('');

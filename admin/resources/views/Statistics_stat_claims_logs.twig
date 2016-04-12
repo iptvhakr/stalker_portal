@@ -19,7 +19,7 @@
                     <div class="box-content">
                         <div class="box-content no-padding">
                             <div class="row">
-                                <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+                                <div class="col-xs-12 col-sm-12">
                                     <div class="dataTables_processing"></div>
                                     <table class="table  table-hover table-datatable" id="datatable-1">
                                         {% if attribute(app, 'dropdownAttribute') is defined %}
@@ -81,6 +81,7 @@
                 {% endif %}
                 "bFilter": true,
                 "bPaginate": true,
+                "columnDefs": [{"searchable": false, "targets": [-1, 0, 2]}],
                 "bInfo": true
             }).prev('.dataTables_processing').hide('');
             $('#datatable-1').DataTable().ajax.reload();
