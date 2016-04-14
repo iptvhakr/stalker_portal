@@ -94,10 +94,7 @@
                 "ajax": {
                     "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/storages-video-search-json",
                     "data": function (d) {
-                        var params = $.parseParams(window.location.href.split('?')[1] || ''); //window.location.href.split('?')[1] || '' 
-                        for (var i in params) {
-                            d[i] = params[i];
-                        }
+                        d = dataTableDataPrepare(d);
                         $('#video_search_form input').each(function(){
                             if (typeof(d['filters']) == 'undefined') {
                                 d["filters"] = {};

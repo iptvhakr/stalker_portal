@@ -92,11 +92,8 @@
                 "ajax": {
                     "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/tasks-list-json",
                     "data": function (d) {
+                        d = dataTableDataPrepare(d);
                         d['task_type'] = '{{ app['task_type'] }}';
-                        var params = $.parseParams(window.location.href.split('?')[1] || ''); //window.location.href.split('?')[1] || '' 
-                        for (var i in params) {
-                            d[i] = params[i];
-                        }
                     }
                 },
                 "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],

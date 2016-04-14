@@ -75,14 +75,7 @@
                 "ajax": {
                     "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/events-list-json",
                     "data": function (d) {
-                        var RegExp = /video_id=(\d+)/;
-                        if (video_id = RegExp.exec(window.location.href)) {
-                            d.video_id = video_id[1];
-                        }
-                        var params = $.parseParams(window.location.href.split('?')[1] || ''); //window.location.href.split('?')[1] || '' 
-                        for (var i in params) {
-                            d[i] = params[i];
-                        }
+                        d = dataTableDataPrepare(d);
 
                         $('input[id^="filter_"]').each(function () {
                             d['filters[' + $(this).attr("id").replace("filter_", "") + ']'] = $(this).val();
