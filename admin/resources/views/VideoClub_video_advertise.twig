@@ -148,8 +148,8 @@
     document.addEventListener("DOMContentLoaded", yelp, false);
     
     var removeAds = function(obj){
-        var cRow = $(obj).closest('tr');
-        $('#datatable-1').DataTable().row(cRow).remove().draw( false );
+        JSSuccessModalBox(obj);
+        $('#datatable-1').DataTable().ajax.reload();
     };
 
     var toggleVideoAdsStatus = function(obj){

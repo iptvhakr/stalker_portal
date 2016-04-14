@@ -1158,7 +1158,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         $error = $this->setLocalization('Failed');
         $ad = new \VclubAdvertising();
         
-        $result = $ad->delById($this->postData['adsid']);
+        $result = $ad->delById($this->postData['adsid'])->total_rows();
         if (is_numeric($result)) {
             $error = '';
             if ($result === 0) {
