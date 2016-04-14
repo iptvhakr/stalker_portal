@@ -326,7 +326,8 @@ class BaseStalkerController {
                 }
                 $query_param['select'][] = $col_name;
                 if (!array_key_exists('visible', $column) || $column['visible'] != 'false'){
-                    if (!empty($column['searchable']) && $column['searchable'] == 'true' && !empty($params['search']['value']) && $params['search']['value'] != "false") {
+                    settype($params['search']['value'], 'string');
+                    if (!empty($column['searchable']) && $column['searchable'] == 'true' && (!empty($params['search']['value']) || $params['search']['value'] === '0') && $params['search']['value'] != "false") {
                         $query_param['like'][$col_name] = "%" . addslashes($params['search']['value']) . "%";
                     }
                 }
