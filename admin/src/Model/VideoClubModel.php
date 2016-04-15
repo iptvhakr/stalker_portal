@@ -2,6 +2,8 @@
 
 namespace Model;
 
+use Symfony\Component\Validator\Constraints\DateTime;
+
 class VideoClubModel extends \Model\BaseStalkerModel {
 
     public function __construct() {
@@ -93,6 +95,11 @@ class VideoClubModel extends \Model\BaseStalkerModel {
     }
 
     public function removeVideoById($video_id) {
+        $date = new \DateTime();
+        $this->mysqlInstance->update(
+            'moderator_tasks',
+            array('ended' => 1, 'rejected' => 1, 'end_time' => $date->format('Y-m-d H:i:s')),
+            array('media_id' => $video_id, 'media_type' => 2));
         return $this->mysqlInstance->delete('video', array('id' => $video_id))->total_rows();
     }
 
