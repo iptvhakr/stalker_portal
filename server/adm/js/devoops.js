@@ -904,11 +904,11 @@ $(document).ready(function () {
     
 });
 
-function getURLFilterString(obj){
-    var hrefM = window.location.href;
+function getURLFilterString(obj, href){
+    var hrefM = href ? href : window.location.href;
     var filterName = $(obj).closest('div[data-tvfilter]').data('tvfilter');
     var filter_str = 'filters[' + filterName + ']=' + ((obj.tagName == "A") ? $(obj).data('filter'): $(obj).prev('input').val() );
-    if (window.location.search == '') {
+    if (window.location.search == '' && !href) {
         return hrefM + '?' + filter_str;
     } else {
         var filterRegExp = new RegExp('filters\\[' + filterName + '[^=]*=[^&|^$]*', 'ig');
@@ -1290,4 +1290,12 @@ function JSErrorModalBox(data){
         notty('<span>' + words['Failed'] + '! ' + msg + '!</span>', 'error');
     }
     $("#modalbox").data('complete', 1);
+}
+
+function setActiveFilter(obj){
+    var parent = $(obj).closest('div[data-tvfilter]');
+    parent.removeClass('open').data('filterval', $(obj).data('filter'));
+    parent.children('a').children("span:last-of-type").text($(obj).find('span').text());
+    $(obj).closest('ul').find("a").removeClass('active');
+    $(obj).addClass('active');
 }

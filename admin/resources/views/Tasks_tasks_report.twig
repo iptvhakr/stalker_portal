@@ -109,7 +109,11 @@
                 "ajax": {
                     "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/tasks-report-json",
                     "data": function (d) {
-                        d = dataTableDataPrepare(d);
+                        var table = $('#datatable-1').DataTable();
+                        var DT_qString = table.ajax.url();
+                        if (DT_qString.indexOf("?") == -1){
+                            d = dataTableDataPrepare(d);
+                        }
                         d['task_type'] = '{{ app['task_type'] }}';
 
                         $('input[id^="datepicker_"]').each(function () {
@@ -184,6 +188,26 @@
                         $('#datatable-1').DataTable().ajax.reload();
                     }
                 });
+
+                $("#iptv_list").on('click', 'div[data-tvfilter] ul a', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+
+                    setActiveFilter(this);
+                    var qString = '';
+                    $("#iptv_list div[data-tvfilter] ul a.active").each(function(){
+                        qString = getURLFilterString(this, qString).split("?").splice(-1)[0] || '';
+                        console.log(qString);
+                    });
+                    var table = $('#datatable-1').DataTable();
+                    var DT_qString = table.ajax.url();
+                    DT_qString = DT_qString.replace(/\??filters[^&]+&?/ig, '');
+                    console.log(DT_qString);
+                    table.ajax.url(DT_qString + '?' + qString);
+                    table.ajax.reload();
+
+                });
+
                 LoadDataTablesScripts(TestTable1);
             });
         }

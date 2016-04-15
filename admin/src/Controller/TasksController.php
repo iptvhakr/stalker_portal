@@ -412,17 +412,23 @@ class TasksController extends \Controller\BaseStalkerController {
         );
         $error = "Error";
         $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
-        
+
         $like_filter = array();
         $filter = $this->getTasksFilters($like_filter);
         if (!empty($filter['task_type'])) {
             $response['table'] = $filter['task_type'];
         }
+
+        if (array_key_exists('filters', $param)) {
+            $param = array_merge($param, $param['filters']);
+            unset($param['filters']);
+        }
+
         if (!empty($param['task_type'])) {
             $response['table'] = $param['task_type'];  
         }
         unset($filter['task_type']);
-        
+
         $func = "getFieldsReport" . ucfirst($response['table']);
         $filds_for_select = $this->$func($response['table']);
 
@@ -474,7 +480,9 @@ class TasksController extends \Controller\BaseStalkerController {
                 $query_param['where']["$prefix.add_by"]=$this->admin->getId();
             }
         }
-        
+
+        /*print_r($query_param);exit;*/
+
         $response['recordsTotal'] = $this->db->getTotalRowsTasksList($query_param, TRUE);
         $response["recordsFiltered"] = $this->db->getTotalRowsTasksList($query_param);
         
