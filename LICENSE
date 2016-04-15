@@ -1,15 +1,105 @@
-The Middleware Stalker is free software. It is released under the terms of the following MIT License.
+Stalker Middleware License Agreement
 
-Copyright (c) 2008-2016 Infomir LLC http://infomir.eu
+       Before using the Stalker Middleware Program (the "Program"), please read this License Agreement (the "License Agreement") carefully. Any use of this Program means your full and express acceptance of this License Agreement. If you do not accept this License Agreement or any portion thereof, you are strictly prohibited from using the Program.
+       
+1. License
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
-documentation files (the "Software"), to deal in the Software without restriction, including without limitation
-the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
-and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+  1.1 Subject to this Agreement, the company Infomir, LLC, a New York limited liability company (hereinafter - "Licensor"), which is the owner of exclusive rights for the Program, grants you (hereinafter - �You� or �User�) the rights expressly specified in this Agreement.
+  1.2 By copying and/or downloading the Program on personal computer or server, You fully and expressly agree to abide by this Agreement. 
+  1.3 Use of the Program is permitted solely and strictly under the terms stipulated herein. If You do not accept this Agreement or any portion hereof, You are strictly prohibited from using the Program.
+  1.4 The license granted hereunder is non-exclusive, non-transferable royalty-free. Use of the Program under the terms, by means, or in a way that is not expressly stipulated in this License Agreement is strictly prohibited. 
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+2. Intellectual Property Rights
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
-TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+  2.1 Licensor is the owner of copyright and exclusive rights for the Program.  You are prohibited from exercising any rights inconsistent with Licensor's ownership of the exclusive rights in the Program.  Moreover, You acknowledge and agree that nothing contained in this Agreement shall confer to You any rights whatsoever in the name STALKER™ or in any intellectual property relating thereto.  Furthermore, You acknowledge and agree that all inventions and creations developed which relate in any way to the Program, including, without limitation, any and all ideas, concepts, discoveries, designs, improvements and creations regardless of whether the same are patentable or protected under any law, shall at all times remain the property of Licensor and shall be subject to the terms and conditions of this Agreement.  This Section shall survive the termination of this Agreement, indefinitely.
+
+3. Rights of the User
+
+  3.1 Subject to the terms of this License Agreement, Licensor grants to You non-exclusive, non-transferable, worldwide license to use the Program.
+  3.2 IT IS STRICTLY PROHIBITED, AND YOU MAY NOT MODIFY, CHANGE, DECOMPILE, DISASSEMBLE, DECRYPT, AND PERFORM ANY OTHER ACTIONS WITH THE SOURCE AND/OR OBJECT CODE OF THE CORE, WHICH ARE AIMED AT OBTAINING INFORMATION ON THE IMPLEMENTATION OF THE ALGORITHMS USED IN THE CORE, AT CREATING DERIVATIVE PRODUCTS BY USING THE CORE AS WELL AS AT FULFILLING (ALLOWING FULFILLING) ANY OTHER USE OF THE CORE WITHOUT THE LICENSOR�S PRIOR WRITTEN CONSENT.  YOU AGREE THAT YOU SHALL MAKE NO COMPIES OF THE SOURCE AND/OR OBJECT CODE OF THE CORE FOR ANY REASON.  YOU AGREE NOT TO TRANLSATE, ADAPT, VARY, DISASSEMBLE, DECOMPILE OR REVERSE ENGINEER ANY OF THE FOREGOING WITHOUT LICENSOR'S PRIOR WRITTEN CONSENT WIHC MAY BE WITHHELD OR DENIED IN THE SOLE DISCRETION OF LICENSOR.
+  3.3 For the purposes of this Agreement, the Core will mean the following elements (files) of the Program:
+  cache.class.php
+  cacheresult.class.php
+  config.class.php
+  core.lic
+  databaseresult.class.php
+  dataloader.class.php
+  middleware.class.php
+  mysql.class.php
+  mysqlresult.class.php
+  stb.class.php
+  3.4 The restrictions of the use of the Program stipulated in the paragraph 3.2 hereof will apply to the Core as a whole, as well as for each element (file) of the Core as defined in the paragraph 3.3 hereof.
+  3.5  The Program shall be used under the name Stalker Middleware. User may not change the name of the Program and change or remove any copyright notices, trademark notices, and licenses from the Program.
+
+4. Representations and Warranties
+
+  4.1 THERE IS NO WARRANTY FOR THE PROGRAM TO THE EXTENT PERMITTED BY APPLICABLE LAW. EXCEPT WHEN OTHERWISE STATED IN WRITING, THE PROGRAM IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE, QUALITY, PERFORMANCE OR NONINFRINGEMENT UPON THE PATENT, TRADEMARK, COPYRIGHT OR OTHER INTELLECTUAL PROPERTY RIGHTS OF ANY OTHER PARTY. THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE PROGRAM IS WITH YOU. SHOULD THE PROGRAM PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION.  LICENSOR MAKES NO WARRANTY THTAT THE PROGRAM AND ALL OTHER MATERIAL RELATED THERETO WILL MEET YOUR SPECIFIC OBJECTIVES OR NEEDS OR THAT SAME WILL BE FREE FROM ERRORS OR BUGS.  LICENSOR MAKES NO WARRANTY THAT THERE WILL BE UNINTERRUPTED OPEATION OF THE PROGRAM.  LICENSEE ACKNOWLEDGES AND AGREES THAT THE FOREGOING EXCLUSIONS AND DISCLAIMERS OF WARRANTIES ARE AN INTEGRAL PART OF THIS AGREEMENT.
+  4.2 IN NO EVENT WILL LICENSOR BE LIABLE TO YOU FOR ANY DAMAGES, INCLUDING, BUT NOT LIMITED TO, ANY GENERAL, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE PROGRAM (INCLUDING, BUT NOT LIMITED TO, LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES INCURRED BY YOU OR THIRD PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER PROGRAMS), EVEN IF LICENSOR HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+  4.3 If the disclaimer of warranty and limitation of liability provided above cannot be given local legal effect according to their terms, reviewing courts shall apply local law that most closely approximates an absolute waiver of all civil liability in connection with the Program, unless a warranty or assumption of liability accompanies a copy of the Program.
+
+5. Termination
+
+  In the event that You, (i) breach any of the terms and conditions of this Agreement, or (ii) use the Program in a manner which is inconsistent with the license granted to You pursuant to this Agreement, or (iii) You use the Program in a manner which is inconsistent with its intended purpose, or (iv) You attempt to assign, transfer or sublicense the Program or any portion thereof to any third party without the consent of the Licensor which may be withheld, delayed, denied or conditioned by Licensor in its sole discretion, or (v) You file a voluntary petition in bankruptcy, You make an assignment for the benefit of creditors, You apply for or consent to the appointment of a custodian, receiver, trustee or liquidator for all or part of Your assets, or an involuntary petition in bankruptcy is filed against You which is not discharged for a period of sixty (60) days, then Licensor may terminate this Agreement upon the provision of notice to You.  Upon termination of this Agreement, you must uninstall and delete all copies of the Program from Your personal computer and server immediately.
+      
+6. Injunctive Relief
+
+You acknowledge and agree that an actual or threatened violation by You of this Agreement will cause Licensor immediate and irreparable harm and injury which cannot be fully compensated by an award of damages or other remedies at law.  Accordingly, You acknowledge and agree that in such case, Licensor shall be entitled, as a matter of right, to an injunction from any Court of competent jurisdiction restraining any further violation by Licensee of this Agreement; such right to an injunction shall be cumulative and in addition to, but not in limitation of any other rights that Licensor may have against You, at law or in equity.  This Section shall survive the termination of this Agreement, indefinitely.
+
+
+
+7. Collection of Information
+
+      User is hereby notified and agrees that Licensor may, for the purposes of improving performance and compatibility of the Program and providing individual support, collect, process, and store information such as ip-address and server identifiers.  With respect to customer information, please note the following:
+* Licensor does not sell customer or user information.
+* Licensor expects persons or organizations that provide services on our behalf to keep customer information confidential and use it only to provide the services Licensor has asked them to perform
+* Within Licensor, Licensor communicates regarding the need to protect Your customer and user information to those individuals who may have access to it, and Licensor has established physical, electronic, and procedural safeguards to protect customer information.
+* Licensor complies with all applicable federal, state and local laws.
+
+      Licensor receives customer or user information from various sources, including information from:
+* Your requests for Licensor' services;
+* Your transactions with Licensor, our affiliates, or others; and
+* Nonpublic information that You provide directly to Licensor.
+
+      Licensor uses nonpublic information that we have about You, as described above, to give You superior products and services, provide convenient access to our products and services, and make a wider range of services available to You.  Licensor furnishes Your nonpublic information to our service providers and generically to serve the function of what Licensor does.  However, Licensor does not disclose your specific nonpublic information to other third parties, except as otherwise described in this policy.
+      
+      Licensor may disclose your nonpublic information as permitted by law.  For example, Licensor may share nonpublic information with regulatory authorities and law enforcement officials who have jurisdiction over Licensor or if Licensor is required to do so by United States or other applicable law; provide nonpublic information to others to protect against fraud; and share nonpublic information with others with Your consent.  Licensor also may share nonpublic information with firms we hire to market our services or with non-affiliated companies with whom Licensor has joint marketing agreements to provide You with offers of their services.  These companies may receive customer information, but they are restricted in its use and they are required to comply with all applicable federal, state and local laws.
+      
+      If You prefer that Licensor does not disclose Your nonpublic information to non-affiliated third parties, You may opt out of those disclosures, that is, you may direct Licensor not to make those disclosures, other than disclosures as permitted by law, by sending an Email directly to Licensor at sales@infomirusa.com.
+      
+      When Licensor shares nonpublic information with companies working on Licensor's behalf, Licensor insists that such companies use the nonpublic information only to provide the service that Licensor has asked them to perform.  Within Licensor, customer or user information is available only to those individuals who may need to see it to fulfill and service the needs of our customers or the general function of Licensor.  Licensor communicates regarding the need to protect nonpublic information to all employees and agents, especially to those individuals who have access to it.  In addition, Licensor has established and maintain physical, electronic, and procedural safeguards to comply with federal regulations to protect nonpublic information.
+      
+8. No Liability for Third Party Claims
+
+Licensor shall not be liable for claims made against Licensor or You arising out of your use of the Program and the materials related thereto and You hereby indemnify, defend and hold Licensor and its members, officers, directors, shareholders, employees, agents and affiliates harmless from and against any and all claims of every nature or type, that may be brought or asserted against Licensor or any of Licensor's members, officers, directors, shareholders, employees, agents and affiliates by any other party arising out of (i) Your use of the Program and/or the material related thereto, or (ii) Your breach of Your obligations, duties and responsibilities under this Agreement, or (iii) any breach or default under any representations, warranties, guaranties or other written or oral statements made by or on behalf of You or any person under Your control, including, without limitation, Your agents.
+
+9. Notices
+
+Any notice required to be given to Licensor under this Agreement or in connection with it, shall be in writing and shall be given to the appropriate party by personal delivery or by certified mail, postage prepaid, or recognized overnight delivery services to: Infomir, LLC, 2626 East 14th Street, Suite 101, Brooklyn, New York 11235.
+
+10. Governing Law; Jurisdiction
+
+This Agreement shall be construed and enforced in accordance with the laws of the State of New York, without regard to the conflict of law principles thereof.  In the event of a dispute arising under this Agreement, the Supreme Court of the State of New York, venued in Kings County and the United States District Court for the Eastern District of New York venued in Kings County shall have co-exclusive jurisdiction to resolve such a dispute.
+
+11. No Assignment
+
+Neither this Agreement nor any interest in this Agreement may be assigned or sublicensed by You without the prior express written approval of Licensor and any attempt by You to assign or sublicense this Agreement or any interest herein without the prior express written approval of Licensor shall be null, void and of no force and effect.
+
+12. Entire Agreement
+
+This Agreement is the entire agreement between the parties hereto and terminates and supersedes all prior understandings or agreements on the subject matter hereof.  This Agreement may be modified only by a further writing that is duly executed by both parties.
+
+13. Severability
+
+If this Agreement is held by a Court of competent jurisdiction to be invalid or unenforceable, then this Agreement, including all of the remaining terms, will remain in full force and effect as if such invalid or unenforceable term had never been included.
+
+14. Independent Contractor Status
+
+The parties acknowledge and agree that Licensor and You are independent contractors and not agents, employees or representatives of each other.  Neither party shall have the right to bind the other party to any obligations of any third parties.  This Agreement shall not be deemed to constitute a franchise relationship between the parties hereto.
+
+15. No Waiver
+
+No party's waiver of any breach or accommodation to the other party shall be deemed to be a waiver of any subsequent breach by a party.
+
+16. Headings; Interpretations; Counterparts
+
+Headings used in this Agreement are provided for convenience only and shall not be used to construe meaning or intent.  Except as otherwise provided herein, words used herein, regardless of the number and gender specifically used, shall be deemed and construed to include any other member, singular or plural, and any other gender, masculine, feminine or neuter, as the context indicates is appropriate.  This Agreement may be executed in one or more counterparts, each of which will be deemed an original and all of which together shall constitute one and the same instrument.

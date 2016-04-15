@@ -9,7 +9,11 @@ use Stalker\Lib\HTTP\HTTPRequest;
 
 class AuthAccessHandler extends AccessHandler
 {
-    private $token_expire = 86400;
+    private $token_expire;
+
+    public function __construct(){
+        $this->token_expire = (int) Config::getSafe('oauth_token_expire', 86400);
+    }
 
     public function checkUserAuth($username, $password, $mac = null, $serial_number = null, OAuthRequest $request = null){
         sleep(1); // anti brute-force delay
