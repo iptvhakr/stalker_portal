@@ -85,7 +85,6 @@
         if (!$.fn.fileupload) {
             return false;
         } else  if (typeof (callbackFileUpload) === "function") {
-            console.log($.blueimp.fileupload());
             $.widget('blueimp.fileupload', $.blueimp.fileupload, {
                 options: {
                     messages: {

@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request as Request;
 use Symfony\Component\HttpFoundation\Response as Response;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
+use Symfony\Component\Form\FormError as FormError;
 use Stalker\Lib\Core\Config;
 use Imagine\Image\Box;
 
@@ -22,6 +23,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         'wowza_tmp_link' => array(''),
         'nginx_secure_link' => array(''),
         'flussonic_tmp_link' => array(''),
+        'xtream_codes_support' => array(''),
         'enable_monitoring' => array(FALSE),
         'monitoring_status' => array(FALSE),
         'enable_balancer_monitoring' => array(''),
@@ -1329,6 +1331,15 @@ class TvChannelsController extends \Controller\BaseStalkerController {
            $def_name = "";//"$def_name $def_number";
         }
 
+        if (extension_loaded('mcrypt') || extension_loaded('mcrypt.so')){
+            $this->app['mcrypt_enabled'] = TRUE;
+        } else {
+            $this->app['mcrypt_enabled'] = FALSE;
+            if (array_key_exists('xtream_codes_support', $data) && !empty($data['xtream_codes_support'])) {
+                $data['xtream_codes_support'] = array_fill(0, count($data['xtream_codes_support']), 0);
+            }
+        }
+
         $form = $builder->createBuilder('form', $data)
                 ->add('id', 'hidden')
                 ->add('number', 'text', array(
@@ -1388,6 +1399,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                 ->add('wowza_tmp_link', 'collection', $this->getDefaultOptions())
                 ->add('nginx_secure_link', 'collection', $this->getDefaultOptions())
                 ->add('flussonic_tmp_link', 'collection', $this->getDefaultOptions())
+                ->add('xtream_codes_support', 'collection', $this->getDefaultOptions())
                 ->add('enable_monitoring', 'collection', $this->getDefaultOptions('checkbox'))
                 ->add('monitoring_status', 'collection', $this->getDefaultOptions())
                 ->add('enable_balancer_monitoring', 'collection', $this->getDefaultOptions())
@@ -1471,6 +1483,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                 'use_http_tmp_link' => !empty($data['use_http_tmp_link']) && array_key_exists($key, $data['use_http_tmp_link']) ? (int) $data['use_http_tmp_link'][$key] : 0,
                 'wowza_tmp_link' => !empty($data['wowza_tmp_link']) && array_key_exists($key, $data['wowza_tmp_link']) ? (int) $data['wowza_tmp_link'][$key] : 0,
                 'flussonic_tmp_link' => !empty($data['flussonic_tmp_link']) && array_key_exists($key, $data['flussonic_tmp_link']) ? (int) $data['flussonic_tmp_link'][$key] : 0,
+                'xtream_codes_support' => !empty($data['xtream_codes_support']) && array_key_exists($key, $data['xtream_codes_support']) ? (int) $data['xtream_codes_support'][$key] : 0,
                 'nginx_secure_link' => !empty($data['nginx_secure_link']) && array_key_exists($key, $data['nginx_secure_link']) ? (int) $data['nginx_secure_link'][$key] : 0,
                 'user_agent_filter' => array_key_exists($key, $data['user_agent_filter']) ? $data['user_agent_filter'][$key] : '',
                 'monitoring_url' => array_key_exists($key, $data['monitoring_url']) ? $data['monitoring_url'][$key] : '',
@@ -1496,16 +1509,19 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                 $is_repeating_number = !(($this->oneChannel['number'] != $data['number']) xor ( (bool) count($this->db->getFieldFirstVal('number', $data['number']))));
                 $operation = 'updateITVChannel';
             }
+            $this->dataPrepare($data);
 
             if ((!empty($data['allow_pvr']) || !empty($data['enable_tv_archive'])) && empty($data['mc_cmd'])) {
                 $error_local = array();
                 $error_local['mc_cmd'] = $this->setLocalization('This field cannot be empty if enabled TV-archive or nPVR');
                 $this->app['error_local'] = $error_local;
                 return FALSE;
+            } elseif(array_key_exists('xtream_codes_support', $data) && array_sum($data['xtream_codes_support']) && empty($this->app['mcrypt_enabled'])) {
+                $form->addError(new FormError($this->setLocalization('For enabling Xtream-Codes Support you need enable mcrypt php-extension')));
+                return FALSE;
             }
 
             if ($form->isValid()) {
-                $this->dataPrepare($data);
                 if (empty($data['cmd'])) {
                     $error_local['cmd'] = $this->setLocalization('Requires at least one link of broadcast');
                     $this->app['error_local'] = $error_local;
