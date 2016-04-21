@@ -540,7 +540,7 @@ class AdminsController extends \Controller\BaseStalkerController {
         $error = "Error";
         $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
 
-        $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_', 'admins_count', 'users_count'));
+        $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
 
         if (!isset($query_param['where'])) {
             $query_param['where'] = array();
@@ -558,6 +558,13 @@ class AdminsController extends \Controller\BaseStalkerController {
             $query_param['where']['R.`id`'] = $param['id'];
         }
 
+        if (!empty($query_param['like'][$filds_for_select['admins_count']])) {
+            unset($query_param['like'][$filds_for_select['admins_count']]);
+        }
+        if (!empty($query_param['like'][$filds_for_select['users_count']])) {
+            unset($query_param['like'][$filds_for_select['users_count']]);
+        }
+
         $response['recordsTotal'] = $this->db->getResellersTotalRows();
         $response["recordsFiltered"] = $this->db->getResellersTotalRows($query_param['where'], $query_param['like']);
 
@@ -565,6 +572,13 @@ class AdminsController extends \Controller\BaseStalkerController {
             $query_param['limit']['limit'] = 50;
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
+        }
+
+        if (($search = array_search('users_count', $query_param['select'])) !== FALSE) {
+            unset($query_param['select'][$search]);
+        }
+        if (($search = array_search('admins_count', $query_param['select'])) !== FALSE) {
+            unset($query_param['select'][$search]);
         }
 
         if (empty($param['id']) && empty($query_param['like'])) {
@@ -577,6 +591,15 @@ class AdminsController extends \Controller\BaseStalkerController {
                 "users_count" => $this->db->getResellerMember('users', NULL),
                 "max_users" => "&#8734;"
             );
+        }
+
+        if (!empty($query_param['order'][$filds_for_select['admins_count']])) {
+            $tmp = $query_param['order'][$filds_for_select['admins_count']];
+            $query_param['order'] = array('admins_count' => $tmp);
+        }
+        if (!empty($query_param['order'][$filds_for_select['users_count']])) {
+            $tmp = $query_param['order'][$filds_for_select['users_count']];
+            $query_param['order'] = array('users_count' => $tmp);
         }
 
         $response["data"] = array_merge($response["data"], $this->db->getResellersList($query_param));

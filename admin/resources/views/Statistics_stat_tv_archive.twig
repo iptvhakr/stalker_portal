@@ -57,10 +57,7 @@
                 "ajax": {
                     "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/stat-tv-archive-list-json",
                     "data": function (d) {
-                        var params = $.parseParams(window.location.href.split('?')[1] || ''); //window.location.href.split('?')[1] || ''
-                        for (var i in params) {
-                            d[i] = params[i];
-                        }
+                        d = dataTableDataPrepare(d);
                         $('input[id^="datepicker_"]').each(function () {
                             d['filters[' + $(this).attr("id").replace("datepicker_", "interval_") + ']'] = $(this).val();
                         });
@@ -76,7 +73,7 @@
                 "bFilter": true,
                 "bPaginate": true,
                 "bInfo": true,
-				"columnDefs": [     ]
+				"columnDefs": [ {"searchable": false, "targets": [2, 3]} ]
             }).prev('.dataTables_processing').hide('');
             $('#datatable-1').DataTable().ajax.reload();
         }

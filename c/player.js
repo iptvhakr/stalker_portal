@@ -2427,13 +2427,18 @@ player.prototype.play = function(item){
                         self.cur_media_item.error = '';
                         module.tv.preview_msg.innerHTML = '';
                     }
-
+                    if (result.cmd && result.cmd.search(/%mac%/ig) !== -1) {
+                        result.cmd = result.cmd.replace(/%mac%/ig, stb.profile.mac);
+                    }
                     stb.player.play_now(result);
                     //}
                 };
 
                 this.create_link('itv', cmd, 0);
             }else{
+                if (cmd && cmd.search(/%mac%/ig) !== -1) {
+                    cmd = cmd.replace(/%mac%/ig, stb.profile.mac);
+                }
                 this.play_now(cmd);
             }
 

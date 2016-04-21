@@ -69,7 +69,7 @@ a {outline:none; text-decoration:none;}
 .signal_2 {height:24px; width:34px; float:left; margin:3px 5px 0 0; background:url(576/signal2.png);}
 .signal_3 {height:24px; width:34px; float:left; margin:3px 5px 0 0; background:url(576/signal3.png);}
 .signal_4 {height:24px; width:34px; float:left; margin:3px 5px 0 0; background:url(576/signal4.png);}
-.list_head {font-family:"Trebuchet MS"; font-size:18px; color:#fff;font-weight:normal; margin-right:10px; line-height: 22px;}
+.list_head {font-family:"Trebuchet MS"; font-size:18px; color:#fff;font-weight:normal; margin-right:10px; line-height: 22px;max-width:100%; word-wrap: break-word;  word-break: break-all;}
 
 
 

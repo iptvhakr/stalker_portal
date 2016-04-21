@@ -71,22 +71,16 @@
             }
         }).dataTable({
             "processing": true,
-            "serverSide": false,
+            "serverSide": true,
             "ajax": {
-                "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/video-advertise-list-json",
-                "data": function (d) {
-                    var params = $.parseParams(window.location.href.split('?')[1] || ''); //window.location.href.split('?')[1] || ''
-                    for (var i in params) {
-                        d[i] = params[i];
-                    }
-                }
+                "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/video-advertise-list-json"
             },
             "language": {
                 "url": "{{ app.datatable_lang_file }}"
             },
-            "paging":   false,
+            "paging":   true,
             "ordering": true,
-            "info":     false,
+            "info":     true,
             "scrollCollapse": true,
             "bFilter": true,
             "bPaginate": true,
@@ -97,9 +91,10 @@
             "aoColumnDefs": [ 
                 { className: "action-menu", "targets": [ -1 ] },
                 { "targets": [ -1 ], "orderable": false},
-                { "targets": [ /*1, 2, 3, 4, 5, 6,*/ -1], "searchable": false}
+                { "targets": [ -1, -2, -3, -4, -5], "searchable": false}
             ]
         }).prev('.dataTables_processing').hide('');
+        $('#datatable-1').DataTable().ajax.reload();
     }
     function yelp() {
         $(document).ready(function () {
@@ -153,13 +148,12 @@
     document.addEventListener("DOMContentLoaded", yelp, false);
     
     var removeAds = function(obj){
-        var cRow = $(obj).closest('tr');
-        $('#datatable-1').DataTable().row(cRow).remove().draw( false );
+        JSSuccessModalBox(obj);
+        $('#datatable-1').DataTable().ajax.reload();
     };
 
     var toggleVideoAdsStatus = function(obj){
-        $(obj).text($(obj).data('title'));
-        $(obj).closest('tr').find('span[data-filter="status"]').html($(obj).data('status'));
+        $('#datatable-1').DataTable().ajax.reload();
     };
 
     var errAction = function(obj){

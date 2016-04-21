@@ -394,12 +394,10 @@ class StatisticsController extends \Controller\BaseStalkerController {
 
         if (empty($query_param['select'])) {
             $query_param['select'] = array_values($filds_for_select);
-        } else {
-//            $query_param['select'][] = 'id';
         }
 
         $this->cleanQueryParams($query_param, array_keys($filds_for_select), $filds_for_select);
-                
+
         $response['recordsTotal'] = $this->db->getVideoStatTotalRows($func_alias);
         $response["recordsFiltered"] = $this->db->getVideoStatTotalRows($func_alias, $query_param['where'], $query_param['like']);
 
@@ -410,19 +408,15 @@ class StatisticsController extends \Controller\BaseStalkerController {
                 $query_param['limit']['limit'] = FALSE;
             }
         }
-        
+
         $response["data"] = $this->db->{"getVideoStat{$func_alias}List"}($query_param);
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
 
         while (list($num, $row) = each($response["data"])){
             if ($func_alias == 'Genre'){
-                $row['title'] = $this->mb_ucfirst($row['title']);
-                if ($row['total_movies'] == 0){
-                    $response["data"][$num]['ratio'] = 0;
-                } elseif ($row['played_movies'] != 0) {
-                    $response["data"][$num]['ratio'] = round(($row['played_movies'] / $row['total_movies'])*100, 2);
-                }
-                $response["data"][$num]['title'] =  $this->setLocalization($row['title']);
+                $response["data"][$num]['total_movies'] = $row['total_movies'] ? $row['total_movies']: 0;
+                $response["data"][$num]['played_movies'] = $row['played_movies'] ? $row['played_movies']: 0;
+                $response["data"][$num]['title'] = $this->mb_ucfirst($this->setLocalization($row['title']));
             } else {
                 $datekey = (array_key_exists('date', $row) ? 'date': 'last_played');
                 $response["data"][$num][$datekey] = (int)strtotime($response["data"][$num][$datekey]);
@@ -565,7 +559,7 @@ class StatisticsController extends \Controller\BaseStalkerController {
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }
-        
+
         $response["data"] = $this->db->getDailyClaimsList($query_param);
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
                
@@ -622,7 +616,7 @@ class StatisticsController extends \Controller\BaseStalkerController {
             $query_param['like'] = array();
         }
         if (!empty($param['date'])) {
-            $query_param['like']['M_C_L.`added`'] = $param['date']."%";
+            $query_param['where']['M_C_L.`added` LIKE "' . $param['date'].'%" AND 1'] = 1;
         }
 
         if (empty($query_param['select'])) {
@@ -637,15 +631,15 @@ class StatisticsController extends \Controller\BaseStalkerController {
         }
         $query_param['select'][] = "M_C_L.uid";
 
-        if (!empty($query_param['like']) && array_key_exists('added', $query_param['like'])) {
+        /*if (!empty($query_param['like']) && array_key_exists('added', $query_param['like'])) {
             $query_param['like']['CAST(M_C_L.`added` as CHAR)'] = $query_param['like']['added'];
             unset($query_param['like']['added']);
-        }
+        }*/
         if (!empty($query_param['like']) && array_key_exists('name', $query_param['like'])) {
-            $query_param['like']["(I.`name` LIKE '{$query_param['like']['name']}' OR K.`name` LIKE '{$query_param['like']['name']}' OR V.`name` LIKE '{$query_param['like']['name']}') OR '1'"] = 1;
+            $query_param['like']["(I.`name` LIKE '{$query_param['like']['name']}' OR K.`name` LIKE '{$query_param['like']['name']}' OR V.`name` LIKE '{$query_param['like']['name']}') AND '1'"] = 1;
             unset($query_param['like']['name']);
         }
-        $response['recordsTotal'] = $this->db->getClaimsLogsTotalRows();
+        $response['recordsTotal'] = $this->db->getClaimsLogsTotalRows($query_param['where']);
         $response["recordsFiltered"] = $this->db->getClaimsLogsTotalRows($query_param['where'], $query_param['like']);
 
         if (empty($query_param['limit']['limit'])) {
@@ -653,7 +647,7 @@ class StatisticsController extends \Controller\BaseStalkerController {
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }
-        
+
         $response["data"] = $this->db->getClaimsLogsList($query_param);
         
         $response["data"] = array_map(function($row){
@@ -952,7 +946,7 @@ class StatisticsController extends \Controller\BaseStalkerController {
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }
-        
+
         $response["data"] = $this->db->getTvList($query_param);
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
                
@@ -1294,12 +1288,11 @@ class StatisticsController extends \Controller\BaseStalkerController {
     }
     
     private function getVideoGenreFields(){
-        $date_obj =  new \DateTime( 'midnight 30 days ago' );
     return array(
-            "title" => "`genre`.`title` as `title`",
-            "played_movies" => "(select count(*) from `video` as V where V.genre_id_1 = `genre`.id or V.genre_id_2 =`genre`.id or V.genre_id_3 = `genre`.id or V.genre_id_4 = `genre`.id) as `played_movies`",
-            "total_movies" => "(select count(*) from `played_video` as P_V left join video as V on V.id=P_V.video_id where `playtime`> '{$date_obj->format('Y-m-d H:i:s')}' and (V.genre_id_1 = `genre`.id or V.genre_id_2 =`genre`.id or V.genre_id_3 = `genre`.id or V.genre_id_4 = `genre`.id)) as `total_movies`",
-            "ratio" => "0 as `ratio`"
+            "title" => "`title` as `title`",
+            "played_movies" => "`played_movies` as `played_movies`",
+            "total_movies" => "`total_movies` as `total_movies`",
+            "ratio" => "IF(`played_movies` AND `played_movies`<>0, ROUND(( IF(total_movies AND total_movies<>0, total_movies, 0 )/ played_movies) * 100, 2), 0.00 ) as `ratio`"
         );
     }
     
@@ -1461,7 +1454,7 @@ class StatisticsController extends \Controller\BaseStalkerController {
             "state"         => "if(ended=0 and archived=0 and (UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(start_time))>864000, 3, M_T.`ended` + M_T.rejected) as `state`",
             "end_time"      => "CAST(M_T.`end_time` as CHAR ) as `end_time`",
             "video_quality" => "if(V.hd = 0, 'SD', 'HD') as `video_quality`",
-            "duration"      => "V.`time` as `duration`",
+            "duration"      => "CAST(V.`time` as UNSIGNED) as `duration`",
             "archived"      => "(archived<>0) as `archived`"
                     
         );

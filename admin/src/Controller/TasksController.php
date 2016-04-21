@@ -412,20 +412,25 @@ class TasksController extends \Controller\BaseStalkerController {
         );
         $error = "Error";
         $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
-        
+
         $like_filter = array();
         $filter = $this->getTasksFilters($like_filter);
         if (!empty($filter['task_type'])) {
             $response['table'] = $filter['task_type'];
         }
+
+        if (array_key_exists('filters', $param)) {
+            $param = array_merge($param, $param['filters']);
+            unset($param['filters']);
+        }
+
         if (!empty($param['task_type'])) {
             $response['table'] = $param['task_type'];  
         }
         unset($filter['task_type']);
-        
+
         $func = "getFieldsReport" . ucfirst($response['table']);
         $filds_for_select = $this->$func($response['table']);
-        
 
         $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
 
@@ -475,7 +480,9 @@ class TasksController extends \Controller\BaseStalkerController {
                 $query_param['where']["$prefix.add_by"]=$this->admin->getId();
             }
         }
-        
+
+        /*print_r($query_param);exit;*/
+
         $response['recordsTotal'] = $this->db->getTotalRowsTasksList($query_param, TRUE);
         $response["recordsFiltered"] = $this->db->getTotalRowsTasksList($query_param);
         
@@ -613,7 +620,7 @@ class TasksController extends \Controller\BaseStalkerController {
         
         $return["end_time"] = "CAST(M_T.`end_time` as CHAR ) as `end_time`";
         $return["video_quality"] = "if(V.hd = 0, 'SD', 'HD') as `video_quality`";
-        $return["duration"] = "V.`time` as `duration`";
+        $return["duration"] = "CAST(V.`time` as UNSIGNED) as `duration`";
         $return["archived"] = "(archived<>0) as `archived`";
         
         return $return;

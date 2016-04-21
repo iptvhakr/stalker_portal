@@ -5,25 +5,17 @@ $.extend(true, $.fn.dataTable.defaults, {
     "sPaginationType": "bootstrap",
     "iDisplayLength": 50,
 	"fnInitComplete": function (oSettings) {
-        var th_length=$('#datatable-1 th').length;
-        var tr_width=$('#datatable-1 tr').width();
-        var plus_width=tr_width;
-        if (tr_width==null || plus_width <=980 || plus_width >1280 || $("#applications_version_table").length) {} else {$("body").css({width: 295+ plus_width});}
+        var tWidth = oSettings.oInstance.width();
+        var tOffset = oSettings.oInstance.offset().left;
 
+        if (oSettings.sTableId !== 'applications_version_table' && tWidth > 980 && tWidth <= 1280) {
+            $("body").css({width: tOffset + tWidth});
+        }
         $(oSettings.nTableWrapper).on("input keypress keyup", "input", function (e) {
             this.value = this.value.replace(/^\s+/ig, '').replace(/\s{2}/ig, ' ');
-            return;
         });
-
 	},
     "fnDrawCallback": function (oSettings) {
-		var table = $('#dataTable-1').DataTable();
- 
-		table.on( 'draw', function () {
-			var body = $( table.table().body() );
-			body.unhighlight();
-			body.highlight( table.search() );  		
-										} );
         var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
         var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
         if (pageCount > 1) {
@@ -63,6 +55,24 @@ $.extend(true, $.fn.dataTable.defaults, {
                 $(oSettings.nTableWrapper).css('minHeight', ddMenuMaxHeight + tableHeight + 30);
             }
         }
+        var oSearch = oSettings.oSearch? oSettings.oSearch: oSettings.oPreviousSearch;
+        var classOperation = (oSearch.sSearch) ? 'addClass': 'removeClass';
+        var table = this.DataTable();
+        $.each(oSettings.aoColumns, function(){
+            var header = table.column(this.idx).header();
+            if (this.bSearchable) {
+                $(header)[classOperation]('DThighlight');
+                table.columns( this.idx ).nodes().flatten().to$()[classOperation]( 'DThighlight' );
+            } else {
+                $(header)[classOperation]('DTbacklight');
+                table.columns( this.idx ).nodes().flatten().to$()[classOperation]( 'DTbacklight' );
+            }
+        });
+    },
+    "ajax" : {
+        data: function(data) {
+            data = dataTableDataPrepare(data);
+        }
     },
     "oLanguage": {
         "sLengthMenu": "_MENU_ records per page"
@@ -72,6 +82,20 @@ $.extend(true, $.fn.dataTable.defaults, {
     ]
 });
 
+$.extend(true, $.fn.dataTable.defaults.column, {
+    "createdCell" : function (td, cellData, rowData, row, col) {
+        var oSettings = this.fnSettings();
+        var oSearch = this.fnSettings().oSearch? this.fnSettings().oSearch: this.fnSettings().oPreviousSearch;
+        var colSettings = oSettings.aoColumns[col];
+        if (oSearch.sSearch) {
+            if (colSettings.bSearchable) {
+                $(td).addClass('DThighlight');
+            } else {
+                $(td).addClass('DTbacklight');
+            }
+        }
+    }
+});
 
 /* Default class modification */
 $.extend( $.fn.dataTableExt.oStdClasses, {
@@ -211,26 +235,34 @@ if ( $.fn.DataTable.TableTools ) {
 	} );
 }
 
-/*// Call datatables, and return the API to the variable for use in our code
-// Binds datatables to all elements with a class of datatable
-var dtable = $(".dataTable").dataTable().api();
-
-// Grab the datatables input box and alter how it is bound to events
-$(".dataTables_filter input")
-    .unbind("input keypress keyup") // Unbind previous default bindings
-    .bind("input keypress keyup", function(e) { // Bind our desired behavior
-        console.log(jn);
-        dtable.search(this.value.replace(/^\s+/ig, '').replace(/\s{2}$/, ' ')).draw();
-        return;
-    });*/
-
-/*$('.dataTables_filter input').on('keyup click input keypress', function () {
-    var val = $(".dataTables_filter input").val().replace(/\s/g, '');
-    console.log(val);
-    filterGlobal(val);
-});
-
-function filterGlobal(val) {
-    $(".dataTable").dataTable().api().search(val, true, false).draw();
-}*/
-
+function dataTableDataPrepare(data) {
+    var visibleFields = {};
+    var dataFields = data.columns.map(function(el){ return el.data;});
+    $("table.dataTable").each(function(){
+        var tmpF = {length: 0};
+        var aoColumns = $(this).dataTable().fnSettings().aoColumns;
+        $.each(aoColumns, function(){
+            if (dataFields.indexOf(this.data) === -1) {
+                tmpF.length = 0;
+                return true;
+            }
+            tmpF[this.data] = this.bVisible;
+            tmpF.length++;
+        });
+        if (tmpF.length != 0) {
+            delete tmpF.length;
+            visibleFields = tmpF;
+            return false;
+        }
+    });
+    $.each(data.columns, function(){
+        if (visibleFields.hasOwnProperty(this.data)) {
+            this.visible = visibleFields[this.data];
+        }
+    });
+    var params = $.parseParams(window.location.href.split('?')[1] || ''); //window.location.href.split('?')[1] || ''
+    for (var i in params) {
+        data[i] = params[i];
+    }
+    return data;
+}

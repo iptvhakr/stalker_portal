@@ -479,14 +479,7 @@
                 "ajax": {
                     "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/users-list-json",
                     "data": function (d) {
-                        var RegExp = /video_id=(\d+)/;
-                        if (video_id = RegExp.exec(window.location.href)) {
-                            d.video_id = video_id[1];
-                        }
-                        var params = $.parseParams(window.location.href.split('?')[1] || ''); //window.location.href.split('?')[1] || '' 
-                        for (var i in params) {
-                            d[i] = params[i];
-                        }
+                        d = dataTableDataPrepare(d);
 
                         $("div[data-tvfilter]").each(function(){
                             var inputs, s2_filter;
@@ -512,7 +505,7 @@
                 "bInfo": true,
                 "aoColumnDefs": [
                     { className: "action-menu", "targets": [ -1 ] },
-                    {"searchable": false, "targets": [6, 7, 8, 9, 10, -3, -2, -1]},
+                    {"searchable": false, "targets": {% if attribute(app, 'reseller') is defined and not app['reseller'] %}[-8, -7, -5, -4, -3, -2, -1]{% else %}[-6, -6, -4, -3, -2, -1]{% endif %}},
                     {"sortable": false, "targets": [-1]},
                     {className: "data-filter-status", "targets": [-{% if attribute(app, 'reseller') is defined and not app['reseller'] %}3{% else %}2{% endif %} ]}
                 ]

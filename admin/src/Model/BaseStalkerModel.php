@@ -65,7 +65,15 @@ class BaseStalkerModel {
     }
     
     public function getCountUnreadedMsgsByUid($uid){
-        return $this->mysqlInstance->query("select count(moderators_history.id) as counter from moderators_history,moderator_tasks where moderators_history.task_id = moderator_tasks.id and moderators_history.to_usr=$uid and moderators_history.readed=0 and moderator_tasks.archived=0 and moderator_tasks.ended=0")->first('counter');
+        return $this->mysqlInstance->query("select
+                                              count(moderators_history.id) as counter
+                                            from moderators_history, moderator_tasks
+                                            where moderators_history.task_id = moderator_tasks.id and
+                                                  moderators_history.to_usr=$uid and
+                                                  moderators_history.readed=0 and
+                                                  moderator_tasks.archived=0 and
+                                                  moderator_tasks.ended=0 and
+                                                  moderator_tasks.rejected=0")->first('counter');
     }
     
     public function getControllerAccess($uid, $reseller){
