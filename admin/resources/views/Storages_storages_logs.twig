@@ -59,7 +59,7 @@
                 {% endif %}
                 "bFilter": true,
                 "bPaginate": true,
-				"columnDefs": [     ], 
+				"columnDefs": [{"searchable": false, "targets": [0]}],
                 "bInfo": true,
                 "order": [[ 0, "desc" ]]
             }).prev('.dataTables_processing').hide('');

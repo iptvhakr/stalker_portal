@@ -42,7 +42,31 @@ class StatisticsModel extends \Model\BaseStalkerModel {
         if (!empty($param['select'])) {
             $this->mysqlInstance->select($param['select']);
         }
-        $this->mysqlInstance->from("genre");
+        $date_obj =  new \DateTime( 'midnight 30 days ago' );
+        $this->mysqlInstance->from("(
+		        SELECT GG.title, N_E_C.count as played_movies
+		        FROM cat_genre AS GG
+		        LEFT JOIN (
+					SELECT G.title, COUNT(*) AS count
+					FROM cat_genre AS G, `video` AS V
+					WHERE G.id = V.cat_genre_id_1 OR G.id = V.cat_genre_id_2 OR G.id = V.cat_genre_id_3 OR G.id = V.cat_genre_id_4
+					GROUP BY G.title
+				) AS N_E_C /*not empty count*/ ON GG.title = N_E_C.title
+		    GROUP BY GG.title
+	        ) AS C_G /* all counted genres */" )
+            ->join("(
+			SELECT COUNT(*) AS total_movies, C_G.title AS c_g_title
+			FROM `played_video` AS P_V
+			LEFT JOIN `video` AS V ON P_V.video_id = V.id, `cat_genre` AS C_G
+			WHERE (V.cat_genre_id_1 = C_G.id OR V.cat_genre_id_2 = C_G.id OR V.cat_genre_id_3 = C_G.id OR V.cat_genre_id_4 = C_G.id)
+				AND `playtime` > '{$date_obj->format('Y-m-d H:i:s')}'
+			GROUP BY C_G.title
+		  ) AS C_V /* all counted views */", "C_G.title", "C_V.c_g_title", "LEFT");
+
+        if (!empty($param['order'])) {
+            $this->mysqlInstance->orderby($param['order']);
+        }
+
         return ($counter) ? $this->mysqlInstance->count()->get()->counter() : $this->mysqlInstance->get()->all();
     }
     

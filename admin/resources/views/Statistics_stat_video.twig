@@ -74,13 +74,11 @@
             {% endif %}
                 .dataTable({
                 "processing": true,
+                "serverSide": true,
                 "ajax": {
                     "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/stat-video-list-json",
                     "data": function (d) {
-                        var params = $.parseParams(window.location.href.split('?')[1] || ''); //window.location.href.split('?')[1] || ''
-                        for (var i in params) {
-                            d[i] = params[i];
-                        }
+                        d = dataTableDataPrepare(d);
                         $('input[id^="datepicker_"]').each(function () {
                             d['filters[' + $(this).attr("id").replace("datepicker_", "interval_") + ']'] = $(this).val();
                         });
@@ -88,9 +86,8 @@
                 },
                 "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
             {% if app['filters']['stat_to'] != 'genre' %}
-                "serverSide": true,
             {% else %}
-                "serverSide": false,
+                /*"serverSide": false,*/
                 "pageLength": 100,
             {% endif %}
                 "language": {
@@ -102,11 +99,18 @@
                 "bFilter": true,
                 "bPaginate": true,
                 "bInfo": true,
-				"columnDefs": [     ]
-            }).prev('.dataTables_processing').hide('');
-            {% if app['filters']['stat_to'] != 'genre' %}
+                "columnDefs": [
+                    {"searchable": false, "targets": [{% if app['filters']['stat_to'] == 'all' %}4{% elseif app['filters']['stat_to'] == 'daily' %}1{% else %}0, 3{% endif %}]} {% if app['filters']['stat_to'] == 'genre' %},
+                    {"sortable": false, "targets": [0]}
+                    {% endif %}
+                ]
+            }).prev('.dataTables_processing').hide('', function(){
+                {% if app['filters']['stat_to'] == 'genre' %}
+                    $(".dataTables_filter").hide();
+                {% endif %}
+            });
             $('#datatable-1').DataTable().ajax.reload();
-            {% endif %}
+
         }
 
         function yelp() {

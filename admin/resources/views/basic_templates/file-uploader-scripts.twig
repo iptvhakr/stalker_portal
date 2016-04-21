@@ -85,6 +85,46 @@
         if (!$.fn.fileupload) {
             return false;
         } else  if (typeof (callbackFileUpload) === "function") {
+            console.log($.blueimp.fileupload());
+            $.widget('blueimp.fileupload', $.blueimp.fileupload, {
+                options: {
+                    messages: {
+                        acceptFileTypes: "{{ 'File type not allowed'|trans }}",
+                        maxFileSize:"{{ 'File is too large'|trans }}",
+                        maxNumberOfFiles:"{{ 'Maximum number of files exceeded'|trans }}",
+                        minFileSize:"{{ 'File is too small'|trans }}",
+                        unknownError:"{{ 'Unknown error'|trans }}",
+                        uploadedBytes:"{{ 'Uploaded bytes exceed file size'|trans }}"
+                    },
+                    fail: function (e, data) {
+                        console.log('fileuploadfail');
+                        $.each(data.files, function (index) {
+                            var error = this.error;
+                            if (error) {
+                                JSErrorModalBox({msg: error});
+                            }
+                        });
+                    },
+                    change: function (e, data) {
+                        console.log('fileuploadchange');
+                        $.each(data.files, function (index) {
+                            var error = this.error;
+                            if (error) {
+                                JSErrorModalBox({msg: error});
+                            }
+                        });
+                    },
+                    processfail: function (e, data) {
+                        console.log('fileuploadsubmit');
+                        $.each(data.files, function (index) {
+                            var error = this.error;
+                            if (error) {
+                                JSErrorModalBox({msg: error});
+                            }
+                        });
+                    }
+                }
+            });
             return callbackFileUpload();
         }
     }

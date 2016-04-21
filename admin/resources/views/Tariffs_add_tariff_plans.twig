@@ -145,10 +145,6 @@
                 $.validate(conf);
                 LoadSelect2Script(DemoSelect2);
                 
-                if ($("#form_packages_optional").val() != "[]") {
-                    
-                }
-
                 $(document).on('change', '#form_external_id', function (e) {
                     var _this = $(this);
                     _this.next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
@@ -156,22 +152,6 @@
                 });
                 
                 $(document).on('click', '#form_save', function(e){
-                var sendData =[];
-                    $('#form_disabled_services').find('option').each(function(index, val){
-                        var _val = $(this);
-                        if (_val.val()) {
-                            sendData.push(_val.val());
-                        }
-                    });
-                    $('#form_disabled_services_json').val(JSON.stringify(sendData));
-                var sendData =[];    
-                    $('#form_services').find('option').each(function(index, val){
-                        var _val = $(this);
-                        if (_val.val()) {
-                            sendData.push(_val.val());
-                        }
-                    });
-                    $('#form_services_json').val(JSON.stringify(sendData));
                     e.stopPropagation();
                     e.preventDefault();
 
@@ -279,10 +259,10 @@
                         _this.find('option[value="' + currPackVal + '"]').removeAttr('selected').change();
                     });
 
-                    $("#" + _this.opts.container_id).on("click", "input[name^='optionals']", function(){
+                    $("#" + _this.opts.container_id).on("change", "input[name^='optionals']", function(){
                         var packages_optional_arr = _this.getPackOpt();
                         var currPackVal = $(this).closest('.row').find("input[name^='packages']").val()+"";
-                        var currOptVal = !$(this).is("checked");
+                        var currOptVal = $(this).is(":checked");
                         packages_optional_arr[currPackVal] = currOptVal ? "1": "0";
                         _this.setPackOpt(packages_optional_arr);
                     })
@@ -299,28 +279,11 @@
             }
         })(jQuery);
                 
-                $('#form_packages').packagePicker({
-{#                    optional_title: 'optional',
-                    packages_optional : JSON.parse($('#form_packages_optional').val())#}
-                });
+                $('#form_packages').packagePicker({});
             });
         }
         document.addEventListener("DOMContentLoaded", yelp, false);
 
-        var updateService = function (data){
-            if (typeof (data.services) !== 'undefined') {
-                $('#form_disabled_services').empty();
-                $.each(data.services, function(index, item){
-                    $('#form_disabled_services').append('<option class="new" value='+item.id+'>'+ item.name +'</option>');
-                })
-            }
-
-            if ($('#form_all_services:checked').length){
-                $('#form_disabled_services').attr('disabled', 'disabled');
-                $('#form_services').attr('disabled', 'disabled');
-            }
-        };
-        
         var checkExternalId = function(data){
             $('#form_external_id').next('div').append('<i class="txt-success fa fa-check"></i> ' + data.chk_rezult).css('visibility', 'visible');
         };

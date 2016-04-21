@@ -85,13 +85,7 @@
                 "processing": true,
                 "serverSide": true,
                 "ajax": {
-                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/video-schedule-list-json",
-                    "data": function (d) {
-                        var params = $.parseParams(window.location.href.split('?')[1] || ''); //window.location.href.split('?')[1] || ''
-                        for (var i in params) {
-                            d[i] = params[i];
-                        }
-                    }
+                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/video-schedule-list-json"
                 },
 
                 "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
@@ -111,9 +105,9 @@
                 "bSort" : true,
                 "aoColumnDefs": [
                     { className: "action-menu", "targets": [ -1 ] },
-                    { "targets": [ -1 ], "searchable": false },
+                    { "targets": [ -1, 0, 4 ], "searchable": false },
                     /*{ "targets": [ 3 ], "visible": false},*/
-                    { "targets": [ -1 , 6], "orderable": false}
+                    { "targets": [ -1, 4 ], "orderable": false}
                 ]
             }).prev('.dataTables_processing').hide('');
             $('#datatable-1').DataTable().ajax.reload();

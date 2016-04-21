@@ -84,13 +84,7 @@
                 "processing": true,
                 "serverSide": false,
                 "ajax": {
-                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-list-json",
-                    "data": function (d) {
-                        var params = $.parseParams(window.location.href.split('?')[1] || ''); //window.location.href.split('?')[1] || ''
-                        for (var i in params) {
-                            d[i] = params[i];
-                        }
-                    }
+                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-list-json"
                 },
                 "deferLoading": [{{ app.recordsFiltered }}, {{ app.totalRecords }}],
                 "language": {
@@ -102,9 +96,9 @@
                 "bFilter": true,
                 "bPaginate": true,
                 "bInfo": true,
-                "columnDefs": [
+                "aoColumnDefs": [
                     {className: "action-menu", "targets": [-1]},
-                    {"searchable": false, "targets": [-1, -2, -3, -4]},
+                    {"searchable": false, "targets": [-1]},
                     {"sortable": false, "targets": [-1]}
                 ]
             });

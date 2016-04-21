@@ -2,6 +2,8 @@
 
 namespace Model;
 
+use Symfony\Component\Validator\Constraints\DateTime;
+
 class VideoClubModel extends \Model\BaseStalkerModel {
 
     public function __construct() {
@@ -93,6 +95,11 @@ class VideoClubModel extends \Model\BaseStalkerModel {
     }
 
     public function removeVideoById($video_id) {
+        $date = new \DateTime();
+        $this->mysqlInstance->update(
+            'moderator_tasks',
+            array('ended' => 1, 'rejected' => 1, 'end_time' => $date->format('Y-m-d H:i:s')),
+            array('media_id' => $video_id, 'media_type' => 2));
         return $this->mysqlInstance->delete('video', array('id' => $video_id))->total_rows();
     }
 
@@ -337,6 +344,9 @@ class VideoClubModel extends \Model\BaseStalkerModel {
         if (!empty($param['like'])) {
             $this->mysqlInstance->like($param['like'], 'OR');
         }
+        if (!empty($param['having'])) {
+            $this->mysqlInstance->having($param['having']);
+        }
         if (!empty($param['order'])) {
             $this->mysqlInstance->orderby($param['order']);
         } else {
@@ -437,5 +447,47 @@ class VideoClubModel extends \Model\BaseStalkerModel {
         }
         
         return FALSE;
+    }
+
+    public function getAdsTotalRows($where = array(), $like = array()) {
+        $params = array(
+            'where' => $where,
+            'like' => $like
+        );
+        return $this->getAdsList($params, TRUE);
+    }
+
+    public function getAdsList($param, $counter = FALSE) {
+
+        $date = new \DateTime();
+        $date->modify('1 month ago');
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+
+        $this->mysqlInstance->from("vclub_ad as V_A")
+                            ->join('vclub_ads_log as V_A_L', 'V_A.id', 'V_A_L.vclub_ad_id AND UNIX_TIMESTAMP(V_A_L.added)>' . $date->getTimestamp(), 'LEFT');
+
+        if (!empty($param['where'])) {
+            $this->mysqlInstance->where($param['where']);
+        }
+
+        if (!empty($param['like'])) {
+            $this->mysqlInstance->like($param['like'], 'OR');
+        }
+        if (!empty($param['order'])) {
+            $this->mysqlInstance->orderby($param['order']);
+        }
+        $this->mysqlInstance->groupby('V_A.id');
+        if (!empty($param['limit']['limit'])) {
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
+        }
+
+        if ($counter) {
+            $count = $this->mysqlInstance->count()->get()->all('count(*)');
+            return  !empty($count) ? array_sum($count) : 0;
+        }
+
+        return $this->mysqlInstance->get()->all();
     }
 }

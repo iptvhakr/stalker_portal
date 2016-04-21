@@ -185,7 +185,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">{{ 'Image descriptor'|trans }}</label>
+                                <label class="col-sm-3 control-label">{{ 'Image description'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class="col-xs-10 col-sm-8">
                                         <div class=" col-xs-10 col-sm-12">
@@ -195,7 +195,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">{{ 'Required version of STB API'|trans }}</label>
+                                <label class="col-sm-3 control-label">{{ 'Required image version'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class="col-xs-10 col-sm-8">
                                         <div class=" col-xs-10 col-sm-12">
@@ -326,7 +326,7 @@
                 "bInfo": true,
                 "columnDefs": [
                     { className: "action-menu", "targets": [ -1 ] },
-                    {"searchable": false, "targets": [-1]},
+                    {"searchable": false, "targets": [-1, -2, 3]},
                     {"sortable": false, "targets": [-1]}
                 ]
             }).prev('.dataTables_processing').hide('');
