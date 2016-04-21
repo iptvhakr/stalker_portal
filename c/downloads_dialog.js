@@ -218,6 +218,8 @@ downloads_dialog_constructor.prototype.bind = function(){
                     download_task.filePath   = $('d_d_fileNameSerial').value+'/' + fn;
                 }
 
+                download_task.url = download_task.url || $('d_d_url').value;
+
                 //if (typeof(this.url) == 'object'){
                     module.downloads.add(download_task);
                 /*}else{
