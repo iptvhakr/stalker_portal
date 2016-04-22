@@ -907,6 +907,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
 
         $response['data'] = array_map(function($row) use ($self){
             $row['localized_title'] = $self->setLocalization($row['title']);
+            $row['censored'] = (int) $row['censored'];
             $row['RowOrder'] = "dTRow_" . $row['id'];
             return $row;
         }, $this->db->getTvGenresList($query_param));
@@ -936,7 +937,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $error = $this->setLocalization('Failed');
         $check = $this->db->getTvGenresList(array('where' => array('title' => $this->postData['title']), 'order' => array('title' => 'ASC')));
         if (empty($check)) {
-            if ($this->db->insertTvGenres(array('title' => $this->postData['title']))) {
+            if ($this->db->insertTvGenres(array('title' => $this->postData['title'], 'censored' => !empty($this->postData['censored'])))) {
                 $error = '';
             } else {
                 $data['msg'] = $error = ' ' . $this->setLocalization('Nothing to do');
@@ -969,7 +970,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             'like' => array()
         ));
         if (empty($check)) {
-            $result = $this->db->updateTvGenres(array('title' => $this->postData['title']), array('id' => $this->postData['id']));
+            $result = $this->db->updateTvGenres(array('title' => $this->postData['title'], 'censored' => !empty($this->postData['censored'])), array('id' => $this->postData['id']));
             if ($result) {
                 $error = '';
                 $data['id'] = $this->postData['id'];
@@ -1840,6 +1841,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             array('name'=>'number',         'title'=>$this->setLocalization('Order'),           'checked' => TRUE),
             array('name'=>'title',          'title'=>$this->setLocalization('Title'),           'checked' => TRUE),
             array('name'=>'localized_title','title'=>$this->setLocalization('Localized title'), 'checked' => TRUE),
+            array('name'=>'censored',       'title'=>$this->setLocalization('Age restriction'), 'checked' => TRUE),
             array('name'=>'operations',     'title'=>$this->setLocalization('Operation'),       'checked' => TRUE)
         );
     }
