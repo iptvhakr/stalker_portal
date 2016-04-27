@@ -84,7 +84,9 @@
                 "processing": true,
                 "serverSide": false,
                 "ajax": {
-                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-list-json"
+                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-list-json",
+                    "data": function (d) {
+                    }
                 },
                 "deferLoading": [{{ app.recordsFiltered }}, {{ app.totalRecords }}],
                 "language": {
