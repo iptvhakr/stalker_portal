@@ -482,7 +482,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
                 }else{
                     $res['cmd'] = preg_replace('/:\/\/([^\/]*)/', '://'.$storage['storage_ip'], $channel['mc_cmd']);
                     $res['cmd'] = preg_replace('/\.m3u8/', '-' . strtotime(date("Y-m-d H:00:00"))
-                        . '-3600' . '.m3u8', $res['cmd']); // todo: current hour?
+                        . '-now' . '.m3u8', $res['cmd']);
                 }
 
                 $res['cmd'] .= ''
