@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-21 15:34+0300\n"
-"PO-Revision-Date: 2016-04-21 17:21+0300\n"
+"POT-Creation-Date: 2016-04-28 13:00+0300\n"
+"PO-Revision-Date: 2016-04-28 13:17+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: es\n"
@@ -55,7 +55,7 @@ msgid "Unpublished"
 msgstr "No publicado"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:59
-#: ../../../../admin/src/Controller/TvChannelsController.php:2028
+#: ../../../../admin/src/Controller/TvChannelsController.php:2030
 #: ../../../../admin/src/Controller/RadioController.php:24
 #: ../../../../admin/src/Controller/RadioController.php:406
 #: ../../../administrator/add_itv.php:1413
@@ -63,21 +63,21 @@ msgid "monitoring off"
 msgstr "sin monitorizacion"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:60
-#: ../../../../admin/src/Controller/TvChannelsController.php:2060
+#: ../../../../admin/src/Controller/TvChannelsController.php:2062
 #: ../../../../admin/src/Controller/RadioController.php:25
 #: ../../../../admin/src/Controller/RadioController.php:420
 msgid "errors occurred"
 msgstr "con errores"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:61
-#: ../../../../admin/src/Controller/TvChannelsController.php:2054
+#: ../../../../admin/src/Controller/TvChannelsController.php:2056
 #: ../../../../admin/src/Controller/RadioController.php:26
 #: ../../../../admin/src/Controller/RadioController.php:418
 msgid "no errors"
 msgstr "sin errores"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:62
-#: ../../../../admin/src/Controller/TvChannelsController.php:2049
+#: ../../../../admin/src/Controller/TvChannelsController.php:2051
 msgid "there are some problems"
 msgstr "con problemas"
 
@@ -98,9 +98,9 @@ msgstr "Publicar"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:393
 #: ../../../../admin/src/Controller/TvChannelsController.php:421
-#: ../../../../admin/src/Controller/TvChannelsController.php:942
-#: ../../../../admin/src/Controller/TvChannelsController.php:979
-#: ../../../../admin/src/Controller/TvChannelsController.php:1008
+#: ../../../../admin/src/Controller/TvChannelsController.php:943
+#: ../../../../admin/src/Controller/TvChannelsController.php:980
+#: ../../../../admin/src/Controller/TvChannelsController.php:1009
 #: ../../../../admin/src/Controller/EventsController.php:499
 #: ../../../../admin/src/Controller/EventsController.php:731
 #: ../../../../admin/src/Controller/EventsController.php:752
@@ -123,8 +123,8 @@ msgstr "Despublicar"
 #: ../../../../admin/src/Controller/TvChannelsController.php:442
 #: ../../../../admin/src/Controller/TvChannelsController.php:652
 #: ../../../../admin/src/Controller/TvChannelsController.php:883
-#: ../../../../admin/src/Controller/TvChannelsController.php:1056
-#: ../../../../admin/src/Controller/TvChannelsController.php:1161
+#: ../../../../admin/src/Controller/TvChannelsController.php:1057
+#: ../../../../admin/src/Controller/TvChannelsController.php:1162
 #: ../../../../admin/src/Controller/EventsController.php:419
 #: ../../../../admin/src/Controller/EventsController.php:544
 #: ../../../../admin/src/Controller/VideoClubController.php:398
@@ -132,7 +132,7 @@ msgstr "Despublicar"
 #: ../../../../admin/src/Controller/VideoClubController.php:1069
 #: ../../../../admin/src/Controller/VideoClubController.php:1211
 #: ../../../../admin/src/Controller/VideoClubController.php:1392
-#: ../../../../admin/src/Controller/VideoClubController.php:1595
+#: ../../../../admin/src/Controller/VideoClubController.php:1602
 #: ../../../../admin/src/Controller/BroadcastServersController.php:164
 #: ../../../../admin/src/Controller/SettingsController.php:123
 #: ../../../../admin/src/Controller/AudioClubController.php:228
@@ -204,14 +204,14 @@ msgstr "Archivo de TV no se ha reiniciado correctamente."
 msgid "TV Archive has been restarted."
 msgstr "Archivo de televisión se ha reiniciado."
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:927
-#: ../../../../admin/src/Controller/TvChannelsController.php:955
-#: ../../../../admin/src/Controller/TvChannelsController.php:993
-#: ../../../../admin/src/Controller/TvChannelsController.php:1019
-#: ../../../../admin/src/Controller/TvChannelsController.php:1047
-#: ../../../../admin/src/Controller/TvChannelsController.php:1153
-#: ../../../../admin/src/Controller/TvChannelsController.php:1204
-#: ../../../../admin/src/Controller/TvChannelsController.php:1235
+#: ../../../../admin/src/Controller/TvChannelsController.php:928
+#: ../../../../admin/src/Controller/TvChannelsController.php:956
+#: ../../../../admin/src/Controller/TvChannelsController.php:994
+#: ../../../../admin/src/Controller/TvChannelsController.php:1020
+#: ../../../../admin/src/Controller/TvChannelsController.php:1048
+#: ../../../../admin/src/Controller/TvChannelsController.php:1154
+#: ../../../../admin/src/Controller/TvChannelsController.php:1205
+#: ../../../../admin/src/Controller/TvChannelsController.php:1236
 #: ../../../../admin/src/Controller/EventsController.php:320
 #: ../../../../admin/src/Controller/EventsController.php:353
 #: ../../../../admin/src/Controller/EventsController.php:389
@@ -238,13 +238,13 @@ msgstr "Archivo de televisión se ha reiniciado."
 #: ../../../../admin/src/Controller/VideoClubController.php:1175
 #: ../../../../admin/src/Controller/VideoClubController.php:1270
 #: ../../../../admin/src/Controller/VideoClubController.php:1289
-#: ../../../../admin/src/Controller/VideoClubController.php:1442
-#: ../../../../admin/src/Controller/VideoClubController.php:1465
-#: ../../../../admin/src/Controller/VideoClubController.php:1498
-#: ../../../../admin/src/Controller/VideoClubController.php:1536
-#: ../../../../admin/src/Controller/VideoClubController.php:1556
-#: ../../../../admin/src/Controller/VideoClubController.php:1670
-#: ../../../../admin/src/Controller/VideoClubController.php:1714
+#: ../../../../admin/src/Controller/VideoClubController.php:1443
+#: ../../../../admin/src/Controller/VideoClubController.php:1466
+#: ../../../../admin/src/Controller/VideoClubController.php:1504
+#: ../../../../admin/src/Controller/VideoClubController.php:1543
+#: ../../../../admin/src/Controller/VideoClubController.php:1563
+#: ../../../../admin/src/Controller/VideoClubController.php:1677
+#: ../../../../admin/src/Controller/VideoClubController.php:1721
 #: ../../../../admin/src/Controller/BroadcastServersController.php:270
 #: ../../../../admin/src/Controller/BroadcastServersController.php:290
 #: ../../../../admin/src/Controller/BroadcastServersController.php:311
@@ -348,10 +348,10 @@ msgstr "Archivo de televisión se ha reiniciado."
 msgid "Page not found"
 msgstr "Página no encontrada"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:936
-#: ../../../../admin/src/Controller/TvChannelsController.php:964
-#: ../../../../admin/src/Controller/TvChannelsController.php:1003
-#: ../../../../admin/src/Controller/TvChannelsController.php:1239
+#: ../../../../admin/src/Controller/TvChannelsController.php:937
+#: ../../../../admin/src/Controller/TvChannelsController.php:965
+#: ../../../../admin/src/Controller/TvChannelsController.php:1004
+#: ../../../../admin/src/Controller/TvChannelsController.php:1240
 #: ../../../../admin/src/Controller/IndexController.php:53
 #: ../../../../admin/src/Controller/IndexController.php:109
 #: ../../../../admin/src/Controller/IndexController.php:167
@@ -364,10 +364,10 @@ msgstr "Página no encontrada"
 #: ../../../../admin/src/Controller/VideoClubController.php:1158
 #: ../../../../admin/src/Controller/VideoClubController.php:1184
 #: ../../../../admin/src/Controller/VideoClubController.php:1298
-#: ../../../../admin/src/Controller/VideoClubController.php:1474
-#: ../../../../admin/src/Controller/VideoClubController.php:1507
-#: ../../../../admin/src/Controller/VideoClubController.php:1679
-#: ../../../../admin/src/Controller/VideoClubController.php:1723
+#: ../../../../admin/src/Controller/VideoClubController.php:1475
+#: ../../../../admin/src/Controller/VideoClubController.php:1513
+#: ../../../../admin/src/Controller/VideoClubController.php:1686
+#: ../../../../admin/src/Controller/VideoClubController.php:1730
 #: ../../../../admin/src/Controller/SettingsController.php:195
 #: ../../../../admin/src/Controller/AudioClubController.php:363
 #: ../../../../admin/src/Controller/AudioClubController.php:387
@@ -391,12 +391,12 @@ msgstr "Página no encontrada"
 msgid "Failed"
 msgstr "Ha fallado"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:945
-#: ../../../../admin/src/Controller/TvChannelsController.php:983
-#: ../../../../admin/src/Controller/TvChannelsController.php:1027
-#: ../../../../admin/src/Controller/TvChannelsController.php:1034
-#: ../../../../admin/src/Controller/VideoClubController.php:1564
-#: ../../../../admin/src/Controller/VideoClubController.php:1570
+#: ../../../../admin/src/Controller/TvChannelsController.php:946
+#: ../../../../admin/src/Controller/TvChannelsController.php:984
+#: ../../../../admin/src/Controller/TvChannelsController.php:1028
+#: ../../../../admin/src/Controller/TvChannelsController.php:1035
+#: ../../../../admin/src/Controller/VideoClubController.php:1571
+#: ../../../../admin/src/Controller/VideoClubController.php:1577
 #: ../../../../admin/src/Controller/AudioClubController.php:432
 #: ../../../../admin/src/Controller/AudioClubController.php:434
 #: ../../../../admin/src/Controller/AudioClubController.php:571
@@ -416,9 +416,9 @@ msgstr "Ha fallado"
 msgid "Name already used"
 msgstr "El nombre ya utilizado"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1036
+#: ../../../../admin/src/Controller/TvChannelsController.php:1037
 #: ../../../../admin/src/Controller/VideoClubController.php:739
-#: ../../../../admin/src/Controller/VideoClubController.php:1572
+#: ../../../../admin/src/Controller/VideoClubController.php:1579
 #: ../../../../admin/src/Controller/AudioClubController.php:436
 #: ../../../../admin/src/Controller/AudioClubController.php:575
 #: ../../../../admin/src/Controller/AudioClubController.php:714
@@ -428,7 +428,7 @@ msgstr "El nombre ya utilizado"
 msgid "Name is available"
 msgstr "Nombre está disponible"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1079
+#: ../../../../admin/src/Controller/TvChannelsController.php:1080
 #: ../../../../admin/src/Controller/StatisticsController.php:52
 #: ../../../../admin/src/Controller/TasksController.php:37
 #: ../../../../admin/src/Controller/TasksController.php:580
@@ -436,75 +436,75 @@ msgstr "Nombre está disponible"
 msgid "Done"
 msgstr "Hecho"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1107
+#: ../../../../admin/src/Controller/TvChannelsController.php:1108
 msgid "Upload failed"
 msgstr "Subida fallida"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1144
+#: ../../../../admin/src/Controller/TvChannelsController.php:1145
 msgid "Error m3u parse. Check the file encoding. Required UTF-8 encoding."
 msgstr ""
 "Error de análisis M3U. Compruebe el archivo de codificación. Se requiere "
 "codificación UTF-8."
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1173
-#: ../../../../admin/src/Controller/TvChannelsController.php:1526
+#: ../../../../admin/src/Controller/TvChannelsController.php:1174
+#: ../../../../admin/src/Controller/TvChannelsController.php:1527
 msgid "Requires at least one link of broadcast"
 msgstr "Requiere al menos un enlace de emisión"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1175
+#: ../../../../admin/src/Controller/TvChannelsController.php:1176
 msgid "Field \"Channel name\" cannot be empty"
 msgstr "\"Nombre del canal\" El campo no puede estar vacío"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1177
+#: ../../../../admin/src/Controller/TvChannelsController.php:1178
 msgid "Field \"Channel number\" cannot be empty"
 msgstr "\"Número de canal\" El campo no puede estar vacío"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1191
+#: ../../../../admin/src/Controller/TvChannelsController.php:1192
 msgid "Number \"%number%\" is already in use"
 msgstr "Número \"%number%\" ya está en uso"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1193
+#: ../../../../admin/src/Controller/TvChannelsController.php:1194
 msgid "Name \"%name%\" already exists"
 msgstr "Nombre \"%name%\" ya existe"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1213
-#: ../../../../admin/src/Controller/TvChannelsController.php:1223
+#: ../../../../admin/src/Controller/TvChannelsController.php:1214
+#: ../../../../admin/src/Controller/TvChannelsController.php:1224
 msgid "Prefix already used"
 msgstr "Prefijo ya utilizado"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1225
+#: ../../../../admin/src/Controller/TvChannelsController.php:1226
 msgid "Prefix is available"
 msgstr "Prefijo disponible"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1516
+#: ../../../../admin/src/Controller/TvChannelsController.php:1517
 msgid "This field cannot be empty if enabled TV-archive or nPVR"
 msgstr ""
 "Este campo no puede estar vacío si está habilitado TV de archivar o nPVR"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1520
+#: ../../../../admin/src/Controller/TvChannelsController.php:1521
 #: ../../../administrator/add_itv.php:721
 msgid "For enabling Xtream-Codes Support you need enable mcrypt php-extension"
 msgstr ""
 "Para permitir Xtream-Codes Support que necesita habilitar mcrypt php-"
 "extensión"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1535
-#: ../../../../admin/src/Controller/VideoClubController.php:2114
+#: ../../../../admin/src/Controller/TvChannelsController.php:1536
+#: ../../../../admin/src/Controller/VideoClubController.php:2121
 msgid "This name already exists"
 msgstr "Este nombre ya existe"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1536
+#: ../../../../admin/src/Controller/TvChannelsController.php:1537
 #: ../../../../admin/src/Controller/InfoportalController.php:274
 msgid "This number is already in use"
 msgstr "Este número ya está en uso"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1745
-#: ../../../../admin/src/Controller/TvChannelsController.php:1799
+#: ../../../../admin/src/Controller/TvChannelsController.php:1746
+#: ../../../../admin/src/Controller/TvChannelsController.php:1800
 #: ../../../../admin/src/Controller/EventsController.php:838
 #: ../../../../admin/src/Controller/EventsController.php:864
 #: ../../../../admin/src/Controller/EventsController.php:882
-#: ../../../../admin/src/Controller/VideoClubController.php:2312
-#: ../../../../admin/src/Controller/VideoClubController.php:2453
+#: ../../../../admin/src/Controller/VideoClubController.php:2319
+#: ../../../../admin/src/Controller/VideoClubController.php:2461
 #: ../../../../admin/src/Controller/BroadcastServersController.php:387
 #: ../../../../admin/src/Controller/BroadcastServersController.php:406
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:409
@@ -531,8 +531,8 @@ msgstr "Este número ya está en uso"
 msgid "ID"
 msgstr "Identificador"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1746
-#: ../../../../admin/src/Controller/VideoClubController.php:2386
+#: ../../../../admin/src/Controller/TvChannelsController.php:1747
+#: ../../../../admin/src/Controller/VideoClubController.php:2393
 #: ../../../../admin/src/Controller/TasksController.php:564
 #: ../../../../admin/src/Controller/TasksController.php:577
 #: ../../../administrator/other_city_info.php:153
@@ -550,20 +550,20 @@ msgstr "Identificador"
 msgid "Number"
 msgstr "Número"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1747
+#: ../../../../admin/src/Controller/TvChannelsController.php:1748
 #: ../../../administrator/add_itv.php:1794
 msgid "Logo"
 msgstr "Logo"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1748
-#: ../../../../admin/src/Controller/TvChannelsController.php:1841
+#: ../../../../admin/src/Controller/TvChannelsController.php:1749
+#: ../../../../admin/src/Controller/TvChannelsController.php:1842
 #: ../../../../admin/src/Controller/EventsController.php:839
-#: ../../../../admin/src/Controller/VideoClubController.php:2314
-#: ../../../../admin/src/Controller/VideoClubController.php:2334
-#: ../../../../admin/src/Controller/VideoClubController.php:2345
-#: ../../../../admin/src/Controller/VideoClubController.php:2387
-#: ../../../../admin/src/Controller/VideoClubController.php:2397
-#: ../../../../admin/src/Controller/VideoClubController.php:2455
+#: ../../../../admin/src/Controller/VideoClubController.php:2321
+#: ../../../../admin/src/Controller/VideoClubController.php:2341
+#: ../../../../admin/src/Controller/VideoClubController.php:2352
+#: ../../../../admin/src/Controller/VideoClubController.php:2394
+#: ../../../../admin/src/Controller/VideoClubController.php:2405
+#: ../../../../admin/src/Controller/VideoClubController.php:2463
 #: ../../../../admin/src/Controller/BroadcastServersController.php:388
 #: ../../../../admin/src/Controller/BroadcastServersController.php:407
 #: ../../../../admin/src/Controller/AudioClubController.php:1214
@@ -608,8 +608,8 @@ msgstr "Logo"
 msgid "Title"
 msgstr "Título"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1749
-#: ../../../../admin/src/Controller/VideoClubController.php:2318
+#: ../../../../admin/src/Controller/TvChannelsController.php:1750
+#: ../../../../admin/src/Controller/VideoClubController.php:2325
 #: ../../../../admin/src/Controller/AudioClubController.php:1216
 #: ../../../../admin/src/Controller/StatisticsController.php:1264
 #: ../../../administrator/audio_album.php:428
@@ -625,7 +625,7 @@ msgstr "Título"
 msgid "Genre"
 msgstr "Género"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1750
+#: ../../../../admin/src/Controller/TvChannelsController.php:1751
 #: ../../../../admin/src/Controller/StatisticsController.php:55
 #: ../../../../admin/src/Controller/TasksController.php:40
 #: ../../../administrator/userlog.php:376
@@ -633,8 +633,8 @@ msgstr "Género"
 msgid "Archive"
 msgstr "Archivo"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1751
-#: ../../../../admin/src/Controller/TvChannelsController.php:1801
+#: ../../../../admin/src/Controller/TvChannelsController.php:1752
+#: ../../../../admin/src/Controller/TvChannelsController.php:1802
 #: ../../../../admin/src/Controller/BroadcastServersController.php:408
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:412
 #: ../../../../admin/src/Controller/AudioClubController.php:1383
@@ -648,24 +648,24 @@ msgstr "Archivo"
 msgid "URL"
 msgstr "URL"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1752
+#: ../../../../admin/src/Controller/TvChannelsController.php:1753
 msgid "XMLTV ID"
 msgstr "XMLTV ID"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1753
+#: ../../../../admin/src/Controller/TvChannelsController.php:1754
 msgid "Claims about audio/video/epg"
 msgstr "Afirmaciones acerca de audio / vídeo / EPG"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1754
+#: ../../../../admin/src/Controller/TvChannelsController.php:1755
 #: ../../../../admin/src/Controller/RadioController.php:398
 msgid "Monitoring status"
 msgstr "Monitorización"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1755
-#: ../../../../admin/src/Controller/VideoClubController.php:2325
-#: ../../../../admin/src/Controller/VideoClubController.php:2351
-#: ../../../../admin/src/Controller/VideoClubController.php:2436
-#: ../../../../admin/src/Controller/VideoClubController.php:2457
+#: ../../../../admin/src/Controller/TvChannelsController.php:1756
+#: ../../../../admin/src/Controller/VideoClubController.php:2332
+#: ../../../../admin/src/Controller/VideoClubController.php:2358
+#: ../../../../admin/src/Controller/VideoClubController.php:2444
+#: ../../../../admin/src/Controller/VideoClubController.php:2465
 #: ../../../../admin/src/Controller/BroadcastServersController.php:411
 #: ../../../../admin/src/Controller/AudioClubController.php:1220
 #: ../../../../admin/src/Controller/AudioClubController.php:1385
@@ -677,15 +677,15 @@ msgstr "Monitorización"
 #: ../../../administrator/events.php:510 ../../../administrator/tasks.php:134
 #: ../../../administrator/add_video.php:841
 msgid "Status"
-msgstr "Estado"
+msgstr "Estatus"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1756
-#: ../../../../admin/src/Controller/TvChannelsController.php:1805
+#: ../../../../admin/src/Controller/TvChannelsController.php:1757
+#: ../../../../admin/src/Controller/TvChannelsController.php:1806
 #: ../../../../admin/src/Controller/EventsController.php:843
 #: ../../../../admin/src/Controller/EventsController.php:893
-#: ../../../../admin/src/Controller/VideoClubController.php:2326
-#: ../../../../admin/src/Controller/VideoClubController.php:2339
-#: ../../../../admin/src/Controller/VideoClubController.php:2352
+#: ../../../../admin/src/Controller/VideoClubController.php:2333
+#: ../../../../admin/src/Controller/VideoClubController.php:2346
+#: ../../../../admin/src/Controller/VideoClubController.php:2359
 #: ../../../../admin/src/Controller/BroadcastServersController.php:412
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:415
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:425
@@ -706,21 +706,21 @@ msgstr "Estado"
 msgid "Operations"
 msgstr "Operaciones"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1800
+#: ../../../../admin/src/Controller/TvChannelsController.php:1801
 #: ../../../../admin/src/Controller/SettingsController.php:257
 #: ../../../administrator/setting_common.php:193
 msgid "Prefix"
 msgstr "Prefijo"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1802
+#: ../../../../admin/src/Controller/TvChannelsController.php:1803
 msgid "XMLTV file hash"
 msgstr "hash de archivo XMLTV"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1803
+#: ../../../../admin/src/Controller/TvChannelsController.php:1804
 msgid "Update date"
 msgstr "Fecha de actualización"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1804
+#: ../../../../admin/src/Controller/TvChannelsController.php:1805
 #: ../../../../admin/src/Controller/EventsController.php:892
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:414
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:424
@@ -734,7 +734,7 @@ msgstr "Fecha de actualización"
 msgid "State"
 msgstr "Estado"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1840
+#: ../../../../admin/src/Controller/TvChannelsController.php:1841
 #: ../../../../admin/src/Controller/AudioClubController.php:1381
 #: ../../../../admin/src/Controller/StatisticsController.php:1433
 #: ../../../../admin/src/Controller/RadioController.php:393
@@ -743,16 +743,23 @@ msgstr "Estado"
 msgid "Order"
 msgstr "Orden"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1842
-#: ../../../../admin/src/Controller/VideoClubController.php:2388
-#: ../../../../admin/src/Controller/VideoClubController.php:2398
+#: ../../../../admin/src/Controller/TvChannelsController.php:1843
+#: ../../../../admin/src/Controller/VideoClubController.php:2395
+#: ../../../../admin/src/Controller/VideoClubController.php:2406
 msgid "Localized title"
 msgstr "Título localizdo"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1843
-#: ../../../../admin/src/Controller/VideoClubController.php:2391
-#: ../../../../admin/src/Controller/VideoClubController.php:2401
-#: ../../../../admin/src/Controller/VideoClubController.php:2437
+#: ../../../../admin/src/Controller/TvChannelsController.php:1844
+#: ../../../../admin/src/Controller/VideoClubController.php:2398
+#: ../../../administrator/add_itv.php:1538
+#: ../../../administrator/add_video.php:1926
+msgid "Age restriction"
+msgstr "Restricción de edad"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:1845
+#: ../../../../admin/src/Controller/VideoClubController.php:2399
+#: ../../../../admin/src/Controller/VideoClubController.php:2409
+#: ../../../../admin/src/Controller/VideoClubController.php:2445
 #: ../../../../admin/src/Controller/BroadcastServersController.php:391
 #: ../../../../admin/src/Controller/AudioClubController.php:1221
 #: ../../../../admin/src/Controller/AudioClubController.php:1386
@@ -762,718 +769,718 @@ msgstr "Título localizdo"
 msgid "Operation"
 msgstr "Operación"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1849
+#: ../../../../admin/src/Controller/TvChannelsController.php:1851
 msgid "Afar"
 msgstr "Afar"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1850
+#: ../../../../admin/src/Controller/TvChannelsController.php:1852
 msgid "Abkhazian"
 msgstr "Abjasia"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1851
+#: ../../../../admin/src/Controller/TvChannelsController.php:1853
 msgid "Afrikaans"
 msgstr "Africaans"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1852
+#: ../../../../admin/src/Controller/TvChannelsController.php:1854
 msgid "Akan"
 msgstr "Akan"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1853
+#: ../../../../admin/src/Controller/TvChannelsController.php:1855
 msgid "Amharic"
 msgstr "Amhárico"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1854
+#: ../../../../admin/src/Controller/TvChannelsController.php:1856
 msgid "Arabic"
 msgstr "Arábica"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1855
+#: ../../../../admin/src/Controller/TvChannelsController.php:1857
 msgid "Assamese"
 msgstr "Assamese"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1856
+#: ../../../../admin/src/Controller/TvChannelsController.php:1858
 msgid "Avaric"
 msgstr "Avaric"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1857
+#: ../../../../admin/src/Controller/TvChannelsController.php:1859
 msgid "Avestan"
 msgstr "Avestan"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1858
+#: ../../../../admin/src/Controller/TvChannelsController.php:1860
 msgid "Aymara"
 msgstr "Aimara"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1859
+#: ../../../../admin/src/Controller/TvChannelsController.php:1861
 msgid "Azerbaijani"
 msgstr "Azerbaiyán"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1860
+#: ../../../../admin/src/Controller/TvChannelsController.php:1862
 msgid "Bashkir"
 msgstr "Bashkir"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1861
+#: ../../../../admin/src/Controller/TvChannelsController.php:1863
 msgid "Bambara"
 msgstr "Bambara"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1862
+#: ../../../../admin/src/Controller/TvChannelsController.php:1864
 msgid "Basque"
 msgstr "Vasco"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1863
+#: ../../../../admin/src/Controller/TvChannelsController.php:1865
 msgid "Belarusian"
 msgstr "Bielorruso"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1864
+#: ../../../../admin/src/Controller/TvChannelsController.php:1866
 msgid "Bengali"
 msgstr "Bengalí"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1865
+#: ../../../../admin/src/Controller/TvChannelsController.php:1867
 msgid "Bislama"
 msgstr "Bislama"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1866
+#: ../../../../admin/src/Controller/TvChannelsController.php:1868
 msgid "Tibetan"
 msgstr "Tibetano"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1867
+#: ../../../../admin/src/Controller/TvChannelsController.php:1869
 msgid "Bosnian"
 msgstr "Bosnio"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1868
+#: ../../../../admin/src/Controller/TvChannelsController.php:1870
 msgid "Breton"
 msgstr "Bretón"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1869
+#: ../../../../admin/src/Controller/TvChannelsController.php:1871
 msgid "Bulgarian"
 msgstr "Búlgaro"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1870
+#: ../../../../admin/src/Controller/TvChannelsController.php:1872
 msgid "Catalan"
 msgstr "Catalán"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1871
+#: ../../../../admin/src/Controller/TvChannelsController.php:1873
 msgid "Czech"
 msgstr "Checo"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1872
+#: ../../../../admin/src/Controller/TvChannelsController.php:1874
 msgid "Chamorro"
 msgstr "Chamorro"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1873
+#: ../../../../admin/src/Controller/TvChannelsController.php:1875
 msgid "Chechen"
 msgstr "Chechenia"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1874
+#: ../../../../admin/src/Controller/TvChannelsController.php:1876
 msgid "Church Slavic"
 msgstr "Eslavo eclesiástico"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1875
+#: ../../../../admin/src/Controller/TvChannelsController.php:1877
 msgid "Chuvash"
 msgstr "Chuvashia"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1876
+#: ../../../../admin/src/Controller/TvChannelsController.php:1878
 msgid "Cornish"
 msgstr "de Cornualles"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1877
+#: ../../../../admin/src/Controller/TvChannelsController.php:1879
 msgid "Corsican"
 msgstr "corso"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1878
+#: ../../../../admin/src/Controller/TvChannelsController.php:1880
 msgid "Welsh"
 msgstr "Galés"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1879
+#: ../../../../admin/src/Controller/TvChannelsController.php:1881
 msgid "Danish"
 msgstr "Danés"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1880
+#: ../../../../admin/src/Controller/TvChannelsController.php:1882
 #: ../../../tools/misctranslations.php:185
 msgid "German"
 msgstr "Alemán"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1881
+#: ../../../../admin/src/Controller/TvChannelsController.php:1883
 msgid "Divehi"
 msgstr "Divehi"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1882
+#: ../../../../admin/src/Controller/TvChannelsController.php:1884
 msgid "Dzongkha"
 msgstr "Dzongkha"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1883
+#: ../../../../admin/src/Controller/TvChannelsController.php:1885
 msgid "Greek"
 msgstr "Griego"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1884
+#: ../../../../admin/src/Controller/TvChannelsController.php:1886
 #: ../../../tools/misctranslations.php:183
 msgid "English"
 msgstr "Inglés"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1885
+#: ../../../../admin/src/Controller/TvChannelsController.php:1887
 msgid "Esperanto"
 msgstr "Esperanto"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1886
+#: ../../../../admin/src/Controller/TvChannelsController.php:1888
 msgid "Estonian"
 msgstr "Estonia"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1887
+#: ../../../../admin/src/Controller/TvChannelsController.php:1889
 msgid "Ewe"
 msgstr "Oveja"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1888
+#: ../../../../admin/src/Controller/TvChannelsController.php:1890
 msgid "Faroese"
 msgstr "Feroés"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1889
+#: ../../../../admin/src/Controller/TvChannelsController.php:1891
 msgid "Persian"
 msgstr "Persa"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1890
+#: ../../../../admin/src/Controller/TvChannelsController.php:1892
 msgid "Fijian"
 msgstr "Fiyiano"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1891
+#: ../../../../admin/src/Controller/TvChannelsController.php:1893
 msgid "Finnish"
 msgstr "Finlandés"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1892
+#: ../../../../admin/src/Controller/TvChannelsController.php:1894
 #: ../../../tools/misctranslations.php:188
 msgid "French"
 msgstr "Francés"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1893
+#: ../../../../admin/src/Controller/TvChannelsController.php:1895
 msgid "Western Frisian"
 msgstr "Frisón"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1894
+#: ../../../../admin/src/Controller/TvChannelsController.php:1896
 msgid "Fulah"
 msgstr "Fulah"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1895
+#: ../../../../admin/src/Controller/TvChannelsController.php:1897
 msgid "Georgian"
 msgstr "Georgiano"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1896
+#: ../../../../admin/src/Controller/TvChannelsController.php:1898
 msgid "Gaelic"
 msgstr "Gaélico"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1897
+#: ../../../../admin/src/Controller/TvChannelsController.php:1899
 msgid "Irish"
 msgstr "Irlandesa"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1898
+#: ../../../../admin/src/Controller/TvChannelsController.php:1900
 msgid "Galician"
 msgstr "Gallego"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1899
+#: ../../../../admin/src/Controller/TvChannelsController.php:1901
 msgid "Manx"
 msgstr "de la isla de Man"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1900
+#: ../../../../admin/src/Controller/TvChannelsController.php:1902
 msgid "Guarani"
 msgstr "Guaraní"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1901
+#: ../../../../admin/src/Controller/TvChannelsController.php:1903
 msgid "Gujarati"
 msgstr "Gujarati"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1902
+#: ../../../../admin/src/Controller/TvChannelsController.php:1904
 msgid "Hausa"
 msgstr "Hausa"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1903
+#: ../../../../admin/src/Controller/TvChannelsController.php:1905
 msgid "Hebrew"
 msgstr "Hebreo"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1904
+#: ../../../../admin/src/Controller/TvChannelsController.php:1906
 msgid "Herero"
 msgstr "Herero"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1905
+#: ../../../../admin/src/Controller/TvChannelsController.php:1907
 msgid "Hindi"
 msgstr "Hindi"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1906
+#: ../../../../admin/src/Controller/TvChannelsController.php:1908
 msgid "Hiri Motu"
 msgstr "Hiri motu"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1907
+#: ../../../../admin/src/Controller/TvChannelsController.php:1909
 msgid "Croatian"
 msgstr "Croata"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1908
+#: ../../../../admin/src/Controller/TvChannelsController.php:1910
 msgid "Hungarian"
 msgstr "Húngaro"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1909
+#: ../../../../admin/src/Controller/TvChannelsController.php:1911
 msgid "Armenian"
 msgstr "Armenio"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1910
+#: ../../../../admin/src/Controller/TvChannelsController.php:1912
 msgid "Igbo"
 msgstr "Igbo"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1911
+#: ../../../../admin/src/Controller/TvChannelsController.php:1913
 msgid "Inuktitut"
 msgstr "Inuktitut"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1912
+#: ../../../../admin/src/Controller/TvChannelsController.php:1914
 msgid "Interlingue"
 msgstr "Interlingue"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1913
+#: ../../../../admin/src/Controller/TvChannelsController.php:1915
 msgid "Interlingua"
 msgstr "Interlingua"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1914
+#: ../../../../admin/src/Controller/TvChannelsController.php:1916
 msgid "Indonesian"
 msgstr "Indonesio"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1915
+#: ../../../../admin/src/Controller/TvChannelsController.php:1917
 msgid "Inupiaq"
 msgstr "Inupiak"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1916
+#: ../../../../admin/src/Controller/TvChannelsController.php:1918
 msgid "Icelandic"
 msgstr "Islandés"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1917
+#: ../../../../admin/src/Controller/TvChannelsController.php:1919
 msgid "Italian"
 msgstr "Italiano"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1918
+#: ../../../../admin/src/Controller/TvChannelsController.php:1920
 msgid "Javanese"
 msgstr "Javanés"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1919
+#: ../../../../admin/src/Controller/TvChannelsController.php:1921
 msgid "Japanese"
 msgstr "Japonés"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1920
+#: ../../../../admin/src/Controller/TvChannelsController.php:1922
 msgid "Kalaallisut"
 msgstr "Groenlandés"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1921
+#: ../../../../admin/src/Controller/TvChannelsController.php:1923
 msgid "Kannada"
 msgstr "Kannada"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1922
+#: ../../../../admin/src/Controller/TvChannelsController.php:1924
 msgid "Kashmiri"
 msgstr "Cachemira"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1923
+#: ../../../../admin/src/Controller/TvChannelsController.php:1925
 msgid "Kanuri"
 msgstr "Kanuri"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1924
+#: ../../../../admin/src/Controller/TvChannelsController.php:1926
 msgid "Kazakh"
 msgstr "Kazajo"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1925
+#: ../../../../admin/src/Controller/TvChannelsController.php:1927
 msgid "Central Khmer"
 msgstr "Khmer central"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1926
+#: ../../../../admin/src/Controller/TvChannelsController.php:1928
 msgid "Kikuyu"
 msgstr "Kikuyu"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1927
+#: ../../../../admin/src/Controller/TvChannelsController.php:1929
 msgid "Kinyarwanda"
 msgstr "Kinyarwanda"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1928
+#: ../../../../admin/src/Controller/TvChannelsController.php:1930
 msgid "Kirghiz"
 msgstr "Kirguises"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1929
+#: ../../../../admin/src/Controller/TvChannelsController.php:1931
 msgid "Komi"
 msgstr "Komi"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1930
+#: ../../../../admin/src/Controller/TvChannelsController.php:1932
 msgid "Kongo"
 msgstr "Kongo"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1931
+#: ../../../../admin/src/Controller/TvChannelsController.php:1933
 msgid "Korean"
 msgstr "Coreano"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1932
+#: ../../../../admin/src/Controller/TvChannelsController.php:1934
 msgid "Kuanyama"
 msgstr "Kuanyama"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1933
+#: ../../../../admin/src/Controller/TvChannelsController.php:1935
 msgid "Kurdish"
 msgstr "Kurdo"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1934
+#: ../../../../admin/src/Controller/TvChannelsController.php:1936
 msgid "Lao"
 msgstr "Lao"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1935
+#: ../../../../admin/src/Controller/TvChannelsController.php:1937
 msgid "Latin"
 msgstr "Latín"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1936
+#: ../../../../admin/src/Controller/TvChannelsController.php:1938
 msgid "Latvian"
 msgstr "Letón"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1937
+#: ../../../../admin/src/Controller/TvChannelsController.php:1939
 msgid "Lingala"
 msgstr "Lingala"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1938
+#: ../../../../admin/src/Controller/TvChannelsController.php:1940
 msgid "Lithuanian"
 msgstr "Lituano"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1939
+#: ../../../../admin/src/Controller/TvChannelsController.php:1941
 msgid "Luxembourgish"
 msgstr "Luxemburgués"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1940
+#: ../../../../admin/src/Controller/TvChannelsController.php:1942
 msgid "Luba-Katanga"
 msgstr "Luba-Katanga"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1941
+#: ../../../../admin/src/Controller/TvChannelsController.php:1943
 msgid "Ganda"
 msgstr "Ganda"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1942
+#: ../../../../admin/src/Controller/TvChannelsController.php:1944
 msgid "Macedonian"
 msgstr "Macedónio"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1943
+#: ../../../../admin/src/Controller/TvChannelsController.php:1945
 msgid "Marshallese"
 msgstr "Marshallese"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1944
+#: ../../../../admin/src/Controller/TvChannelsController.php:1946
 msgid "Malayalam"
 msgstr "Malayalam"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1945
+#: ../../../../admin/src/Controller/TvChannelsController.php:1947
 msgid "Maori"
 msgstr "Maorí"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1946
+#: ../../../../admin/src/Controller/TvChannelsController.php:1948
 msgid "Marathi"
 msgstr "Marathi"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1947
+#: ../../../../admin/src/Controller/TvChannelsController.php:1949
 msgid "Malagasy"
 msgstr "Madagascarí"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1948
+#: ../../../../admin/src/Controller/TvChannelsController.php:1950
 msgid "Maltese"
 msgstr "Maltés"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1949
+#: ../../../../admin/src/Controller/TvChannelsController.php:1951
 msgid "Mongolian"
 msgstr "Mongol"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1950
+#: ../../../../admin/src/Controller/TvChannelsController.php:1952
 msgid "Malay"
 msgstr "Malayo"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1951
+#: ../../../../admin/src/Controller/TvChannelsController.php:1953
 msgid "Burmese"
 msgstr "Birmano"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1952
+#: ../../../../admin/src/Controller/TvChannelsController.php:1954
 msgid "Nauru"
 msgstr "Nauru"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1953
+#: ../../../../admin/src/Controller/TvChannelsController.php:1955
 msgid "Navajo"
 msgstr "Navajo"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1954
+#: ../../../../admin/src/Controller/TvChannelsController.php:1956
 msgid "Ndebele"
 msgstr "Ndebele"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1955
+#: ../../../../admin/src/Controller/TvChannelsController.php:1957
 msgid "North Ndebele"
 msgstr "Ndebele del Norte"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1956
+#: ../../../../admin/src/Controller/TvChannelsController.php:1958
 msgid "Ndonga"
 msgstr "Ndonga"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1957
+#: ../../../../admin/src/Controller/TvChannelsController.php:1959
 msgid "Nepali"
 msgstr "Nepalí"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1958
+#: ../../../../admin/src/Controller/TvChannelsController.php:1960
 msgid "Dutch"
 msgstr "Holandés"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1959
+#: ../../../../admin/src/Controller/TvChannelsController.php:1961
 msgid "Norwegian"
 msgstr "Noruego"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1960
+#: ../../../../admin/src/Controller/TvChannelsController.php:1962
 msgid "Chichewa"
 msgstr "Chichewa"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1961
+#: ../../../../admin/src/Controller/TvChannelsController.php:1963
 msgid "Occitan"
 msgstr "Occitano"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1962
+#: ../../../../admin/src/Controller/TvChannelsController.php:1964
 msgid "Ojibwa"
 msgstr "Ojibwa"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1963
+#: ../../../../admin/src/Controller/TvChannelsController.php:1965
 msgid "Oriya"
 msgstr "Oriya"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1964
+#: ../../../../admin/src/Controller/TvChannelsController.php:1966
 msgid "Oromo"
 msgstr "Oromo"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1965
+#: ../../../../admin/src/Controller/TvChannelsController.php:1967
 msgid "Ossetian"
 msgstr "Osetia"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1966
+#: ../../../../admin/src/Controller/TvChannelsController.php:1968
 msgid "Panjabi"
 msgstr "Panyabí"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1967
+#: ../../../../admin/src/Controller/TvChannelsController.php:1969
 msgid "Pali"
 msgstr "Pali"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1968
+#: ../../../../admin/src/Controller/TvChannelsController.php:1970
 msgid "Polish"
 msgstr "Polaco"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1969
+#: ../../../../admin/src/Controller/TvChannelsController.php:1971
 #: ../../../tools/misctranslations.php:189
 msgid "Portuguese"
 msgstr "Portugués"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1970
+#: ../../../../admin/src/Controller/TvChannelsController.php:1972
 msgid "Pushto"
 msgstr "Pushto"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1971
+#: ../../../../admin/src/Controller/TvChannelsController.php:1973
 msgid "Quechua"
 msgstr "Quechua"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1972
+#: ../../../../admin/src/Controller/TvChannelsController.php:1974
 msgid "Romansh"
 msgstr "Romanche"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1973
+#: ../../../../admin/src/Controller/TvChannelsController.php:1975
 msgid "Romanian"
 msgstr "Rumano"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1974
+#: ../../../../admin/src/Controller/TvChannelsController.php:1976
 msgid "Rundi"
 msgstr "Kiroundi"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1975
+#: ../../../../admin/src/Controller/TvChannelsController.php:1977
 #: ../../../tools/misctranslations.php:187
 msgid "Russian"
 msgstr "Ruso"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1976
+#: ../../../../admin/src/Controller/TvChannelsController.php:1978
 msgid "Sango"
 msgstr "Sango"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1977
+#: ../../../../admin/src/Controller/TvChannelsController.php:1979
 msgid "Sanskrit"
 msgstr "Sánscrito"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1978
+#: ../../../../admin/src/Controller/TvChannelsController.php:1980
 msgid "Sinhala"
 msgstr "Cingalés"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1979
+#: ../../../../admin/src/Controller/TvChannelsController.php:1981
 msgid "Slovak"
 msgstr "Eslovaco"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1980
+#: ../../../../admin/src/Controller/TvChannelsController.php:1982
 msgid "Slovenian"
 msgstr "Esloveno"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1981
+#: ../../../../admin/src/Controller/TvChannelsController.php:1983
 msgid "Samoan"
 msgstr "Samoano"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1982
+#: ../../../../admin/src/Controller/TvChannelsController.php:1984
 msgid "Shona"
 msgstr "Shona"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1983
+#: ../../../../admin/src/Controller/TvChannelsController.php:1985
 msgid "Sindhi"
 msgstr "Sindhi"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1984
+#: ../../../../admin/src/Controller/TvChannelsController.php:1986
 msgid "Somali"
 msgstr "Somalí"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1985
+#: ../../../../admin/src/Controller/TvChannelsController.php:1987
 msgid "Southern Sotho"
 msgstr "Sesotho meridional"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1986
+#: ../../../../admin/src/Controller/TvChannelsController.php:1988
 #: ../../../tools/misctranslations.php:184
 msgid "Spanish"
 msgstr "Español"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1987
+#: ../../../../admin/src/Controller/TvChannelsController.php:1989
 msgid "Albanian"
 msgstr "Albanés"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1988
+#: ../../../../admin/src/Controller/TvChannelsController.php:1990
 msgid "Sardinian"
 msgstr "Sardo"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1989
+#: ../../../../admin/src/Controller/TvChannelsController.php:1991
 msgid "Serbian"
 msgstr "Serbio"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1990
+#: ../../../../admin/src/Controller/TvChannelsController.php:1992
 msgid "Swati"
 msgstr "Swati"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1991
+#: ../../../../admin/src/Controller/TvChannelsController.php:1993
 msgid "Sundanese"
 msgstr "Sundanese"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1992
+#: ../../../../admin/src/Controller/TvChannelsController.php:1994
 msgid "Swahili"
 msgstr "Swahili"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1993
+#: ../../../../admin/src/Controller/TvChannelsController.php:1995
 msgid "Swedish"
 msgstr "Sueco"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1994
+#: ../../../../admin/src/Controller/TvChannelsController.php:1996
 msgid "Tahitian"
 msgstr "Tahitian"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1995
+#: ../../../../admin/src/Controller/TvChannelsController.php:1997
 msgid "Tamil"
 msgstr "Tamil"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1996
+#: ../../../../admin/src/Controller/TvChannelsController.php:1998
 msgid "Tatar"
 msgstr "Tártaro"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1997
+#: ../../../../admin/src/Controller/TvChannelsController.php:1999
 msgid "Telugu"
 msgstr "Telugu"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1998
+#: ../../../../admin/src/Controller/TvChannelsController.php:2000
 msgid "Tajik"
 msgstr "Tayiko"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1999
+#: ../../../../admin/src/Controller/TvChannelsController.php:2001
 msgid "Tagalog"
 msgstr "Tagalo"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:2000
+#: ../../../../admin/src/Controller/TvChannelsController.php:2002
 msgid "Thai"
 msgstr "Tailandés"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:2001
+#: ../../../../admin/src/Controller/TvChannelsController.php:2003
 msgid "Tigrinya"
 msgstr "Tigrinia"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:2002
+#: ../../../../admin/src/Controller/TvChannelsController.php:2004
 msgid "Tonga"
 msgstr "Tonga"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:2003
+#: ../../../../admin/src/Controller/TvChannelsController.php:2005
 msgid "Tswana"
 msgstr "Tsuana"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:2004
+#: ../../../../admin/src/Controller/TvChannelsController.php:2006
 msgid "Tsonga"
 msgstr "Tsonga"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:2005
+#: ../../../../admin/src/Controller/TvChannelsController.php:2007
 msgid "Turkmen"
 msgstr "Turcomano"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:2006
+#: ../../../../admin/src/Controller/TvChannelsController.php:2008
 #: ../../../tools/misctranslations.php:190
 msgid "Turkish"
 msgstr "Turco"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:2007
+#: ../../../../admin/src/Controller/TvChannelsController.php:2009
 msgid "Twi"
 msgstr "Twi"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:2008
+#: ../../../../admin/src/Controller/TvChannelsController.php:2010
 msgid "Uighur"
 msgstr "Uigur"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:2009
+#: ../../../../admin/src/Controller/TvChannelsController.php:2011
 msgid "Ukrainian"
 msgstr "Ucranio"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:2010
+#: ../../../../admin/src/Controller/TvChannelsController.php:2012
 msgid "Urdu"
 msgstr "Urdu"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:2011
+#: ../../../../admin/src/Controller/TvChannelsController.php:2013
 msgid "Uzbek"
 msgstr "Uzbeko"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:2012
+#: ../../../../admin/src/Controller/TvChannelsController.php:2014
 msgid "Venda"
 msgstr "Venda"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:2013
+#: ../../../../admin/src/Controller/TvChannelsController.php:2015
 msgid "Vietnamese"
 msgstr "Vietnamita"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:2014
+#: ../../../../admin/src/Controller/TvChannelsController.php:2016
 msgid "Volap"
 msgstr "Volap"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:2015
+#: ../../../../admin/src/Controller/TvChannelsController.php:2017
 msgid "Wolof"
 msgstr "Wolof"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:2016
+#: ../../../../admin/src/Controller/TvChannelsController.php:2018
 msgid "Xhosa"
 msgstr "Xhosa"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:2017
+#: ../../../../admin/src/Controller/TvChannelsController.php:2019
 msgid "Yiddish"
 msgstr "Yídish"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:2018
+#: ../../../../admin/src/Controller/TvChannelsController.php:2020
 msgid "Yoruba"
 msgstr "Yoruba"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:2019
+#: ../../../../admin/src/Controller/TvChannelsController.php:2021
 msgid "Zhuang"
 msgstr "Zhuang"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:2020
+#: ../../../../admin/src/Controller/TvChannelsController.php:2022
 msgid "Chinese"
 msgstr "Chino"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:2021
+#: ../../../../admin/src/Controller/TvChannelsController.php:2023
 msgid "Zulu"
 msgstr "Zulú"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:2032
+#: ../../../../admin/src/Controller/TvChannelsController.php:2034
 #: ../../../../admin/src/Controller/RadioController.php:410
 #: ../../../administrator/add_itv.php:1419
 msgid "more than an hour ago"
 msgstr "hace más de una hora"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:2034
+#: ../../../../admin/src/Controller/TvChannelsController.php:2036
 #: ../../../../admin/src/Controller/RadioController.php:412
 #: ../../../administrator/add_itv.php:1423
 msgid "less than a minute ago"
 msgstr "Hace menos de un minuto"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:2036
+#: ../../../../admin/src/Controller/TvChannelsController.php:2038
 #: ../../../../admin/src/Controller/RadioController.php:414
 msgid "{{minute}} minutes ago"
 msgstr "Hace {{minute}} minutos"
@@ -1622,8 +1629,8 @@ msgid "Stopped"
 msgstr "Detenido"
 
 #: ../../../../admin/src/Controller/EventsController.php:67
-#: ../../../../admin/src/Controller/VideoClubController.php:2319
-#: ../../../../admin/src/Controller/VideoClubController.php:2338
+#: ../../../../admin/src/Controller/VideoClubController.php:2326
+#: ../../../../admin/src/Controller/VideoClubController.php:2345
 #: ../../../../admin/src/Controller/AudioClubController.php:1217
 #: ../../../administrator/audio_album.php:429
 #: ../../../administrator/audio_album.php:544
@@ -1841,7 +1848,7 @@ msgstr "direcciones"
 
 #: ../../../../admin/src/Controller/EventsController.php:399
 #: ../../../../admin/src/Controller/VideoClubController.php:852
-#: ../../../../admin/src/Controller/VideoClubController.php:1726
+#: ../../../../admin/src/Controller/VideoClubController.php:1733
 #: ../../../../admin/src/Controller/AudioClubController.php:940
 #: ../../../../admin/src/Controller/StoragesController.php:351
 #: ../../../../admin/src/Controller/AdminsController.php:679
@@ -1872,7 +1879,7 @@ msgid "do not yet running"
 msgstr "todavía no se ejecuta"
 
 #: ../../../../admin/src/Controller/EventsController.php:600
-#: ../../../../admin/src/Controller/VideoClubController.php:1923
+#: ../../../../admin/src/Controller/VideoClubController.php:1930
 #: ../../../lib/ajaxresponse.class.php:49
 #: ../../../administrator/subscribe.php:362
 #: ../../../administrator/subscribe.php:365
@@ -1964,7 +1971,7 @@ msgstr "Estado de entrega"
 
 #: ../../../../admin/src/Controller/EventsController.php:873
 msgid "Receipt status"
-msgstr "estado de la confirmación"
+msgstr "Estado de la confirmación"
 
 #: ../../../../admin/src/Controller/EventsController.php:884
 msgid "Post-function"
@@ -2017,7 +2024,7 @@ msgstr "Última carrera"
 #: ../../../../admin/src/Controller/VideoClubController.php:140
 #: ../../../../admin/json_menu/menu.json:43
 msgid "Movie list"
-msgstr "lista de películas"
+msgstr "Lista de películas"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:97
 msgid "Add movie"
@@ -2046,7 +2053,7 @@ msgstr "Editar comercial"
 #: ../../../../admin/src/Controller/VideoClubController.php:300
 #: ../../../../admin/json_menu/menu.json:58
 msgid "Moderators"
-msgstr "moderadores"
+msgstr "Moderadores"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:273
 msgid "Add moderator"
@@ -2159,7 +2166,7 @@ msgstr "todos"
 msgid "Not published"
 msgstr "No publicado"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:1451
+#: ../../../../admin/src/Controller/VideoClubController.php:1452
 #: ../../../../admin/src/Controller/BroadcastServersController.php:341
 #: ../../../../admin/src/Controller/AudioClubController.php:1091
 #: ../../../../admin/src/Controller/KaraokeController.php:163
@@ -2174,69 +2181,69 @@ msgstr "No publicado"
 msgid "error"
 msgstr "error"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:1702
+#: ../../../../admin/src/Controller/VideoClubController.php:1709
 msgid "Inserted"
 msgstr "Insertado"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:1704
+#: ../../../../admin/src/Controller/VideoClubController.php:1711
 msgid "In this category already exists such a genre"
 msgstr "En esta categoría ya existe un género"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:2037
+#: ../../../../admin/src/Controller/VideoClubController.php:2044
 msgid "If the protocol"
 msgstr "Si el protocolo"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:2037
+#: ../../../../admin/src/Controller/VideoClubController.php:2044
 msgid "then this field must be filled"
 msgstr "entonces este campo debe ser llenado"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:2042
+#: ../../../../admin/src/Controller/VideoClubController.php:2049
 #: ../../../../admin/src/Controller/AudioClubController.php:1118
 #: ../../../../admin/src/Controller/KaraokeController.php:188
 msgid "Invalid format links"
 msgstr "Formato no válido"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:2209
-#: ../../../../admin/src/Controller/VideoClubController.php:2211
+#: ../../../../admin/src/Controller/VideoClubController.php:2216
+#: ../../../../admin/src/Controller/VideoClubController.php:2218
 #: ../../../administrator/add_video.php:188
 msgid "Error: could not save cover image"
 msgstr "Error: No se pudo guardar la imagen de portada"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:2222
+#: ../../../../admin/src/Controller/VideoClubController.php:2229
 #: ../../../administrator/add_video.php:273
 msgid "Error: The folder with that name already exists"
 msgstr "Error: La carpeta con ese nombre ya existe"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:2232
+#: ../../../../admin/src/Controller/VideoClubController.php:2239
 #: ../../../administrator/add_video.php:284
 msgid "Error creating the folder on moderator storage"
 msgstr "Error al crear la carpeta de almacenamiento de moderador"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:2313
+#: ../../../../admin/src/Controller/VideoClubController.php:2320
 #: ../../../../admin/src/Controller/StoragesController.php:587
 msgid "Catalogue"
 msgstr "Catalogar"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:2315
-#: ../../../../admin/src/Controller/VideoClubController.php:2335
+#: ../../../../admin/src/Controller/VideoClubController.php:2322
+#: ../../../../admin/src/Controller/VideoClubController.php:2342
 #: ../../../administrator/add_video.php:867
 #: ../../../administrator/add_video.php:1837
 msgid "Original title"
 msgstr "Titulo original"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:2316
-#: ../../../../admin/src/Controller/VideoClubController.php:2336
+#: ../../../../admin/src/Controller/VideoClubController.php:2323
+#: ../../../../admin/src/Controller/VideoClubController.php:2343
 #: ../../../../admin/src/Controller/StatisticsController.php:1439
 msgid "Length, min"
 msgstr "Longitud, min"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:2317
+#: ../../../../admin/src/Controller/VideoClubController.php:2324
 msgid "Episodes"
 msgstr "episodios"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:2320
-#: ../../../../admin/src/Controller/VideoClubController.php:2333
-#: ../../../../admin/src/Controller/VideoClubController.php:2454
+#: ../../../../admin/src/Controller/VideoClubController.php:2327
+#: ../../../../admin/src/Controller/VideoClubController.php:2340
+#: ../../../../admin/src/Controller/VideoClubController.php:2462
 #: ../../../../admin/src/Controller/StatisticsController.php:1333
 #: ../../../../admin/src/Controller/StatisticsController.php:1351
 #: ../../../../admin/src/Controller/InfoportalController.php:392
@@ -2251,7 +2258,7 @@ msgstr "episodios"
 msgid "Date"
 msgstr "Fecha"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:2321
+#: ../../../../admin/src/Controller/VideoClubController.php:2328
 #: ../../../../admin/src/Controller/KaraokeController.php:350
 #: ../../../administrator/tasks.php:61 ../../../administrator/tasks.php:67
 #: ../../../../admin/json_menu/menu.json:239
@@ -2259,68 +2266,68 @@ msgstr "Fecha"
 msgid "Tasks"
 msgstr "Tareas"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:2322
+#: ../../../../admin/src/Controller/VideoClubController.php:2329
 #: ../../../../admin/src/Controller/StatisticsController.php:1247
 msgid "Views lifetime"
 msgstr "vistas curso de la vida"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:2323
+#: ../../../../admin/src/Controller/VideoClubController.php:2330
 #: ../../../../admin/src/Controller/StatisticsController.php:1248
 msgid "Views last month"
 msgstr "Vistas mes pasado"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:2324
+#: ../../../../admin/src/Controller/VideoClubController.php:2331
 #: ../../../../admin/src/Controller/KaraokeController.php:349
 msgid "Complaints"
 msgstr "Las quejas"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:2337
+#: ../../../../admin/src/Controller/VideoClubController.php:2344
 msgid "Date of publication"
 msgstr "Fecha de publicación"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:2346
+#: ../../../../admin/src/Controller/VideoClubController.php:2353
 #: ../../../administrator/stream_servers.php:171
 #: ../../../administrator/stream_servers.php:215
 msgid "Address"
 msgstr "Dirección"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:2347
+#: ../../../../admin/src/Controller/VideoClubController.php:2354
 #: ../../../administrator/vclub_ad.php:153
 #: ../../../administrator/vclub_ad.php:195
 msgid "Weight"
 msgstr "Peso"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:2348
+#: ../../../../admin/src/Controller/VideoClubController.php:2355
 msgid "Views started"
 msgstr "vistas comenzaron"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:2349
+#: ../../../../admin/src/Controller/VideoClubController.php:2356
 msgid "Views counted"
 msgstr "vistas contados"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:2350
+#: ../../../../admin/src/Controller/VideoClubController.php:2357
 msgid "Necessary to view"
 msgstr "Es necesario para ver"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:2389
+#: ../../../../admin/src/Controller/VideoClubController.php:2396
 msgid "Genres in category"
 msgstr "Géneros en la categoría"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:2390
+#: ../../../../admin/src/Controller/VideoClubController.php:2397
 msgid "Movies in category"
 msgstr "Películas en la categoría"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:2399
+#: ../../../../admin/src/Controller/VideoClubController.php:2407
 #: ../../../../admin/src/Controller/StatisticsController.php:1347
 #: ../../../administrator/add_video.php:2013 ../../../lang/stb.php:239
 msgid "Category"
 msgstr "Categoría"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:2400
+#: ../../../../admin/src/Controller/VideoClubController.php:2408
 msgid "Movies in genre"
 msgstr "Películas de género"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:2433
+#: ../../../../admin/src/Controller/VideoClubController.php:2441
 #: ../../../../admin/src/Controller/UsersController.php:2075
 #: ../../../../admin/src/Controller/UsersController.php:2096
 #: ../../../../admin/src/Controller/AdminsController.php:944
@@ -2351,15 +2358,15 @@ msgstr "Películas de género"
 msgid "Name"
 msgstr "Nombre"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:2434
+#: ../../../../admin/src/Controller/VideoClubController.php:2442
 msgid "MAC address"
 msgstr "Dirección MAC"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:2435
+#: ../../../../admin/src/Controller/VideoClubController.php:2443
 msgid "Advertising is disabled"
 msgstr "La publicidad es discapacitado"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:2456
+#: ../../../../admin/src/Controller/VideoClubController.php:2464
 #: ../../../../admin/src/Controller/StatisticsController.php:1440
 #: ../../../administrator/videolog.php:131
 #: ../../../administrator/myvideolog.php:150
@@ -2527,7 +2534,7 @@ msgstr "Actualización automática"
 #: ../../../lib/audioclub.class.php:18 ../../../lang/stb.php:548
 #: ../../../../admin/json_menu/menu.json:86
 msgid "Albums"
-msgstr "álbumes"
+msgstr "Álbums"
 
 #: ../../../../admin/src/Controller/AudioClubController.php:88
 msgid "Add audio album"
@@ -2627,7 +2634,7 @@ msgstr "Karaoke"
 #: ../../../../admin/src/Controller/StatisticsController.php:353
 #: ../../../../admin/json_menu/menu.json:316
 msgid "Complaints statistics"
-msgstr "estadísticas de quejas"
+msgstr "Estadísticas de quejas"
 
 #: ../../../../admin/src/Controller/StatisticsController.php:354
 msgid "Complaints log"
@@ -2821,7 +2828,7 @@ msgstr "Archivo no disponible y no puede ser publicado"
 #: ../../../../admin/src/Controller/KaraokeController.php:345
 #: ../../../lang/stb.php:546
 msgid "Artist"
-msgstr "Artista"
+msgstr "Artistas"
 
 #: ../../../../admin/src/Controller/KaraokeController.php:347
 #: ../../../administrator/add_video.php:1904
@@ -3105,7 +3112,7 @@ msgstr "Los servicios de emergencia"
 
 #: ../../../../admin/src/Controller/InfoportalController.php:19
 msgid "Reference services"
-msgstr "servicios de referencia"
+msgstr "Servicios de referencia"
 
 #: ../../../../admin/src/Controller/InfoportalController.php:20
 #: ../../../administrator/other_city_info.php:118
@@ -7140,11 +7147,6 @@ msgstr "hace minutos"
 msgid "Error deleting a logo"
 msgstr "Error al eliminar un logotipo"
 
-#: ../../../administrator/add_itv.php:1538
-#: ../../../administrator/add_video.php:1926
-msgid "Age restriction"
-msgstr "Restricción de edad"
-
 #: ../../../administrator/add_itv.php:1554
 msgid "Base channel"
 msgstr "canal base"
@@ -7221,7 +7223,7 @@ msgstr "Las pistas de audio"
 #: ../../../administrator/audio_track.php:217
 #: ../../../../admin/json_menu/menu.json:101
 msgid "Languages"
-msgstr "idiomas"
+msgstr "Idiomas"
 
 #: ../../../administrator/audio_track.php:237
 msgid "search by track name"
@@ -10276,7 +10278,7 @@ msgid "Autocomplete"
 msgstr "autocompletar"
 
 msgid "Available on the serves"
-msgstr "Disponible en los sirve"
+msgstr "Disponible en los servidores"
 
 msgid "Basic"
 msgstr "BASIC"
@@ -10440,7 +10442,7 @@ msgstr "En formato texto"
 
 #: ../../../../admin/json_menu/menu.json:311
 msgid "Inactive subscribers"
-msgstr "los suscriptores inactivos"
+msgstr "Los suscriptores inactivos"
 
 msgid "Load balancing"
 msgstr "Balanceo de carga"
@@ -11243,7 +11245,7 @@ msgid "Channel not selected"
 msgstr "El canal no seleccionado"
 
 msgid "Default area"
-msgstr "área por defecto"
+msgstr "Área por defecto"
 
 msgid "Edit EPG"
 msgstr "Editar EPG"
