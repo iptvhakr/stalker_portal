@@ -246,22 +246,29 @@ class Tmdb {
     }
 
     private static function getLanguage() {
-        $locales = array();
 
-        $allowed_locales = Config::get("allowed_locales");
+        $language = Config::getSafe('vclub_default_lang', '');
 
-        foreach ($allowed_locales as $lang => $locale) {
-            $locales[substr($locale, 0, 2)] = $locale;
-        }
+        if (empty($language)) {
 
-        $accept_language = !empty($_SERVER["HTTP_ACCEPT_LANGUAGE"]) ? $_SERVER["HTTP_ACCEPT_LANGUAGE"] : null;
+            $locales = array();
 
-        if (!empty($_COOKIE['language']) && array_key_exists($_COOKIE['language'], $locales)) {
-            $language = $_COOKIE['language'];
-        } else if ($accept_language && array_key_exists(substr($accept_language, 0, 2), $locales)) {
-            $language = substr($accept_language, 0, 2);
-        } else {
-            $language = key($locales);
+            $allowed_locales = Config::get("allowed_locales");
+
+            foreach ($allowed_locales as $lang => $locale) {
+                $locales[substr($locale, 0, 2)] = $locale;
+            }
+
+            $accept_language = !empty($_SERVER["HTTP_ACCEPT_LANGUAGE"]) ? $_SERVER["HTTP_ACCEPT_LANGUAGE"] : null;
+
+            if (!empty($_COOKIE['language']) && in_array($_COOKIE['language'], $locales)) {
+                $language = $_COOKIE['language'];
+            } else if ($accept_language && array_key_exists(substr($accept_language, 0, 2), $locales)) {
+                $language = $accept_language;
+            } else {
+                $language = key($locales);
+            }
+            $language = substr($language, 0, 2);
         }
 
         return $language;

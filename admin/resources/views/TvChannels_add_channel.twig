@@ -159,6 +159,7 @@
                                                             {{ main_macro.input_hidden(app['form']['wowza_tmp_link'], 'wowza_tmp_link', key, 0) }}
                                                             {{ main_macro.input_hidden(app['form']['nginx_secure_link'], 'nginx_secure_link', key, 0) }}
                                                             {{ main_macro.input_hidden(app['form']['flussonic_tmp_link'], 'flussonic_tmp_link', key, 0) }}
+                                                            {{ main_macro.input_hidden(app['form']['xtream_codes_support'], 'xtream_codes_support', key, 0) }}
                                                         </div>
                                                     </td>
                                                     <td>
@@ -236,6 +237,7 @@
                                                 <input type="hidden" disabled="disabled" name="form[wowza_tmp_link][0]" id="form_wowza_tmp_link_0">
                                                 <input type="hidden" disabled="disabled" name="form[nginx_secure_link][0]" id="form_nginx_secure_link_0">
                                                 <input type="hidden" disabled="disabled" name="form[flussonic_tmp_link][0]" id="form_flussonic_tmp_link_0">
+                                                <input type="hidden" disabled="disabled" name="form[xtream_codes_support][0]" id="xtream_codes_support_0">
                                             </div>
                                         </td>
                                         <td>
@@ -691,6 +693,7 @@
         {{ form_row(app['form'].wowza_tmp_link) }}
         {{ form_row(app['form'].nginx_secure_link) }}
         {{ form_row(app['form'].flussonic_tmp_link) }}
+        {{ form_row(app['form'].xtream_codes_support) }}
         {{ form_row(app['form'].enable_monitoring) }}
         {{ form_row(app['form'].enable_balancer_monitoring) }}
         {{ form_row(app['form'].monitoring_url) }}
@@ -847,6 +850,19 @@
                                         <div class="checkbox">
                                             <label>
                                                 <input type="checkbox" name="form[flussonic_tmp_link][]">
+                                                <i class="fa fa-square-o small"></i>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">{{ 'Xtream-Codes support'|trans }}</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-6">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="form[xtream_codes_support][]" data-check-module={% if not app['mcrypt_enabled'] %}0{% else %}1{% endif %}>
                                                 <i class="fa fa-square-o small"></i>
                                             </label>
                                         </div>
@@ -1288,7 +1304,7 @@
                     }
                 });
 
-                var linkTypeFields = $("#modalbox_ad input[name*='wowza_tmp_link'], #modalbox_ad input[name*='nginx_secure_link'], #modalbox_ad input[name*='flussonic_tmp_link']");
+                var linkTypeFields = $("#modalbox_ad input[name*='wowza_tmp_link'], #modalbox_ad input[name*='nginx_secure_link'], #modalbox_ad input[name*='flussonic_tmp_link'], #modalbox_ad input[name*='xtream_codes_support']");
 
                 $("#modalbox_ad").on('change', "input[name*='use_http_tmp_link']", function(e){
                     if ($(this).prop("checked")) {
@@ -1298,11 +1314,15 @@
                     }
                 });
 
-                $("#modalbox_ad").on('click', "input[name*='wowza_tmp_link'] + i, input[name*='nginx_secure_link'] + i, input[name*='flussonic_tmp_link'] + i", function(e){
+                $("#modalbox_ad").on('click', "input[name*='wowza_tmp_link'] + i, input[name*='nginx_secure_link'] + i, input[name*='flussonic_tmp_link'] + i, input[name*='xtream_codes_support'] + i", function(e){
                     e.stopPropagation();
                     e.preventDefault();
                     var checkBox = $(this).prev('input');
                     var currState = !checkBox.prop("checked");
+                    if (checkBox.get(0).hasAttribute('data-check-module') && '' + checkBox.data('check-module') == '0') {
+                        currState = false;
+                        JSErrorModalBox({msg: "{{ 'For enabling Xtream-Codes Support you need enable mcrypt php-extension'|trans}}"});
+                    }
                     if (currState) {
                         linkTypeFields.val('off').prop('checked', false);
                         checkBox.val('on');

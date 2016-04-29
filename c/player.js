@@ -5498,15 +5498,16 @@ player.prototype.build_con_menu = function(){
     }
 
     if (stb && stb.Set3DConversionMode){
+        mode = stb.Get3DConversionMode ? stb.Get3DConversionMode(): 0;
         this.con_menu.map.unshift(
             {
                 "title" : get_word('3D mode'),
                 "type"  : "switch",
                 "cmd"   : [
-                    {"title" : get_word('mode {0}').format(1), "cmd" : function(){_debug('mode 1'); stb.Set3DConversionMode(0)}, active : true},
-                    {"title" : get_word('mode {0}').format(2), "cmd" : function(){_debug('mode 2'); stb.Set3DConversionMode(1)}},
-                    {"title" : get_word('mode {0}').format(3), "cmd" : function(){_debug('mode 3'); stb.Set3DConversionMode(2)}},
-                    {"title" : get_word('mode {0}').format(4), "cmd" : function(){_debug('mode 4'); stb.Set3DConversionMode(3)}}
+                    {"title" : get_word('mode {0}').format(1), "cmd" : function(){_debug('mode 1'); stb.Set3DConversionMode(0)}, active : (mode == 0)},
+                    {"title" : get_word('mode {0}').format(2), "cmd" : function(){_debug('mode 2'); stb.Set3DConversionMode(1)}, active : (mode == 1)},
+                    {"title" : get_word('mode {0}').format(3), "cmd" : function(){_debug('mode 3'); stb.Set3DConversionMode(2)}, active : (mode == 2)},
+                    {"title" : get_word('mode {0}').format(4), "cmd" : function(){_debug('mode 4'); stb.Set3DConversionMode(3)}, active : (mode == 3)}
                 ]
             }
         );

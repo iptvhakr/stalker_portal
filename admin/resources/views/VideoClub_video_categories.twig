@@ -43,13 +43,14 @@
                         var num = json.data[i].num;
                         var genre_in_category = parseInt(json.data[i].genre_in_category, 10);
                         var movie_in_category = parseInt(json.data[i].movie_in_category, 10);
+                        var censored = json.data[i].censored;
                         json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
                                                         <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\
                                                         <ul class='dropdown-menu pull-right'>\n\
                                                             <li>\n\
-                                                                <a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-video-categories' data-categoriesid='" + id + "' id='edit_video_categories_" + id + "'>\n\
+                                                                <a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-video-categories' data-categoriesid='" + id + "' data-cat-censored='" + censored + "' id='edit_video_categories_" + id + "'>\n\
                                                                     <span>{{ 'Edit'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
@@ -61,6 +62,8 @@
                                                         </ul>\n\
                                                     </div>";
                         var category_name = json.data[i].category_name;
+
+                        json.data[i].censored = censored ? "{{ 'Yes'|trans }}": "{{ 'No'|trans }}";
 
                         json.data[i].category_name = "<a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-video-categories' data-categoriesid='" + id + "' id='edit_video_categories_" + id + "' >" + category_name + "</a>";
                     }
@@ -89,12 +92,12 @@
                 "aoColumnDefs": [
                     { className: "action-menu", "targets": [ -1 ]},
                     { "sortable": false, "targets": [-1]},
-                    { "searchable": false, "targets": [-1, 2]}
+                    { "searchable": false, "targets": [-2, -1, 2]}
                 ]
             }).rowReordering({
                 iIndexColumn: 0,
                 sURL: "{{ app.request.baseUrl }}/{{ app.controller_alias }}/video-categories-reorder"
-            }).closest('#iptv_list').find('.dataTables_processing').hide('');
+            }).closest('#iptv_list').find('.dataTables_processing').hide('', function(){$('.dataTables_filter').hide();});
         }
 
         function yelp() {
@@ -172,7 +175,8 @@
                     var sendData = {
                         id: $("#modalbox input[type='hidden']").val(),
                         category_name: $("#modalbox input[name='category_name']").val(),
-                        num: $("#modalbox input[name='num']").val()
+                        num: $("#modalbox input[name='num']").val(),
+                        censored: $("#modalbox input[name='censored']").prop('checked') ? 1: 0
                     };
 
                     e.stopPropagation();
@@ -256,6 +260,18 @@
                                     <div class="bg-danger"></div>\n\
                                 </span>\n\
                             </div>\n\
+                            <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Age restriction'|trans }}</label>\n\
+                            <div class="col-xs-10 col-sm-8">\n\
+                                <span class="col-xs-8 col-sm-8">\n\
+                                    <div class="checkbox">\n\
+                                        <label>\n\
+                                            <input type="checkbox" class="own_fields form-control " value="1" name="censored" id="video_censored">\n\
+                                            <i class="fa fa-square-o small"></i>\n\
+                                        </label>\n\
+                                        <div class="bg-danger"></div>\n\
+                                    </div>\n\
+                                </span>\n\
+                            </div>\n\
                         </div>\n\
                     </form>\n\
                 </div>');
@@ -271,6 +287,7 @@
             $('#modalbox').find('.devoops-modal-inner').find('input[name="category_name"]').val(obj.closest('tr').find('a:first').text());
             $('#modalbox').find('.devoops-modal-inner').find('input[name="num"]').val(obj.closest('tr').find('td:first').text());
         }
+        $('#modalbox').find('.devoops-modal-inner').find('input[name="censored"]').prop('checked', obj.data('cat-censored') && ('' + obj.data('cat-censored')) == '1');
         $('#modalbox button[type="submit"]').removeAttr("disabled");
         $('#video_category_name').next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
         $('#video_num').next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');

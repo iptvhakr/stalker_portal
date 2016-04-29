@@ -11,6 +11,7 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
             'wowza_tmp_link' => '',
             'nginx_secure_link' => '',
             'flussonic_tmp_link' => '',
+            'xtream_codes_support' => '',
             'enable_monitoring' => FALSE,
             'enable_balancer_monitoring' => '',
             'monitoring_url' => '',

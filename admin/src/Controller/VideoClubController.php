@@ -1421,6 +1421,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
 
         $self = $this;
         $response['data'] = array_map(function($row) use ($self){
+            $row['censored'] = (int)$row['censored'];
             $row['localized_title'] = $self->setLocalization($row['category_name']);
             $row['RowOrder'] = "dTRow_" . $row['id'];
             return $row;
@@ -1483,7 +1484,12 @@ class VideoClubController extends \Controller\BaseStalkerController {
             )));
 
         if (empty($check)) {
-            $data['id']  = $this->db->insertCategoriesGenres(array('category_name' => $this->postData['category_name'], 'num' => $this->postData['num'], 'category_alias' => $category_alias));
+            $data['id']  = $this->db->insertCategoriesGenres(array(
+                'category_name' => $this->postData['category_name'],
+                'num' => $this->postData['num'],
+                'category_alias' => $category_alias,
+                'censored' => !empty($this->postData['censored'])
+            ));
             $data['category_name'] = $this->postData['category_name'];
             $error = '';
         }
@@ -1519,7 +1525,8 @@ class VideoClubController extends \Controller\BaseStalkerController {
         if (empty($check)) {
             $this->db->updateCategoriesGenres(array(
                 'category_name' => $this->postData['category_name'],
-                'num' => $this->postData['num']
+                'num' => $this->postData['num'],
+                'censored' => !empty($this->postData['censored'])
             ), array('id' => $this->postData['id']));
             $error = '';
             $data['id'] = $this->postData['id'];
@@ -2388,6 +2395,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
             array('name'=>'localized_title',    'title'=>$this->setLocalization('Localized title'), 'checked' => TRUE),
             array('name'=>'genre_in_category',  'title'=>$this->setLocalization('Genres in category'), 'checked' => TRUE),
             array('name'=>'movie_in_category',  'title'=>$this->setLocalization('Movies in category'), 'checked' => TRUE),
+            array('name'=>'censored',           'title'=>$this->setLocalization('Age restriction'), 'checked' => TRUE),
             array('name'=>'operations',         'title'=>$this->setLocalization('Operation'),       'checked' => TRUE)
         );
     }
@@ -2463,7 +2471,8 @@ class VideoClubController extends \Controller\BaseStalkerController {
             'num' => '`media_category`.`num` as `num`',
             'category_name' => '`media_category`.`category_name` as `category_name`',
             'genre_in_category' => 'CAST((SELECT  COUNT(*) FROM `cat_genre` WHERE `cat_genre`.`category_alias` = `media_category`.`category_alias`) as CHAR) as `genre_in_category`',
-            'movie_in_category' => 'CAST((SELECT  COUNT(*) FROM `video` WHERE `video`.`category_id` = `media_category`.`id`) as CHAR) as `movie_in_category`'
+            'movie_in_category' => 'CAST((SELECT  COUNT(*) FROM `video` WHERE `video`.`category_id` = `media_category`.`id`) as CHAR) as `movie_in_category`',
+            'censored' => '`media_category`.`censored` as `censored`',
         );
     }
 

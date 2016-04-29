@@ -12,24 +12,24 @@
         </div>
 
         <div class="row">
-                <div class="box">
-					{% if attribute(app, 'dropdownAttribute') is defined %}
+            <div class="box">
+                {% if attribute(app, 'dropdownAttribute') is defined %}
                     {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
-                    {% endif %}	
-                    <div class="box-content">
-                        <div class="box-content no-padding">
-                                <div class="dataTables_processing"></div>
-                                <table class="table  table-hover table-datatable" id="datatable-1">
-                                    {% if attribute(app, 'dropdownAttribute') is defined %}
-                                        {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
-                                    {% endif %}
-                                    <tbody>
+                {% endif %}
+                <div class="box-content">
+                    <div class="box-content no-padding">
+                        <div class="dataTables_processing"></div>
+                        <table class="table  table-hover table-datatable" id="datatable-1">
+                            {% if attribute(app, 'dropdownAttribute') is defined %}
+                                {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                            {% endif %}
+                            <tbody>
 
-                                    </tbody>
-                                </table>
-                        </div>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+            </div>
         </div>
     </div>
 
@@ -40,13 +40,14 @@
                 if (typeof (json.data) == 'object') {
                     for (var i in json.data) {
                         var id = json.data[i].id;
+                        var censored = json.data[i].censored;
                         json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
                                                         <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\
                                                         <ul class='dropdown-menu pull-right'>\n\
                                                             <li>\n\
-                                                                <a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-tv-genres' data-genresid='" + id + "' id='edit_tv_genres_" + id + "'>\n\
+                                                                <a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-tv-genres' data-genre-censored='" + censored + "' data-genresid='" + id + "' id='edit_tv_genres_" + id + "'>\n\
                                                                     <span>{{ 'Edit'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
@@ -58,6 +59,8 @@
                                                         </ul>\n\
                                                     </div>";
                         var title = json.data[i].title;
+
+                        json.data[i].censored = censored ? "{{ 'Yes'|trans }}": "{{ 'No'|trans }}";
 
                         json.data[i].title = "<a  href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-tv-genres' data-genresid='" + id + "' id='edit_tv_genres_" + id + "' >" + title + "</a>";
                     }
@@ -91,7 +94,7 @@
             }).rowReordering({
                 iIndexColumn: 0,
                 sURL: "{{ app.request.baseUrl }}/{{ app.controller_alias }}/tv-genres-reorder"
-            }).closest('#iptv_list').find('.dataTables_processing').hide('');
+            }).closest('#iptv_list').find('.dataTables_processing').hide('', function(){$('.dataTables_filter').hide();});
             /*$('#datatable-1').DataTable().ajax.reload();*/
         }
 
@@ -166,7 +169,8 @@
                     }
                     var sendData = {
                         id: $("#modalbox input[type='hidden']").val(),
-                        title: $("#modalbox input[type='text']").val()
+                        title: $("#modalbox input[type='text']").val(),
+                        censored: $("#modalbox input[name='censored']").prop('checked') ? 1: 0
                     };
 
                     e.stopPropagation();
@@ -228,6 +232,18 @@
                                     <div class="bg-danger"></div>\n\
                                 </span>\n\
                             </div>\n\
+                            <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Age restriction'|trans }}</label>\n\
+                            <div class="col-xs-10 col-sm-8">\n\
+                                <span class="col-xs-8 col-sm-8">\n\
+                                    <div class="checkbox">\n\
+                                        <label>\n\
+                                            <input type="checkbox" class="own_fields form-control " value="1" name="censored" id="tv_genres_censored">\n\
+                                            <i class="fa fa-square-o small"></i>\n\
+                                        </label>\n\
+                                        <div class="bg-danger"></div>\n\
+                                    </div>\n\
+                                </span>\n\
+                            </div>\n\
                         </div>\n\
                     </form>\n\
                 </div>');
@@ -241,9 +257,11 @@
         if (obj.data('genresid')) {
             $('#modalbox').find('.devoops-modal-inner').find('input[type="hidden"]').val(obj.data('genresid'));
             $('#modalbox').find('.devoops-modal-inner').find('input[type="text"]').val(obj.closest('tr').find('a:first').text());
+            $('#modalbox').find('.devoops-modal-inner').find('input[name="censored"]').prop('checked', obj.data('genre-censored') && ('' + obj.data('genre-censored')) == '1');
         } else {
             $('#modalbox').find('.devoops-modal-inner').find('input[type="hidden"]').val('');
             $('#modalbox').find('.devoops-modal-inner').find('input[type="text"]').val('');
+            $('#modalbox').find('.devoops-modal-inner').find('input[name="censored"]').prop('checked', false);
         }
         $('#modalbox button[type="submit"]').removeAttr("disabled");
         $('#tv_genres_title').next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
