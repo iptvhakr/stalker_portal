@@ -49,5 +49,5 @@ class RESTManager
         self::$enable_log = (boolean) $value;
     }
 }
-
+//comment 
 ?>
