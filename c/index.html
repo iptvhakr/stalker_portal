@@ -1,33 +1,14 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
+    <script type="text/javascript" src="../server/api/load_js.php"></script>
 <title>stalker_portal</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-
-<script type="text/javascript" src="version.js"></script>
-
-<script type="text/javascript" src="global.js"></script>
-
-<script type="text/javascript" src="JsHttpRequest.js"></script>
-
-<script type="text/javascript" src="keydown.keycodes.js"></script>
-<script type="text/javascript" src="keydown.observer.js"></script>
-
-<script type="text/javascript" src="watchdog.js"></script>
-<script type="text/javascript" src="usbdisk.js"></script>
-
-<script type="text/javascript" src="load_bar.js"></script>
-<script type="text/javascript" src="xpcom.common.js"></script>
-<script type="text/javascript" src="xpcom.webkit.js"></script>
-
-<script type="text/javascript" src="blocking.js"></script>
-
-<script type="text/javascript" src="player.js"></script>
 
 <!--debug-->
 <!--<script type="text/javascript" src="http://192.168.1.71:8000/target/target-script-min.js#azhurb"></script>-->
 
-<script type="text/javascript">
+<script type="text/javascript" defer="defer">
 
 var debug = 0;
 var stb;
@@ -38,39 +19,39 @@ var resolution_prefix = '';
 var module = module || {};
 var word = {};
 var windowId;
+var focus_module = '', referrer = '', single_module = [];
 
-window.onerror = function(msg, url, lno){
-    _debug('line: '+lno+'; msg: "'+msg+'" url: '+url);
-    return true;
-};
+window.loadRequiredFiles(load_base);
 
-get_params();
+function load_base(){
+    console.log('Loading load_base');
+    window.onerror = function(msg, url, lno){
+        _debug('line: '+lno+'; msg: "'+msg+'" url: '+url);
+        return true;
+    };
+    get_params();
 
-if (_GET.hasOwnProperty('debug')){
-    debug = 1;
+    if (_GET.hasOwnProperty('debug')){
+        debug = 1;
+    }
+
+    if (_GET.hasOwnProperty('referrer')){
+        referrer = decodeURIComponent(_GET['referrer']);
+    }
+
+    if (_GET.hasOwnProperty('single_module')){
+        single_module = _GET['single_module'].split(',');
+    }
+
+    if (_GET && _GET.hasOwnProperty('focus_module')){
+        focus_module = _GET['focus_module'];
+    }
+    init();
 }
-
-if (_GET.hasOwnProperty('referrer')){
-    var referrer = decodeURIComponent(_GET['referrer']);
-}else{
-    referrer = '';
-}
-
-if (_GET.hasOwnProperty('single_module')){
-    var single_module = _GET['single_module'].split(',');
-}else{
-    single_module = [];
-}
-
-var focus_module;
-if (_GET && _GET.hasOwnProperty('focus_module')){
-    focus_module = _GET['focus_module'];
-}
-
-window.onload = init;
+    /*window.onload = init;*/
 
 var loader = {
-    
+
     chain : [],
     cur_idx : -1,
     head : document.getElementsByTagName("head")[0],
@@ -82,39 +63,39 @@ var loader = {
         _debug('loader.set_template', template);
         this.template = template;
     },
-    
+
     add : function(modules){
         _debug('loader.add');
-        
+
         modules = modules || [];
-        
+
         this.cur_idx = -1;
-        
+
         for (var i=0; i<modules.length; i++){
             if (this.chain.indexOf(modules[i]) >= 0){
                 modules.splice(i, 1);
             }
         }
-        
+
         this.chain = modules;
-        
+
         this.step = Math.ceil(this.max_load_percent/this.chain.length);
-        
+
         this.next();
     },
-    
+
     next : function(){
         _debug('loader.next');
-        
+
         if (this.cur_idx < this.chain.length-1){
             this.cur_idx++;
             this.append(this.chain[this.cur_idx]);
         }
     },
-    
+
     append : function(module){
         _debug('loader.append');
-        
+
         stb.loader.add_pos(this.step, 'append '+module);
 
         this.append_style(module);
