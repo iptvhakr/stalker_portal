@@ -1,0 +1,2020 @@
+{% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
+{% set title = ('Video club'|trans ~ ': ' ~ (app.videoEdit ? ('Edit movie'|trans ~ " '"~ app.videoName ~ "'"): 'Add movie'|trans)) | trans %}
+
+{% block content %}
+    <div id="add_channel" class="new_video_club">
+        {{ form_start(app['form'], {'method': 'POST', 'action': (app.request.baseUrl ~ '/' ~ app.controller_alias  ~ '/' ~ app.action_alias) | trans, 'attr': {'class': 'form-horizontal', 'role': 'form', 'id': 'form_'}}) }}
+        <div class="bg-danger">
+            <div class="bg-danger">
+                {{ form_errors(app['form']) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="box">
+                <a class="collapse-link">
+                    <div class="box-header">
+                        <div class="box-name">
+                            <div class="row">
+                                <div class="col-xs-10 col-sm-2">
+                                    <span>{{ 'Basic'|trans }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-icons">
+                            <i class="fa fa-chevron-up"></i>
+                        </div>
+                        <div class="no-move"></div>
+                    </div>
+                </a>
+                <div class="box-content">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label ">{{ 'Title'|trans }}<span class="icon-required">*</span></label>
+                                <div class="col-xs-10 col-sm-6">
+                                    <div class=" col-xs-10 col-sm-6">
+                                        {{ form_widget(app['form'].id) }}
+                                        {{ form_widget(app['form'].rating_count_kinopoisk) }}
+                                        {{ form_widget(app['form'].rating_imdb) }}
+                                        {{ form_widget(app['form'].rating_count_imdb) }}
+                                        {{ form_widget(app['form'].name, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
+                                        <div class="bg-danger">
+                                            {{ form_errors(app['form'].name) }}
+                                            {% if app['error_local'] and attribute(app['error_local'], 'name') is defined %}
+                                                <span> {{ app['error_local']['name'] }}</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">{{ 'You can use letters, digits and symbols from the list: ! @ # $ % ^ & * ( ) _ - + : ; , .'|trans }}</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label ">{{ 'Category'|trans }}<span class="icon-required">*</span></label>
+                                <div class="col-xs-10 col-sm-6">
+                                    <div class=" col-xs-10 col-sm-6">
+                                        {{ form_widget(app['form'].category_id, {'attr': {'class': 'populate placeholder', 'data-validation':'required'} }) }}
+                                        <div class="bg-danger">
+                                            {{ form_errors(app['form'].category_id) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label ">{{ 'Genre'|trans }}<span class="icon-required">*</span></label>
+                                <div class="col-xs-10 col-sm-6">
+                                    <div class=" col-xs-10 col-sm-6">
+                                        {{ form_widget(app['form'].cat_genre_id, {'attr': {'class': 'populate placeholder', 'data-validation':'required'}}) }}
+                                        <div class="bg-danger">
+                                            {{ form_errors(app['form'].cat_genre_id) }}
+                                        </div>
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">{{ 'You can choose up to 4 genres'|trans }}</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label ">{{ 'Type'|trans }}</label>
+                                <div class="col-xs-10 col-sm-6">
+                                    <div class=" col-xs-10 col-sm-6">
+                                        {{ form_widget(app['form'].is_series, {'attr': {'class': 'populate placeholder'}}) }}
+                                        <div class="bg-danger">
+                                            {{ form_errors(app['form'].is_series) }}
+                                        </div>
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">{{ 'Serial type adds a seasons and a episodes.'|trans }}</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label ">{{ 'Parent control'|trans }}</label>
+                                <div class="col-xs-10 col-sm-9">
+                                    <div class=" col-xs-10 col-sm-9">
+                                        <div class="checkbox">
+                                            <label>
+                                                {{ form_widget(app['form'].censored) }}
+                                                <i class="fa fa-square-o small"></i>
+                                            </label>
+                                            <div class="bg-danger">
+                                                {{ form_errors(app['form'].censored) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">{{ 'Adds the restriction for movie access (password set in the "Parental advisory"). Default password 0000'|trans }}</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box">
+                <a class="collapse-link">
+                    <div class="box-header">
+                        <div class="box-name">
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-4">
+                                    <span>{{ 'Movie information'|trans }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-header-btn" id="autocomplete_button_container">
+                            <button class="btn btn-default btn-add-video-rating" data-provider="tmdb">{{ 'Autocomplete'|trans }} TMDB</button>
+                            <button class="btn btn-default btn-add-video-rating" data-provider="kinopoisk">{{ 'Autocomplete'|trans }} {{ 'Kinopoisk'|trans }}</button>
+                        </div>
+                        <div class="box-icons">
+                            <i class="fa fa-chevron-up"></i>
+                        </div>
+                        <div class="no-move"></div>
+                    </div>
+                </a>
+                <div class="box-content">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label ">{{ 'Original title'|trans }}</label>
+                                <div class="col-xs-8 col-sm-7">
+                                    <div class=" col-xs-9 col-sm-11">
+                                        {{ form_widget(app['form'].o_name, {'attr': {'class': 'form-control', 'data-oldvalue': app['form'].o_name.vars.value }}) }}
+                                        <div class="bg-danger">
+                                            {{ form_errors(app['form'].o_name) }}
+                                            {% if app['error_local'] and attribute(app['error_local'], 'o_name') is defined %}<span> {{ app['error_local']['o_name'] }}</span> {% endif %}
+                                        </div>
+                                        <div>
+                                            <a href="" id="kinopoisk_url"></a>
+                                        </div>
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">{{ 'Title on the native language. Autocomplete is available'|trans }}</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label ">{% if app['form'].autocomplete_provider.vars.value and app['form'].autocomplete_provider.vars.value == 'tmdb' %}{{ 'TMDB ID'|trans }}{% else %}{{ 'Kinopoisk ID'|trans }}{% endif %}</label>
+                                <div class="col-xs-8 col-sm-7">
+                                    <div class=" col-xs-9 col-sm-11">
+                                        {{ form_widget(app['form'].autocomplete_provider) }}
+                                        {{ form_widget(app['form'].kinopoisk_id, {'attr': {'class': 'form-control'}}) }}
+                                        <div class="bg-danger">
+                                            {{ form_errors(app['form'].kinopoisk_id) }}
+                                        </div>
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">{% if app['form'].autocomplete_provider.vars.value and app['form'].autocomplete_provider.vars.value == 'tmdb' %}{{ 'ID of movie on the TMDB'|trans }}{% else %}{{ 'ID of movie on the Kinopoisk'|trans }}{% endif %}</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label ">{% if app['form'].autocomplete_provider.vars.value and app['form'].autocomplete_provider.vars.value == 'tmdb' %}{{ 'TMDB rating'|trans }}{% else %}{{ 'Kinopoisk rating'|trans }}{% endif %}</label>
+                                <div class="col-xs-8 col-sm-7">
+                                    <div class="col-xs-9 col-sm-11 col-md-11 col-lg-11">
+                                        {{ form_widget(app['form'].rating_kinopoisk, {'attr': {'class': 'form-control', 'readonly': 'readonly'}}) }}
+                                        <div class="bg-danger">
+                                            {{ form_errors(app['form'].rating_kinopoisk) }}
+                                        </div>
+                                    </div>
+                                    <div class=" col-xs-3 col-sm-1 no-padding">
+                                        <button class="btn btn-default btn-app-mini btn-circle" type="button" id="update_rating_kinopoisk"><i class="fa fa-refresh"></i></button>
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">{% if app['form'].autocomplete_provider.vars.value and app['form'].autocomplete_provider.vars.value == 'tmdb' %}{{ 'Film rating on the TMDB. Autocomplete only'|trans }}{% else %}{{ 'Film rating on the Kinopoisk. Autocomplete only'|trans }}{% endif %}</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label uniseries">{{ 'Year'|trans }}<span class="icon-required">*</span></label>
+                                <label class="col-sm-2 control-label ">{{ 'Period of showing '|trans }}<span class="icon-required">*</span></label>
+                                <div class="col-xs-8 col-sm-7">
+                                    <div class=" col-xs-9 col-sm-11">
+                                        {{ form_widget(app['form'].year, {'attr': {'class': 'form-control pull-left', 'data-validation':'compare_number', 'data-validation-compare-element': '#form_year_end', 'data-validation-compare-operation': '<=', 'data-validation-regexp' : '^\\d{4}$'}}) }}
+                                        {{ form_widget(app['form'].year_end, {'attr': {'class': 'form-control  pull-left add-video-year', 'data-validation' : 'compare_number', 'data-validation-compare-element': '#form_year', 'data-validation-compare-operation': '>=' , 'data-validation-regexp' : '^(?:\\d{4})$', 'data-validation-optional' : 'true', 'disabled': 'disabled' }}) }}
+                                        <div class="bg-danger">
+                                            {{ form_errors(app['form'].year) }}
+                                        </div>
+                                        <div class="bg-danger">
+                                            {{ form_errors(app['form'].year_end) }}
+                                        </div>
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default uniseries">{{ 'Year of the film creation Example: 2014'|trans }}</span>
+                                        <span class="small txt-default">{{ 'The period of showing of the episodes on TV'|trans }}</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label uniseries">{{ 'Length'|trans }}<span class="icon-required">*</span></label>
+                                <label class="col-sm-2 control-label ">{{ 'Approximate duration'|trans }}<span class="icon-required">*</span></label>
+                                <div class="col-xs-8 col-sm-7">
+                                    <div class=" col-xs-9 col-sm-11">
+                                        {{ form_widget(app['form'].duration, {'attr': {'class': 'form-control', 'data-validation':'number'}}) }}
+                                        <div class="bg-danger">
+                                            {{ form_errors(app['form'].duration) }}
+                                        </div>
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default uniseries">{{ 'Film length in minutes Example: 102'|trans }}</span>
+                                        <span class="small txt-default">{{ 'Approximate duration(format)  of episode of serial on minutes. Example: 24'|trans }}</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label ">{{ 'Country'|trans }}<span class="icon-required">*</span></label>
+                                <div class="col-xs-8 col-sm-7">
+                                    <div class=" col-xs-9 col-sm-11">
+                                        {{ form_widget(app['form'].country, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
+                                        <div class="bg-danger">
+                                            {{ form_errors(app['form'].country) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label ">{{ 'Director'|trans }}<span class="icon-required">*</span></label>
+                                <div class="col-xs-8 col-sm-7">
+                                    <div class=" col-xs-9 col-sm-11">
+                                        {{ form_widget(app['form'].director, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
+                                        <div class="bg-danger">
+                                            {{ form_errors(app['form'].director) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label ">{{ 'Actors'|trans }}<span class="icon-required">*</span></label>
+                                <div class="col-xs-8 col-sm-7">
+                                    <div class=" col-xs-9 col-sm-11">
+                                        {{ form_widget(app['form'].actors, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
+                                        <div class="bg-danger">
+                                            {{ form_errors(app['form'].actors) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label ">{{ 'Movie description'|trans }}<span class="icon-required">*</span>:</label>
+                                <div class="col-xs-8 col-sm-7">
+                                    <div class=" col-xs-9 col-sm-11">
+                                        {{ form_widget(app['form'].description, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
+                                        <div class="bg-danger">
+                                            {{ form_errors(app['form'].description) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label ">{{ 'Comments'|trans }}:</label>
+                                <div class="col-xs-8 col-sm-7">
+                                    <div class=" col-xs-9 col-sm-11">
+                                        {{ form_widget(app['form'].comments, {'attr': {'class': 'form-control'}}) }}
+                                        <div class="bg-danger">
+                                            {{ form_errors(app['form'].comments) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label ">{{ 'MPAA rating'|trans }}</label>
+                                <div class="col-xs-8 col-sm-7">
+                                    <div class=" col-xs-10 col-sm-4">
+                                        {{ form_widget(app['form'].rating_mpaa, {'attr': {'class': 'populate placeholder'} }) }}
+                                        <div class="bg-danger">
+                                            {{ form_errors(app['form'].rating_mpaa) }}
+                                        </div>
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">{{ 'MPAA age restriction'|trans }}</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label ">{{ 'Age restriction'|trans }}</label>
+                                <div class="col-xs-8 col-sm-7">
+                                    <div class=" col-xs-10 col-sm-4">
+                                        {{ form_widget(app['form'].age, {'attr': {'class': 'populate placeholder'} }) }}
+                                        <div class="bg-danger">
+                                            {{ form_errors(app['form'].age) }}
+                                        </div>
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">{{ 'Recommended viewer age'|trans }}</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="form-group">
+                                <div class=" col-xs-6 col-sm-6 col-sm-offset-2 no-padding">
+                                    {{ form_widget(app['form'].cover_big) }}
+                                    {{ form_widget(app['form'].cover_id) }}
+                                    <div id="cover_container" data-id="{% if app['form'].cover_id.vars.value %}{{ app['form'].cover_id.vars.value }}{% else %}new{% endif %}" data-file_num="0">
+                                        <input type="file" name="files" style="opacity: 0;" multiple>
+                                    </div>
+                                    <img class="img-rounded channel-logo" src="{% if app['form'].cover_id.vars.value %}{{ app['curr_cover_dir'] }}/{{ app['form'].cover_id.vars.value }}{{ app['cover_ext'] }}{% elseif app['form'].cover_big.vars.value %}{{ app['form'].cover_big.vars.value }}{% endif %}" alt="" style="width: 100%;">
+                                    <a id="delete_cover" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/delete-cover" data-cover_id="{% if app['form'].cover_id.vars.value %}{{ app['form'].cover_id.vars.value }}{% endif %}">
+                                        <span class="txt-primary">{{ 'Delete cover'|trans }}</span>
+                                    </a>
+                                </div>
+                                <div class=" col-xs-6 col-sm-6 col-sm-offset-2 no-padding" style="line-height: 22px;"><br></div>
+                                {% if app.videoEdit %}
+                                <div class=" col-xs-6 col-sm-6 col-sm-offset-2 " id="fileupload_episodes">
+                                    <ul class="video_episodes">
+                                        {% for key in 1..9 %}
+                                            {% if attribute(app, 'videoImages') is defined and attribute(app.videoImages, key) is defined %}
+                                        <li class="col-xs-4 col-sm-4">
+                                            <div id="video_episodes_{{ key }}" data-id="{{ app.videoImages[key].id }}" data-file_num="{{ key }}">
+                                                <input type="file" name="files" style="opacity: 0;" multiple>
+                                            </div>
+                                            <img class="img-rounded" src="{{ app.videoImages[key].curr_cover_dir }}/{{ app.videoImages[key].name }}" alt="">
+                                            <div class="clear_video_episodes"></div>
+                                        </li>
+                                            {% else %}
+                                        <li class="col-xs-4 col-sm-4">
+                                            <div id="video_episodes_{{ key }}" data-id="new" data-file_num="{{ key }}">
+                                                <input type="file" name="files" style="opacity: 0;" multiple>
+                                            </div>
+                                            <img class="img-rounded" src="" alt="">
+                                            <div class="clear_video_episodes"></div>
+                                        </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" id="season_button_container" style="display: none">
+                <div class="col-xs-6 col-sm-6 col-xs-offset-6 col-sm-offset-6">
+                    <div class="box">
+                        <div class="box-content">
+                            <button id="update_season" class="btn btn-success col-xs-6 col-sm-4 col-md-5 col-xs-offset-0 col-sm-offset-1 col-md-offset-1 pull-right">{{ 'Update season data'|trans }}</button>
+                            <button id="add_season_structure" class="btn btn-default col-xs-6 col-sm-4 col-md-5 col-xs-offset-0 col-sm-offset-1 col-md-offset-1 pull-right">{{ 'Create season structure'|trans }}</button>
+                            <button id="add_season" class="btn btn-default col-xs-6 col-sm-4 col-md-5 col-xs-offset-0 col-sm-offset-1 col-md-offset-1 pull-right">{{ 'Add one season'|trans }}</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12"><div class="box"></div></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                    <div id="files_container" data-video_id="{% if attribute(app, 'video_id') is defined %}{{ app['video_id'] }}{% endif %}"></div>
+                </div>
+            </div>
+            <div class="box">
+                <div class="box-content">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pull-right">
+                            {{ form_widget(app['form'].save, { 'label': 'Save'|trans, attr: {'class': 'btn btn-success   pull-right'}}) }}
+                            <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/video-list" class="btn btn-default  pull-right"> {{ 'Cancel'|trans }} </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="">
+            {{ form_rest(app.form) }}
+        </div>
+        {{ form_end(app['form']) }}
+    </div>
+
+    <script type="text/javascript" src="./plugins/scrollTo/jquery.scrollTo.min.js" defer=""></script>
+    <script type="text/javascript">
+
+        var sendCounter = 0;
+
+        var pendingList = [];
+
+        var conf = {
+            form: '#form_',
+            lang : '{{ app.language }}',
+            showHelpOnFocus : true,
+            validateHiddenInputs: true,
+            ignore: ['.ignore'],
+            modules: 'jsconf, date',
+            errorClass: "myErrorClass",
+            onSuccess: function () {
+                if (this.form == '#form_') {
+                    if (typeof (pendingList) != "undefined" && pendingList instanceof Array && pendingList.length != 0){
+                        if (!$("#modalbox").is(':visible')) {
+                            $('#modalbox').find('.modal-header-name span').text("{{ 'Uploading progress'|trans }}");
+                            $("#modalbox .devoops-modal-inner").empty();
+                            $("#modalbox").show();
+                        }
+                        pendingList.forEach(function (data) {
+                            var name = '';
+                            if (typeof(data.files) != "undefined" && data.files.length) {
+                                name = "{{ 'Image'|trans }} " + data.files[0].name;
+                            }
+                            var progress_id = 'qq-progress-bar-' + data.formData.file_num;
+                            data.progress_id = progress_id;
+                            $("#modalbox .devoops-modal-inner").append('\n\
+                            <span class="col-sm-10 col-sm-offset-1" style="text-align: center;">'+name+'</span>\n\
+                            <div class="qq-progress-bar-container-selector">\n\
+                                <div id="' + progress_id + '" class="tu-progress-bar ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="width: 90%; margin-left: 5%;">\n\
+                                    <div class="qq-progress-bar-selector ui-progressbar-value ui-widget-header ui-corner-left" style="width: 0%;"></div>\n\
+                                </div>\n\
+                            </div>');
+                            data.submit();
+                        });
+                    }
+
+                    var submittedFileTimer = window.setInterval(function(){
+                        if ((typeof (pendingList) != "undefined" && pendingList instanceof Array && pendingList.length == 0) || (typeof (window.submitTry) != "undefined" && window.submitTry >= 300)){
+                            window.clearInterval(submittedFileTimer);
+                            if (typeof (window.submitTry) != "undefined" && window.submitTry >= 300) {
+                                JSErrorModalBox({msg: "{{ 'One or more images not be loaded'|trans }}"});
+                            }
+                            $('#form_').get(0).submit();
+                        } else {
+                            window.submitTry = typeof (window.submitTry) != "undefined" ? window.submitTry++: 0;
+                        }
+                    }, 100);
+                }
+                return false;
+            },
+            onError: function () {
+                var _this = this;
+                $(_this.form + " select").each(function(){
+                    if ($(this).hasClass('error')) {
+                        _this.highlight(this, _this.errorClass);
+                    } else {
+                        _this.unhighlight(this, _this.errorClass);
+                    }
+                });
+                return false;
+            },
+            highlight: function (element, errorClass, validClass) {
+                var elem = $(element);
+                if (element.tagName.toLowerCase() == 'select') {
+                    $("#s2id_" + elem.attr("id") + " ul").addClass(errorClass);
+                    $("#s2id_" + elem.attr("id") + " a").addClass(errorClass);
+                } else {
+                    $(element).addClass(errorClass);
+                }
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                var elem = $(element);
+                if (element.tagName.toLowerCase() == 'select') {
+                    $("#s2id_" + elem.attr("id") + " ul").removeClass(errorClass);
+                    $("#s2id_" + elem.attr("id") + " a").removeClass(errorClass);
+                } else {
+                    $(element).removeClass(errorClass).removeAttr('style');
+                }
+            }
+        };
+
+        function DemoSelect2() {
+            $.getScript("{{ app.request.baseUrl }}/plugins/select2/i18n/{% if app["language"] %}{{ app["language"] }}{% else %}en{% endif %}.js", function(){
+                $.fn.select2.defaults.set('dropdownAutoWidth', false);
+                $.fn.select2.defaults.set('width', '100%');
+                $.fn.select2.defaults.set('allowDuplicates', false);
+                checkCatGenreList('#form_category_id', '#form_cat_genre_id');
+                $('#form_category_id').select2({minimumResultsForSearch: -1, placeholder: ""});
+                $('#form_cat_genre_id').select2({minimumResultsForSearch: -1, maximumSelectionLength: 4});
+                $('#form_is_series').select2({minimumResultsForSearch: -1});
+                $('#form_rating_mpaa').select2({minimumResultsForSearch: -1});
+                $('#form_age').select2({minimumResultsForSearch: -1});
+            });
+        }
+
+        function setFileLanguagesSelect(){
+            var file_languages = $('#file_languages').select2({minimumResultsForSearch: -1, allowDuplicates: true, width: '100%'});
+            if ($('#fileLangCloneList').length) {
+                $('#fileLangCloneList').remove();
+            }
+            file_languages.parent().css({position: 'relative', overflow: 'hidden'});
+            var fileLangList = file_languages.next();
+            var cloneList = fileLangList.clone(true, true);
+            cloneList.insertAfter(fileLangList);
+
+            cloneList.attr('id', 'fileLangCloneList').css({width: '92%', top: 0, left: 10, position: 'absolute'});
+            file_languages.next().css({visibility: 'hidden'});
+
+            cloneList.on('select2:selecting', function(e){
+                e.stopPropagation();
+                e.preventDefault();
+               return false;
+            });
+            cloneList.on('select2:opening', function(e){
+                e.stopPropagation();
+                e.preventDefault();
+                return false;
+            });
+
+            file_languages.on('select2:selecting', function(e){
+                var lastTimestamp = $("#fileLangCloneList").data('last-timestamp');
+                var lastGuid = $("#fileLangCloneList").data('last-guid');
+                if (lastTimestamp != e.timeStamp){
+                    var liTmpl = $('<li class="select2-selection__choice" title=""><span role="presentation" class="select2-selection__choice__remove">×</span></li>').insertBefore($("#fileLangCloneList").find('li.select2-search'));
+                    var val = $(this).data().select2.results.getHighlightedResults().attr('id').split('-').slice(-1)[0];
+                    var textLabel = $(this).data().select2.results.getHighlightedResults().text();
+                    liTmpl.attr('title', textLabel);
+                    liTmpl.find('span').after(textLabel);
+                    liTmpl.data('val', val);
+                }
+                $("#fileLangCloneList").data('last-timestamp', e.timeStamp);
+                $("#fileLangCloneList").data('last-guid', e.handleObj.guid);
+            });
+
+            file_languages.on('select2:select', function(e){
+                if ($("#fileLangCloneList").height() >= $('#file_languages').next().height()) {
+                    $(this).parent().css({paddingTop: $("#fileLangCloneList").height() - $('#file_languages').next().height() + 'px'});
+                } else {
+                    $("#fileLangCloneList").find('.select2-selection').css({minHeight: $('#file_languages').next().height() + 'px'})
+                }
+            });
+
+            $("#fileLangCloneList ul").on('mouseup mousedown select2:selecting select2:opening keyup keydown input query', 'li, li *', function(e){
+                e.stopPropagation();
+                e.preventDefault();
+                return false;
+            });
+
+            $("#fileLangCloneList").on('click', 'li.select2-selection__choice', function(e){
+                e.stopPropagation();
+                e.preventDefault();
+                var curVal = $(this).data('val');
+                $(this).remove();
+                var langData = [];
+                $("#fileLangCloneList li").each(function(i){
+                    langData.push($(this).data('val'));
+                });
+                $('#file_languages').val(langData).trigger('change.select2');
+                if ($("#fileLangCloneList").height() >= $('#file_languages').next().height()) {
+                    $("#fileLangCloneList").parent().css({paddingTop: $("#fileLangCloneList").height() - $('#file_languages').next().height() + 'px'});
+                } else {
+                    $("#fileLangCloneList").find('.select2-selection').css({minHeight: $('#file_languages').next().height() + 'px'})
+                }
+                $('#file_languages').data().select2.trigger('close');
+                return false;
+            });
+
+        }
+
+        function initFileUploader(){
+            $('#cover_container, div[id^="video_episodes_"]').fileupload({
+                url: '{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-cover',
+                type: 'POST',
+                autoUpload: false,
+                multipart: true,
+                multiple: true,
+                singleFileUploads: true,
+                limitMultiFileUploads: 10,
+                acceptFileTypes: /(\.|\/)(jpe?g|png)$/i,
+                maxFileSize: 1000000,
+                maxNumberOfFiles: 10
+            }).bind('fileuploadadd', function (e, data) {
+                if (e.currentTarget.id.search('video_episodes_') == -1){
+                    $(this).fileupload(
+                            'option',
+                            'previewMaxWidth',
+                            '484px'
+                    );
+                    $(this).fileupload(
+                            'option',
+                            'previewMaxHeight',
+                            '363px'
+                    );
+                } else {
+                    $(this).fileupload(
+                            'option',
+                            'previewMaxWidth',
+                            '101px'
+                    );
+                    $(this).fileupload(
+                            'option',
+                            'previewMaxHeight',
+                            '68px'
+                    );
+                }
+            }).bind('fileuploadadded', function (e, data) {
+                var container, img, params = {}, currentFile, id;
+                container = e.currentTarget;
+                id = container.id.search('video_episodes_') == -1 ? 0: parseInt(container.id.replace(/[^\d]*/ig, ''), 10);
+                currentFile = data.files[0];
+                img = $(container).next('img');
+
+                if (img.attr('src') || $(container).attr('qq-file-id')) {
+                    img = false;
+                    $("#cover_container, div[id^='video_episodes_']").each(function(){
+                        if (!$(this).next('img').attr('src') && !$(this).attr('qq-file-id') ) {
+                            id = this.id.search('video_episodes_') == -1 ? 0: parseInt(this.id.replace(/[^\d]*/ig, ''), 10);
+                            $(this).attr('qq-file-id', id);
+                            params = {
+                                id: $(this).data('id'),
+                                file_num: ''+$(this).data('file_num'),
+                                video_id: ($("#form_id").val() ? $("#form_id").val() : 'new')
+                            };
+                            img = $(this).next('img');
+                            return false;
+                        }
+                    });
+                    if (img === false) {
+                        return false;
+                    }
+                } else {
+                    $(container).attr('qq-file-id', id);
+                    params = {
+                        id: $(container).data('id'),
+                        file_num: ''+$(container).data('file_num'),
+                        video_id: ($("#form_id").val() ? $("#form_id").val() : 'new')
+                    };
+                }
+
+                if (typeof(data.formData) == 'undefined') {
+                    data.formData = {};
+                }
+
+                data.formData = params;
+
+                img.attr('src', currentFile.preview.toDataURL(currentFile.type));
+                if (!img.is(':visible')) {
+                    img.show();
+                }
+                pendingList.push(data);
+            }).bind('fileuploadalways', function (e, data) {
+                if (typeof(data.progressWorkTimer) != "undefined") {
+                    window.clearInterval(data.progressWorkTimer);
+                }
+
+                var name = '';
+                if (typeof(data.files) != "undefined" && data.files.length) {
+                    name = "{{ 'Image'|trans }} " + data.files[0].name;
+                }
+
+                var progress_id = ( typeof(data.progress_id) != "undefined" ? data.progress_id: 'qq-progress-bar-' + data.formData.file_num);
+
+                $('#' + progress_id).attr('aria-valuenow', 100);
+                $('#' + progress_id).closest('div.qq-progress-bar-container-selector').prev('span').html(name + ' ' + "{{ 'saving'|trans }}");
+                $('#' + progress_id + " > div").css("width", "100%");
+                var file_num = '' + data.formData.file_num;
+                if (typeof (pendingList) != "undefined" && pendingList instanceof Array && pendingList.length && file_num) {
+                    $.each(pendingList, function (i) {
+                        if (file_num && this.formData && this.formData.file_num && this.formData.file_num == file_num) {
+                            pendingList.splice(i,1);
+                        }
+                    });
+                }
+            }).bind('fileuploadprogress', function (e, data) {
+                var name = '';
+                if (typeof(data.files) != "undefined" && data.files.length) {
+                    name = "{{ 'Image'|trans }} " + data.files[0].name;
+                }
+                var value_now = Math.round(data.loaded / data.total * 100);
+                var progress = '"' + name + '" '+"{{ 'uploading'|trans }}"+'...  ' + value_now + '%';
+                var progress_id = ( typeof(data.progress_id) != "undefined" ? data.progress_id: 'qq-progress-bar-' + data.formData.file_num);
+                if (data.loaded < data.total) {
+                    $('#' + progress_id).attr('aria-valuenow', value_now);
+                    $('#' + progress_id).closest('div.qq-progress-bar-container-selector').prev('span').html(progress);
+                    $('#' + progress_id + " > div").css("width", value_now + "%");
+                } else {
+                    $('#' + progress_id).attr('aria-valuenow', 100);
+                    $('#' + progress_id).closest('div.qq-progress-bar-container-selector').prev('span').html(name + ' ' + "{{ 'saving'|trans }}");
+                    $('#' + progress_id + " > div").css("width", "100%");
+                }
+            });
+            return true;
+        }
+
+        function yelp() {
+            $(document).ready(function () {
+                // Add custom validation rule
+                var customRuleObj = {
+                    name : 'compare_number',
+                    errorMessage : "",
+                    errorMessageKey: 'badCompareNumber'
+                };
+
+                customRuleObj.validatorFunction = function(value, el, config, language, form) {
+                    var compElem = $(el).data('validation-compare-element');
+                    var compOperation = $(el).data('validation-compare-operation') ? $(el).data('validation-compare-operation') : "<=";
+                    var compRegExpStr = $(el).data('validation-regexp');
+                    var compElemValidationOptional = $(compElem).data('validation-optional') || false;
+
+                    if (compRegExpStr) {
+                        var compRegExp = new RegExp(compRegExpStr, 'ig');
+                        if (!compRegExp.test($(el).val())){
+                            this.errorMessage = language.badCustomVal;
+                            return false;
+                        }
+                    }
+
+                    if (compElem && !$(compElem).is(":disabled")) {
+                        if (!$(compElem).val() && compElemValidationOptional) {
+                            return true;
+                        }
+                        var val = parseFloat($(el).val());
+                        var compVal = parseFloat($(compElem).val());
+                        if ((compOperation == '<=' && !(val <= compVal)) || (compOperation == '>=' && !(val >= compVal))) {
+                            this.errorMessage = "{{ 'End date can not be less than the start date'|trans }}";
+                            return false;
+                        }
+                    }
+
+                    return true;
+                };
+
+                $.formUtils.addValidator(customRuleObj);
+
+                $.validate(conf);
+
+                LoadSelect2Script(DemoSelect2);
+
+                if (typeof (loadFileUploadScripts) != 'function' || !loadFileUploadScripts(initFileUploader)){
+                    JSErrorModalBox({msg: "{{ 'Cannot load File Upload plugin'|trans }}"})
+                }
+
+                $("#files_container").on('click', '.box-header input, .box-header button, .mod_input i', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                });
+
+                $("#files_container").on('blur keydown', 'input[name="season_original_name"], input[name="season_name"], input[name="series_original_name"], input[name="series_name"]', function(e){
+                    if ((e.type == 'blur' || e.type == 'focusout' || (e.type == 'keydown' && e.keyCode == 13)) && !$(this).data('is_sended')){
+                        e.stopPropagation();
+                        e.preventDefault();
+                        var params = {
+                            id: $(this).closest("div[id*='season']").attr('id'),
+                            field: $(this).attr('name'),
+                            value: $(this).val(),
+                            event: e.type
+                        };
+
+                        ajaxPostSend('{{ app.request.baseUrl }}/{{ app.controller_alias }}/save-season-series-names', params, false, false);
+                        $(this).data('is_sended', 1);
+                        return;
+                    }
+                    if ($(this).data('is_sended') && e.type && e.type != 'keydown') {
+                        $(this).removeData('is_sended');
+                    }
+                });
+
+                $("#files_container").on('click', 'button[data-add-files]', function (e) {
+                    $("#modalbox").hide();
+                    $("#modalbox").data('complete', 1);
+                    $('#modalbox').find('.modal-header-name span').text("{{ 'Add file'|trans }}");
+                    $('#modalbox').find('.devoops-modal-inner').html($("#modal_save_form_body").text());
+                    $('#modalbox').find('.devoops-modal-bottom').html($("#modal_save_form_buttons").text());
+
+                    $("#file_id").remove();
+                    $("#file_name").remove();
+                    $("#video_id").val($("#files_container").data('video_id'));
+
+                    var seasonContainer = $(this).closest('div[id^="season_"]');
+                    if (seasonContainer.length) {
+                        $("#season_id").val(seasonContainer.data('seasonid'));
+                    } else {
+                        $("#season_id").remove();
+                    }
+
+                    var seriesContainer = $(this).closest('div[id^="s_season_"]');
+                    if (seriesContainer.length) {
+                        $("#series_id").val(seriesContainer.data('seriesid'));
+                    } else {
+                        $("#series_id").remove();
+                    }
+
+                    $("#file_type").prop({
+                        'readonly': 'readonly',
+                        'disabled': 'disabled'
+                    }).find('option[value="video"]').prop({'selected': 'selected'});
+                    $("#file_protocol").prop({
+                        'readonly': 'readonly',
+                        'disabled': 'disabled'
+                    }).find('option[value="custom"]').prop({'selected': 'selected'});
+
+                    $('#file_type').select2({minimumResultsForSearch: -1});
+                    $('#file_quality').select2({minimumResultsForSearch: -1});
+                    setFileLanguagesSelect();
+                    $('#file_volume_level option[value="0"]').prop('selected', true);
+                    $('#file_volume_level').select2({minimumResultsForSearch: -1});
+                    $('#file_protocol').select2({minimumResultsForSearch: -1});
+                    $('#file_accessed').select2({minimumResultsForSearch: -1});
+
+                    $('#modalbox').show();
+                    if (!$(this).closest('a.collapse-link').next('.box-content').is(':visible')) {
+                        $(this).closest('a.collapse-link').trigger('click');
+                    }
+                });
+
+                $("#files_container").on('click', 'button[data-add-series]', function (e) {
+                    var container = $(this).closest('div[id^="season_"]');
+                    if (container.length) {
+                        var sendData = {
+                            season_id: container.data('seasonid'),
+                            series_number: container.find("span[data-series-count]").data("series-count")
+                        };
+                        ajaxPostSend("{{ app.request.baseUrl }}/{{ app.controller_alias }}/add-video-season-series", sendData, false);
+                    }
+                });
+
+                $("#files_container").on('click', "a.collapse-link", function(e){
+                    if ($(this).parent('div[id^="s_season_"]').length == 0 && $(this).next('div.box-content').is(':visible')) {
+                        $(this).next('div').find('.box-content:visible').prev('a.collapse-link').trigger('click');
+                    }
+                });
+
+                $("#season_button_container").on('click', '#add_season', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+
+                    var seasonNumbers = new Array(), j;//.find("span[data-season-number]").data("season-number");
+
+                    $("#files_container").find('div[id^="season_"]').each(function(){
+                        seasonNumbers.push(parseInt($(this).find("span[data-season-number]").data("season-number"), 10));
+                        if ($(this).children('.box-content').is(':visible')){
+                            $(this).children('a.collapse-link').trigger('click');
+                        }
+                    });
+
+                    var sendData = {
+                        video_id: $("#files_container").data('video_id'),
+                        season_number: seasonNumbers[seasonNumbers.length - 1] + 1
+                    };
+
+                    for(var i in seasonNumbers){
+                        j = parseInt(i, 10) +1;
+                        if (typeof(seasonNumbers[j]) != 'undefined' && seasonNumbers[i] + 1 != seasonNumbers[j]) {
+                            sendData.season_number = seasonNumbers[i] + 1;
+                            break;
+                        }
+                    }
+
+                    ajaxPostSend("{{ app.request.baseUrl }}/{{ app.controller_alias }}/add-video-season", sendData, false);
+                });
+
+                $("#season_button_container").on('click', '#add_season_structure', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $("#modalbox .modal-header-name span").empty().text("{{ 'Add seasons and episodes'|trans }}");
+                    $("#modalbox .devoops-modal-inner").empty();
+                    $($("#season_counter_template").html()).appendTo("#modalbox .devoops-modal-inner");
+
+                    $("#modalbox .devoops-modal-bottom").empty().append($("#modal_save_form_buttons").html());
+
+                    $('#season_counter').select2({minimumResultsForSearch: -1});
+                    $('<hr>').insertAfter($("#season_counter").closest('.form-group'));
+                    $("#season_counter").closest('.form-group').next('hr').css({minWidth: "100%", clear: "both", marginTop: "40px", marginBottom: "40px"});
+
+                    var selectBox = $($("#series_counter_template").html()).insertAfter($("#season_counter").closest('.form-group').next('hr'));
+                    selectBox.find('select').attr({name: 'season_structure[1]', id: 'series_counter_0'});
+                    selectBox.find('label').text(selectBox.find('label').text() + 1);
+                    $('#series_counter_0').select2({minimumResultsForSearch: -1});
+
+                    $("#modalbox").data('complete', 1).show();
+                });
+
+                $("#modalbox").on('change', "#season_counter", function(){
+                    if ($("#season_counter").closest('.form-group').next('hr').length == 0) {
+                        $('<hr>').insertAfter($("#season_counter").closest('.form-group'));
+                        $("#season_counter").closest('.form-group').next('hr').css({minWidth: "100%", clear: "both", marginTop: "65px"});
+                    }
+
+                    var currCount = parseInt($(this).val(), 10);
+                    var selectBoxes = $("#modalbox select[id^='series_counter_']");
+                    var selectBox;
+
+                    while(selectBoxes.length != currCount) {
+                        if (selectBoxes.length > currCount) {
+                            $(selectBoxes.get(selectBoxes.length - 1)).closest('.form-group').remove();
+                        } else {
+                            if (selectBoxes.length == 0) {
+                                selectBox = $($("#series_counter_template").html()).insertAfter($("#season_counter").closest('.form-group').next('hr'));
+                            } else {
+                                selectBox = $($("#series_counter_template").html()).insertAfter(selectBoxes.get(selectBoxes.length - 1).closest('.form-group'));
+                            }
+                            selectBox.find('select').attr({name: 'season_structure[' + (selectBoxes.length + 1) + ']', id: 'series_counter_' + selectBoxes.length});
+                            selectBox.find('label').text(selectBox.find('label').text() + (selectBoxes.length + 1));
+                            $('#series_counter_' + selectBoxes.length).select2({minimumResultsForSearch: -1});
+                        }
+                        selectBoxes = $("#modalbox select[id^='series_counter_']");
+                    }
+
+                });
+
+                $("#modalbox").on("click", "button[type='submit']", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+
+                    conf.form = '#' + $("#modalbox form").attr('id');
+
+                    if ($(conf.form).isValid({}, conf, true)) {
+                        conf.onSuccess();
+                    } else {
+                        conf.onError();
+                        return false;
+                    }
+
+                    var sendData = {};
+                    $("#modalbox form").find("input.own_fields, select.own_fields").filter('[id!="file_languages"]').each(function () {
+                        var _this = $(this);
+                        sendData[_this.attr('name')] = _this.val();
+                    });
+
+                    if ($("#modalbox form #file_languages").length) {
+                        sendData['languages'] = [];
+                        $('#fileLangCloneList li').each(function () {
+                            sendData['languages'].push($(this).data('val'));
+                        });
+                    }
+
+                    ajaxPostSend($("#modalbox form").attr('action'), sendData, false);
+                    JScloseModalBox();
+                });
+
+                $("#modalbox").on("click", "button[type='reset']", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $.validate();
+                    $("#modalbox form").get(0).reset();
+                    /*$("#modalbox form").find("select.own_fields").each(function () {
+                        $(this).select2({minimumResultsForSearch: -1});
+                    });*/
+                    JScloseModalBox();
+                });
+
+                $("#files_container").on('click', 'a.main_ajax:not([disabled])', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $(this).closest("div.open").removeClass('open');
+                    ajaxPostSend($(this).attr('href'), $(this).data(), false);
+                });
+
+                $("#files_container").on('click', 'a[disabled]', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    JSErrorModalBox({msg: "{{ 'Action is disabled'|trans }}"});
+                });
+
+                $("table[id*='filedata']").on("click", "a[href*='remove-video']", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    JScloseModalBox();
+                    $('#modalbox').find('.modal-header-name span').text("{{ 'Delete file'|trans }}");
+                    var id = $(this).data('id');
+                    if (id) {
+                        $('#modalbox').find('.devoops-modal-inner').html("\n\
+                        <form class='form-horizontal' role='form' action=''>\n\
+                            <input type='hidden' class='own_fields form-control' name='id' value='' readonly='readonly'>\n\
+                            <span class='col-xs-12 col-sm-12'>\n\
+                                <span class='text-danger text-center'>\n\
+                                {{ 'Do you really wont delete this record?'|trans }}\n\
+                                </span>\n\
+                            </span>\n\
+                        </form>\n\
+                        ");
+                        $('#modalbox').find('.devoops-modal-inner form').attr('action', $(this).attr('href'));
+                        $('#modalbox').find('.devoops-modal-inner form input').val($(this).data('id'));
+                        $('#modalbox').find('.devoops-modal-bottom').html($("#modal_save_form_buttons").text());
+                    } else {
+                        JSErrorModalBox({msg: "{{ 'This record cannot be deleted'|trans }}"});
+                    }
+                });
+
+                $(document).on("click", ".clear_video_episodes, #delete_cover", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var img, container;
+                    if ($(this).hasClass('clear_video_episodes')) {
+                        img = $(this).prev('img');
+                        container = $(this).closest('li').find("div[id^='video_episodes_']").attr('id');
+                    } else {
+                        img = $("#cover_container").next('img');
+                        container = "cover_container";
+                    }
+                    img.hide(100, function () {
+                        img.attr('src', '');
+                    });
+                    img.css('display', 'inline');
+
+                    var id = $('#' + container).attr('qq-file-id');
+                    if (typeof(id) != 'undefined') {
+                        var file_num = ''+$('#' + container).data('file_num');
+                        if (typeof (pendingList) != "undefined" && pendingList instanceof Array && pendingList.length && file_num) {
+                            $.each(pendingList, function (i) {
+                                if (file_num && this.formData && this.formData.file_num && this.formData.file_num == file_num) {
+                                    this.abort();
+                                    pendingList.splice(i,1);
+                                }
+                            });
+                        }
+                    } else if($("#form_id").val()){
+                        ajaxPostSend('{{ app.request.baseUrl }}/{{ app.controller_alias }}/delete-cover', {id: $("#" + container).data('id'), container: container}, false);
+                    }
+                    $('#' + container).removeAttr('qq-file-id');
+                    $(this).hide(50, function(){
+                        var _this = this;
+                        setTimeout(function(){
+                            $(_this).removeAttr('style');
+                        }, 1000);
+                    });
+                });
+
+                $("#form_save").on('click', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+
+                    conf.form = '#form_';
+
+                    if ($(conf.form).isValid({}, conf, true)) {
+                        conf.onSuccess();
+                    } else {
+                        conf.onError();
+                    }
+                    return false;
+                });
+
+                $("#form_reset").on('click', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $.validate();
+                    $(this).closest('form').get(0).reset();
+                    return false;
+                });
+
+                $(document).on('change', '#form_category_id', function () {
+                    checkCatGenreList('#form_category_id', '#form_cat_genre_id');
+                });
+
+                $("#modalbox").on('change', '#file_protocol', function (e) {
+                    checkProtocol();
+                });
+
+                $(document).on('change keyup', '#form_name, #form_year', function (e) {
+                    var _this = $('#form_name');
+                    _this.next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
+
+                    if ($.trim(_this.val()) == '' && $.trim($('#form_o_name').val()) == '') {
+                        $('#form_kinopoisk_id').removeAttr('readonly');
+                    } else {
+                        $('#form_kinopoisk_id').attr('readonly', 'readonly');
+                    }
+                    if ($.trim(_this.val()) == '') {
+                        return;
+                    }
+
+                    $.ajax({
+                        url: '{{ app.request.baseUrl }}/{{ app.controller_alias }}/check-name',
+                        type: 'POST',
+                        data: {name: _this.val(), year: $.trim($('#form_year').val()), 'id<>': $("#form_id").val()},
+                        success: function (data) {
+                            if (data.success) {
+                                _this.next('div').append('<i class="txt-success fa fa-check"></i> ' + data.chk_rezult).css('visibility', 'visible');
+                            } else if (data.error) {
+                                alert(data.error);
+                            } else {
+                                alert("{{ 'Some server error'|trans }}");
+                            }
+                        },
+                        error: function (data) {
+                            if (typeof(data.responseJSON) != 'undefined' && typeof(data.responseJSON.error) != 'undefined') {
+                                _this.next('div').append('<i class="txt-danger fa fa-ban"></i> ' + data.responseJSON.error).css('visibility', 'visible');
+                            } else {
+                                alert("{{ 'Some network error or access denied'|trans }}");
+                            }
+                        },
+                        dataType: "json",
+                        async: false
+                    });
+                });
+
+                $(document).on('change keyup', '#form_o_name', function (e) {
+                    if ($.trim($(this).val()) == '' && $.trim($('#form_name').val()) == '') {
+                        $('#form_kinopoisk_id').removeAttr('readonly');
+                    } else {
+                        $('#form_kinopoisk_id').attr('readonly', 'readonly');
+                    }
+                    checkAutocompliteButton('#form_o_name', '#form_kinopoisk_id');
+                });
+
+                $(document).on('change keyup', '#form_kinopoisk_id', function (e) {
+                    checkAutocompliteButton('#form_kinopoisk_id', '#form_o_name');
+                });
+
+                checkProtocol();
+
+                $(document).on('click', '#update_rating_kinopoisk', function () {
+                    $.ajax({
+                        url: '{{ app.request.baseUrl }}/{{ app.controller_alias }}/update-rating-kinopoisk',
+                        type: 'POST',
+                        data: {data: $("#form_o_name").val() || $("#form_name").val()},
+                        success: function (data) {
+                            if (data.success) {
+                                $('#kinopoisk_url').attr('href', '');
+                                $('#kinopoisk_url').html('');
+                                for (var id in data.result) {
+                                    if (data.result.hasOwnProperty(id)) {
+                                        $("#form_" + id).val(data.result[id]);
+
+                                        if (id == 'kinopoisk_url') {
+                                            $('#kinopoisk_url').attr('href', data.result[id]);
+                                            $('#kinopoisk_url').html(data.result[id]);
+                                        }
+                                    }
+                                }
+                            } else if (data.error) {
+                                alert(data.error);
+                            } else {
+                                alert("{{ 'Some server error'|trans }}");
+                            }
+                        },
+                        error: function (data) {
+                            if (typeof(data.responseJSON) != 'undefined' && typeof(data.responseJSON.error) != 'undefined') {
+                                alert(data.responseJSON.error);
+                            } else {
+                                alert("{{ 'Some network error or access denied'|trans }}");
+                            }
+                        },
+                        dataType: "json",
+                        async: false
+                    });
+
+                });
+
+                $("#autocomplete_button_container").on('click', 'button', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+
+                    if ($("#modalbox > div").css('display') != 'none') {
+                        $("#modalbox > div").hide();
+                    }
+                    $("#modalbox").show();
+                    JSshowModalBox();
+                    var sendData = {
+                        provider: $(this).data('provider')
+                    };
+
+                    var useLastProvider = $("#form_autocomplete_provider").val() == sendData.provider;
+                    $("#form_autocomplete_provider").val(sendData.provider);
+                    $('#form_kinopoisk_id').closest('div.form-group').children('label.control-label').text(sendData.provider == 'tmdb' ? '{{ 'TMDB ID'|trans }}':'{{ 'Kinopoisk ID'|trans }}');
+                    $('#form_kinopoisk_id').closest('div.form-group').find('.help-inline').find('span').text(sendData.provider == 'tmdb' ? '{{ 'ID of movie on the TMDB'|trans }}':'{{ 'ID of movie on the Kinopoisk'|trans }}');
+                    $('#form_rating_kinopoisk').closest('div.form-group').children('label.control-label').text(sendData.provider == 'tmdb' ? '{{ 'TMDB rating'|trans }}':'{{ 'Kinopoisk rating'|trans }}');
+                    $('#form_rating_kinopoisk').closest('div.form-group').find('.help-inline').find('span').text(sendData.provider == 'tmdb' ? '{{ 'Film rating on the TMDB. Autocomplete only'|trans }}':'{{ 'Film rating on the Kinopoisk. Autocomplete only'|trans }}');
+
+                    var searchBy;
+
+                    if (($('#form_o_name').val() && $('#form_o_name').val() != $('#form_o_name').data('oldvalue')) || !useLastProvider) {
+                        $('#form_o_name').data('oldvalue', $('#form_o_name').val());
+                        sendData.data = $('#form_o_name').val();
+                        searchBy = 'name';
+                    } else {
+                        sendData.data = ($('#form_kinopoisk_id').val() ? $('#form_kinopoisk_id').val() : $('#form_o_name').val());
+                        searchBy = ($('#form_kinopoisk_id').val() ? 'id' : 'name');
+                    }
+
+                    $.ajax({
+                        url: '{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-kinopoisk-info-by-' + searchBy,
+                        type: 'POST',
+                        data: sendData,
+                        success: function (data) {
+                            $("#modalbox").hide();
+                            $("body").removeClass("modal-open");
+                            if (data.success) {
+                                JSSuccessModalBox(data);
+                                /*if (data.result.hasOwnProperty('cover_big')) {
+                                    $('#cover_container').next('img').attr('src', "{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-image?url=" + data.result['cover_big']);
+                                }*/
+
+                                fillFormData(data);
+
+                            } else if (data.error) {
+                                JSErrorModalBox(data);
+                            } else {
+                                JSErrorModalBox({'msg': "{{ 'Some server error'|trans }}"});
+                            }
+                        },
+                        error: function (data) {
+                            $("#modalbox").hide();
+                            if (typeof(data.responseJSON) != 'undefined' && typeof(data.responseJSON.error) != 'undefined') {
+                                JSErrorModalBox(data.responseJSON);
+                            } else {
+                                JSErrorModalBox({'msg': "{{ 'Some network error or access denied'|trans }}"});
+                            }
+                        },
+                        dataType: "json",
+                        async: false
+                    });
+                });
+
+                checkVideoType();
+                $(document).on("change", "#form_is_series", function () {
+                    checkVideoType();
+                });
+
+                $("#season_button_container").on("click", "#update_season", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    checkVideoType();
+                });
+
+                $(document).on("show", "div[id^='s_season_'] .box-content", function(e){
+                    /*var boxContent = $(this).closest('.box').children('.box-content');*/
+                    if (e && e.type && e.type == "show") {
+                        $.queue(this, "fx", function() {
+                            $(this).find('table').DataTable().draw();
+                            $.dequeue( this );
+                        });
+                    }
+                });
+
+                $('.mod_input').on('click', 'i.fa-pencil', function(e){
+                    $(this).prev('input').focus();
+                })
+
+                $("#files_container").on('blur', 'input', function(e){
+                    $(this).selectRange(0);
+                });
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", yelp, false);
+        var cat_genre_list = {
+            {% for key, g_item in app['preparedCatGenre'] %}
+            '{{ key }}': [{% for g_in_item in g_item %}{
+                'id': '{{ g_in_item['id'] }}',
+                'title': '{{ g_in_item['title'] }}'
+            }{% if not loop.last %}, {% endif %}{% endfor %}]{% if not loop.last %}, {% endif %}
+            {% endfor %}
+        };
+
+        var category_list = {
+            {% for g_item in app['catGenres'] %}
+            '{{ g_item['id'] }}': '{{ g_item['category_alias'] }}'{% if not loop.last %}, {% endif %}
+            {% endfor %}
+        };
+
+        function checkCatGenreList(parent, child) {
+            var selAlias = category_list[$(parent).val()];
+            var selChildData = $(child).val();
+            $(child).empty();
+            if (typeof(cat_genre_list[selAlias]) != 'undefined') {
+                $.each(cat_genre_list[selAlias], function (index, value) {
+                    $(child).append('<option value="' + value.id + '" ' + ($.inArray(value.id, selChildData) != -1 ? 'selected="selected"' : '') + '>' + value.title + '</option>');
+                });
+            }
+            $(child).select2({minimumResultsForSearch: -1, maximumSelectionLength: 4});
+        }
+
+        function checkProtocol() {
+            var protocol = $("#file_protocol");
+            if (protocol.val() != 'custom') {
+                protocol.closest('.form-group').next('div.form-group').hide();
+                $('#video_url').attr('disabled', 'disabled');
+            } else {
+                protocol.closest('.form-group').next('div.form-group').show();
+                $('#video_url').removeAttr('disabled');
+            }
+        }
+
+        function checkAutocompliteButton(master, slave) {
+            var buttonContainer = $(slave).parent('div').next();
+            if ($.trim($(master).val()) != '') {
+                buttonContainer.find('button').attr('disabled', 'disabled').removeClass('btn-success');
+                buttonContainer.find('i').removeClass('txt-success').removeClass('fa-check').addClass('txt-danger').addClass('fa-ban');
+            } else {
+                buttonContainer.find('button').removeAttr('disabled').addClass('btn-success');
+                buttonContainer.find('i').removeClass('txt-danger').removeClass('fa-ban').addClass('txt-success').addClass('fa-check');
+            }
+        }
+
+        function checkVideoType() {
+            $("#add_season_structure").hide();
+            $("#add_season").hide();
+            if ($("#form_is_series").val() == 1) {
+                ajaxPostSend("{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-video-season-list-json", $("#files_container").data(), false);
+            } else {
+                ajaxPostSend("{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-video-files-list-json", $("#files_container").data(), false);
+            }
+        }
+
+        function setUniserial(data) {
+            $("#files_container").removeClass().addClass('box').empty();
+            $(".serial").removeClass('serial').addClass('uniseries');
+            $("#form_year").removeClass("add-video-year");
+            $("#form_year_end").attr("disabled", "disabled");
+            $("#season_button_container").hide();
+            if (typeof (data.data) == 'object') {
+                $("#files_container").append($("#files_box_header").html());
+                fillFilesData('#files_container', 'filedata');
+            }
+        }
+
+        function fillFormData(data){
+            if (data.result.hasOwnProperty('cover_big')) {
+                /*var image = "data:image/jpeg;base64,";
+                $.ajaxSetup({async: false});
+                $.get("{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-image", { url : data.result['cover_big']}, function(data){
+                    image += data;
+                    console.log(data);
+                });*/
+                $('#cover_container').next('img').attr('src', "{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-image?url=" + data.result['cover_big']);
+            } else {
+                $('#cover_container').next('img').attr('src', '');
+            }
+            $.each([
+                'kinopoisk_url',
+                'rating_count_kinopoisk',
+                'rating_imdb',
+                'rating_count_imdb',
+                'name',
+                'censored',
+                'o_name',
+                'kinopoisk_id',
+                'rating_kinopoisk',
+                'year',
+                'year_end',
+                'duration',
+                'country',
+                'director',
+                'actors',
+                'description',
+                'comments',
+                'rating_mpaa',
+                'age',
+                'cover_big'
+            ], function(i){
+                var fieldValue = data.result.hasOwnProperty(this) ? data.result[this] : '';
+                var fieldObj = $("#form_" + this);
+
+                if (fieldObj.length != 0) {
+                    if (fieldObj.get(0).tagName.toLocaleUpperCase() == 'SELECT') {
+                        fieldObj.find('option[value="' + fieldValue + '"]').prop('selected', 'selected');
+                        fieldObj.select2({minimumResultsForSearch: -1});
+                    } else {
+                        if (fieldObj.get(0).type && fieldObj.get(0).type.toLocaleUpperCase() == 'CHECKBOX') {
+                            fieldObj.prop('checked', !!fieldValue);
+                        } else {
+                            fieldObj.val(fieldValue);
+                        }
+                    }
+                }
+                if (this == 'kinopoisk_url') {
+                    $('#kinopoisk_url').attr('href', fieldValue);
+                    $('#kinopoisk_url').html(fieldValue);
+                }
+            });
+        }
+
+        var setSerial = function (data) {
+            $("#files_container").removeClass();
+            if ($("#filedata").length) {
+                $("#files_container").empty();
+            }
+            $(".uniseries").removeClass('uniseries').addClass('serial');
+            $("#form_year").addClass("add-video-year");
+            $("#form_year_end").removeAttr("disabled");
+            $("#season_button_container").show();
+
+            if (data.data.length == 0) {
+                $("#add_season_structure").show();
+            } else {
+                $("#add_season").show();
+            }
+            var targetNeighbor = {};
+            var existsSeasonBoxCount = $("div[id^='season_']").length;
+            var gettingSeasonBoxCount = Object.keys ? Object.keys(data.data).length: -1;
+            for (var i in data.data) {
+                var seasonBox = $("#season_" + data.data[i].season_id);
+                if (seasonBox.length == 0) {
+                    targetNeighbor.action = 'undefined';
+                    targetNeighbor.key = 0;
+                    var neighbors = $("div[id^='season_']:has(div[id^='s_season_'])");
+                    var season_number = parseInt(data.data[i].season_number, 10);
+                    $.each(neighbors, function(i) {
+                        var currNumberS, nextNumberS;
+                        targetNeighbor.key = i;
+                        targetNeighbor.action = 'insertAfter';
+                        currNumberS = parseInt($(this).find("span[data-season-number]").data('season-number'), 10);
+                        if ( typeof(neighbors[i+1]) != "undefined") {
+                            nextNumberS = parseInt($(neighbors[i+1]).find("span[data-season-number]").data('season-number'), 10);
+                        } else {
+                            nextNumberS = false;
+                        }
+
+                        if (season_number < currNumberS) {
+                            targetNeighbor.action = 'insertBefore';
+                            return false;
+                        } else if (currNumberS < season_number && nextNumberS !== false && season_number < nextNumberS ) {
+                            return false;
+                        }
+                    });
+
+                    if ( typeof (neighbors[targetNeighbor.key]) != 'undefined' && targetNeighbor.action != 'undefined') {
+                        seasonBox = $('<div class="box" id="season_' + data.data[i].season_id + '"></div>')[targetNeighbor.action](neighbors[targetNeighbor.key]);
+                    } else if ($("#other_files").length == 0) {
+                        seasonBox = $('<div class="box" id="season_' + data.data[i].season_id + '"></div>').appendTo("#files_container");
+                    } else {
+                        seasonBox = $('<div class="box" id="season_' + data.data[i].season_id + '"></div>').insertBefore("#other_files");
+                    }
+                    seasonBox.data('seasonid', data.data[i].season_id);
+                    seasonBox.append($("#season_box_header").html());
+
+                    seasonBox.find("span[data-season-number]").data("season-number", (typeof(data.data[i].season_number) != 'undefined' ? data.data[i].season_number : 1))
+                            .html("{{ 'Season'|trans }} " + (typeof(data.data[i].season_number) != 'undefined' ? data.data[i].season_number : 1));
+                    seasonBox.find("input[name='season_name']").val((typeof(data.data[i].season_name) != 'undefined' ? data.data[i].season_name : ''));
+                    seasonBox.find("input[name='season_original_name']").val((typeof(data.data[i].season_original_name) != 'undefined' ? data.data[i].season_original_name : ''));
+                    seasonBox.append($('<div class="box-content">\n\
+                                            <div class="row">\n\
+                                                <div class="col-sm-11 col-xs-11 col-sm-offset-1 col-xs-offset-1 no-padding-left">\n\
+                                                </div>\n\
+                                            </div>\n\
+                                       </div>'));
+                    if (existsSeasonBoxCount != gettingSeasonBoxCount) {
+                        seasonBox.find('.box-content').hide();
+                    }
+                } else {
+                    seasonBox.find("span[data-season-number]").data("season-number", (typeof(data.data[i].season_number) != 'undefined' ? data.data[i].season_number : 1))
+                            .html("{{ 'Season'|trans }} " + (typeof(data.data[i].season_number) != 'undefined' ? data.data[i].season_number : 1));
+                    seasonBox.find("input[name='season_name']").val((typeof(data.data[i].season_name) != 'undefined' ? data.data[i].season_name : ''));
+                    seasonBox.find("input[name='season_original_name']").val((typeof(data.data[i].season_original_name) != 'undefined' ? data.data[i].season_original_name : ''));
+                }
+
+                seasonBox.find("span[data-series-count]").data("series-count", (typeof(data.data[i].series_count) != 'undefined' ? data.data[i].series_count : 0))
+                        .html("{{ 'episodes'|trans }} " + (typeof(data.data[i].series_count) != 'undefined' ? data.data[i].series_count : 0));
+
+                targetNeighbor = {action : 'undefined', key: 0};
+                for (var j in data.data[i].season_series) {
+                    var seriesBox = $('#s_season_' + data.data[i].season_id + '_series_' + data.data[i].season_series[j].series_id);
+
+                    if (seriesBox.length == 0) {
+                        targetNeighbor.action = 'undefined';
+                        targetNeighbor.key = 0;
+                        var neighborsS = seasonBox.find("div[id^='s_season_']");
+                        var series_number = parseInt(data.data[i].season_series[j].series_number, 10);
+                        $.each(neighborsS, function(i) {
+                            var currNumberS, nextNumberS;
+                            targetNeighbor.key = i;
+                            targetNeighbor.action = 'insertAfter';
+                            currNumberS = parseInt($(this).find("span[data-series-number]").data('series-number'), 10);
+                            if ( typeof(neighborsS[i+1]) != "undefined") {
+                                nextNumberS = parseInt($(neighborsS[i+1]).find("span[data-series-number]").data('series-number'), 10);
+                            } else {
+                                nextNumberS = false;
+                            }
+
+                            if (series_number < currNumberS) {
+                                targetNeighbor.action = 'insertBefore';
+                                return false;
+                            } else if (currNumberS < series_number && nextNumberS !== false && series_number < nextNumberS ) {
+                                return false;
+                            }
+                        });
+
+                        if ( typeof (neighborsS[targetNeighbor.key]) != 'undefined' && targetNeighbor.action != 'undefined') {
+                            seriesBox = $('<div class="box" id="s_season_' + data.data[i].season_id + '_series_' + data.data[i].season_series[j].series_id + '"></div>')[targetNeighbor.action](neighborsS[targetNeighbor.key]);
+                        } else {
+                            seriesBox = $('<div class="box" id="s_season_' + data.data[i].season_id + '_series_' + data.data[i].season_series[j].series_id + '"></div>').appendTo(seasonBox.children(".box-content").children(".row").children(".col-sm-11"));
+                        }
+
+                        seriesBox.data('seriesid', (typeof(data.data[i].season_series[j].series_id) != 'undefined' ? data.data[i].season_series[j].series_id : ''));
+                        seriesBox.append($('#series_box_header').html());
+                        seriesBox.find("span[data-series-number]").data("series-number", (typeof(data.data[i].season_series[j].series_number) != 'undefined' ? data.data[i].season_series[j].series_number : 1))
+                                .html((typeof(data.data[i].season_series[j].series_number) != 'undefined' ? data.data[i].season_series[j].series_number : 1) + " {{ 'episode'|trans }}");
+                        seriesBox.find("span[data-files-count]").data("files-count", (typeof(data.data[i].season_series[j].series_files) != 'undefined' ? data.data[i].season_series[j].series_files : 0))
+                                .html("{{ 'files'|trans }} " + (typeof(data.data[i].season_series[j].series_files) != 'undefined' ? data.data[i].season_series[j].series_files : 0));
+
+                        seriesBox.find("input[name='series_name']").val((typeof(data.data[i].season_series[j].series_name) != 'undefined' ? data.data[i].season_series[j].series_name : ''));
+                        seriesBox.find("input[name='series_original_name']").val((typeof(data.data[i].season_series[j].series_original_name) != 'undefined' ? data.data[i].season_series[j].series_original_name : ''));
+
+                        fillFilesData(seriesBox, 'f_season_' + data.data[i].season_id + '_series_' + data.data[i].season_series[j].series_id + '_filedata');
+                    } else {
+                        seriesBox.find("span[data-series-number]").data("series-number", (typeof(data.data[i].season_series[j].series_number) != 'undefined' ? data.data[i].season_series[j].series_number : 1))
+                                .html((typeof(data.data[i].season_series[j].series_number) != 'undefined' ? data.data[i].season_series[j].series_number : 1) + " {{ 'episode'|trans }}");
+                        seriesBox.find("span[data-files-count]").data("files-count", (typeof(data.data[i].season_series[j].series_files) != 'undefined' ? data.data[i].season_series[j].series_files : 0))
+                                .html("{{ 'files'|trans }} " + (typeof(data.data[i].season_series[j].series_files) != 'undefined' ? data.data[i].season_series[j].series_files : 0));
+
+                        seriesBox.find("input[name='series_name']").val((typeof(data.data[i].season_series[j].series_name) != 'undefined' ? data.data[i].season_series[j].series_name : ''));
+                        seriesBox.find("input[name='series_original_name']").val((typeof(data.data[i].season_series[j].series_original_name) != 'undefined' ? data.data[i].season_series[j].series_original_name : ''));
+                        $("#" + seriesBox.find('table').attr('id')).DataTable().ajax.reload();
+                    }
+                }
+            }
+
+            if (typeof (data.other_files) != 'undefined' && data.other_files != 0 && $("#other_files").length == 0) {
+                $('<div class="box" id="other_files"></div>').appendTo("#files_container");
+                $('<div id="other_files_layer"></div>').appendTo("#other_files");
+                $('#other_files_layer').css({
+                    minWidth: '100%',
+                    minHeight: '100%',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    background: "center rgba(150, 150, 150, 0.3)",
+                    boxShadow: "0 0 30px 25px rgba(255, 255, 255, 0.7) inset",
+                    opacity: 0.8,
+                    zIndex: 400
+                });
+
+                $("#other_files").append($("#files_box_header").html());
+                fillFilesData('#other_files', 'other_filedata');
+                $('#other_files').children('a.collapse-link').find('[data-files-title]').text("{{ 'Other files'|trans }}");
+            }
+        };
+
+        var setSerialError = function (obj) {
+            JSErrorModalBox(obj);
+        };
+
+        function fillFilesData(target, id) {
+            LoadDataTablesScripts(function () {
+                $(target).append($("#files_box_content").html());
+                $(target).find('table').attr('id', id);
+                $("#" + id).on('xhr.dt', function (e, settings, json) {
+                    if (typeof (json.data) == 'object') {
+                        var season_id = '', series_id = '', season_number = '', series_number = '';
+
+                        var seasonContainer = $(this).closest('div[id^="season_"]');
+                        if (seasonContainer.length) {
+                            season_id = seasonContainer.data('seasonid');
+                            season_number = seasonContainer.find("span[data-season-number]").data("season-number");
+                        }
+                        var seriesContainer = $(this).closest('div[id^="s_season_"]');
+                        if (seriesContainer.length) {
+                            series_id = seriesContainer.data('seriesid');
+                            series_number = seriesContainer.find("span[data-series-number]").data("series-number");
+                        }
+                        var video_id = $("#files_container").data('video_id');
+                        for (var i in json.data) {
+                            var id = typeof(json.data[i].id) != 'undefined' ? json.data[i].id : '';
+
+                            var status = parseInt(json.data[i].status, 10);
+                            var accessed = parseInt(json.data[i].accessed, 10);
+                            var file_name = json.data[i].file_name;
+
+                            json.data[i].languages = json.data[i].languages.join(", ");
+
+                            json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
+                                                        <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                                            <i class='pull-right fa fa-cog'></i>\n\
+                                                        </a>\n\
+                                                        <ul class='dropdown-menu pull-right'>\n\
+                                                            <li>\n\
+                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-one-video-file-json' data-id='" + id + "' data-video_id='" + video_id + "' data-season_id='" + season_id + "' data-series_id='" + series_id + "' data-season_number='" + season_number + "' data-series_number='" + series_number + "' data-file_name='" + file_name + "'>\n\
+                                                                    <span>{{ 'Edit'|trans }}</span>\n\
+                                                                </a>\n\
+                                                            </li>";
+                            if (id != 0 ) {
+                                json.data[i].operations += "<li>\n\
+                                                                <a class='main_ajax' " + (id == 0 ? "disabled='disabled'" : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-video-accessed' data-accessed='" + (accessed != 0 ? 0 : 1) + "' data-id='" + id + "' data-video_id='" + video_id + "'  data-season_id='" + season_id + "' data-series_id='" + series_id + "'>\n\
+                                                                    <span>" + ( accessed == "1" ? "{{ 'Unpublish'|trans }}" : "{{ 'Publish'|trans }}") + "</span>\n\
+                                                                </a>\n\
+                                                            </li>";
+                            }
+                            if (id != 0 ) {
+                                json.data[i].operations += "<li>\n\
+                                                                <a class='main_ajax' " + (id == 0 ? "disabled='disabled'" : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-video-data' data-id='" + id + "' data-video_id='" + video_id + "' data-season_id='" + season_id + "' data-series_id='" + series_id + "'>\n\
+                                                                    <span>{{ 'Remove'|trans }}</span>\n\
+                                                                </a>\n\
+                                                            </li>";
+                            }
+                            json.data[i].operations += "</ul>\n\
+                                                    </div>";
+
+                            json.data[i].status = accessed != 0 ? "<span class='txt-success'>{{ 'Published'|trans }}</span>" : "<span class='txt-danger'>{{ 'Unpublished'|trans }}</span>";
+                            json.data[i].status += (status == 0 ? "<br><span class=''>{{ 'Not available on storages'|trans }}</span>" : "");
+                            json.data[i].volume_level = parseInt(json.data[i].volume_level, 10) * 5;
+                        }
+                        var counter = !isNaN(i) ? (parseInt(i, 10) + 1) : 0;
+                        $(target).children('a.collapse-link').find('[data-files-count]').text('{{ 'files'|trans }} ' + counter);
+                    }
+
+                }).dataTable({
+                    "processing": false,
+                    "serverSide": false,
+                    "ajax": {
+                        "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-video-files-list-json",
+                        "data": function (d) {
+                            if ($("#files_container").data('video_id')) {
+                                d['video_id'] = $("#files_container").data('video_id');
+                            }
+                            var season = $(target).closest("div[id^='season_']").find('[data-season-number]');
+                            if (season.length && season.data('season-number')) {
+                                d['seasonnumber'] = season.data('season-number');
+                            }
+                            var series = $(target).closest("div[id^='s_season_']").find('[data-series-number]');
+                            if (series.length && series.data('series-number')) {
+                                d['seriesnumber'] = $(series).data('series-number');
+                            }
+                        }
+                    },
+                    "deferLoading": [{#{{ app.recordsFiltered }}, {{ app.totalRecords }}#}],
+                    "language": {
+                        "url": "{{ app.datatable_lang_file }}"
+                    },
+                    {% if attribute(app, 'dropdownAttribute') is defined %}
+                    {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
+                    {% endif %}
+                    "bFilter": true,
+                    "bPaginate": true,
+                    "bInfo": true,
+                    "aoColumnDefs": [
+                        {className: "action-menu", "targets": [-1]}/*,
+                         {"searchable": false, "targets": [-1, -2, -3]},
+                         {"sortable": false, "targets": [-1]},
+                         {className: "data-filter-status", "targets": [-3]},
+                         { "width": "16px", "targets": [ -1 ] }*/
+                    ]
+                }).prev('.dataTables_processing').hide('');
+            });
+        }
+
+        var deleteCover = function (data) {
+            if (typeof (data.id)) {
+                $("#" + data.id).data('id', 'new');
+            }
+            JSSuccessModalBox(data);
+        };
+
+        var deleteCoverError = function (data) {
+            JSErrorModalBox(data);
+        };
+
+        var closeModalBox = function () {
+            JScloseModalBox();
+        };
+
+        var emptyFileContainer = function (data) {
+            $('#files_container').empty();
+        };
+
+        var dataTableUpdate = function (data) {
+            JSSuccessModalBox(data);
+            $("#" + data.datatable).DataTable().ajax.reload();
+        };
+
+        var dataTableUpdateError = function (data) {
+            JSErrorModalBox(data);
+        };
+
+        var fillModalBoxFilesData = function (data) {
+            $("#modalbox").hide();
+            $("#modalbox").data('complete', 1);
+            $('#modalbox').find('.modal-header-name span').text("{{ 'Edit file'|trans }}");
+            $('#modalbox').find('.devoops-modal-inner').html($("#modal_save_form_body").text());
+            $('#modalbox').find('.devoops-modal-bottom').html($("#modal_save_form_buttons").text());
+
+            var fields = {file_id: 'id', video_id: 'video_id', season_id: 'season_id', series_id: 'series_id', status: 'status'};
+            for (var key in fields) {
+                var field = fields[key];
+                if (typeof(data.data[field]) != 'undefined' && data.data[field]) {
+                    $("#" + key).val(data.data[field]);
+                } else {
+                    $("#" + key).remove();
+                }
+
+            }
+
+            var fields = {
+                file_type: 'file_type',
+                file_protocol: 'protocol',
+                file_quality: 'quality',
+                file_volume_level: 'volume_level',
+                file_accessed: 'accessed'
+            };
+            for (var key in fields) {
+                var field = fields[key];
+                if (typeof(data.data[field]) != 'undefined' && data.data[field]) {
+                    $("#" + key).find('option[value="' + data.data[field] + '"]').prop({'selected': 'selected'});
+                }
+                $("#" + key).removeAttr('readonly').removeAttr('disabled');
+            }
+            $('#modalbox').show();
+
+            $('#file_type').select2({minimumResultsForSearch: -1});
+            $('#file_quality').select2({minimumResultsForSearch: -1});
+            $('#file_volume_level').select2({minimumResultsForSearch: -1});
+            $('#file_protocol').select2({minimumResultsForSearch: -1});
+            $('#file_accessed').select2({minimumResultsForSearch: -1});
+
+            setFileLanguagesSelect();
+
+            if (typeof(data.data.languages) != 'undefined' && data.data.languages instanceof Array && data.data.languages.length) {
+                setFileLanguagesSelect();
+                $("#file_languages").val(data.data.languages).trigger("change");
+                var resultList = {};
+                $.each( $("#file_languages").data().select2.data(), function(i){
+                    resultList[this.id] = this.text;
+                });
+                $.each(data.data.languages, function(i){
+                    if (typeof resultList[this] != 'undefined') {
+                        var liTmpl = $('<li class="select2-selection__choice" title=""><span role="presentation" class="select2-selection__choice__remove">×</span></li>').insertBefore($("#fileLangCloneList").find('li.select2-search'));
+                        liTmpl.attr('title', resultList[this]);
+                        liTmpl.find('span').after(resultList[this]);
+                        liTmpl.data('val', this);
+                    }
+                });
+                if ($("#fileLangCloneList").height() >= $('#file_languages').next().height()) {
+                    $("#fileLangCloneList").parent().css({paddingTop: $("#fileLangCloneList").height() - $('#file_languages').next().height() + 'px'});
+                } else {
+                    $("#fileLangCloneList").find('.select2-selection').css({minHeight: $('#file_languages').next().height() + 'px'})
+                }
+            }
+            if (typeof(data.data.file_name) != 'undefined' && data.data.file_name) {
+                $("#file_name").val(data.data.file_name);
+            }
+            if (typeof(data.data.url) != 'undefined' && data.data.url) {
+                $("#video_url").val(data.data.url);
+            }
+            checkProtocol();
+        };
+
+        var fillModalBoxFilesDataError = function (data) {
+            JSErrorModalBox(data);
+        };
+
+        var emptyFunction = function(){}
+
+    </script>
+
+    <script type="text/template" id="files_box_content">
+        <div class="box-content">
+            <div class="dataTables_processing"></div>
+            <table class="table  table-hover table-datatable">
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                    {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                {% endif %}
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </script>
+
+    <script type="text/template" id="files_box_header">
+        <a class="collapse-link">
+            <div class="box-header">
+                <div class="box-name">
+                    <div class="row">
+                        <div class="col-xs-4 col-sm-3">
+                            <span data-files-title="">{{ 'Files'|trans }}</span>
+                        </div>
+                        <div class="col-xs-4 col-sm-3">
+                            <span data-files-count="">{{ 'files'|trans }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-header-btn">
+                    <button class="btn btn-default btn-add-video-rating" data-add-files="1">{{ 'Add file'|trans }}</button>
+                </div>
+                <div class="box-icons">
+                    <i class="fa fa-chevron-up"></i>
+                </div>
+                <div class="no-move"></div>
+            </div>
+        </a>
+    </script>
+
+    <script type="text/template" id="series_box_header">
+        <a class="collapse-link">
+            <div class="box-header">
+                <div class="box-name">
+                    <div class="row">
+                        <div class="col-lg-1 col-md-1 no-padding-right">
+                            <span data-series-number=""></span>
+                        </div>
+                        <div class="col-lg-1 col-md-1 no-padding-right">
+                            <span data-files-count=""></span>
+                        </div>
+                        <div class="col-lg-4 col-md-4 no-padding-right">
+                            <span class="col-lg-4 col-md-4 text-right">{{ 'Title'|trans }}:</span>
+                            <div class="mod_input col-lg-8 col-md-8 no-padding">
+                                <input class="col-lg-12 col-md-12  no-padding" type="text" name="series_name" placeholder="{{ 'Add episodes name'|trans }}">
+                                <i class="fa fa-pencil"></i>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 no-padding-left">
+                            <span class="col-lg-5 col-md-4 text-right no-padding-left">{{ 'Original title'|trans }}:</span>
+                            <div class="mod_input col-lg-7 col-md-6 no-padding">
+                                <input class="col-lg-12 col-md-12  no-padding" type="text" name="series_original_name" placeholder="{{ 'Add original name'|trans }}">
+                                <i class="fa fa-pencil"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-header-btn">
+                    <button class="btn btn-default btn-add-video-rating" data-add-files="1">{{ 'Add file'|trans }}</button>
+                </div>
+                <div class="box-icons">
+                    <i class="fa fa-chevron-down"></i>
+                </div>
+                <div class="no-move"></div>
+            </div>
+        </a>
+    </script>
+
+    <script type="text/template" id="season_box_header">
+        <a class="collapse-link">
+            <div class="box-header">
+                <div class="box-name">
+                    <div class="row">
+                        <div class="col-lg-1 col-md-1 no-padding-right">
+                            <span data-season-number=""></span>
+                        </div>
+                        <div class="col-lg-1 col-md-1 no-padding-right">
+                            <span data-series-count=""></span>
+                        </div>
+                        <div class="col-lg-4 col-md-4 no-padding-right">
+                            <span class="col-lg-3 col-md-4 text-right">{{ 'Title'|trans }}:</span>
+                            <div class="mod_input col-lg-9 col-md-8 no-padding">
+                                <input class="col-lg-12 col-md-12  no-padding" type="text" name="season_name" placeholder="{{ 'Add season name'|trans }}">
+                                <i class="fa fa-pencil"></i>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 no-padding-right">
+                            <span class="col-lg-5 col-md-4 text-right no-padding-left ">{{ 'Original title'|trans }}:</span>
+                            <div class="mod_input col-lg-7 col-md-6 no-padding">
+                                <input class="col-lg-12 col-md-12  no-padding" type="text" name="season_original_name" placeholder="{{ 'Add original name'|trans }}">
+                                <i class="fa fa-pencil"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-header-btn">
+                    <button class="btn btn-default btn-add-video-rating" data-add-series="1">{{ 'Add episodes'|trans }}</button>
+                </div>
+                <div class="box-icons">
+                    <i class="fa fa-chevron-down"></i>
+                </div>
+                <div class="no-move"></div>
+            </div>
+        </a>
+    </script>
+
+    <script type="text/template" id="modal_save_form_body">
+        <div class="box-content">
+            <form id="file_form" class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/save-video-files">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">{{ 'File type'|trans }}</label>
+                    <div class="col-xs-6 col-sm-6">
+                        <span class="col-xs-12 col-sm-12">
+                            <input type="hidden" class="own_fields form-control" name="id" id="file_id" value="" readonly="readonly">
+                            <input type="hidden" class="own_fields form-control" name="video_id" id="video_id" value="" readonly="readonly">
+                            <input type="hidden" class="own_fields form-control" name="season_id" id="season_id" value="" readonly="readonly">
+                            <input type="hidden" class="own_fields form-control" name="series_id" id="series_id" value="" readonly="readonly">
+                            <input type="hidden" class="own_fields form-control" name="file_name" id="file_name" value="" readonly="readonly">
+                            <input type="hidden" class="own_fields form-control" name="status" id="status" value="" readonly="readonly">
+                            <select id="file_type" name="file_type" class="own_fields populate placeholder">
+                                <option value="video">{{ 'Video'|trans }}</option>
+                                <option value="sub">{{ 'Subs'|trans }}</option>
+                            </select>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">{{ 'Quality'|trans }}</label>
+                    <div class="col-xs-6 col-sm-6">
+                        <span class="col-xs-12 col-sm-12">
+                            <select id="file_quality" name="quality" class="own_fields populate placeholder">
+                                {% if attribute(app, 'quality') is defined and app['quality'] %}
+                                    {% for item in app['quality'] %}
+                                <option value="{{ item.id }}">{{ item.num_title }}{{ item.text_title ? (' (' ~ item.text_title ~ ')')|trans : '' }}</option>
+                                    {% endfor %}
+                                {% endif %}
+                            </select>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">{{ 'Languages'|trans }}<span class="icon-required">*</span></label>
+                    <div class="col-xs-6 col-sm-6">
+                        <span class="col-xs-12 col-sm-12">
+                            <select id="file_languages" name="languages" class="own_fields populate placeholder" multiple="multiple" data-validation='required'>
+                                {% if attribute(app, 'allLanguages') is defined %}
+                                    {% for key, item in app.allLanguages %}
+                                        <option value="{{ key }}">{{ item }}</option>
+                                    {% endfor %}
+                                {% endif %}
+                            </select>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">{{ 'Volume level'|trans }}</label>
+                    <div class="col-xs-6 col-sm-6">
+                        <span class="col-xs-12 col-sm-12">
+                            <select id="file_volume_level" name="volume_level" class="own_fields populate placeholder">
+                                {% for item in -20..20 %}
+                                    <option value="{{ item }}">{{ item * 5 }}</option>
+                                {% endfor %}
+                            </select>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">{{ 'Protocol'|trans }}</label>
+                    <div class="col-xs-6 col-sm-6">
+                        <span class="col-xs-12 col-sm-12">
+                            <select id="file_protocol" name="protocol" class="own_fields populate placeholder">
+                                <option value="http">HTTP</option>
+                                <option value="custom">Custom URL</option>
+                            </select>
+                        </span>
+                    </div>
+                    <span class="help-inline col-xs-9 col-sm-9 col-xs-offset-3 col-sm-offset-3">
+                        <span class="small txt-default col-xs-11 col-sm-11">{{ 'Selecting the method of content delivery to the user (http, custom url, nfs). When using HTTP or NFS variants do not link to the content, in which case the content is stored on the server.'|trans }}</span>
+                    </span>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">{{ 'URL'|trans }}<span class="icon-required">*</span></label>
+                    <div class="col-xs-6 col-sm-6">
+                        <span class="col-xs-12 col-sm-12">
+                            <input type="text" class="own_fields form-control" name="url" id="video_url" value="" data-validation = 'custom' data-validation-regexp = '^(\w+\s)?\w+\:\/\/.+$' data-validation-error-msg = "{{ 'Invalid format links'|trans }}">
+                        </span>
+                    </div>
+                    <span class="help-inline col-xs-9 col-sm-9 col-xs-offset-3 col-sm-offset-3">
+                        <span class="small txt-default col-xs-11 col-sm-11">{{ 'Example: ffmpeg http://anon.nasa-global.edgesuite.net/HD_downloads/135_launch_720p.wmv'|trans }}</span>
+                    </span>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">{{ 'Status'|trans }}</label>
+                    <div class="col-xs-6 col-sm-6">
+                        <span class="col-xs-12 col-sm-12">
+                            <select id="file_accessed" name="accessed" class="own_fields populate placeholder">
+                                <option value="0">{{ 'Not published'|trans }}</option>
+                                <option value="1">{{ 'Published'|trans }}</option>
+                            </select>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </script>
+
+    <script type="text/template" id="modal_save_form_buttons">
+        <div class="pull-right no-padding">
+            <button type="submit" class="btn btn-success pull-right">{{ 'Save'|trans }}</button>
+            <button type="reset" class="btn btn-default pull-right">{{ 'Cancel'|trans }}</button>
+        </div>
+    </script>
+
+    <script type="text/template" id="season_counter_template">
+        <form id="season_counter_form" class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/add-video-season">
+            <input type="hidden" class="own_fields form-control" name="video_id" id="video_id" value="{% if attribute(app, 'video_id') is defined %}{{ app['video_id'] }}{% endif %}" readonly="readonly">
+            <div class="form-group">
+                <label class="col-sm-2 control-label col-sm-offset-2 ">{{ 'Seasons'|trans }}</label>
+                <div class="col-xs-10 col-sm-6">
+                    <select name='season_counter' id='season_counter'>
+                        <option value='1'>1</option>
+                        <option value='2'>2</option>
+                        <option value='3'>3</option>
+                        <option value='4'>4</option>
+                        <option value='5'>5</option>
+                        <option value='6'>6</option>
+                        <option value='7'>7</option>
+                        <option value='8'>8</option>
+                        <option value='9'>9</option>
+                        <option value='10'>10</option>
+                        <option value='11'>11</option>
+                        <option value='12'>12</option>
+                        <option value='13'>13</option>
+                        <option value='14'>14</option>
+                        <option value='15'>15</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </script>
+
+    <script type="text/template" id="series_counter_template">
+        <div class="form-group">
+            <label class="col-sm-2 control-label col-sm-offset-2">{{ 'Season'|trans }} </label>
+            <div class="col-xs-10 col-sm-6">
+                <select name='' id='series_counter_' class="populate placeholder own_fields">
+                    <option value='1'>1 {{ 'episodes'|trans }}</option>
+                    <option value='2'>2 {{ 'episodes'|trans }}</option>
+                    <option value='3'>3 {{ 'episodes'|trans }}</option>
+                    <option value='4'>4 {{ 'episodes'|trans }}</option>
+                    <option value='5'>5 {{ 'episodes'|trans }}</option>
+                    <option value='6'>6 {{ 'episodes'|trans }}</option>
+                    <option value='7'>7 {{ 'episodes'|trans }}</option>
+                    <option value='8'>8 {{ 'episodes'|trans }}</option>
+                    <option value='9'>9 {{ 'episodes'|trans }}</option>
+                    <option value='10'>10 {{ 'episodes'|trans }}</option>
+                    <option value='11'>11 {{ 'episodes'|trans }}</option>
+                    <option value='12'>12 {{ 'episodes'|trans }}</option>
+                    <option value='13'>13 {{ 'episodes'|trans }}</option>
+                    <option value='14'>14 {{ 'episodes'|trans }}</option>
+                    <option value='15'>15 {{ 'episodes'|trans }}</option>
+                </select>
+            </div>
+            <br><br>
+        </div>
+    </script>
+
+    {% include "basic_templates/file-uploader-scripts.twig" %}
+{% endblock %}

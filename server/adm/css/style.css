@@ -72,8 +72,6 @@ a, a:active, a:hover, a:focus{
 .center{
     text-align: center;
 }
-
-
 a.show-sidebar {
   float: left;
   color:#6d6d6d;
@@ -591,6 +589,15 @@ z-index:20;
 .no-padding {
   padding:0 !important;
 }
+
+.no-padding-left {
+    padding-left: 0 !important;
+}
+
+.no-padding-right {
+    padding-right: 0 !important;
+}
+
 .padding-15 {
   padding:15px !important;
 }
@@ -2562,6 +2569,57 @@ div.google-visualization-tooltip span{
   color: #f5f5f5;
   text-shadow: 0 -1px 1px #d8d8d8;
 }
+
+.video_episodes{
+    overflow: hidden;
+    padding: 0;
+    position: relative;
+}
+
+.video_episodes li{
+    border: 5px solid #FFF;
+    border-radius: 2px;
+    box-shadow: 0 0 2px 2px rgba(100, 100, 100, 0.4) inset;
+    list-style: outside none none;
+    max-height: 78px;
+    max-width: 111px;
+    overflow: hidden;
+    padding: 0;
+    text-align: center;
+}
+
+.video_episodes li > div:first-of-type{
+    max-width: 111px;
+    height: 68px;
+    overflow: hidden;
+    background: url( "../img/video_episodes_plus.png" ) no-repeat center transparent;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 68px;
+    position: relative;
+}
+
+.video_episodes li > div.clear_video_episodes{
+    background: rgba(255, 255, 255, 0.7) url("../img/video_episodes_plus_rotate.png") no-repeat scroll center center;
+    left: 0;
+    min-height: 68px;
+    /*min-width: 111px;*/
+    opacity: 0.7;
+    position: absolute;
+    display: none;
+    width: 100%;
+}
+
+.video_episodes li img{
+    width: 100%;
+    position: absolute;
+    margin-top: -39%;
+    top: 50%;
+    left: 0;
+    /*min-width: 64px;
+    min-height: 64px;*/
+}
+
 #page-500 h1, .page-404 h1 {
   font-size: 5em;
 }
@@ -3102,6 +3160,76 @@ color:#000; background-color:#FFF; border:1px solid #000; margin-top:5px !import
     margin: 10px 4px 0;
 }
 
+.btn.btn-add-video-rating{
+    background-color: transparent !important;
+    border-color: #fff;
+    border-radius: 0;
+    border-width: 0 1px;
+    color: #6e6e6e;
+    margin-left: -5px !important;
+    outline: none;
+}
+
+.box-header-btn{
+    position: absolute;
+    right: 50px;
+    top: 0;
+}
+
+#form_year + input{
+    display: none;
+}
+
+#form_year.add-video-year + input{
+    display: block;
+}
+
+.add-video-year {
+    width: 50%;
+}
+
+.add-video-year:first-of-type{
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;;
+}
+
+.add-video-year:last-of-type{
+    border-top-left-radius: 0 !important;;
+    border-bottom-left-radius: 0 !important;;
+    margin-left: -1px;
+}
+
+label.uniseries{
+    display: block;
+}
+
+label.uniseries + label{
+    display: none;
+}
+
+label.serial{
+    display: none;
+}
+
+label.serial + label{
+    display: block;
+}
+
+span.uniseries{
+    display: inline;
+}
+
+span.uniseries + span{
+    display: none;
+}
+
+span.serial{
+    display: none;
+}
+
+span.serial + span{
+    display: inline;
+}
 
 #iptv_list .input-group-addon, #iptv_list_move .input-group-addon{
     background-color: #FFFFFF;
@@ -3220,7 +3348,7 @@ color:#000; background-color:#FFF; border:1px solid #000; margin-top:5px !import
     text-decoration: none;
     right: 0;
 }
-#attribute_set a:hover,#attribute_set a:focus,#dataTables_ajax_update_button:hover {
+#attribute_set a:hover,#attribute_set a:focus, .dataTables_ajax_update_button:hover {
      background-color: #e3e3e3;
 }
 .dataTables_filter {
@@ -3229,7 +3357,7 @@ color:#000; background-color:#FFF; border:1px solid #000; margin-top:5px !import
     z-index: 320;
 }
 
-#dataTables_ajax_update_button{
+.dataTables_ajax_update_button{
     border: 1px solid #D3D3D3;
 	background-color: #fff;
     height: 24px;
@@ -3240,7 +3368,7 @@ color:#000; background-color:#FFF; border:1px solid #000; margin-top:5px !import
     z-index: 320;
 }
 
-#dataTables_ajax_update_button i{
+.dataTables_ajax_update_button i{
     font-size: 16px;
     line-height: 16px;
     vertical-align: top;
@@ -3476,7 +3604,52 @@ z-index:10;
     resize: none;
 }
 
-.form-control:focus { 
+.mod_input{
+    display: inline-block;
+    position: relative;
+}
+
+.mod_input input[type=text]{
+    background-color: transparent;
+    border-radius: 0 !important;
+    border: 1px solid transparent !important;
+    margin-top: 1px;
+    cursor: pointer !important;
+    line-height: 30px !important;
+    height: 30px !important;
+}
+
+.mod_input i.fa{
+    background-color: rgba(204, 204, 204, 0.7);
+    box-shadow: 0 0 0 1px #fff inset;
+    height: 2em;
+    line-height: 2em;
+    margin: 1px;
+    outline: medium none;
+    position: absolute;
+    right: 0;
+    top: 1px;
+    text-align: center;
+    width: 2em;
+    visibility: hidden;
+    cursor: pointer !important;
+}
+
+.mod_input input:hover{
+    cursor: pointer;
+}
+
+.mod_input:focus input, .mod_input:hover input, .mod_input:active input,
+.mod_input input:focus, .mod_input input:hover, .mod_input input:active{
+    border: 1px solid rgba(136, 136, 136, 0.7) !important;
+}
+
+.mod_input input + i:focus, .mod_input input + i:hover, .mod_input input + i:active,
+.mod_input input:focus + i, .mod_input input:hover + i, .mod_input input:active + i{
+    visibility: visible;
+}
+
+.form-control:focus {
 border-bottom-color: #FFCD1C;
 border-left-color: #FFCD1C;
 border-right-color: #FFCD1C;
@@ -3545,6 +3718,20 @@ outline: 0px none currentColor!important;
 #modalbox_ad .box-header .box-name, #modalbox_ad .box-header .box-name span{
     vertical-align: middle;
 	font-weight:700;
+}
+
+#files_container .box-header .box-name span{
+    white-space: nowrap;
+}
+
+#files_container .box-header .box-name span:not(:only-child){
+    display: inline-block;
+    max-height: 26px;
+    max-width: 33%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    word-break: break-all;
 }
 
 #add_channel .select2-choice, #add_channel .select2-arrow,
@@ -3980,6 +4167,29 @@ table.dataTable thead th,
 table.dataTable thead th {
   color: #5F5F5F !important;     height: 34px;}
 
+#files_container .dataTables_wrapper {
+    min-height: 100px;
+    position: relative;
+    z-index: 300;
+}
+
+#files_container .dataTables_wrapper > .row-fluid:first-of-type{
+    display: block;
+    min-height: 30px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    position: relative;
+}
+
+#files_container .dataTables_wrapper > .row-fluid > .span6 {
+    float: left;
+    min-width: 50%;
+}
+
+#files_container .dataTables_wrapper .dataTables_filter label{
+    margin-top: 5px;
+}
+
 .bord { border-bottom:2px solid #2e2e2e;}
 .select2-results .select2-no-results, .select2-results .select2-searching, .select2-results .select2-selection-limit { background-color: #FFCD1C !important; }
 
@@ -4072,7 +4282,55 @@ li[data-filter='operations']{
     min-height: 0;
 }
 
-#cover_container > a:last-of-type, #deletelogolink{
+#cover_container > a:last-of-type, #deletelogolink {
+    background-color: rgba(200, 200, 200, 0.5);
+    display: none;
+    margin: 0 auto;
+    padding: 10px;
+    position: absolute;
+    text-align: center;
+    text-decoration: none;
+    top: 0;
+    vertical-align: middle;
+}
+#cover_container > a:last-of-type {
+    width: 88%;
+}
+#deletelogolink {
+    width: 96px;
+}
+#deletelogolink a {
+    text-decoration: none;
+}
+#cover_container:hover > a:last-of-type, #cover_container:focus > a:last-of-type, #cover_container:active > a:last-of-type, #cover_container:hover > #deletelogolink, #cover_container:focus > #deletelogolink, #cover_container:active > #deletelogolink {
+    display: block;
+}
+#cover_container > a:last-of-type span {
+    vertical-align: middle;
+}
+
+.new_video_club #cover_container{
+    background: transparent url("../img/video_episodes_plus.png") no-repeat scroll center center;
+    border: 1px solid rgba(100, 100, 100, 0.3);
+    border-radius: 4px;
+    box-shadow: 0 0 2px 1px rgba(100, 100, 100, 0.2), 0 0 1px 0 rgba(100, 100, 100, 0.2) inset;
+    line-height: 68px;
+    max-height: 484px;
+    max-width: 363px;
+    position: relative;
+    text-align: center;
+    vertical-align: middle;
+    width: 100%;
+    padding: 55% 0;
+}
+
+.new_video_club #cover_container input, .new_video_club div[id^='video_episodes_'] input{
+    width: 100%;
+    cursor: pointer;
+    min-height: 60px;
+}
+
+.new_video_club #cover_container + img + a, .new_video_club #deletelogolink, .new_video_club #change_cover{
     display: none;
     background-color: rgba(200, 200, 200, 0.5);
     text-align: center;
@@ -4084,27 +4342,39 @@ li[data-filter='operations']{
     top: 0px;
 }
 
-#cover_container > a:last-of-type{
-    width: 88%;
+.new_video_club #cover_container + img + a{
+    width: 100%;
+    max-width: 363px;
 }
 
-#deletelogolink{
-    width: 96px;
+.new_video_club #cover_container + img{
+    max-height: 484px;
+    max-width: 363px;
+    position: absolute;
+    top: 0;
+    width: 100%;
 }
 
-#deletelogolink a{
-    text-decoration: none;
-}
-
-#cover_container:hover > a:last-of-type, #cover_container:focus > a:last-of-type, #cover_container:active > a:last-of-type,
-#cover_container:hover > #deletelogolink, #cover_container:focus > #deletelogolink, #cover_container:active > #deletelogolink{
+.new_video_club #cover_container + img:hover + a,
+.new_video_club #cover_container + img + a:hover{
     display: block;
+    cursor: pointer;
+    z-index: 1;
 }
 
-#cover_container > a:last-of-type span{
+.new_video_club div[id^=video_episodes_] + img[src=''], .new_video_club #cover_container + img[src='']{
+    display: none;
+}
+
+div[id^=video_episodes_] + img:hover + .clear_video_episodes,
+div[id^=video_episodes_] + img + .clear_video_episodes:hover{
+    top: 0;
+    display: block;
+    cursor: pointer;
+}
+
+.new_video_club #cover_container + img + a > span, .new_video_club #change_cover > span{
+    color: #000 !important;
+    text-shadow: 1px 0 1px rgba(255, 255, 255, 0.5), 0 1px 1px rgba(0, 0, 0, 0.5);
     vertical-align: middle;
-}
-
-#cover_container > img[src=''], #cover_container > img[src=''] + a {
-    display: none !important;
 }

@@ -3,6 +3,7 @@
 namespace Stalker\Lib\RESTAPI\v2;
 
 use Stalker\Lib\Core\Stb;
+use Stalker\Lib\Core\Mysql;
 
 class RESTApiResourceVideo extends RESTApiCollection
 {
@@ -187,9 +188,42 @@ class RESTApiResourceVideo extends RESTApiCollection
             $new_video['hd']            = (int) $video['hd'];
             $new_video['rating_kinopoisk'] = (float) $video['rating_kinopoisk'];
             $new_video['rating_imdb']   = (float) $video['rating_imdb'];
+            $new_video['series']        = array();
 
-            $series = unserialize($video['series']);
-            $new_video['series'] = ($series !== false) ? $series : array();
+            $has_files = (int) Mysql::getInstance()
+                ->from('video_series_files')
+                ->where(array(
+                    'video_id' => $video['id']
+                ))
+                ->count()
+                ->get()
+                ->counter();
+
+            if ($has_files){
+                if ($video['is_series']){
+
+                    $season = Mysql::getInstance()
+                        ->from('video_season')
+                        ->where(array('video_id' => $video['id']))
+                        ->orderby('season_number')
+                        ->get()->first();
+
+                    if ($season){
+                        $episodes = Mysql::getInstance()
+                            ->from('video_season_series')
+                            ->where(array('season_id' => $season['id']))
+                            ->orderby('series_number')
+                            ->get()->all('series_number');
+
+                        if ($episodes){
+                            $new_video['series'] = array_map('intval', $episodes);
+                        }
+                    }
+                }
+            }else{
+                $series = unserialize($video['series']);
+                $new_video['series'] = ($series !== false) ? $series : array();
+            }
 
             $new_video['favorite']  = in_array($video['id'], $favorites) ? 1 : 0;
 
@@ -206,7 +240,11 @@ class RESTApiResourceVideo extends RESTApiCollection
                 $new_video['end_time'] = $not_ended[$video['id']]['end_time'];
             }
 
-            $new_video['url'] = empty($video['rtsp_url']) ? '' : $video['rtsp_url'];
+            if ($has_files){
+                $new_video['url'] = '';
+            }else{
+                $new_video['url'] = empty($video['rtsp_url']) ? '' : $video['rtsp_url'];
+            }
 
             if (preg_match("/(\S+:\/\/\S+)/", $new_video['url'], $match)){
                 $new_video['url'] = $match[1];

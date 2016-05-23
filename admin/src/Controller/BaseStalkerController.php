@@ -220,7 +220,7 @@ class BaseStalkerController {
         if (empty($this->app['controller_alias']) || ($this->app['action_alias'] != 'register' && $this->app['action_alias'] != 'login')) {
             if (!$this->admin->isAuthorized()) {
                 if ($this->isAjax) {
-                    $response = $this->generateAjaxResponse(array(), 'Need authorization');
+                    $response = $this->generateAjaxResponse(array(), $this->setLocalization('Need authorization'));
                     return new Response(json_encode($response), 401);
                 } else {
                     return $this->app->redirect(trim($this->workURL, '/') . '/login', 302);
@@ -337,9 +337,12 @@ class BaseStalkerController {
         return $query_param;
     }
 
-    protected function cleanQueryParams(&$data, $filds_for_delete = array(), $fields_for_replace = array()) {
+    protected function cleanQueryParams(&$data, $filds_for_delete = array(), $fields_for_replace = array(), $order_no_replace = FALSE) {
         reset($data);
         while (list($key, $block) = each($data)) {
+            if ($order_no_replace !== FALSE && $key == 'order') {
+                continue;
+            }
             foreach ($filds_for_delete as $field) {
                 if (array_key_exists($field, $block)) {
                     $new_name = str_replace(" as `$field`", '', $fields_for_replace[$field]);
@@ -448,7 +451,7 @@ class BaseStalkerController {
                     $this->app['breadcrumbs']->addItem($row_a['name'], $this->workURL . "/$controller/$action");
                 }
                 if ((!$dont_remove && !array_key_exists($action, $this->app['controllerAccessMap'][$controller]['action']))
-                    || (array_key_exists($action, $this->app['controllerAccessMap'][$controller]['action']) && $this->app['controllerAccessMap'][$controller]['action'][$action]['access'] == 0)) {
+                    || (array_key_exists($controller, $this->app['controllerAccessMap']) && array_key_exists($action, $this->app['controllerAccessMap'][$controller]['action']) && $this->app['controllerAccessMap'][$controller]['action'][$action]['access'] == 0)) {
                     unset($side_bar[$key]['action'][$key_a]);
                 }
             }
@@ -536,5 +539,184 @@ class BaseStalkerController {
             $array[$key] = $row;
         }
         return $array;
+    }
+
+    protected function getLanguageCodesEN($code = FALSE) {
+        $return_array =  array(
+            'aa' => $this->setLocalization('Afar'),
+            'ab' => $this->setLocalization('Abkhazian'),
+            'af' => $this->setLocalization('Afrikaans'),
+            'ak' => $this->setLocalization('Akan'),
+            'am' => $this->setLocalization('Amharic'),
+            'ar' => $this->setLocalization('Arabic'),
+            'as' => $this->setLocalization('Assamese'),
+            'av' => $this->setLocalization('Avaric'),
+            'ae' => $this->setLocalization('Avestan'),
+            'ay' => $this->setLocalization('Aymara'),
+            'az' => $this->setLocalization('Azerbaijani'),
+            'ba' => $this->setLocalization('Bashkir'),
+            'bm' => $this->setLocalization('Bambara'),
+            'eu' => $this->setLocalization('Basque'),
+            'be' => $this->setLocalization('Belarusian'),
+            'bn' => $this->setLocalization('Bengali'),
+            'bi' => $this->setLocalization('Bislama'),
+            'bo' => $this->setLocalization('Tibetan'),
+            'bs' => $this->setLocalization('Bosnian'),
+            'br' => $this->setLocalization('Breton'),
+            'bg' => $this->setLocalization('Bulgarian'),
+            'ca' => $this->setLocalization('Catalan'),
+            'cs' => $this->setLocalization('Czech'),
+            'ch' => $this->setLocalization('Chamorro'),
+            'ce' => $this->setLocalization('Chechen'),
+            'cu' => $this->setLocalization('Church Slavic'),
+            'cv' => $this->setLocalization('Chuvash'),
+            'kw' => $this->setLocalization('Cornish'),
+            'co' => $this->setLocalization('Corsican'),
+            'cy' => $this->setLocalization('Welsh'),
+            'da' => $this->setLocalization('Danish'),
+            'de' => $this->setLocalization('German'),
+            'dv' => $this->setLocalization('Divehi'),
+            'dz' => $this->setLocalization('Dzongkha'),
+            'el' => $this->setLocalization('Greek'),
+            'en' => $this->setLocalization('English'),
+            'eo' => $this->setLocalization('Esperanto'),
+            'et' => $this->setLocalization('Estonian'),
+            'ee' => $this->setLocalization('Ewe'),
+            'fo' => $this->setLocalization('Faroese'),
+            'fa' => $this->setLocalization('Persian'),
+            'fj' => $this->setLocalization('Fijian'),
+            'fi' => $this->setLocalization('Finnish'),
+            'fr' => $this->setLocalization('French'),
+            'fy' => $this->setLocalization('Western Frisian'),
+            'ff' => $this->setLocalization('Fulah'),
+            'ka' => $this->setLocalization('Georgian'),
+            'gd' => $this->setLocalization('Gaelic'),
+            'ga' => $this->setLocalization('Irish'),
+            'gl' => $this->setLocalization('Galician'),
+            'gv' => $this->setLocalization('Manx'),
+            'gn' => $this->setLocalization('Guarani'),
+            'gu' => $this->setLocalization('Gujarati'),
+            'ha' => $this->setLocalization('Hausa'),
+            'he' => $this->setLocalization('Hebrew'),
+            'hz' => $this->setLocalization('Herero'),
+            'hi' => $this->setLocalization('Hindi'),
+            'ho' => $this->setLocalization('Hiri Motu'),
+            'hr' => $this->setLocalization('Croatian'),
+            'hu' => $this->setLocalization('Hungarian'),
+            'hy' => $this->setLocalization('Armenian'),
+            'ig' => $this->setLocalization('Igbo'),
+            'iu' => $this->setLocalization('Inuktitut'),
+            'ie' => $this->setLocalization('Interlingue'),
+            'ia' => $this->setLocalization('Interlingua'),
+            'id' => $this->setLocalization('Indonesian'),
+            'ik' => $this->setLocalization('Inupiaq'),
+            'is' => $this->setLocalization('Icelandic'),
+            'it' => $this->setLocalization('Italian'),
+            'jv' => $this->setLocalization('Javanese'),
+            'ja' => $this->setLocalization('Japanese'),
+            'kl' => $this->setLocalization('Kalaallisut'),
+            'kn' => $this->setLocalization('Kannada'),
+            'ks' => $this->setLocalization('Kashmiri'),
+            'kr' => $this->setLocalization('Kanuri'),
+            'kk' => $this->setLocalization('Kazakh'),
+            'km' => $this->setLocalization('Central Khmer'),
+            'ki' => $this->setLocalization('Kikuyu'),
+            'rw' => $this->setLocalization('Kinyarwanda'),
+            'ky' => $this->setLocalization('Kirghiz'),
+            'kv' => $this->setLocalization('Komi'),
+            'kg' => $this->setLocalization('Kongo'),
+            'ko' => $this->setLocalization('Korean'),
+            'kj' => $this->setLocalization('Kuanyama'),
+            'ku' => $this->setLocalization('Kurdish'),
+            'lo' => $this->setLocalization('Lao'),
+            'la' => $this->setLocalization('Latin'),
+            'lv' => $this->setLocalization('Latvian'),
+            'ln' => $this->setLocalization('Lingala'),
+            'lt' => $this->setLocalization('Lithuanian'),
+            'lb' => $this->setLocalization('Luxembourgish'),
+            'lu' => $this->setLocalization('Luba-Katanga'),
+            'lg' => $this->setLocalization('Ganda'),
+            'mk' => $this->setLocalization('Macedonian'),
+            'mh' => $this->setLocalization('Marshallese'),
+            'ml' => $this->setLocalization('Malayalam'),
+            'mi' => $this->setLocalization('Maori'),
+            'mr' => $this->setLocalization('Marathi'),
+            'mg' => $this->setLocalization('Malagasy'),
+            'mt' => $this->setLocalization('Maltese'),
+            'mn' => $this->setLocalization('Mongolian'),
+            'ms' => $this->setLocalization('Malay'),
+            'my' => $this->setLocalization('Burmese'),
+            'na' => $this->setLocalization('Nauru'),
+            'nv' => $this->setLocalization('Navajo'),
+            'nr' => $this->setLocalization('Ndebele'),
+            'nd' => $this->setLocalization('North Ndebele'),
+            'ng' => $this->setLocalization('Ndonga'),
+            'ne' => $this->setLocalization('Nepali'),
+            'nl' => $this->setLocalization('Dutch'),
+            'no' => $this->setLocalization('Norwegian'),
+            'ny' => $this->setLocalization('Chichewa'),
+            'oc' => $this->setLocalization('Occitan'),
+            'oj' => $this->setLocalization('Ojibwa'),
+            'or' => $this->setLocalization('Oriya'),
+            'om' => $this->setLocalization('Oromo'),
+            'os' => $this->setLocalization('Ossetian'),
+            'pa' => $this->setLocalization('Panjabi'),
+            'pi' => $this->setLocalization('Pali'),
+            'pl' => $this->setLocalization('Polish'),
+            'pt' => $this->setLocalization('Portuguese'),
+            'ps' => $this->setLocalization('Pushto'),
+            'qu' => $this->setLocalization('Quechua'),
+            'rm' => $this->setLocalization('Romansh'),
+            'ro' => $this->setLocalization('Romanian'),
+            'rn' => $this->setLocalization('Rundi'),
+            'ru' => $this->setLocalization('Russian'),
+            'sg' => $this->setLocalization('Sango'),
+            'sa' => $this->setLocalization('Sanskrit'),
+            'si' => $this->setLocalization('Sinhala'),
+            'sk' => $this->setLocalization('Slovak'),
+            'sl' => $this->setLocalization('Slovenian'),
+            'sm' => $this->setLocalization('Samoan'),
+            'sn' => $this->setLocalization('Shona'),
+            'sd' => $this->setLocalization('Sindhi'),
+            'so' => $this->setLocalization('Somali'),
+            'st' => $this->setLocalization('Southern Sotho'),
+            'es' => $this->setLocalization('Spanish'),
+            'sq' => $this->setLocalization('Albanian'),
+            'sc' => $this->setLocalization('Sardinian'),
+            'sr' => $this->setLocalization('Serbian'),
+            'ss' => $this->setLocalization('Swati'),
+            'su' => $this->setLocalization('Sundanese'),
+            'sw' => $this->setLocalization('Swahili'),
+            'sv' => $this->setLocalization('Swedish'),
+            'ty' => $this->setLocalization('Tahitian'),
+            'ta' => $this->setLocalization('Tamil'),
+            'tt' => $this->setLocalization('Tatar'),
+            'te' => $this->setLocalization('Telugu'),
+            'tg' => $this->setLocalization('Tajik'),
+            'tl' => $this->setLocalization('Tagalog'),
+            'th' => $this->setLocalization('Thai'),
+            'ti' => $this->setLocalization('Tigrinya'),
+            'to' => $this->setLocalization('Tonga'),
+            'tn' => $this->setLocalization('Tswana'),
+            'ts' => $this->setLocalization('Tsonga'),
+            'tk' => $this->setLocalization('Turkmen'),
+            'tr' => $this->setLocalization('Turkish'),
+            'tw' => $this->setLocalization('Twi'),
+            'ug' => $this->setLocalization('Uighur'),
+            'uk' => $this->setLocalization('Ukrainian'),
+            'ur' => $this->setLocalization('Urdu'),
+            'uz' => $this->setLocalization('Uzbek'),
+            've' => $this->setLocalization('Venda'),
+            'vi' => $this->setLocalization('Vietnamese'),
+            'vo' => $this->setLocalization('Volap'),
+            'wo' => $this->setLocalization('Wolof'),
+            'xh' => $this->setLocalization('Xhosa'),
+            'yi' => $this->setLocalization('Yiddish'),
+            'yo' => $this->setLocalization('Yoruba'),
+            'za' => $this->setLocalization('Zhuang'),
+            'zh' => $this->setLocalization('Chinese'),
+            'zu' => $this->setLocalization('Zulu')
+        );
+        return ($code !== FALSE) ? (array_key_exists($code, $return_array) ? $return_array[$code]: '') : $return_array;
     }
 }

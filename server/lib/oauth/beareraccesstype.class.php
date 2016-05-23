@@ -1,38 +1,41 @@
-<?php
-
-namespace Stalker\Lib\OAuth;
-
-class BearerAccessType extends AccessTokenType
-{
-    protected $type = 'Bearer';
-
-    protected function parseAuthHeader(){
-
-        if (preg_match('/Bearer\s+(.*)$/i', $this->request->getAuthorization(), $matches)){
-            $this->access_token = trim($matches[1]);
-        }else{
-            throw new AuthBadRequest("Wrong Bearer authorization header");
-        }
-    }
-
-    public function getToken(){
-        return $this->access_token;
-    }
-
-    public function checkRequest(){
-
-        $session = $this->access_handler->getAccessSessionByToken($this->access_token);
-
-        if (empty($session)){
-            throw new AuthUnauthorized("Access token wrong or expired");
-        }
-
-        if (preg_match("/\/users\/(\d+)/", $this->request->getRequestUri(), $match)){
-            if ($match[1] != $session['uid']){
-                throw new AuthForbidden("Access denied");
-            }
-        }
-    }
-}
-
-?>
+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

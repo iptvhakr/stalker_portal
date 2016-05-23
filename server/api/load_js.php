@@ -23,21 +23,21 @@ this.loadRequiredFiles = function (callback) {
     onLoadScript();
 
     function finishLoad() {
-        console.log('Loading finish');
+        //console.log('Loading finish');
         if (filesloaded === filestoload) {
-            console.log('Load callback');
+            //console.log('Load callback');
             callback();
         }
     }
 
     function onLoadScript() {
         if ( i < scripts.length){
-            console.log('Loading script ' + scripts[i]);
+            //console.log('Loading script ' + scripts[i]);
             var script = document.createElement('script');
             script.type = 'text/javascript';
             script.src = scripts[i];
             script.onload = function () {
-                console.log('Loaded script ' + scripts[i]);
+                //console.log('Loaded script ' + scripts[i]);
                 filesloaded++;  // (This means increment, i.e. add one)
                 i++;
                 onLoadScript();

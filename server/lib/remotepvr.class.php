@@ -46,9 +46,10 @@ class RemotePvr extends AjaxResponse implements \Stalker\Lib\StbApi\RemotePvr
         $res['local'] = 0;
 
         if (!empty($res['cmd'])){
-            preg_match("/\.(\w*)$/", $res['cmd'], $ext_arr);
             $res['to_file'] = System::transliterate($item['id'].'_'.Itv::getChannelNameById($item['ch_id']).'_'.$item['program']);
-            $res['to_file'] .= '.'.$ext_arr[1];
+            if (preg_match("/\.(\w*)$/", $res['cmd'], $ext_arr)){
+                $res['to_file'] .= '.'.$ext_arr[1];
+            }
         }
 
         if (!empty($_REQUEST['download'])){

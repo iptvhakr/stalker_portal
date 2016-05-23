@@ -16,12 +16,12 @@ $.extend(true, $.fn.dataTable.defaults, {
         });
 	},
     "fnDrawCallback": function (oSettings) {
-        var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
+        var paginateRow = $(oSettings.nTableWrapper).find('div.dataTables_paginate');
         var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
         if (pageCount > 1) {
-            $("#datatable-1_paginate").css("display", "block");
+            $(paginateRow).css("display", "block");
         } else {
-            $("#datatable-1_paginate").css("display", "none");
+            $(paginateRow).css("display", "none");
         }
         if (oSettings.fnRecordsDisplay() && oSettings.aoData && oSettings.aoData.length) {
             var tableHeight = oSettings.oInstance.height();

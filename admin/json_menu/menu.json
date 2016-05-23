@@ -77,6 +77,49 @@
         }
     },
     "3": {
+        "name": _("New Video club"),
+        "alias": "new-video-club",
+        "icon": "fa fa-video-camera",
+        "icon2": "pull-right fa fa-chevron-left",
+        "action": {
+            "1": {
+                "name": _("Movie list"),
+                "alias": "video-list",
+                "icon": ""
+            },
+            "2": {
+                "name": _("Schedule"),
+                "alias": "video-schedule",
+                "icon": ""
+            },
+            "3": {
+                "name": _("Advertising"),
+                "alias": "video-advertise",
+                "icon": ""
+            },
+            "4": {
+                "name": _("Moderators"),
+                "alias": "video-moderators-addresses",
+                "icon": ""
+            },
+            "5": {
+                "name": _("Activity log"),
+                "alias": "video-logs",
+                "icon": ""
+            },
+            "6": {
+                "name": _("Categories"),
+                "alias": "video-categories",
+                "icon": ""
+            },
+            "7": {
+                "name": _("Genres"),
+                "alias": "video-genres",
+                "icon": ""
+            }
+        }
+    },
+    "4": {
         "name": _("Audio club"),
         "alias": "audio-club",
         "icon": "fa fa-music",
@@ -109,7 +152,7 @@
             }
         }
     },
-    "4": {
+    "5": {
         "name": _("Karaoke"),
         "alias": "karaoke",
         "icon": "fa fa-microphone",
@@ -117,7 +160,7 @@
         "action": {
         }
     },
-    "5": {
+    "6": {
         "name": _("Radio"),
         "alias": "radio",
         "icon": "fa fa-bullhorn",
@@ -125,7 +168,7 @@
         "action": {
         }
     },
-    "6": {
+    "7": {
         "name": _("Tariffs"),
         "alias": "tariffs",
         "icon": "fa fa-calculator",
@@ -148,7 +191,7 @@
             }
         }
     },
-    "7": {
+    "8": {
         "name": _("Users"),
         "alias": "users",
         "icon": "fa  fa-users",
@@ -181,7 +224,7 @@
             }
         }
     },
-    "8": {
+    "9": {
         "name": _("Applications"),
         "alias": "application-catalog",
         "icon": "fa fa-rocket",
@@ -189,7 +232,7 @@
         "action": {
         }
     },
-    "9": {
+    "10": {
         "name": _("Events"),
         "alias": "events",
         "icon": "fa fa-calendar",
@@ -212,7 +255,7 @@
             }
         }
     },
-    "10": {
+    "11": {
         "name": _("Administrators"),
         "alias": "admins",
         "icon": "fa fa-user-secret",
@@ -235,7 +278,7 @@
             }
         }
     },
-    "11": {
+    "12": {
         "name": _("Tasks"),
         "alias": "tasks",
         "icon": "fa fa-check",
@@ -253,7 +296,7 @@
             }
         }
     },
-    "12": {
+    "13": {
         "name": _("Information portal"),
         "alias": "infoportal",
         "icon": "fa fa-info",
@@ -271,7 +314,7 @@
             }
         }
     },
-    "13": {
+    "14": {
         "name": _("Statistics"),
         "alias": "statistics",
         "icon": "fa fa-pie-chart",
@@ -319,7 +362,7 @@
             }
         }
     },
-    "14": {
+    "15": {
         "name": _("Storage"),
         "alias": "storages",
         "icon": "fa fa-archive",
@@ -342,7 +385,7 @@
             }
         }
     },
-    "15": {
+    "16": {
         "name": _("Streaming servers"),
         "alias": "broadcast-servers",
         "icon": "fa fa-server",
@@ -360,7 +403,7 @@
             }
         }
     },
-    "16": {
+    "17": {
         "name": _("Settings"),
         "alias": "settings",
         "icon": "fa fa-cogs",

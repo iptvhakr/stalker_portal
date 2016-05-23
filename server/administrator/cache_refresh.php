@@ -20,7 +20,7 @@ $not_custom_video = Mysql::getInstance()->from('video')->where(array('protocol!=
 
 while($item = $not_custom_video->next()){
     $master = new VideoMaster();
-    $master->getAllGoodStoragesForMediaFromNet($item['id'], true);
+    $master->getAllGoodStoragesForMediaFromNet($item['id'], 0, true);
     unset($master);
     $updated_video++;
 }
@@ -29,7 +29,7 @@ $not_custom_karaoke = Mysql::getInstance()->from('karaoke')->where(array('protoc
 
 while($item = $not_custom_video->next()){
     $master = new KaraokeMaster();
-    $master->getAllGoodStoragesForMediaFromNet($item['id']);
+    $master->getAllGoodStoragesForMediaFromNet($item['id'], 0);
     unset($master);
     $updated_karaoke++;
 }

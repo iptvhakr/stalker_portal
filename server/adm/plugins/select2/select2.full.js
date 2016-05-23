@@ -1171,10 +1171,17 @@ S2.define('select2/results',[
 
       if ($this.attr('aria-selected') === 'true') {
         if (self.options.get('multiple')) {
-          self.trigger('unselect', {
-            originalEvent: evt,
-            data: data
-          });
+            if (!self.options.get('allowDuplicates')) {
+              self.trigger('unselect', {
+                originalEvent: evt,
+                data: data
+              });
+            } else {
+                self.trigger('select', {
+                    originalEvent: evt,
+                    data: data
+                });
+            }
         } else {
           self.trigger('close', {});
         }

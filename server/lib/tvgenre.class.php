@@ -28,7 +28,10 @@ class TvGenre
                     $item['id'] = preg_replace(array("/\s/i", "/[^a-z0-9-]/i"), array("-", ""), $item['title']);
                 }
 
+                $item['censored'] = (boolean) $item['censored'];
+
                 $item['title'] = _($item['title']);
+
 
                 return $item;
             }, $genres);

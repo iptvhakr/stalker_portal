@@ -1,0 +1,151 @@
+{% extends 'layout.twig' %}
+{% set title = ('Video club'|trans ~ ': ' ~ (app.modEdit ? ('Edit moderator'|trans ~ " '"~ app.modName ~ "'"): 'Add moderator'|trans)) | trans %}
+{% set active_alias = 'video-moderators-addresses' %}
+
+{% block content %}
+    <div id="add_channel">
+        {{ form_start(app['form'], {'method': 'POST', 'action': (app.request.baseUrl ~ '/' ~ app.controller_alias  ~ '/' ~ app.action_alias) | trans, 'attr': {'class': 'form-horizontal', 'role': 'form', 'id': 'form_'}}) }}
+        <div class="bg-danger">
+            <div class="bg-danger">
+                {{ form_errors(app['form']) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="box">
+                    <div class="box-content">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'Name'|trans }}<span class="icon-required">*</span></label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].id, {'attr': {'class': 'form-control'}}) }}
+                                    {{ form_widget(app['form'].name, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].name) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'MAC address'|trans }}<span class="icon-required">*</span></label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].mac, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].mac) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'Switch off advertising'|trans }}</label>
+                            <div class=" col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    <div class="checkbox">
+                                        <label>
+                                            {{ form_widget(app['form'].disable_vclub_ad) }}
+                                            <i class="fa fa-square-o small"></i>
+                                        </label>
+                                        <div class="bg-danger">
+                                            {{ form_errors(app['form'].disable_vclub_ad) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="box-content">
+                        <div class="row">
+                            <div class="col-xs-10 col-sm-4 pull-right">
+                                {{ form_widget(app['form'].save, { 'label': 'Save'|trans , attr: {'class': 'btn btn-success col-sm-5 pull-right'}}) }}
+                                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/video-moderators-addresses" class="btn btn-default col-sm-5 pull-left">{{ 'Cancel'|trans }}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="">
+            {{ form_rest(app.form) }}
+        </div>
+        {{ form_end(app['form']) }}  
+    </div>
+    <script type="text/javascript" defer>
+
+        var conf = {
+            form: '#form_',
+            lang : '{{ app.language }}',
+            showHelpOnFocus : true,
+            validateHiddenInputs: true,
+            ignore: ['.ignore'],
+            modules: 'jsconf',
+            onSuccess: function () {
+                $(this.form).get(0).submit();
+                return false;
+            },
+            onError: function () {
+                return false;
+            }
+        };
+
+        function yelp() {
+            $(document).ready(function () {
+
+                $.validate(conf);
+
+                $(document).on('change', '#form_mac', function (e) {
+                    var _this = $(this);
+                    _this.next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
+
+                    if ($.trim(_this.val()) == '') {
+                        return;
+                    } else {
+                        var mac_val = $.trim(_this.val());
+                        var regExp = /([0-9a-fA-F]{2}([:]|$)){6}$/ig;
+                        if (!regExp.test(mac_val)) {
+                            _this.next('div').append('<i class="txt-danger fa fa-ban"></i> ' + "{{ 'Error: Not valid mac address'|trans }}").css('visibility', 'visible');
+                            return;
+                        }
+                    }
+
+                    $.ajax({
+                        url: 'video-club/check-moderator-mac',
+                        type: 'POST',
+                        data: {mac: _this.val(), id: $("#form_id").val()},
+                        success: function (data) {
+                            if (data.success) {
+                                _this.next('div').append('<i class="txt-success fa fa-check"></i> ' + data.chk_rezult).css('visibility', 'visible');
+                            } else {
+                                JSErrorModalBox(data);
+                            }
+                        },
+                        error: function (data) {
+                            if (typeof (data.responseJSON) != 'undefined' && typeof (data.responseJSON.error) != 'undefined') {
+                                _this.next('div').append('<i class="txt-danger fa fa-ban"></i> ' + data.responseJSON.error).css('visibility', 'visible');
+                            } else {
+                                JSErrorModalBox(data.responseJSON);
+                            }
+                        },
+                        dataType: "json",
+                        async: false
+                    });
+                });
+
+                $(document).on("click", "#form_save", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+
+                    if ($(conf.form).isValid({}, conf, true)) {
+                        conf.onSuccess();
+                    } else {
+                        conf.onError();
+                    }
+                    return false;
+                });
+            });
+        }
+        document.addEventListener("DOMContentLoaded", yelp, false);
+    </script>
+{% endblock %}

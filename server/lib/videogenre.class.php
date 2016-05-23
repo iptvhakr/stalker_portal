@@ -18,10 +18,12 @@ class VideoGenre
 
     public function getAll($pretty_id = false, $group = true, $include_internal_id = false){
 
-        $genres = Mysql::getInstance()->from('cat_genre');
+        $genres = Mysql::getInstance()->select('*')->from('cat_genre');
 
         if ($group){
-            $genres->groupby('title');
+            $genres->select('GROUP_CONCAT(category_alias) as categories')->groupby('title');
+        }else{
+            $genres->select('category_alias as categories');
         }
 
         $genres = $genres->get()->all();
@@ -39,6 +41,14 @@ class VideoGenre
 
                 $item['original_title'] = $item['title'];
                 $item['title']          = _($item['title']);
+                $item['categories']     = array_map(function($id) {
+                        return intval($id);
+                    }, Mysql::getInstance()->getInstance()
+                             ->from('media_category')
+                             ->in('category_alias', explode(',', $item['categories']))
+                             ->get()
+                             ->all('id')
+                    );
 
                 return $item;
             }, $genres);

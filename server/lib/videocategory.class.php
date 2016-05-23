@@ -29,6 +29,7 @@ class VideoCategory
 
                 $item['original_title'] = $item['category_name'];
                 $item['title']          = _($item['category_name']);
+                $item['censored']       = (boolean) $item['censored'];
 
                 return $item;
             }, $categories);

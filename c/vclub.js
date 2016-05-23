@@ -13,9 +13,14 @@
         this.row_blocks  = ['hd', 'sd', 'fav', 'lock', 'low_quality', 'name', 'today', 'yesterday', 'week_and_more'];
         
         this.load_params = {
-            'type'   : 'vod',
-            'action' : 'get_ordered_list'
+            'type'       : 'vod',
+            'action'     : 'get_ordered_list',
+            'movie_id'   : 0,
+            'season_id'  : 0,
+            'episode_id' : 0
         };
+
+        this.history = []; //{page:1, row:2, load_params:{}, header_path:[]}
         
         this.superclass = ListLayer.prototype;
         
@@ -208,7 +213,7 @@
                     "onclick" : function(){
                         scope.complete_confirm.hide();
                         //scope.on = false;
-                        scope.check_for_series(scope.play_url, scope.storage);
+                        scope.play(scope.play_url, scope.storage);
                     }
                 }
             ));
@@ -341,9 +346,84 @@
                 stb.player.stop && stb.player.stop();
             }
 
-            this.clear_short_info();
-            
+            if (!do_not_reset){
+
+                this.clear_short_info();
+
+                this.history = [];
+
+                this.update_header_path([
+                    {"alias" : "movie", "item" : ''},
+                    {"alias" : "season", "item" : ''},
+                    {"alias" : "episode", "item" : ''}
+                ]);
+            }
+
             this.superclass.hide.call(this, do_not_reset);
+        };
+
+        this.back = function(){
+            _debug('vclub.back');
+
+            _debug('this.history.length', this.history.length);
+
+            if (this.history.length == 1){
+
+                if (single_module.indexOf(this.layer_name) != -1){
+                    if (window.self !== window.top) {
+                        stb.player.stop();
+                        // minimize
+                        this.hide();
+                        parent.postMessage('hide', '*');
+                    } else if (typeof(stbWebWindow) != 'undefined' && windowId !== 1) {
+                        stb.player.stop();
+                        // minimize
+                        this.hide();
+                        stbWindowMgr.windowHide(windowId);
+                    } else if (window.referrer){
+                        stb.player.stop();
+                        window.location = window.referrer;
+                    }
+
+                    this.history.push({
+                        "page" : this.cur_page,
+                        "row" : this.cur_row,
+                        "load_params" : this.load_params
+                    });
+
+                    return;
+                }
+
+                this.hide();
+                main_menu.show();
+            }
+
+            var level = this.history.splice(this.history.length - 1, 1)[0];
+
+            _debug('level', level);
+
+            this.update_header_path([
+                {"alias" : "movie", "item" : ''},
+                {"alias" : "season", "item" : ''},
+                {"alias" : "episode", "item" : ''}
+            ]);
+
+            if (level){
+                this.load_params = level.load_params;
+
+                this.load_params['row']  = level.row;
+                this.cur_page = level.page;
+
+                if (level.header_path && level.header_path.length > 0){
+                    this.update_header_path(level.header_path);
+                }
+            }
+
+            if (level){
+                this.load_data();
+            }
+
+            this.load_params['row'] = 0;
         };
         
         this.init_sort_menu = function(map, options){
@@ -473,6 +553,10 @@
             if (!item){
                 return;
             }
+
+            if (!item.is_movie){
+                return;
+            }
             
             //item.name
             //item.o_name
@@ -542,7 +626,16 @@
         };
         
         this.shift_row_callback = function(item){
-            
+
+            if (item.is_movie){
+                this.enable_color_buttons();
+            }else{
+                this.disable_color_buttons();
+            }
+
+            if (!item.is_movie){
+                return;
+            }
             window.clearTimeout(this.row_callback_timer);
             
             var self = this;
@@ -687,7 +780,7 @@
         this.bind = function(){
             this.superclass.bind.apply(this);
             
-            this.check_for_pass.bind(key.OK, this, true);
+            this.action.bind(key.OK, this, true);
             this.check_for_storage_selection.bind(key.PLAY, this, true);
             this.check_for_pass.bind(key.REC, this, false);
 
@@ -713,9 +806,67 @@
                 this.update_header_path([{"alias" : "search", "item" : ''}]);
                 this.hide();
                 main_menu.show();
-            }).bind(key.EXIT, this).bind(key.LEFT, this).bind(key.MENU, this);
+            }).bind(key.MENU, this);
+
+            this.back.bind(key.EXIT, this).bind(key.LEFT, this);
 
             this.load_data.bind(key.REFRESH, this);
+        };
+
+        this.action = function() {
+            _debug('vclub.action');
+
+            if (this.data_items[this.cur_row].is_file) {
+
+                this.check_for_pass(true);
+                return;
+            }
+
+            if (this.data_items[this.cur_row].is_movie && this.data_items[this.cur_row].has_files == '0') {
+
+                this.check_for_series(true);
+                return;
+            }
+
+            this.page_dir = 1;
+
+            this.history.push({
+                "page": this.cur_page,
+                "row": this.cur_row,
+                "load_params": this.load_params.clone(),
+                "header_path": this.header_path_map.clone()
+            });
+
+            if (this.data_items[this.cur_row].is_movie) {
+                this.update_header_path([{"alias" : "movie", "item" : this.data_items[this.cur_row].name}, {"alias" : "sortby", "item" : ''}, {"alias" : "genre", "item" : ''}, {"alias" : "search", "item" : ''}]);
+                this.load_params['movie_id'] = this.data_items[this.cur_row].id;
+            }else if (this.data_items[this.cur_row].is_season) {
+                this.update_header_path([{"alias" : "season", "item" : this.data_items[this.cur_row].name}]);
+                this.load_params['season_id'] = this.data_items[this.cur_row].id;
+            }else if (this.data_items[this.cur_row].is_episode) {
+                this.update_header_path([{"alias" : "episode", "item" : this.data_items[this.cur_row].name}]);
+                this.load_params['episode_id'] = this.data_items[this.cur_row].id;
+            }
+
+            this.cur_page = 1;
+
+            this.load_data();
+        };
+
+        this.disable_color_buttons = function(){
+            _debug('vclub.disable_color_buttons');
+            this.color_buttons.get('red').disable();
+            this.color_buttons.get('green').disable();
+            this.color_buttons.get('yellow').disable();
+            this.color_buttons.get('blue').disable();
+        };
+
+        this.enable_color_buttons = function(){
+            _debug('vclub.enable_color_buttons');
+            this.color_buttons.get('red').enable();
+            this.color_buttons.get('green').enable();
+            this.color_buttons.get('yellow').enable();
+            this.color_buttons.get('blue').enable();
         };
 
         this.check_for_storage_selection = function(play_url){
@@ -860,7 +1011,7 @@
             }else if (this.data_items[this.cur_row].lock){
                 
                 this.password_input.callback = function(){
-                    self.check_for_series(play_url, storage);
+                    this.check_for_series(play_url, storage);
                 };
                 
                 this.password_input.show();
@@ -872,18 +1023,21 @@
         this.check_for_series = function(play_url, storage){
             _debug('vclub.check_for_series', play_url, storage);
 
+            if (this.data_items[this.cur_row].has_files == '0'){
+                if (this.data_items[this.cur_row].series && this.data_items[this.cur_row].series.length > 0) {
 
-            if (this.data_items[this.cur_row].series.length > 0){
-                
-                var self = this;
-                
-                this.series_switch.callback = function(series){
-                    _debug('series', series);
-                    self.data_items[self.cur_row].cur_series = series;
-                    self.play(play_url, storage);
-                };
-                
-                this.series_switch.show(this.data_items[this.cur_row].series, this.data_items[this.cur_row].cur_series);
+                    var self = this;
+
+                    this.series_switch.callback = function (series) {
+                        _debug('series', series);
+                        self.data_items[self.cur_row].cur_series = series;
+                        self.play(play_url, storage);
+                    };
+
+                    this.series_switch.show(this.data_items[this.cur_row].series, this.data_items[this.cur_row].cur_series);
+                }else{
+                    this.play(play_url, storage);
+                }
             }else{
                 this.play(play_url, storage);
             }
@@ -942,7 +1096,7 @@
             _debug('cmd', this.data_items[this.cur_row].cmd);
             _debug('indexOf', this.data_items[this.cur_row].cmd.indexOf('://'));
 
-            if (this.data_items[this.cur_row].cmd.indexOf('://') < 0 || (this.data_items[this.cur_row].protocol == 'custom')){
+            if (this.data_items[this.cur_row].cmd.indexOf('://') < 0 || this.data_items[this.cur_row].protocol == 'custom'){
             
                 stb.player.on_create_link = function(result){
                     _debug('vclub.on_create_link', result);
@@ -1396,17 +1550,29 @@
                         
                         
                         return function(){
-                            _debug('alias', category.alias);
+                            _debug('category', category);
 
-                            if (category.alias == 'adult'){
+                            if (category.censored){
                                 module.vclub.parent_password_promt.callback = function(){
                                     main_menu.hide();
                                     module.vclub._show(category);
+
+                                    module.vclub.history.push({
+                                        "page" : module.vclub.cur_page,
+                                        "row" : module.vclub.cur_row,
+                                        "load_params" : module.vclub.load_params
+                                    })
                                 };
                                 module.vclub.parent_password_promt.show();
                             }else{
                                 main_menu.hide();
                                 module.vclub._show(category);
+
+                                module.vclub.history.push({
+                                    "page" : module.vclub.cur_page,
+                                    "row" : module.vclub.cur_row,
+                                    "load_params" : module.vclub.load_params
+                                })
                             }
                         }
                         
@@ -1414,6 +1580,14 @@
                 }
                 
                 );
+            }
+
+            if (single_module.indexOf('vclub') != -1) {
+                module.vclub.history.push({
+                    "page" : module.vclub.cur_page,
+                    "row" : module.vclub.cur_row,
+                    "load_params" : module.vclub.load_params
+                });
             }
             
             main_menu.add(word['vclub_title'], map, 'mm_ico_video.png', '', module.vclub);

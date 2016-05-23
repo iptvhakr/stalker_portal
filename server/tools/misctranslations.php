@@ -668,3 +668,18 @@ _('Welcome %s<br>We are glad to see you on the Stalker portal!');
 _('Setting the tariff plans and additional services for users on edit page');
 _('Managing of billing date for users on edit page');
 _('Managing of users reseller on edit page');
+
+_('Getting list of seasons and episodes of video');
+_('Getting list of files of episode');
+_('Getting info by one file of episode');
+_('Adding and editing files of episode');
+_('Change accessed status of one file of episode');
+_('Change names and original names for episodes and seasons');
+_('Deleting info about one video file from database');
+_('Adding episodes into season');
+_('Adding seasons into video');
+
+_('Regular quality');
+_('Good quality');
+_('Excellent quality');
+_('Ultra high quality');

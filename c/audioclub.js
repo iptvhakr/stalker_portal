@@ -492,6 +492,8 @@
                 return;
             }
 
+            this.page_dir = 1;
+
             if (this.data_items[this.cur_row].is_album && !this.data_items[this.cur_row].is_search_result) {
                 this.history.push({
                     "page": this.cur_page,

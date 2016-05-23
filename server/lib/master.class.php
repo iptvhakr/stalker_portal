@@ -30,7 +30,8 @@ abstract class Master
     protected $rtsp_url;
     protected $db_table;
     protected $stb_storages;
-    
+    protected $is_file = false;
+
     public function __construct(){
         $this->db = Mysql::getInstance();
         $this->stb = Stb::getInstance();
@@ -48,11 +49,12 @@ abstract class Master
      * @param int $series_num
      * @param bool $from_cache
      * @param string $forced_storage
+     * @param int $file_id
      * @return array contains path to media or error
      */
-    public function play($media_id, $series_num = 0, $from_cache = true, $forced_storage = ""){
+    public function play($media_id, $series_num = 0, $from_cache = true, $forced_storage = "", $file_id = 0){
         
-        $this->initMedia($media_id);
+        $this->initMedia($media_id, $file_id);
         
         $res = array(
             'id'         => 0,
@@ -61,8 +63,8 @@ abstract class Master
             'load'       => '',
             'error'      => ''
         );
-        
-        if (!empty($this->rtsp_url)){
+
+        if (!empty($this->rtsp_url) && (!$file_id || $this->is_file)){
             
             $res['id']  = $this->media_id;
             $res['cmd'] = $this->rtsp_url;
@@ -74,7 +76,7 @@ abstract class Master
             $from_cache = false;
         }
         
-        $good_storages = $this->getAllGoodStoragesForMedia($this->media_id, !$from_cache);
+        $good_storages = $this->getAllGoodStoragesForMedia($this->media_id, $file_id, !$from_cache);
 
         if (!empty($forced_storage)){
             if (array_key_exists($forced_storage, $good_storages)){
@@ -87,75 +89,117 @@ abstract class Master
         $default_error = 'nothing_to_play';
 
         foreach ($good_storages as $name => $storage){
-                if ($storage['load'] < 1){
+            if ($storage['load'] < 1){
 
-                    if ($series_num > 0){
+                if ($file_id){
+                    $file = Video::getFileById($file_id);
+                    $file = $file['file_name'];
+                }elseif ($series_num > 0){
 
-                        $file = $storage['series_file'][array_search($series_num, $storage['series'])];
+                    $file = $storage['series_file'][array_search($series_num, $storage['series'])];
 
-                    }else{
-                        $file = $storage['first_media'];
+                }else{
+                    $file = $storage['first_media'];
+                }
+
+                preg_match("/([\S\s]+)\.([\S]+)$/", $file, $arr);
+                $ext = $arr[2];
+
+                if ($this->storages[$name]['external'] == 0){
+
+                    try {
+                        $this->clients[$name]->resource($this->media_type)->create(array('media_name' => $this->getMediaPath($file, $file_id), 'media_id' => $this->media_id, 'proto' => $this->media_protocol));
+                    }catch (Exception $exception){
+                        $default_error = 'link_fault';
+                        $this->parseException($exception);
+
+                        if (($exception instanceof RESTClientException) && !($exception instanceof RESTClientRemoteError)){
+                            $storage = new Storage(array('name' => $name));
+                            $storage->markAsFailed($exception->getMessage());
+                            continue;
+                        }
+
+                        if ($this->from_cache){
+
+                            return $this->play($media_id, $series_num, false, '', $file_id);
+                        }else{
+                            continue;
+                        }
                     }
 
-                    preg_match("/([\S\s]+)\.([\S]+)$/", $file, $arr);
-                    $ext = $arr[2];
-
-                    //var_dump($this->storages[$name]);
-
-                    if ($this->storages[$name]['external'] == 0){
-
-                        try {
-                            //$this->clients[$name]->createLink($this->stb->mac, $this->media_name, $file, $this->media_id, (($this->media_protocol == 'http') ? 'http_' : '') . $this->media_type);
-                            $this->clients[$name]->resource($this->media_type)->create(array('media_name' => $this->getMediaPath($file), 'media_id' => $this->media_id, 'proto' => $this->media_protocol));
-                        }catch (Exception $exception){
-                            $default_error = 'link_fault';
-                            $this->parseException($exception);
-
-                            if (($exception instanceof RESTClientException) && !($exception instanceof RESTClientRemoteError)){
-                                $storage = new Storage(array('name' => $name));
-                                $storage->markAsFailed($exception->getMessage());
-                                continue;
-                            }
-
-                            if ($this->from_cache){
-
-                                return $this->play($media_id, $series_num, false);
-                            }else{
-                                continue;
-                            }
-                        }
-
-                        if ($this->media_protocol == 'http' || $this->media_type == 'remote_pvr'){
-                            if (Config::exist('nfs_proxy')){
-                                $base_path = 'http://'.Config::get('nfs_proxy').'/media/'.$name.'/'.RESTClient::$from.'/';
-                            }elseif (!empty($this->storages[$name]['wowza_server'])){
-                                $base_path = 'http://'.$this->storages[$name]['storage_ip'].':'.$this->storages[$name]['wowza_port'].'/'.$this->storages[$name]['wowza_app'].'/_definst_/mp4:'.$this->getMediaPath($file).'/';
-                            }else{
-                                $base_path = 'http://'.$this->storages[$name]['storage_ip'].'/media/'.$name.'/'.RESTClient::$from.'/';
-                            }
+                    if ($this->media_protocol == 'http' || $this->media_type == 'remote_pvr'){
+                        if (Config::exist('nfs_proxy')){
+                            $base_path = 'http://'.Config::get('nfs_proxy').'/media/'.$name.'/'.RESTClient::$from.'/';
+                        }elseif (!empty($this->storages[$name]['wowza_server'])){
+                            $base_path = 'http://'.$this->storages[$name]['storage_ip'].':'.$this->storages[$name]['wowza_port'].'/'.$this->storages[$name]['wowza_app'].'/_definst_/mp4:'.$this->getMediaPath($file, $file_id).'/';
                         }else{
-                            $base_path = '/media/'.$name.'/';
+                            $base_path = 'http://'.$this->storages[$name]['storage_ip'].'/media/'.$name.'/'.RESTClient::$from.'/';
                         }
+                    }else{
+                        $base_path = '/media/'.$name.'/';
+                    }
 
-                        if (strpos($base_path, 'http://') !== false){
-                            $res['cmd'] = 'ffmpeg ';
+                    if (strpos($base_path, 'http://') !== false){
+                        $res['cmd'] = 'ffmpeg ';
+                    }else{
+                        $res['cmd'] = 'auto ';
+                    }
+
+                    if (empty($this->storages[$name]['wowza_server'])){
+                        $res['cmd'] .= $base_path.$this->media_id.'.'.$ext;
+
+                        // nginx secure link
+                        $secret = Config::get('nginx_secure_link_secret');
+
+                        if(preg_match('/http(s)?:\/\/([^\/]+)\/(.+)$/', $res['cmd'], $match)){
+                            $uri = '/'.$match[3];
                         }else{
-                            $res['cmd'] = 'auto ';
+                            $uri = '';
                         }
 
-                        if (empty($this->storages[$name]['wowza_server'])){
-                            $res['cmd'] .= $base_path.$this->media_id.'.'.$ext;
+                        $remote_addr = $this->stb->ip;
+                        $expire = time() + Config::getSafe('vclub_nginx_tmp_link_ttl', 7200);
+
+                        $hash = base64_encode(md5($secret.$uri.$remote_addr.$expire, true));
+
+                        $hash = strtr($hash, '+/', '-_');
+                        $hash = str_replace('=', '', $hash);
+
+                        $res['cmd'] .= '?st='.$hash.'&e='.$expire;
+                    }else{
+                        $res['cmd'] .= $base_path.'playlist.m3u8?token='.$this->createTemporaryLink("1");
+                    }
+
+                    $file_info = array_filter($storage['files'], function($info) use ($file){
+                        return $info['name'] == $file;
+                    });
+
+                    $file_info = array_values($file_info);
+
+                    if (!empty($file_info) && !empty($file_info[0]['subtitles'])){
+                        $ip = $this->stb->ip;
+                        $res['subtitles'] = array_map(function($subtitle) use ($base_path, $file, $ip){
+
+                            $file_base = substr($file, 0, strrpos($file, '.'));
+
+                            $lang = substr($subtitle, strlen($file_base), strrpos($subtitle, '.') - strlen($file_base));
+
+                            if ($lang && ($lang{0} == '_' || $lang{0} == '.')){
+                                $lang = substr($lang, 1);
+                            }
+
+                            $file = $base_path.$subtitle;
 
                             // nginx secure link
                             $secret = Config::get('nginx_secure_link_secret');
 
-                            if(preg_match('/http(s)?:\/\/([^\/]+)\/(.+)$/', $res['cmd'], $match)){
+                            if(preg_match('/http(s)?:\/\/([^\/]+)\/(.+)$/', $file, $match)){
                                 $uri = '/'.$match[3];
                             }else{
                                 $uri = '';
                             }
 
-                            $remote_addr = $this->stb->ip;
+                            $remote_addr = $ip;
                             $expire = time() + Config::getSafe('vclub_nginx_tmp_link_ttl', 7200);
 
                             $hash = base64_encode(md5($secret.$uri.$remote_addr.$expire, true));
@@ -163,84 +207,42 @@ abstract class Master
                             $hash = strtr($hash, '+/', '-_');
                             $hash = str_replace('=', '', $hash);
 
-                            $res['cmd'] .= '?st='.$hash.'&e='.$expire;
-                        }else{
-                            $res['cmd'] .= $base_path.'playlist.m3u8?token='.$this->createTemporaryLink("1");
-                        }
-
-                        $file_info = array_filter($storage['files'], function($info) use ($file){
-                            return $info['name'] == $file;
-                        });
-
-                        $file_info = array_values($file_info);
-
-                        if (!empty($file_info) && !empty($file_info[0]['subtitles'])){
-                            $ip = $this->stb->ip;
-                            $res['subtitles'] = array_map(function($subtitle) use ($base_path, $file, $ip){
-
-                                $file_base = substr($file, 0, strrpos($file, '.'));
-
-                                $lang = substr($subtitle, strlen($file_base), strrpos($subtitle, '.') - strlen($file_base));
-
-                                if ($lang && ($lang{0} == '_' || $lang{0} == '.')){
-                                    $lang = substr($lang, 1);
-                                }
-
-                                $file = $base_path.$subtitle;
-
-                                // nginx secure link
-                                $secret = Config::get('nginx_secure_link_secret');
-
-                                if(preg_match('/http(s)?:\/\/([^\/]+)\/(.+)$/', $file, $match)){
-                                    $uri = '/'.$match[3];
-                                }else{
-                                    $uri = '';
-                                }
-
-                                $remote_addr = $ip;
-                                $expire = time() + Config::getSafe('vclub_nginx_tmp_link_ttl', 7200);
-
-                                $hash = base64_encode(md5($secret.$uri.$remote_addr.$expire, true));
-
-                                $hash = strtr($hash, '+/', '-_');
-                                $hash = str_replace('=', '', $hash);
-
-                                return array(
-                                    'file' => $file.'?st='.$hash.'&e='.$expire,
-                                    'lang' => $lang
-                                );
-                            }, $file_info[0]['subtitles']);
-                        }
-
-                    }else{
-                        $redirect_url = '/media/'.$this->getMediaPath($file);
-
-                        $link_result = $this->createTemporaryLink($redirect_url);
-
-                        var_dump($redirect_url, $link_result);
-
-                        if (!$link_result){
-                            $default_error = 'link_fault';
-
-                            if ($this->from_cache){
-
-                                return $this->play($media_id, $series_num, false);
-                            }else{
-                                continue;
-                            }
-                        }else{
-                            $res['cmd']      = 'ffmpeg http://'.$this->storages[$name]['storage_ip'].'/get/'.$link_result;
-                            $res['external'] = 1;
-                        }
+                            return array(
+                                'file' => $file.'?st='.$hash.'&e='.$expire,
+                                'lang' => $lang
+                            );
+                        }, $file_info[0]['subtitles']);
                     }
 
-                    //$res['cmd'] = 'auto /media/'.$name.'/'.$this->media_id.'.'.$ext;
-                    $res['id']   = $this->media_id;
-                    $res['load'] = $storage['load'];
-                    $res['storage_id'] = $this->storages[$name]['id'];
-                    $res['from_cache'] = $this->from_cache;
-                    return $res;
                 }else{
+                    $redirect_url = '/media/'.$this->getMediaPath($file, $file_id);
+
+                    $link_result = $this->createTemporaryLink($redirect_url);
+
+                    var_dump($redirect_url, $link_result);
+
+                    if (!$link_result){
+                        $default_error = 'link_fault';
+
+                        if ($this->from_cache){
+
+                            return $this->play($media_id, $series_num, false, '', $file_id);
+                        }else{
+                            continue;
+                        }
+                    }else{
+                        $res['cmd']      = 'ffmpeg http://'.$this->storages[$name]['storage_ip'].'/get/'.$link_result;
+                        $res['external'] = 1;
+                    }
+                }
+
+                //$res['cmd'] = 'auto /media/'.$name.'/'.$this->media_id.'.'.$ext;
+                $res['id']   = $this->media_id;
+                $res['load'] = $storage['load'];
+                $res['storage_id'] = $this->storages[$name]['id'];
+                $res['from_cache'] = $this->from_cache;
+                return $res;
+            }else{
                 $this->incrementStorageDeny($name);
                 $res['error'] = 'limit';
                 return $res;
@@ -249,7 +251,7 @@ abstract class Master
         
         if ($this->from_cache){
             
-            return $this->play($media_id, $series_num, false);
+            return $this->play($media_id, $series_num, false, '', $file_id);
         }else{
             $res['error'] = $default_error;
             return $res;
@@ -363,15 +365,16 @@ abstract class Master
      * Set media_id and media_name properties
      *
      * @param int $media_id
+     * @param int $file_id
      */
-    private function initMedia($media_id){
-        
+    private function initMedia($media_id, $file_id){
+
         if (empty($this->media_id)){
             $this->media_id = $media_id;
         }
         
         if (empty($this->media_params)){
-            $this->media_params = $this->getMediaParams($this->media_id);
+            $this->media_params = $this->getMediaParams($this->media_id, $file_id);
         }
         
         if (empty($this->media_name)){
@@ -414,16 +417,18 @@ abstract class Master
      * Get all good storages for media by id from cache(if they valid), or from network
      *
      * @param int $media_id
+     * @param int $file_id
+     * @param boolean $force_net
      * @return array good storages, sorted by load
      */
-    private function getAllGoodStoragesForMedia($media_id, $force_net = false){
+    private function getAllGoodStoragesForMedia($media_id, $file_id, $force_net = false){
         
         $cache = array();
         
-        $this->initMedia($media_id);
+        $this->initMedia($media_id, $file_id);
         
         if ($this->stb->isModerator()){
-            $good_storages = $this->getAllGoodStoragesForMediaFromNet($this->media_name);
+            $good_storages = $this->getAllGoodStoragesForMediaFromNet($this->media_name, $file_id);
             $good_storages = $this->sortByLoad($good_storages);
             return $good_storages;
         }
@@ -436,7 +441,7 @@ abstract class Master
             $good_storages = $cache;
             $this->from_cache = true;
         }else{
-            $good_storages = $this->getAllGoodStoragesForMediaFromNet($this->media_name);
+            $good_storages = $this->getAllGoodStoragesForMediaFromNet($this->media_name, $file_id);
             $this->from_cache = false;
         }
 
@@ -464,12 +469,13 @@ abstract class Master
      * Get all good for media by id interviewing all good storages
      *
      * @param int $media_id
+     * @param int $file_id
      * @param bool $force_moderator default = false
      * @return array good storages from net
      */
-    public function getAllGoodStoragesForMediaFromNet($media_id, $force_moderator = false){
+    public function getAllGoodStoragesForMediaFromNet($media_id, $file_id, $force_moderator = false){
         
-        $this->initMedia($media_id);
+        $this->initMedia($media_id, $file_id);
         
         $good_storages = array();
         
@@ -490,9 +496,12 @@ abstract class Master
             if (count($raw['files']) > 0){
                 
                 $raw['first_media'] = $raw['files'][0]['name'];
-                
-                $this->saveSeries($raw['series']);
-                
+
+                if (!$file_id){
+                    $this->saveSeries($raw['series']);
+                }
+
+
                 $raw['load'] = $this->getStorageLoad($storage);
 
                 $raw['for_moderator'] = $storage['for_moderator'];
@@ -831,10 +840,10 @@ abstract class Master
     /**
      * Return media path
      *
-     * @param string $file
+     * @param string $file_name
      * @return string
      */
-    protected function getMediaPath($file){
+    protected function getMediaPath($file_name, $file_id){
         return $this->media_name;
     }
     
@@ -842,16 +851,29 @@ abstract class Master
      * Return media params from db
      *
      * @param int $media_id
+     * @param int $file_id
      * @return array
      */
-    protected function getMediaParams($media_id){
+    protected function getMediaParams($media_id, $file_id){
         
         $media_params = $this->db->from($this->db_table)
                                   ->where(array('id' => $media_id))
                                   ->get()
                                   ->first();
-        
-        if (!empty($media_params)){
+
+        $file = Video::getFileById($file_id);
+
+        if (!empty($file)){
+            if (!empty($file['url']) && $file['protocol'] != 'http'){
+                $this->rtsp_url = $file['url'];
+            }
+
+            if (!empty($file['protocol'])){
+                $this->media_protocol = $file['protocol'];
+            }
+
+            $this->is_file = true;
+        }else{
             if (!empty($media_params['rtsp_url'])){
                 $this->rtsp_url = $media_params['rtsp_url'];
             }

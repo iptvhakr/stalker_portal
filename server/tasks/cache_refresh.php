@@ -23,7 +23,7 @@ $not_custom_video = Mysql::getInstance()
 while($video = $not_custom_video->next()){
     //$timer = microtime(1);
     $master = new VideoMaster();
-    $master->getAllGoodStoragesForMediaFromNet($video['id'], true);
+    $master->getAllGoodStoragesForMediaFromNet($video['id'], 0, true);
     unset($master);
     $updated_video++;
     //echo "Updated video ".round(microtime(1) - $timer, 3)."s: ".$video['path']."\n";
@@ -39,7 +39,7 @@ $not_custom_karaoke = Mysql::getInstance()
 while($karaoke = $not_custom_karaoke->next()){
     //$timer = microtime(1);
     $master = new KaraokeMaster();
-    $master->getAllGoodStoragesForMediaFromNet($karaoke['id']);
+    $master->getAllGoodStoragesForMediaFromNet($karaoke['id'], 0);
     unset($master);
     $updated_karaoke++;
     //echo "Updated karaoke: ".round(microtime(1) - $timer, 3)."s: ".$karaoke['id']."\n";

@@ -1,38 +1,40 @@
-<?php
-
-namespace Stalker\Lib\OAuth;
-
-class DeveloperAccessType extends AccessTokenType
-{
-    protected $type = 'Developer';
-    private $api_key;
-
-    protected function parseAuthHeader(){
-        $this->api_key = $this->request->getParam('api_key');
-    }
-
-    public function getToken(){
-        return $this->api_key;
-    }
-
-    public function checkRequest(){
-
-        $session = $this->access_handler->getAccessSessionByDeveloperApiKey($this->api_key);
-
-        if (empty($session)){
-            throw new AuthUnauthorized("Developer api key wrong or expired");
-        }
-
-        if (preg_match("/\/users\/(\d+)/", $this->request->getRequestUri(), $match)){
-            if ($match[1] != $session['uid']){
-                throw new AuthForbidden("Access denied");
-            }
-        }
-
-        return true;
-    }
-
-    public function getSession(){
-        return $this->access_handler->getAccessSessionByDeveloperApiKey($this->api_key);
-    }
-}
+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

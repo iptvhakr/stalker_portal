@@ -51,7 +51,7 @@ $('.filter').removeClass('dropup');
 for (var f = document.forms, i = f.length; i--;)f[i].setAttribute("novalidate", i)
 function LoadSelect2Script(callback) {
     if (!$.fn.select2) {
-        $.getScript('plugins/select2/select2.full.min.js', callback);
+        $.getScript('plugins/select2/select2.full.js', callback);
     }
     else {
         $.fn.select2.defaults.set({dropdownAutoWidth: 'false', width: 'auto'});
@@ -87,7 +87,7 @@ function LoadDataTablesScripts(callback) {
                                 "fnInit": function( oDTSettings ) {
                                     var filterContainer = $(oDTSettings.nTableWrapper).find("#" + oDTSettings.sTableId + '_filter');
                                     if (filterContainer.length) {
-                                        filterContainer.after('<button id="dataTables_ajax_update_button" class="btn" type="button"><i class="fa fa-refresh"></i></button>');
+                                        filterContainer.after('<button id="dataTables_ajax_update_button" class="btn dataTables_ajax_update_button" type="button"><i class="fa fa-refresh"></i></button>');
                                         $(document).on("click", "#dataTables_ajax_update_button", function(){
                                             $("#" + oDTSettings.sTableId).DataTable().ajax.reload();
                                         });
@@ -522,7 +522,7 @@ $(document).ready(function () {
             .on('click', '.collapse-link', function (e) {
                 e.preventDefault();
                 var box = $(this).closest('div.box');
-                var button = $(this).find('i');
+                var button = $(this).find('i.fa-chevron-up i.fa-chevron-down');
                 var content = box.find('div.box-content');
                 content.slideToggle('fast');
                 button.toggleClass('fa-chevron-up').toggleClass('fa-chevron-down');
@@ -1147,6 +1147,28 @@ function ajaxPostSend(url, sendData, alertMsg, consoleMsg, async){
             return el.apply(this, arguments);
         };
     });
+})(jQuery);
+
+(function($) {
+    $.fn.selectRange = function(start, end) {
+        if(end === undefined) {
+            end = start;
+        }
+        return this.each(function() {
+            if('selectionStart' in this) {
+                this.selectionStart = start;
+                this.selectionEnd = end;
+            } else if(this.setSelectionRange) {
+                this.setSelectionRange(start, end);
+            } else if(this.createTextRange) {
+                var range = this.createTextRange();
+                range.collapse(true);
+                range.moveEnd('character', end);
+                range.moveStart('character', start);
+                range.select();
+            }
+        });
+    };
 })(jQuery);
 
 function setDropdownAttribute(sendData){
