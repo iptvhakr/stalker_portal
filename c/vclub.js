@@ -33,6 +33,7 @@
         this.view_menu = {};
         
         this.other_menu = {};
+        this.current_movie = {};
         
         this.row_callback_timer;
         this.row_callback_timeout = 1000;
@@ -629,6 +630,7 @@
 
             if (item.is_movie){
                 this.enable_color_buttons();
+                this.current_movie = item;
             }else{
                 this.disable_color_buttons();
             }
@@ -773,7 +775,7 @@
                 this.info.hide();
             }else{
                 this.on = false;
-                this.info.show(this.data_items[this.cur_row]);
+                this.info.show(this.current_movie);
             }
         };
         
