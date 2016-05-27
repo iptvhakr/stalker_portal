@@ -115,8 +115,8 @@ foreach ($apps as $app){
         continue;
     }
 
-    $app['name'] = isset($app['name']) ? _($app['name']) : '';
-    $app['info'] = isset($app['info']) ? _($app['info']) : '';
+    $app['name'] = !empty($app['name']) ? _($app['name']) : '';
+    $app['description'] = !empty($app['description']) ? _($app['description']) : '';
 
     $user_apps[] = $app;
 }
