@@ -1,0 +1,225 @@
+{
+    "options": {
+        "pluginsPath":"../plugins/",
+        "stalkerApiHost":"http://stage-api.sandbox.lpo.priv",
+        "stalkerAuthHost":"http://stage-api.sandbox.lpo.priv/stalker_portal/auth/token.php",
+        "pingTimeout":50000,
+        "sap":"http://stage-api.sandbox.lpo.priv/stalker_portal/server/api/sap.php"
+    },
+    "themes": {
+        "graphite": "http://192.168.1.103:8030/graphite/"
+    },
+
+    "apps": [
+        {
+            "name": "launcher",
+            "type": "launcher",
+            "version": "0.0.7",
+            "url": "http://192.168.1.103:8030/launcher/",
+            "dependencies": {
+                "ufs-json": "^0.0.1"
+            }
+        },
+        {
+            "type": "system",
+            "name": "player",
+            "url": "http://192.168.1.103:8030/app-player/",
+            "actions": {
+                "play": true
+            }
+        },
+        {
+            "type": "module",
+            "name": "osd-pip",
+            "url": "http://192.168.1.103:8030/osd-pip/",
+            "actions": {
+                "pip": true
+            },
+            "alwaysVisible": true
+        },
+        {
+            "type": "osd",
+            "name": "osd",
+            "url": "http://192.168.1.103:8030/osd/",
+            "actions": {
+                "volume": true
+            },
+            "dependencies": {
+                "ufs": "^0.0.1"
+            },
+            "version": "0.0.2"
+        },
+        {
+            "type": "module",
+            "name": "taskManager",
+            "actions": {
+                "pip-active": true
+            },
+            "url": "http://192.168.1.103:8011/develop.html",
+            "url": "http://192.168.1.103:8030/task.manager/",
+            "version": "0.0.1"
+        },
+        {
+            "type": "osd",
+            "name": "osd-tv",
+            "description": "tv app notification osd",
+            "metrics": {
+                "480": {
+                    "width": "640px",
+                    "height": "40px",
+                    "top": "30px",
+                    "left": "40px"
+                },
+                "576": {
+                    "width": "620px",
+                    "height": "40px",
+                    "top": "50px",
+                    "left": "50px"
+                },
+                "720": {
+                    "width": "1160px",
+                    "height": "60px",
+                    "top": "50px",
+                    "left": "60px"
+                },
+                "1080": {
+                    "width": "1740px",
+                    "height": "90px",
+                    "top": "75px",
+                    "left": "90px"
+                }
+            },
+            "actions": {
+                "osd-tv": true
+            },
+            "version": "0.1.0",
+            "url": "http://192.168.1.103:8030/osd-tv/"
+        },
+        {
+            "type": "app",
+            "category": "media",
+            "backgroundColor": "#3cbb3c",
+            "name": "explorer",
+            "description": "Library of movies for any mood with easy search and sorting by genre that help to find what you need in seconds.",
+            "icons": {
+                "paths": {
+                    "480": "/../img/480/",
+                    "576": "/../img/576/",
+                    "720": "/../img/720/",
+                    "1080": "/../img/1080/"
+                },
+                "states": {
+                    "normal": "normal.png",
+                    "active": "active.png"
+                }
+            },
+            "url": "http://192.168.1.102:8000/develop.html",
+            "dependencies": {
+                "ufs-json": "^0.0.1",
+                "fs": "^0.0.1"
+            },
+            "registerTypes": ["mpg", "mpeg", "mkv", "avi", "3gp", "ts", "tspinf", "m4a", "mp3", "mp4", "ac3", "mov", "vob", "wav", "ape", "mts", "m2t", "m2v", "ogg", "oga", "divx", "aiff", "m2ts", "wv", "m2p", "tp", "flv", "tta", "mod", "tod", "asf", "wma", "wmv", "flac", "ape", "cue", "iso", "aac", "txt", "srt", "sub", "ass", "m4v", "tts"],
+            "mountPath": "/ram/mnt"
+        },
+        {
+            "type": "app",
+            "category": "media",
+            "backgroundColor": "#00bae8",
+            "name": "tv",
+            "description": "Watch TV shows, movies, tv series, news and educational programs in digital quality.",
+            "icons": {
+                "paths": {
+                    "480": "/../img/480/",
+                    "576": "/../img/576/",
+                    "720": "/../img/720/",
+                    "1080": "/../img/1080/"
+                },
+                "states": {
+                    "normal": "normal.png",
+                    "active": "active.png"
+                }
+            },
+            "url": "http://192.168.1.103:8030/tv/"
+        },
+        {
+            "type": "app",
+            "category": "media",
+            "backgroundColor": "#3cbb3c",
+            "name": "video club",
+            "description": "Library of movies for any mood with easy search and sorting by genre that help to find what you need in seconds.",
+            "icons": {
+                "paths": {
+                    "480": "/../img/480/",
+                    "576": "/../img/576/",
+                    "720": "/../img/720/",
+                    "1080": "/../img/1080/"
+                },
+                "states": {
+                    "normal": "normal.png",
+                    "active": "active.png"
+                }
+            },
+            "url": "http://192.168.1.151:8000/develop.html"
+        },
+        {
+            "type": "app",
+            "category": "media",
+            "backgroundColor": "#fc9360",
+            "name": "downloads",
+            "description": "Download the files directly from the Internet network to the connected removable storage.",
+            "icons": {
+                "paths": {
+                    "480": "/../img/480/",
+                    "576": "/../img/576/",
+                    "720": "/../img/720/",
+                    "1080": "/../img/1080/"
+                },
+                "states": {
+                    "normal": "normal.png",
+                    "active": "active.png"
+                }
+            },
+            "url": "http://192.168.1.109:8000/develop.html"
+        },
+        {
+            "type": "app",
+            "category": "media",
+            "backgroundColor": "#dea700",
+            "name": "radio",
+            "description": "Easy and handy way of listening to music, news, talk shows and much more.",
+            "icons": {
+                "paths": {
+                    "480": "/../img/480/",
+                    "576": "/../img/576/",
+                    "720": "/../img/720/",
+                    "1080": "/../img/1080/"
+                },
+                "states": {
+                    "normal": "normal.png",
+                    "active": "active.png"
+                }
+            },
+            "url": "http://192.168.1.103:8030/radio/"
+        },
+        {
+            "type": "app",
+            "category": "media",
+            "backgroundColor": "#ff6650",
+            "name": "karaoke",
+            "description": "Sing your favourite songs with friends or improve your vocal skills.",
+            "icons": {
+                "paths": {
+                    "480": "img/480/",
+                    "576": "img/576/",
+                    "720": "img/720/",
+                    "1080": "img/1080/"
+                },
+                "states": {
+                    "normal": "normal.png",
+                    "active": "active.png"
+                }
+            },
+            "url": "http://192.168.1.103:8030/karaoke/"
+        }
+    ]
+}

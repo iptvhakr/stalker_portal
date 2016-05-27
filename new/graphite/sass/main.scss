@@ -1,0 +1,291 @@
+// ======================================
+// Vars of main theme colors
+// to make new theme you just change them
+// ======================================
+
+$componentBgColor: #283c50;         // all components background color
+$componentBgColor: #384452;         // all components background color
+//$componentBgColor: rgba(33,33,33,0.25);         // all components background color
+$focusItemBackground: #1D54AE;      // focus elements background
+$focusItemBackground: #2c60c6;      // focus elements background
+//$focusItemBackground: rgba(29, 84, 174, 0.85);      // focus elements background
+$focusItemColor: #fff;              // focus elements text color
+$focusItemIconColor: #fff;          // focus element icon color
+
+$overlayOpacity: 0.2;
+$panelOpacity: 0.6;
+$mainPanelOpacity: 0.97;
+
+// color of favorite icon in lists
+.theme-favorite-icon {
+    color: #6b6b6b;
+}
+
+.theme-favorite-icon-active {
+    color: #FEC500;
+}
+
+
+// chocolate theme
+/*$componentBgColor: #3e2723;
+$focusItemBackground: #e7b900;
+$focusItemColor: #3e2723;
+$focusItemIconColor: #3e2723;
+.theme-favorite-icon {
+    color: transparent;
+}
+.theme-favorite-icon-active {
+    color: #ffffff;
+}*/
+
+.osdPanel {
+    background-color: $componentBgColor;
+    color: #fff;
+}
+.osdFocusItem {
+    background-color: $focusItemBackground;
+}
+
+.bgDarken {
+    background-color: darken($componentBgColor, 5)!important;
+}
+
+$titleDiveder: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAACCAYAAABhYU3QAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABpJREFUeNpiZGBg8GUgAjD+//9fjRiFAAEGAJJMA3OVnUxoAAAAAElFTkSuQmCC';
+
+// all apps background img
+body {
+    background : url(#{$imgPath}/bg.jpg) no-repeat;
+}
+// data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAACCAYAAABhYU3QAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABpJREFUeNpiZGBg8GUgAjD+//9fjRiFAAEGAJJMA3OVnUxoAAAAAElFTkSuQmCC
+
+
+
+
+@font-face {
+    font-family : 'icons';
+    src         : url('icons.ttf');
+    font-weight : normal;
+    font-style  : normal;
+}
+
+.icon {
+    font-family: icons;
+
+    &.menu:before { content:'Q'; }
+    &.info:before { content:'P'; }
+    &.f1, &.f2, &.f3, &.f4 {
+        width: $fWidth;
+        height: $fHeight;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+    &.f1 { background-image:url($imgPath + '/f1.png'); }
+    &.f2 { background-image:url($imgPath + '/f2.png'); }
+    &.f3 { background-image:url($imgPath + '/f3.png'); }
+    &.f4 { background-image:url($imgPath + '/f4.png'); }
+
+}
+
+
+
+.component.button {
+    background : darken($focusItemBackground, 10);
+    color      : #ffffff;
+    &.focus {
+        background : $focusItemBackground;
+        color: $focusItemColor;
+    }
+}
+
+.component.list {
+    background : transparent;
+    .item {
+        background : transparent;
+        padding    : 0;
+        &.focus {
+            background : transparent;
+            color      : $focusItemColor;
+            .input .placeholder, .input .char {
+                color :$focusItemColor;
+            }
+        }
+    }
+    .item.focus {
+        background : $focusItemBackground;
+    }
+}
+
+.component.scrollBar {
+    background : transparent;
+    .thumb {
+        background : #A1A1A1;
+    }
+}
+
+/*.component.panelEx, comment.list {
+    background: $componentBgColor;
+}*/
+
+.component.panelEx {
+    /*border-top: 1px solid #313131;
+    border-bottom: 1px solid #313131;*/
+    background: rgba($componentBgColor, $panelOpacity);
+    .list .item.focus {
+        background: rgba($focusItemBackground, $panelOpacity);
+    }
+    &.active {
+        background: rgba($componentBgColor, $mainPanelOpacity);
+        .list .item.focus {
+            background: rgba($focusItemBackground, 1);
+        }
+    }
+    .component.layoutList > .body > .item, .component.layoutList > .body > .item .component.input {
+        font-size : $panelFontSize;
+
+    }
+    .component.layoutList .icon {
+        font-size: $panelIconSize!important;
+    }
+    > .title {
+        font-size:$panelTitleSize;
+        background:url($titleDiveder) bottom;
+        background-repeat:repeat-x;
+    }
+    &.main {
+        .component.layoutList > .body > .item {
+            font-size : $mainPanelFontSize;
+        }
+        > .title {
+            font-size : $mainPanelTitleSize;
+        }
+        .component.button.bottom {  // for item info page
+            width:100%;
+            position:absolute;
+            bottom:0;
+            background-color:transparent;
+            background-image:url($titleDiveder);
+            background-repeat:repeat-x;
+
+            &.focus { background: $focusItemBackground; }
+        }
+    }
+    &.left.expand > .title,  &.right.expand > .title{
+        background:url($titleDiveder) bottom;
+        background-repeat:repeat-x;
+    }
+}
+
+.component.panelEx {
+    >.shadow.left {
+        background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAHACAQAAAAIWIALAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAFhSURBVHja7dxBeoIwFEXhQxLAqPvfZydttUA6IEHUfq2Tzg5v4CC/lxsW8DqgqxOJ9IyMHMgcOZLJjAwc+Uy0pyMQKx7InDlx5kRm5MTHHq44EOnp6Rlq9oET4QbZCiQSPT0jmcyRzPkGW89AJBBJDLXt2rTsE9nhWAuMjIxk5nCXB6FOK5BIDAwM4SGR7UotN60T6uH93anZkdh+7xP337T1rfMzfL4gv8Gy1eA3uL6ev+HDIxQKhUKhUCgUCoVCoVAoFAqFQqFQKBQKhUKhUCgUCoVCoVAoFAqFQqFQKBQKhUKhUCgUCoVCoVAoFAr/ARYWymuJHeuakfLaqwuFhSXs44FC147uJzz9u83CzMTMzML8CIEtY2Zm4qtNeEhaKp5r4sTEhQuX9FT9lnblyoUeSHxGqItk2rqbsC2SiSRCPd/gum+lrZBZ19PEuiWmEHi/wbagZuVdLTHxxZUrb9+Ij19Z7AmH/QAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxNi0wMS0yNVQwOToxMDozNSswMDowMOujNaoAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTYtMDEtMjVUMDk6MTA6MzUrMDA6MDCa/o0WAAAAAElFTkSuQmCC');
+        background-size: auto 100%;
+    }
+    >.shadow.right {
+        background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAHACAQAAAAIWIALAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAFxSURBVHja7dxBkpswFEXRK1k4LneG2WG2n6kBC4EysAxqO5V0ZXz5RRWDo6fHBn7gJ1duZGYmxvbO3LmzsLJSH5P4wZULmYkbiUhlZaVwYqOyUQEgceWDjQQU7pwZGMhEIgEIhAdNfOeDjROVQiYzkEicCA3tiReuFAIrmW8MJE4tLxCIT5q4cCGzkTnvaU/WPZGh9TqTdhYJO24HImnPSUQi7Ax4NoTYzXH+gfqrwzuMn7sdiX3tPu8NHuSP4BX2iV+AX04UCoVCoVAoFAqFQqFQKBQKhUKhUCgUCoVCoVAoFAqFQqFQKBQKhUKhUCgUCoVCoVAoFAqFQqFQKBQKhf8N67HN5B3WndS/Jz43wfwTbm0qtft+3NKVimysbWq/kKbdEI7EpU1h6ZIr9XX5S+ZOZmFhpezZ9SWZxEzat+FkCqWD3ZOYiEzMzMxkFgorhdJotxtnJDCSmfcKS5fZ7cb5xchIZmLkxo2p/drRFYDf9OW2uhEh76gAAAAldEVYdGRhdGU6Y3JlYXRlADIwMTYtMDEtMjVUMDk6MTA6NDkrMDA6MDAmxlbHAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE2LTAxLTI1VDA5OjEwOjQ5KzAwOjAwV5vuewAAAABJRU5ErkJggg==');
+        background-size: auto 100%;
+    }
+    >.overlay {
+        background: rgba(black, $overlayOpacity);
+    }
+
+}
+
+@-webkit-keyframes inputCursor {
+    from {
+        background-color: $focusItemColor;
+    }
+    to {
+        background-color: transparent;
+    }
+}
+
+.component.input {
+    background: transparent;
+    border: none;
+    outline: none;
+    >.placeholder {
+        color: #ffffff;
+    }
+    &.focus {
+        color: $focusItemColor;
+        .char {
+            color: $focusItemColor;
+        }
+        .line {
+            > .caret {
+                background-color:                  $focusItemColor;
+                -webkit-animation:                 inputCursor 1s;
+                -webkit-animation-iteration-count: infinite;
+            }
+
+        }
+    }
+}
+
+.component.layoutList .item .layout{
+    >.input {
+        display: inline-block;
+        color: #ffffff;
+    }
+}
+
+.component.modalMessage {
+    & > div.alignBox > div {
+        background: $componentBgColor;
+        & > div.header {
+            background:url($titleDiveder) bottom;
+            background-repeat:repeat-x;
+            text-transform:uppercase;
+            .icon { font-size: $iconsSize; }
+        }
+        & > div.body > .component.list .item {
+            .component.checkBox, .component.layout > div.icon { font-size: $iconsSize; }
+        }
+        & > div.overlay {
+            background:rgba(9, 9, 9, 0.6);
+        }
+    }
+    & > .title {
+        background:url($titleDiveder) bottom;
+        background-repeat:repeat-x;
+    }
+    .wrapper { background: $componentBgColor; }
+}
+
+.component.footer {
+    .icon { font-size:$iconsSize; }
+    .iconImg {
+        background-repeat:no-repeat;
+        background-position:center;
+
+        &.f1 { background-image:url($imgPath + '/f1.png'); }
+        &.f2 { background-image:url($imgPath + '/f2.png'); }
+        &.f3 { background-image:url($imgPath + '/f3.png'); }
+        &.f4 { background-image:url($imgPath + '/f4.png'); }
+    }
+    .central .wrapper > div {
+        &.button {
+            border-right:1px solid rgba(255, 255, 255, 0.7);
+            border-left:1px solid rgba(255, 255, 255, 6);
+            //background-color:rgba(9, 9, 9, 0.6);
+            &:last-of-type {
+                border-right: none;
+            }
+            &:first-of-type {
+                border-left: none;
+            }
+        }
+        &.right {
+            margin-left:-1px;
+            width:1px;
+            background-color:rgba(0, 0, 0, 0.6);
+            display:inline-block;
+            height:inherit;
+        }
+    }
+}
+
+// special classes
+.infoText {
+    font-size: $infoTextFontSize;
+}

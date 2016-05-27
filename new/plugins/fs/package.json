@@ -1,0 +1,15 @@
+{
+    "name": "magsdk-plugin-fs",
+    "version": "0.0.1",
+    "description": "",
+    "author": "",
+    "main": "index.js",
+    "repository": {},
+    "config": {
+        "name": "fs",
+        "type": "plugin"
+    },
+    "devDependencies": {
+        "spa-eslint-config": "https://github.com/spasdk/eslint-config"
+    }
+}

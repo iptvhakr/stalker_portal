@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Loader</title>
+</head>
+<body>
+<script !src="">
+	(function () {
+		var href = window.location.href.split('?');
+		while ( href[0].lastIndexOf('/') === href[0].length - 1 ) {
+			href[0] = href[0].substr(0, href[0].length - 1)
+		}
+		href = [href[0]];
+		href.push('core');
+		href = href.join('/');
+		if ( window.location.search ) {
+			href += '/index.html' + window.location.search;
+		} else {
+			href += '/index.html';
+		}
+		window.location.href = href;
+	})();
+</script>
+</body>
+</html>

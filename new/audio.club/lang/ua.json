@@ -1,0 +1,45 @@
+{
+	"meta": {
+		"charset": "utf-8",
+		"project": "stb-app 0.0.1",
+		"language": "ua",
+		"plural": ""
+	},
+	"data": {
+		"": {
+			"Actions": "Дії",
+			"Add to playlist": "Додати у плейліст",
+			"Albums": "Альбоми",
+			"All genres": "Всі жанри",
+			"All years": "Всі жанри",
+			"Artist:": "Виконавець:",
+			"Artists": "Виконавці",
+			"By date": "По даті",
+			"By name": "По назві",
+			"Cancel": "Скасувати",
+			"Categories": "Категорії",
+			"Create": "створити",
+			"Create playlist": "Створити плейліст",
+			"Delete": "Видалити",
+			"Exit": "Вихід",
+			"Genres": "Жанри",
+			"Genres:": "Жанри",
+			"Info": "Інформація",
+			"Menu": "Меню",
+			"No albums": "Не має альбомів",
+			"No artists": "Не має виконавцев",
+			"No playlists": "Не має плейлистів",
+			"No tracks": "Не має треків",
+			"Play": "Перегляд",
+			"Playlists": "Перегляд",
+			"Remove from playlist": "Видалити з плейліста",
+			"Search": "Пошук",
+			"Sort": "Сортування",
+			"Tracks": "Треки",
+			"Year:": "Рік:",
+			"Years": "Рік:",
+			"create playlist": "створити плейліст",
+			"name": "По назві"
+		}
+	}
+}

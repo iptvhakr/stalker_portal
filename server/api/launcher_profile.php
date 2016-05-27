@@ -10,7 +10,7 @@ if (empty($_GET['uid'])){
 use Stalker\Lib\Core\Config;
 use Stalker\Lib\Core\Stb;
 
-$file = file_get_contents('../../new/launcher/config.json');
+$file = file_get_contents('../../new/core/config.json');
 
 $profile = json_decode($file, true);
 
@@ -78,7 +78,15 @@ $profile['options']['sap'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HT
 $profile['options']['pingTimeout'] = Config::getSafe('watchdog_timeout', 120) * 1000;
 
 $available_modules = array_diff($all_modules, $disabled_modules);
-$available_modules[] = 'personalization';
+$available_modules[] = 'tuning';
+$available_modules[] = 'launcher';
+$available_modules[] = 'osd';
+$available_modules[] = 'osd-tv';
+$available_modules[] = 'osd-pip';
+$available_modules[] = 'player';
+$available_modules[] = 'taskManager';
+$available_modules[] = 'sap-loader';
+$available_modules[] = 'sap-loader';
 
 $module_to_app_map = array(
     'vclub'         => 'video club',
@@ -115,11 +123,8 @@ foreach ($apps as $app){
 
 foreach ($installed_apps as $app) {
     $user_apps[] = array(
-        'icon'  => $app['app_url'].'/img/{0}/'.$app['icons'].'/2015.png',
-        'focusIcon'  => $app['app_url'].'/img/{0}/'.$app['icons'].'/2015.focus.png',
-
         'type'     => 'app',
-        'category' => 'media',
+        'category' => 'apps',
         'backgroundColor' => $app['icon_color'],
         'name'     => $app['alias'],
         'description'  => $app['description'],
@@ -135,8 +140,8 @@ foreach ($installed_apps as $app) {
                 'active' => $app['icons'].'/2015.focus.png',
             )
         ),
-        'url' => $app['app_url']
-
+        'url' => $app['app_url'].'/',
+        'legacy' => true
     );
 }
 

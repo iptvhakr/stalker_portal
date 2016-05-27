@@ -1,0 +1,18 @@
+$imgPath: './img/1080';
+
+$panelTitleSize: 28px;
+$panelFontSize: 23px;
+$mainPanelFontSize: 28px;
+$mainPanelTitleSize: 26px;
+$infoTextFontSize: 22px;
+$iconsSize: 30px;
+$panelIconSize: 32px;
+$fWidth: 38px;
+$fHeight: 23px;
+$panelX2Width: 800px;
+.panelEx.main.size2 {
+    width: 1260px!important;
+}
+.component.clock {
+    z-index: 8;
+}

@@ -1,0 +1,45 @@
+{
+	"meta": {
+		"charset": "utf-8",
+		"project": "stb-app 0.0.1",
+		"language": "ru",
+		"plural": "(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)"
+	},
+	"data": {
+		"": {
+			"Actions": "Действия",
+			"Add to playlist": "Добавить в плейлист",
+			"Albums": "Альбомы",
+			"All genres": "Все жанры",
+			"All years": "Все жанры",
+			"Artist:": "Исполнитель:",
+			"Artists": "Исполнители",
+			"By date": "По дате",
+			"By name": "По названию",
+			"Cancel": "Отмена",
+			"Categories": "Категории",
+			"Create": "Создать",
+			"Create playlist": "Создать плейлист",
+			"Delete": "Удалить",
+			"Exit": "Выход",
+			"Genres": "Жанры",
+			"Genres:": "Жанры",
+			"Info": "Информация",
+			"Menu": "Меню",
+			"No albums": "Нет альбомов",
+			"No artists": "Нет исполнителей",
+			"No playlists": "Нет плейлистов",
+			"No tracks": "Нет треков",
+			"Play": "Просмотр",
+			"Playlists": "Просмотр",
+			"Remove from playlist": "Удалить из плейлиста",
+			"Search": "Поиск",
+			"Sort": "Сортировка",
+			"Tracks": "Треки",
+			"Year:": "Год:",
+			"Years": "Год:",
+			"create playlist": "Создать плейлист",
+			"name": "По названию"
+		}
+	}
+}

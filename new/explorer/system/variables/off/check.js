@@ -1,1 +1,0 @@
-function checkEnvVars(){return!1}

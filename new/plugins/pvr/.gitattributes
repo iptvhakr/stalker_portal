@@ -1,0 +1,12 @@
+# detect all text files and automatically normalize them (convert CRLF to LF)
+* text=auto
+
+# definitively text files
+*.js   text
+*.json text
+*.html text
+*.jade text
+*.less text
+*.css  text
+*.txt  text
+*.md   text
