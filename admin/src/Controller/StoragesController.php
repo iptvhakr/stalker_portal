@@ -44,12 +44,6 @@ class StoragesController extends \Controller\BaseStalkerController {
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
         
-        $list = $this->storages_list_json();
-        
-        $this->app['allData'] = $list['data'];
-        $this->app['totalRecords'] = $list['recordsTotal'];
-        $this->app['recordsFiltered'] = $list['recordsFiltered'];
-
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
     
@@ -79,12 +73,6 @@ class StoragesController extends \Controller\BaseStalkerController {
             return $val;
         }, $this->allServerStatus);
         
-        $list = $this->storages_video_search_json();
-        
-        $this->app['allData'] = $list['data'];
-        $this->app['totalRecords'] = $list['recordsTotal'];
-        $this->app['recordsFiltered'] = $list['recordsFiltered'];
-
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
         
     }
@@ -97,12 +85,6 @@ class StoragesController extends \Controller\BaseStalkerController {
         $attribute = $this->getLogsDropdownAttribute();
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
-
-        $list = $this->storages_logs_json();
-        
-        $this->app['allData'] = $list['data'];
-        $this->app['totalRecords'] = $list['recordsTotal'];
-        $this->app['recordsFiltered'] = $list['recordsFiltered'];
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }

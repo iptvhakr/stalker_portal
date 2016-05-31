@@ -92,168 +92,175 @@ class IndexController extends \Controller\BaseStalkerController {
     }
 
     public function index_datatable1_list_json(){
-        $data = array(
-            'data' => array(),
-            'recordsTotal' => 0,
-            'recordsFiltered' => 0
-        );
         if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
                 return $no_auth;
             }
         }
-
-        $data['action'] = 'datatableReload';
-        $data['datatableID'] = 'datatable-1';
-        $data['json_action_alias'] = 'index-datatable1-list-json';
+        $data = array(
+            'data' => array(),
+            'action' => 'datatableReload',
+            'datatableID' => 'datatable-1',
+            'json_action_alias' => 'index-datatable1-list-json'
+        );
         $error = $this->setLocalization('Failed');
-
-        $data['data'] = array();
         $row = array('category'=>'', 'number' => '');
 
-        $row['category'] = $this->setLocalization('Users online');
-        $row['number'] = '<span class="txt-success">' . $this->db->get_users('online') . '</sapn>';
-        $data['data'][] = $row;
-
-        $row['category'] = $this->setLocalization('Users offline');
-        $row['number'] = '<span class="txt-danger">' . $this->db->get_users('offline') . '</sapn>';
-        $data['data'][] = $row;
-
-        $row['category'] = $this->setLocalization('TV channels');
-        $row['number'] = $this->db->getCountForStatistics('itv', array('status' => 1));
-        $data['data'][] = $row;
-
-        $row['category'] = $this->setLocalization('Films, serials');
-        $row['number'] = $this->db->getCountForStatistics('video', array('status' => 1, 'accessed' => 1));
-        $data['data'][] = $row;
-
-        $row['category'] = $this->setLocalization('Audio albums');
-        $row['number'] = $this->db->getCountForStatistics('audio_albums', array('status' => 1));
-        $data['data'][] = $row;
-
-        $row['category'] = $this->setLocalization('Karaoke songs');
-        $row['number'] = $this->db->getCountForStatistics('karaoke', array('status' => 1));
-        $data['data'][] = $row;
-
-        $row['category'] = $this->setLocalization('Installed applications');
-        $row['number'] = 0;
-        $data['data'][] = $row;
-
-        $data["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         if ($this->isAjax) {
+
+            $row['category'] = $this->setLocalization('Users online');
+            $row['number'] = '<span class="txt-success">' . $this->db->get_users('online') . '</sapn>';
+            $data['data'][] = $row;
+
+            $row['category'] = $this->setLocalization('Users offline');
+            $row['number'] = '<span class="txt-danger">' . $this->db->get_users('offline') . '</sapn>';
+            $data['data'][] = $row;
+
+            $row['category'] = $this->setLocalization('TV channels');
+            $row['number'] = $this->db->getCountForStatistics('itv', array('status' => 1));
+            $data['data'][] = $row;
+
+            $row['category'] = $this->setLocalization('Films, serials');
+            $row['number'] = $this->db->getCountForStatistics('video', array('status' => 1, 'accessed' => 1));
+            $data['data'][] = $row;
+
+            $row['category'] = $this->setLocalization('Audio albums');
+            $row['number'] = $this->db->getCountForStatistics('audio_albums', array('status' => 1));
+            $data['data'][] = $row;
+
+            $row['category'] = $this->setLocalization('Karaoke songs');
+            $row['number'] = $this->db->getCountForStatistics('karaoke', array('status' => 1));
+            $data['data'][] = $row;
+
+            $row['category'] = $this->setLocalization('Installed applications');
+            $row['number'] = 0;
+            $data['data'][] = $row;
+
+            $data["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
+
             $error = '';
             $data = $this->generateAjaxResponse($data);
             return new Response(json_encode($data), (empty($error) ? 200 : 500));
         } else {
+            $data['data'][] = $row;
             return $data;
         }
     }
 
     public function index_datatable2_list_json(){
-        $data = array(
-            'data' => array(),
-            'recordsTotal' => 0,
-            'recordsFiltered' => 0
-        );
         if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
                 return $no_auth;
             }
         }
 
-        $data['action'] = 'datatableReload';
-        $data['datatableID'] = 'datatable-2';
-        $data['json_action_alias'] = 'index-datatable2-list-json';
+        $data = array(
+            'action' => 'datatableReload',
+            'datatableID' => 'datatable-2',
+            'json_action_alias' => 'index-datatable2-list-json'
+        );
+
         $error = $this->setLocalization('Failed');
 
-        $data['data'] = array();
 
         $storages = $this->db->getStorages();
 
-        foreach($storages as $storage){
-            $row = array('storage'=> $storage['storage_name'], 'video' => '-', 'tv_archive' => '-', 'timeshift'=>'-', 'loading' => 0);
-            $records = $this->db->getStoragesRecords($row['storage']);
-            $total_storage_loading = $this->db->getStoragesRecords($row['storage'], TRUE);
-            $row['loading'] = (int) $storage['max_online'] ? round(($total_storage_loading*100)/$storage['max_online'], 2) . "%": '-';
-            foreach ($records as $record) {
-                if ($record['now_playing_type'] == 2) {
-                    $row['video'] = $record['count'];
-                } elseif ($record['now_playing_type'] == 11) {
-                    $row['tv_archive'] = $record['count'];
-                } elseif ($record['now_playing_type'] == 14) {
-                    $row['timeshift'] = $record['count'];
-                }
-            }
-            $data['data'][] = $row;
+        if (count($storages)) {
+            $data['data'] = array();
         }
-
         $data["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
+        $row_tmp = array(
+            'storage' => '',
+            'video' => '-',
+            'tv_archive' => '-',
+            'timeshift' => '-',
+            'loading' => 0
+        );
         if ($this->isAjax) {
+            foreach ($storages as $storage) {
+                $row = $row_tmp;
+                $row['storage'] = $storage['storage_name'];
+                $records = $this->db->getStoragesRecords($row['storage']);
+                $total_storage_loading = $this->db->getStoragesRecords($row['storage'], TRUE);
+                $row['loading'] = (int)$storage['max_online'] ? round(($total_storage_loading * 100) / $storage['max_online'], 2) . "%" : '-';
+                foreach ($records as $record) {
+                    if ($record['now_playing_type'] == 2) {
+                        $row['video'] = $record['count'];
+                    } elseif ($record['now_playing_type'] == 11) {
+                        $row['tv_archive'] = $record['count'];
+                    } elseif ($record['now_playing_type'] == 14) {
+                        $row['timeshift'] = $record['count'];
+                    }
+                }
+                $data['data'][] = $row;
+            }
             $error = '';
             $data = $this->generateAjaxResponse($data);
             return new Response(json_encode($data), (empty($error) ? 200 : 500));
         } else {
+            if (array_key_exists('data', $data)) {
+                $data['data'][] = $row_tmp;
+            }
             return $data;
         }
     }
 
     public function index_datatable3_list_json(){
-        $data = array(
-            'data' => array(),
-            'recordsTotal' => 0,
-            'recordsFiltered' => 0
-        );
         if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
                 return $no_auth;
             }
         }
 
-        $data['action'] = 'datatableReload';
-        $data['datatableID'] = 'datatable-3';
-        $data['json_action_alias'] = 'index-datatable3-list-json';
+        $data = array(
+            'action' => 'datatableReload',
+            'datatableID' => 'datatable-3',
+            'json_action_alias' => 'index-datatable3-list-json'
+        );
+
         $error = $this->setLocalization('Failed');
 
-        $data['data'] = array();
-
         $streaming_servers = $this->db->getStreamServer();
-
-        foreach($streaming_servers as $server){
-            $user_sessions = $this->db->getStreamServerStatus($server['id'], TRUE);
-            $row = array(
-                'server'=> $server['name'],
-                'sessions' => $user_sessions,
-                'loading' => ((int) $server['max_sessions'] > 0 ? round(($user_sessions * 100)/$server['max_sessions'], 2)."%" : "&infin;")
-            );
-            $data['data'][] = $row;
+        if (count($streaming_servers)) {
+            $data['data'] = array();
         }
 
         $data["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         if ($this->isAjax) {
+            foreach($streaming_servers as $server){
+                $user_sessions = $this->db->getStreamServerStatus($server['id'], TRUE);
+                $row = array(
+                    'server'=> $server['name'],
+                    'sessions' => $user_sessions,
+                    'loading' => ((int) $server['max_sessions'] > 0 ? round(($user_sessions * 100)/$server['max_sessions'], 2)."%" : "&infin;")
+                );
+                $data['data'][] = $row;
+            }
             $error = '';
             $data = $this->generateAjaxResponse($data);
             return new Response(json_encode($data), (empty($error) ? 200 : 500));
         } else {
+            if (array_key_exists('data', $data)) {
+                $data['data'][] = array('server'=> '', 'sessions' => '', 'loading' => '');
+            }
             return $data;
         }
     }
 
     public function index_datatable4_list_json(){
 
-        $data = array(
-            'data' => array(),
-            'recordsTotal' => 0,
-            'recordsFiltered' => 0
-        );
         if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
                 return $no_auth;
             }
         }
 
-        $data['action'] = 'datatableReload';
-        $data['datatableID'] = 'datatable-4';
-        $data['json_action_alias'] = 'index-datatable4-list-json';
+        $data = array(
+            'data' => array(),
+            'action' => 'datatableReload',
+            'datatableID' => 'datatable-4',
+            'json_action_alias' => 'index-datatable4-list-json'
+        );
         $error = $this->setLocalization('Failed');
 
         $data['data'] = array();
@@ -287,20 +294,18 @@ class IndexController extends \Controller\BaseStalkerController {
 
     public function index_datatable5_list_json(){
 
-        $data = array(
-            'data' => array(),
-            'recordsTotal' => 0,
-            'recordsFiltered' => 0
-        );
         if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
                 return $no_auth;
             }
         }
 
-        $data['action'] = 'datatableReload';
-        $data['datatableID'] = 'datatable-5';
-        $data['json_action_alias'] = 'index-datatable5-list-json';
+        $data = array(
+            'data' => array(),
+            'action' => 'datatableReload',
+            'datatableID' => 'datatable-5',
+            'json_action_alias' => 'index-datatable5-list-json'
+        );
         $error = $this->setLocalization('Failed');
 
         $data['data'] = $this->db->getUsersActivity();

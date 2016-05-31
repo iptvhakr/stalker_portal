@@ -154,7 +154,6 @@
                 "ajax": {
                     "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/humor-list-json"
                 },
-                "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
@@ -170,7 +169,6 @@
                     {"sortable": false, "targets": [-1]}
                 ]
             }).prev('.dataTables_processing').hide('');
-            $('#datatable-1').DataTable().ajax.reload();
         }
 
         function yelp() {

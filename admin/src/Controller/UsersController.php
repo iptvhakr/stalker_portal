@@ -13,7 +13,6 @@ use Stalker\Lib\Core\Stb;
 
 class UsersController extends \Controller\BaseStalkerController {
 
-    protected $allStatus = array();
     protected $mediaTypeName = array(
         0 => '--',
         1 => 'TV',
@@ -59,10 +58,6 @@ class UsersController extends \Controller\BaseStalkerController {
         parent::__construct($app, __CLASS__);
         $this->watchdog = Config::get('watchdog_timeout') * 2;
         $this->userFields[] = "((UNIX_TIMESTAMP() - UNIX_TIMESTAMP(`keep_alive`)) <= $this->watchdog) as `state`";
-        $this->allStatus = array(
-            array('id' => 1, 'title' => $this->setLocalization('on')),
-            array('id' => 2, 'title' => $this->setLocalization('off'))
-        );
 
         $this->formEvent = array(
             array("id" => "send_msg",           "title" => $this->setLocalization('Sending a message') ),
@@ -210,13 +205,11 @@ class UsersController extends \Controller\BaseStalkerController {
             $this->app['filters_template'] = array_combine($this->getFieldFromArray($filters_template, 'text_id'), array_values($filters_template));
         }
 
-        $users = $this->users_list_json();
-
-        $this->app['allUsers'] = $users['data'];
-        $this->app['allStatus'] = $this->allStatus;
+        $this->app['allStatus'] = array(
+            array('id' => 1, 'title' => $this->setLocalization('on')),
+            array('id' => 2, 'title' => $this->setLocalization('off'))
+        );
         $this->app['allState'] = $this->allState;
-        $this->app['totalRecords'] = $users['recordsTotal'];
-        $this->app['recordsFiltered'] = $users['recordsFiltered'];
         $this->app['consoleGroup'] = $this->db->getConsoleGroup(array('select' => $this->getUsersGroupsConsolesListFields()));
 
         $attribute = $this->getUsersListDropdownAttribute();
@@ -235,8 +228,9 @@ class UsersController extends \Controller\BaseStalkerController {
         }
 
         $reseller_info = $this->db->getReseller(array('where'=>array('id' => $this->app['reseller'])));
+        $reseller_users = $this->db->getTotalRowsUresList();
         if (!empty($reseller_info[0]['max_users'])) {
-            $this->app['resellerUserLimit'] = ((int)$reseller_info[0]['max_users'] - (int)$users['recordsTotal']) > 0;
+            $this->app['resellerUserLimit'] = ((int)$reseller_info[0]['max_users'] - (int)$reseller_users) > 0;
         } else {
             $this->app['resellerUserLimit'] = TRUE;
         }
@@ -260,11 +254,6 @@ class UsersController extends \Controller\BaseStalkerController {
             $this->app['allResellers'] = array_merge($resellers, $this->db->getAllFromTable('reseller'));
         }
 
-        $list = $this->users_consoles_groups_list_json();
-        $this->app['ads'] = $list['data'];
-        $this->app['recordsFiltered'] = $list['recordsFiltered'];
-        $this->app['totalRecords'] = $list['recordsTotal'];
-
         $attribute = $this->getUsersConsolesGroupsDropdownAttribute();
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
@@ -277,8 +266,6 @@ class UsersController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
 
-        $list = $this->users_consoles_logs_json();
-        
         if (!empty($this->data['id']) || !empty($this->data['mac'])) {
             $this->app['user'] = $this->db->getUsersList(array(
                 'select' => array(
@@ -289,10 +276,7 @@ class UsersController extends \Controller\BaseStalkerController {
                 'where' => !empty($this->data['id']) ? array('`users`.id' => $this->data['id']): array('`users`.mac' => $this->data['mac'])
             ));
         }
-        
-        $this->app['logList'] = $list['data'];
-        $this->app['totalRecords'] = $list['recordsTotal'];
-        $this->app['recordsFiltered'] = $list['recordsFiltered'];
+
         $user_name = '';
 
         $attribute = $this->getUsersConsolesLogsDropdownAttribute();
@@ -318,10 +302,6 @@ class UsersController extends \Controller\BaseStalkerController {
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
 
-        $list = $this->users_consoles_report_json();
-        $this->app['consoleReport'] = $list['data'];
-        $this->app['totalRecords'] = $list['recordsTotal'];
-        $this->app['recordsFiltered'] = $list['recordsFiltered'];
         $this->app['now_time'] = strftime('%d.%m.%Y')  . " " . strftime('%T');
         $this->app['breadcrumbs']->addItem($this->setLocalization("STB statuses report") . " " . $this->app['now_time']);
     
@@ -451,9 +431,6 @@ class UsersController extends \Controller\BaseStalkerController {
         $tmp = $this->db->getConsoleGroup(array('select' => $this->getUsersGroupsConsolesListFields(), 'where' => array('Sg.id' => $id)));
         $this->app['consoleGroup'] = $tmp[0];
         $this->app['groupid'] = $id;
-        $list = $this->users_groups_consoles_list_json();
-        $this->app['consoleGroupList'] = $list['data'];
-        $this->app['totalRecords'] = $list['recordsTotal'];
 
         $attribute = $this->getUsersGroupsConsolesListDropdownAttribute();
         $this->checkDropdownAttribute($attribute);
@@ -474,11 +451,6 @@ class UsersController extends \Controller\BaseStalkerController {
         $this->app['dropdownAttribute'] = $attribute;
 
         $this->app['allAdmins'] = $this->db->getAllFromTable('administrators', 'login');
-
-        $list = $this->users_filter_list_json();
-        $this->app['allData'] = $list['data'];
-        $this->app['totalRecords'] = $list['recordsTotal'];
-        $this->app['recordsFiltered'] = $list['recordsFiltered'];
 
         if (!empty($this->data['filters'])) {
             $this->app['filters'] = $this->data['filters'];

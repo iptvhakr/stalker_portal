@@ -13,7 +13,6 @@
                     {{ main_macro.get_filter('state', 'Status'|trans, 'id', 'title', app['taskState'], 2) }}
                     {{ main_macro.get_filter('video_quality', 'Quality'|trans, 'id', 'title', app['videoQuality'], 2, 6) }}
                     {{ main_macro.get_filter('to_user', 'Assignee'|trans, 'id', 'login', app['taskAdmin'], 2) }}
-                    {#{{ main_macro.get_datepicker_double_input() }}#}
             </div>
         </div>
 
@@ -110,7 +109,6 @@
                         });
                     }
                 },
-                "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
@@ -125,7 +123,6 @@
                     {"sortable": false, "targets": [1]}
                 ]
             }).prev('.dataTables_processing').hide('');
-            $('#datatable-1').DataTable().ajax.reload();
         }
 
         function yelp() {

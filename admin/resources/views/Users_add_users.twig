@@ -415,6 +415,8 @@
     </div>
     <script type="text/javascript" defer>
 
+        var select2Opt = {minimumResultsForSearch: -1, dropdownAutoWidth: false, width: '100%'};
+
         var conf = {
             form: '#form_',
             lang : '{{ app.language }}',
@@ -432,18 +434,14 @@
         };
 
         function DemoSelect2() {
-            $.getScript("{{ app.request.baseUrl }}/plugins/select2/i18n/{% if app["language"] %}{{ app["language"] }}{% else %}en{% endif %}.js", function() {
-                $.fn.select2.defaults.set('dropdownAutoWidth', 'false');
-                $.fn.select2.defaults.set('width', '100%');
-                $('#form_group_id').select2({minimumResultsForSearch: -1});
-                $('#form_tariff_plan_id').select2({minimumResultsForSearch: -1});
-                $('#form_additional_services_on').select2({minimumResultsForSearch: -1});
-                $('#form_status').select2({minimumResultsForSearch: -1});
-                $('#form_theme').select2({minimumResultsForSearch: -1});
-                {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
-                $('#form_reseller_id').select2({minimumResultsForSearch: -1});
-                {% endif %}
-            });
+            $('#form_group_id').select2(select2Opt);
+            $('#form_tariff_plan_id').select2(select2Opt);
+            $('#form_additional_services_on').select2(select2Opt);
+            $('#form_status').select2(select2Opt);
+            $('#form_theme').select2(select2Opt);
+            {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
+            $('#form_reseller_id').select2(select2Opt);
+            {% endif %}
         }
 
         function yelp() {

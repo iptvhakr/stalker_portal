@@ -1020,6 +1020,8 @@
     <script type="text/javascript" src="./plugins/scrollTo/jquery.scrollTo.min.js" defer=""></script>
     <script type="text/javascript">
 
+        var select2Opt = {minimumResultsForSearch: -1, dropdownAutoWidth: false, width: '100%'};
+
         var conf = {
             form: '#form_',
             formContainer: '#add_channel',
@@ -1045,20 +1047,16 @@
         };
 
         function DemoSelect2() {
-            $.getScript("{{ app.request.baseUrl }}/plugins/select2/i18n/{% if app["language"] %}{{ app["language"] }}{% else %}en{% endif %}.js", function() {
-                $.fn.select2.defaults.set('dropdownAutoWidth', 'false');
-                $.fn.select2.defaults.set('width', '100%');
-                $('#form_tv_genre_id').select2({minimumResultsForSearch: -1});
-                $('#form_volume_correction').select2({minimumResultsForSearch: -1});
-                $('#s2_priority').select2({minimumResultsForSearch: -1});
-                $('#s2_stream_server').select2({minimumResultsForSearch: -1});
-                $('#form_pvr_storage_names').select2({minimumResultsForSearch: -1});
-                $('#form_storage_names').select2({minimumResultsForSearch: -1});
-                $('#form_flussonic_storage_names').select2({minimumResultsForSearch: -1});
-                $('#form_wowza_storage_names').select2({minimumResultsForSearch: -1});
-                $("#form_enable_tv_archive, #form_allow_pvr").each(function () {
-                    checkEnableChkBox($(this).attr('id'));
-                });
+            $('#form_tv_genre_id').select2(select2Opt);
+            $('#form_volume_correction').select2(select2Opt);
+            $('#s2_priority').select2(select2Opt);
+            $('#s2_stream_server').select2(select2Opt);
+            $('#form_pvr_storage_names').select2(select2Opt);
+            $('#form_storage_names').select2(select2Opt);
+            $('#form_flussonic_storage_names').select2(select2Opt);
+            $('#form_wowza_storage_names').select2(select2Opt);
+            $("#form_enable_tv_archive, #form_allow_pvr").each(function () {
+                checkEnableChkBox($(this).attr('id'));
             });
         }
 
@@ -1162,7 +1160,6 @@
                     e.stopPropagation();
                     e.preventDefault();
                     $(this).closest('form').get(0).reset();
-{#                    $("#cmd_data").find("tr:visible").remove();#}
                     return false;
                 });
                 
@@ -1240,7 +1237,7 @@
                                 lSelect.find("option[value='" + lValue + "']").prop('selected', 'selected');
                             });
                             if (lSelect.attr('id').search('s2') != -1) {
-                                lSelect.select2({minimumResultsForSearch: -1});
+                                lSelect.select2(select2Opt);
                             }
                         } else if (type == 'checkbox') {
                             $(this).prop('checked', (data[name].value == 'on' || data[name].value == '1'));
@@ -1268,7 +1265,7 @@
                         $("#add_channel_load_balancing input[type='checkbox'][name*='enable_balancer_monitoring']").prop('checked', false).closest(".form-group").hide();
                     } else {
                         $("#s2_stream_server").prop('disabled', false).removeAttr('disabled');
-                        $('#s2_stream_server').select2({minimumResultsForSearch: -1});
+                        $('#s2_stream_server').select2(select2Opt);
                         $("#s2_stream_server").closest(".form-group").show();
                         $("#add_channel_load_balancing input[type='checkbox'][name*='enable_balancer_monitoring']").closest(".form-group").show();
                     }
@@ -1347,7 +1344,7 @@
                         $("#add_channel_load_balancing input[type='checkbox'][name*='enable_balancer_monitoring']").prop('checked', false).closest(".form-group").hide();
                     } else {
                         $("#s2_stream_server").prop('disabled', false).removeAttr('disabled');
-                        $('#s2_stream_server').select2({minimumResultsForSearch: -1});
+                        $('#s2_stream_server').select2(select2Opt);
                         $("#s2_stream_server").closest(".form-group").show();
                         $("#add_channel_load_balancing input[type='checkbox'][name*='enable_balancer_monitoring']").closest(".form-group").show();
                     }
@@ -1377,12 +1374,10 @@
                 if (key !== objId) {
                     currObj.next('span').hide();
                     currObj.prop("disabled", 'disabled').attr('disabled', "disabled");
-                    /*currObj.prev('div[id*="' + val + '"]').hide('fast').find('input').prop("disabled", "disabled").attr('disabled', "disabled");*/
                 } else {
                     currObj.next('span').show();
-                    currObj.select2({minimumResultsForSearch: -1});
+                    currObj.select2(select2Opt);
                     currObj.prop("disabled", false).removeAttr('disabled');
-                    /*currObj.prev('div[id*="' + val + '"]').show('fast').find('input').prop("disabled", false).removeAttr('disabled');*/
                 }
             });
         }

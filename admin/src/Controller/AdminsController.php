@@ -37,12 +37,6 @@ class AdminsController extends \Controller\BaseStalkerController {
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
 
-        $list = $this->admins_list_json();
-        
-        $this->app['allAdmins'] = $list['data'];
-        $this->app['totalRecords'] = $list['recordsTotal'];
-        $this->app['recordsFiltered'] = $list['recordsFiltered'];
-
         $this->app['allAdminGroups'] = $this->db->getAdminGropsList(array('select'=>array('A_G.id as id', "A_G.name as name")));
         if (empty($this->app['reseller'])) {
             $resellers = array(array('id' => '-', 'name' => $this->setLocalization('Empty')));
@@ -60,11 +54,6 @@ class AdminsController extends \Controller\BaseStalkerController {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
-        $list = $this->admins_groups_list_json();
-        
-        $this->app['allGroups'] = $list['data'];
-        $this->app['totalRecords'] = $list['recordsTotal'];
-        $this->app['recordsFiltered'] = $list['recordsFiltered'];
 
         if (empty($this->app['reseller'])) {
             $resellers = array(array('id' => '-', 'name' => $this->setLocalization('Empty')));
@@ -129,12 +118,6 @@ class AdminsController extends \Controller\BaseStalkerController {
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
 
-        $list = $this->resellers_list_json();
-
-        $this->app['allData'] = $list['data'];
-        $this->app['totalRecords'] = $list['recordsTotal'];
-        $this->app['recordsFiltered'] = $list['recordsFiltered'];
-
         $this->app['allResellers'] = 1;
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
@@ -156,7 +139,6 @@ class AdminsController extends \Controller\BaseStalkerController {
             'action' => 'setAdminsModal'
         );
 
-               
         $filds_for_select = $this->getAdminsFields();
                 
         $error = "Error";
@@ -190,10 +172,10 @@ class AdminsController extends \Controller\BaseStalkerController {
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }
-        
+
         $response["data"] = $this->db->getAdminsList($query_param);
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
-        
+
         $error = "";
         if ($this->isAjax) {
             $response = $this->generateAjaxResponse($response);

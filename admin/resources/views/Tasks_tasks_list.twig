@@ -96,7 +96,6 @@
                         d['task_type'] = '{{ app['task_type'] }}';
                     }
                 },
-                "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
@@ -113,7 +112,6 @@
                     {"sortable": false, "targets": [-1, 1]}
                 ]
             }).prev('.dataTables_processing').hide('');
-            $('#datatable-1').DataTable().ajax.reload();
         }
 
         function yelp() {
