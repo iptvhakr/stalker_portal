@@ -91,7 +91,16 @@ a:hover{
             var lang = $('.langs option:selected').val().substr(0, 2);
             $.cookies.set('language', lang, {expiresAt: new Date( 2037, 1, 1 )});
             document.location = document.location;
-        })
+        });
+
+        $('.goto_new_adm').click(function () {
+            window.location = '../adm/'
+        });
+
+        $('.hide_banner').click(function () {
+            $('.adm_banner').hide();
+            $.cookies.set('hide_banner', 1, {expiresAt: new Date( 2037, 1, 1 )});
+        });
     });
 
 </script>
@@ -99,6 +108,13 @@ a:hover{
 </head>
 
 <body>
+<? if (empty($_COOKIE['hide_banner'])){?>
+<div class="adm_banner" style="background-color: #E5E5E5; height: 22px; width: 100%; margin: -8px -8px 10px -8px; text-align: center; padding: 10px; color:#868895; font-family: Arial, Helvetica, sans-serif">
+<span style="padding-right: 20px"><? echo _('Wish for more options? Try the new Stalker admin interface.');?></span>
+    <input type="button" class="goto_new_adm" value="<? echo _('Try now!') ?>" style="color: #fff; background-color: #2B78E4; border: 1px solid #84878B; padding: 3px 10px"> <input class="hide_banner" type="button" value="<? echo _('Later')?>">
+</div>
+<?}?>
+
 <div style="width: 80%; margin:0 auto; text-align: right">
     <select class="langs">
         <?
