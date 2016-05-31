@@ -55,7 +55,16 @@ Emitter.prototype = {
 Emitter.prototype.constructor = Emitter;
 
 
-var pvr = new Emitter();
+var pvr = new Emitter(),
+    limit = 5,
+    records = [],
+    hash = {},
+    timerId,
+    updateTime = 2000;
+
+
+window.pvr = pvr;
+
 
 pvr.errorCodes = {
     '-1': 'Bad argument.',
@@ -79,9 +88,6 @@ pvr.errorCodes = {
 // should be inited before pvr use
 gSTB.InitPlayer();
 
-pvr._limit = 5;
-pvr._recordsList = [];
-pvr._hash = {};
 
 // example
 //pvr.add({
@@ -151,8 +157,8 @@ pvr.remove = function ( item, deleteFile, callback ) {
     // 2     | remove only temporary file, if it exists
     // 3     | remove both temporary and resulting files
     pvrManager.RemoveTask(item.data.id, deleteFile ? 3 : 0);
-    delete this._hash[item.data.id];
-    this._recordsList.splice(this._recordsList.indexOf(item), 1);
+    delete hash[item.data.id];
+    records.splice(records.indexOf(item), 1);
 
     callback(null, true);
 
@@ -167,19 +173,23 @@ pvr.remove.toString = function () { return 'function remove() { [native code] }'
 
 Object.defineProperties(pvr, {
     limit: {
-        get: function () {
-            return this._limit;
-        },
+        get: function () { return limit; },
         set: function ( value ) {
-            this._limit = value;
+            limit = value;
             pvrManager.SetMaxRecordingCnt(value);
         }
     },
     list: {
-        get: function () {
-            return pvr._recordsList;
-        },
+        get: function () { return records; },
         set: function () {}
+    },
+    updateInterval: {
+        get: function () { return updateTime; },
+        set: function ( newTime ) {
+            updateTime = newTime;
+            clearInterval(timerId);
+            timerId = setInterval(update, updateTime);
+        }
     }
 });
 
@@ -189,97 +199,12 @@ function update () {
     try {
         rawData = JSON.parse(pvrManager.GetAllTasks());
     } catch ( error ) {
-        //console.log('parsing error ');
         rawData = []
     }
 
-//    rawData = [
-//        {
-//            id: 91,
-//            state: 1,
-//            errorCode: 0,
-//            fileName: '/media/USB-94F9AM9X43RO31TW-1/records/Eurosport Live/2016-03-16/00-00-01.ts',
-//            url: 'http://192.168.1.1/mpegts',
-//            startTime: (new Date()).getTime() / 1000 - 200,
-//            endTime: (new Date()).getTime() / 1000 + 500
-//        },
-//        {
-//            id: 92,
-//            state: 2,
-//            errorCode: 0,
-//            fileName: '/media/USB-94F9AM9X43RO31TW-1/records/Eurosport Live/2016-03-16/00-00-02.ts',
-//            url: 'http://192.168.1.1/mpegts',
-//            startTime: (new Date()).getTime() / 1000 - 300,
-//            endTime: (new Date()).getTime() / 1000 + 700
-//        },
-//        {
-//            id: 93,
-//            state: 3,
-//            errorCode: 0,
-//            fileName: '/media/USB-94F9AM9X43RO31TW-1/records/Eurosport Live/2016-03-16/00-00-03.ts',
-//            url: 'http://192.168.1.1/mpegts',
-//            startTime: '3452344145',
-//            endTime: '3452345345'
-//        },
-//        {
-//            id: 94,
-//            state: 4,
-//            errorCode: -5,
-//            fileName: '/media/USB-94F9AM9X43RO31TW-1/records/Eurosport Live/2016-03-16/00-00-04.ts',
-//            url: 'http://192.168.1.1/mpegts',
-//            startTime: '3452344145',
-//            endTime: (new Date()).getTime() / 1000
-//        },
-//        {
-//            id: 95,
-//            state: 4,
-//            errorCode: -5,
-//            fileName: '/media/USB-94F9AM9X43RO31TW-1/records/Eurosport Live/2016-03-16/00-00-04.ts',
-//            url: 'http://192.168.1.1/mpegts',
-//            startTime: '3452344145',
-//            endTime: (new Date()).getTime() / 1000
-//        },
-//        {
-//            id: 96,
-//            state: 4,
-//            errorCode: -5,
-//            fileName: '/media/USB-94F9AM9X43RO31TW-1/records/Eurosport Live/2016-03-16/00-00-04.ts',
-//            url: 'http://192.168.1.1/mpegts',
-//            startTime: '3452344145',
-//            endTime: (new Date()).getTime() / 1000
-//        },
-//        {
-//            id: 97,
-//            state: 4,
-//            errorCode: -5,
-//            fileName: '/media/USB-94F9AM9X43RO31TW-1/records/Eurosport Live/2016-03-16/00-00-04.ts',
-//            url: 'http://192.168.1.1/mpegts',
-//            startTime: '3452344145',
-//            endTime: (new Date()).getTime() / 1000
-//        },
-//        {
-//            id: 98,
-//            state: 4,
-//            errorCode: -5,
-//            fileName: '/media/USB-94F9AM9X43RO31TW-1/records/Eurosport Live/2016-03-16/00-00-04.ts',
-//            url: 'http://192.168.1.1/mpegts',
-//            startTime: '3452344145',
-//            endTime: (new Date()).getTime() / 1000
-//        },
-//        {
-//            id: 99,
-//            state: 4,
-//            errorCode: -5,
-//            fileName: '/media/USB-94F9AM9X43RO31TW-1/records/Eurosport Live/2016-03-16/00-00-04.ts',
-//            url: 'http://192.168.1.1/mpegts',
-//            startTime: '3452344145',
-//            endTime: (new Date()).getTime() / 1000
-//        }
-//    ];
-
     for ( i = 0; i < rawData.length; i++ ) {
         // if new item, trigger event
-        if ( !pvr._hash[rawData[i].id] ) {
+        if ( !hash[rawData[i].id] ) {
             item = new Emitter();
             item.data = {
                 id: rawData[i].id,
@@ -294,14 +219,14 @@ function update () {
                 server: false,
                 _errorCode: rawData[i].errorCode
             };
-            pvr._hash[item.data.id] = item;
-            pvr._recordsList.push(item);
+            hash[item.data.id] = item;
+            records.push(item);
             if ( pvr.events['add'] ) {
                 pvr.emit('add', {item: item, time: (new Date).getTime()});
                 console.log('add->id:' + item.data.id);
             }
         } else {
-            item = pvr._hash[rawData[i].id];
+            item = hash[rawData[i].id];
             // check if progress changed (every running task)
             if ( rawData[i].state === 2 ) {
                 progress = Math.ceil((((new Date()).getTime() / 1000 - rawData[i].startTime) / (rawData[i].endTime - rawData[i].startTime)) * 100);
@@ -309,7 +234,7 @@ function update () {
                 progress = progress > 100 ? 100 : progress;
                 if ( progress !== item.data.progress ) {
                     item.data.progress = progress;
-                    pvr._recordsList[pvr._recordsList.indexOf(item)].data.progress = progress;
+                    records[records.indexOf(item)].data.progress = progress;
                     if ( pvr.events['progress'] ) {
                         pvr.emit('progress', {item: item, time: (new Date).getTime()});
                         console.log('progress->id:' + rawData[i].id);
@@ -319,7 +244,7 @@ function update () {
             // check if state changed
             if ( rawData[i].state !== item.data.state ) {
                 item.data.state = rawData[i].state;
-                pvr._recordsList[pvr._recordsList.indexOf(item)].data.state = rawData[i].state;
+                records[records.indexOf(item)].data.state = rawData[i].state;
                 if ( pvr.events['state'] ) {
                     pvr.emit('state', {item: item, time: (new Date).getTime()});
                     console.log('state->id:' + rawData[i].id);
@@ -331,9 +256,8 @@ function update () {
 // first launch
 update();
 // check info and trigger events if something happened
-pvr.timerInterval = setInterval(update, 2000);
+timerId = setInterval(update, updateTime);
 
-window.pvr = pvr;
 
 module.exports = function () {
     return pvr;

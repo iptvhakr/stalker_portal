@@ -1,3 +1,20 @@
+.osdPanel {
+  background-color: #384452;
+  color: #fff; }
+
+.osdFocusItem {
+  background-color: #2c60c6; }
+
+/*$componentBgColor: #3e2723;
+$focusItemBackground: #e7b900;
+$focusItemColor: #3e2723;
+$focusItemIconColor: #3e2723;
+.theme-favorite-icon {
+    color: transparent;
+}
+.theme-favorite-icon-active {
+    color: #ffffff;
+}*/
 .panelEx.main.size2 {
   width: 1260px !important; }
 
@@ -10,22 +27,8 @@
 .theme-favorite-icon-active {
   color: #FEC500; }
 
-/*$componentBgColor: #3e2723;
-$focusItemBackground: #e7b900;
-$focusItemColor: #3e2723;
-$focusItemIconColor: #3e2723;
-.theme-favorite-icon {
-    color: transparent;
-}
-.theme-favorite-icon-active {
-    color: #ffffff;
-}*/
-.osdPanel {
-  background-color: #384452;
-  color: #fff; }
-
-.osdFocusItem {
-  background-color: #2c60c6; }
+.bgDarken {
+  background-color: #2e3743 !important; }
 
 body {
   background: url(./img/1080/bg.jpg) no-repeat; }
@@ -91,7 +94,7 @@ body {
   .component.panelEx .list .item.focus {
     background: rgba(44, 96, 198, 0.6); }
   .component.panelEx.active {
-    background: rgba(56, 68, 82, 0.97); }
+    background-color: rgba(56, 68, 82, 0.97) !important; }
     .component.panelEx.active .list .item.focus {
       background: #2c60c6; }
   .component.panelEx .component.layoutList > .body > .item, .component.panelEx .component.layoutList > .body > .item .component.input {
@@ -140,8 +143,10 @@ body {
   background: transparent;
   border: none;
   outline: none; }
-  .component.input > .placeholder {
-    color: #ffffff; }
+  .component.input .char {
+    color: #fff; }
+  .component.input > .line > .placeholder {
+    color: #fff !important; }
   .component.input.focus {
     color: #fff; }
     .component.input.focus .char {
