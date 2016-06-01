@@ -1,38 +1,41 @@
-<?php
-
-namespace Stalker\Lib\OAuth;
-
-class BearerAccessType extends AccessTokenType
-{
-    protected $type = 'Bearer';
-
-    protected function parseAuthHeader(){
-
-        if (preg_match('/Bearer\s+(.*)$/i', $this->request->getAuthorization(), $matches)){
-            $this->access_token = trim($matches[1]);
-        }else{
-            throw new AuthBadRequest("Wrong Bearer authorization header");
-        }
-    }
-
-    public function getToken(){
-        return $this->access_token;
-    }
-
-    public function checkRequest(){
-
-        $session = $this->access_handler->getAccessSessionByToken($this->access_token);
-
-        if (empty($session)){
-            throw new AuthUnauthorized("Access token wrong or expired");
-        }
-
-        if (preg_match("/\/users\/(\d+)/", $this->request->getRequestUri(), $match)){
-            if ($match[1] != $session['uid']){
-                throw new AuthForbidden("Access denied");
-            }
-        }
-    }
-}
-
-?>
+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

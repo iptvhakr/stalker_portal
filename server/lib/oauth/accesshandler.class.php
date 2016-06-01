@@ -6,11 +6,11 @@ abstract class AccessHandler
 {
     public function checkUserAuth($username, $password, $mac = null, $serial_number = null, OAuthRequest $request){}
 
-    public function generateUniqueToken(\User $user){}
+    public function generateUniqueToken(\User $user, $for_apiv3){}
 
     public function isValidClient($client_id, $client_secret){}
 
-    public function getAdditionalParams(\User $user){}
+    public function getAdditionalParams(\User $user, $for_apiv3){}
 
     /**
      * @param $token

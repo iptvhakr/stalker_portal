@@ -160,6 +160,43 @@ class User implements \Stalker\Lib\StbApi\User
         $this->profile = Mysql::getInstance()->from('users')->where(array('id' => $this->id))->get()->first();
     }
 
+    public function setLocale($lang){
+
+        $_COOKIE['stb_lang'] = $lang;
+
+        if (!empty($lang) && strlen($lang) >= 2) {
+            $preferred_locales = array_filter(Config::get('allowed_locales'), function ($e) use ($lang) {
+                return (strpos($e, $lang) === 0);
+            });
+
+            if (!empty($preferred_locales)) {
+
+                $preferred_locales = array_values($preferred_locales);
+
+                $locale = $preferred_locales[0];
+            }
+        }
+
+        if (!isset($locale)){
+            $locale = array_shift(array_values(Config::get('allowed_locales')));
+        }
+
+        setlocale(LC_MESSAGES, $locale);
+        putenv('LC_MESSAGES=' . $locale);
+
+        if (!function_exists('bindtextdomain')) {
+            throw new \ErrorException("php-gettext extension not installed.");
+        }
+
+        if (!function_exists('locale_accept_from_http')) {
+            throw new \ErrorException("php-intl extension not installed.");
+        }
+
+        bindtextdomain('stb', PROJECT_PATH . '/locale');
+        textdomain('stb');
+        bind_textdomain_codeset('stb', 'UTF-8');
+    }
+
     public function getLocalizedText($text){
 
         $current_local = setlocale(LC_MESSAGES, 0);

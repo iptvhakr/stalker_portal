@@ -1,0 +1,7 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine on
+
+    RewriteRule .* - [env=TARGET:API]
+    RewriteRule .* - [env=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+    RewriteRule ^(.*)$ index.php?_resource=$1 [L,QSA]
+</IfModule>

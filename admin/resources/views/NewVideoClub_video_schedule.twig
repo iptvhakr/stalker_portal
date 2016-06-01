@@ -1,0 +1,277 @@
+{% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
+{% set title = ('Video club'|trans ~ ': ' ~ 'schedule'|trans) | trans %}
+
+{% block content %}
+
+    <div id="iptv_list">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"></div>
+        </div>
+        <div class="row">
+            <div class="box">
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                    {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
+                {% endif %}
+                <div class="box-content">
+                    <div class="box-content no-padding">
+                        <div class="dataTables_processing"></div>
+                        <table class="table  table-hover table-datatable" id="datatable-1">
+                            {% if attribute(app, 'dropdownAttribute') is defined %}
+                                {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                            {% endif %}
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" defer>
+	
+        function TestTable1() {
+            $('#datatable-1').on('xhr.dt', function (e, settings, json) {
+                if (typeof (json.data) == 'object') {
+                    var date, id, name, curr_on_date, videoid, taskid, video_on_date = new Date().toLocaleFormat("%y-%m-%d");
+                    for (var i in json.data) {
+                        id = json.data[i].id;
+                        name = json.data[i].name;
+                        videoid = json.data[i].video_id;
+                        taskid = json.data[i].task_id;
+
+                        date = json.data[i]['task_added'];
+                        if (date > 0) {
+                            date = new Date(date * 1000);
+                            json.data[i]['task_added'] = date.toLocaleFormat("%b %d, %Y %H:%M");
+                        }
+
+                        date = json.data[i]['date_on'];
+                        if (date > 0) {
+                            date = new Date(date * 1000);
+                            json.data[i]['date_on'] = date.toLocaleFormat("%b %d, %Y %H:%M");
+                            curr_on_date = date.toLocaleFormat("%d-%m-%Y");
+                        }
+
+                        json.data[i]['name'] = '<a href="{{ app.controller_alias }}/edit-video?id='+id+'" data-fieldname="name">'+name+'</a>';
+
+                        json.data[i].operations = '<div class="col-xs-3 col-sm-8 ddd">\n\
+                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">\n\
+                                                            <i class="pull-right fa fa-cog"></i>\n\
+                                                        </a>\n\
+                                                        <ul class="dropdown-menu pull-right">\n\
+                                                            <li>\n\
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/enable-video" data-videoid="'+videoid+'" data-taskid="'+taskid+'" data-video_on_date="'+video_on_date+'" data-curr_on_date="'+curr_on_date+'">\n\
+                                                                    <span>{{ 'Edit'|trans }}</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                            <li>\n\
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/enable-video" data-videoid="'+videoid+'" data-video_on_date="'+video_on_date+'" data-waiting="1">\n\
+                                                                    <span>{{ 'Publish now'|trans }}</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                            <li>\n\
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-tasks" data-taskid="'+taskid+'">\n\
+                                                                    <span>{{ 'Remove schedule'|trans }}</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                        </ul>\n\
+                                                    </div>';
+
+                    }
+                }
+            }).dataTable( {
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/video-schedule-list-json"
+                },
+
+                "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
+                "language": {
+                    "url": "{{ app.datatable_lang_file }}"
+                },
+
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
+                {% endif %}
+                "scrollCollapse": true,
+
+                "bFilter": true,
+                "bPaginate": true,
+                "bInfo":     true,
+                "order": [[ 0, "desc" ]],
+                "bSort" : true,
+                "aoColumnDefs": [
+                    { className: "action-menu", "targets": [ -1 ] },
+                    { "targets": [ -1, 0, 4 ], "searchable": false },
+                    /*{ "targets": [ 3 ], "visible": false},*/
+                    { "targets": [ -1, 4 ], "orderable": false}
+                ]
+            }).prev('.dataTables_processing').hide('');
+            $('#datatable-1').DataTable().ajax.reload();
+        }
+	
+        function yelp() {
+            $(document).ready(function () {
+			LoadDataTablesScripts(TestTable1);
+
+                $(document).on('click', "a.main_ajax", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var _this = $(this);
+
+                    if (_this.data('curr_on_date') && !_this.data('waiting')) {
+                        setEnableDatePicker(_this);
+                        return false;
+                    }
+
+                    if (!_this.data('action')) {
+                        $.ajax({
+                            url: $(this).attr('href'),
+                            type: 'POST',
+                            data: $(this).data(),
+                            success: function (data) {
+                                if (data.success) {
+                                    for (var key in data) {
+                                        _this.data(key, data[key]);
+                                    }
+                                } else {
+                                    JSErrorModalBox({msg: "{{ 'Some server error'|trans }}"});
+                                }
+                            },
+                            error: function (data) {
+                                var errAction = '';
+                                if (typeof (data.responseJSON) == 'object') {
+                                    errAction += data.responseJSON.action + 'Error';
+                                    for (var key in data.responseJSON) {
+                                        _this.data(key, data.responseJSON[key]);
+                                    }
+                                }
+                                if ($.isFunction(window[errAction])) {
+                                    window[errAction]($(_this));
+                                } else {
+                                    JSErrorModalBox({msg: "{{ 'Some network error or access denied'|trans }}"});
+                                }
+                            },
+                            dataType: "json",
+                            async: false
+                        });
+                    }
+
+                    if ($.isFunction(window[$(this).data('action')]) && !$(this).data('error')) {
+                        window[$(this).data('action')]($(this));
+                    }
+                    _this.closest('div.open').removeClass('open');
+                    return false;
+                });
+                
+                $(document).on('click', "#apply_enable_date", function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $("a[data-videoid='" + $("#modalbox input[type='hidden']").val() + "'][data-curr_on_date]")
+                            .data('video_on_date', $("#modalbox input[type='text']").val()).data('waiting', true)
+                            .removeData('action').trigger('click');
+                    $("div[id*='datepicker']").hide().remove();
+                    closeModalBox();
+                    $("div[id*='datepicker']").remove();
+                    return false;
+                });
+
+                $(document).on('click', "#reset_enable_date, #modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
+                    if (e.currentTarget != e.target) {
+                        return;
+                    }
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $("div[id*='datepicker']").hide().remove();
+                    closeModalBox();
+                    return false;
+                });
+            });
+        }
+        document.addEventListener("DOMContentLoaded", yelp, false);
+
+        var removeTasks = function (obj) {
+            $('#datatable-1').DataTable().row( $(obj).closest('tr') ).remove().draw();
+        };
+
+        var videoenable = function (obj) {
+            if ($(obj).data('waiting')) {
+                $(obj).closest('tr').find('span[data-task-state]').html($(obj).data('status'));
+                $(obj).removeData('waiting');
+                $(obj).data('curr_on_date', $(obj).data('date_on'));
+            } else {
+                removeTasks(obj);
+            }
+            JSSuccessModalBox();
+        };
+
+        function setEnableDatePicker(obj) {
+            $('#modalbox').find('.modal-header-name span').text("{{ 'Schedule switch on'|trans }}");
+			 $('#modalbox').find('.devoops-modal-inner').html('\n\
+                <div class="box-content">\n\
+                    <form class="form-horizontal" role="form">\n\
+                        <div class="form-group">\n\
+                            <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Schedule switch on'|trans }}</label>\n\
+                            <div class="col-xs-10 col-sm-8">\n\
+                                <span class="col-xs-8 col-sm-8">\n\
+                                   <input type="hidden" name="link_id" value="' + obj.data('videoid') + '">\n\
+                                   <input type="text" class="form-control own_fields datepicker col-sm-12" data-date-format="dd-mm-yy" value="'+ obj.data('curr_on_date') +'" name="video_on_date">\n\
+                                    <div class="bg-danger"></div>\n\
+                                </span>\n\
+                            </div>\n\
+                        </div>\n\
+                    </form>\n\
+                </div>');
+           
+           $('#modalbox').find('.devoops-modal-bottom').html('<div class="pull-right no-padding">&nbsp;</div>\n\
+                        <div class="pull-right no-padding">\n\
+                            <button type="submit" id="apply_enable_date" class="btn btn-success  pull-right">{{ 'Publish'|trans }}</button>\n\
+                            <button type="reset" id="reset_enable_date" class="btn btn-default pull-right" >{{ 'Cancel'|trans }}</button>\n\
+                        </div>');
+           
+            $(".datepicker").datepicker({
+                language: 'ru',
+                dateFormat: 'dd-mm-yy',
+                firstDay: 1,
+                minDate: new Date(),
+                dayNamesMin : [
+                    '{{ 'Sun'|trans }}',
+                    '{{ 'Mon'|trans }}',
+                    '{{ 'Tue'|trans }}',
+                    '{{ 'Wed'|trans }}',
+                    '{{ 'Thu'|trans }}',
+                    '{{ 'Fri'|trans }}',
+                    '{{ 'Sat'|trans }}'
+                ],
+                monthNames  : [
+                    '{{ 'January'|trans }}',
+                    '{{ 'February'|trans }}',
+                    '{{ 'March'|trans }}',
+                    '{{ 'April'|trans }}',
+                    '{{ 'May'|trans }}',
+                    '{{ 'June'|trans }}',
+                    '{{ 'July'|trans }}',
+                    '{{ 'August'|trans }}',
+                    '{{ 'September'|trans }}',
+                    '{{ 'October'|trans }}',
+                    '{{ 'November'|trans }}',
+                    '{{ 'December'|trans }}'
+                ]
+            });
+            $("div[id*='datepicker']").addClass('dp_white');
+            $(obj).closest('div.open').removeClass('open');
+            $('#modalbox').show();
+        }
+        
+        function closeModalBox(){
+            $("#modalbox").hide();
+            $('#modalbox').find('.modal-header-name span').empty();
+            $('#modalbox').find('.devoops-modal-inner').empty();
+            $('#modalbox').find('.devoops-modal-bottom').empty();
+        }
+    </script>
+
+{% endblock %}

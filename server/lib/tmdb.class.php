@@ -57,7 +57,7 @@ class Tmdb {
             }
 
             if (empty($movie_info['name'])) {
-                throw new tmdbException("Movie name in '" . $movie_url . "' not found", $page);
+                throw new tmdbException(sprintf(_("Movie name in '%s' not found"), $movie_url), $page);
             }
 
             if (isset($moviedata['original_title'])){
@@ -145,6 +145,8 @@ class Tmdb {
                 $prod_countries[] = $prod_country_item['name'];
             }
             $movie_info['country'] = implode(", ", $prod_countries);
+        } else {
+            throw new tmdbException(_("Location does not contain movie id.") . " " . sprintf(_("Location: ('%s')"), $movie_url), $moviedata);
         }
         return $movie_info;
     }
@@ -158,7 +160,7 @@ class Tmdb {
         $ch = curl_init();
 
         if ($ch === false) {
-            throw new tmdbException("Curl initialization error", curl_error($ch));
+            throw new tmdbException(_("Curl initialization error"), curl_error($ch));
         }
 
         $orig_name = urlencode($orig_name);
@@ -192,7 +194,7 @@ class Tmdb {
         curl_close($ch);
 
         if ($response === false) {
-            throw new tmdbException("Curl exec failure", curl_error($ch));
+            throw new tmdbException(_("Curl exec failure"), curl_error($ch));
         }
 
         $results = json_decode($response, true);
@@ -231,7 +233,7 @@ class Tmdb {
         $xml = @simplexml_load_file($xml_url);
 
         if (!$xml) {
-            throw new tmdbException("Can't get rating from " . $xml_url . "; " . implode(', ', libxml_get_errors()), '');
+            throw new tmdbException(_("Can't get rating from") . " " . $xml_url . "; " . implode(', ', libxml_get_errors()), '');
         }
 
         $result['rating_kinopoisk'] = (string) $xml->kp_rating;
@@ -255,20 +257,21 @@ class Tmdb {
 
             $allowed_locales = Config::get("allowed_locales");
 
-            foreach ($allowed_locales as $lang => $locale) {
+            foreach ($allowed_locales as $lang => $locale){
                 $locales[substr($locale, 0, 2)] = $locale;
             }
 
             $accept_language = !empty($_SERVER["HTTP_ACCEPT_LANGUAGE"]) ? $_SERVER["HTTP_ACCEPT_LANGUAGE"] : null;
 
-            if (!empty($_COOKIE['language']) && in_array($_COOKIE['language'], $locales)) {
-                $language = $_COOKIE['language'];
-            } else if ($accept_language && array_key_exists(substr($accept_language, 0, 2), $locales)) {
-                $language = $accept_language;
-            } else {
+            if (!empty($_COOKIE['language']) && (array_key_exists($_COOKIE['language'], $locales) || in_array($_COOKIE['language'], $locales))){
+                $language = substr($_COOKIE['language'], 0, 2);
+            }else if ($accept_language && array_key_exists(substr($accept_language, 0, 2), $locales)){
+                $language = substr($accept_language, 0, 2);
+            }else{
+                reset($locales);
                 $language = key($locales);
             }
-            $language = substr($language, 0, 2);
+            /*$language = substr($language, 0, 2);*/
         }
 
         return $language;

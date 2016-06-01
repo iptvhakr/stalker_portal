@@ -10,7 +10,7 @@ if (empty($_GET['uid'])){
 use Stalker\Lib\Core\Config;
 use Stalker\Lib\Core\Stb;
 
-$file = file_get_contents('../../new/launcher/profile.json');
+$file = file_get_contents('../../new/core/config.json');
 
 $profile = json_decode($file, true);
 
@@ -60,20 +60,31 @@ if ($user['status'] == 1){
     exit;
 }
 
-$profile['apiDomain'] = $profile['stalkerAuthDomain'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
+$profile['options']['stalkerApiHost'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
     .'://'.$_SERVER['HTTP_HOST']
     .Config::getSafe('portal_url', '/stalker_portal/')
-    .'api/api_v2.php?_resource=';
+    .'api/v3/';
 
-$profile['authDomain'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
+$profile['options']['stalkerAuthHost'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
     .'://'.$_SERVER['HTTP_HOST']
     .Config::getSafe('portal_url', '/stalker_portal/')
     .'auth/token.php';
 
-$profile['pingTimeout'] = Config::getSafe('watchdog_timeout', 120) * 1000;
+$profile['options']['sap'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
+    .'://'.$_SERVER['HTTP_HOST']
+    .Config::getSafe('portal_url', '/stalker_portal/')
+    .'server/api/sap.php';
 
-$available_modules = array_diff($all_modules, $disabled_modules);
-$available_modules[] = 'personalization';
+$profile['options']['pingTimeout'] = Config::getSafe('watchdog_timeout', 120) * 1000;
+$available_modules = array_values(array_diff($all_modules, $disabled_modules));
+$available_modules[] = 'portal';
+$available_modules[] = 'launcher';
+$available_modules[] = 'osd';
+$available_modules[] = 'osd-tv';
+$available_modules[] = 'osd-pip';
+$available_modules[] = 'player';
+$available_modules[] = 'taskManager';
+$available_modules[] = 'sap-loader';
 
 $module_to_app_map = array(
     'vclub'         => 'video club',
@@ -92,45 +103,46 @@ $available_modules = array_map(function($module) use ($module_to_app_map){
     return isset($module_to_app_map[$module]) ? $module_to_app_map[$module] : $module;
 }, $available_modules);
 
-$menu = $profile['menu'];
+$apps = $profile['apps'];
 
-$user_menu = array();
+$user_apps = array();
 
-foreach ($menu as $section){
+foreach ($apps as $app){
 
-    $section['items'] = array_values(array_filter($section['items'], function($item) use ($available_modules){
-        return in_array($item['name'], $available_modules);
-    }));
-
-    $section['items'] = array_map(function($item){
-        $item['name'] = $item['name'] ? _($item['name']) : '';
-        $item['info'] = $item['info'] ? _($item['info']) : '';
-        return $item;
-    }, $section['items']);
-
-    // add external apps
-    if ($section['name'] == 'Apps') {
-
-        foreach ($installed_apps as $app) {
-            $section['items'][] = array(
-                'name'  => $app['alias'],
-                'info'  => $app['description'],
-                'icon'  => $app['app_url'].'/img/{0}/'.$app['icons'].'/2015.png',
-                'focusIcon'  => $app['app_url'].'/img/{0}/'.$app['icons'].'/2015.focus.png',
-                'color' => $app['icon_color'],
-                'url'   => $app['app_url'],
-                'type'  => 'iframe'
-            );
-        }
+    if (!in_array(strtolower($app['name']), $available_modules)){
+        continue;
     }
 
-    $user_menu[] = $section;
+    $app['name'] = !empty($app['name']) ? _($app['name']) : '';
+    $app['description'] = !empty($app['description']) ? _($app['description']) : '';
+
+    $user_apps[] = $app;
 }
 
-$user_menu = array_values(array_filter($user_menu, function($section){
-    return !empty($section['items']);
-}));
+foreach ($installed_apps as $app) {
+    $user_apps[] = array(
+        'type'     => 'app',
+        'category' => 'apps',
+        'backgroundColor' => $app['icon_color'],
+        'name'     => $app['alias'],
+        'description'  => $app['description'],
+        'icons' => array(
+            'paths' => array(
+                '480'  => 'img/480/',
+                '576'  => 'img/576/',
+                '720'  => 'img/720/',
+                '1080' => 'img/1080/'
+            ),
+            'states' => array(
+                'normal' => $app['icons'].'/2015.png',
+                'active' => $app['icons'].'/2015.focus.png',
+            )
+        ),
+        'url' => $app['app_url'].'/',
+        'legacy' => true
+    );
+}
 
-$profile['menu'] = $user_menu;
-
-echo json_encode($profile);
+$profile['apps'] = $user_apps;
+header('Content-Type: application/json');
+echo json_encode($profile, 192);

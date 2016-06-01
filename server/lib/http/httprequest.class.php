@@ -15,12 +15,21 @@ class HTTPRequest implements IHTTPRequest
     public function __construct(){
 
         $this->method          = !empty($_SERVER["REQUEST_METHOD"]) ? $_SERVER["REQUEST_METHOD"] : null;
-        $this->request_uri     = !empty($_SERVER["REQUEST_URI"]) ? $_SERVER["REQUEST_URI"] : null;
+        $this->request_uri     = !empty($_SERVER["REQUEST_URI"]) ? str_replace('//', '/', $_SERVER['REQUEST_URI']) : null;
         $this->accept_type     = $this->parseAcceptType();
         $this->authorization   = !empty($_SERVER["HTTP_AUTHORIZATION"]) ? $_SERVER["HTTP_AUTHORIZATION"] : null;
 
         $this->raw_data        = file_get_contents("php://input");
-        parse_str($this->raw_data, $this->data);
+
+        if (!empty($_SERVER['CONTENT_TYPE']) && $_SERVER['CONTENT_TYPE'] == 'application/json'){
+            $this->data = json_decode($this->raw_data, true);
+
+            if (empty($this->data)){
+                $this->data = array();
+            }
+        }else{
+            parse_str($this->raw_data, $this->data);
+        }
 
         $this->accept_language = $this->parseAcceptLanguage();
     }
@@ -88,7 +97,11 @@ class HTTPRequest implements IHTTPRequest
     }
 
     public function getHost(){
-        return !empty($_SERVER["HTTP_HOST"]) ? $_SERVER["HTTP_HOST"] : "";
+        $host = !empty($_SERVER["HTTP_HOST"]) ? $_SERVER["HTTP_HOST"] : "";
+
+        $host_parts = explode(":", $host);
+
+        return $host_parts[0];
     }
 
     public function getServerPort(){

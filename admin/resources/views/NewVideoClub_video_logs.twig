@@ -1,0 +1,84 @@
+{% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
+{% set title = ('Video club'|trans ~ ': ' ~ 'Activity log'|trans) | trans %}
+
+{% block content %}
+    <div id="iptv_list">
+        <div class="row row_no_padding">
+            <div class="box">
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                    {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
+                {% endif %}
+                <div class="box-content">
+                    <div class="box-content no-padding">
+                        <div class="dataTables_processing"></div>
+                        <table class="table dataTable no-footer table-hover table-datatable"  id="datatable-1">
+                            {% if attribute(app, 'dropdownAttribute') is defined %}
+                                {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                            {% endif %}
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script type="text/javascript" defer>
+
+    function TestTable1() {
+        $('#datatable-1').on('xhr.dt', function (e, settings, json) {
+                if (typeof (json.data) == 'object' && json.data.length >0) {
+                    var date;
+                    for (var i in json.data) {
+                        date = json.data[i]['actiontime'];
+                        if (date > 0) {
+                            date = new Date(date * 1000);
+                            json.data[i]['actiontime'] = date.toLocaleFormat("%b %d, %Y %H:%M");
+                        }
+                        json.data[i]['action'] = json.data[i]['action'].ucfirst();
+                    }
+                }
+            }).dataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/video-logs-json",
+                "data": function ( d ) {
+                    var RegExp = /video_id=(\d+)/;
+                    if (video_id = RegExp.exec(window.location.href)) {
+                        d.video_id = video_id[1];
+                    }
+                }
+            },
+            "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
+            "language": {
+                "url": "{{ app.datatable_lang_file }}"
+            },
+            {% if attribute(app, 'dropdownAttribute') is defined %}
+            {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
+            {% endif %}
+            "bFilter": true,
+            "bPaginate": true,
+			"scrollCollapse": true,
+            "bInfo":     true,
+            "order": [[ 1, "desc" ]],
+            "aoColumnDefs": [ 
+                { "searchable": false, "targets": [1, 4 ] }
+            ]
+        }).prev('.dataTables_processing').hide('');
+        $('#datatable-1').DataTable().ajax.reload();
+    }
+
+
+    function yelp() {
+        $(document).ready(function () {
+            LoadDataTablesScripts(TestTable1);
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", yelp, false);
+
+</script>
+{% endblock %}

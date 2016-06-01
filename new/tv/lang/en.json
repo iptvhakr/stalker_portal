@@ -1,0 +1,29 @@
+{
+	"meta": {
+		"charset": "utf-8",
+		"project": "stb-app 0.0.1",
+		"language": "en",
+		"plural": "(n != 1)"
+	},
+	"data": {
+		"": {
+			"Actions": "",
+			"All categories": "",
+			"By name": "",
+			"By number": "",
+			"Cancel": "",
+			"Categories": "",
+			"Channel list": "",
+			"Exit": "",
+			"Favorite": "",
+			"Menu": "Menu",
+			"Play": "",
+			"Record": "",
+			"Search": "",
+			"Sort": "",
+			"TV": "",
+			"Tv program": "",
+			"Watch TV shows, movies, tv series, news and educational programs in digital quality.": ""
+		}
+	}
+}

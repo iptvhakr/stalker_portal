@@ -1,0 +1,21 @@
+{
+	"meta": {
+		"charset": "utf-8",
+		"project": "Stalker Radio",
+		"language": "en",
+		"plural": ""
+	},
+	"data": {
+		"": {
+			"Cancel": "",
+			"Exit": "",
+			"by name": "",
+			"by number": "",
+			"menu": "",
+			"no stations": "",
+			"radio stations": "",
+			"search": "",
+			"sorting": ""
+		}
+	}
+}

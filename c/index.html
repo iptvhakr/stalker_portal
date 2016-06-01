@@ -24,7 +24,7 @@ var focus_module = '', referrer = '', single_module = [];
 window.loadRequiredFiles(load_base);
 
 function load_base(){
-    console.log('Loading load_base');
+    //console.log('Loading load_base');
     window.onerror = function(msg, url, lno){
         _debug('line: '+lno+'; msg: "'+msg+'" url: '+url);
         return true;
@@ -218,7 +218,7 @@ function init(){
         
         if (stb.player.on){
             
-            if (stb.player.con_menu.on){
+            if (stb.player.con_menu && stb.player.con_menu.on){
                 stb.player.con_menu.hide();
             }
 

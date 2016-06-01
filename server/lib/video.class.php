@@ -14,6 +14,63 @@ class Video
         return Mysql::getInstance()->from('video')->where(array('id' => $id))->get()->first();
     }
 
+    public static function getVideoByFileId($file_id){
+
+        $video_id = (int) Mysql::getInstance()->from('video_series_files')
+            ->where(array('id' => (int) $file_id))->get()->first('video_id');
+
+        if (!$video_id){
+            return null;
+        }
+
+        return self::getById($video_id);
+    }
+
+    public static function getFileById($file_id){
+        return Mysql::getInstance()->from('video_series_files')
+                    ->where(array('id' => (int) $file_id))->get()->first();
+    }
+
+    public static function getSeasonById($season_id){
+        return Mysql::getInstance()->from('video_season')
+                    ->where(array('id' => (int) $season_id))->get()->first();
+    }
+
+    public static function getEpisodeById($episode_id){
+        return Mysql::getInstance()->from('video_season_series')
+                    ->where(array('id' => (int) $episode_id))->get()->first();
+    }
+
+    public static function getQualityById($quality_id, $for_api = false){
+        $qualities = Mysql::getInstance()->from('quality')->orderby('width')->get()->all();
+
+        foreach ($qualities as $quality){
+            if ($quality['id'] == $quality_id){
+
+                  return array(
+                   'id'    => (int) $quality['id'],
+                   'code'  => $quality['num_title'],
+                   'name'  => _($quality['text_title']),
+                   'width' => (int) $quality['width'],
+                  );
+            }
+        }
+
+        return null;
+    }
+
+    public static function getQualityMap(){
+        $qualities = Mysql::getInstance()->from('quality')->orderby('width')->get()->all();
+
+        $map = array();
+
+        foreach ($qualities as $quality){
+            $map[$quality['id']] = $quality;
+        }
+
+        return $map;
+    }
+
     public static function switchOnById($id){
 
         $id = intval($id);

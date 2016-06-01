@@ -2,6 +2,8 @@
 
 namespace Stalker\Lib\RESTAPI\v2;
 
+use Stalker\Lib\Core\Mysql;
+
 class RESTApiVideoLink extends RESTApiTvChannelLink
 {
     protected $name = 'link';
@@ -30,8 +32,61 @@ class RESTApiVideoLink extends RESTApiTvChannelLink
 
         $video = \Vod::getInstance();
 
+        $has_files = (int) Mysql::getInstance()
+            ->from('video_series_files')
+            ->where(array(
+                'video_id' => $video_id
+            ))
+            ->count()
+            ->get()
+            ->counter();
+
         try{
-            $url = $video->getUrlByVideoId($video_id, $episode);
+            $file_id = 0;
+
+            if ($has_files){
+
+                if (!$episode){
+                    $file_id = (int) Mysql::getInstance()
+                        ->from('video_series_files')
+                        ->where(array(
+                            'video_id'  => $video_id,
+                            'file_type' => 'video'
+                        ))
+                        ->get()->first('id');
+                }else{
+                    $season = Mysql::getInstance()
+                        ->from('video_season')
+                        ->where(array('video_id' => $video_id))
+                        ->orderby('season_number')
+                        ->get()->first();
+
+                    if ($season){
+                        $episode_item = Mysql::getInstance()
+                            ->from('video_season_series')
+                            ->where(array(
+                                'season_id'     => $season['id'],
+                                'series_number' => $episode
+                            ))
+                            ->orderby('series_number')
+                            ->get()->first();
+
+                        if ($episode_item){
+                            $file_id = (int) Mysql::getInstance()
+                                ->from('video_series_files')
+                                ->where(array(
+                                    'video_id'  => $video_id,
+                                    'series_id' => $episode_item['id'],
+                                    'file_type' => 'video'
+                                ))
+                                ->get()->first('id');
+                        }
+                    }
+                }
+            }
+
+            $url = $video->getUrlByVideoId($video_id, $episode, '', $file_id);
+
         }catch(\Exception $e){
             throw new RESTServerError("Failed to obtain url");
         }

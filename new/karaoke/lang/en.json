@@ -1,0 +1,22 @@
+{
+	"meta": {
+		"charset": "utf-8",
+		"project": "Stalker Karaoke",
+		"language": "English",
+		"plural": "(n != 1)"
+	},
+	"data": {
+		"": {
+			"Cancel": "",
+			"Exit": "",
+			"by name": "",
+			"by number": "",
+			"by performer": "",
+			"menu": "",
+			"no songs": "",
+			"search": "",
+			"songs": "",
+			"sorting": ""
+		}
+	}
+}

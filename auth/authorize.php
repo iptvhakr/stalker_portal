@@ -42,7 +42,7 @@ if (empty($_GET['response_type']) || empty($_GET['client_id']) || $_GET['respons
 
         $auth = array_merge($auth, $access);
 
-        $additional = $access_handler->getAdditionalParams($_POST['username']);
+        $additional = $access_handler->getAdditionalParams($user);
 
         $auth = array_merge($auth, $additional);
 
@@ -61,7 +61,11 @@ if ($error){
     header("Location: auth_error#error=".$error);
     exit;
 }else if (!empty($auth)){
-    header("Location: auth_success#".$auth);
+    if (isset($_GET['redirect_uri'])){
+        header("Location: ".$_GET['redirect_uri']."#".$auth);
+    }else{
+        header("Location: auth_success#".$auth);
+    }
     exit;
 }
 

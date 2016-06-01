@@ -500,7 +500,7 @@ $(document).ready(function () {
             .on('click', '.collapse-link', function (e) {
                 e.preventDefault();
                 var box = $(this).closest('div.box');
-                var button = $(this).find('i');
+                var button = $(this).find('i.fa-chevron-up i.fa-chevron-down');
                 var content = box.find('div.box-content');
                 content.slideToggle('fast');
                 button.toggleClass('fa-chevron-up').toggleClass('fa-chevron-down');
@@ -1125,6 +1125,28 @@ function ajaxPostSend(url, sendData, alertMsg, consoleMsg, async){
             return el.apply(this, arguments);
         };
     });
+})(jQuery);
+
+(function($) {
+    $.fn.selectRange = function(start, end) {
+        if(end === undefined) {
+            end = start;
+        }
+        return this.each(function() {
+            if('selectionStart' in this) {
+                this.selectionStart = start;
+                this.selectionEnd = end;
+            } else if(this.setSelectionRange) {
+                this.setSelectionRange(start, end);
+            } else if(this.createTextRange) {
+                var range = this.createTextRange();
+                range.collapse(true);
+                range.moveEnd('character', end);
+                range.moveStart('character', start);
+                range.select();
+            }
+        });
+    };
 })(jQuery);
 
 function setDropdownAttribute(sendData){

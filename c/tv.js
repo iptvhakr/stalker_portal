@@ -1924,7 +1924,7 @@
                             return function(){
                                 _debug('genre.id', genre.id);
 
-                                if (genre.alias == 'for adults'){
+                                if (genre.censored){
 
                                     module.tv.parent_password_promt.callback = function(){
                                         main_menu.hide();

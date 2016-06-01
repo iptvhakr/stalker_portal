@@ -1,0 +1,747 @@
+.component.panelEx.main.position-right {
+  left: 240px;
+}
+.component.panelEx.main.position-left {
+  left: 90px;
+}
+.component.panelEx.right > .title {
+  background: #151515;
+  -webkit-transform: rotate(90deg);
+  width: 360px;
+  position: absolute;
+  top: 157px;
+  right: -158px;
+  text-align: center;
+  padding: 0;
+  z-index: 1;
+}
+.component.panelEx.left > .title {
+  background: #151515;
+  -webkit-transform: rotate(-90deg);
+  width: 360px;
+  position: absolute;
+  top: 157px;
+  left: -158px;
+  text-align: center;
+  padding: 0;
+  z-index: 1;
+}
+.component.panelEx.expand > .title {
+  width: inherit;
+  -webkit-transform: none;
+  position: static;
+  text-align: left;
+  padding-left: 20px;
+}
+html,
+body {
+  width: 720px;
+  height: 576px;
+  overflow: hidden;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+  font-family: Ubuntu, sans-serif;
+  font-size: 18px;
+  -webkit-user-select: none;
+}
+table {
+  border: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+table td {
+  padding: 0;
+}
+.maxh {
+  height: 100%;
+}
+.maxw {
+  width: 100%;
+}
+a {
+  text-decoration: none;
+}
+.component.hidden {
+  display: none !important;
+}
+.component div {
+  -webkit-box-sizing: border-box;
+}
+.component.button {
+  display: inline-table;
+  height: 36px;
+  cursor: pointer;
+}
+.component.button .icon {
+  height: 36px;
+  width: 36px;
+  display: table-cell;
+  background: no-repeat center center;
+}
+.component.button .text {
+  display: table-cell;
+  padding: 4.8px 7px;
+  vertical-align: middle;
+  text-align: center;
+}
+.component.button .text:empty {
+  padding: 0;
+}
+.component.checkBox {
+  cursor: pointer;
+  display: inline-block;
+  width: 18px;
+  height: 21.6px;
+  line-height: 21.6px;
+  vertical-align: bottom;
+}
+.component.grid table {
+  width: 100%;
+  table-layout: fixed;
+}
+.component.grid table td.item {
+  cursor: pointer;
+  padding: 2.4px 5px;
+  vertical-align: middle;
+  text-align: center;
+}
+.component.grid table td.item.focus {
+  color: black;
+}
+.component.grid table td.item.focus.mark {
+  color: white;
+}
+.component.grid table td.item.disable {
+  color: grey;
+}
+.component.input {
+  width: 200px;
+  height: 36px;
+  font-size: 20px;
+  color: #000;
+  display: table;
+  table-layout: fixed;
+}
+.component.input .line {
+  cursor: text;
+  display: table-cell;
+  vertical-align: middle;
+  padding: 0 3px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.component.input .line > .char,
+.component.input .line > .placeholder,
+.component.input .line > .caret {
+  display: inline-block;
+  vertical-align: middle;
+}
+.component.input .line > .caret {
+  height: 80%;
+  width: 2px;
+  margin-left: -2px;
+}
+.component.input .line > .placeholder {
+  color: #999;
+}
+.component.input.focus .line > .caret {
+  background-color: #000000;
+  -webkit-animation: inputCursor 1s;
+  -webkit-animation-iteration-count: infinite;
+}
+@-webkit-keyframes inputCursor {
+  from {
+    background-color: #000000;
+  }
+  to {
+    background-color: transparent;
+  }
+}
+.component.list {
+  width: 100%;
+}
+.component.list .item {
+  cursor: pointer;
+  padding: 0;
+  vertical-align: middle;
+  height: 38.4px;
+  line-height: 38.4px;
+}
+.component.list .item.mark {
+  color: black;
+}
+.component.list.horizontal {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+}
+.component.list.horizontal .item {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}
+.component.modalBox {
+  width: 720px;
+  height: 576px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: black;
+  display: table;
+}
+.component.modalBox > div {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+.component.modalBox > div > div.body {
+  display: inline-block;
+  overflow: hidden;
+  background-color: #333;
+  padding: 3%;
+  max-width: 80%;
+  max-height: 80%;
+}
+.component.modalMessage {
+  width: 720px;
+  height: 576px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: table;
+  z-index: 10;
+}
+.component.modalMessage.active > div.alignBox > div > div.overlay {
+  display: none;
+}
+.component.modalMessage > div.alignBox {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+.component.modalMessage > div.alignBox > div {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  max-width: 80%;
+  min-width: 172.5px;
+  max-height: 80%;
+}
+.component.modalMessage > div.alignBox > div > div.header {
+  height: 50px;
+  line-height: 50px;
+  font-size: 24px;
+  padding: 0 20px;
+}
+.component.modalMessage > div.alignBox > div > div.header .icon {
+  height: 36px;
+  width: 36px;
+  display: table-cell;
+  background: no-repeat center center;
+}
+.component.modalMessage > div.alignBox > div > div.header .text {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+.component.modalMessage > div.alignBox > div > div.header .text:empty {
+  padding: 0;
+}
+.component.modalMessage > div.alignBox > div > div.body > .component.list .item {
+  height: 45px;
+  line-height: 45px;
+  padding: 0 20px;
+}
+.component.modalMessage > div.alignBox > div > div.body > .component.list .item .component.checkBox,
+.component.modalMessage > div.alignBox > div > div.body > .component.list .item .component.layout > div.icon {
+  margin-left: -20px;
+  width: 45px;
+  height: 45px;
+  line-height: 45px;
+  text-align: center;
+}
+.component.modalMessage > div.alignBox > div > div.overlay {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.component.page {
+  width: 720px;
+  height: 576px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  visibility: hidden;
+  overflow: hidden;
+}
+.component.page.active {
+  visibility: inherit;
+}
+.component.panel {
+  padding: 7.2px 6px;
+}
+.component.progressBar {
+  height: 19.2px;
+}
+.component.progressBar .value {
+  height: 100%;
+}
+.component.scrollBar {
+  display: inline-block;
+  height: 100%;
+  width: 2px;
+  vertical-align: bottom;
+}
+.component.scrollBar .thumb {
+  display: block;
+  width: 2px;
+  min-height: 2px;
+}
+.component.scrollBar .thumb.hidden {
+  display: none;
+}
+.component.scrollBar.horizontal {
+  display: block;
+  height: 4.8px;
+  width: 100%;
+}
+.component.scrollBar.horizontal .thumb {
+  display: inline-block;
+  vertical-align: top;
+  height: 4.8px;
+  min-width: 4.8px;
+}
+.component.widget {
+  position: absolute;
+}
+.component.widget.hidden {
+  visibility: hidden;
+}
+.component.tabItem {
+  position: absolute;
+  visibility: inherit;
+  width: inherit;
+  height: inherit;
+}
+.component.tabItem.hidden {
+  visibility: hidden;
+}
+.component.tabList {
+  position: relative;
+}
+.component.layerItem {
+  position: absolute;
+  width: inherit;
+  height: inherit;
+  display: block;
+  visibility: inherit;
+}
+.component.layerItem.hidden {
+  display: block;
+  visibility: hidden;
+}
+.component.layerList {
+  position: relative;
+}
+.component.layout {
+  display: table;
+  width: 100%;
+}
+.component.layout > div {
+  display: table-cell;
+  text-align: left;
+  vertical-align: middle;
+  height: 100%;
+}
+.component.list.checkList > .item .checkBoxWrapper > .component.checkBox {
+  display: block;
+}
+.component.list.checkList > .item .checkBoxWrapper > .component.checkBox:after {
+  font-family: 'icons';
+  display: block;
+  content: 'Y';
+}
+.component.list.checkList > .item .checkBoxWrapper > .component.checkBox.checked:after {
+  content: 'Z';
+}
+.component.list.radioList > .item .checkBoxWrapper > .component.checkBox {
+  display: block;
+}
+.component.list.radioList > .item .checkBoxWrapper > .component.checkBox:after {
+  font-family: 'icons';
+  display: block;
+  content: 'W';
+}
+.component.list.radioList > .item .checkBoxWrapper > .component.checkBox.checked:after {
+  content: 'X';
+}
+.component.scrollArea {
+  overflow: hidden;
+  height: 100%;
+  position: relative;
+}
+.component.scrollArea > .body {
+  position: absolute;
+}
+.component.valueList {
+  border: 1px solid grey;
+  text-align: center;
+}
+.component.valueList.focus {
+  border-color: orange;
+}
+.component.panelSet {
+  width: 100%;
+  height: 100%;
+}
+.component.panelSet.hidden {
+  display: block!important;
+  visibility: hidden;
+}
+.component.panelEx {
+  width: 230px;
+  height: 360px;
+  box-sizing: border-box;
+  padding: 0;
+  display: inline-block;
+  position: absolute;
+  z-index: 0;
+}
+.component.panelEx > .body {
+  overflow: hidden;
+}
+.component.panelEx > .title {
+  height: 45px;
+  line-height: 45px;
+  position: relative;
+  padding-left: 20px;
+  text-transform: uppercase;
+  background-repeat: repeat-x;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.component.panelEx .list .item {
+  height: 45px;
+  line-height: 45px;
+  font-size: 16.2px;
+}
+.component.panelEx .list .item .icon {
+  font-size: 31.5px;
+}
+.component.panelEx.main {
+  width: 390px;
+  top: 80px;
+  left: 200px;
+  height: 400px;
+  z-index: 2;
+}
+.component.panelEx.main .list .item {
+  height: 50px;
+  line-height: 50px;
+  font-size: 18px;
+}
+.component.panelEx.main .list .item .icon {
+  font-size: 22.5px;
+}
+.component.panelEx.main > .title {
+  height: 50px;
+  line-height: 50px;
+  font-size: 24px;
+}
+.component.panelEx.main.size2 {
+  width: 430px;
+}
+.component.panelEx.main.size3 {
+  width: 430px;
+}
+.component.panelEx.left {
+  top: 100px;
+  left: 50px;
+}
+.component.panelEx.right {
+  top: 100px;
+  right: 50px;
+}
+.component.panelEx > .overlay {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.component.panelEx .component.scrollBar {
+  display: none;
+}
+.component.panelEx.active > .overlay {
+  visibility: hidden;
+}
+.component.panelEx.active .component.scrollBar {
+  display: block;
+}
+.component.panelEx.top {
+  z-index: 3;
+}
+.component.panelEx > .shadow {
+  width: 10px;
+  position: absolute;
+  top: 0;
+  z-index: -1;
+  display: none;
+}
+.component.panelEx > .shadow.left {
+  left: -10px;
+}
+.component.panelEx > .shadow.right {
+  right: -10px;
+}
+.component.panelEx.leftShadow > .shadow.left {
+  display: block;
+}
+.component.panelEx.rightShadow > .shadow.right {
+  display: block;
+}
+.component.panelEx.active > .shadow {
+  z-index: 1;
+}
+.component.list.layoutList {
+  position: relative;
+}
+.component.list.layoutList > .body > .item > .layout > .icon {
+  width: 45px;
+  font-family: 'icons';
+  text-align: center;
+}
+.component.list.layoutList > .body > .item > .layout > .icon.yellow {
+  color: #FEC500;
+}
+.component.list.layoutList > .body > .item > .layout > .icon.red {
+  color: #FF0000;
+}
+.component.list.layoutList > .body > .item > .layout > .icon.green {
+  color: #04E900;
+}
+.component.list.layoutList > .body > .item > .layout > .icon.blue {
+  color: #1CACFF;
+}
+.component.list.layoutList > .body > .item > .layout > .number {
+  width: 45px;
+}
+.component.list.layoutList .noData {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  display: block;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.component.list.layoutList .noData:before {
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  content: "";
+}
+.component.list.layoutList .noData > div {
+  display: inline-block;
+  vertical-align: middle;
+  width: 100%;
+  text-align: center;
+}
+.component.list.layoutList .noData.hidden {
+  visibility: hidden;
+}
+.component.footer {
+  width: 580px;
+  height: 32px;
+  line-height: 32px;
+  position: absolute;
+  left: 70px;
+  bottom: 34px;
+  display: table;
+  z-index: 10;
+}
+.component.footer > table {
+  vertical-align: middle;
+  text-align: center;
+}
+.component.footer > table > tr > td {
+  width: 32px;
+}
+.component.footer > table > tr > td.central {
+  width: 516px;
+}
+.component.footer > table > tr > td.central > .wrapper {
+  height: 32px;
+  visibility: inherit;
+}
+.component.footer > table > tr > td.central > .wrapper.hidden {
+  display: none;
+}
+.component.footer > table > tr > td.central > .wrapper > .button {
+  display: inline-block;
+  height: 32px;
+  padding: 0 10px 0 7.5px;
+}
+.component.footer > table > tr > td.central > .wrapper > .button.hidden {
+  display: none;
+}
+.component.footer > table > tr > td.central > .wrapper > .button .title {
+  padding-left: 5px;
+}
+.component.footer > table > tr > td.central > .wrapper > .button .f1,
+.component.footer > table > tr > td.central > .wrapper > .button .f2,
+.component.footer > table > tr > td.central > .wrapper > .button .f3,
+.component.footer > table > tr > td.central > .wrapper > .button .f4 {
+  width: 32px;
+  float: left;
+}
+.component.footer > table > tr > td .icon {
+  display: block;
+  text-align: left;
+  background: no-repeat center center;
+}
+.component.footer > table > tr > td .icon.info {
+  text-align: right;
+}
+.component.footer > table > tr > td .iconImg {
+  height: 32px;
+  line-height: 32px;
+  width: 32px;
+  text-align: center;
+}
+.component.footer > table > tr > td .title {
+  display: block;
+  float: right;
+}
+.component.clock {
+  color: #fff;
+  height: 16px;
+  line-height: 28px;
+  padding-right: 20px;
+  position: absolute;
+  right: 50px;
+  text-align: right;
+  top: 80px;
+  width: 228px;
+  z-index: 100;
+}
+#pageMainRadioTitle {
+  height: 20px;
+  left: 50px;
+  line-height: 20px;
+  overflow: hidden;
+  padding-right: 20px;
+  position: absolute;
+  top: 80px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 230px;
+}
+.scrollBar {
+  height: 350px !important;
+  position: absolute;
+  right: 5px;
+  top: 50px;
+}
+.component.layout {
+  height: inherit !important;
+  line-height: inherit !important;
+}
+.songPerformerListBlock {
+  max-width: 215px;
+  min-width: 215px;
+  overflow: hidden;
+  padding-right: 20px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 215px;
+}
+.songNameListBlock {
+  max-width: 215px;
+  min-width: 215px;
+  overflow: hidden;
+  padding-right: 20px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 215px;
+}
+.placeholder,
+.panelEx.left .item:last-child .component.layout div:last-child,
+.modalMessage td:first-letter {
+  text-transform: capitalize;
+}
+html {
+  overflow: auto;
+}
+div.develop canvas {
+  cursor: none;
+  visibility: hidden;
+  position: absolute;
+  width: 720px;
+  height: 576px;
+}
+div.develop canvas.active {
+  visibility: visible;
+  z-index: 1000;
+}
+body.develop {
+  outline: 1px dashed #005000;
+  outline-offset: -1px;
+}
+body.develop .component {
+  outline: 1px dashed #005000;
+  outline-offset: -1px;
+}
+body.develop .component.focus {
+  outline: 1px dashed red;
+}
+body.develop .component.wired {
+  outline-width: 3px;
+  outline-style: dotted;
+}
+body.develop .component.wired div,
+body.develop .component.wired td {
+  outline: 1px dashed grey;
+  outline-offset: -1px;
+}
+body.develop .component.button {
+  outline: none;
+}
+body.develop .component.button .text,
+body.develop .component.button .icon {
+  outline: 1px dashed #005000;
+  outline-offset: -1px;
+}
+body.develop .component.button.focus .text,
+body.develop .component.button.focus .icon {
+  outline: 1px dashed red;
+}
+body.develop .component.list > .item {
+  outline: 1px dashed #000000;
+  outline-offset: -1px;
+}
+body.develop .component.list > .item.focus {
+  outline: 1px dashed orange;
+  outline-offset: -1px;
+}
+body.develop .component.grid td.item {
+  outline: 1px dashed #000000;
+  outline-offset: -1px;
+}
+body.develop .component.grid td.item.focus {
+  outline: 1px dashed orange;
+  outline-offset: -1px;
+}
+body.develop .component.input > .body {
+  outline: 1px dashed #000;
+}
+body.develop .component.focus.input > .body {
+  outline: 1px dashed red;
+}
+
+/*# sourceMappingURL=develop.576.css.map */

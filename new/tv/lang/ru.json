@@ -1,0 +1,29 @@
+{
+	"meta": {
+		"charset": "utf-8",
+		"project": "stb-app 0.0.1",
+		"language": "ru",
+		"plural": "(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)"
+	},
+	"data": {
+		"": {
+			"Actions": "Действия",
+			"All categories": "Все категории",
+			"By name": "По имени",
+			"By number": "По номеру",
+			"Cancel": "Отмена",
+			"Categories": "Категории",
+			"Channel list": "Список каналов",
+			"Exit": "Выход",
+			"Favorite": "Избранное",
+			"Menu": "Меню",
+			"Play": "Смотреть",
+			"Record": "Запись",
+			"Search": "Поиск",
+			"Sort": "Сортировка",
+			"TV": "",
+			"Tv program": "Программа передач",
+			"Watch TV shows, movies, tv series, news and educational programs in digital quality.": "Смотрите телепередачи, фильмы, сериалы, новостные и познавательные программы в цифровом качестве."
+		}
+	}
+}

@@ -1,0 +1,157 @@
+{% extends 'layout.twig' %}
+{% set title = ('Video club'|trans ~ ': ' ~ (app.adsEdit ? ('Edit commercial'|trans ~ " '"~ app.adsTitle ~ "'"): 'Add commercial'|trans)) | trans %}
+{% set active_alias = 'video-advertise' %}
+
+{% block content %}
+    <div id="add_channel">
+        {{ form_start(app['form'], {'method': 'POST', 'action': (app.request.baseUrl ~ '/' ~ app.controller_alias  ~ '/' ~ app.action_alias) | trans, 'attr': {'class': 'form-horizontal', 'role': 'form', 'id': 'form_'}}) }}
+        <div class="bg-danger">
+            <div class="bg-danger">
+                {{ form_errors(app['form']) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="box">
+                    <div class="box-content">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'Title'|trans }}<span class="icon-required">*</span></label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].id, {'attr': {'class': 'form-control'}}) }}
+                                    {{ form_widget(app['form'].title, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].title) }}
+                                    </div>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">{{ 'You can use letters, digits'|trans }}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'Address'|trans }}<span class="icon-required">*</span></label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].url, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].url) }}
+                                    </div>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">{{ 'Format: solution+URL. Example: ffmpeg http://example_of_link'|trans }}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'Weight'|trans }}<span class="icon-required">*</span></label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].weight, {'attr': {'class': 'form-control', 'data-validation':'required', 'value':'1'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].weight) }}
+                                    </div>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">{{ 'Display frequency rate'|trans }}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'Forbidden for categories'|trans }}</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].denied_categories, {'attr': {'class': 'populate placeholder'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].denied_categories) }}
+                                    </div>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">{{ "Show categories that won't see the advertising"|trans }}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'Necessary to see'|trans }}</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-2">
+                                    {{ form_widget(app['form'].must_watch, {'attr': {'class': 'populate placeholder'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].must_watch) }}
+                                    </div>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">{{ 'Percentage of the total length of video that user has to watch to skip commercials.'|trans }}</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="box-content">
+                        <div class="row">
+                            <div class=" pull-right">
+                                {{ form_widget(app['form'].save, { 'label': 'Save'|trans , attr: {'class': 'btn btn-success pull-right'}}) }}
+                                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/video-advertise" class="btn btn-default pull-right">{{ 'Cancel'|trans }}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="">
+            {{ form_rest(app.form) }}
+        </div>
+        {{ form_end(app['form']) }}  
+    </div>
+    <script type="text/javascript" defer>
+
+        var conf = {
+            form: '#form_',
+            lang : '{{ app.language }}',
+            showHelpOnFocus : true,
+            validateHiddenInputs: true,
+            ignore: ['.ignore'],
+            modules: 'jsconf',
+            onSuccess: function () {
+                $(this.form).get(0).submit();
+                return false;
+            },
+            onError: function () {
+                return false;
+            }
+        };
+
+        function DemoSelect2() {
+            $.getScript("{{ app.request.baseUrl }}/plugins/select2/i18n/{% if app["language"] %}{{ app["language"] }}{% else %}en{% endif %}.js", function() {
+                $.fn.select2.defaults.set('dropdownAutoWidth', 'false');
+                $.fn.select2.defaults.set('width', '100%');
+                $('#form_denied_categories').select2({minimumResultsForSearch: -1});
+                $('#form_must_watch').select2({minimumResultsForSearch: -1});
+            });
+        }
+
+        function yelp() {
+            $(document).ready(function () {
+
+                $.validate(conf);
+
+                LoadSelect2Script(DemoSelect2);
+
+                $(document).on("click", "#form_save", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+
+                    if ($(conf.form).isValid({}, conf, true)) {
+                        conf.onSuccess();
+                    } else {
+                        conf.onError();
+                    }
+                    return false;
+                });
+
+            });
+        }
+        document.addEventListener("DOMContentLoaded", yelp, false);
+    </script>
+{% endblock %}

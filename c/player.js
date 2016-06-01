@@ -2393,7 +2393,7 @@ player.prototype.play = function(item){
 
     _debug('stb.cur_place', stb.cur_place);
 
-    if (this.media_type == 'stream' && !stb.player.cur_media_item.hasOwnProperty('series')){
+    if (this.media_type == 'stream' && !stb.player.cur_media_item.hasOwnProperty('series') && !stb.player.cur_media_item.hasOwnProperty('is_file')){
 
         if (item.hasOwnProperty('open') && !item.open){
             _debug('channel is closed');
@@ -2485,6 +2485,12 @@ player.prototype.play = function(item){
         var series_number = item.cur_series || 0;
         if (stb.player.cur_media_item.rtsp_url) {
             cmd = '/media/'+this.cur_media_item.id+'.mpg';
+
+            if (this.cur_media_item.hasOwnProperty('position')){
+                cmd += ' position:'+this.cur_media_item.position;
+            }
+        }else if(stb.player.cur_media_item.is_file){
+            cmd = '/media/file_'+this.cur_media_item.id+'.mpg';
 
             if (this.cur_media_item.hasOwnProperty('position')){
                 cmd += ' position:'+this.cur_media_item.position;

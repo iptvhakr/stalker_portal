@@ -75,7 +75,7 @@ class Kinopoisk implements \Stalker\Lib\StbApi\vclubinfo
         }
 
         if (empty($movie_info['name'])){
-            throw new KinopoiskException("Movie name in '".$movie_url."' not found", $page);
+            throw new KinopoiskException(sprintf(_("Movie name in '%s' not found"), $movie_url), $page);
         }
 
         // Original name
@@ -206,7 +206,7 @@ class Kinopoisk implements \Stalker\Lib\StbApi\vclubinfo
         $ch = curl_init();
 
         if ($ch === false){
-            throw new KinopoiskException("Curl initialization error", curl_error($ch));
+            throw new KinopoiskException(_("Curl initialization error"), curl_error($ch));
         }
 
         $orig_name = iconv("utf-8", "windows-1251", $orig_name);
@@ -246,7 +246,7 @@ class Kinopoisk implements \Stalker\Lib\StbApi\vclubinfo
         curl_close($ch);
 
         if ($response === false){
-            throw new KinopoiskException("Curl exec failure", curl_error($ch));
+            throw new KinopoiskException(_("Curl exec failure"), curl_error($ch));
         }
 
         if (preg_match("/Location: ([^\s]*)/", $response, $match)){
@@ -254,17 +254,17 @@ class Kinopoisk implements \Stalker\Lib\StbApi\vclubinfo
         }
 
         if (empty($location)){
-            throw new KinopoiskException("Empty location header", $response);
+            throw new KinopoiskException(_("Empty location header"), $response);
         }
 
         if (strpos($location, 'http') === 0){
-            throw new KinopoiskException("Wrong location header. Location: ('".$location."')", $response);
+            throw new KinopoiskException(_("Wrong location header.") . " " . sprintf(_("Location: ('%s')"), $location), $response);
         }
 
         if (preg_match("/\/([\d]*)\/$/", $location, $match)){
             $movie_id = $match[1];
         }else{
-            throw new KinopoiskException("Location does not contain movie id. Location: ('".$location."')", $response);
+            throw new KinopoiskException(_("Location does not contain movie id.") . " " . sprintf(_("Location: ('%s')"), $location), $response);
         }
 
         return self::getInfoById($movie_id);
@@ -294,7 +294,7 @@ class Kinopoisk implements \Stalker\Lib\StbApi\vclubinfo
         $xml = @simplexml_load_file($xml_url);
 
         if (!$xml){
-            throw new KinopoiskException("Can't get rating from ".$xml_url."; ".implode(', ', libxml_get_errors()), '');
+            throw new KinopoiskException(_("Can't get rating from") . " " .$xml_url."; ".implode(', ', libxml_get_errors()), '');
         }
 
         $result['rating_kinopoisk']       = (string) $xml->kp_rating;
