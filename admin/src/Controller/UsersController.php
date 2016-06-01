@@ -13,28 +13,6 @@ use Stalker\Lib\Core\Stb;
 
 class UsersController extends \Controller\BaseStalkerController {
 
-    protected $mediaTypeName = array(
-        0 => '--',
-        1 => 'TV',
-        2 => 'Video',
-        3 => 'Karaoke',
-        4 => 'Audio',
-        5 => 'Radio',
-        6 => 'My records',
-        7 => 'Records',
-        9 => 'ad',
-        10 => 'Media browser',
-        11 => 'Tv archive',
-        12 => 'Records',
-        14 => 'TimeShift',
-        20 => 'Infoportal',
-        21 => 'Infoportal',
-        22 => 'Infoportal',
-        23 => 'Infoportal',
-        24 => 'Infoportal',
-        25 => 'Infoportal'
-    );
-    private $allState = array(array('id' => 2, 'title' => 'Offline'), array('id' => 1, 'title' => 'Online'));
     private $watchdog = 0;
     private $userFields = array(
         'users.id as `id`', "`mac`", "`ip`", "`country`", "`login`", "`ls`", "`fname`", "reseller.id as `reseller_id`", "`theme`",
@@ -46,39 +24,11 @@ class UsersController extends \Controller\BaseStalkerController {
         "users.`created` as `created`",
         "`account_balance`", "`now_playing_type`", "IF(now_playing_type = 2 and storage_name, CONCAT('[', storage_name, ']', now_playing_content), now_playing_content) as `now_playing_content`"
     );
-    private $logObjectsTypes = array(
-        'itv' => 'IPTV каналы',
-        'video' => 'Видео клуб',
-        'unknown' => '',
-    );
-    protected $formEvent = array();
-    protected $hiddenEvent = array();
 
     public function __construct(Application $app) {
         parent::__construct($app, __CLASS__);
         $this->watchdog = Config::get('watchdog_timeout') * 2;
         $this->userFields[] = "((UNIX_TIMESTAMP() - UNIX_TIMESTAMP(`keep_alive`)) <= $this->watchdog) as `state`";
-
-        $this->formEvent = array(
-            array("id" => "send_msg",           "title" => $this->setLocalization('Sending a message') ),
-            array("id" => "reboot",             "title" => $this->setLocalization('Reboot') ),
-            array("id" => "reload_portal",      "title" => $this->setLocalization('Restart the portal') ),
-            array("id" => "update_channels",    "title" => $this->setLocalization('Update channel list') ),
-            array("id" => "play_channel",       "title" => $this->setLocalization('Playback channel') ),
-            array("id" => "play_radio_channel", "title" => $this->setLocalization('Playback radio channel') ),
-            array("id" => "mount_all_storages", "title" => $this->setLocalization('Mount all storages') ),
-            array("id" => "cut_off",            "title" => $this->setLocalization('Turn off') ),
-            array("id" => "update_image",       "title" => $this->setLocalization('Image update') )
-        );
-        $this->hiddenEvent = array(
-            /*array("id" => "send_msg_with_video",        "title" => $this->setLocalization('Sending a message with video') ),*/
-            array("id" => "update_epg",                 "title" => $this->setLocalization('EPG update') ),
-            array("id" => "update_subscription",        "title" => $this->setLocalization('Subscribe update') ),
-            array("id" => "update_modules",             "title" => $this->setLocalization('Modules update') ),
-            array("id" => "cut_on",                     "title" => $this->setLocalization('Turn on') ),
-            array("id" => "show_menu",                  "title" => $this->setLocalization('Show menu') ),
-            array("id" => "additional_services_status", "title" => $this->setLocalization('Status additional service') )
-        );
 
         if (empty($this->app['reseller'])) {
             $this->userFields[] = "reseller.name as `reseller_name`";
@@ -209,7 +159,10 @@ class UsersController extends \Controller\BaseStalkerController {
             array('id' => 1, 'title' => $this->setLocalization('on')),
             array('id' => 2, 'title' => $this->setLocalization('off'))
         );
-        $this->app['allState'] = $this->allState;
+        $this->app['allState'] = array(
+            array('id' => 2,'title' => 'Offline'),
+            array('id' => 1,'title' => 'Online')
+        );
         $this->app['consoleGroup'] = $this->db->getConsoleGroup(array('select' => $this->getUsersGroupsConsolesListFields()));
 
         $attribute = $this->getUsersListDropdownAttribute();
@@ -220,7 +173,27 @@ class UsersController extends \Controller\BaseStalkerController {
         }
 
         $this->app['hide_media_info'] = Config::getSafe('hide_media_info_for_offline_stb', false);
-        $this->app['mediaTypeName'] = $this->setLocalization($this->mediaTypeName);
+        $this->app['mediaTypeName'] = $this->setLocalization(array(
+            0 => '--',
+            1 => 'TV',
+            2 => 'Video',
+            3 => 'Karaoke',
+            4 => 'Audio',
+            5 => 'Radio',
+            6 => 'My records',
+            7 => 'Records',
+            9 => 'ad',
+            10 => 'Media browser',
+            11 => 'Tv archive',
+            12 => 'Records',
+            14 => 'TimeShift',
+            20 => 'Infoportal',
+            21 => 'Infoportal',
+            22 => 'Infoportal',
+            23 => 'Infoportal',
+            24 => 'Infoportal',
+            25 => 'Infoportal'
+        ));
 
         if (empty($this->app['reseller'])) {
             $resellers = array(array('id' => '-', 'name' => $this->setLocalization('Empty')));
@@ -458,8 +431,8 @@ class UsersController extends \Controller\BaseStalkerController {
 
         $this->app['consoleGroup'] = $this->db->getConsoleGroup(array('select' => $this->getUsersGroupsConsolesListFields()));
 
-        $this->app['formEvent'] = $this->formEvent;
-        $this->app['allEvent'] = array_merge($this->formEvent, $this->hiddenEvent);
+        $this->app['formEvent'] = $this->getFormEvent();
+        $this->app['allEvent'] = array_merge($this->getFormEvent(), $this->getHiddenEvent());
 
         $filter_set = \Filters::getInstance();
         $filter_set->setResellerID($this->app['reseller']);
@@ -1993,29 +1966,34 @@ class UsersController extends \Controller\BaseStalkerController {
     }
 
     private function setLogObjects(&$data) {
+        $logObjectsTypes = array(
+            'itv' => $this->setLocalization('IPTV channels'),
+            'video' => $this->setLocalization('Video club'),
+            'unknown' => '',
+        );
         while (list($key, $row) = each($data)) {
             if ($row['action'] == 'play') {
                 $sub_param = substr($row['param'], 0, 3);
                 if ($sub_param == 'rtp') {
-                    $data[$key]['type'] = $this->logObjectsTypes['itv'];
+                    $data[$key]['type'] = $logObjectsTypes['itv'];
                     $chanel = $this->db->getITV(array('cmd' => $row['param']));
                     $data[$key]['object'] = $chanel['name'];
                 } elseif ($sub_param == 'aut') {
-                    $data[$key]['type'] = $this->logObjectsTypes['video'];
+                    $data[$key]['type'] = $logObjectsTypes['video'];
                     preg_match("/auto \/media\/(\d+)\.[a-z]*$/", $row['param'], $tmp_arr);
                     if (!empty($tmp_arr[1])) {
                         $media = $this->db->getVideo(array('id' => $tmp_arr[1]));
                         $data[$key]['object'] = $media['name'];
                     } else {
-                        $data[$key]['type'] = $this->logObjectsTypes['unknown'];
+                        $data[$key]['type'] = $logObjectsTypes['unknown'];
                         $data[$key]['object'] = '';
                     }
                 } else {
-                    $data[$key]['type'] = $this->logObjectsTypes['unknown'];
+                    $data[$key]['type'] = $logObjectsTypes['unknown'];
                     $data[$key]['object'] = '';
                 }
             } else {
-                $data[$key]['type'] = $this->logObjectsTypes['unknown'];
+                $data[$key]['type'] = $logObjectsTypes['unknown'];
                 $data[$key]['object'] = (!empty($row['param']) ? $row['param'] : "");
             }
         }
@@ -2141,5 +2119,76 @@ class UsersController extends \Controller\BaseStalkerController {
             array('name' => 'last_change_status','title' => $this->setLocalization('Time'), 'checked' => TRUE)
         );
         return $attribute;
+    }
+
+    private function getFormEvent() {
+        return array(
+            array(
+                "id" => "send_msg",
+                "title" => $this->setLocalization('Sending a message')
+            ),
+            array(
+                "id" => "reboot",
+                "title" => $this->setLocalization('Reboot')
+            ),
+            array(
+                "id" => "reload_portal",
+                "title" => $this->setLocalization('Restart the portal')
+            ),
+            array(
+                "id" => "update_channels",
+                "title" => $this->setLocalization('Update channel list')
+            ),
+            array(
+                "id" => "play_channel",
+                "title" => $this->setLocalization('Playback channel')
+            ),
+            array(
+                "id" => "play_radio_channel",
+                "title" => $this->setLocalization('Playback radio channel')
+            ),
+            array(
+                "id" => "mount_all_storages",
+                "title" => $this->setLocalization('Mount all storages')
+            ),
+            array(
+                "id" => "cut_off",
+                "title" => $this->setLocalization('Turn off')
+            ),
+            array(
+                "id" => "update_image",
+                "title" => $this->setLocalization('Image update')
+            )
+        );
+    }
+
+    private function getHiddenEvent() {
+        return array(
+            /*array("id" => "send_msg_with_video",        "title" => $this->setLocalization('Sending a message with video') ),*/
+            array(
+                "id" => "update_epg",
+                "title" => $this->setLocalization('EPG update')
+            ),
+            array(
+                "id" => "update_subscription",
+                "title" => $this->setLocalization('Subscribe update')
+            ),
+            array(
+                "id" => "update_modules",
+                "title" => $this->setLocalization('Modules update')
+            ),
+            array(
+                "id" => "cut_on",
+                "title" => $this->setLocalization('Turn on')
+            ),
+            array(
+                "id" => "show_menu",
+                "title" => $this->setLocalization('Show menu')
+            ),
+            array(
+                "id" => "additional_services_status",
+                "title" => $this->setLocalization('Status additional service')
+            )
+        );
     }
 }

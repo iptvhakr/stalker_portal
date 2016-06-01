@@ -53,35 +53,8 @@
     </tr>
 [% } %]
 </script>
-<script defer="">
+<script type="text/javascript" defer="defer">
     function loadFileUploadScripts(callbackFileUpload){
-        $.each([
-            "//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/themes/vader/jquery-ui.css",
-            "//blueimp.github.io/Gallery/css/blueimp-gallery.min.css",
-            "{{app.request.baseUrl}}/plugins/jquery-file-upload/css/jquery.fileupload.css",
-            "{{app.request.baseUrl}}/plugins/jquery-file-upload/css/jquery.fileupload-ui.css"
-        ], function(){
-            $("head").append($("<link rel='stylesheet' href='"+this+"' type='text/css' />"));
-        });
-
-        var tempAsync = $.ajaxSettings.async;
-        $.each([
-            'load-image.all.min.js',
-            'canvas-to-blob.min.js',
-            'jquery.blueimp-gallery.min.js',
-            'jquery.iframe-transport.js',
-            'jquery.fileupload.js',
-            'jquery.fileupload-process.js',
-            'jquery.fileupload-image.js',
-            'jquery.fileupload-validate.js',
-            'jquery.fileupload-ui.js',
-            'jquery.fileupload-jquery-ui.js',
-            'cors/jquery.xdr-transport.js'
-        ], function(){
-            $.ajaxSetup({'async': false});
-            $.getScript("{{app.request.baseUrl}}/plugins/jquery-file-upload/js/" + this);
-        });
-        $.ajaxSetup({'async': tempAsync});
         if (!$.fn.fileupload) {
             return false;
         } else  if (typeof (callbackFileUpload) === "function") {

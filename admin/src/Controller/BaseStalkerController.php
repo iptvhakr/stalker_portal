@@ -110,6 +110,7 @@ class BaseStalkerController {
             $this->setSideBarMenu();
             $this->setTopBarMenu();
             $this->setBreadcrumbs();
+            $this->app['request']->getSession()->set('cached_lang', $this->app['language']);
         }
 
         if (isset($this->data['set-dropdown-attribute'])) {
@@ -566,7 +567,8 @@ class BaseStalkerController {
     }
 
     private function checkCachedMenu($menu_name) {
-        return !$this->isCacheTimeOut($menu_name) ? $this->getCachedMenu($menu_name) : FALSE;
+        $cached_lang = $this->app['request']->getSession()->get('cached_lang', '');
+        return !$this->isCacheTimeOut($menu_name) && $cached_lang == $this->app['language'] ? $this->getCachedMenu($menu_name) : FALSE;
     }
 
     private function setCachedMenu($menu_name) {

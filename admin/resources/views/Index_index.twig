@@ -251,7 +251,7 @@
                 {% for item in app.datatables %}
                     {% if attribute(item, 'data') is defined %}
             $('#{{ item.datatableID }}').on('xhr.dt', function (e, settings, json) {
-                console.log(json);
+                /*console.log(json);*/
             }).dataTable({
                 "ajax": {
                     "url": "{{ app.request.baseUrl }}/index/{{ item.json_action_alias }}",
@@ -427,15 +427,7 @@
                 });
                 $('#datatable-1 > thead').hide();
 
-                $.getScript('//www.google.com/jsapi?autoload=' + JSON.stringify({"modules":[{"name":"visualization","version":"1","packages":["corechart"],"callback":"load_page_data"}]}));
-
-                $.getScript('{{app.request.baseUrl}}/plugins/flot/jquery.flot.js', function(){
-                    $.getScript('{{app.request.baseUrl}}/plugins/flot/jquery.flot.time.js', function(){
-                        $.getScript('{{app.request.baseUrl}}/plugins/flot/jquery.flot.navigate.js', function() {
-                            DrawFlot();
-                        });
-                    });
-                });
+                DrawFlot();
 
                 updateTimer();
                 $(document).on('click', '#auto-update-button', function(){

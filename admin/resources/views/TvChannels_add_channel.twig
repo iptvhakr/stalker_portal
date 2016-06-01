@@ -1017,8 +1017,10 @@
         </div>
     </div>
 
+    {% include "basic_templates/file-uploader-scripts.twig" %}
+
     <script type="text/javascript" src="./plugins/scrollTo/jquery.scrollTo.min.js" defer=""></script>
-    <script type="text/javascript">
+    <script type="text/javascript" defer="">
 
         var select2Opt = {minimumResultsForSearch: -1, dropdownAutoWidth: false, width: '100%'};
 
@@ -1426,7 +1428,5 @@
         };
 
     </script>
-
-    {% include "basic_templates/file-uploader-scripts.twig" %}
 
 {% endblock %}

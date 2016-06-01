@@ -151,7 +151,7 @@
                     $("#s2_user_list_type").closest(".form-group").hide();
                     $("#s2_filter option[value='"+$(this).data('filter_set')+"']").prop('selected', 'selected');
                     $("#s2_filter").change();
-                    $("#s2_filter").select2({minimumResultsForSearch: -1});
+                    $("#s2_filter").select2({minimumResultsForSearch: -1, dropdownAutoWidth: false, width: '100%'});
                     checkFields('#s2_user_list_type', e);
                     checkFields('#s2_event', e);
                     $('#s2_event').change();

@@ -261,7 +261,9 @@
         </div>
     </div>
 
-    <script type="text/javascript">
+    {% include "basic_templates/file-uploader-scripts.twig" %}
+
+    <script type="text/javascript" defer="defer">
 
         var select2Opt = {minimumResultsForSearch: -1, dropdownAutoWidth: false, width: '100%'};
 
@@ -596,5 +598,4 @@
         };
     </script>
 
-    {% include "basic_templates/file-uploader-scripts.twig" %}
 {% endblock %}

@@ -31,6 +31,10 @@
         }
     });*/
 
+if (typeof (load_page_data) !== 'function') {
+    var load_page_data = function(){};
+}
+
 $(document).on("click", "div.dropdown-menu *", function(e){
     e.stopPropagation();
 });
@@ -87,13 +91,13 @@ function LoadDataTablesScripts(callback) {
         $.fn.dataTable.defaults.stateSaveCallback = function(settings,data) {
             var page = window.location.href.split("/");
             page = (page[page.length - 1] ? page[page.length - 1] : page[page.length - 2]).replace(/[^\w]/ig, '');
-            console.log(page + " dataTable save settings");
+            /*console.log(page + " dataTable save settings");*/
             localStorage.setItem( page + 'DataTables_' + settings.sInstance, JSON.stringify(data) )
         };
         $.fn.dataTable.defaults.stateLoadCallback = function(settings) {
             var page = window.location.href.split("/");
             page = (page[page.length - 1] ? page[page.length - 1] : page[page.length - 2]).replace(/[^\w]/ig, '');
-            console.log(page + " dataTable load settings");
+            /*console.log(page + " dataTable load settings");*/
             return JSON.parse( localStorage.getItem( page + 'DataTables_' + settings.sInstance ) )
         };
     }

@@ -267,8 +267,8 @@
 
         <exec command="mkdir ${project_path}/admin" level="info"/>
         <exec command="mkdir ${project_path}/admin/logs" level="info"/>
-        <exec command="mkdir ${project_path}/admin/resources/cache/twig" level="info"/>
-        <exec command="mkdir ${project_path}/admin/resources/cache/sidebar" level="info"/>
+        <exec command="mkdir -p --mode=0777 ${project_path}/admin/resources/cache/twig" level="info"/>
+        <exec command="mkdir -p --mode=0777 ${project_path}/admin/resources/cache/sidebar" level="info"/>
         <exec command="mkdir ${project_path}/deploy/composer" level="info"/>
         <exec command="mkdir ${project_path}/../${apps_path}" level="info"/>
         <chmod file="${project_path}/../${apps_path}" mode="0777" />

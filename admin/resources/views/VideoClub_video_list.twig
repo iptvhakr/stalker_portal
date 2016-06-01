@@ -198,11 +198,9 @@
             }).dataTable({
             "processing": true,
             "serverSide": true,
-			
             "ajax": {
                 "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/video-list-json"
             },
-            "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
             "language": {
                 "url": "{{ app.datatable_lang_file }}"
             },
@@ -211,7 +209,6 @@
             {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
             {% endif %}
 			"scrollCollapse": true,
-			
             "bFilter": true,
             "bPaginate": true,
             "bInfo":     true,
@@ -225,11 +222,10 @@
             ]
             
         }).prev('.dataTables_processing').hide('');
-        $('#datatable-1').DataTable().ajax.reload();
     }
 
     function DemoSelect2() {
-        $('#s2_video_moderators').select2({minimumResultsForSearch: -1});
+        $('#s2_video_moderators').select2({minimumResultsForSearch: -1, dropdownAutoWidth: false, width: '100%'});
     }
 
     function yelp() {

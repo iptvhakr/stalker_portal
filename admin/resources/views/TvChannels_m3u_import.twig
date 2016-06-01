@@ -52,6 +52,8 @@
         </div>
     </div>
 
+    {% include "basic_templates/file-uploader-scripts.twig" %}
+
     <script type="text/javascript" defer>
 
         var select2Opt = {minimumResultsForSearch: -1, dropdownAutoWidth: false, width: '100%'};
@@ -269,8 +271,6 @@
         document.addEventListener("DOMContentLoaded", yelp, false);
 
     </script>
-
-    {% include "basic_templates/file-uploader-scripts.twig" %}
 
     <script type="text/template" id="channel-template" >
         <div class="box" style="display: none;">
