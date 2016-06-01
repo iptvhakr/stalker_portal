@@ -131,7 +131,7 @@
             </then>
         </if>
 
-        <exec command="${progs.mysql} -P${mysql_port} ${protocol_str} -h${mysql_host} -u${mysql_user} -p${mysql_pass} &lt; /tmp/init_db.sql"
+        <exec command="export MYSQL_PWD=${mysql_pass}; ${progs.mysql} -P${mysql_port} ${protocol_str} -h${mysql_host} -u${mysql_user} &lt; /tmp/init_db.sql"
               dir="${build.dir}" checkreturn="false" outputProperty="mysql_init.error.msg" returnProperty="mysql_init.error.code" />
 
         <if>
