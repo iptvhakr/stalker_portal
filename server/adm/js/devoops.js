@@ -75,7 +75,7 @@ function LoadDataTablesScripts(callback) {
         "fnInit": function( oDTSettings ) {
             var filterContainer = $(oDTSettings.nTableWrapper).find("#" + oDTSettings.sTableId + '_filter');
             if (filterContainer.length) {
-                filterContainer.after('<button id="dataTables_ajax_update_button" class="btn" type="button"><i class="fa fa-refresh"></i></button>');
+                                        filterContainer.after('<button id="dataTables_ajax_update_button" class="btn dataTables_ajax_update_button" type="button"><i class="fa fa-refresh"></i></button>');
                 $(document).on("click", "#dataTables_ajax_update_button", function(){
                     $("#" + oDTSettings.sTableId).DataTable().ajax.reload();
                 });

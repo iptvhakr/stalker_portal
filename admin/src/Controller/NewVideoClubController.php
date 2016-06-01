@@ -52,8 +52,6 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         
         $allYears = $this->db->getAllFromTable('video', 'year', 'year');
 
-        $list = $this->video_list_json();
-        
         $this->app['allYears'] = array_filter(array_map(function($val){
             if ((int)$val['year'] >= 1895) {
                 return array('id'=>$val['year'], 'title'=>$val['year']);
@@ -62,16 +60,12 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         }, $allYears));
         
         $this->app['allGenre'] =  $this->prepareNewGenresListIds($this->db->getVideoCategories());
-        $this->app['allVideo'] = $list['data'];
-        $this->app['totalRecords'] = $list['recordsTotal'];
-        $this->app['recordsFiltered'] = $list['recordsFiltered'];
-        
+
         $this->app['allModerators'] = $this->db->getAllAdmins();
         
         $attribute = $this->getVideoListDropdownAttribute();
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
-        
         
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -425,7 +419,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
             "o_name" => "`video`.`o_name` as `o_name`",
             "time" => "`video`.`time` as `time`",
             "cat_genre" => "'' as `cat_genre`",
-            "series" => "CAST(IF(`video`.`is_series` = 1, (select sum(`season_series`) from `video_season` where `video_season`.video_id = video.id), REPLACE(SUBSTRING_INDEX(`video`.`series`, ':', 2), 'a:', '')) as SIGNED) as `series`",
+            "is_series" => "`video`.`is_series` as `is_series`",
             "tasks" => "(select count(*) from moderator_tasks where media_id = video.id) as `tasks`", //moderator_tasks.ended = 0 and 
             "task_id" => "`video_on_tasks`.`id` as `task_id`",
             "count" => "`video`.`count` as `count`",
@@ -3011,7 +3005,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
             array('name' => 'name',         'title' => $this->setLocalization('Title'),         'checked' => TRUE),
             array('name' => 'o_name',       'title' => $this->setLocalization('Original title'),'checked' => FALSE),
             array('name' => 'time',         'title' => $this->setLocalization('Length, min'),   'checked' => TRUE),
-            array('name' => 'series',       'title' => $this->setLocalization('Episodes'),      'checked' => TRUE),
+            array('name' => 'is_series',    'title' => $this->setLocalization('Series'),        'checked' => TRUE),
             array('name' => 'cat_genre',    'title' => $this->setLocalization('Genre'),         'checked' => TRUE),
             array('name' => 'year',         'title' => $this->setLocalization('Year'),          'checked' => TRUE),
             array('name' => 'added',        'title' => $this->setLocalization('Date'),          'checked' => TRUE),
