@@ -109,7 +109,7 @@ $user_apps = array();
 
 foreach ($apps as $app){
 
-    if (!in_array(strtolower($app['name']), $available_modules)){
+    if (!in_array(strtolower($app['name']), $available_modules) && $app['name'] != 'taskManager'){
         continue;
     }
 
