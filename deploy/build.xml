@@ -152,7 +152,7 @@
                 undooutputfile="${build.dir}/${build.dbdeploy.undofile}"/>
 
         <exec
-                command="${progs.mysql} -P${mysql_port} ${protocol_str} -h${mysql_host} -u${mysql_user} -p${mysql_pass} ${db_name} &lt; ${build.dbdeploy.deployfile}"
+                command="export MYSQL_PWD=${mysql_pass}; ${progs.mysql} -P${mysql_port} ${protocol_str} -h${mysql_host} -u${mysql_user} ${db_name} &lt; ${build.dbdeploy.deployfile}"
                 dir="${build.dir}"
                 returnProperty="dbdeploy_return" outputProperty="dbdeploy_output"/>
 
@@ -163,7 +163,7 @@
             <then>
                 <echo msg="DbDeployTask failed reason: ${dbdeploy_output}"/>
                 <exec
-                        command="${progs.mysql} -P${mysql_port} ${protocol_str} -h${mysql_host} -u${mysql_user} -p${mysql_pass} ${db_name} &lt; ${build.dbdeploy.undofile}"
+                        command="export MYSQL_PWD=${mysql_pass}; ${progs.mysql} -P${mysql_port} ${protocol_str} -h${mysql_host} -u${mysql_user} ${db_name} &lt; ${build.dbdeploy.undofile}"
                         dir="${build.dir}"
                         checkreturn="true"/>
                 <fail message="DbDeployTask failed."/>
