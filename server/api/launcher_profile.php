@@ -76,16 +76,14 @@ $profile['options']['sap'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HT
     .'server/api/sap.php';
 
 $profile['options']['pingTimeout'] = Config::getSafe('watchdog_timeout', 120) * 1000;
-
-$available_modules = array_diff($all_modules, $disabled_modules);
-$available_modules[] = 'tuning';
+$available_modules = array_values(array_diff($all_modules, $disabled_modules));
+$available_modules[] = 'portal';
 $available_modules[] = 'launcher';
 $available_modules[] = 'osd';
 $available_modules[] = 'osd-tv';
 $available_modules[] = 'osd-pip';
 $available_modules[] = 'player';
 $available_modules[] = 'taskManager';
-$available_modules[] = 'sap-loader';
 $available_modules[] = 'sap-loader';
 
 $module_to_app_map = array(
@@ -111,7 +109,7 @@ $user_apps = array();
 
 foreach ($apps as $app){
 
-    if (!in_array($app['name'], $available_modules)){
+    if (!in_array(strtolower($app['name']), $available_modules)){
         continue;
     }
 

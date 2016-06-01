@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-31 12:54+0300\n"
-"PO-Revision-Date: 2016-05-31 12:55+0300\n"
+"POT-Creation-Date: 2016-06-01 12:16+0300\n"
+"PO-Revision-Date: 2016-06-01 12:19+0300\n"
 "Last-Translator: Aleksey Zhurbitsky <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -714,6 +714,7 @@ msgstr "Користувачі"
 #: ../../../administrator/index.php:163
 #: ../../../administrator/add_video.php:608
 #: ../../../administrator/add_video.php:628
+#: ../../../tools/misctranslations.php:636
 msgid "VIDEO CLUB"
 msgstr "ВІДЕО КЛУБ"
 
@@ -723,7 +724,8 @@ msgstr "ВІДЕО КЛУБ"
 msgid "Events"
 msgstr "Події"
 
-#: ../../../administrator/index.php:169 ../../../lang/stb.php:536
+#: ../../../administrator/index.php:169
+#: ../../../tools/misctranslations.php:637 ../../../lang/stb.php:536
 msgid "AUDIO CLUB"
 msgstr "АУДІО КЛУБ"
 
@@ -735,7 +737,8 @@ msgstr "Адміністратори"
 
 #: ../../../administrator/index.php:175
 #: ../../../administrator/add_karaoke.php:206
-#: ../../../administrator/add_karaoke.php:213 ../../../lang/stb.php:27
+#: ../../../administrator/add_karaoke.php:213
+#: ../../../tools/misctranslations.php:639 ../../../lang/stb.php:27
 msgid "KARAOKE"
 msgstr "КАРАОКЕ"
 
@@ -745,7 +748,8 @@ msgstr "КАРАОКЕ"
 msgid "Logout"
 msgstr "вихід"
 
-#: ../../../administrator/index.php:181 ../../../lang/stb.php:70
+#: ../../../administrator/index.php:181
+#: ../../../tools/misctranslations.php:638 ../../../lang/stb.php:70
 msgid "RADIO"
 msgstr "РАДІО"
 
@@ -759,7 +763,6 @@ msgid "Tasks (new messages: %s)"
 msgstr "Завдання (є нові повідомлення: %s)"
 
 #: ../../../administrator/index.php:253
-#: ../../../tools/misctranslations.php:635
 msgid "tv"
 msgstr "тб"
 
@@ -773,12 +776,10 @@ msgid "audioclub"
 msgstr "відеоклуб"
 
 #: ../../../administrator/index.php:294 ../../../administrator/tasks.php:166
-#: ../../../tools/misctranslations.php:639
 msgid "karaoke"
 msgstr "караоке"
 
 #: ../../../administrator/index.php:298
-#: ../../../tools/misctranslations.php:638
 msgid "radio"
 msgstr "радіо"
 
@@ -796,7 +797,6 @@ msgid "timeshift"
 msgstr "{0}:{1}"
 
 #: ../../../administrator/index.php:382
-#: ../../../tools/misctranslations.php:643
 msgid "records"
 msgstr "записи"
 
@@ -1518,9 +1518,10 @@ msgstr "Звіт"
 msgid "Subscription import"
 msgstr "Імпорт підписки на канали"
 
-#: ../../../administrator/users.php:166 ../../../lang/stb.php:92
+#: ../../../administrator/users.php:166
+#: ../../../tools/misctranslations.php:635 ../../../lang/stb.php:92
 msgid "TV"
-msgstr "ТБ"
+msgstr "ТВ"
 
 #: ../../../administrator/users.php:174
 msgid "Media browser"
@@ -5107,41 +5108,38 @@ msgstr ""
 msgid "Unpublish video"
 msgstr "на зображення"
 
-#: ../../../tools/misctranslations.php:636
-msgid "video club"
-msgstr "відео клуб"
-
-#: ../../../tools/misctranslations.php:637
-msgid "audio club"
-msgstr "аудіо клуб"
-
 #: ../../../tools/misctranslations.php:640
-msgid "explorer"
-msgstr "провідник"
+msgid "EXPLORER"
+msgstr "ПРОВІДНИК"
 
 #: ../../../tools/misctranslations.php:641
-msgid "browser"
-msgstr "браузер"
+msgid "BROWSER"
+msgstr "БРАУЗЕР"
 
-#: ../../../tools/misctranslations.php:642
-msgid "downloads"
-msgstr "завантаження"
+#: ../../../tools/misctranslations.php:642 ../../../lang/stb.php:293
+msgid "DOWNLOADS"
+msgstr "ЗАВАНТАЖЕННЯ"
 
-#: ../../../tools/misctranslations.php:644
-msgid "weather"
-msgstr "погода"
+#: ../../../tools/misctranslations.php:643 ../../../lang/stb.php:33
+#: ../../../lang/stb.php:142
+msgid "RECORDS"
+msgstr "ЗАПИСИ"
 
-#: ../../../tools/misctranslations.php:645
-msgid "settings"
-msgstr "налаштування"
+#: ../../../tools/misctranslations.php:644 ../../../lang/stb.php:185
+msgid "WEATHER"
+msgstr "ПОГОДА"
+
+#: ../../../tools/misctranslations.php:645 ../../../lang/stb.php:151
+msgid "SETTINGS"
+msgstr "НАЛАШТУВАННЯ"
 
 #: ../../../tools/misctranslations.php:646
-msgid "portal"
-msgstr "портал"
+msgid "PORTAL"
+msgstr "ПОРТАЛ"
 
 #: ../../../tools/misctranslations.php:647
-msgid "exchange"
-msgstr "курс валют"
+msgid "EXCHANGE"
+msgstr "КУРС ВАЛЮТ"
 
 #: ../../../tools/misctranslations.php:648
 msgid ""
@@ -5236,7 +5234,15 @@ msgid ""
 "MAGic Remote mobile app or connect the keyboard or mouse via USB port."
 msgstr "Подорожуйте просторами Інтернету за допомогою вбудованого браузера!"
 
-#: ../../../tools/misctranslations.php:663
+#: ../../../tools/misctranslations.php:661
+msgid ""
+"2048 is one of the world’s most popular puzzles. The rules are simple: you "
+"need to shuffle all the bars to one side of the game field. Your goal is to "
+"reach 2048."
+msgstr ""
+"Популярна логічна гра метою якої є отримання плитки номіналом в \"2048\"."
+
+#: ../../../tools/misctranslations.php:664
 msgid ""
 "The portal is temporarily unavailable.<br>Please try again later.<br>Sorry "
 "for the inconvenience."
@@ -5244,85 +5250,85 @@ msgstr ""
 "Портал тимчасово недоступний.<br>Будь ласка, спробуйте пізніше.<br>Приносимо "
 "вибачення за незручності."
 
-#: ../../../tools/misctranslations.php:664
+#: ../../../tools/misctranslations.php:665
 #, php-format
 msgid "Use your username and password to login or register on %s"
 msgstr "Для входу використовуйте свій логін і пароль або зареєструйтеся на %s"
 
-#: ../../../tools/misctranslations.php:665
+#: ../../../tools/misctranslations.php:666
 msgid "Please contact your provider<br>to register this device."
 msgstr ""
 
-#: ../../../tools/misctranslations.php:666
+#: ../../../tools/misctranslations.php:667
 #, php-format
 msgid "Welcome %s<br>We are glad to see you on the Stalker portal!"
 msgstr "Ласкаво просимо, %s<br>Ми раді бачити Вас в порталі Stalker!"
 
-#: ../../../tools/misctranslations.php:668
+#: ../../../tools/misctranslations.php:669
 msgid "Setting the tariff plans and additional services for users on edit page"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:669
+#: ../../../tools/misctranslations.php:670
 msgid "Managing of billing date for users on edit page"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:670
+#: ../../../tools/misctranslations.php:671
 msgid "Managing of users reseller on edit page"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:672
+#: ../../../tools/misctranslations.php:673
 msgid "Getting list of seasons and episodes of video"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:673
+#: ../../../tools/misctranslations.php:674
 msgid "Getting list of files of episode"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:674
+#: ../../../tools/misctranslations.php:675
 msgid "Getting info by one file of episode"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:675
+#: ../../../tools/misctranslations.php:676
 #, fuzzy
 msgid "Adding and editing files of episode"
 msgstr "Пошук по сховищах"
 
-#: ../../../tools/misctranslations.php:676
+#: ../../../tools/misctranslations.php:677
 msgid "Change accessed status of one file of episode"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:677
+#: ../../../tools/misctranslations.php:678
 msgid "Change names and original names for episodes and seasons"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:678
+#: ../../../tools/misctranslations.php:679
 msgid "Deleting info about one video file from database"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:679
+#: ../../../tools/misctranslations.php:680
 msgid "Adding episodes into season"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:680
+#: ../../../tools/misctranslations.php:681
 #, fuzzy
 msgid "Adding seasons into video"
 msgstr "Надіслати повідомлення"
 
-#: ../../../tools/misctranslations.php:682
+#: ../../../tools/misctranslations.php:683
 #, fuzzy
 msgid "Regular quality"
 msgstr "висока якість"
 
-#: ../../../tools/misctranslations.php:683
+#: ../../../tools/misctranslations.php:684
 #, fuzzy
 msgid "Good quality"
 msgstr "Низька якість"
 
-#: ../../../tools/misctranslations.php:684
+#: ../../../tools/misctranslations.php:685
 msgid "Excellent quality"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:685
+#: ../../../tools/misctranslations.php:686
 #, fuzzy
 msgid "Ultra high quality"
 msgstr "висока якість"
@@ -5401,10 +5407,6 @@ msgstr "З"
 #: ../../../lang/stb.php:32
 msgid "FOUND"
 msgstr "ЗНАЙДЕНО"
-
-#: ../../../lang/stb.php:33 ../../../lang/stb.php:142
-msgid "RECORDS"
-msgstr "ЗАПИСИ"
 
 #: ../../../lang/stb.php:34
 msgid "LOADING..."
@@ -5723,10 +5725,6 @@ msgstr "ТВ ГІД"
 msgid "PACKAGE INFO"
 msgstr "ПРО ПАКЕТ"
 
-#: ../../../lang/stb.php:151
-msgid "SETTINGS"
-msgstr "НАЛАШТУВАННЯ"
-
 #: ../../../lang/stb.php:152 ../../../lang/stb.php:172
 #: ../../../lang/stb.php:274
 msgid "CANCEL"
@@ -5830,10 +5828,6 @@ msgstr "Курс НБУ на"
 #: ../../../lang/stb.php:183
 msgid "CBR exchange rate on"
 msgstr "Курс ЦБР на"
-
-#: ../../../lang/stb.php:185
-msgid "WEATHER"
-msgstr "ПОГОДА"
 
 #: ../../../lang/stb.php:186
 msgid "pres.:"
@@ -6105,10 +6099,6 @@ msgstr "S/PDIF не декодований (RAW) або S/PDIF PCM"
 #: ../../../lang/stb.php:290
 msgid "GAME"
 msgstr "ГРА"
-
-#: ../../../lang/stb.php:293
-msgid "DOWNLOADS"
-msgstr "ЗАВАНТАЖЕННЯ"
 
 #: ../../../lang/stb.php:294
 msgid "Not found mounted devices"
@@ -7323,6 +7313,33 @@ msgstr ""
 #: ../../../lib/epg.class.php:846 ../../../lib/epg.class.php:847
 msgid "H:i"
 msgstr ""
+
+#~ msgid "video club"
+#~ msgstr "відео клуб"
+
+#~ msgid "audio club"
+#~ msgstr "аудіо клуб"
+
+#~ msgid "explorer"
+#~ msgstr "провідник"
+
+#~ msgid "browser"
+#~ msgstr "браузер"
+
+#~ msgid "downloads"
+#~ msgstr "завантаження"
+
+#~ msgid "weather"
+#~ msgstr "погода"
+
+#~ msgid "settings"
+#~ msgstr "налаштування"
+
+#~ msgid "portal"
+#~ msgstr "портал"
+
+#~ msgid "exchange"
+#~ msgstr "курс валют"
 
 #, fuzzy
 #~ msgid "Audio club"

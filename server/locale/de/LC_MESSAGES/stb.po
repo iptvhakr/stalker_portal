@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-31 12:54+0300\n"
-"PO-Revision-Date: 2016-05-31 12:54+0300\n"
+"POT-Creation-Date: 2016-06-01 12:20+0300\n"
+"PO-Revision-Date: 2016-06-01 12:22+0300\n"
 "Last-Translator: Aleksey Zhurbitsky <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "Language: de_CH\n"
@@ -714,6 +714,7 @@ msgstr "Benutzer"
 #: ../../../administrator/index.php:163
 #: ../../../administrator/add_video.php:608
 #: ../../../administrator/add_video.php:628
+#: ../../../tools/misctranslations.php:636
 msgid "VIDEO CLUB"
 msgstr "VIDEO CLUB"
 
@@ -723,7 +724,8 @@ msgstr "VIDEO CLUB"
 msgid "Events"
 msgstr "Ereignis"
 
-#: ../../../administrator/index.php:169 ../../../lang/stb.php:536
+#: ../../../administrator/index.php:169
+#: ../../../tools/misctranslations.php:637 ../../../lang/stb.php:536
 msgid "AUDIO CLUB"
 msgstr "AUDIO CLUB"
 
@@ -735,7 +737,8 @@ msgstr "Administratoren"
 
 #: ../../../administrator/index.php:175
 #: ../../../administrator/add_karaoke.php:206
-#: ../../../administrator/add_karaoke.php:213 ../../../lang/stb.php:27
+#: ../../../administrator/add_karaoke.php:213
+#: ../../../tools/misctranslations.php:639 ../../../lang/stb.php:27
 msgid "KARAOKE"
 msgstr "KARAOKE"
 
@@ -745,7 +748,8 @@ msgstr "KARAOKE"
 msgid "Logout"
 msgstr "Ausloggen"
 
-#: ../../../administrator/index.php:181 ../../../lang/stb.php:70
+#: ../../../administrator/index.php:181
+#: ../../../tools/misctranslations.php:638 ../../../lang/stb.php:70
 msgid "RADIO"
 msgstr "RADIO"
 
@@ -759,7 +763,6 @@ msgid "Tasks (new messages: %s)"
 msgstr "Aufgaben (neue Nachricht: %s)"
 
 #: ../../../administrator/index.php:253
-#: ../../../tools/misctranslations.php:635
 msgid "tv"
 msgstr "tv"
 
@@ -772,12 +775,10 @@ msgid "audioclub"
 msgstr "audioclub"
 
 #: ../../../administrator/index.php:294 ../../../administrator/tasks.php:166
-#: ../../../tools/misctranslations.php:639
 msgid "karaoke"
 msgstr "karaoke"
 
 #: ../../../administrator/index.php:298
-#: ../../../tools/misctranslations.php:638
 msgid "radio"
 msgstr "radio"
 
@@ -794,7 +795,6 @@ msgid "timeshift"
 msgstr "Timeshift"
 
 #: ../../../administrator/index.php:382
-#: ../../../tools/misctranslations.php:643
 msgid "records"
 msgstr "Aufnahmen"
 
@@ -1513,7 +1513,8 @@ msgstr "Bericht"
 msgid "Subscription import"
 msgstr "Abonnement import"
 
-#: ../../../administrator/users.php:166 ../../../lang/stb.php:92
+#: ../../../administrator/users.php:166
+#: ../../../tools/misctranslations.php:635 ../../../lang/stb.php:92
 msgid "TV"
 msgstr "TV"
 
@@ -5082,103 +5083,111 @@ msgstr ""
 msgid "Unpublish video"
 msgstr "Video"
 
-#: ../../../tools/misctranslations.php:636
-#, fuzzy
-msgid "video club"
-msgstr "videoclub"
-
-#: ../../../tools/misctranslations.php:637
-#, fuzzy
-msgid "audio club"
-msgstr "audioclub"
-
 #: ../../../tools/misctranslations.php:640
-msgid "explorer"
-msgstr ""
+msgid "EXPLORER"
+msgstr "Assistent"
 
 #: ../../../tools/misctranslations.php:641
-#, fuzzy
-msgid "browser"
-msgstr "Media Browser"
+msgid "BROWSER"
+msgstr "Browser"
 
-#: ../../../tools/misctranslations.php:642
-#, fuzzy
-msgid "downloads"
-msgstr "Download"
+#: ../../../tools/misctranslations.php:642 ../../../lang/stb.php:293
+msgid "DOWNLOADS"
+msgstr "DOWNLOADS"
 
-#: ../../../tools/misctranslations.php:644
-#, fuzzy
-msgid "weather"
-msgstr "andere"
+#: ../../../tools/misctranslations.php:643 ../../../lang/stb.php:33
+#: ../../../lang/stb.php:142
+msgid "RECORDS"
+msgstr "Aufnahmen"
 
-#: ../../../tools/misctranslations.php:645
-#, fuzzy
-msgid "settings"
-msgstr "Einstellungen"
+#: ../../../tools/misctranslations.php:644 ../../../lang/stb.php:185
+msgid "WEATHER"
+msgstr "Wetter"
+
+#: ../../../tools/misctranslations.php:645 ../../../lang/stb.php:151
+msgid "SETTINGS"
+msgstr "EINSTELLUNGEN"
 
 #: ../../../tools/misctranslations.php:646
 #, fuzzy
-msgid "portal"
-msgstr "Infoportal"
+msgid "PORTAL"
+msgstr "INFOPORTAL"
 
 #: ../../../tools/misctranslations.php:647
-#, fuzzy
-msgid "exchange"
-msgstr "Ändern"
+msgid "EXCHANGE"
+msgstr "Wechselkurs"
 
 #: ../../../tools/misctranslations.php:648
 msgid ""
 "Watch TV shows, movies, tv series, news and educational programs in digital "
 "quality."
 msgstr ""
+"Schauen Sie TV-Shows, Filme, Serien, Nachrichten und Bildungsprogramme in "
+"digitaler Qualität."
 
 #: ../../../tools/misctranslations.php:649
 msgid ""
 "Library of movies for any mood with easy search and sorting by genre that "
 "help to find what you need in seconds."
 msgstr ""
+"Die Videothek für jede Stimmung mit einer einfachen Such- und Filterfunktion "
+"nach Genre, die schnell das findet wonach Sie suchen!"
 
 #: ../../../tools/misctranslations.php:650
 msgid ""
 "Audio club app allows creating a special atmosphere for any party of family "
 "event!"
 msgstr ""
+"Die Anwendung „Audio Club“ schafft eine besondere Atmosphäre auf jeder Party "
+"oder Familienfeie!"
 
 #: ../../../tools/misctranslations.php:651
 msgid ""
 "Easy and handy way of listening to music, news, talk shows and much more."
 msgstr ""
+"Eine einfache und bequeme Art Musik, Nachrichten, Talkshows und vieles mehr "
+"zu hören."
 
 #: ../../../tools/misctranslations.php:652
 msgid "Sing your favourite songs with friends or improve your vocal skills."
 msgstr ""
+"Singen Sie Ihre Lieblingssongs zusammen mit Ihren Freunden oder entwickeln "
+"Sie Ihre vokalen Fähigkeiten."
 
 #: ../../../tools/misctranslations.php:653
 msgid ""
 "Watch movies, listen to music or view the photos, saved on your removable "
 "storages or within the local network."
 msgstr ""
+"Filme sehen, Musik hören, Fotos auf den Wechselmedien oder im lokalen Netz "
+"anschauen."
 
 #: ../../../tools/misctranslations.php:654
 msgid ""
 "Download the files directly from the Internet network to the connected "
 "removable storage."
 msgstr ""
+"Filme direkt aus dem Internet auf das angeschlossene Wechselmedium "
+"herunterladen."
 
 #: ../../../tools/misctranslations.php:655
 msgid ""
 "This app allows recording TV shows or watch the records made previously."
 msgstr ""
+"Diese Anwendung erlaubt es die TV-Sendungen aufzuzeichnen oder früher "
+"aufgezeichnete Medien wiederzugeben."
 
 #: ../../../tools/misctranslations.php:656
 msgid ""
 "App will help you to stay up to date with the changes in rates of currencies "
 "from all over the world."
 msgstr ""
+"Die Anwendung hilft Ihnen dabei stets auf dem neuesten Stand der "
+"Wechselkurse zu bleiben."
 
 #: ../../../tools/misctranslations.php:657
 msgid "Weather forecast for three subsequent days in any city of the world."
-msgstr ""
+msgstr "Weltweite Wettervorhersage für die nächsten drei Tage"
 
 #: ../../../tools/misctranslations.php:658
 msgid ""
@@ -5191,14 +5200,26 @@ msgid ""
 "This menu allows setting up the parental control, region and language, "
 "remote control and network connection."
 msgstr ""
+"In diesem Menü können Sie die Kindersicherung, Region und Sprache, "
+"Fernbedienung und Internetverbindung einstellen. "
 
 #: ../../../tools/misctranslations.php:660
 msgid ""
 "Surf the Internet via built-in browser! To make it easier, you can use the "
 "MAGic Remote mobile app or connect the keyboard or mouse via USB port."
-msgstr ""
+msgstr "Surfen Sie im Internet durch einen integrierten Browser!"
 
-#: ../../../tools/misctranslations.php:663
+#: ../../../tools/misctranslations.php:661
+msgid ""
+"2048 is one of the world’s most popular puzzles. The rules are simple: you "
+"need to shuffle all the bars to one side of the game field. Your goal is to "
+"reach 2048."
+msgstr ""
+"Ein der beliebtesten Kopfzerbrecher der Welt. Spielregeln: Sie können alle "
+"Tafeln des Spielfelds in eine der 4 Richtungen bewegen. Ihr Ziel ist es die "
+"2048 zu erreichen."
+
+#: ../../../tools/misctranslations.php:664
 msgid ""
 "The portal is temporarily unavailable.<br>Please try again later.<br>Sorry "
 "for the inconvenience."
@@ -5206,83 +5227,83 @@ msgstr ""
 "Das Portal ist temporär nicht verfügbar.<br>Bitte versuche es später "
 "nochmals.<br>Sorry für die Umstände."
 
-#: ../../../tools/misctranslations.php:664
+#: ../../../tools/misctranslations.php:665
 #, php-format
 msgid "Use your username and password to login or register on %s"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:665
+#: ../../../tools/misctranslations.php:666
 msgid "Please contact your provider<br>to register this device."
 msgstr ""
 
-#: ../../../tools/misctranslations.php:666
+#: ../../../tools/misctranslations.php:667
 #, php-format
 msgid "Welcome %s<br>We are glad to see you on the Stalker portal!"
 msgstr "Wilkommen %s<br>Wir freuen uns, dich auf Stalker zu sehen!"
 
-#: ../../../tools/misctranslations.php:668
+#: ../../../tools/misctranslations.php:669
 msgid "Setting the tariff plans and additional services for users on edit page"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:669
+#: ../../../tools/misctranslations.php:670
 msgid "Managing of billing date for users on edit page"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:670
+#: ../../../tools/misctranslations.php:671
 msgid "Managing of users reseller on edit page"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:672
+#: ../../../tools/misctranslations.php:673
 msgid "Getting list of seasons and episodes of video"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:673
+#: ../../../tools/misctranslations.php:674
 msgid "Getting list of files of episode"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:674
+#: ../../../tools/misctranslations.php:675
 msgid "Getting info by one file of episode"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:675
+#: ../../../tools/misctranslations.php:676
 msgid "Adding and editing files of episode"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:676
+#: ../../../tools/misctranslations.php:677
 msgid "Change accessed status of one file of episode"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:677
+#: ../../../tools/misctranslations.php:678
 msgid "Change names and original names for episodes and seasons"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:678
+#: ../../../tools/misctranslations.php:679
 msgid "Deleting info about one video file from database"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:679
+#: ../../../tools/misctranslations.php:680
 msgid "Adding episodes into season"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:680
+#: ../../../tools/misctranslations.php:681
 msgid "Adding seasons into video"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:682
+#: ../../../tools/misctranslations.php:683
 #, fuzzy
 msgid "Regular quality"
 msgstr "Hohe Qualität"
 
-#: ../../../tools/misctranslations.php:683
+#: ../../../tools/misctranslations.php:684
 #, fuzzy
 msgid "Good quality"
 msgstr "Niedrige Qualität"
 
-#: ../../../tools/misctranslations.php:684
+#: ../../../tools/misctranslations.php:685
 msgid "Excellent quality"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:685
+#: ../../../tools/misctranslations.php:686
 #, fuzzy
 msgid "Ultra high quality"
 msgstr "Hohe Qualität"
@@ -5361,10 +5382,6 @@ msgstr "Von"
 #: ../../../lang/stb.php:32
 msgid "FOUND"
 msgstr "GEFUNDEN"
-
-#: ../../../lang/stb.php:33 ../../../lang/stb.php:142
-msgid "RECORDS"
-msgstr "Aufnahmen"
 
 #: ../../../lang/stb.php:34
 msgid "LOADING..."
@@ -5684,10 +5701,6 @@ msgstr "TV HANDBUCH"
 msgid "PACKAGE INFO"
 msgstr "PACKAGE INFO"
 
-#: ../../../lang/stb.php:151
-msgid "SETTINGS"
-msgstr "EINSTELLUNGEN"
-
 #: ../../../lang/stb.php:152 ../../../lang/stb.php:172
 #: ../../../lang/stb.php:274
 msgid "CANCEL"
@@ -5792,10 +5805,6 @@ msgstr "NBU Wechselkurs"
 #: ../../../lang/stb.php:183
 msgid "CBR exchange rate on"
 msgstr "CBR Wechselkurs"
-
-#: ../../../lang/stb.php:185
-msgid "WEATHER"
-msgstr "Wetter"
 
 #: ../../../lang/stb.php:186
 msgid "pres.:"
@@ -6062,10 +6071,6 @@ msgstr "S/PDIF Raw 2-Kanal PCM"
 #: ../../../lang/stb.php:290
 msgid "GAME"
 msgstr "SPIEL"
-
-#: ../../../lang/stb.php:293
-msgid "DOWNLOADS"
-msgstr "DOWNLOADS"
 
 #: ../../../lang/stb.php:294
 msgid "Not found mounted devices"
@@ -7282,6 +7287,38 @@ msgstr "%H:%i"
 #: ../../../lib/epg.class.php:846 ../../../lib/epg.class.php:847
 msgid "H:i"
 msgstr "H:i"
+
+#, fuzzy
+#~ msgid "video club"
+#~ msgstr "videoclub"
+
+#, fuzzy
+#~ msgid "audio club"
+#~ msgstr "audioclub"
+
+#, fuzzy
+#~ msgid "browser"
+#~ msgstr "Media Browser"
+
+#, fuzzy
+#~ msgid "downloads"
+#~ msgstr "Download"
+
+#, fuzzy
+#~ msgid "weather"
+#~ msgstr "andere"
+
+#, fuzzy
+#~ msgid "settings"
+#~ msgstr "Einstellungen"
+
+#, fuzzy
+#~ msgid "portal"
+#~ msgstr "Infoportal"
+
+#, fuzzy
+#~ msgid "exchange"
+#~ msgstr "Ändern"
 
 #~ msgid "Only for API"
 #~ msgstr "Nur für API"
