@@ -12,24 +12,24 @@
         </div>
 
         <div class="row">
-                <div class="box"> 
-					{% if attribute(app, 'dropdownAttribute') is defined %}
+            <div class="box">
+                {% if attribute(app, 'dropdownAttribute') is defined %}
                     {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
-                    {% endif %}
-                    <div class="box-content">
-                        <div class="box-content no-padding">                        
-                                <div class="dataTables_processing"></div>
-                                <table class="table  table-hover table-datatable" id="datatable-1">
-                                    {% if attribute(app, 'dropdownAttribute') is defined %}
-                                        {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
-                                    {% endif %}
-                                    <tbody>
+                {% endif %}
+                <div class="box-content">
+                    <div class="box-content no-padding">
+                        <div class="dataTables_processing"></div>
+                        <table class="table  table-hover table-datatable" id="datatable-1">
+                            {% if attribute(app, 'dropdownAttribute') is defined %}
+                                {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                            {% endif %}
+                            <tbody>
 
-                                    </tbody>
-                                </table>
-                        </div>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+            </div>
         </div>
     </div>
 
@@ -74,7 +74,6 @@
                 "ajax": {
                     "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/video-categories-list-json"
                 },
-                "deferLoading": [{{ app.recordsFiltered }}, {{ app.totalRecords }} ],
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
