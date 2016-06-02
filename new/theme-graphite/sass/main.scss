@@ -7,7 +7,7 @@
 
 // color of favorite icon in lists
 .theme-favorite-icon {
-    color: #6b6b6b;
+    color: rgba(255,255,255,0.2);
 }
 
 .theme-favorite-icon-active {
@@ -238,8 +238,8 @@ body {
     }
     .central .wrapper > div {
         &.button {
-            border-right:1px solid rgba(255, 255, 255, 0.7);
-            border-left:1px solid rgba(255, 255, 255, 6);
+            border-right:1px solid rgba(255, 255, 255, 0.5);
+            //border-left:1px solid rgba(255, 255, 255, 6);
             //background-color:rgba(9, 9, 9, 0.6);
             &:last-of-type {
                 border-right: none;

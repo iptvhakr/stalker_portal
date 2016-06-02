@@ -220,10 +220,11 @@ a {
 }
 .component.modalMessage > div.alignBox > div > div.body > .component.list .item .component.checkBox,
 .component.modalMessage > div.alignBox > div > div.body > .component.list .item .component.layout > div.icon {
+  margin-left: -30px;
+  width: 84px;
   height: 84px;
   line-height: 84px;
-  width: 63px;
-  text-align: left;
+  text-align: center;
 }
 .component.modalMessage > div.alignBox > div > div.overlay {
   display: block;

@@ -27,7 +27,7 @@ gulp.task('sass:watch', function () {
 });
 
 function makeSass ( resolution ) {
-	return gulp.src(['./sass/' + resolution +'.scss','./sass/main.scss'])
+	return gulp.src(['./sass/vars.scss', './sass/' + resolution +'.scss', './sass/main.scss'])
 		.pipe(concat(resolution.toString() + '.scss'))
 		.pipe(sass().on('error', sass.logError))
 		.pipe(gulp.dest('./'));
