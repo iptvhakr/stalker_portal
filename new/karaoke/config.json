@@ -1,13 +1,13 @@
 {
     "options": {
         "pluginsPath": "../plugins/",
-        "stalkerApiHost": "http://stage-api.sandbox.lpo.priv",
-        "stalkerAuthHost": "http://stage-api.sandbox.lpo.priv/stalker_portal/auth/token.php",
+        "stalkerApiHost": "http://192.168.1.120/stalker_portal/api/v3/",
+        "stalkerAuthHost": "http://192.168.1.120/stalker_portal/auth/token.php",
         "pingTimeout": 50000,
         "sap": "http://stage-api.sandbox.lpo.priv/stalker_portal/server/api/sap.php"
     },
     "themes": {
-        "graphite": "http://192.168.1.103:8030/graphite/",
+        "graphite": "http://192.168.1.103:8030/theme-graphite/",
         "chocolate": "../theme-chocolate/"
     },
     "apps": [{
