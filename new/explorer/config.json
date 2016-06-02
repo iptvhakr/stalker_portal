@@ -133,7 +133,7 @@
             "ufs-json": "^0.0.1",
             "fs": "^0.0.1"
         },
-        "registerTypes": ["mpg", "mpeg", "mkv", "avi", "3gp", "ts", "tspinf", "m4a", "mp3", "mp4", "ac3", "mov", "vob", "wav", "ape", "mts", "m2t", "m2v", "ogg", "oga", "divx", "aiff", "m2ts", "wv", "m2p", "tp", "flv", "tta", "mod", "tod", "asf", "wma", "wmv", "flac", "ape", "cue", "iso", "aac", "txt", "srt", "sub", "ass", "m4v", "tts"],
+        "registerTypes": ["mpg", "mpeg", "mkv", "avi", "3gp", "ts", "tspinf", "m4a", "mp3", "mp4", "ac3", "mov", "vob", "wav", "ape", "mts", "m2t", "m2v", "ogg", "oga", "divx", "aiff", "m2ts", "wv", "m2p", "tp", "flv", "tta", "mod", "tod", "asf", "wma", "wmv", "flac", "ape", "cue", "iso", "aac", "txt", "srt", "sub", "ass", "m4v", "tts", "m3u", "m3u8"],
         "mountPath": "/ram/mnt",
         "version": "1.1.7"
     }, {

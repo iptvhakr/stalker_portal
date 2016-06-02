@@ -59,7 +59,7 @@
 			"new folder": "new folder",
 			"open": "open",
 			"password": "password",
-			"playlists": "playlists",
+			"playlist": "playlists",
 			"real name": "real name",
 			"records": "records",
 			"remove from favorites": "remove from favorites",
@@ -68,10 +68,12 @@
 			"server": "server",
 			"size": "size",
 			"sorting": "sorting",
+			"stream": "",
 			"text": "text",
 			"total": "total",
 			"type": "type",
 			"unsaved changes": "unsaved changes",
+			"uri": "",
 			"video": "video"
 		}
 	}
