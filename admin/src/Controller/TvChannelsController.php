@@ -450,15 +450,26 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                 try{
                     $uploaded = $this->request->files->get($f_key)->getPathname();
                     $ext = end(explode('.', $tmp['name']));
+                    if (!is_dir($img_path."/original")) {
+                        if (!mkdir($img_path."/original", 0777, TRUE)){
+                            throw new \Exception(sprintf(_('Cannot create directory %s'), $img_path."/original"));
+                        }
+                    }
                     $this->app['imagine']->open($uploaded)->save($img_path."/original/$upload_id.$ext");
                     foreach($this->logoResolutions as $res => $param){
+                        if (!is_dir($img_path."/$res")) {
+                            if (!mkdir($img_path."/$res", 0777, TRUE)){
+                                throw new \Exception(sprintf(_('Cannot create directory %s'), $img_path."/$res"));
+                            }
+                        }
                         $this->app['imagine']->open($uploaded)->resize(new Box($param['width'], $param['height']))->save($img_path."/$res/$upload_id.$ext");
                         chmod($img_path."/$res/$upload_id.$ext", 0644);
                     }
                     $error = '';
                     $response = $this->generateAjaxResponse(array('pic' => $this->logoHost . "/320/$upload_id.$ext"), $error);
-                } catch (\ImagickException $e) {
-                    $error = sprintf(_('Error save file %s'), $tmp['tmp_name']);
+                } catch (\Exception $e) {
+                    $error = sprintf(_('Error save file %s'), $tmp['name']);
+                    $response['msg'] = $e->getMessage() . '. ' . $error;
                 }
             }
         }

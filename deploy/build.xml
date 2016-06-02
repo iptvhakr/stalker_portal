@@ -261,9 +261,9 @@
             </then>
         </if>
 
-        <chmod file="${project_path}/screenshots" mode="0777" />
-        <chmod file="${project_path}/misc/logos" mode="0777" />
-        <chmod file="${project_path}/misc/audio_covers" mode="0777" />
+        <exec command="mkdir -p --mode=0777 ${project_path}/screenshots" level="info"/>
+        <exec command="mkdir -p --mode=0777 ${project_path}/misc/logos" level="info"/>
+        <exec command="mkdir -p --mode=0777 ${project_path}/misc/audio_covers" level="info"/>
 
         <exec command="mkdir ${project_path}/admin" level="info"/>
         <exec command="mkdir ${project_path}/deploy/composer" level="info"/>

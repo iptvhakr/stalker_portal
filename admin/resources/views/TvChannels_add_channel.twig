@@ -1094,6 +1094,12 @@
                 $("#deletelogolink a").data("logo_id", (imageName.search('new') != -1 ? val: imageName));
 
                 return false;
+            }).bind('fileuploadfail', function (e, data) {
+                var errMSG = '';
+                if (data && data.jqXHR && data.jqXHR.responseJSON) {
+                    errMSG = data.jqXHR.responseJSON.msg ? data.jqXHR.responseJSON.msg : (data.jqXHR.responseJSON.error ? data.jqXHR.responseJSON.error: '');
+                }
+                JSErrorModalBox({msg: errMSG});
             });
             return true;
         }
