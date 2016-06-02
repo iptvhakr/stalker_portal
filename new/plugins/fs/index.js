@@ -76,15 +76,21 @@ Fs.prototype.readDir = function ( path, callback ) {
  * @param {string} path path to the file in file system
  * @param {Function} callback method to invoke with a result of operation
  */
-function readFile ( path, callback ) {
+Fs.prototype.readFile = function ( path, callback ) {
     'use strict';
 
-    var res = gSTB.RDir('GetFile "' + uri + '"');
+    var result;
+
+    if ( typeof callback !== 'function' ) {
+        throw new Error('[Fs::readFile()] callback must be a function');
+    }
+
+    result = gSTB.RDir('GetFile "' + path + '"');
 
     setTimeout(function () {
-        callback(null, res);
+        callback(null, result);
     }, 0);
-}
+};
 
 
 /**

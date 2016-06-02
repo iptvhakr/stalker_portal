@@ -255,10 +255,11 @@ a {
 }
 .component.modalMessage > div.alignBox > div > div.body > .component.list .item .component.checkBox,
 .component.modalMessage > div.alignBox > div > div.body > .component.list .item .component.layout > div.icon {
+  margin-left: -20px;
+  width: 40px;
   height: 40px;
   line-height: 40px;
-  width: 30px;
-  text-align: left;
+  text-align: center;
 }
 .component.modalMessage > div.alignBox > div > div.overlay {
   display: block;

@@ -60,6 +60,9 @@ if ($user['status'] == 1){
     exit;
 }
 
+$profile['options']['stalkerHost'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
+    .'://'.$_SERVER['HTTP_HOST'];
+
 $profile['options']['stalkerApiHost'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
     .'://'.$_SERVER['HTTP_HOST']
     .Config::getSafe('portal_url', '/stalker_portal/')
