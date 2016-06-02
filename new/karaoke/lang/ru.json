@@ -7,8 +7,8 @@
 	},
 	"data": {
 		"": {
-			"Cancel": "",
-			"Exit": "",
+			"Cancel": "Отмена",
+			"Exit": "Выход",
 			"by name": "по имени",
 			"by number": "по номеру",
 			"by performer": "по исполнителю",

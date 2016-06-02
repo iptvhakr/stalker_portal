@@ -3,18 +3,7 @@
 // to make new theme you just change them
 // ======================================
 
-$componentBgColor: #283c50;         // all components background color
-$componentBgColor: #384452;         // all components background color
-//$componentBgColor: rgba(33,33,33,0.25);         // all components background color
-$focusItemBackground: #1D54AE;      // focus elements background
-$focusItemBackground: #2c60c6;      // focus elements background
-//$focusItemBackground: rgba(29, 84, 174, 0.85);      // focus elements background
-$focusItemColor: #fff;              // focus elements text color
-$focusItemIconColor: #fff;          // focus element icon color
 
-$overlayOpacity: 0.2;
-$panelOpacity: 0.6;
-$mainPanelOpacity: 0.97;
 
 // color of favorite icon in lists
 .theme-favorite-icon {
@@ -26,24 +15,9 @@ $mainPanelOpacity: 0.97;
 }
 
 
-// chocolate theme
-/*$componentBgColor: #3e2723;
-$focusItemBackground: #e7b900;
-$focusItemColor: #3e2723;
-$focusItemIconColor: #3e2723;
-.theme-favorite-icon {
-    color: transparent;
-}
-.theme-favorite-icon-active {
-    color: #ffffff;
-}*/
 
-.osdPanel {
-    background-color: $componentBgColor;
-    color: #fff;
-}
-.osdFocusItem {
-    background-color: $focusItemBackground;
+.bgDarken {
+    background-color: darken($componentBgColor, 5)!important;
 }
 
 $titleDiveder: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAACCAYAAABhYU3QAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABpJREFUeNpiZGBg8GUgAjD+//9fjRiFAAEGAJJMA3OVnUxoAAAAAElFTkSuQmCC';
@@ -130,7 +104,7 @@ body {
         background: rgba($focusItemBackground, $panelOpacity);
     }
     &.active {
-        background: rgba($componentBgColor, $mainPanelOpacity);
+        background-color: rgba($componentBgColor, $mainPanelOpacity)!important;
         .list .item.focus {
             background: rgba($focusItemBackground, 1);
         }
@@ -199,8 +173,11 @@ body {
     background: transparent;
     border: none;
     outline: none;
-    >.placeholder {
-        color: #ffffff;
+    .char {
+        color: $focusItemColor;
+    }
+    > .line > .placeholder {
+        color: $focusItemColor!important;
     }
     &.focus {
         color: $focusItemColor;

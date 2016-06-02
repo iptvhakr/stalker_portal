@@ -40,13 +40,13 @@
 			"MB": "",
 			"Menu": "",
 			"Music": "",
+			"No downloads": "",
 			"Not connected": "",
 			"Not enough free space in storage": "",
 			"Pause": "",
 			"Paused": "",
 			"Play file": "",
 			"Playlists": "",
-			"Press": "",
 			"Resume": "",
 			"Running": "",
 			"Search": "",
@@ -66,8 +66,7 @@
 			"devices": "",
 			"filter": "",
 			"new download": "",
-			"sort": "",
-			"to add new download": ""
+			"sort": ""
 		}
 	}
 }

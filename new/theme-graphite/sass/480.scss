@@ -9,3 +9,43 @@ $iconsSize: 20px;
 $panelIconSize: 22px;
 $fWidth: 25px;
 $fHeight: 15px;
+
+.component.panelEx.right,  .component.panelEx.left{
+    background-color: transparent;
+    .body {
+        display: none;
+    }
+    > .shadow {
+        display: none!important;
+    }
+    > .overlay {
+        background: transparent;
+    }
+    &.expand {
+        background: rgba($componentBgColor, $panelOpacity);
+        .body {
+            display: block;
+        }
+        > .shadow {
+            display: block!important;
+        }
+
+    }
+}
+
+.component.panelEx {
+    &.main {
+        &.position-right {
+            left: 258px!important;
+        }
+        &.position-left {
+            left: 88px!important;
+        }
+    }
+    &.right {
+        right: 32px!important;
+    }
+    &.left {
+        left: 48px!important;
+    }
+}

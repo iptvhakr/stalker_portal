@@ -650,6 +650,7 @@ a {
 }
 .searchPlaceModalWindow .icon {
   font-size: 31.5px !important;
+  padding-right: 10px;
 }
 .searchPlaceModalWindow .item {
   padding-left: 20px !important;
@@ -752,6 +753,11 @@ a {
 }
 .component.layout .component.input.focus .line > .caret {
   background-color: white !important;
+}
+.bgDarken > div:first-child {
+  max-width: 100% !important;
+  overflow: hidden;
+  width: 100% !important;
 }
 
 /*# sourceMappingURL=develop.480.css.map */

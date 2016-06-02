@@ -11,7 +11,7 @@
 			"Add to playlist": "Додати у плейліст",
 			"Albums": "Альбоми",
 			"All genres": "Всі жанри",
-			"All years": "Всі жанри",
+			"All years": "Всі роки",
 			"Artist:": "Виконавець:",
 			"Artists": "Виконавці",
 			"By date": "По даті",
@@ -23,7 +23,7 @@
 			"Delete": "Видалити",
 			"Exit": "Вихід",
 			"Genres": "Жанри",
-			"Genres:": "Жанри",
+			"Genres:": "Жанри:",
 			"Info": "Інформація",
 			"Menu": "Меню",
 			"No albums": "Не має альбомів",
@@ -31,15 +31,15 @@
 			"No playlists": "Не має плейлистів",
 			"No tracks": "Не має треків",
 			"Play": "Перегляд",
-			"Playlists": "Перегляд",
+			"Playlists": "Плейліст",
 			"Remove from playlist": "Видалити з плейліста",
 			"Search": "Пошук",
 			"Sort": "Сортування",
 			"Tracks": "Треки",
 			"Year:": "Рік:",
-			"Years": "Рік:",
+			"Years": "Роки",
 			"create playlist": "створити плейліст",
-			"name": "По назві"
+			"name": "назва"
 		}
 	}
 }

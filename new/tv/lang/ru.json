@@ -17,11 +17,13 @@
 			"Exit": "Выход",
 			"Favorite": "Избранное",
 			"Menu": "Меню",
-			"Play": "",
+			"Play": "Смотреть",
 			"Record": "Запись",
 			"Search": "Поиск",
 			"Sort": "Сортировка",
-			"Tv program": "Программа передач"
+			"TV": "",
+			"Tv program": "Программа передач",
+			"Watch TV shows, movies, tv series, news and educational programs in digital quality.": "Смотрите телепередачи, фильмы, сериалы, новостные и познавательные программы в цифровом качестве."
 		}
 	}
 }
