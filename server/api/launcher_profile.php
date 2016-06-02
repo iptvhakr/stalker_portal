@@ -80,7 +80,6 @@ $profile['options']['sap'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HT
 
 $profile['options']['pingTimeout'] = Config::getSafe('watchdog_timeout', 120) * 1000;
 $available_modules = array_values(array_diff($all_modules, $disabled_modules));
-$available_modules[] = 'portal';
 $available_modules[] = 'launcher';
 $available_modules[] = 'osd';
 $available_modules[] = 'osd-tv';
@@ -99,12 +98,15 @@ $module_to_app_map = array(
     'game.memory'   => 'memory',
     'game.sudoku'   => 'sudoku',
     'internet'      => 'browser',
-    'game.2048'     => '2048'
+    'game.2048'     => '2048',
+    'settings'      => 'system'
 );
 
 $available_modules = array_map(function($module) use ($module_to_app_map){
     return isset($module_to_app_map[$module]) ? $module_to_app_map[$module] : $module;
 }, $available_modules);
+
+$available_modules[] = 'settings';
 
 $apps = $profile['apps'];
 
