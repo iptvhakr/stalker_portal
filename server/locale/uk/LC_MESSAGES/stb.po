@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-01 12:16+0300\n"
-"PO-Revision-Date: 2016-06-01 12:19+0300\n"
+"POT-Creation-Date: 2016-06-02 17:45+0300\n"
+"PO-Revision-Date: 2016-06-02 17:45+0300\n"
 "Last-Translator: Aleksey Zhurbitsky <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -5134,14 +5134,18 @@ msgid "SETTINGS"
 msgstr "НАЛАШТУВАННЯ"
 
 #: ../../../tools/misctranslations.php:646
+msgid "SYSTEM"
+msgstr "СИСТЕМА"
+
+#: ../../../tools/misctranslations.php:647
 msgid "PORTAL"
 msgstr "ПОРТАЛ"
 
-#: ../../../tools/misctranslations.php:647
+#: ../../../tools/misctranslations.php:648
 msgid "EXCHANGE"
 msgstr "КУРС ВАЛЮТ"
 
-#: ../../../tools/misctranslations.php:648
+#: ../../../tools/misctranslations.php:649
 msgid ""
 "Watch TV shows, movies, tv series, news and educational programs in digital "
 "quality."
@@ -5149,7 +5153,7 @@ msgstr ""
 "Дивіться телепередачі, фільми, серіали, новини та пізнавальні програми в "
 "цифровій якості."
 
-#: ../../../tools/misctranslations.php:649
+#: ../../../tools/misctranslations.php:650
 msgid ""
 "Library of movies for any mood with easy search and sorting by genre that "
 "help to find what you need in seconds."
@@ -5157,7 +5161,7 @@ msgstr ""
 "Бібліотека кіно під будь-який настрій. Зручний пошук і сортування за жанрами "
 "дозволять швидко знайти те, що Вам потрібно!"
 
-#: ../../../tools/misctranslations.php:650
+#: ../../../tools/misctranslations.php:651
 msgid ""
 "Audio club app allows creating a special atmosphere for any party of family "
 "event!"
@@ -5165,19 +5169,19 @@ msgstr ""
 "Додаток Аудіо клуб дозволить створити особливу атмосферу на будь-якій "
 "вечірці або сімейному святі!"
 
-#: ../../../tools/misctranslations.php:651
+#: ../../../tools/misctranslations.php:652
 msgid ""
 "Easy and handy way of listening to music, news, talk shows and much more."
 msgstr ""
 "Простий і зручний спосіб слухати музику, новини, ток-шоу та багато іншого."
 
-#: ../../../tools/misctranslations.php:652
+#: ../../../tools/misctranslations.php:653
 msgid "Sing your favourite songs with friends or improve your vocal skills."
 msgstr ""
 "Співайте улюблені пісні в компанії друзів або розвивайте свої вокальні "
 "навички."
 
-#: ../../../tools/misctranslations.php:653
+#: ../../../tools/misctranslations.php:654
 msgid ""
 "Watch movies, listen to music or view the photos, saved on your removable "
 "storages or within the local network."
@@ -5185,7 +5189,7 @@ msgstr ""
 "Дивіться фільми, слухайте музику, переглядайте фотографії, розташовані на "
 "знімних носіях або в локальній мережі."
 
-#: ../../../tools/misctranslations.php:654
+#: ../../../tools/misctranslations.php:655
 msgid ""
 "Download the files directly from the Internet network to the connected "
 "removable storage."
@@ -5193,14 +5197,14 @@ msgstr ""
 "Завантажуйте файли безпосередньо з мережі Інтернет на підключений знімний "
 "носій."
 
-#: ../../../tools/misctranslations.php:655
+#: ../../../tools/misctranslations.php:656
 msgid ""
 "This app allows recording TV shows or watch the records made previously."
 msgstr ""
 "Ця програма дозволяє записувати ТВ програми або переглядати зроблені раніше "
 "записи."
 
-#: ../../../tools/misctranslations.php:656
+#: ../../../tools/misctranslations.php:657
 msgid ""
 "App will help you to stay up to date with the changes in rates of currencies "
 "from all over the world."
@@ -5208,11 +5212,11 @@ msgstr ""
 "Додаток допоможе Вам завжди залишатися в курсі інформації про вартість валют "
 "з усього світу."
 
-#: ../../../tools/misctranslations.php:657
+#: ../../../tools/misctranslations.php:658
 msgid "Weather forecast for three subsequent days in any city of the world."
 msgstr "Прогноз погоди на найближчі три дні в будь-якому місті світу."
 
-#: ../../../tools/misctranslations.php:658
+#: ../../../tools/misctranslations.php:659
 msgid ""
 "Horoscope, city guide and many other things that can be useful for fun and "
 "useful pastime."
@@ -5220,21 +5224,30 @@ msgstr ""
 "Гороскоп, міський довідник і багато іншого. Все що може стати в нагоді для "
 "веселого і корисного дозвілля."
 
-#: ../../../tools/misctranslations.php:659
-msgid ""
-"This menu allows setting up the parental control, region and language, "
-"remote control and network connection."
-msgstr ""
-"Це меню дозволяє налаштувати батьківський контроль, регіон і мову, "
-"дистанційне керування і підключення до Інтернету."
-
 #: ../../../tools/misctranslations.php:660
+msgid ""
+"Configure the user interface appearance and set up parental control to "
+"ensure your child’s safety while he’s using a set-top box."
+msgstr ""
+"Налаштуйте зовнішній вигляд користувальницького інтерфейсу, встановіть "
+"батьківський контроль, щоб бути спокійним за безпеку дитини, коли вона "
+"користується приставкою."
+
+#: ../../../tools/misctranslations.php:661
+msgid ""
+"System settings will help you to set up network connection, graphics "
+"resolution and to change interface language."
+msgstr ""
+"Системні налаштування допоможуть організувати підключення до мережі, "
+"встановити графічне розширення, змінити мову інтерфейсу."
+
+#: ../../../tools/misctranslations.php:662
 msgid ""
 "Surf the Internet via built-in browser! To make it easier, you can use the "
 "MAGic Remote mobile app or connect the keyboard or mouse via USB port."
 msgstr "Подорожуйте просторами Інтернету за допомогою вбудованого браузера!"
 
-#: ../../../tools/misctranslations.php:661
+#: ../../../tools/misctranslations.php:663
 msgid ""
 "2048 is one of the world’s most popular puzzles. The rules are simple: you "
 "need to shuffle all the bars to one side of the game field. Your goal is to "
@@ -5242,7 +5255,7 @@ msgid ""
 msgstr ""
 "Популярна логічна гра метою якої є отримання плитки номіналом в \"2048\"."
 
-#: ../../../tools/misctranslations.php:664
+#: ../../../tools/misctranslations.php:666
 msgid ""
 "The portal is temporarily unavailable.<br>Please try again later.<br>Sorry "
 "for the inconvenience."
@@ -5250,85 +5263,85 @@ msgstr ""
 "Портал тимчасово недоступний.<br>Будь ласка, спробуйте пізніше.<br>Приносимо "
 "вибачення за незручності."
 
-#: ../../../tools/misctranslations.php:665
+#: ../../../tools/misctranslations.php:667
 #, php-format
 msgid "Use your username and password to login or register on %s"
 msgstr "Для входу використовуйте свій логін і пароль або зареєструйтеся на %s"
 
-#: ../../../tools/misctranslations.php:666
+#: ../../../tools/misctranslations.php:668
 msgid "Please contact your provider<br>to register this device."
 msgstr ""
 
-#: ../../../tools/misctranslations.php:667
+#: ../../../tools/misctranslations.php:669
 #, php-format
 msgid "Welcome %s<br>We are glad to see you on the Stalker portal!"
 msgstr "Ласкаво просимо, %s<br>Ми раді бачити Вас в порталі Stalker!"
 
-#: ../../../tools/misctranslations.php:669
+#: ../../../tools/misctranslations.php:671
 msgid "Setting the tariff plans and additional services for users on edit page"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:670
+#: ../../../tools/misctranslations.php:672
 msgid "Managing of billing date for users on edit page"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:671
+#: ../../../tools/misctranslations.php:673
 msgid "Managing of users reseller on edit page"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:673
+#: ../../../tools/misctranslations.php:675
 msgid "Getting list of seasons and episodes of video"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:674
+#: ../../../tools/misctranslations.php:676
 msgid "Getting list of files of episode"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:675
+#: ../../../tools/misctranslations.php:677
 msgid "Getting info by one file of episode"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:676
+#: ../../../tools/misctranslations.php:678
 #, fuzzy
 msgid "Adding and editing files of episode"
 msgstr "Пошук по сховищах"
 
-#: ../../../tools/misctranslations.php:677
+#: ../../../tools/misctranslations.php:679
 msgid "Change accessed status of one file of episode"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:678
+#: ../../../tools/misctranslations.php:680
 msgid "Change names and original names for episodes and seasons"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:679
+#: ../../../tools/misctranslations.php:681
 msgid "Deleting info about one video file from database"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:680
+#: ../../../tools/misctranslations.php:682
 msgid "Adding episodes into season"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:681
+#: ../../../tools/misctranslations.php:683
 #, fuzzy
 msgid "Adding seasons into video"
 msgstr "Надіслати повідомлення"
 
-#: ../../../tools/misctranslations.php:683
+#: ../../../tools/misctranslations.php:685
 #, fuzzy
 msgid "Regular quality"
 msgstr "висока якість"
 
-#: ../../../tools/misctranslations.php:684
+#: ../../../tools/misctranslations.php:686
 #, fuzzy
 msgid "Good quality"
 msgstr "Низька якість"
 
-#: ../../../tools/misctranslations.php:685
+#: ../../../tools/misctranslations.php:687
 msgid "Excellent quality"
 msgstr ""
 
-#: ../../../tools/misctranslations.php:686
+#: ../../../tools/misctranslations.php:688
 #, fuzzy
 msgid "Ultra high quality"
 msgstr "висока якість"
@@ -7313,6 +7326,13 @@ msgstr ""
 #: ../../../lib/epg.class.php:846 ../../../lib/epg.class.php:847
 msgid "H:i"
 msgstr ""
+
+#~ msgid ""
+#~ "This menu allows setting up the parental control, region and language, "
+#~ "remote control and network connection."
+#~ msgstr ""
+#~ "Це меню дозволяє налаштувати батьківський контроль, регіон і мову, "
+#~ "дистанційне керування і підключення до Інтернету."
 
 #~ msgid "video club"
 #~ msgstr "відео клуб"

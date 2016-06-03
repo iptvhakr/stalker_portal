@@ -1,18 +1,19 @@
 {
     "options": {
         "pluginsPath": "../plugins/",
-        "stalkerApiHost": "http://stage-api.sandbox.lpo.priv",
+        "stalkerHost": "http://stage-api.sandbox.lpo.priv/",
+        "stalkerApiHost": "http://stage-api.sandbox.lpo.priv/stalker_portal/api/v3/",
         "stalkerAuthHost": "http://stage-api.sandbox.lpo.priv/stalker_portal/auth/token.php",
         "pingTimeout": 50000,
         "sap": "http://stage-api.sandbox.lpo.priv/stalker_portal/server/api/sap.php"
     },
     "themes": {
-        "graphite": "http://192.168.1.103:8030/graphite/",
+        "graphite": "http://192.168.1.103:8030/theme-graphite/",
         "chocolate": "../theme-chocolate/"
     },
     "apps": [{
-        "name": "tv",
-        "description": "Watch TV shows, movies, tv series, news and educational programs in digital quality",
+        "name": "TV",
+        "description": "Watch TV shows, movies, tv series, news and educational programs in digital quality.",
         "type": "app",
         "category": "media",
         "backgroundColor": "#00bae8",
@@ -34,7 +35,7 @@
         "type": "app",
         "category": "media",
         "backgroundColor": "#3cbb3c",
-        "name": "audio club",
+        "name": "AUDIO CLUB",
         "description": "Audio club app allows creating a special atmosphere for any party of family event!",
         "icons": {
             "paths": {
@@ -49,12 +50,12 @@
             }
         },
         "url": "../audio.club/",
-        "version": "0.2.2"
+        "version": "0.2.6"
     }, {
         "type": "app",
         "category": "media",
         "backgroundColor": "#8f58e7",
-        "name": "video club",
+        "name": "VIDEO CLUB",
         "description": "Library of movies for any mood with easy search and sorting by genre that help to find what you need in seconds.",
         "icons": {
             "paths": {
@@ -69,12 +70,12 @@
             }
         },
         "url": "../video.club/",
-        "version": "0.2.0"
+        "version": "0.2.6"
     }, {
         "type": "app",
         "category": "media",
         "backgroundColor": "#dea700",
-        "name": "radio",
+        "name": "RADIO",
         "description": "Easy and handy way of listening to music, news, talk shows and much more.",
         "icons": {
             "paths": {
@@ -89,12 +90,12 @@
             }
         },
         "url": "../radio/",
-        "version": "1.0.1"
+        "version": "1.0.5"
     }, {
         "type": "app",
         "category": "media",
         "backgroundColor": "#ff6650",
-        "name": "karaoke",
+        "name": "KARAOKE",
         "description": "Sing your favourite songs with friends or improve your vocal skills.",
         "icons": {
             "paths": {
@@ -109,12 +110,12 @@
             }
         },
         "url": "../karaoke/",
-        "version": "1.0.1"
+        "version": "1.0.5"
     }, {
         "type": "app",
         "category": "media",
         "backgroundColor": "#3cbb3c",
-        "name": "explorer",
+        "name": "EXPLORER",
         "description": "Watch movies, listen to music or view the photos, saved on your removable storages or within the local network.",
         "icons": {
             "paths": {
@@ -133,14 +134,14 @@
             "ufs-json": "^0.0.1",
             "fs": "^0.0.1"
         },
-        "registerTypes": ["mpg", "mpeg", "mkv", "avi", "3gp", "ts", "tspinf", "m4a", "mp3", "mp4", "ac3", "mov", "vob", "wav", "ape", "mts", "m2t", "m2v", "ogg", "oga", "divx", "aiff", "m2ts", "wv", "m2p", "tp", "flv", "tta", "mod", "tod", "asf", "wma", "wmv", "flac", "ape", "cue", "iso", "aac", "txt", "srt", "sub", "ass", "m4v", "tts"],
+        "registerTypes": ["mpg", "mpeg", "mkv", "avi", "3gp", "ts", "tspinf", "m4a", "mp3", "mp4", "ac3", "mov", "vob", "wav", "ape", "mts", "m2t", "m2v", "ogg", "oga", "divx", "aiff", "m2ts", "wv", "m2p", "tp", "flv", "tta", "mod", "tod", "asf", "wma", "wmv", "flac", "ape", "cue", "iso", "aac", "txt", "srt", "sub", "ass", "m4v", "tts", "m3u", "m3u8"],
         "mountPath": "/ram/mnt",
-        "version": "1.1.7"
+        "version": "1.2.0"
     }, {
         "type": "app",
         "category": "media",
         "backgroundColor": "#fc9360",
-        "name": "downloads",
+        "name": "DOWNLOADS",
         "description": "Download the files directly from the Internet network to the connected removable storage.",
         "icons": {
             "paths": {
@@ -157,13 +158,18 @@
         "actions": {
             "download": true
         },
-        "version": "0.0.2",
+        "dependencies": {
+            "ufs-json": "^0.0.1",
+            "fs": "^0.0.1",
+            "download-manager": "^0.0.1"
+        },
+        "version": "0.0.3",
         "url": "../downloads/"
     }, {
         "type": "app",
         "category": "media",
         "backgroundColor": "#a56d24",
-        "name": "records",
+        "name": "RECORDS",
         "description": "This app allows recording TV shows or watch the records made previously.",
         "icons": {
             "paths": {
@@ -191,7 +197,7 @@
         "type": "app",
         "category": "media",
         "backgroundColor": "#41c2ab",
-        "name": "weather",
+        "name": "WEATHER",
         "description": "Weather forecast for three subsequent days in any city of the world.",
         "icons": {
             "paths": {
@@ -206,13 +212,13 @@
             }
         },
         "url": "../weather/",
-        "version": "1.0.1"
+        "version": "1.0.3"
     }, {
         "type": "app",
         "category": "media",
-        "description": "This menu allows setting up the parental control, and theme.",
+        "description": "This menu allows setting up the parental control, region and language, remote control and network connection.",
         "backgroundColor": "#8ab027",
-        "name": "tuning",
+        "name": "PORTAL",
         "icons": {
             "paths": {
                 "480": "img/480/",
@@ -230,9 +236,9 @@
     }, {
         "type": "app",
         "category": "media",
-        "description": "This menu allows setting up the region and language, remote control and network connection.",
+        "description": "This menu allows setting up the parental control, region and language, remote control and network connection.",
         "backgroundColor": "#005ea6",
-        "name": "settings",
+        "name": "SETTINGS",
         "icons": {
             "paths": {
                 "480": "img/480/",
@@ -275,13 +281,13 @@
                 "width": "640px",
                 "height": "40px",
                 "top": "30px",
-                "left": "40px"
+                "left": "48px"
             },
             "576": {
-                "width": "620px",
+                "width": "640px",
                 "height": "40px",
                 "top": "50px",
-                "left": "50px"
+                "left": "55px"
             },
             "720": {
                 "width": "1200px",
@@ -342,7 +348,7 @@
         "backgroundColor": "#c12226",
         "name": "Youtube",
         "legacy": true,
-        "description": "Youtube.com is an Internet service that provides video hosting services. Users can add, view, comment and share these or other videos with their friends. The site includes a professionally shot movies and clips as well as amateur videos, including video blogs. Due to the simplicity and ease of use YouTube has become the most popular videohosting site, and the third in the world as regards to the number of visitors",
+        "description": "Youtube.com is a world famous video hosting, which allows users to watch, upload and share videos with their friends.",
         "icons": {
             "paths": {
                 "480": "img/480/",
@@ -360,7 +366,7 @@
         "category": "games",
         "backgroundColor": "#f9a91a",
         "name": "2048",
-        "description": "",
+        "description": "2048 is one of the worldâ€™s most popular puzzles. The rules are simple: you need to shuffle all the bars to one side of the game field. Your goal is to reach 2048.",
         "version": "1.0.0",
         "legacy": true,
         "icons": {

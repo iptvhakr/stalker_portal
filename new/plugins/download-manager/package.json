@@ -1,0 +1,16 @@
+{
+    "name": "mag-plugin-download-manager",
+    "version": "0.0.2",
+    "description": "",
+    "author": "bas",
+    "main": "index.js",
+    "repository": {},
+    "license": "GPL-3.0",
+    "config": {
+        "name": "downloadManager",
+        "type": "plugin"
+    },
+    "devDependencies": {
+        "spa-eslint-config": "https://github.com/spasdk/eslint-config"
+    }
+}

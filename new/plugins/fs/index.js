@@ -21,9 +21,14 @@ function Fs ( config ) {
 
     Object.defineProperty(this, 'onMount', {
         set: function ( fn ) {
-            window.parent.stbEvent.addListener('device:mount', function ( state ) {
-                //self.emit('device:mount', state);
-                fn ( state );
+            window.parent.stbEvent.addListener('message', function ( evt ) {
+                if ( evt.broadcast ) {
+                    if ( evt.message === 'storage.mount' ) {
+                        fn(true);
+                    } else if ( evt.message === 'storage.unmount' ) {
+                        fn(false);
+                    }
+                }
             });
         }
     });

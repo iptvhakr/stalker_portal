@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-03 11:19+0300\n"
-"PO-Revision-Date: 2016-06-03 11:20+0300\n"
+"POT-Creation-Date: 2016-06-03 11:31+0300\n"
+"PO-Revision-Date: 2016-06-03 11:33+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -180,7 +180,7 @@ msgstr "Ошибка"
 #: ../../../../admin/src/Controller/TvChannelsController.php:462
 #, php-format
 msgid "Cannot create directory %s"
-msgstr "Не возможно создать  директорию %s"
+msgstr "Невозможно создать директорию  %s"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:471
 #, php-format
@@ -5763,14 +5763,18 @@ msgid "SETTINGS"
 msgstr "Настройки"
 
 #: ../../../tools/misctranslations.php:646
+msgid "SYSTEM"
+msgstr "СИСТЕМА"
+
+#: ../../../tools/misctranslations.php:647
 msgid "PORTAL"
 msgstr "ПОРТАЛ"
 
-#: ../../../tools/misctranslations.php:647
+#: ../../../tools/misctranslations.php:648
 msgid "EXCHANGE"
 msgstr "КУРС ВАЛЮТ"
 
-#: ../../../tools/misctranslations.php:648
+#: ../../../tools/misctranslations.php:649
 msgid ""
 "Watch TV shows, movies, tv series, news and educational programs in digital "
 "quality."
@@ -5778,7 +5782,7 @@ msgstr ""
 "Смотрите телепередачи, фильмы, сериалы, новостные и познавательные программы "
 "в цифровом качестве."
 
-#: ../../../tools/misctranslations.php:649
+#: ../../../tools/misctranslations.php:650
 msgid ""
 "Library of movies for any mood with easy search and sorting by genre that "
 "help to find what you need in seconds."
@@ -5786,7 +5790,7 @@ msgstr ""
 "Библиотека фильмов под любое настроение с удобным поиском и сортировкой по "
 "жанрам, которые позволят быстро найти то, что Вам нужно!"
 
-#: ../../../tools/misctranslations.php:650
+#: ../../../tools/misctranslations.php:651
 msgid ""
 "Audio club app allows creating a special atmosphere for any party of family "
 "event!"
@@ -5794,18 +5798,18 @@ msgstr ""
 "Приложение Аудио клуб позволит создать особую атмосферу на любой вечеринке "
 "или семейном празднике!"
 
-#: ../../../tools/misctranslations.php:651
+#: ../../../tools/misctranslations.php:652
 msgid ""
 "Easy and handy way of listening to music, news, talk shows and much more."
 msgstr ""
 "Простой и удобный способ слушать музыку, новости, ток-шоу и многое другое."
 
-#: ../../../tools/misctranslations.php:652
+#: ../../../tools/misctranslations.php:653
 msgid "Sing your favourite songs with friends or improve your vocal skills."
 msgstr ""
 "Пойте любимые песни в компании друзей или развивайте свои вокальные навыки."
 
-#: ../../../tools/misctranslations.php:653
+#: ../../../tools/misctranslations.php:654
 msgid ""
 "Watch movies, listen to music or view the photos, saved on your removable "
 "storages or within the local network."
@@ -5813,21 +5817,21 @@ msgstr ""
 "Смотрите фильмы, слушайте музыку, просматривайте фотографии, расположенные "
 "на съемных носителях или в локальной сети."
 
-#: ../../../tools/misctranslations.php:654
+#: ../../../tools/misctranslations.php:655
 msgid ""
 "Download the files directly from the Internet network to the connected "
 "removable storage."
 msgstr ""
 "Скачивайте файлы напрямую из сети Интернет на подключенный съемный носитель."
 
-#: ../../../tools/misctranslations.php:655
+#: ../../../tools/misctranslations.php:656
 msgid ""
 "This app allows recording TV shows or watch the records made previously."
 msgstr ""
 "Это приложение позволяет записывать ТВ программы или просматривать сделанные "
 "ранее записи."
 
-#: ../../../tools/misctranslations.php:656
+#: ../../../tools/misctranslations.php:657
 msgid ""
 "App will help you to stay up to date with the changes in rates of currencies "
 "from all over the world."
@@ -5835,11 +5839,11 @@ msgstr ""
 "Приложение поможет Вам всегда оставаться в курсе информации о стоимости "
 "валют со всего мира."
 
-#: ../../../tools/misctranslations.php:657
+#: ../../../tools/misctranslations.php:658
 msgid "Weather forecast for three subsequent days in any city of the world."
 msgstr "Прогноз погоды на ближайшие три дня в любом городе мира"
 
-#: ../../../tools/misctranslations.php:658
+#: ../../../tools/misctranslations.php:659
 msgid ""
 "Horoscope, city guide and many other things that can be useful for fun and "
 "useful pastime."
@@ -5847,21 +5851,30 @@ msgstr ""
 "Гороскоп, городской справочник и многое другое. Все что может пригодиться "
 "для веселого и полезного времяпрепровождения."
 
-#: ../../../tools/misctranslations.php:659
-msgid ""
-"This menu allows setting up the parental control, region and language, "
-"remote control and network connection."
-msgstr ""
-"Это меню позволит настроить родительский контроль, регион и язык,  "
-"дистанционное управление и подключение к Интернету."
-
 #: ../../../tools/misctranslations.php:660
+msgid ""
+"Configure the user interface appearance and set up parental control to "
+"ensure your child’s safety while he’s using a set-top box."
+msgstr ""
+"Настройте внешний вид пользовательского интерфейса, установите родительский "
+"контроль, чтобы быть спокойным за безопасность ребенка, когда он пользуется "
+"приставкой."
+
+#: ../../../tools/misctranslations.php:661
+msgid ""
+"System settings will help you to set up network connection, graphics "
+"resolution and to change interface language."
+msgstr ""
+"Системные настройки помогут организовать сетевые подключения, установить "
+"подходящее графическое разрешение, сменить язык интерфейса."
+
+#: ../../../tools/misctranslations.php:662
 msgid ""
 "Surf the Internet via built-in browser! To make it easier, you can use the "
 "MAGic Remote mobile app or connect the keyboard or mouse via USB port."
 msgstr "Путешествуйте по просторам Интернета с помощью встроенного браузера!"
 
-#: ../../../tools/misctranslations.php:661
+#: ../../../tools/misctranslations.php:663
 msgid ""
 "2048 is one of the world’s most popular puzzles. The rules are simple: you "
 "need to shuffle all the bars to one side of the game field. Your goal is to "
@@ -5870,7 +5883,7 @@ msgstr ""
 "Популярная головоломка целью которой является получение плитки номиналом в "
 "\"2048\"."
 
-#: ../../../tools/misctranslations.php:664
+#: ../../../tools/misctranslations.php:666
 msgid ""
 "The portal is temporarily unavailable.<br>Please try again later.<br>Sorry "
 "for the inconvenience."
@@ -5878,84 +5891,84 @@ msgstr ""
 "Портал временно недоступен.<br>Пожалуйста, повторите попытку позже."
 "<br>Приносим извинения за неудобства."
 
-#: ../../../tools/misctranslations.php:665
+#: ../../../tools/misctranslations.php:667
 #, php-format
 msgid "Use your username and password to login or register on %s"
 msgstr "Для входа используйте свой логин и пароль или зарегистрируйтесь на %s"
 
-#: ../../../tools/misctranslations.php:666
+#: ../../../tools/misctranslations.php:668
 msgid "Please contact your provider<br>to register this device."
 msgstr ""
 
-#: ../../../tools/misctranslations.php:667
+#: ../../../tools/misctranslations.php:669
 #, php-format
 msgid "Welcome %s<br>We are glad to see you on the Stalker portal!"
 msgstr "Добро пожаловать %s<br>Мы рады видеть Вас в портале Stalker!"
 
-#: ../../../tools/misctranslations.php:669
+#: ../../../tools/misctranslations.php:671
 msgid "Setting the tariff plans and additional services for users on edit page"
 msgstr ""
 "Установка тарифных планов и доп. сервисов пользователя на странице "
 "редактирования"
 
-#: ../../../tools/misctranslations.php:670
+#: ../../../tools/misctranslations.php:672
 msgid "Managing of billing date for users on edit page"
 msgstr ""
 "Управление сроком действия акаунта пользователя на странице редактирования "
 
-#: ../../../tools/misctranslations.php:671
+#: ../../../tools/misctranslations.php:673
 msgid "Managing of users reseller on edit page"
 msgstr "Управление реселлером поьлзователя на странице редактирования"
 
-#: ../../../tools/misctranslations.php:673
+#: ../../../tools/misctranslations.php:675
 msgid "Getting list of seasons and episodes of video"
 msgstr "Получение списока сезонов и серий для видео"
 
-#: ../../../tools/misctranslations.php:674
+#: ../../../tools/misctranslations.php:676
 msgid "Getting list of files of episode"
 msgstr "Получение списока файлов серии"
 
-#: ../../../tools/misctranslations.php:675
+#: ../../../tools/misctranslations.php:677
 msgid "Getting info by one file of episode"
 msgstr "Получение информации по одному файлу серии"
 
-#: ../../../tools/misctranslations.php:676
+#: ../../../tools/misctranslations.php:678
 msgid "Adding and editing files of episode"
 msgstr "Добавление и редактирование файлов серии"
 
-#: ../../../tools/misctranslations.php:677
+#: ../../../tools/misctranslations.php:679
 msgid "Change accessed status of one file of episode"
 msgstr "Смена статуса доступности для одного файла серии"
 
-#: ../../../tools/misctranslations.php:678
+#: ../../../tools/misctranslations.php:680
 msgid "Change names and original names for episodes and seasons"
 msgstr "Смена названия и оригинального названия серий и сезонов"
 
-#: ../../../tools/misctranslations.php:679
+#: ../../../tools/misctranslations.php:681
 msgid "Deleting info about one video file from database"
 msgstr "Удаление информации о одном файле виде из базы"
 
-#: ../../../tools/misctranslations.php:680
+#: ../../../tools/misctranslations.php:682
 msgid "Adding episodes into season"
 msgstr "Добавить серию в сезон"
 
-#: ../../../tools/misctranslations.php:681
+#: ../../../tools/misctranslations.php:683
 msgid "Adding seasons into video"
 msgstr "Добавиление сезонов в видео "
 
-#: ../../../tools/misctranslations.php:683
+#: ../../../tools/misctranslations.php:685
 msgid "Regular quality"
 msgstr "Обычное качество"
 
-#: ../../../tools/misctranslations.php:684
+#: ../../../tools/misctranslations.php:686
 msgid "Good quality"
 msgstr "Хорошее качество"
 
-#: ../../../tools/misctranslations.php:685
+#: ../../../tools/misctranslations.php:687
 msgid "Excellent quality"
 msgstr "Отличное качество"
 
-#: ../../../tools/misctranslations.php:686
+#: ../../../tools/misctranslations.php:688
 msgid "Ultra high quality"
 msgstr "Ультра высокое качество"
 
@@ -11929,6 +11942,13 @@ msgstr "Внешний вид"
 #: ../../../../admin/json_menu/menu.json:418
 msgid "Firmware update"
 msgstr "Обновление прошивки"
+
+#~ msgid ""
+#~ "This menu allows setting up the parental control, region and language, "
+#~ "remote control and network connection."
+#~ msgstr ""
+#~ "Это меню позволит настроить родительский контроль, регион и язык,  "
+#~ "дистанционное управление и подключение к Интернету."
 
 #~ msgid "video club"
 #~ msgstr "видео клуб"
