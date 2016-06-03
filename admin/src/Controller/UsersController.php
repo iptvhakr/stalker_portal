@@ -345,6 +345,7 @@ class UsersController extends \Controller\BaseStalkerController {
 
         if ($this->app['resellerUserLimit']) {
             $this->app['tarifPlanFlag'] = Config::getSafe('enable_tariff_plans', false);
+            $this->app['tariffPlanSubscriptionFlag'] = Config::getSafe('enable_tv_subscription_for_tariff_plans', false);
             $form = $this->buildUserForm();
 
             if ($this->saveUsersData($form)) {
@@ -352,9 +353,9 @@ class UsersController extends \Controller\BaseStalkerController {
             }
             $this->app['form'] = $form->createView();
 
-            if (Config::getSafe('enable_tv_subscription_for_tariff_plans', false)) {
-                $this->app['channelsCost'] = "0.00"; //$this->getCostSubChannels();
-            }
+/*            if (Config::getSafe('enable_tv_subscription_for_tariff_plans', false)) {
+                $this->app['channelsCost'] = 0.00;
+            }*/
             if (Config::getSafe('enable_internal_billing', 'false')) {
                 $this->app['enableBilling'] = TRUE;
             }
@@ -394,7 +395,8 @@ class UsersController extends \Controller\BaseStalkerController {
         if (empty($this->user)) {
             return $this->app->redirect('add-users');
         }
-        $this->app['tarifPlanFlag'] = Config::getSafe('enable_tariff_plans', false);
+        $this->app['tariffPlanFlag'] = Config::getSafe('enable_tariff_plans', false);
+        $this->app['tariffPlanSubscriptionFlag'] = Config::getSafe('enable_tv_subscription_for_tariff_plans', false);
         if (!empty($this->user['expire_billing_date']) && preg_match("/(19|20\d\d)[- \/\.](0[1-9]|1[012])[- \/\.](0[1-9]|[12][0-9]|3[01])/im", $this->user['expire_billing_date'], $match)) {
             unset($match[0]);
             $this->user['expire_billing_date'] = implode('-', array_reverse($match));
@@ -423,9 +425,9 @@ class UsersController extends \Controller\BaseStalkerController {
 
         $this->app['state'] = (int) $this->user['state'];
 
-        if (Config::getSafe('enable_tv_subscription_for_tariff_plans', false)) {
-            $this->app['channelsCost'] = "0.00"; //$this->getCostSubChannels();    
-        }
+/*        if ($this->app['tariffPlanSubscriptionFlag']) {
+            $this->app['channelsCost'] = $this->getCostSubChannels($this->user['id']);
+        }*/
         if (Config::getSafe('enable_internal_billing', 'false')) {
             $this->app['enableBilling'] = TRUE;
         }
@@ -1699,6 +1701,74 @@ class UsersController extends \Controller\BaseStalkerController {
         return new Response(json_encode($result), 200);
     }
 
+    public function get_subscribed_tv(){
+        if (!$this->isAjax || empty($this->postData['user_id'])) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array(
+            'action' => 'setSubscribedTVModal',
+            'user_id' =>(int) $this->postData['user_id']
+        );
+
+        $error = $this->setLocalization('Error');
+        $subscribed_tv_ids = unserialize(base64_decode($this->db->getSubChannelsDB((int) $this->postData['user_id'])));
+        if (is_array($subscribed_tv_ids)) {
+            $subscribed_tv_ids = implode(", ", $subscribed_tv_ids);
+            $data['subscribed_tv'] = array_map(function($row){
+                return array('id' => $row['id'], 'name' => $row['name'], 'cost' => $row['cost']);
+            }, $this->db->getITV(array('base_ch' => 0, 'id IN('. $subscribed_tv_ids .') AND 1=' => 1), 'ALL'));
+
+            $data['not_subscribed_tv'] = array_map(function($row){
+                return array('id' => $row['id'], 'name' => $row['name'], 'cost' => $row['cost']);
+            }, $this->db->getITV(array('base_ch' => 0, 'id NOT IN('. $subscribed_tv_ids .') AND 1=' => 1), 'ALL'));
+            $error = '';
+        }
+
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function save_subscribed_tv(){
+        if (!$this->isAjax || empty($this->postData['user_id'])) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array(
+            'action' => 'hideSubscribedTVModal'
+        );
+
+        $error = $this->setLocalization('Error');
+
+        if (!empty($this->postData['sub_ch']) && is_array($this->postData['sub_ch'])) {
+            $params = array(
+                'sub_ch'   => base64_encode(serialize($this->postData['sub_ch'])),
+                'bonus_ch' => '',
+                'addtime'  => 'NOW()'
+            );
+            if ($this->db->getSubChannelsDB((int) $this->postData['user_id']) && $this->db->updateSubChannelsDB($params, $this->postData['user_id'])) {
+                $error = '';
+            } elseif (($params['uid'] = $this->postData['user_id']) && $this->db->insertSubChannelsDB($params)) {
+                $error = '';
+            } else {
+                $error = $this->setLocalization('Write database error');
+            }
+        }
+
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
     //------------------------ service method ----------------------------------
 
     private function getUsersFilters() {
@@ -1783,7 +1853,7 @@ class UsersController extends \Controller\BaseStalkerController {
             $data['version'] = str_replace(";", ";\r\n", $data['version']);
         }
 
-        if ($this->app['tarifPlanFlag']) {
+        if ($this->app['tariffPlanFlag']) {
             $tarif_plans = $this->db->getAllTariffPlans();
             $plan_keys = $this->getFieldFromArray($tarif_plans, 'id');
             $plan_names = $this->getFieldFromArray($tarif_plans, 'name');
@@ -1874,7 +1944,7 @@ class UsersController extends \Controller\BaseStalkerController {
             $this->app['tariff_and_service_control'] = 0;
         }
 
-        if ($this->app['tarifPlanFlag']){
+        if ($this->app['tariffPlanFlag']){
             $this->app['allTariffPlans'] = $tariff_plans;
             $form->add('tariff_plan_id', 'choice', array(
                     'choices' => $tariff_plans,
@@ -2013,11 +2083,10 @@ class UsersController extends \Controller\BaseStalkerController {
 
     private function getCostSubChannels($id = 0) {
         if ($id == 0) {
-            return 0;
+            return 0.00;
         }
         $sub_ch = $this->getSubChannels($id);
-
-        return number_format($this->db->returngetCostSubChannelsDB($sub_ch), 2, '.');
+        return number_format(floatval($this->db->getCostSubChannelsDB($sub_ch)/100), 2, '.', ' ');
     }
 
     private function setLogObjects(&$data) {

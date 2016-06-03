@@ -128,7 +128,15 @@ class UsersModel extends \Model\BaseStalkerModel {
     public function getSubChannelsDB($id){
         return $this->mysqlInstance->from('itv_subscription')->where(array('uid' => $id))->get()->first('sub_ch');
     }
-    
+
+    public function insertSubChannelsDB($params){
+        return $this->mysqlInstance->insert('itv_subscription', $params)->total_rows();
+    }
+
+    public function updateSubChannelsDB($params, $id){
+        return $this->mysqlInstance->update('itv_subscription', $params, array('uid' => $id))->total_rows();
+    }
+
     public function getCostSubChannelsDB($channels = array()){
         return empty($channels)? 0 : $this->mysqlInstance->select('SUM(cost) as total_cost')->from('itv')->in('id', $channels)->get()->first('total_cost');
     }
@@ -281,8 +289,8 @@ class UsersModel extends \Model\BaseStalkerModel {
         return $this->mysqlInstance->get()->all();
     }
     
-    public function getITV($param) {
-        return $this->mysqlInstance->from('itv')->where($param)->get()->first();
+    public function getITV($param, $all = FALSE) {
+        return $this->mysqlInstance->from('itv')->where($param)->get()->{$all ? 'all': 'first'}();
     }
     
     public function getVideo($param) {

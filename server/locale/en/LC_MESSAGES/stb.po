@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-23 10:50+0300\n"
-"PO-Revision-Date: 2016-05-23 10:50+0300\n"
+"POT-Creation-Date: 2016-06-03 11:20+0300\n"
+"PO-Revision-Date: 2016-06-03 11:20+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -60,7 +60,7 @@ msgid "Unpublished"
 msgstr "Unpublished"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:59
-#: ../../../../admin/src/Controller/TvChannelsController.php:1852
+#: ../../../../admin/src/Controller/TvChannelsController.php:1863
 #: ../../../../admin/src/Controller/RadioController.php:24
 #: ../../../../admin/src/Controller/RadioController.php:406
 #: ../../../administrator/add_itv.php:1413
@@ -68,21 +68,21 @@ msgid "monitoring off"
 msgstr "Monitoring off"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:60
-#: ../../../../admin/src/Controller/TvChannelsController.php:1884
+#: ../../../../admin/src/Controller/TvChannelsController.php:1895
 #: ../../../../admin/src/Controller/RadioController.php:25
 #: ../../../../admin/src/Controller/RadioController.php:420
 msgid "errors occurred"
 msgstr "Errors occurred"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:61
-#: ../../../../admin/src/Controller/TvChannelsController.php:1878
+#: ../../../../admin/src/Controller/TvChannelsController.php:1889
 #: ../../../../admin/src/Controller/RadioController.php:26
 #: ../../../../admin/src/Controller/RadioController.php:418
 msgid "no errors"
 msgstr "No errors"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:62
-#: ../../../../admin/src/Controller/TvChannelsController.php:1873
+#: ../../../../admin/src/Controller/TvChannelsController.php:1884
 msgid "there are some problems"
 msgstr "There are some problems"
 
@@ -90,7 +90,7 @@ msgstr "There are some problems"
 #: ../../../../admin/src/Controller/TvChannelsController.php:380
 #: ../../../../admin/src/Controller/TvChannelsController.php:406
 #: ../../../../admin/src/Controller/TvChannelsController.php:436
-#: ../../../../admin/src/Controller/TvChannelsController.php:474
+#: ../../../../admin/src/Controller/TvChannelsController.php:485
 msgid "Cannot find channel"
 msgstr "Cannot find channel"
 
@@ -105,15 +105,15 @@ msgstr "Publish"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:393
 #: ../../../../admin/src/Controller/TvChannelsController.php:421
-#: ../../../../admin/src/Controller/TvChannelsController.php:943
-#: ../../../../admin/src/Controller/TvChannelsController.php:980
-#: ../../../../admin/src/Controller/TvChannelsController.php:1009
+#: ../../../../admin/src/Controller/TvChannelsController.php:954
+#: ../../../../admin/src/Controller/TvChannelsController.php:991
+#: ../../../../admin/src/Controller/TvChannelsController.php:1020
 #: ../../../../admin/src/Controller/EventsController.php:499
 #: ../../../../admin/src/Controller/EventsController.php:731
 #: ../../../../admin/src/Controller/EventsController.php:752
-#: ../../../../admin/src/Controller/UsersController.php:1372
-#: ../../../../admin/src/Controller/UsersController.php:1411
-#: ../../../../admin/src/Controller/UsersController.php:1519
+#: ../../../../admin/src/Controller/UsersController.php:1374
+#: ../../../../admin/src/Controller/UsersController.php:1413
+#: ../../../../admin/src/Controller/UsersController.php:1521
 #: ../../../../admin/src/Controller/AdminsController.php:744
 #: ../../../../admin/src/Controller/AdminsController.php:778
 #: ../../../../admin/src/Controller/AdminsController.php:821
@@ -129,10 +129,10 @@ msgid "Unpublish"
 msgstr "Unpublish"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:442
-#: ../../../../admin/src/Controller/TvChannelsController.php:652
-#: ../../../../admin/src/Controller/TvChannelsController.php:883
-#: ../../../../admin/src/Controller/TvChannelsController.php:1057
-#: ../../../../admin/src/Controller/TvChannelsController.php:1162
+#: ../../../../admin/src/Controller/TvChannelsController.php:663
+#: ../../../../admin/src/Controller/TvChannelsController.php:894
+#: ../../../../admin/src/Controller/TvChannelsController.php:1068
+#: ../../../../admin/src/Controller/TvChannelsController.php:1173
 #: ../../../../admin/src/Controller/EventsController.php:419
 #: ../../../../admin/src/Controller/EventsController.php:544
 #: ../../../../admin/src/Controller/VideoClubController.php:398
@@ -164,68 +164,76 @@ msgstr "Unpublish"
 #: ../../../../admin/src/Controller/KaraokeController.php:78
 #: ../../../../admin/src/Controller/KaraokeController.php:305
 #: ../../../../admin/src/Controller/TasksController.php:530
-#: ../../../../admin/src/Controller/UsersController.php:856
-#: ../../../../admin/src/Controller/UsersController.php:1199
-#: ../../../../admin/src/Controller/UsersController.php:1544
+#: ../../../../admin/src/Controller/UsersController.php:858
+#: ../../../../admin/src/Controller/UsersController.php:1201
+#: ../../../../admin/src/Controller/UsersController.php:1546
+#: ../../../../admin/src/Controller/UsersController.php:1718
+#: ../../../../admin/src/Controller/UsersController.php:1750
 #: ../../../../admin/src/Controller/AdminsController.php:335
 #: ../../../../admin/src/Controller/AdminsController.php:459
 #: ../../../lang/stb.php:362
 msgid "Error"
 msgstr "Error"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:461
+#: ../../../../admin/src/Controller/TvChannelsController.php:455
+#: ../../../../admin/src/Controller/TvChannelsController.php:462
+#, php-format
+msgid "Cannot create directory %s"
+msgstr "Cannot create directory %s"
+
+#: ../../../../admin/src/Controller/TvChannelsController.php:471
 #, php-format
 msgid "Error save file %s"
 msgstr "Error save file %s"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:514
-#: ../../../../admin/src/Controller/TvChannelsController.php:541
-#: ../../../../admin/src/Controller/TvChannelsController.php:571
-#: ../../../../admin/src/Controller/TvChannelsController.php:608
+#: ../../../../admin/src/Controller/TvChannelsController.php:525
+#: ../../../../admin/src/Controller/TvChannelsController.php:552
+#: ../../../../admin/src/Controller/TvChannelsController.php:582
+#: ../../../../admin/src/Controller/TvChannelsController.php:619
 msgid "The unexpected request"
 msgstr "The unexpected request"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:518
+#: ../../../../admin/src/Controller/TvChannelsController.php:529
 msgid "No moved items, nothing to do"
 msgstr "No moved items, nothing to do"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:527
-#: ../../../../admin/src/Controller/TvChannelsController.php:556
+#: ../../../../admin/src/Controller/TvChannelsController.php:538
+#: ../../../../admin/src/Controller/TvChannelsController.php:567
 msgid "Failed to save, update the channel list"
 msgstr "Failed to save, update the channel list"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:732
-#: ../../../../admin/src/Controller/TvChannelsController.php:790
-#: ../../../../admin/src/Controller/TvChannelsController.php:793
+#: ../../../../admin/src/Controller/TvChannelsController.php:743
+#: ../../../../admin/src/Controller/TvChannelsController.php:801
+#: ../../../../admin/src/Controller/TvChannelsController.php:804
 msgid "URL is busy"
 msgstr "URL is busy"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:795
+#: ../../../../admin/src/Controller/TvChannelsController.php:806
 msgid "URL is free"
 msgstr "Yes"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:855
+#: ../../../../admin/src/Controller/TvChannelsController.php:866
 msgid "Some channels not enough params."
 msgstr "Some channels not enough params."
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:860
+#: ../../../../admin/src/Controller/TvChannelsController.php:871
 #: ../../../administrator/add_itv.php:93
 msgid "TV Archive has NOT been restarted correctly."
 msgstr "TV Archive has NOT been restarted correctly."
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:862
+#: ../../../../admin/src/Controller/TvChannelsController.php:873
 #: ../../../administrator/add_itv.php:95
 msgid "TV Archive has been restarted."
 msgstr "TV Archive has been restarted."
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:928
-#: ../../../../admin/src/Controller/TvChannelsController.php:956
-#: ../../../../admin/src/Controller/TvChannelsController.php:994
-#: ../../../../admin/src/Controller/TvChannelsController.php:1020
-#: ../../../../admin/src/Controller/TvChannelsController.php:1048
-#: ../../../../admin/src/Controller/TvChannelsController.php:1154
-#: ../../../../admin/src/Controller/TvChannelsController.php:1205
-#: ../../../../admin/src/Controller/TvChannelsController.php:1236
+#: ../../../../admin/src/Controller/TvChannelsController.php:939
+#: ../../../../admin/src/Controller/TvChannelsController.php:967
+#: ../../../../admin/src/Controller/TvChannelsController.php:1005
+#: ../../../../admin/src/Controller/TvChannelsController.php:1031
+#: ../../../../admin/src/Controller/TvChannelsController.php:1059
+#: ../../../../admin/src/Controller/TvChannelsController.php:1165
+#: ../../../../admin/src/Controller/TvChannelsController.php:1216
+#: ../../../../admin/src/Controller/TvChannelsController.php:1247
 #: ../../../../admin/src/Controller/EventsController.php:320
 #: ../../../../admin/src/Controller/EventsController.php:353
 #: ../../../../admin/src/Controller/EventsController.php:389
@@ -348,29 +356,31 @@ msgstr "TV Archive has been restarted."
 #: ../../../../admin/src/Controller/RadioController.php:205
 #: ../../../../admin/src/Controller/RadioController.php:224
 #: ../../../../admin/src/Controller/RadioController.php:247
-#: ../../../../admin/src/Controller/UsersController.php:724
-#: ../../../../admin/src/Controller/UsersController.php:756
-#: ../../../../admin/src/Controller/UsersController.php:787
-#: ../../../../admin/src/Controller/UsersController.php:807
-#: ../../../../admin/src/Controller/UsersController.php:827
-#: ../../../../admin/src/Controller/UsersController.php:925
-#: ../../../../admin/src/Controller/UsersController.php:950
-#: ../../../../admin/src/Controller/UsersController.php:983
-#: ../../../../admin/src/Controller/UsersController.php:1001
-#: ../../../../admin/src/Controller/UsersController.php:1029
-#: ../../../../admin/src/Controller/UsersController.php:1097
-#: ../../../../admin/src/Controller/UsersController.php:1115
-#: ../../../../admin/src/Controller/UsersController.php:1157
-#: ../../../../admin/src/Controller/UsersController.php:1318
-#: ../../../../admin/src/Controller/UsersController.php:1348
-#: ../../../../admin/src/Controller/UsersController.php:1382
-#: ../../../../admin/src/Controller/UsersController.php:1422
-#: ../../../../admin/src/Controller/UsersController.php:1461
-#: ../../../../admin/src/Controller/UsersController.php:1609
-#: ../../../../admin/src/Controller/UsersController.php:1635
-#: ../../../../admin/src/Controller/UsersController.php:1661
-#: ../../../../admin/src/Controller/UsersController.php:1672
-#: ../../../../admin/src/Controller/UsersController.php:1683
+#: ../../../../admin/src/Controller/UsersController.php:726
+#: ../../../../admin/src/Controller/UsersController.php:758
+#: ../../../../admin/src/Controller/UsersController.php:789
+#: ../../../../admin/src/Controller/UsersController.php:809
+#: ../../../../admin/src/Controller/UsersController.php:829
+#: ../../../../admin/src/Controller/UsersController.php:927
+#: ../../../../admin/src/Controller/UsersController.php:952
+#: ../../../../admin/src/Controller/UsersController.php:985
+#: ../../../../admin/src/Controller/UsersController.php:1003
+#: ../../../../admin/src/Controller/UsersController.php:1031
+#: ../../../../admin/src/Controller/UsersController.php:1099
+#: ../../../../admin/src/Controller/UsersController.php:1117
+#: ../../../../admin/src/Controller/UsersController.php:1159
+#: ../../../../admin/src/Controller/UsersController.php:1320
+#: ../../../../admin/src/Controller/UsersController.php:1350
+#: ../../../../admin/src/Controller/UsersController.php:1384
+#: ../../../../admin/src/Controller/UsersController.php:1424
+#: ../../../../admin/src/Controller/UsersController.php:1463
+#: ../../../../admin/src/Controller/UsersController.php:1611
+#: ../../../../admin/src/Controller/UsersController.php:1637
+#: ../../../../admin/src/Controller/UsersController.php:1663
+#: ../../../../admin/src/Controller/UsersController.php:1674
+#: ../../../../admin/src/Controller/UsersController.php:1685
+#: ../../../../admin/src/Controller/UsersController.php:1706
+#: ../../../../admin/src/Controller/UsersController.php:1739
 #: ../../../../admin/src/Controller/InfoportalController.php:239
 #: ../../../../admin/src/Controller/InfoportalController.php:287
 #: ../../../../admin/src/Controller/InfoportalController.php:307
@@ -396,10 +406,10 @@ msgstr "TV Archive has been restarted."
 msgid "Page not found"
 msgstr "Page not found"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:937
-#: ../../../../admin/src/Controller/TvChannelsController.php:965
-#: ../../../../admin/src/Controller/TvChannelsController.php:1004
-#: ../../../../admin/src/Controller/TvChannelsController.php:1240
+#: ../../../../admin/src/Controller/TvChannelsController.php:948
+#: ../../../../admin/src/Controller/TvChannelsController.php:976
+#: ../../../../admin/src/Controller/TvChannelsController.php:1015
+#: ../../../../admin/src/Controller/TvChannelsController.php:1251
 #: ../../../../admin/src/Controller/IndexController.php:53
 #: ../../../../admin/src/Controller/IndexController.php:109
 #: ../../../../admin/src/Controller/IndexController.php:167
@@ -441,21 +451,21 @@ msgstr "Page not found"
 #: ../../../../admin/src/Controller/NewVideoClubController.php:2314
 #: ../../../../admin/src/Controller/KaraokeController.php:248
 #: ../../../../admin/src/Controller/RadioController.php:189
-#: ../../../../admin/src/Controller/UsersController.php:733
-#: ../../../../admin/src/Controller/UsersController.php:934
-#: ../../../../admin/src/Controller/UsersController.php:959
-#: ../../../../admin/src/Controller/UsersController.php:1124
-#: ../../../../admin/src/Controller/UsersController.php:1618
-#: ../../../../admin/src/Controller/UsersController.php:1644
+#: ../../../../admin/src/Controller/UsersController.php:735
+#: ../../../../admin/src/Controller/UsersController.php:936
+#: ../../../../admin/src/Controller/UsersController.php:961
+#: ../../../../admin/src/Controller/UsersController.php:1126
+#: ../../../../admin/src/Controller/UsersController.php:1620
+#: ../../../../admin/src/Controller/UsersController.php:1646
 #: ../../../../admin/src/Controller/AdminsController.php:487
 #: ../../../adm/js/js_translate.php:43
 msgid "Failed"
 msgstr "Failed"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:946
-#: ../../../../admin/src/Controller/TvChannelsController.php:984
-#: ../../../../admin/src/Controller/TvChannelsController.php:1028
-#: ../../../../admin/src/Controller/TvChannelsController.php:1035
+#: ../../../../admin/src/Controller/TvChannelsController.php:957
+#: ../../../../admin/src/Controller/TvChannelsController.php:995
+#: ../../../../admin/src/Controller/TvChannelsController.php:1039
+#: ../../../../admin/src/Controller/TvChannelsController.php:1046
 #: ../../../../admin/src/Controller/VideoClubController.php:1571
 #: ../../../../admin/src/Controller/VideoClubController.php:1577
 #: ../../../../admin/src/Controller/AudioClubController.php:432
@@ -470,16 +480,16 @@ msgstr "Failed"
 #: ../../../../admin/src/Controller/NewVideoClubController.php:1644
 #: ../../../../admin/src/Controller/RadioController.php:232
 #: ../../../../admin/src/Controller/RadioController.php:235
-#: ../../../../admin/src/Controller/UsersController.php:973
-#: ../../../../admin/src/Controller/UsersController.php:1009
-#: ../../../../admin/src/Controller/UsersController.php:1017
-#: ../../../../admin/src/Controller/UsersController.php:1037
+#: ../../../../admin/src/Controller/UsersController.php:975
+#: ../../../../admin/src/Controller/UsersController.php:1011
+#: ../../../../admin/src/Controller/UsersController.php:1019
 #: ../../../../admin/src/Controller/UsersController.php:1039
-#: ../../../../admin/src/Controller/UsersController.php:1165
+#: ../../../../admin/src/Controller/UsersController.php:1041
+#: ../../../../admin/src/Controller/UsersController.php:1167
 msgid "Name already used"
 msgstr "Name already used"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1037
+#: ../../../../admin/src/Controller/TvChannelsController.php:1048
 #: ../../../../admin/src/Controller/VideoClubController.php:739
 #: ../../../../admin/src/Controller/VideoClubController.php:1579
 #: ../../../../admin/src/Controller/AudioClubController.php:436
@@ -488,12 +498,12 @@ msgstr "Name already used"
 #: ../../../../admin/src/Controller/NewVideoClubController.php:792
 #: ../../../../admin/src/Controller/NewVideoClubController.php:1646
 #: ../../../../admin/src/Controller/RadioController.php:237
-#: ../../../../admin/src/Controller/UsersController.php:1019
-#: ../../../../admin/src/Controller/UsersController.php:1041
+#: ../../../../admin/src/Controller/UsersController.php:1021
+#: ../../../../admin/src/Controller/UsersController.php:1043
 msgid "Name is available"
 msgstr "Name is available"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1080
+#: ../../../../admin/src/Controller/TvChannelsController.php:1091
 #: ../../../../admin/src/Controller/StatisticsController.php:52
 #: ../../../../admin/src/Controller/TasksController.php:37
 #: ../../../../admin/src/Controller/TasksController.php:580
@@ -501,66 +511,66 @@ msgstr "Name is available"
 msgid "Done"
 msgstr "Done"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1108
+#: ../../../../admin/src/Controller/TvChannelsController.php:1119
 msgid "Upload failed"
 msgstr "Upload failed"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1145
+#: ../../../../admin/src/Controller/TvChannelsController.php:1156
 msgid "Error m3u parse. Check the file encoding. Required UTF-8 encoding."
 msgstr "Error m3u parse. Check the file encoding. Required UTF-8 encoding."
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1174
-#: ../../../../admin/src/Controller/TvChannelsController.php:1527
+#: ../../../../admin/src/Controller/TvChannelsController.php:1185
+#: ../../../../admin/src/Controller/TvChannelsController.php:1538
 msgid "Requires at least one link of broadcast"
 msgstr "Requires at least one link of broadcast"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1176
+#: ../../../../admin/src/Controller/TvChannelsController.php:1187
 msgid "Field \"Channel name\" cannot be empty"
 msgstr "Field \"Channel name\" cannot be empty"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1178
+#: ../../../../admin/src/Controller/TvChannelsController.php:1189
 msgid "Field \"Channel number\" cannot be empty"
 msgstr "Field \"Channel number\" cannot be empty"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1192
+#: ../../../../admin/src/Controller/TvChannelsController.php:1203
 msgid "Number \"%number%\" is already in use"
 msgstr "Number \"%number%\" is already in use"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1194
+#: ../../../../admin/src/Controller/TvChannelsController.php:1205
 msgid "Name \"%name%\" already exists"
 msgstr "Name \"%name%\" already exists"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1214
-#: ../../../../admin/src/Controller/TvChannelsController.php:1224
+#: ../../../../admin/src/Controller/TvChannelsController.php:1225
+#: ../../../../admin/src/Controller/TvChannelsController.php:1235
 msgid "Prefix already used"
 msgstr "Prefix already used"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1226
+#: ../../../../admin/src/Controller/TvChannelsController.php:1237
 msgid "Prefix is available"
 msgstr "Prefix is available"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1517
+#: ../../../../admin/src/Controller/TvChannelsController.php:1528
 msgid "This field cannot be empty if enabled TV-archive or nPVR"
 msgstr "This field cannot be empty if enabled TV-archive or nPVR"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1521
+#: ../../../../admin/src/Controller/TvChannelsController.php:1532
 #: ../../../administrator/add_itv.php:721
 msgid "For enabling Xtream-Codes Support you need enable mcrypt php-extension"
 msgstr "For enabling Xtream-Codes Support you need enable mcrypt php-extension"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1536
+#: ../../../../admin/src/Controller/TvChannelsController.php:1547
 #: ../../../../admin/src/Controller/VideoClubController.php:2121
 #: ../../../../admin/src/Controller/NewVideoClubController.php:2804
 msgid "This name already exists"
 msgstr "This name already exists"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1537
+#: ../../../../admin/src/Controller/TvChannelsController.php:1548
 #: ../../../../admin/src/Controller/InfoportalController.php:274
 msgid "This number is already in use"
 msgstr "This number is already in use"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1746
-#: ../../../../admin/src/Controller/TvChannelsController.php:1800
+#: ../../../../admin/src/Controller/TvChannelsController.php:1757
+#: ../../../../admin/src/Controller/TvChannelsController.php:1811
 #: ../../../../admin/src/Controller/EventsController.php:838
 #: ../../../../admin/src/Controller/EventsController.php:864
 #: ../../../../admin/src/Controller/EventsController.php:882
@@ -586,7 +596,7 @@ msgstr "This number is already in use"
 #: ../../../../admin/src/Controller/StoragesController.php:586
 #: ../../../../admin/src/Controller/KaraokeController.php:343
 #: ../../../../admin/src/Controller/RadioController.php:392
-#: ../../../../admin/src/Controller/UsersController.php:2108
+#: ../../../../admin/src/Controller/UsersController.php:2177
 #: ../../../../admin/src/Controller/TariffsController.php:872
 #: ../../../../admin/src/Controller/AdminsController.php:879
 #: ../../../../admin/src/Controller/AdminsController.php:892
@@ -594,7 +604,7 @@ msgstr "This number is already in use"
 msgid "ID"
 msgstr "ID"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1747
+#: ../../../../admin/src/Controller/TvChannelsController.php:1758
 #: ../../../../admin/src/Controller/VideoClubController.php:2393
 #: ../../../../admin/src/Controller/NewVideoClubController.php:3083
 #: ../../../../admin/src/Controller/TasksController.php:564
@@ -614,13 +624,13 @@ msgstr "ID"
 msgid "Number"
 msgstr "Number"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1748
+#: ../../../../admin/src/Controller/TvChannelsController.php:1759
 #: ../../../administrator/add_itv.php:1794
 msgid "Logo"
 msgstr "Logo"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1749
-#: ../../../../admin/src/Controller/TvChannelsController.php:1842
+#: ../../../../admin/src/Controller/TvChannelsController.php:1760
+#: ../../../../admin/src/Controller/TvChannelsController.php:1853
 #: ../../../../admin/src/Controller/EventsController.php:839
 #: ../../../../admin/src/Controller/VideoClubController.php:2321
 #: ../../../../admin/src/Controller/VideoClubController.php:2341
@@ -652,7 +662,7 @@ msgstr "Logo"
 #: ../../../../admin/src/Controller/TasksController.php:777
 #: ../../../../admin/src/Controller/TasksController.php:788
 #: ../../../../admin/src/Controller/RadioController.php:394
-#: ../../../../admin/src/Controller/UsersController.php:2110
+#: ../../../../admin/src/Controller/UsersController.php:2179
 #: ../../../../admin/src/Controller/InfoportalController.php:383
 #: ../../../../admin/src/Controller/AdminsController.php:893
 #: ../../../administrator/tariffs.php:314
@@ -678,7 +688,7 @@ msgstr "Logo"
 msgid "Title"
 msgstr "Title"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1750
+#: ../../../../admin/src/Controller/TvChannelsController.php:1761
 #: ../../../../admin/src/Controller/VideoClubController.php:2325
 #: ../../../../admin/src/Controller/AudioClubController.php:1216
 #: ../../../../admin/src/Controller/NewVideoClubController.php:3015
@@ -696,7 +706,7 @@ msgstr "Title"
 msgid "Genre"
 msgstr "Genre"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1751
+#: ../../../../admin/src/Controller/TvChannelsController.php:1762
 #: ../../../../admin/src/Controller/StatisticsController.php:55
 #: ../../../../admin/src/Controller/TasksController.php:40
 #: ../../../administrator/userlog.php:376
@@ -704,8 +714,8 @@ msgstr "Genre"
 msgid "Archive"
 msgstr "Archive"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1752
-#: ../../../../admin/src/Controller/TvChannelsController.php:1802
+#: ../../../../admin/src/Controller/TvChannelsController.php:1763
+#: ../../../../admin/src/Controller/TvChannelsController.php:1813
 #: ../../../../admin/src/Controller/BroadcastServersController.php:408
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:412
 #: ../../../../admin/src/Controller/AudioClubController.php:1383
@@ -719,20 +729,20 @@ msgstr "Archive"
 msgid "URL"
 msgstr "URL"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1753
+#: ../../../../admin/src/Controller/TvChannelsController.php:1764
 msgid "XMLTV ID"
 msgstr "XMLTV ID"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1754
+#: ../../../../admin/src/Controller/TvChannelsController.php:1765
 msgid "Claims about audio/video/epg"
 msgstr "Claims about audio/video/epg"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1755
+#: ../../../../admin/src/Controller/TvChannelsController.php:1766
 #: ../../../../admin/src/Controller/RadioController.php:398
 msgid "Monitoring status"
 msgstr "Monitoring status"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1756
+#: ../../../../admin/src/Controller/TvChannelsController.php:1767
 #: ../../../../admin/src/Controller/VideoClubController.php:2332
 #: ../../../../admin/src/Controller/VideoClubController.php:2358
 #: ../../../../admin/src/Controller/VideoClubController.php:2444
@@ -748,15 +758,15 @@ msgstr "Monitoring status"
 #: ../../../../admin/src/Controller/StoragesController.php:568
 #: ../../../../admin/src/Controller/StoragesController.php:594
 #: ../../../../admin/src/Controller/RadioController.php:397
-#: ../../../../admin/src/Controller/UsersController.php:2081
-#: ../../../../admin/src/Controller/UsersController.php:2168
+#: ../../../../admin/src/Controller/UsersController.php:2150
+#: ../../../../admin/src/Controller/UsersController.php:2237
 #: ../../../administrator/events.php:510 ../../../administrator/tasks.php:134
 #: ../../../administrator/add_video.php:841
 msgid "Status"
 msgstr "Status"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1757
-#: ../../../../admin/src/Controller/TvChannelsController.php:1806
+#: ../../../../admin/src/Controller/TvChannelsController.php:1768
+#: ../../../../admin/src/Controller/TvChannelsController.php:1817
 #: ../../../../admin/src/Controller/EventsController.php:843
 #: ../../../../admin/src/Controller/EventsController.php:893
 #: ../../../../admin/src/Controller/VideoClubController.php:2333
@@ -771,10 +781,10 @@ msgstr "Status"
 #: ../../../../admin/src/Controller/NewVideoClubController.php:3049
 #: ../../../../admin/src/Controller/KaraokeController.php:352
 #: ../../../../admin/src/Controller/RadioController.php:399
-#: ../../../../admin/src/Controller/UsersController.php:2089
-#: ../../../../admin/src/Controller/UsersController.php:2102
-#: ../../../../admin/src/Controller/UsersController.php:2114
-#: ../../../../admin/src/Controller/UsersController.php:2138
+#: ../../../../admin/src/Controller/UsersController.php:2158
+#: ../../../../admin/src/Controller/UsersController.php:2171
+#: ../../../../admin/src/Controller/UsersController.php:2183
+#: ../../../../admin/src/Controller/UsersController.php:2207
 #: ../../../../admin/src/Controller/InfoportalController.php:385
 #: ../../../../admin/src/Controller/InfoportalController.php:394
 #: ../../../../admin/src/Controller/TariffsController.php:857
@@ -785,21 +795,21 @@ msgstr "Status"
 msgid "Operations"
 msgstr "Operations"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1801
+#: ../../../../admin/src/Controller/TvChannelsController.php:1812
 #: ../../../../admin/src/Controller/SettingsController.php:257
 #: ../../../administrator/setting_common.php:193
 msgid "Prefix"
 msgstr "Prefix"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1803
+#: ../../../../admin/src/Controller/TvChannelsController.php:1814
 msgid "XMLTV file hash"
 msgstr "XMLTV file hash"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1804
+#: ../../../../admin/src/Controller/TvChannelsController.php:1815
 msgid "Update date"
 msgstr "Update date"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1805
+#: ../../../../admin/src/Controller/TvChannelsController.php:1816
 #: ../../../../admin/src/Controller/EventsController.php:892
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:414
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:424
@@ -808,12 +818,12 @@ msgstr "Update date"
 #: ../../../../admin/src/Controller/TasksController.php:585
 #: ../../../../admin/src/Controller/TasksController.php:781
 #: ../../../../admin/src/Controller/TasksController.php:791
-#: ../../../../admin/src/Controller/UsersController.php:2080
+#: ../../../../admin/src/Controller/UsersController.php:2149
 #: ../../../../admin/src/Controller/TariffsController.php:875
 msgid "State"
 msgstr "State"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1841
+#: ../../../../admin/src/Controller/TvChannelsController.php:1852
 #: ../../../../admin/src/Controller/AudioClubController.php:1381
 #: ../../../../admin/src/Controller/StatisticsController.php:1433
 #: ../../../../admin/src/Controller/RadioController.php:393
@@ -822,7 +832,7 @@ msgstr "State"
 msgid "Order"
 msgstr "Order"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1843
+#: ../../../../admin/src/Controller/TvChannelsController.php:1854
 #: ../../../../admin/src/Controller/VideoClubController.php:2395
 #: ../../../../admin/src/Controller/VideoClubController.php:2406
 #: ../../../../admin/src/Controller/NewVideoClubController.php:3085
@@ -830,7 +840,7 @@ msgstr "Order"
 msgid "Localized title"
 msgstr "Localized title"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1844
+#: ../../../../admin/src/Controller/TvChannelsController.php:1855
 #: ../../../../admin/src/Controller/VideoClubController.php:2398
 #: ../../../../admin/src/Controller/NewVideoClubController.php:3088
 #: ../../../administrator/add_itv.php:1538
@@ -838,7 +848,7 @@ msgstr "Localized title"
 msgid "Age restriction"
 msgstr "Age restriction"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1845
+#: ../../../../admin/src/Controller/TvChannelsController.php:1856
 #: ../../../../admin/src/Controller/VideoClubController.php:2399
 #: ../../../../admin/src/Controller/VideoClubController.php:2409
 #: ../../../../admin/src/Controller/VideoClubController.php:2445
@@ -855,19 +865,19 @@ msgstr "Age restriction"
 msgid "Operation"
 msgstr "Operation"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1856
+#: ../../../../admin/src/Controller/TvChannelsController.php:1867
 #: ../../../../admin/src/Controller/RadioController.php:410
 #: ../../../administrator/add_itv.php:1419
 msgid "more than an hour ago"
 msgstr "more than an hour ago"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1858
+#: ../../../../admin/src/Controller/TvChannelsController.php:1869
 #: ../../../../admin/src/Controller/RadioController.php:412
 #: ../../../administrator/add_itv.php:1423
 msgid "less than a minute ago"
 msgstr "less than a minute ago"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1860
+#: ../../../../admin/src/Controller/TvChannelsController.php:1871
 #: ../../../../admin/src/Controller/RadioController.php:414
 msgid "{{minute}} minutes ago"
 msgstr "{{minute}} minutes ago"
@@ -885,7 +895,7 @@ msgid "Users offline"
 msgstr "Users offline"
 
 #: ../../../../admin/src/Controller/IndexController.php:122
-#: ../../../lib/user.class.php:1141
+#: ../../../lib/user.class.php:1178
 msgid "TV channels"
 msgstr "TV channels"
 
@@ -1255,7 +1265,7 @@ msgstr "Events"
 #: ../../../../admin/src/Controller/EventsController.php:476
 #: ../../../../admin/src/Controller/EventsController.php:676
 #: ../../../../admin/src/Controller/EventsController.php:775
-#: ../../../../admin/src/Controller/UsersController.php:1470
+#: ../../../../admin/src/Controller/UsersController.php:1472
 msgid "Not enough data"
 msgstr "Not enough data"
 
@@ -1302,7 +1312,7 @@ msgstr "Filter"
 
 #: ../../../../admin/src/Controller/EventsController.php:840
 #: ../../../../admin/src/Controller/StatisticsController.php:1350
-#: ../../../../admin/src/Controller/UsersController.php:2109
+#: ../../../../admin/src/Controller/UsersController.php:2178
 #: ../../../administrator/add_karaoke.php:815
 msgid "Author"
 msgstr "Author"
@@ -1311,7 +1321,7 @@ msgstr "Author"
 #: ../../../../admin/src/Controller/StatisticsController.php:1435
 #: ../../../../admin/src/Controller/TasksController.php:568
 #: ../../../../admin/src/Controller/TasksController.php:579
-#: ../../../../admin/src/Controller/UsersController.php:2076
+#: ../../../../admin/src/Controller/UsersController.php:2145
 #: ../../../../admin/src/Controller/AdminsController.php:945
 msgid "Created"
 msgstr "Created"
@@ -1330,9 +1340,9 @@ msgstr "Expiration date"
 #: ../../../../admin/src/Controller/StatisticsController.php:1376
 #: ../../../../admin/src/Controller/StatisticsController.php:1384
 #: ../../../../admin/src/Controller/StatisticsController.php:1392
-#: ../../../../admin/src/Controller/UsersController.php:2132
-#: ../../../../admin/src/Controller/UsersController.php:2155
-#: ../../../../admin/src/Controller/UsersController.php:2167
+#: ../../../../admin/src/Controller/UsersController.php:2201
+#: ../../../../admin/src/Controller/UsersController.php:2224
+#: ../../../../admin/src/Controller/UsersController.php:2236
 #: ../../../../admin/src/Controller/TariffsController.php:873
 #: ../../../administrator/user.php:157
 msgid "MAC"
@@ -1383,8 +1393,8 @@ msgstr "Recipient"
 #: ../../../../admin/src/Controller/TasksController.php:578
 #: ../../../../admin/src/Controller/TasksController.php:776
 #: ../../../../admin/src/Controller/TasksController.php:787
-#: ../../../../admin/src/Controller/UsersController.php:2077
-#: ../../../../admin/src/Controller/UsersController.php:2158
+#: ../../../../admin/src/Controller/UsersController.php:2146
+#: ../../../../admin/src/Controller/UsersController.php:2227
 #: ../../../administrator/claims_log.php:176
 #: ../../../administrator/users.php:584 ../../../lang/stb.php:396
 #: ../../../lang/stb.php:501
@@ -1507,9 +1517,9 @@ msgstr "Information not available"
 #: ../../../../admin/src/Controller/NewVideoClubController.php:708
 #: ../../../../admin/src/Controller/NewVideoClubController.php:1100
 #: ../../../../admin/src/Controller/UsersController.php:63
-#: ../../../../admin/src/Controller/UsersController.php:744
-#: ../../../../admin/src/Controller/UsersController.php:745
-#: ../../../../admin/src/Controller/UsersController.php:1747
+#: ../../../../admin/src/Controller/UsersController.php:746
+#: ../../../../admin/src/Controller/UsersController.php:747
+#: ../../../../admin/src/Controller/UsersController.php:1817
 #: ../../../../admin/src/Controller/TariffsController.php:44
 #: ../../../lang/stb.php:369
 msgid "on"
@@ -1806,8 +1816,8 @@ msgstr "Movies in genre"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:2441
 #: ../../../../admin/src/Controller/NewVideoClubController.php:3131
-#: ../../../../admin/src/Controller/UsersController.php:2075
-#: ../../../../admin/src/Controller/UsersController.php:2096
+#: ../../../../admin/src/Controller/UsersController.php:2144
+#: ../../../../admin/src/Controller/UsersController.php:2165
 #: ../../../../admin/src/Controller/AdminsController.php:944
 #: ../../../administrator/playlists.php:129
 #: ../../../administrator/playlists.php:153
@@ -1856,9 +1866,9 @@ msgstr "Moderator"
 
 #: ../../../../admin/src/Controller/BroadcastServersController.php:18
 #: ../../../../admin/src/Controller/UsersController.php:64
-#: ../../../../admin/src/Controller/UsersController.php:744
-#: ../../../../admin/src/Controller/UsersController.php:745
-#: ../../../../admin/src/Controller/UsersController.php:1746
+#: ../../../../admin/src/Controller/UsersController.php:746
+#: ../../../../admin/src/Controller/UsersController.php:747
+#: ../../../../admin/src/Controller/UsersController.php:1816
 #: ../../../../admin/src/Controller/TariffsController.php:43
 #: ../../../lang/stb.php:370
 msgid "off"
@@ -2132,6 +2142,7 @@ msgstr "By genres"
 
 #: ../../../../admin/src/Controller/StatisticsController.php:40
 #: ../../../../admin/src/Controller/StatisticsController.php:46
+#: ../../../tools/misctranslations.php:635
 #: ../../../administrator/users.php:166 ../../../lang/stb.php:92
 msgid "TV"
 msgstr "TV"
@@ -2140,7 +2151,7 @@ msgstr "TV"
 #: ../../../../admin/src/Controller/StatisticsController.php:47
 #: ../../../../admin/src/Controller/StatisticsController.php:59
 #: ../../../tools/misctranslations.php:67
-#: ../../../tools/misctranslations.php:132 ../../../lib/user.class.php:1142
+#: ../../../tools/misctranslations.php:132 ../../../lib/user.class.php:1179
 msgid "Movies"
 msgstr "Movies"
 
@@ -2302,8 +2313,7 @@ msgid "movies"
 msgstr "Movies"
 
 #: ../../../../admin/src/Controller/StoragesController.php:234
-#: ../../../tools/misctranslations.php:639
-#: ../../../administrator/tasks.php:166 ../../../administrator/index.php:278
+#: ../../../administrator/tasks.php:166 ../../../administrator/index.php:294
 msgid "karaoke"
 msgstr "Karaoke"
 
@@ -2317,8 +2327,8 @@ msgid "Fill in the required fields"
 msgstr "Fill in the required fields"
 
 #: ../../../../admin/src/Controller/StoragesController.php:549
-#: ../../../../admin/src/Controller/UsersController.php:2154
-#: ../../../../admin/src/Controller/UsersController.php:2169
+#: ../../../../admin/src/Controller/UsersController.php:2223
+#: ../../../../admin/src/Controller/UsersController.php:2238
 #: ../../../administrator/userlog.php:430
 #: ../../../administrator/master_log.php:123
 #: ../../../administrator/all_userlog.php:277
@@ -2467,9 +2477,9 @@ msgstr "Volume"
 
 #: ../../../../admin/src/Controller/UsersController.php:233
 #: ../../../../admin/src/Controller/UsersController.php:259
-#: ../../../../admin/src/Controller/UsersController.php:685
-#: ../../../../admin/src/Controller/UsersController.php:898
-#: ../../../../admin/src/Controller/UsersController.php:1814
+#: ../../../../admin/src/Controller/UsersController.php:687
+#: ../../../../admin/src/Controller/UsersController.php:900
+#: ../../../../admin/src/Controller/UsersController.php:1884
 #: ../../../../admin/src/Controller/AdminsController.php:48
 #: ../../../../admin/src/Controller/AdminsController.php:70
 #: ../../../../admin/src/Controller/AdminsController.php:365
@@ -2490,46 +2500,46 @@ msgstr "Log of user"
 msgid "STB statuses report"
 msgstr "STB statuses report"
 
-#: ../../../../admin/src/Controller/UsersController.php:362
-#: ../../../../admin/src/Controller/UsersController.php:436
+#: ../../../../admin/src/Controller/UsersController.php:363
+#: ../../../../admin/src/Controller/UsersController.php:438
 #: ../../../../admin/json_menu/menu.json:201
 msgid "Users list"
 msgstr "Users list"
 
-#: ../../../../admin/src/Controller/UsersController.php:363
+#: ../../../../admin/src/Controller/UsersController.php:364
 msgid "Add user"
 msgstr "Add user"
 
-#: ../../../../admin/src/Controller/UsersController.php:437
+#: ../../../../admin/src/Controller/UsersController.php:439
 msgid "Edit user"
 msgstr "Edit user"
 
-#: ../../../../admin/src/Controller/UsersController.php:462
+#: ../../../../admin/src/Controller/UsersController.php:464
 #: ../../../../admin/json_menu/menu.json:211
 msgid "User groups"
 msgstr "User groups"
 
-#: ../../../../admin/src/Controller/UsersController.php:463
+#: ../../../../admin/src/Controller/UsersController.php:465
 msgid "STB of group"
 msgstr "STB of group"
 
-#: ../../../../admin/src/Controller/UsersController.php:1145
-#: ../../../../admin/src/Controller/UsersController.php:1172
-#: ../../../../admin/src/Controller/UsersController.php:1173
+#: ../../../../admin/src/Controller/UsersController.php:1147
+#: ../../../../admin/src/Controller/UsersController.php:1174
+#: ../../../../admin/src/Controller/UsersController.php:1175
 msgid "This user is already connected to the group"
 msgstr "This user is already connected to the group"
 
-#: ../../../../admin/src/Controller/UsersController.php:1147
-#: ../../../../admin/src/Controller/UsersController.php:1175
+#: ../../../../admin/src/Controller/UsersController.php:1149
+#: ../../../../admin/src/Controller/UsersController.php:1177
 msgid "User with this MAC-address is not defined"
 msgstr "User with this MAC-address is not defined"
 
-#: ../../../../admin/src/Controller/UsersController.php:1177
+#: ../../../../admin/src/Controller/UsersController.php:1179
 msgid "The user can be connected to the group"
 msgstr "The user can be connected to the group"
 
-#: ../../../../admin/src/Controller/UsersController.php:1370
-#: ../../../../admin/src/Controller/UsersController.php:1404
+#: ../../../../admin/src/Controller/UsersController.php:1372
+#: ../../../../admin/src/Controller/UsersController.php:1406
 #: ../../../../admin/src/Controller/AdminsController.php:708
 #: ../../../../admin/src/Controller/AdminsController.php:742
 #: ../../../../admin/src/Controller/AdminsController.php:776
@@ -2538,30 +2548,34 @@ msgstr "The user can be connected to the group"
 msgid "Moved"
 msgstr "Moved"
 
-#: ../../../../admin/src/Controller/UsersController.php:1372
-#: ../../../../admin/src/Controller/UsersController.php:1411
+#: ../../../../admin/src/Controller/UsersController.php:1374
+#: ../../../../admin/src/Controller/UsersController.php:1413
 #: ../../../../admin/src/Controller/AdminsController.php:744
 #: ../../../../admin/src/Controller/AdminsController.php:778
 msgid "Not found reseller for moving"
 msgstr "Not found reseller for moving"
 
-#: ../../../../admin/src/Controller/UsersController.php:1431
+#: ../../../../admin/src/Controller/UsersController.php:1433
 msgid "Not exists"
 msgstr "Not exists"
 
-#: ../../../../admin/src/Controller/UsersController.php:1449
+#: ../../../../admin/src/Controller/UsersController.php:1451
 msgid "No data for this filter"
 msgstr "No data for this filter"
 
-#: ../../../../admin/src/Controller/UsersController.php:1750
+#: ../../../../admin/src/Controller/UsersController.php:1763
+msgid "Write database error"
+msgstr "Write database error"
+
+#: ../../../../admin/src/Controller/UsersController.php:1820
 msgid "status off"
 msgstr "off"
 
-#: ../../../../admin/src/Controller/UsersController.php:1751
+#: ../../../../admin/src/Controller/UsersController.php:1821
 msgid "status on"
 msgstr "on"
 
-#: ../../../../admin/src/Controller/UsersController.php:2073
+#: ../../../../admin/src/Controller/UsersController.php:2142
 #: ../../../../admin/src/Controller/AdminsController.php:880
 #: ../../../administrator/profile.php:438 ../../../administrator/user.php:141
 #: ../../../administrator/administrators.php:166
@@ -2571,64 +2585,64 @@ msgstr "on"
 msgid "Login"
 msgstr "Login"
 
-#: ../../../../admin/src/Controller/UsersController.php:2074
+#: ../../../../admin/src/Controller/UsersController.php:2143
 msgid "Account"
 msgstr "Account"
 
-#: ../../../../admin/src/Controller/UsersController.php:2078
+#: ../../../../admin/src/Controller/UsersController.php:2147
 #: ../../../administrator/msg.php:147
 #: ../../../administrator/claims_log.php:177
 #: ../../../administrator/users.php:585 ../../../administrator/msgs.php:118
 msgid "Media"
 msgstr "Media"
 
-#: ../../../../admin/src/Controller/UsersController.php:2079
+#: ../../../../admin/src/Controller/UsersController.php:2148
 msgid "Last modified"
 msgstr "Last modified"
 
-#: ../../../../admin/src/Controller/UsersController.php:2084
-#: ../../../../admin/src/Controller/UsersController.php:2100
-#: ../../../../admin/src/Controller/UsersController.php:2136
+#: ../../../../admin/src/Controller/UsersController.php:2153
+#: ../../../../admin/src/Controller/UsersController.php:2169
+#: ../../../../admin/src/Controller/UsersController.php:2205
 #: ../../../../admin/src/Controller/AdminsController.php:884
 #: ../../../../admin/src/Controller/AdminsController.php:897
 msgid "Reseller"
 msgstr "Reseller"
 
-#: ../../../../admin/src/Controller/UsersController.php:2087
+#: ../../../../admin/src/Controller/UsersController.php:2156
 #: ../../../administrator/profile.php:471
 msgid "Expire billing date"
 msgstr "Expire billing date"
 
-#: ../../../../admin/src/Controller/UsersController.php:2097
+#: ../../../../admin/src/Controller/UsersController.php:2166
 msgid "Quantity of users"
 msgstr "Quantity of users"
 
-#: ../../../../admin/src/Controller/UsersController.php:2111
+#: ../../../../admin/src/Controller/UsersController.php:2180
 msgid "Filter conditions"
 msgstr "Filter conditions"
 
-#: ../../../../admin/src/Controller/UsersController.php:2112
+#: ../../../../admin/src/Controller/UsersController.php:2181
 msgid "Visibility"
 msgstr "Visibility"
 
-#: ../../../../admin/src/Controller/UsersController.php:2113
+#: ../../../../admin/src/Controller/UsersController.php:2182
 #: ../../../lang/stb.php:385
 msgid "Favorites"
 msgstr "Favorites"
 
-#: ../../../../admin/src/Controller/UsersController.php:2133
+#: ../../../../admin/src/Controller/UsersController.php:2202
 msgid "uid"
 msgstr "Uid"
 
-#: ../../../../admin/src/Controller/UsersController.php:2156
+#: ../../../../admin/src/Controller/UsersController.php:2225
 msgid "Actions"
 msgstr "Actions"
 
-#: ../../../../admin/src/Controller/UsersController.php:2157
+#: ../../../../admin/src/Controller/UsersController.php:2226
 msgid "Object"
 msgstr "Object"
 
-#: ../../../../admin/src/Controller/UsersController.php:2159
+#: ../../../../admin/src/Controller/UsersController.php:2228
 #: ../../../administrator/userlog.php:432
 #: ../../../administrator/all_userlog.php:280
 msgid "Parameter"
@@ -3467,7 +3481,7 @@ msgstr "Package"
 #: ../../../../admin/src/Controller/TariffsController.php:854
 #: ../../../../admin/src/Controller/TariffsController.php:865
 #: ../../../tools/misctranslations.php:444 ../../../administrator/users.php:92
-#: ../../../administrator/users.php:98 ../../../administrator/index.php:143
+#: ../../../administrator/users.php:98 ../../../administrator/index.php:159
 #: ../../../../admin/json_menu/menu.json:195
 msgid "Users"
 msgstr "Users"
@@ -4457,14 +4471,14 @@ msgstr "Messages"
 
 #: ../../../tools/misctranslations.php:299
 #: ../../../tools/misctranslations.php:357
-#: ../../../administrator/index.php:480
+#: ../../../administrator/index.php:496
 #: ../../../../admin/json_menu/menu.json:407
 msgid "Settings"
 msgstr "Settings"
 
 #: ../../../tools/misctranslations.php:300
 #: ../../../tools/misctranslations.php:344
-#: ../../../administrator/index.php:161
+#: ../../../administrator/index.php:177
 #: ../../../../admin/json_menu/top_menu.json:16
 msgid "Logout"
 msgstr "Logout"
@@ -4694,7 +4708,7 @@ msgid "Change the on/off state firmware update"
 msgstr "Change the on/off state firmware update"
 
 #: ../../../tools/misctranslations.php:372
-#: ../../../administrator/index.php:435
+#: ../../../administrator/index.php:451
 #: ../../../../admin/json_menu/menu.json:318
 msgid "Statistics"
 msgstr "Statistics"
@@ -4770,7 +4784,7 @@ msgstr "Logs of complaints by page + filters"
 #: ../../../tools/misctranslations.php:391
 #: ../../../administrator/storages.php:187
 #: ../../../administrator/storages.php:220
-#: ../../../administrator/index.php:486
+#: ../../../administrator/index.php:502
 msgid "Storages"
 msgstr "Storages"
 
@@ -4914,7 +4928,7 @@ msgstr "Report by page + filters"
 #: ../../../tools/misctranslations.php:429
 #: ../../../administrator/add_itv.php:680
 #: ../../../administrator/add_itv.php:1050
-#: ../../../administrator/index.php:141
+#: ../../../administrator/index.php:157
 #: ../../../../admin/json_menu/menu.json:3
 msgid "IPTV channels"
 msgstr "IPTV channels"
@@ -5694,56 +5708,62 @@ msgstr "Publish or add to schedule"
 msgid "Unpublish video"
 msgstr "Unpublish video"
 
-#: ../../../tools/misctranslations.php:635
-#: ../../../administrator/index.php:237
-msgid "tv"
-msgstr "TV"
-
 #: ../../../tools/misctranslations.php:636
-msgid "video club"
-msgstr "video club"
+#: ../../../administrator/add_video.php:608
+#: ../../../administrator/add_video.php:628
+#: ../../../administrator/index.php:163
+msgid "VIDEO CLUB"
+msgstr "VIDEO CLUB"
 
 #: ../../../tools/misctranslations.php:637
-msgid "audio club"
-msgstr "audio club"
+#: ../../../administrator/index.php:169 ../../../lang/stb.php:536
+msgid "AUDIO CLUB"
+msgstr "AUDIO CLUB"
 
 #: ../../../tools/misctranslations.php:638
-#: ../../../administrator/index.php:282
-msgid "radio"
-msgstr "Radio"
+#: ../../../administrator/index.php:181 ../../../lang/stb.php:70
+msgid "RADIO"
+msgstr "RADIO"
+
+#: ../../../tools/misctranslations.php:639
+#: ../../../administrator/index.php:175
+#: ../../../administrator/add_karaoke.php:206
+#: ../../../administrator/add_karaoke.php:213 ../../../lang/stb.php:27
+msgid "KARAOKE"
+msgstr "KARAOKE"
 
 #: ../../../tools/misctranslations.php:640
-msgid "explorer"
-msgstr "explorer"
+msgid "EXPLORER"
+msgstr "EXPLORER"
 
 #: ../../../tools/misctranslations.php:641
-msgid "browser"
-msgstr "browser"
+msgid "BROWSER"
+msgstr "BROWSER"
 
-#: ../../../tools/misctranslations.php:642
-msgid "downloads"
-msgstr "downloads"
+#: ../../../tools/misctranslations.php:642 ../../../lang/stb.php:293
+msgid "DOWNLOADS"
+msgstr "DOWNLOADS"
 
-#: ../../../tools/misctranslations.php:643
-#: ../../../administrator/index.php:366
-msgid "records"
-msgstr "Records"
+#: ../../../tools/misctranslations.php:643 ../../../lang/stb.php:33
+#: ../../../lang/stb.php:142
+msgid "RECORDS"
+msgstr "RECORDINGS"
 
-#: ../../../tools/misctranslations.php:644
-msgid "weather"
-msgstr "weather"
+#: ../../../tools/misctranslations.php:644 ../../../lang/stb.php:185
+msgid "WEATHER"
+msgstr "WEATHER"
 
-#: ../../../tools/misctranslations.php:645
-msgid "settings"
-msgstr "settings"
+#: ../../../tools/misctranslations.php:645 ../../../lang/stb.php:151
+msgid "SETTINGS"
+msgstr "SETTINGS"
 
 #: ../../../tools/misctranslations.php:646
-msgid "portal"
-msgstr "portal"
+msgid "PORTAL"
+msgstr "PORTAL"
 
 #: ../../../tools/misctranslations.php:647
-msgid "exchange"
-msgstr "exchange"
+msgid "EXCHANGE"
+msgstr "EXCHANGE"
 
 #: ../../../tools/misctranslations.php:648
 msgid ""
@@ -5837,7 +5857,17 @@ msgstr ""
 "Surf the Internet via built-in browser! To make it easier, you can use the "
 "MAGic Remote mobile app or connect the keyboard or mouse via USB port."
 
-#: ../../../tools/misctranslations.php:663
+#: ../../../tools/misctranslations.php:661
+msgid ""
+"2048 is one of the world’s most popular puzzles. The rules are simple: you "
+"need to shuffle all the bars to one side of the game field. Your goal is to "
+"reach 2048."
+msgstr ""
+"2048 is one of the world’s most popular puzzles. The rules are simple: you "
+"need to shuffle all the bars to one side of the game field. Your goal is to "
+"reach 2048."
+
+#: ../../../tools/misctranslations.php:664
 msgid ""
 "The portal is temporarily unavailable.<br>Please try again later.<br>Sorry "
 "for the inconvenience."
@@ -5845,83 +5875,82 @@ msgstr ""
 "The portal is temporarily unavailable.<br>Please try again later.<br>Sorry "
 "for the inconvenience."
 
-#: ../../../tools/misctranslations.php:664
+#: ../../../tools/misctranslations.php:665
 #, php-format
 msgid "Use your username and password to login or register on %s"
 msgstr "Use your username and password to login or register on %s"
 
-#: ../../../tools/misctranslations.php:665
+#: ../../../tools/misctranslations.php:666
 msgid "Please contact your provider<br>to register this device."
 msgstr "Please contact your provider<br>to register this device."
 
-#: ../../../tools/misctranslations.php:666
+#: ../../../tools/misctranslations.php:667
 #, php-format
 msgid "Welcome %s<br>We are glad to see you on the Stalker portal!"
 msgstr "Welcome %s<br>We are glad to see you on the Stalker portal!"
 
-#: ../../../tools/misctranslations.php:668
+#: ../../../tools/misctranslations.php:669
 msgid "Setting the tariff plans and additional services for users on edit page"
 msgstr ""
 "Setting the tariff plans and additional services for users on edit page"
 
-#: ../../../tools/misctranslations.php:669
+#: ../../../tools/misctranslations.php:670
 msgid "Managing of billing date for users on edit page"
 msgstr "Managing of billing date for users on edit page"
 
-#: ../../../tools/misctranslations.php:670
+#: ../../../tools/misctranslations.php:671
 msgid "Managing of users reseller on edit page"
 msgstr "Managing of users reseller on edit page"
 
-#: ../../../tools/misctranslations.php:672
+#: ../../../tools/misctranslations.php:673
 msgid "Getting list of seasons and episodes of video"
 msgstr "Getting list of seasons and episodes of video"
 
-#: ../../../tools/misctranslations.php:673
+#: ../../../tools/misctranslations.php:674
 msgid "Getting list of files of episode"
 msgstr "Getting list of files of episode"
 
-#: ../../../tools/misctranslations.php:674
+#: ../../../tools/misctranslations.php:675
 msgid "Getting info by one file of episode"
 msgstr "Getting info by one file of episode"
 
-#: ../../../tools/misctranslations.php:675
+#: ../../../tools/misctranslations.php:676
 msgid "Adding and editing files of episode"
 msgstr "Adding and editing files of episode"
 
-#: ../../../tools/misctranslations.php:676
+#: ../../../tools/misctranslations.php:677
 msgid "Change accessed status of one file of episode"
 msgstr "Change accessed status of one file of episode"
 
-#: ../../../tools/misctranslations.php:677
+#: ../../../tools/misctranslations.php:678
 msgid "Change names and original names for episodes and seasons"
 msgstr "Change names and original names for episodes and seasons"
 
-#: ../../../tools/misctranslations.php:678
+#: ../../../tools/misctranslations.php:679
 msgid "Deleting info about one video file from database"
 msgstr "Deleting info about one video file from database"
 
-#: ../../../tools/misctranslations.php:679
+#: ../../../tools/misctranslations.php:680
 msgid "Adding episodes into season"
 msgstr "Adding episodes into season"
 
-#: ../../../tools/misctranslations.php:680
+#: ../../../tools/misctranslations.php:681
 msgid "Adding seasons into video"
 msgstr "Adding seasons into video"
 
-#: ../../../tools/misctranslations.php:682 ../../../lib/vod.class.php:947
+#: ../../../tools/misctranslations.php:683
 msgid "Regular quality"
 msgstr "Regular quality"
 
-#: ../../../tools/misctranslations.php:683 ../../../lib/vod.class.php:948
-#: ../../../lib/vod.class.php:949 ../../../lib/vod.class.php:950
+#: ../../../tools/misctranslations.php:684
 msgid "Good quality"
 msgstr "Good quality"
 
-#: ../../../tools/misctranslations.php:684 ../../../lib/vod.class.php:951
+#: ../../../tools/misctranslations.php:685
 msgid "Excellent quality"
 msgstr "Excellent quality"
 
-#: ../../../tools/misctranslations.php:685
+#: ../../../tools/misctranslations.php:686
 msgid "Ultra high quality"
 msgstr "Ultra high quality"
 
@@ -6179,7 +6208,7 @@ msgstr "New claim on %s - %s (%s, id: %s). From %s"
 msgid "Exchange rate on"
 msgstr "Exchange rate on"
 
-#: ../../../lib/system.class.php:69 ../../../lib/user.class.php:1085
+#: ../../../lib/system.class.php:69 ../../../lib/user.class.php:1122
 #: ../../../administrator/services_packages.php:441
 msgid "h"
 msgstr "h"
@@ -6194,11 +6223,11 @@ msgstr "m"
 msgid "s"
 msgstr "s"
 
-#: ../../../lib/system.class.php:99 ../../../lib/vod.class.php:1192
+#: ../../../lib/system.class.php:99 ../../../lib/vod.class.php:1185
 msgid "today"
 msgstr "Today"
 
-#: ../../../lib/system.class.php:101 ../../../lib/vod.class.php:1195
+#: ../../../lib/system.class.php:101 ../../../lib/vod.class.php:1188
 msgid "yesterday"
 msgstr "Yesterday"
 
@@ -6333,8 +6362,8 @@ msgstr "December"
 msgid "Action \"%s\" denied for page \"%s\""
 msgstr "Action \"%s\" denied for page \"%s\""
 
-#: ../../../lib/video.class.php:126 ../../../lib/vod.class.php:1089
-#: ../../../lib/user.class.php:1131 ../../../lib/user.class.php:1132
+#: ../../../lib/video.class.php:156 ../../../lib/vod.class.php:1082
+#: ../../../lib/user.class.php:1168 ../../../lib/user.class.php:1169
 #, php-format
 msgid "video_name_format"
 msgstr "%2$s"
@@ -6347,14 +6376,14 @@ msgstr "DVB"
 msgid "Channels with PVR"
 msgstr "Channels with PVR"
 
-#: ../../../lib/itv.class.php:1852
+#: ../../../lib/itv.class.php:1853
 #, php-format
 msgid ""
 "Channel %s set to active because at least one of its URLs became available."
 msgstr ""
 "Channel %s set to active because at least one of its URLs became available."
 
-#: ../../../lib/itv.class.php:1862
+#: ../../../lib/itv.class.php:1863
 #, php-format
 msgid "Channel %s set to inactive because all its URLs are not available."
 msgstr "Channel %s set to inactive because all its URLs are not available."
@@ -6425,7 +6454,7 @@ msgstr "Wrong location header."
 msgid "end_date_format"
 msgstr "m.d.Y"
 
-#: ../../../lib/accountinfo.class.php:49 ../../../lib/user.class.php:1081
+#: ../../../lib/accountinfo.class.php:49 ../../../lib/user.class.php:1118
 #, php-format
 msgid "%d day"
 msgid_plural "%d days"
@@ -6511,15 +6540,11 @@ msgstr "Episode"
 msgid "Season"
 msgstr "Season"
 
-#: ../../../lib/vod.class.php:952
-msgid "The best quality"
-msgstr "The best quality"
-
-#: ../../../lib/vod.class.php:1198
+#: ../../../lib/vod.class.php:1191
 msgid "last week"
 msgstr "last week"
 
-#: ../../../lib/vod.class.php:1227
+#: ../../../lib/vod.class.php:1221
 msgid "coming soon"
 msgstr "Coming soon"
 
@@ -6583,21 +6608,21 @@ msgstr "Pressure"
 msgid "wind"
 msgstr "Wind"
 
-#: ../../../lib/user.class.php:1089 ../../../administrator/add_itv.php:1754
+#: ../../../lib/user.class.php:1126 ../../../administrator/add_itv.php:1754
 #: ../../../administrator/add_video.php:2078 ../../../lang/stb.php:100
 #: ../../../lang/stb.php:316
 msgid "min"
 msgstr "min"
 
-#: ../../../lib/user.class.php:1143
+#: ../../../lib/user.class.php:1180
 msgid "Radio channels"
 msgstr "Radio channels"
 
-#: ../../../lib/user.class.php:1144
+#: ../../../lib/user.class.php:1181
 msgid "Modules"
 msgstr "Modules"
 
-#: ../../../lib/user.class.php:1145
+#: ../../../lib/user.class.php:1182
 msgid "Options"
 msgstr "Options"
 
@@ -6693,7 +6718,7 @@ msgstr "Counting if channel is playing more than 30 minutes"
 #: ../../../administrator/audio_genre.php:176
 #: ../../../administrator/unique_video.php:332
 #: ../../../administrator/add_video.php:779
-#: ../../../administrator/index.php:412
+#: ../../../administrator/index.php:428
 #: ../../../administrator/add_karaoke.php:393
 #: ../../../administrator/video_search.php:357
 #: ../../../administrator/myvideolog.php:80
@@ -6840,7 +6865,7 @@ msgstr "Packages"
 #: ../../../administrator/setting_common.php:127
 #: ../../../administrator/setting_common.php:137
 #: ../../../administrator/setting_common.php:289
-#: ../../../administrator/index.php:484
+#: ../../../administrator/index.php:500
 msgid "Firmware auto update"
 msgstr "Firmware auto update"
 
@@ -7098,7 +7123,7 @@ msgstr "Search by name"
 
 #: ../../../administrator/stat_moderators.php:61
 #: ../../../administrator/stat_moderators.php:67
-#: ../../../administrator/index.php:463
+#: ../../../administrator/index.php:479
 #: ../../../../admin/json_menu/menu.json:344
 msgid "Moderators statistics"
 msgstr "Moderators statistics"
@@ -7171,7 +7196,7 @@ msgid "File with list is missing"
 msgstr "File with list is missing"
 
 #: ../../../administrator/events.php:251 ../../../administrator/events.php:257
-#: ../../../administrator/profile.php:354 ../../../administrator/index.php:149
+#: ../../../administrator/profile.php:354 ../../../administrator/index.php:165
 #: ../../../../admin/json_menu/menu.json:236
 msgid "Events"
 msgstr "Events"
@@ -7252,7 +7277,7 @@ msgid "There are no active events for %s"
 msgstr "There are no active events for %s"
 
 #: ../../../administrator/themes.php:113 ../../../administrator/themes.php:140
-#: ../../../administrator/index.php:495
+#: ../../../administrator/index.php:511
 msgid "Templates"
 msgstr "Templates"
 
@@ -7530,7 +7555,7 @@ msgstr "Video log"
 
 #: ../../../administrator/anecdote.php:108
 #: ../../../administrator/anecdote.php:115
-#: ../../../administrator/index.php:427
+#: ../../../administrator/index.php:443
 msgid "Jokes"
 msgstr "Jokes"
 
@@ -7580,7 +7605,7 @@ msgstr "TimeShift"
 #: ../../../administrator/users.php:178 ../../../administrator/users.php:179
 #: ../../../administrator/users.php:180 ../../../administrator/users.php:181
 #: ../../../administrator/users.php:182 ../../../administrator/users.php:183
-#: ../../../administrator/index.php:421
+#: ../../../administrator/index.php:437
 msgid "Infoportal"
 msgstr "Infoportal"
 
@@ -8142,12 +8167,6 @@ msgstr "Video deleted"
 msgid "Error: insufficient permissions for this action"
 msgstr "Error: insufficient permissions for this action"
 
-#: ../../../administrator/add_video.php:608
-#: ../../../administrator/add_video.php:628
-#: ../../../administrator/index.php:147
-msgid "VIDEO CLUB"
-msgstr "VIDEO CLUB"
-
 #: ../../../administrator/add_video.php:613
 msgid "Schedule turn the video on"
 msgstr "Schedule turn the video on"
@@ -8317,109 +8336,119 @@ msgstr ""
 msgid "Stalker MW admin interface"
 msgstr "Stalker MW admin interface"
 
-#: ../../../administrator/index.php:137
+#: ../../../administrator/index.php:113
+msgid "Wish for more options? Try the new Stalker admin interface."
+msgstr "Wish for more options? Try the new Stalker admin interface."
+
+#: ../../../administrator/index.php:114
+msgid "Try now!"
+msgstr "Try now!"
+
+#: ../../../administrator/index.php:114
+msgid "Later"
+msgstr "Later"
+
+#: ../../../administrator/index.php:153
 msgid "Sections"
 msgstr "Sections"
 
-#: ../../../administrator/index.php:153 ../../../lang/stb.php:536
-msgid "AUDIO CLUB"
-msgstr "AUDIO CLUB"
-
-#: ../../../administrator/index.php:155
+#: ../../../administrator/index.php:171
 #: ../../../administrator/administrators.php:100
 #: ../../../administrator/administrators.php:143
 #: ../../../../admin/json_menu/menu.json:259
 msgid "Administrators"
 msgstr "Administrators"
 
-#: ../../../administrator/index.php:159
-#: ../../../administrator/add_karaoke.php:206
-#: ../../../administrator/add_karaoke.php:213 ../../../lang/stb.php:27
-msgid "KARAOKE"
-msgstr "KARAOKE"
-
-#: ../../../administrator/index.php:165 ../../../lang/stb.php:70
-msgid "RADIO"
-msgstr "RADIO"
-
-#: ../../../administrator/index.php:171
+#: ../../../administrator/index.php:187
 msgid "TARIFFS"
 msgstr "TARIFFS"
 
-#: ../../../administrator/index.php:175
+#: ../../../administrator/index.php:191
 #, php-format
 msgid "Tasks (new messages: %s)"
 msgstr "Tasks (new messages: %s)"
 
-#: ../../../administrator/index.php:241
+#: ../../../administrator/index.php:253
+msgid "tv"
+msgstr "TV"
+
+#: ../../../administrator/index.php:257
 msgid "videoclub"
 msgstr "Videoclub"
 
-#: ../../../administrator/index.php:274
+#: ../../../administrator/index.php:290
 msgid "audioclub"
 msgstr "Audioclub"
 
-#: ../../../administrator/index.php:286
+#: ../../../administrator/index.php:298
+msgid "radio"
+msgstr "Radio"
+
+#: ../../../administrator/index.php:302
 msgid "infoportal"
 msgstr "Infoportal"
 
-#: ../../../administrator/index.php:299
+#: ../../../administrator/index.php:315
 msgid "tv archive"
 msgstr "TV archive"
 
-#: ../../../administrator/index.php:333
+#: ../../../administrator/index.php:349
 msgid "timeshift"
 msgstr "Timeshift"
 
-#: ../../../administrator/index.php:385 ../../../administrator/index.php:492
+#: ../../../administrator/index.php:382
+msgid "records"
+msgstr "Records"
+
+#: ../../../administrator/index.php:401 ../../../administrator/index.php:508
 #: ../../../administrator/stream_servers.php:139
 #: ../../../administrator/stream_servers.php:146
 msgid "Stream servers"
 msgstr "Stream servers"
 
-#: ../../../administrator/index.php:412
+#: ../../../administrator/index.php:428
 msgid "search by MAC or IP"
 msgstr "Search by MAC or IP"
 
-#: ../../../administrator/index.php:425
+#: ../../../administrator/index.php:441
 msgid "City help"
 msgstr "City help"
 
-#: ../../../administrator/index.php:439
+#: ../../../administrator/index.php:455
 msgid "Video statistics"
 msgstr "Video statistics"
 
-#: ../../../administrator/index.php:441
+#: ../../../administrator/index.php:457
 msgid "Users statistics for TV"
 msgstr "Users statistics for TV"
 
-#: ../../../administrator/index.php:445
+#: ../../../administrator/index.php:461
 #: ../../../../admin/json_menu/menu.json:329
 msgid "TV statistics"
 msgstr "TV statistics"
 
-#: ../../../administrator/index.php:447
+#: ../../../administrator/index.php:463
 msgid "Users statistics for VIDEO"
 msgstr "Users statistics for VIDEO"
 
-#: ../../../administrator/index.php:451
+#: ../../../administrator/index.php:467
 msgid "TV Archive statistics"
 msgstr "TV Archive statistics"
 
-#: ../../../administrator/index.php:453
+#: ../../../administrator/index.php:469
 msgid "Users statistics for Jokes"
 msgstr "Users statistics for Jokes"
 
-#: ../../../administrator/index.php:457
+#: ../../../administrator/index.php:473
 #: ../../../../admin/json_menu/menu.json:339
 msgid "TimeShift statistics"
 msgstr "TimeShift statistics"
 
-#: ../../../administrator/index.php:459
+#: ../../../administrator/index.php:475
 msgid "Inactive users"
 msgstr "Inactive users"
 
-#: ../../../administrator/index.php:469 ../../../administrator/claims.php:84
+#: ../../../administrator/index.php:485 ../../../administrator/claims.php:84
 #: ../../../administrator/claims.php:90
 msgid "Claims"
 msgstr "Claims"
@@ -8824,10 +8853,6 @@ msgstr "OF"
 msgid "FOUND"
 msgstr "FOUND"
 
-#: ../../../lang/stb.php:33 ../../../lang/stb.php:142
-msgid "RECORDS"
-msgstr "RECORDINGS"
-
 #: ../../../lang/stb.php:34
 msgid "LOADING..."
 msgstr "LOADING..."
@@ -9060,10 +9085,6 @@ msgstr "TV GUIDE"
 msgid "PACKAGE INFO"
 msgstr "PACKAGE INFO"
 
-#: ../../../lang/stb.php:151
-msgid "SETTINGS"
-msgstr "SETTINGS"
-
 #: ../../../lang/stb.php:152 ../../../lang/stb.php:172
 #: ../../../lang/stb.php:274
 msgid "CANCEL"
@@ -9156,10 +9177,6 @@ msgstr "NBU exchange rate on"
 #: ../../../lang/stb.php:183
 msgid "CBR exchange rate on"
 msgstr "CBR exchange rate on"
-
-#: ../../../lang/stb.php:185
-msgid "WEATHER"
-msgstr "WEATHER"
 
 #: ../../../lang/stb.php:186
 msgid "pres.:"
@@ -9430,10 +9447,6 @@ msgstr "S/PDIF raw or 2-channel PCM"
 #: ../../../lang/stb.php:290
 msgid "GAME"
 msgstr "GAME"
-
-#: ../../../lang/stb.php:293
-msgid "DOWNLOADS"
-msgstr "DOWNLOADS"
 
 #: ../../../lang/stb.php:294
 msgid "Not found mounted devices"
@@ -10219,6 +10232,9 @@ msgstr "Unlimited"
 
 msgid "User group"
 msgstr "User group"
+
+msgid "User subscription on tv-channels"
+msgstr "User subscription on tv-channels"
 
 msgid "User's theme"
 msgstr "User's theme"
@@ -11890,6 +11906,36 @@ msgstr "Appearance"
 #: ../../../../admin/json_menu/menu.json:418
 msgid "Firmware update"
 msgstr "Firmware update"
+
+#~ msgid "video club"
+#~ msgstr "video club"
+
+#~ msgid "audio club"
+#~ msgstr "audio club"
+
+#~ msgid "explorer"
+#~ msgstr "explorer"
+
+#~ msgid "browser"
+#~ msgstr "browser"
+
+#~ msgid "downloads"
+#~ msgstr "downloads"
+
+#~ msgid "weather"
+#~ msgstr "weather"
+
+#~ msgid "settings"
+#~ msgstr "settings"
+
+#~ msgid "portal"
+#~ msgstr "portal"
+
+#~ msgid "exchange"
+#~ msgstr "exchange"
+
+#~ msgid "The best quality"
+#~ msgstr "The best quality"
 
 #~ msgid "Image descriptor"
 #~ msgstr "Image descriptor"
