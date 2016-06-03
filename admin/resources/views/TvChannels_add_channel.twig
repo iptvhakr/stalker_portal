@@ -124,6 +124,28 @@
                             </span>
                         </div>
                     </div>
+                    {% if attribute(app, 'enable_tariff_plans') is defined and not app['enable_tariff_plans']%}
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{{ 'Basic channel'|trans }}</label>
+                        <div class="col-xs-10 col-sm-6">
+                            <div class=" col-xs-10 col-sm-2">
+                                <div class="checkbox">
+                                    <label>
+                                        {{ form_widget(app['form'].base_ch) }}
+                                        <i class="fa fa-square-o small"></i>
+                                    </label>
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].base_ch) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="help-inline col-xs-12 col-sm-12">
+                                <span class="small txt-default">{{ 'The base channel is available for user by default.'|trans }}</span>
+                                <span class="small txt-default">{{ 'Not base channel may be available by subscription in user profile.'|trans }}</span>
+                            </span>
+                        </div>
+                    </div>
+                    {% endif %}
                     <div class="form-group">
                         <label class="col-sm-2 control-label">{{ 'Streaming links'|trans }}:</label>
                         <div class="col-xs-10 col-sm-8">
@@ -318,15 +340,6 @@
                                 <div class="col-xs-10 col-sm-2">
                                     <span>{{ 'TV archive'|trans }}</span>
                                 </div>
-                                <div class="col-xs-10 col-sm-2 header_check_info">
-                                    <div class="toggle-switch toggle-switch-success">
-                                        <label>
-                                            <input type="checkbox">
-                                            <div class="toggle-switch-inner"></div>
-                                            <div class="toggle-switch-switch"></div>
-                                        </label>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         <div class="box-icons">
@@ -461,15 +474,6 @@
                                 <div class="col-xs-10 col-sm-2">
                                     <span>{{ 'EPG'|trans }}</span>
                                 </div>
-                                <div class="col-xs-10 col-sm-2 header_check_info">
-                                    <div class="toggle-switch toggle-switch-success">
-                                        <label>
-                                            <input type="checkbox">
-                                            <div class="toggle-switch-inner"></div>
-                                            <div class="toggle-switch-switch"></div>
-                                        </label>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         <div class="box-icons">
@@ -517,15 +521,6 @@
                                 <div class="col-xs-10 col-sm-2">
                                     <span>{{ 'Parental control'|trans }}</span>
                                 </div>
-                                <div class="col-xs-10 col-sm-2 header_check_info">
-                                    <div class="toggle-switch toggle-switch-success">
-                                        <label>
-                                            <input type="checkbox">
-                                            <div class="toggle-switch-inner"></div>
-                                            <div class="toggle-switch-switch"></div>
-                                        </label>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         <div class="box-icons">
@@ -562,63 +557,7 @@
                         <div class="box-name">
                             <div class="row">
                                 <div class="col-xs-10 col-sm-2">
-                                    <span>{{ 'Channel type'|trans }}</span>
-                                </div>
-                                <div class="col-xs-10 col-sm-2 header_check_info">
-                                    <div class="toggle-switch toggle-switch-success">
-                                        <label>
-                                            <input type="checkbox">
-                                            <div class="toggle-switch-inner"></div>
-                                            <div class="toggle-switch-switch"></div>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="box-icons">
-                            <i class="fa fa-chevron-up"></i>
-                        </div>
-                        <div class="no-move"></div>
-                    </div>
-                </a>
-                <div class="box-content" id="add_channel_type">
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">{{ 'Basic channel'|trans }}</label>
-                        <div class="col-xs-10 col-sm-6">
-                            <div class=" col-xs-10 col-sm-2">
-                                <div class="checkbox">
-                                    <label>
-                                        {{ form_widget(app['form'].base_ch) }}
-                                        <i class="fa fa-square-o small"></i>
-                                    </label>
-                                    <div class="bg-danger">
-                                        {{ form_errors(app['form'].base_ch) }}
-                                    </div>
-                                </div>
-                            </div>
-                            <span class="help-inline col-xs-12 col-sm-12">
-                                <span class="small txt-default">{{ 'Ignore is Tariff plan functional is used'|trans }}</span>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="box">
-                <a class="collapse-link">
-                    <div class="box-header">
-                        <div class="box-name">
-                            <div class="row">
-                                <div class="col-xs-10 col-sm-2">
                                     <span>{{ 'USB recordings'|trans }}</span>
-                                </div>
-                                <div class="col-xs-10 col-sm-2 header_check_info">
-                                    <div class="toggle-switch toggle-switch-success">
-                                        <label>
-                                            <input type="checkbox">
-                                            <div class="toggle-switch-inner"></div>
-                                            <div class="toggle-switch-switch"></div>
-                                        </label>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -783,15 +722,6 @@
                                         <div class="col-xs-10 col-sm-4">
                                             <span>{{ 'Temporary URL'|trans }}</span>
                                         </div>
-                                        <div class="col-xs-10 col-sm-6 header_check_info">
-                                            <div class="toggle-switch toggle-switch-success">
-                                                <label>
-                                                    <input type="checkbox">
-                                                    <div class="toggle-switch-inner"></div>
-                                                    <div class="toggle-switch-switch"></div>
-                                                </label>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                                 <div class="box-icons">
@@ -879,15 +809,6 @@
                                         <div class="col-xs-10 col-sm-4">
                                             <span>{{ 'Monitoring'|trans }}</span>
                                         </div>
-                                        <div class="col-xs-10 col-sm-6 header_check_info">
-                                            <div class="toggle-switch toggle-switch-success">
-                                                <label>
-                                                    <input type="checkbox">
-                                                    <div class="toggle-switch-inner"></div>
-                                                    <div class="toggle-switch-switch"></div>
-                                                </label>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                                 <div class="box-icons">
@@ -933,15 +854,6 @@
                                     <div class="row">
                                         <div class="col-xs-10 col-sm-4">
                                             <span>{{ 'Load balancing'|trans }}</span>
-                                        </div>
-                                        <div class="col-xs-10 col-sm-6 header_check_info">
-                                            <div class="toggle-switch toggle-switch-success">
-                                                <label>
-                                                    <input type="checkbox">
-                                                    <div class="toggle-switch-inner"></div>
-                                                    <div class="toggle-switch-switch"></div>
-                                                </label>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
