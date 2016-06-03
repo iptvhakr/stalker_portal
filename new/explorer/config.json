@@ -50,7 +50,7 @@
             }
         },
         "url": "../audio.club/",
-        "version": "0.2.6"
+        "version": "0.2.7"
     }, {
         "type": "app",
         "category": "media",
@@ -70,7 +70,7 @@
             }
         },
         "url": "../video.club/",
-        "version": "0.2.6"
+        "version": "0.2.7"
     }, {
         "type": "app",
         "category": "media",
@@ -110,7 +110,7 @@
             }
         },
         "url": "../karaoke/",
-        "version": "1.0.5"
+        "version": "1.0.6"
     }, {
         "type": "app",
         "category": "media",
@@ -136,7 +136,7 @@
         },
         "registerTypes": ["mpg", "mpeg", "mkv", "avi", "3gp", "ts", "tspinf", "m4a", "mp3", "mp4", "ac3", "mov", "vob", "wav", "ape", "mts", "m2t", "m2v", "ogg", "oga", "divx", "aiff", "m2ts", "wv", "m2p", "tp", "flv", "tta", "mod", "tod", "asf", "wma", "wmv", "flac", "ape", "cue", "iso", "aac", "txt", "srt", "sub", "ass", "m4v", "tts", "m3u", "m3u8"],
         "mountPath": "/ram/mnt",
-        "version": "1.2.0"
+        "version": "1.2.1"
     }, {
         "type": "app",
         "category": "media",
@@ -216,9 +216,9 @@
     }, {
         "type": "app",
         "category": "media",
-        "description": "This menu allows setting up the parental control, region and language, remote control and network connection.",
+        "description": "Configure the user interface appearance and set up parental control to ensure your childâ€™s safety while heâ€™s using a set-top box.",
         "backgroundColor": "#8ab027",
-        "name": "PORTAL",
+        "name": "SETTINGS",
         "icons": {
             "paths": {
                 "480": "img/480/",
@@ -236,9 +236,9 @@
     }, {
         "type": "app",
         "category": "media",
-        "description": "This menu allows setting up the parental control, region and language, remote control and network connection.",
+        "description": "System settings will help you to set up network connection, graphics resolution and to change interface language.",
         "backgroundColor": "#005ea6",
-        "name": "SETTINGS",
+        "name": "SYSTEM",
         "icons": {
             "paths": {
                 "480": "img/480/",

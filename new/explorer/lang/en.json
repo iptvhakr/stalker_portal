@@ -25,6 +25,7 @@
 			"Unsupported symbols": "Unsupported symbols",
 			"actions": "actions",
 			"add to favorites": "add to favorites",
+			"address": "",
 			"all": "all",
 			"anonymous entry": "anonymous entry",
 			"audio": "audio",
@@ -58,12 +59,14 @@
 			"name": "name",
 			"network": "network",
 			"new folder": "new folder",
+			"new name": "rename",
 			"open": "open",
 			"password": "password",
 			"playlist": "playlists",
 			"real name": "real name",
 			"records": "records",
 			"remove from favorites": "remove from favorites",
+			"rename": "rename",
 			"search": "search",
 			"server": "server",
 			"size": "size",
@@ -73,7 +76,6 @@
 			"total": "total",
 			"type": "type",
 			"unsaved changes": "unsaved changes",
-			"uri": "",
 			"video": "video"
 		}
 	}
