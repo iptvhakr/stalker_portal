@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-03 11:31+0300\n"
-"PO-Revision-Date: 2016-06-03 11:33+0300\n"
+"POT-Creation-Date: 2016-06-03 15:32+0300\n"
+"PO-Revision-Date: 2016-06-03 15:33+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -31,7 +31,7 @@ msgid "No"
 msgstr "Нет"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:54
-#: ../../../../admin/src/Controller/TvChannelsController.php:414
+#: ../../../../admin/src/Controller/TvChannelsController.php:419
 #: ../../../../admin/src/Controller/VideoClubController.php:24
 #: ../../../../admin/src/Controller/VideoClubController.php:639
 #: ../../../../admin/src/Controller/VideoClubController.php:1190
@@ -47,7 +47,7 @@ msgid "Published"
 msgstr "Опубликован"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:55
-#: ../../../../admin/src/Controller/TvChannelsController.php:388
+#: ../../../../admin/src/Controller/TvChannelsController.php:393
 #: ../../../../admin/src/Controller/VideoClubController.php:23
 #: ../../../../admin/src/Controller/VideoClubController.php:619
 #: ../../../../admin/src/Controller/AudioClubController.php:19
@@ -61,7 +61,7 @@ msgid "Unpublished"
 msgstr "Не опубликован"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:59
-#: ../../../../admin/src/Controller/TvChannelsController.php:1863
+#: ../../../../admin/src/Controller/TvChannelsController.php:1868
 #: ../../../../admin/src/Controller/RadioController.php:24
 #: ../../../../admin/src/Controller/RadioController.php:406
 #: ../../../administrator/add_itv.php:1413
@@ -69,33 +69,33 @@ msgid "monitoring off"
 msgstr "Не мониторится"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:60
-#: ../../../../admin/src/Controller/TvChannelsController.php:1895
+#: ../../../../admin/src/Controller/TvChannelsController.php:1900
 #: ../../../../admin/src/Controller/RadioController.php:25
 #: ../../../../admin/src/Controller/RadioController.php:420
 msgid "errors occurred"
 msgstr "Обнаружены ошибки"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:61
-#: ../../../../admin/src/Controller/TvChannelsController.php:1889
+#: ../../../../admin/src/Controller/TvChannelsController.php:1894
 #: ../../../../admin/src/Controller/RadioController.php:26
 #: ../../../../admin/src/Controller/RadioController.php:418
 msgid "no errors"
 msgstr "Ошибок нет"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:62
-#: ../../../../admin/src/Controller/TvChannelsController.php:1884
+#: ../../../../admin/src/Controller/TvChannelsController.php:1889
 msgid "there are some problems"
 msgstr "Есть проблемы"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:355
-#: ../../../../admin/src/Controller/TvChannelsController.php:380
-#: ../../../../admin/src/Controller/TvChannelsController.php:406
-#: ../../../../admin/src/Controller/TvChannelsController.php:436
-#: ../../../../admin/src/Controller/TvChannelsController.php:485
+#: ../../../../admin/src/Controller/TvChannelsController.php:360
+#: ../../../../admin/src/Controller/TvChannelsController.php:385
+#: ../../../../admin/src/Controller/TvChannelsController.php:411
+#: ../../../../admin/src/Controller/TvChannelsController.php:441
+#: ../../../../admin/src/Controller/TvChannelsController.php:490
 msgid "Cannot find channel"
 msgstr "Канал не найден"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:387
+#: ../../../../admin/src/Controller/TvChannelsController.php:392
 #: ../../../../admin/src/Controller/VideoClubController.php:586
 #: ../../../../admin/src/Controller/VideoClubController.php:1189
 #: ../../../../admin/src/Controller/NewVideoClubController.php:634
@@ -104,11 +104,11 @@ msgstr "Канал не найден"
 msgid "Publish"
 msgstr "Опубликовать"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:393
-#: ../../../../admin/src/Controller/TvChannelsController.php:421
-#: ../../../../admin/src/Controller/TvChannelsController.php:954
-#: ../../../../admin/src/Controller/TvChannelsController.php:991
-#: ../../../../admin/src/Controller/TvChannelsController.php:1020
+#: ../../../../admin/src/Controller/TvChannelsController.php:398
+#: ../../../../admin/src/Controller/TvChannelsController.php:426
+#: ../../../../admin/src/Controller/TvChannelsController.php:959
+#: ../../../../admin/src/Controller/TvChannelsController.php:996
+#: ../../../../admin/src/Controller/TvChannelsController.php:1025
 #: ../../../../admin/src/Controller/EventsController.php:499
 #: ../../../../admin/src/Controller/EventsController.php:731
 #: ../../../../admin/src/Controller/EventsController.php:752
@@ -122,18 +122,18 @@ msgstr "Опубликовать"
 msgid "Nothing to do"
 msgstr "Нечего сохранять"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:413
+#: ../../../../admin/src/Controller/TvChannelsController.php:418
 #: ../../../../admin/src/Controller/VideoClubController.php:1189
 #: ../../../../admin/src/Controller/NewVideoClubController.php:1256
 #: ../../../../admin/src/Controller/RadioController.php:193
 msgid "Unpublish"
 msgstr "Не публиковать"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:442
-#: ../../../../admin/src/Controller/TvChannelsController.php:663
-#: ../../../../admin/src/Controller/TvChannelsController.php:894
-#: ../../../../admin/src/Controller/TvChannelsController.php:1068
-#: ../../../../admin/src/Controller/TvChannelsController.php:1173
+#: ../../../../admin/src/Controller/TvChannelsController.php:447
+#: ../../../../admin/src/Controller/TvChannelsController.php:668
+#: ../../../../admin/src/Controller/TvChannelsController.php:899
+#: ../../../../admin/src/Controller/TvChannelsController.php:1073
+#: ../../../../admin/src/Controller/TvChannelsController.php:1178
 #: ../../../../admin/src/Controller/EventsController.php:419
 #: ../../../../admin/src/Controller/EventsController.php:544
 #: ../../../../admin/src/Controller/VideoClubController.php:398
@@ -176,65 +176,65 @@ msgstr "Не публиковать"
 msgid "Error"
 msgstr "Ошибка"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:455
-#: ../../../../admin/src/Controller/TvChannelsController.php:462
+#: ../../../../admin/src/Controller/TvChannelsController.php:460
+#: ../../../../admin/src/Controller/TvChannelsController.php:467
 #, php-format
 msgid "Cannot create directory %s"
 msgstr "Невозможно создать директорию  %s"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:471
+#: ../../../../admin/src/Controller/TvChannelsController.php:476
 #, php-format
 msgid "Error save file %s"
 msgstr "Ошибка сохранения файла %s"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:525
-#: ../../../../admin/src/Controller/TvChannelsController.php:552
-#: ../../../../admin/src/Controller/TvChannelsController.php:582
-#: ../../../../admin/src/Controller/TvChannelsController.php:619
+#: ../../../../admin/src/Controller/TvChannelsController.php:530
+#: ../../../../admin/src/Controller/TvChannelsController.php:557
+#: ../../../../admin/src/Controller/TvChannelsController.php:587
+#: ../../../../admin/src/Controller/TvChannelsController.php:624
 msgid "The unexpected request"
 msgstr "Неожиданный запрос"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:529
+#: ../../../../admin/src/Controller/TvChannelsController.php:534
 msgid "No moved items, nothing to do"
 msgstr "Нет перемещенных элементов, нечего сохранять"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:538
-#: ../../../../admin/src/Controller/TvChannelsController.php:567
+#: ../../../../admin/src/Controller/TvChannelsController.php:543
+#: ../../../../admin/src/Controller/TvChannelsController.php:572
 msgid "Failed to save, update the channel list"
 msgstr "Не удалось сохранить, обновить список каналов"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:743
-#: ../../../../admin/src/Controller/TvChannelsController.php:801
-#: ../../../../admin/src/Controller/TvChannelsController.php:804
+#: ../../../../admin/src/Controller/TvChannelsController.php:748
+#: ../../../../admin/src/Controller/TvChannelsController.php:806
+#: ../../../../admin/src/Controller/TvChannelsController.php:809
 msgid "URL is busy"
 msgstr "URL занят"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:806
+#: ../../../../admin/src/Controller/TvChannelsController.php:811
 msgid "URL is free"
 msgstr "URL свободен"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:866
+#: ../../../../admin/src/Controller/TvChannelsController.php:871
 msgid "Some channels not enough params."
 msgstr "Для некоторых каналов указаны не все обязательные параметры."
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:871
+#: ../../../../admin/src/Controller/TvChannelsController.php:876
 #: ../../../administrator/add_itv.php:93
 msgid "TV Archive has NOT been restarted correctly."
 msgstr "При перезапуска ТВ архива возникли неполадки."
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:873
+#: ../../../../admin/src/Controller/TvChannelsController.php:878
 #: ../../../administrator/add_itv.php:95
 msgid "TV Archive has been restarted."
 msgstr "ТВ архив был успешно перезапущен."
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:939
-#: ../../../../admin/src/Controller/TvChannelsController.php:967
-#: ../../../../admin/src/Controller/TvChannelsController.php:1005
-#: ../../../../admin/src/Controller/TvChannelsController.php:1031
-#: ../../../../admin/src/Controller/TvChannelsController.php:1059
-#: ../../../../admin/src/Controller/TvChannelsController.php:1165
-#: ../../../../admin/src/Controller/TvChannelsController.php:1216
-#: ../../../../admin/src/Controller/TvChannelsController.php:1247
+#: ../../../../admin/src/Controller/TvChannelsController.php:944
+#: ../../../../admin/src/Controller/TvChannelsController.php:972
+#: ../../../../admin/src/Controller/TvChannelsController.php:1010
+#: ../../../../admin/src/Controller/TvChannelsController.php:1036
+#: ../../../../admin/src/Controller/TvChannelsController.php:1064
+#: ../../../../admin/src/Controller/TvChannelsController.php:1170
+#: ../../../../admin/src/Controller/TvChannelsController.php:1221
+#: ../../../../admin/src/Controller/TvChannelsController.php:1252
 #: ../../../../admin/src/Controller/EventsController.php:320
 #: ../../../../admin/src/Controller/EventsController.php:353
 #: ../../../../admin/src/Controller/EventsController.php:389
@@ -407,10 +407,10 @@ msgstr "ТВ архив был успешно перезапущен."
 msgid "Page not found"
 msgstr "Страница не найдена"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:948
-#: ../../../../admin/src/Controller/TvChannelsController.php:976
-#: ../../../../admin/src/Controller/TvChannelsController.php:1015
-#: ../../../../admin/src/Controller/TvChannelsController.php:1251
+#: ../../../../admin/src/Controller/TvChannelsController.php:953
+#: ../../../../admin/src/Controller/TvChannelsController.php:981
+#: ../../../../admin/src/Controller/TvChannelsController.php:1020
+#: ../../../../admin/src/Controller/TvChannelsController.php:1256
 #: ../../../../admin/src/Controller/IndexController.php:53
 #: ../../../../admin/src/Controller/IndexController.php:109
 #: ../../../../admin/src/Controller/IndexController.php:167
@@ -463,10 +463,10 @@ msgstr "Страница не найдена"
 msgid "Failed"
 msgstr "Ошибка"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:957
-#: ../../../../admin/src/Controller/TvChannelsController.php:995
-#: ../../../../admin/src/Controller/TvChannelsController.php:1039
-#: ../../../../admin/src/Controller/TvChannelsController.php:1046
+#: ../../../../admin/src/Controller/TvChannelsController.php:962
+#: ../../../../admin/src/Controller/TvChannelsController.php:1000
+#: ../../../../admin/src/Controller/TvChannelsController.php:1044
+#: ../../../../admin/src/Controller/TvChannelsController.php:1051
 #: ../../../../admin/src/Controller/VideoClubController.php:1571
 #: ../../../../admin/src/Controller/VideoClubController.php:1577
 #: ../../../../admin/src/Controller/AudioClubController.php:432
@@ -490,7 +490,7 @@ msgstr "Ошибка"
 msgid "Name already used"
 msgstr "Имя уже используется"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1048
+#: ../../../../admin/src/Controller/TvChannelsController.php:1053
 #: ../../../../admin/src/Controller/VideoClubController.php:739
 #: ../../../../admin/src/Controller/VideoClubController.php:1579
 #: ../../../../admin/src/Controller/AudioClubController.php:436
@@ -504,7 +504,7 @@ msgstr "Имя уже используется"
 msgid "Name is available"
 msgstr "Имя доступно"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1091
+#: ../../../../admin/src/Controller/TvChannelsController.php:1096
 #: ../../../../admin/src/Controller/StatisticsController.php:52
 #: ../../../../admin/src/Controller/TasksController.php:37
 #: ../../../../admin/src/Controller/TasksController.php:580
@@ -512,70 +512,70 @@ msgstr "Имя доступно"
 msgid "Done"
 msgstr "Готово"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1119
+#: ../../../../admin/src/Controller/TvChannelsController.php:1124
 msgid "Upload failed"
 msgstr "Сбой при загрузке"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1156
+#: ../../../../admin/src/Controller/TvChannelsController.php:1161
 msgid "Error m3u parse. Check the file encoding. Required UTF-8 encoding."
 msgstr ""
 "Ошибка парсинга m3u-файла. Проверте кодировку файла. Необходимая кодировка "
 "UTF-8."
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1185
-#: ../../../../admin/src/Controller/TvChannelsController.php:1538
+#: ../../../../admin/src/Controller/TvChannelsController.php:1190
+#: ../../../../admin/src/Controller/TvChannelsController.php:1543
 msgid "Requires at least one link of broadcast"
 msgstr "Требуется по крайней мере одна ссылка вещания"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1187
+#: ../../../../admin/src/Controller/TvChannelsController.php:1192
 msgid "Field \"Channel name\" cannot be empty"
 msgstr "Поле \"Название канала\" не может быть пустым"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1189
+#: ../../../../admin/src/Controller/TvChannelsController.php:1194
 msgid "Field \"Channel number\" cannot be empty"
 msgstr "Поле \"Номер канала\" не может быть пустым"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1203
+#: ../../../../admin/src/Controller/TvChannelsController.php:1208
 msgid "Number \"%number%\" is already in use"
 msgstr "Номер \"%number%\" уже используется"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1205
+#: ../../../../admin/src/Controller/TvChannelsController.php:1210
 msgid "Name \"%name%\" already exists"
 msgstr "Имя \"%name%\" уже существует"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1225
-#: ../../../../admin/src/Controller/TvChannelsController.php:1235
+#: ../../../../admin/src/Controller/TvChannelsController.php:1230
+#: ../../../../admin/src/Controller/TvChannelsController.php:1240
 msgid "Prefix already used"
 msgstr "Префикс уже используется"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1237
+#: ../../../../admin/src/Controller/TvChannelsController.php:1242
 msgid "Prefix is available"
 msgstr "Префикс доступен"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1528
+#: ../../../../admin/src/Controller/TvChannelsController.php:1533
 msgid "This field cannot be empty if enabled TV-archive or nPVR"
 msgstr "Поле не может быть пустым если включено TV-архив или nPVR"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1532
+#: ../../../../admin/src/Controller/TvChannelsController.php:1537
 #: ../../../administrator/add_itv.php:721
 msgid "For enabling Xtream-Codes Support you need enable mcrypt php-extension"
 msgstr ""
 "Для использования Xtream-Codes Support вам необходимо включить php-модуль "
 "mcrypt"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1547
+#: ../../../../admin/src/Controller/TvChannelsController.php:1552
 #: ../../../../admin/src/Controller/VideoClubController.php:2121
 #: ../../../../admin/src/Controller/NewVideoClubController.php:2804
 msgid "This name already exists"
 msgstr "Это имя уже существует"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1548
+#: ../../../../admin/src/Controller/TvChannelsController.php:1553
 #: ../../../../admin/src/Controller/InfoportalController.php:274
 msgid "This number is already in use"
 msgstr "Такой номер уже используется"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1757
-#: ../../../../admin/src/Controller/TvChannelsController.php:1811
+#: ../../../../admin/src/Controller/TvChannelsController.php:1762
+#: ../../../../admin/src/Controller/TvChannelsController.php:1816
 #: ../../../../admin/src/Controller/EventsController.php:838
 #: ../../../../admin/src/Controller/EventsController.php:864
 #: ../../../../admin/src/Controller/EventsController.php:882
@@ -609,7 +609,7 @@ msgstr "Такой номер уже используется"
 msgid "ID"
 msgstr "ID"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1758
+#: ../../../../admin/src/Controller/TvChannelsController.php:1763
 #: ../../../../admin/src/Controller/VideoClubController.php:2393
 #: ../../../../admin/src/Controller/NewVideoClubController.php:3083
 #: ../../../../admin/src/Controller/TasksController.php:564
@@ -629,13 +629,13 @@ msgstr "ID"
 msgid "Number"
 msgstr "Номер"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1759
+#: ../../../../admin/src/Controller/TvChannelsController.php:1764
 #: ../../../administrator/add_itv.php:1794
 msgid "Logo"
 msgstr "Логотип"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1760
-#: ../../../../admin/src/Controller/TvChannelsController.php:1853
+#: ../../../../admin/src/Controller/TvChannelsController.php:1765
+#: ../../../../admin/src/Controller/TvChannelsController.php:1858
 #: ../../../../admin/src/Controller/EventsController.php:839
 #: ../../../../admin/src/Controller/VideoClubController.php:2321
 #: ../../../../admin/src/Controller/VideoClubController.php:2341
@@ -693,7 +693,7 @@ msgstr "Логотип"
 msgid "Title"
 msgstr "Название"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1761
+#: ../../../../admin/src/Controller/TvChannelsController.php:1766
 #: ../../../../admin/src/Controller/VideoClubController.php:2325
 #: ../../../../admin/src/Controller/AudioClubController.php:1216
 #: ../../../../admin/src/Controller/NewVideoClubController.php:3015
@@ -711,7 +711,7 @@ msgstr "Название"
 msgid "Genre"
 msgstr "Жанр"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1762
+#: ../../../../admin/src/Controller/TvChannelsController.php:1767
 #: ../../../../admin/src/Controller/StatisticsController.php:55
 #: ../../../../admin/src/Controller/TasksController.php:40
 #: ../../../administrator/userlog.php:376
@@ -719,8 +719,8 @@ msgstr "Жанр"
 msgid "Archive"
 msgstr "Архив"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1763
-#: ../../../../admin/src/Controller/TvChannelsController.php:1813
+#: ../../../../admin/src/Controller/TvChannelsController.php:1768
+#: ../../../../admin/src/Controller/TvChannelsController.php:1818
 #: ../../../../admin/src/Controller/BroadcastServersController.php:408
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:412
 #: ../../../../admin/src/Controller/AudioClubController.php:1383
@@ -734,20 +734,20 @@ msgstr "Архив"
 msgid "URL"
 msgstr "URL"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1764
+#: ../../../../admin/src/Controller/TvChannelsController.php:1769
 msgid "XMLTV ID"
 msgstr "XMLTV ID"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1765
+#: ../../../../admin/src/Controller/TvChannelsController.php:1770
 msgid "Claims about audio/video/epg"
 msgstr "Жалобы на видео/аудио/epg"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1766
+#: ../../../../admin/src/Controller/TvChannelsController.php:1771
 #: ../../../../admin/src/Controller/RadioController.php:398
 msgid "Monitoring status"
 msgstr "Статус мониторинга"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1767
+#: ../../../../admin/src/Controller/TvChannelsController.php:1772
 #: ../../../../admin/src/Controller/VideoClubController.php:2332
 #: ../../../../admin/src/Controller/VideoClubController.php:2358
 #: ../../../../admin/src/Controller/VideoClubController.php:2444
@@ -770,8 +770,8 @@ msgstr "Статус мониторинга"
 msgid "Status"
 msgstr "Статус"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1768
-#: ../../../../admin/src/Controller/TvChannelsController.php:1817
+#: ../../../../admin/src/Controller/TvChannelsController.php:1773
+#: ../../../../admin/src/Controller/TvChannelsController.php:1822
 #: ../../../../admin/src/Controller/EventsController.php:843
 #: ../../../../admin/src/Controller/EventsController.php:893
 #: ../../../../admin/src/Controller/VideoClubController.php:2333
@@ -800,21 +800,21 @@ msgstr "Статус"
 msgid "Operations"
 msgstr "Действия"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1812
+#: ../../../../admin/src/Controller/TvChannelsController.php:1817
 #: ../../../../admin/src/Controller/SettingsController.php:257
 #: ../../../administrator/setting_common.php:193
 msgid "Prefix"
 msgstr "Префикс"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1814
+#: ../../../../admin/src/Controller/TvChannelsController.php:1819
 msgid "XMLTV file hash"
 msgstr "Хэш XMLTV файла"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1815
+#: ../../../../admin/src/Controller/TvChannelsController.php:1820
 msgid "Update date"
 msgstr "Дата обновления"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1816
+#: ../../../../admin/src/Controller/TvChannelsController.php:1821
 #: ../../../../admin/src/Controller/EventsController.php:892
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:414
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:424
@@ -828,7 +828,7 @@ msgstr "Дата обновления"
 msgid "State"
 msgstr "Состояние"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1852
+#: ../../../../admin/src/Controller/TvChannelsController.php:1857
 #: ../../../../admin/src/Controller/AudioClubController.php:1381
 #: ../../../../admin/src/Controller/StatisticsController.php:1433
 #: ../../../../admin/src/Controller/RadioController.php:393
@@ -837,7 +837,7 @@ msgstr "Состояние"
 msgid "Order"
 msgstr "Порядок"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1854
+#: ../../../../admin/src/Controller/TvChannelsController.php:1859
 #: ../../../../admin/src/Controller/VideoClubController.php:2395
 #: ../../../../admin/src/Controller/VideoClubController.php:2406
 #: ../../../../admin/src/Controller/NewVideoClubController.php:3085
@@ -845,7 +845,7 @@ msgstr "Порядок"
 msgid "Localized title"
 msgstr "Переведенное название"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1855
+#: ../../../../admin/src/Controller/TvChannelsController.php:1860
 #: ../../../../admin/src/Controller/VideoClubController.php:2398
 #: ../../../../admin/src/Controller/NewVideoClubController.php:3088
 #: ../../../administrator/add_itv.php:1538
@@ -853,7 +853,7 @@ msgstr "Переведенное название"
 msgid "Age restriction"
 msgstr "Ограничение по возрасту"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1856
+#: ../../../../admin/src/Controller/TvChannelsController.php:1861
 #: ../../../../admin/src/Controller/VideoClubController.php:2399
 #: ../../../../admin/src/Controller/VideoClubController.php:2409
 #: ../../../../admin/src/Controller/VideoClubController.php:2445
@@ -870,19 +870,19 @@ msgstr "Ограничение по возрасту"
 msgid "Operation"
 msgstr "Действия"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1867
+#: ../../../../admin/src/Controller/TvChannelsController.php:1872
 #: ../../../../admin/src/Controller/RadioController.php:410
 #: ../../../administrator/add_itv.php:1419
 msgid "more than an hour ago"
 msgstr "больше часа назад"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1869
+#: ../../../../admin/src/Controller/TvChannelsController.php:1874
 #: ../../../../admin/src/Controller/RadioController.php:412
 #: ../../../administrator/add_itv.php:1423
 msgid "less than a minute ago"
 msgstr "меньше минуты назад"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1871
+#: ../../../../admin/src/Controller/TvChannelsController.php:1876
 #: ../../../../admin/src/Controller/RadioController.php:414
 msgid "{{minute}} minutes ago"
 msgstr "{{minute}} минут назад"
@@ -10668,9 +10668,6 @@ msgstr "Название канала"
 msgid "Channel number"
 msgstr "Номер канала"
 
-msgid "Channel type"
-msgstr "Тип канала"
-
 msgid "Create new message template"
 msgstr "Создание нового шаблона сообщения"
 
@@ -10775,9 +10772,6 @@ msgstr "Номер фильма по которому он может быть �
 msgid "ID of movie on the TMDB"
 msgstr "Номер фильма по которому он может быть найден на TMDB."
 
-msgid "Ignore is Tariff plan functional is used"
-msgstr "Игнорируется, если используется функционал Тарифных планов"
-
 msgid "Image"
 msgstr "Изображение"
 
@@ -10827,6 +10821,10 @@ msgstr "Должен быть уникальным"
 
 msgid "New template"
 msgstr "Новый шаблон сообщения"
+
+msgid "Not base channel may be available by subscription in user profile."
+msgstr ""
+"Не базовый канал может быть доступен по подписке в профиле пользователя."
 
 msgid "Number in channel list must contain only numbers from 0 to 999"
 msgstr "Номер в списке каналов. Должен содержать только цифры: 0-999"
@@ -10977,6 +10975,9 @@ msgstr "Временная HTTP-ссылка"
 
 msgid "Temporary URL"
 msgstr "Временные HTTP-ссылки"
+
+msgid "The base channel is available for user by default."
+msgstr "Базовый канал доступен для пользователя по умолчанию."
 
 msgid "The period of showing of the episodes on TV"
 msgstr "Период показа серий по ТВ"
@@ -11942,6 +11943,12 @@ msgstr "Внешний вид"
 #: ../../../../admin/json_menu/menu.json:418
 msgid "Firmware update"
 msgstr "Обновление прошивки"
+
+#~ msgid "Channel type"
+#~ msgstr "Тип канала"
+
+#~ msgid "Ignore is Tariff plan functional is used"
+#~ msgstr "Игнорируется, если используется функционал Тарифных планов"
 
 #~ msgid ""
 #~ "This menu allows setting up the parental control, region and language, "
