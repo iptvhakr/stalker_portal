@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-03 11:20+0300\n"
-"PO-Revision-Date: 2016-06-03 11:20+0300\n"
+"POT-Creation-Date: 2016-06-03 11:35+0300\n"
+"PO-Revision-Date: 2016-06-03 11:35+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -5758,107 +5758,119 @@ msgid "SETTINGS"
 msgstr "SETTINGS"
 
 #: ../../../tools/misctranslations.php:646
+msgid "SYSTEM"
+msgstr "SYSTEM"
+
+#: ../../../tools/misctranslations.php:647
 msgid "PORTAL"
 msgstr "PORTAL"
 
-#: ../../../tools/misctranslations.php:647
+#: ../../../tools/misctranslations.php:648
 msgid "EXCHANGE"
 msgstr "EXCHANGE"
 
-#: ../../../tools/misctranslations.php:648
-msgid ""
-"Watch TV shows, movies, tv series, news and educational programs in digital "
-"quality."
-msgstr ""
-"Watch TV shows, movies, tv series, news and educational programs in digital "
-"quality."
-
 #: ../../../tools/misctranslations.php:649
 msgid ""
-"Library of movies for any mood with easy search and sorting by genre that "
-"help to find what you need in seconds."
+"Watch TV shows, movies, tv series, news and educational programs in digital "
+"quality."
 msgstr ""
-"Library of movies for any mood with easy search and sorting by genre that "
-"help to find what you need in seconds."
+"Watch TV shows, movies, tv series, news and educational programs in digital "
+"quality."
 
 #: ../../../tools/misctranslations.php:650
 msgid ""
-"Audio club app allows creating a special atmosphere for any party of family "
-"event!"
+"Library of movies for any mood with easy search and sorting by genre that "
+"help to find what you need in seconds."
 msgstr ""
-"Audio club app allows creating a special atmosphere for any party of family "
-"event!"
+"Library of movies for any mood with easy search and sorting by genre that "
+"help to find what you need in seconds."
 
 #: ../../../tools/misctranslations.php:651
 msgid ""
+"Audio club app allows creating a special atmosphere for any party of family "
+"event!"
+msgstr ""
+"Audio club app allows creating a special atmosphere for any party of family "
+"event!"
+
+#: ../../../tools/misctranslations.php:652
+msgid ""
 "Easy and handy way of listening to music, news, talk shows and much more."
 msgstr ""
 "Easy and handy way of listening to music, news, talk shows and much more."
 
-#: ../../../tools/misctranslations.php:652
+#: ../../../tools/misctranslations.php:653
 msgid "Sing your favourite songs with friends or improve your vocal skills."
 msgstr "Sing your favourite songs with friends or improve your vocal skills."
 
-#: ../../../tools/misctranslations.php:653
-msgid ""
-"Watch movies, listen to music or view the photos, saved on your removable "
-"storages or within the local network."
-msgstr ""
-"Watch movies, listen to music or view the photos, saved on your removable "
-"storages or within the local network."
-
 #: ../../../tools/misctranslations.php:654
 msgid ""
-"Download the files directly from the Internet network to the connected "
-"removable storage."
+"Watch movies, listen to music or view the photos, saved on your removable "
+"storages or within the local network."
 msgstr ""
-"Download the files directly from the Internet network to the connected "
-"removable storage."
+"Watch movies, listen to music or view the photos, saved on your removable "
+"storages or within the local network."
 
 #: ../../../tools/misctranslations.php:655
 msgid ""
-"This app allows recording TV shows or watch the records made previously."
+"Download the files directly from the Internet network to the connected "
+"removable storage."
 msgstr ""
-"This app allows recording TV shows or watch the records made previously."
+"Download the files directly from the Internet network to the connected "
+"removable storage."
 
 #: ../../../tools/misctranslations.php:656
 msgid ""
+"This app allows recording TV shows or watch the records made previously."
+msgstr ""
+"This app allows recording TV shows or watch the records made previously."
+
+#: ../../../tools/misctranslations.php:657
+msgid ""
 "App will help you to stay up to date with the changes in rates of currencies "
 "from all over the world."
 msgstr ""
 "App will help you to stay up to date with the changes in rates of currencies "
 "from all over the world."
 
-#: ../../../tools/misctranslations.php:657
+#: ../../../tools/misctranslations.php:658
 msgid "Weather forecast for three subsequent days in any city of the world."
 msgstr "Weather forecast for three subsequent days in any city of the world."
 
-#: ../../../tools/misctranslations.php:658
-msgid ""
-"Horoscope, city guide and many other things that can be useful for fun and "
-"useful pastime."
-msgstr ""
-"Horoscope, city guide and many other things that can be useful for fun and "
-"useful pastime."
-
 #: ../../../tools/misctranslations.php:659
 msgid ""
-"This menu allows setting up the parental control, region and language, "
-"remote control and network connection."
+"Horoscope, city guide and many other things that can be useful for fun and "
+"useful pastime."
 msgstr ""
-"This menu allows setting up the parental control, region and language, "
-"remote control and network connection."
+"Horoscope, city guide and many other things that can be useful for fun and "
+"useful pastime."
 
 #: ../../../tools/misctranslations.php:660
 msgid ""
-"Surf the Internet via built-in browser! To make it easier, you can use the "
-"MAGic Remote mobile app or connect the keyboard or mouse via USB port."
+"Configure the user interface appearance and set up parental control to "
+"ensure your child’s safety while he’s using a set-top box."
 msgstr ""
-"Surf the Internet via built-in browser! To make it easier, you can use the "
-"MAGic Remote mobile app or connect the keyboard or mouse via USB port."
+"Configure the user interface appearance and set up parental control to "
+"ensure your child’s safety while he’s using a set-top box."
 
 #: ../../../tools/misctranslations.php:661
 msgid ""
+"System settings will help you to set up network connection, graphics "
+"resolution and to change interface language."
+msgstr ""
+"System settings will help you to set up network connection, graphics "
+"resolution and to change interface language."
+
+#: ../../../tools/misctranslations.php:662
+msgid ""
+"Surf the Internet via built-in browser! To make it easier, you can use the "
+"MAGic Remote mobile app or connect the keyboard or mouse via USB port."
+msgstr ""
+"Surf the Internet via built-in browser! To make it easier, you can use the "
+"MAGic Remote mobile app or connect the keyboard or mouse via USB port."
+
+#: ../../../tools/misctranslations.php:663
+msgid ""
 "2048 is one of the world’s most popular puzzles. The rules are simple: you "
 "need to shuffle all the bars to one side of the game field. Your goal is to "
 "reach 2048."
@@ -5867,7 +5879,7 @@ msgstr ""
 "need to shuffle all the bars to one side of the game field. Your goal is to "
 "reach 2048."
 
-#: ../../../tools/misctranslations.php:664
+#: ../../../tools/misctranslations.php:666
 msgid ""
 "The portal is temporarily unavailable.<br>Please try again later.<br>Sorry "
 "for the inconvenience."
@@ -5875,82 +5887,82 @@ msgstr ""
 "The portal is temporarily unavailable.<br>Please try again later.<br>Sorry "
 "for the inconvenience."
 
-#: ../../../tools/misctranslations.php:665
+#: ../../../tools/misctranslations.php:667
 #, php-format
 msgid "Use your username and password to login or register on %s"
 msgstr "Use your username and password to login or register on %s"
 
-#: ../../../tools/misctranslations.php:666
+#: ../../../tools/misctranslations.php:668
 msgid "Please contact your provider<br>to register this device."
 msgstr "Please contact your provider<br>to register this device."
 
-#: ../../../tools/misctranslations.php:667
+#: ../../../tools/misctranslations.php:669
 #, php-format
 msgid "Welcome %s<br>We are glad to see you on the Stalker portal!"
 msgstr "Welcome %s<br>We are glad to see you on the Stalker portal!"
 
-#: ../../../tools/misctranslations.php:669
+#: ../../../tools/misctranslations.php:671
 msgid "Setting the tariff plans and additional services for users on edit page"
 msgstr ""
 "Setting the tariff plans and additional services for users on edit page"
 
-#: ../../../tools/misctranslations.php:670
+#: ../../../tools/misctranslations.php:672
 msgid "Managing of billing date for users on edit page"
 msgstr "Managing of billing date for users on edit page"
 
-#: ../../../tools/misctranslations.php:671
+#: ../../../tools/misctranslations.php:673
 msgid "Managing of users reseller on edit page"
 msgstr "Managing of users reseller on edit page"
 
-#: ../../../tools/misctranslations.php:673
+#: ../../../tools/misctranslations.php:675
 msgid "Getting list of seasons and episodes of video"
 msgstr "Getting list of seasons and episodes of video"
 
-#: ../../../tools/misctranslations.php:674
+#: ../../../tools/misctranslations.php:676
 msgid "Getting list of files of episode"
 msgstr "Getting list of files of episode"
 
-#: ../../../tools/misctranslations.php:675
+#: ../../../tools/misctranslations.php:677
 msgid "Getting info by one file of episode"
 msgstr "Getting info by one file of episode"
 
-#: ../../../tools/misctranslations.php:676
+#: ../../../tools/misctranslations.php:678
 msgid "Adding and editing files of episode"
 msgstr "Adding and editing files of episode"
 
-#: ../../../tools/misctranslations.php:677
+#: ../../../tools/misctranslations.php:679
 msgid "Change accessed status of one file of episode"
 msgstr "Change accessed status of one file of episode"
 
-#: ../../../tools/misctranslations.php:678
+#: ../../../tools/misctranslations.php:680
 msgid "Change names and original names for episodes and seasons"
 msgstr "Change names and original names for episodes and seasons"
 
-#: ../../../tools/misctranslations.php:679
+#: ../../../tools/misctranslations.php:681
 msgid "Deleting info about one video file from database"
 msgstr "Deleting info about one video file from database"
 
-#: ../../../tools/misctranslations.php:680
+#: ../../../tools/misctranslations.php:682
 msgid "Adding episodes into season"
 msgstr "Adding episodes into season"
 
-#: ../../../tools/misctranslations.php:681
+#: ../../../tools/misctranslations.php:683
 msgid "Adding seasons into video"
 msgstr "Adding seasons into video"
 
-#: ../../../tools/misctranslations.php:683
+#: ../../../tools/misctranslations.php:685
 msgid "Regular quality"
 msgstr "Regular quality"
 
-#: ../../../tools/misctranslations.php:684
+#: ../../../tools/misctranslations.php:686
 msgid "Good quality"
 msgstr "Good quality"
 
-#: ../../../tools/misctranslations.php:685
+#: ../../../tools/misctranslations.php:687
 msgid "Excellent quality"
 msgstr "Excellent quality"
 
-#: ../../../tools/misctranslations.php:686
+#: ../../../tools/misctranslations.php:688
 msgid "Ultra high quality"
 msgstr "Ultra high quality"
 
@@ -11906,6 +11918,13 @@ msgstr "Appearance"
 #: ../../../../admin/json_menu/menu.json:418
 msgid "Firmware update"
 msgstr "Firmware update"
+
+#~ msgid ""
+#~ "This menu allows setting up the parental control, region and language, "
+#~ "remote control and network connection."
+#~ msgstr ""
+#~ "This menu allows setting up the parental control, region and language, "
+#~ "remote control and network connection."
 
 #~ msgid "video club"
 #~ msgstr "video club"
