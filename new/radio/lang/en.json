@@ -1,21 +1,21 @@
 {
 	"meta": {
 		"charset": "utf-8",
-		"project": "Stalker Radio",
+		"project": "stb-app 1.0.6",
 		"language": "en",
-		"plural": ""
+		"plural": "(n != 1)"
 	},
 	"data": {
 		"": {
-			"Cancel": "",
-			"Exit": "",
-			"by name": "",
-			"by number": "",
-			"menu": "",
-			"no stations": "",
-			"radio stations": "",
-			"search": "",
-			"sorting": ""
+			"Cancel": "Cancel",
+			"Exit": "Exit",
+			"Search": "Search",
+			"by name": "by name",
+			"by number": "by number",
+			"menu": "menu",
+			"no stations": "no stations",
+			"radio stations": "radio stations",
+			"sorting": "sorting"
 		}
 	}
 }
