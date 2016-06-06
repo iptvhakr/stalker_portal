@@ -633,6 +633,17 @@
                 this.current_movie = item;
             }else{
                 this.disable_color_buttons();
+                if (item.is_season){
+                    this.current_movie['cur_season'] = item.season_number;
+                }else if (item.is_episode && item.hasOwnProperty('series')){
+                    this.current_movie['series']     = item.series;
+                    this.current_movie['cur_series'] = item.series_number;
+                }else if (item.is_file && this.current_movie.hasOwnProperty('series')){
+                    stb.player.play_continuously = true;
+                    item['series']     = this.current_movie['series'];
+                    item['cur_season'] = this.current_movie['cur_season'];
+                    item['cur_series'] = this.current_movie['cur_series'];
+                }
             }
 
             if (!item.is_movie){
@@ -1231,6 +1242,8 @@
             if (!play_url){
                 played_item.download = !play_url;
             }
+
+            played_item.name = this.current_movie['name'];
 
             stb.player.play(played_item);
         };

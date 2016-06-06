@@ -3193,7 +3193,7 @@ player.prototype.show_info = function(item, direct_call){
         stb.clock.show();
         
         if (item.cur_series && parseInt(item.cur_series) > 0){
-            this.info.pos_series.innerHTML = item.cur_series + ' ' + get_word('player_series');
+            this.info.pos_series.innerHTML = (item.cur_season ? item.cur_season + ' ' + get_word('player_season') + ', ' : '') + item.cur_series + ' ' + get_word('player_series');
         }else if ((this.cur_media_item.hasOwnProperty('live_date') || this.pause.on) && this.active_time_shift){
             this.info.pos_series.innerHTML = module.time_shift.get_current_date();
         }else{
