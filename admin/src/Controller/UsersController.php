@@ -1821,7 +1821,6 @@ class UsersController extends \Controller\BaseStalkerController {
             "0" => $this->setLocalization('status on')
         );
 
-
         $stb_groups = new \StbGroup();
 
         $all_groups = $stb_groups->getAll();
@@ -1851,33 +1850,6 @@ class UsersController extends \Controller\BaseStalkerController {
             }
             $data['version'] = str_replace("; ", ";", $data['version']);
             $data['version'] = str_replace(";", ";\r\n", $data['version']);
-        }
-
-        if ($this->app['tariffPlanFlag']) {
-            $tarif_plans = $this->db->getAllTariffPlans();
-            $plan_keys = $this->getFieldFromArray($tarif_plans, 'id');
-            $plan_names = $this->getFieldFromArray($tarif_plans, 'name');
-
-            if (is_array($plan_keys) && is_array($plan_names) && count($plan_keys) == count($plan_names) && count($plan_keys) > 0) {
-                $tariff_plans = array_combine($plan_keys, $plan_names);
-                if (!array_key_exists(0 , $tariff_plans)) {
-                    $tariff_plans[0] = '---';
-                }
-            } else {
-                $tariff_plans = array();
-            }
-            if (!empty($data) && is_array($data) && array_key_exists('tariff_plan_id', $data) && (int)$data['tariff_plan_id'] == 0) {
-                $user_default = array_filter(array_combine($plan_keys, $this->getFieldFromArray($tarif_plans, 'user_default')));
-                reset($user_default);
-                list($default_id) = each($user_default);
-                if (!empty($default_id) ) {
-                    settype($default_id, 'int');
-                    if (array_key_exists($default_id, $tariff_plans)){
-                        $data['tariff_plan_id'] = $default_id;
-                        $data['tariff_plan_name'] = $tariff_plans[$default_id];
-                    }
-                }
-            }
         }
 
         if (empty($this->app['reseller'])) {
@@ -1951,6 +1923,33 @@ class UsersController extends \Controller\BaseStalkerController {
         }
 
         if ($this->app['tariffPlanFlag']){
+
+            $tariff_plans = array();
+            $default_id = FALSE;
+
+            foreach($this->db->getAllTariffPlans() as $num=>$row){
+                if((int)$row['user_default']){
+                    $tariff_plans = array($row['id'] => $row['name']) + $tariff_plans;
+                    $default_id = $row['id'];
+                } else {
+                    $tariff_plans[$row['id']] = $row['name'];
+                }
+            }
+
+            if (!empty($tariff_plans) && !array_key_exists(0 , $tariff_plans)) {
+                $tariff_plans[0] = '---';
+            }
+
+            if (is_array($data) && array_key_exists('tariff_plan_id', $data) && (int)$data['tariff_plan_id'] == 0) {
+                if (!empty($default_id) ) {
+                    settype($default_id, 'int');
+                    if (array_key_exists($default_id, $tariff_plans)){
+                        $data['tariff_plan_id'] = $default_id;
+                        $data['tariff_plan_name'] = $tariff_plans[$default_id];
+                    }
+                }
+            }
+
             $this->app['allTariffPlans'] = $tariff_plans;
             $form->add('tariff_plan_id', 'choice', array(
                     'choices' => $tariff_plans,
@@ -2060,6 +2059,13 @@ class UsersController extends \Controller\BaseStalkerController {
                 if (array_key_exists('password', $data) && !empty($id)) {
                     $password = md5(md5($data['password']).$id);
                     $this->db->updateUserById(array('password' => $password), $id);
+                }
+
+                if (Config::get('enable_tariff_plans') && !empty($data['tariff_plan_id']) && isset($this->user) && array_key_exists('tariff_plan_id', $this->user) && $data['tariff_plan_id'] != $this->user['tariff_plan_id']){
+                    $event = new \SysEvent();
+                    $event->setUserListById(array(intval($this->user['id'])));
+                    $user = \User::getInstance((int) $this->user['id']);
+                    $event->sendMsgAndReboot($user->getLocalizedText('Tariff plan is changed, please restart your STB'));
                 }
 
                 if (!empty($this->postData['tariff_plan_packages'])) {
