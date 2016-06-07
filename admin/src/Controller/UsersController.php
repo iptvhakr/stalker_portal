@@ -1878,6 +1878,35 @@ class UsersController extends \Controller\BaseStalkerController {
             return ucfirst(str_replace('_', ' ', $row));
         }, $themes);
 
+        if ($this->app['tariffPlanFlag']) {
+
+            $tariff_plans = array();
+            $default_id = FALSE;
+
+            foreach ($this->db->getAllTariffPlans() as $num => $row) {
+                if ((int)$row['user_default']) {
+                    $tariff_plans = array($row['id'] => $row['name']) + $tariff_plans;
+                    $default_id = $row['id'];
+                } else {
+                    $tariff_plans[$row['id']] = $row['name'];
+                }
+            }
+
+            if (!empty($tariff_plans) && !array_key_exists(0, $tariff_plans)) {
+                $tariff_plans[0] = '---';
+            }
+
+            if (is_array($data) && array_key_exists('tariff_plan_id', $data) && (int)$data['tariff_plan_id'] == 0) {
+                if (!empty($default_id)) {
+                    settype($default_id, 'int');
+                    if (array_key_exists($default_id, $tariff_plans)) {
+                        $data['tariff_plan_id'] = $default_id;
+                        $data['tariff_plan_name'] = $tariff_plans[$default_id];
+                    }
+                }
+            }
+        }
+
         $form = $builder->createBuilder('form', $data)
                 ->add('id', 'hidden')
                 ->add('fname', 'text', array('required' => FALSE))
@@ -1924,30 +1953,8 @@ class UsersController extends \Controller\BaseStalkerController {
 
         if ($this->app['tariffPlanFlag']){
 
-            $tariff_plans = array();
-            $default_id = FALSE;
-
-            foreach($this->db->getAllTariffPlans() as $num=>$row){
-                if((int)$row['user_default']){
-                    $tariff_plans = array($row['id'] => $row['name']) + $tariff_plans;
-                    $default_id = $row['id'];
-                } else {
-                    $tariff_plans[$row['id']] = $row['name'];
-                }
-            }
-
-            if (!empty($tariff_plans) && !array_key_exists(0 , $tariff_plans)) {
-                $tariff_plans[0] = '---';
-            }
-
-            if (is_array($data) && array_key_exists('tariff_plan_id', $data) && (int)$data['tariff_plan_id'] == 0) {
-                if (!empty($default_id) ) {
-                    settype($default_id, 'int');
-                    if (array_key_exists($default_id, $tariff_plans)){
-                        $data['tariff_plan_id'] = $default_id;
-                        $data['tariff_plan_name'] = $tariff_plans[$default_id];
-                    }
-                }
+            if (!isset($tariff_plans)) {
+                $tariff_plans = array();
             }
 
             $this->app['allTariffPlans'] = $tariff_plans;
