@@ -268,9 +268,10 @@
             "volume": true
         },
         "dependencies": {
-            "ufs": "^0.0.1"
+            "ufs": "^0.0.1",
+            "fs": "^0.0.1"
         },
-        "version": "0.0.2",
+        "version": "0.0.3",
         "url": "../osd/"
     }, {
         "type": "osd",

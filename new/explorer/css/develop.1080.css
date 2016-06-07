@@ -609,8 +609,6 @@ a {
   color: #FEC500;
   padding-left: 30px;
 }
-.panelEx.left .item:nth-child(n + 2) .component.layout div:last-child,
-.panelEx.right .item div:first-letter,
 .persistentMainEntries {
   text-transform: capitalize;
 }
@@ -625,10 +623,6 @@ a {
 .denseRightDisplay .component.layout,
 .denseRightDisplay .component.layout > div {
   display: block;
-}
-.denseRightDisplay .item div {
-  height: 30px !important;
-  line-height: 30px !important;
 }
 .denseRightDisplay .item div div:last-child {
   overflow: hidden;
@@ -667,14 +661,12 @@ a {
 .panelEx.main .item {
   white-space: nowrap;
 }
-.panelEx.right .component.list.layoutList {
-  position: static;
-}
 .infoStorageDiagram {
   border: 12px solid #303030;
-  margin: 0 auto;
-  position: relative;
-  top: -216px;
+  left: 50%;
+  margin-left: -151.35135135px;
+  position: absolute;
+  top: 255px;
   width: 302.7027027px !important;
   height: 302.7027027px !important;
   text-align: center;
@@ -705,10 +697,9 @@ a {
   height: 30px;
   line-height: 30px !important;
   padding-left: 30px;
-  position: relative;
-  top: -236.84210526px;
+  position: absolute;
+  top: 210px;
   width: 100%;
-  text-transform: capitalize;
 }
 .allocSpaceElem,
 .freeSpaceElem {
@@ -721,11 +712,8 @@ a {
   border: 1px solid #303030;
 }
 .freeSpaceElem {
-  margin-left: 210px;
+  margin-left: 60px;
   border: 1px solid #303030;
-}
-.denseRightDisplay .body > .layoutList {
-  height: 588px;
 }
 .cancelBtn,
 .createBtn {
@@ -737,8 +725,28 @@ a {
 .inactiveBtn {
   background: initial !important;
 }
+.component.modalMessage .input {
+  padding-left: 30px;
+  text-align: left;
+}
 .input {
   color: inherit !important;
+}
+.component.scrollArea {
+  height: 588px;
+}
+.component.scrollArea > .body > div {
+  font-size: 29.7px;
+  word-wrap: break-word;
+  word-break: break-all;
+  padding: 0 30px;
+}
+.component.scrollArea > .body > div.title {
+  color: gold;
+  padding: 30px 30px 0 30px;
+}
+.component.scrollArea > .body > div:last-child {
+  padding-bottom: 30px;
 }
 html {
   overflow: auto;
