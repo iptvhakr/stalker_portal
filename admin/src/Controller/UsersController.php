@@ -343,9 +343,9 @@ class UsersController extends \Controller\BaseStalkerController {
             $this->app['resellerUserLimit'] = TRUE;
         }
 
+        $this->app['tariffPlanFlag'] = Config::getSafe('enable_tariff_plans', false);
+        $this->app['tariffPlanSubscriptionFlag'] = Config::getSafe('enable_tv_subscription_for_tariff_plans', false);
         if ($this->app['resellerUserLimit']) {
-            $this->app['tarifPlanFlag'] = Config::getSafe('enable_tariff_plans', false);
-            $this->app['tariffPlanSubscriptionFlag'] = Config::getSafe('enable_tv_subscription_for_tariff_plans', false);
             $form = $this->buildUserForm();
 
             if ($this->saveUsersData($form)) {
@@ -1895,10 +1895,16 @@ class UsersController extends \Controller\BaseStalkerController {
         $all_themes = Middleware::getThemes();
 
         $themes = array();
-
-        foreach ($all_themes as $alias => $theme){
-            $themes[$alias] = $alias;
+        if (array_key_exists('default', $all_themes)) {
+            $themes['default'] = 'default';
+            unset($all_themes['default']);
         }
+
+        $themes = array_merge($themes, array_combine(array_keys($all_themes), array_keys($all_themes)));
+
+        $themes = array_map(function($row){
+            return ucfirst(str_replace('_', ' ', $row));
+        }, $themes);
 
         $form = $builder->createBuilder('form', $data)
                 ->add('id', 'hidden')
