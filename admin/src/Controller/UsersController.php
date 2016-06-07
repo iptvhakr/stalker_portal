@@ -2061,7 +2061,7 @@ class UsersController extends \Controller\BaseStalkerController {
                     $this->db->updateUserById(array('password' => $password), $id);
                 }
 
-                if (Config::get('enable_tariff_plans') && !empty($data['tariff_plan_id']) && isset($this->user) && array_key_exists('tariff_plan_id', $this->user) && $data['tariff_plan_id'] != $this->user['tariff_plan_id']){
+                if (Config::get('enable_tariff_plans') && isset($data['tariff_plan_id']) && isset($this->user) && array_key_exists('tariff_plan_id', $this->user) && $data['tariff_plan_id'] != $this->user['tariff_plan_id']){
                     $event = new \SysEvent();
                     $event->setUserListById(array(intval($this->user['id'])));
                     $user = \User::getInstance((int) $this->user['id']);
