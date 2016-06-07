@@ -644,8 +644,6 @@ a {
   color: #FEC500;
   padding-left: 20px;
 }
-.panelEx.left .item:nth-child(n + 2) .component.layout div:last-child,
-.panelEx.right .item div:first-letter,
 .persistentMainEntries {
   text-transform: capitalize;
 }
@@ -660,10 +658,6 @@ a {
 .denseRightDisplay .component.layout,
 .denseRightDisplay .component.layout > div {
   display: block;
-}
-.denseRightDisplay .item div {
-  height: 20px !important;
-  line-height: 20px !important;
 }
 .denseRightDisplay .item div div:last-child {
   overflow: hidden;
@@ -702,14 +696,12 @@ a {
 .panelEx.main .item {
   white-space: nowrap;
 }
-.panelEx.right .component.list.layoutList {
-  position: static;
-}
 .infoStorageDiagram {
   border: 8px solid #303030;
-  margin: 0 auto;
-  position: relative;
-  top: -92px;
+  left: 50%;
+  margin-left: -81.08108108px;
+  position: absolute;
+  top: 170px;
   width: 162.16216216px !important;
   height: 162.16216216px !important;
   text-align: center;
@@ -740,10 +732,9 @@ a {
   height: 20px;
   line-height: 20px !important;
   padding-left: 20px;
-  position: relative;
-  top: -100.87719298px;
+  position: absolute;
+  top: 140px;
   width: 100%;
-  text-transform: capitalize;
 }
 .allocSpaceElem,
 .freeSpaceElem {
@@ -756,11 +747,8 @@ a {
   border: 1px solid #303030;
 }
 .freeSpaceElem {
-  margin-left: 140px;
+  margin-left: 40px;
   border: 1px solid #303030;
-}
-.denseRightDisplay .body > .layoutList {
-  height: 315px;
 }
 .cancelBtn,
 .createBtn {
@@ -772,8 +760,28 @@ a {
 .inactiveBtn {
   background: initial !important;
 }
+.component.modalMessage .input {
+  padding-left: 20px;
+  text-align: left;
+}
 .input {
   color: inherit !important;
+}
+.component.scrollArea {
+  height: 315px;
+}
+.component.scrollArea > .body > div {
+  font-size: 16.2px;
+  word-wrap: break-word;
+  word-break: break-all;
+  padding: 0 20px;
+}
+.component.scrollArea > .body > div.title {
+  color: gold;
+  padding: 20px 20px 0 20px;
+}
+.component.scrollArea > .body > div:last-child {
+  padding-bottom: 20px;
 }
 html {
   overflow: auto;

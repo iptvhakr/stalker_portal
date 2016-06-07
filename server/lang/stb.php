@@ -49,6 +49,7 @@ $words['player_server_error'] = _('Server error');
 $words['player_access_denied'] = _('Access denied');
 $words['player_server_unavailable'] = _('Server unavailable');
 $words['player_series'] = _('part');
+$words['player_season'] = _('Season');
 $words['player_track'] = _('Track');
 $words['player_off'] = _('Off');
 $words['player_subtitle'] = _('Subtitles');
