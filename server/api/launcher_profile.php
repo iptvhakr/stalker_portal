@@ -125,27 +125,39 @@ foreach ($apps as $app){
 }
 
 foreach ($installed_apps as $app) {
-    $user_apps[] = array(
-        'type'     => 'app',
-        'category' => 'apps',
-        'backgroundColor' => $app['icon_color'],
-        'name'     => $app['alias'],
-        'description'  => $app['description'],
-        'icons' => array(
-            'paths' => array(
-                '480'  => 'img/480/',
-                '576'  => 'img/576/',
-                '720'  => 'img/720/',
-                '1080' => 'img/1080/'
+
+    if ($app['config']){
+        $config = json_decode($app['config'], true);
+        if ($config){
+            $app['config'] = $config;
+        }
+    }
+    if ($app['config']){
+        $app['config']['url'] = $app['app_url'] . '/';
+        $user_apps[] = $app['config'];
+    }else {
+        $user_apps[] = array(
+            'type'            => 'app',
+            'category'        => 'apps',
+            'backgroundColor' => $app['icon_color'],
+            'name'            => $app['alias'],
+            'description'     => $app['description'],
+            'icons'           => array(
+                'paths'  => array(
+                    '480'  => 'img/480/',
+                    '576'  => 'img/576/',
+                    '720'  => 'img/720/',
+                    '1080' => 'img/1080/'
+                ),
+                'states' => array(
+                    'normal' => $app['icons'] . '/2015.png',
+                    'active' => $app['icons'] . '/2015.focus.png',
+                )
             ),
-            'states' => array(
-                'normal' => $app['icons'].'/2015.png',
-                'active' => $app['icons'].'/2015.focus.png',
-            )
-        ),
-        'url' => $app['app_url'].'/',
-        'legacy' => true
-    );
+            'url'             => $app['app_url'] . '/',
+            'legacy'          => true
+        );
+    }
 }
 
 $profile['apps'] = $user_apps;
