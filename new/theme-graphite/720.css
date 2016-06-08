@@ -44,7 +44,7 @@ body {
     background-image: url("./img/720/f4.png"); }
 
 .component.button {
-  background: #234c9c;
+  background: transparent;
   color: #ffffff; }
   .component.button.focus {
     background: #2c60c6;

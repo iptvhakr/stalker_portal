@@ -728,6 +728,12 @@ a {
   right: 5px;
   top: 50px;
 }
+.filterScroll {
+  height: 150px !important;
+  position: absolute;
+  right: 5px;
+  top: 50px;
+}
 .cntIndicators {
   height: 20px;
   line-height: 20px !important;
@@ -782,74 +788,6 @@ a {
 }
 .component.scrollArea > .body > div:last-child {
   padding-bottom: 20px;
-}
-html {
-  overflow: auto;
-}
-div.develop canvas {
-  cursor: none;
-  visibility: hidden;
-  position: absolute;
-  width: 720px;
-  height: 576px;
-}
-div.develop canvas.active {
-  visibility: visible;
-  z-index: 1000;
-}
-body.develop {
-  outline: 1px dashed #005000;
-  outline-offset: -1px;
-}
-body.develop .component {
-  outline: 1px dashed #005000;
-  outline-offset: -1px;
-}
-body.develop .component.focus {
-  outline: 1px dashed red;
-}
-body.develop .component.wired {
-  outline-width: 3px;
-  outline-style: dotted;
-}
-body.develop .component.wired div,
-body.develop .component.wired td {
-  outline: 1px dashed grey;
-  outline-offset: -1px;
-}
-body.develop .component.button {
-  outline: none;
-}
-body.develop .component.button .text,
-body.develop .component.button .icon {
-  outline: 1px dashed #005000;
-  outline-offset: -1px;
-}
-body.develop .component.button.focus .text,
-body.develop .component.button.focus .icon {
-  outline: 1px dashed red;
-}
-body.develop .component.list > .item {
-  outline: 1px dashed #000000;
-  outline-offset: -1px;
-}
-body.develop .component.list > .item.focus {
-  outline: 1px dashed orange;
-  outline-offset: -1px;
-}
-body.develop .component.grid td.item {
-  outline: 1px dashed #000000;
-  outline-offset: -1px;
-}
-body.develop .component.grid td.item.focus {
-  outline: 1px dashed orange;
-  outline-offset: -1px;
-}
-body.develop .component.input > .body {
-  outline: 1px dashed #000;
-}
-body.develop .component.focus.input > .body {
-  outline: 1px dashed red;
 }
 
 /*# sourceMappingURL=develop.576.css.map */

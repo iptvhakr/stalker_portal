@@ -44,7 +44,7 @@ body {
     background-image: url("./img/1080/f4.png"); }
 
 .component.button {
-  background: #234c9c;
+  background: transparent;
   color: #ffffff; }
   .component.button.focus {
     background: #2c60c6;
@@ -82,7 +82,7 @@ body {
     .component.panelEx.active .list .item.focus {
       background: #2c60c6; }
   .component.panelEx .component.layoutList > .body > .item, .component.panelEx .component.layoutList > .body > .item .component.input {
-    font-size: 23px; }
+    font-size: 28px; }
   .component.panelEx .component.layoutList .icon {
     font-size: 32px !important; }
   .component.panelEx > .title {

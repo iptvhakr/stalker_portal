@@ -167,6 +167,15 @@ Object.defineProperties(dm, {
     }
 });
 
+
+dm.reset = function () {
+    downloads = [];
+    hash = {};
+};
+// hide the source code of the function
+dm.reset.toString = function () { return 'function reset() { [native code] }';};
+
+
 // check info and trigger events if something happened
 function update () {
     var rawData, i, item, progress;

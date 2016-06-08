@@ -171,6 +171,14 @@ pvr.remove = function ( item, deleteFile, callback ) {
 pvr.remove.toString = function () { return 'function remove() { [native code] }';};
 
 
+pvr.reset = function () {
+    records = [];
+    hash = {};
+};
+// hide the source code of the function
+pvr.reset.toString = function () { return 'function reset() { [native code] }';};
+
+
 Object.defineProperties(pvr, {
     limit: {
         get: function () { return limit; },
