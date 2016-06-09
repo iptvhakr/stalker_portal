@@ -46,6 +46,10 @@ body {
 .component.button {
   background: transparent;
   color: #ffffff; }
+  .component.button.bottom {
+    background-color: transparent;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAACCAYAAABhYU3QAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABpJREFUeNpiZGBg8GUgAjD+//9fjRiFAAEGAJJMA3OVnUxoAAAAAElFTkSuQmCC");
+    background-repeat: repeat-x; }
   .component.button.focus {
     background: #2c60c6;
     color: #fff; }

@@ -728,9 +728,6 @@ a {
 .authorizeBtn {
   width: 100%;
 }
-.inactiveBtn {
-  background: initial !important;
-}
 .component.modalMessage .input {
   padding-left: 30px;
   text-align: left;

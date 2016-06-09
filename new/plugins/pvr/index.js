@@ -63,9 +63,6 @@ var pvr = new Emitter(),
     updateTime = 2000;
 
 
-window.pvr = pvr;
-
-
 pvr.errorCodes = {
     '-1': 'Bad argument.',
     '-2': 'Not enough memory.',
