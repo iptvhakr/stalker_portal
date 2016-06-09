@@ -349,7 +349,7 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
         return $this->mysqlInstance->from('itv')
             ->where(array(
                 'id' => $ch_id,
-                'NOT ISNULL(mc_cmd) AND mc_cmd<>"" and "1"' => '1'
+                'NOT ISNULL(mc_cmd) AND mc_cmd<>"" and 1=' => 1
             ))
             ->get()->count();
     }

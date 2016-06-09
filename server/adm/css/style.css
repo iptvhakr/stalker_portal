@@ -2877,6 +2877,54 @@ div.google-visualization-tooltip span{
 .devoops-modal .col-sm-2 {padding-right: 0px !important; margin-right: -15px;}
 .devoops-modal .col-sm-10,.devoops-modal .col-sm-6,.devoops-modal .col-sm-12, .devoops-modal .col-sm-shifted  {padding-left: 10px !important; margin-left: 15px !important;}
 
+#file_form_input_container{
+    transition: margin-left 0.5s ease 0s;
+}
+
+#media_info {
+    border: 1px solid #aeaeae;
+    border-radius: 5px;
+    margin-top: 15px;
+    max-width: 29%;
+    min-height: 320px;
+    padding: 0;
+    background: #efefef url("../img/preloader.gif") no-repeat scroll center center;
+    background-size: 60% auto;
+    opacity: 0;
+    width: 0;
+    transition: opacity,width 0.5s ease  0s;
+}
+
+#media_info.filled{
+    background-image: none;
+    transition: background 0.5s ease 0s;
+}
+
+#media_info button{
+    position: absolute;
+    bottom: 0;
+}
+
+#media_info > span {
+    margin: 1px 10px !important;
+    max-width: 90% !important;
+    min-width: 0;
+    padding: 2px 15px !important;
+    border-radius: 3px !important;
+}
+
+#media_info > span:first-of-type{
+    margin-top: 5px  !important;
+}
+
+#media_info > span:last-of-type{
+    margin-bottom: 5px !important;
+}
+
+#media_info > span.bg-default{
+    background-color: #ffffff !important;
+    border: 1px solid #dfdfdf !important;
+}
 
 #modalbox_ad  .devoops-modal-bottom {
 /*    background-color: #DCDCDC;

@@ -528,7 +528,7 @@ class NewVideoClubModel extends \Model\BaseStalkerModel {
     }
 
     public function insertSeriesFiles($data){
-        return $this->mysqlInstance->insert('video_series_files', $data)->total_rows();
+        return $this->mysqlInstance->insert('video_series_files', $data)->insert_id();
     }
 
     public function updateSeriesFiles($data, $where){

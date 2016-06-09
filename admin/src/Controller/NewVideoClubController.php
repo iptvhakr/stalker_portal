@@ -2017,13 +2017,17 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
 
-    public function save_video_files(){
+    public function save_video_files($internal_use = FALSE){
 
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['video_id'])) {
-            $this->app->abort(404, $this->setLocalization('Page not found'));
+            if (!$internal_use) {
+                $this->app->abort(404, $this->setLocalization('Page not found'));
+            } else {
+                return $this->generateAjaxResponse();
+            }
         }
 
-        if ($no_auth = $this->checkAuth()) {
+        if (!$internal_use && $no_auth = $this->checkAuth()) {
             return $no_auth;
         }
 
@@ -2055,7 +2059,10 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
 
         $error = $this->setLocalization('Failed');
 
-        if (call_user_func_array(array($this->db, $operation), $params)) {
+        if (($result = call_user_func_array(array($this->db, $operation), $params))) {
+            if ($internal_use) {
+                $data['id'] = isset($id) ? $id : $result;
+            }
             $error = '';
         } else {
             $data['msg'] = $error;
@@ -2063,7 +2070,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
 
         $response = $this->generateAjaxResponse($data, $error);
 
-        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+        return ($internal_use) ? $response :new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
     
     public function get_one_video_file_json(){
@@ -2413,6 +2420,73 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function get_media_info_json(){
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['video_id'])) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array(
+            'action' => 'setMediaInfo'
+        );
+        /*$error = $this->setLocalization('Failed');*/
+
+        $error = '';
+        $url = '';
+        $id = FALSE;
+
+        if (!empty($this->postData['url'])) {
+            $url = $this->postData['url'];
+        } else {
+            $video_id = intval($this->postData['video_id']);
+            if (!empty($this->postData['id'])) {
+                $id = intval($this->postData['id']);
+            } else {
+                $tmp = $this->save_video_files(TRUE);
+                $id = !empty($tmp['id']) ? $tmp['id'] : $id;
+            }
+            try{
+                $user = \User::getInstance(-1);
+                $master = new \VideoMaster();
+                $res = $master->play($video_id, 0, true, '', $id);
+                $url = $res['cmd'];
+                $error = '';
+            } catch (\Exception $e){
+                $error = $this->setLocalization('Failed') . '. ' . $e->getMessage();
+            }
+        }
+
+        if (!empty($url) && empty($error)) {
+            $url = end(explode(' ', trim($url)));
+
+            if (!empty($url)) {
+                try{
+                    /*$video = $this->app['ffmpeg']->open($url);*/
+                   /* $ffprobe = FFProbe::create();
+                    $ffprobe->streams($url)
+                        ->videos()                      // filters video streams
+                        ->first()                       // returns the first video stream
+                        ->get('codec_name');
+                    print_r($ffprobe);exit;*/
+                    print_r(stream_get_meta_data(fopen($url, "r")));exit;
+                } catch(\Exception $e){
+                    $error = $this->setLocalization('Failed') . '. ' . $e->getMessage();
+                }
+            }
+        }
+        $data['msg'] = $error;
+        $data['id'] = $id;
+        $data['url'] = $url;
+
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+
     }
 
     //------------------------ service method ----------------------------------

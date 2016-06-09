@@ -1235,10 +1235,16 @@
 
                 $('.mod_input').on('click', 'i.fa-pencil', function(e){
                     $(this).prev('input').focus();
-                })
+                });
 
                 $("#files_container").on('blur', 'input', function(e){
                     $(this).selectRange(0);
+                });
+
+                $("#modalbox").on('blur keypress', '#video_url', function(e){
+                    if (e && e.type && (e.type == "blur" || e.type == 'focusout' || (e.type == "keypress" && e.keyCode && e.keyCode == 13))) {
+                        getMediaInfo();
+                    }
                 });
             });
         }
@@ -1732,10 +1738,70 @@
                 $("#video_url").val(data.data.url);
             }
             checkProtocol();
+            getMediaInfo();
         };
 
         var fillModalBoxFilesDataError = function (data) {
             JSErrorModalBox(data);
+        };
+
+        var getMediaInfo = function() {
+            var sendData = {};
+            $("#file_form_input_container").find("input,select").not(":disabled").each(function(i){
+                var val = this.tagName.toUpperCase() == 'INPUT' ? $(this).val(): $(this).find('option:selected').val();
+                if (val) {
+                    sendData[$(this).attr('name')] = val;
+                }
+            });
+            $("#file_form_input_container").find('input,select').prop('readonly', 'readonly').prop('disabled', 'disabled');
+            $("#modalbox div.devoops-modal-bottom").find('button').addClass('disabled').prop('disabled', 'disabled');
+            if (!$("#media_info").length) {
+                $("#file_form_input_container").removeClass('col-sm-offset-2').after($("#media_info_body").html()).delay(1000).promise().done(function(){
+                    $("#media_info").css({opacity: 1, width: '29%'});
+                });
+            } else {
+                cleanMediaInfo();
+            }
+
+            ajaxPostSend("{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-media-info-json", sendData, false, false, true);
+        };
+
+        var setMediaInfo = function(data){
+            cleanMediaInfo();
+            if (data.data) {
+                $("#media_info").addClass('filled').find('button').removeClass('disabled').prop('disabled', false).removeAttr('disabled');
+                var infoField = $($("#media_info_info").html()).prependTo("#media_info");
+                infoField.addClass('bg-default').addClass('txt-default').text("{{ 'Media info from source'|trans }}");
+                for(var key in data.data){
+                    var infoField = $($("#media_info_info").html()).insertAfter(infoField);
+                    infoField.addClass('bg-default').addClass('txt-default').text(key + ": " + data.data[key]);
+                    infoField.data({'info-key': key, 'info-val': data.data[key]});
+                }
+            }
+        };
+
+        var setMediaInfoError = function(data) {
+            cleanMediaInfo();
+            $("#media_info").addClass('filled');
+            var infoField = $($("#media_info_info").html()).prependTo("#media_info");
+            infoField.addClass('bg-warning').addClass('txt-danger').text("{{ 'No media info'|trans }}");
+            var addMessage = data.msg || data.error;
+            if (addMessage) {
+                var infoField2 = $($("#media_info_info").html()).insertAfter(infoField);
+                infoField2.addClass('bg-warning').addClass('txt-danger').text(addMessage);
+            }
+        };
+
+        var cleanMediaInfo = function(){
+            $("#file_form_input_container").find('input,select').prop('readonly', false).prop('disabled', false).removeAttr('readonly').removeAttr('disabled');
+            $("#modalbox div.devoops-modal-bottom").find('button').removeClass('disabled').prop('disabled', false).removeAttr('disabled');
+            $("#media_info").removeClass('filled').find('button').addClass('disabled').prop('disabled', 'disabled');
+            $("#media_info").children().not('button').remove();
+        };
+
+        var errAction = function(){
+            setMediaInfoError({});
+            JSErrorModalBox({});
         };
 
         var emptyFunction = function(){}
@@ -1856,103 +1922,115 @@
     </script>
 
     <script type="text/template" id="modal_save_form_body">
-        <div class="box-content">
+        <div class="box-content no-padding">
             <form id="file_form" class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/save-video-files">
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">{{ 'File type'|trans }}</label>
-                    <div class="col-xs-6 col-sm-6">
-                        <span class="col-xs-12 col-sm-12">
-                            <input type="hidden" class="own_fields form-control" name="id" id="file_id" value="" readonly="readonly">
-                            <input type="hidden" class="own_fields form-control" name="video_id" id="video_id" value="" readonly="readonly">
-                            <input type="hidden" class="own_fields form-control" name="season_id" id="season_id" value="" readonly="readonly">
-                            <input type="hidden" class="own_fields form-control" name="series_id" id="series_id" value="" readonly="readonly">
-                            <input type="hidden" class="own_fields form-control" name="file_name" id="file_name" value="" readonly="readonly">
-                            <input type="hidden" class="own_fields form-control" name="status" id="status" value="" readonly="readonly">
-                            <select id="file_type" name="file_type" class="own_fields populate placeholder">
-                                <option value="video">{{ 'Video'|trans }}</option>
-                                <option value="sub">{{ 'Subs'|trans }}</option>
-                            </select>
-                        </span>
+                    <div class="col-sm-8 col-sm-offset-2" id="file_form_input_container">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">{{ 'File type'|trans }}</label>
+                            <div class="col-xs-9 col-sm-9">
+                                <span class="col-xs-12 col-sm-12">
+                                    <input type="hidden" class="own_fields form-control" name="id" id="file_id" value="" readonly="readonly">
+                                    <input type="hidden" class="own_fields form-control" name="video_id" id="video_id" value="" readonly="readonly">
+                                    <input type="hidden" class="own_fields form-control" name="season_id" id="season_id" value="" readonly="readonly">
+                                    <input type="hidden" class="own_fields form-control" name="series_id" id="series_id" value="" readonly="readonly">
+                                    <input type="hidden" class="own_fields form-control" name="file_name" id="file_name" value="" readonly="readonly">
+                                    <input type="hidden" class="own_fields form-control" name="status" id="status" value="" readonly="readonly">
+                                    <select id="file_type" name="file_type" class="own_fields populate placeholder">
+                                        <option value="video">{{ 'Video'|trans }}</option>
+                                        <option value="sub">{{ 'Subs'|trans }}</option>
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">{{ 'Quality'|trans }}</label>
+                            <div class="col-xs-9 col-sm-9">
+                                <span class="col-xs-12 col-sm-12">
+                                    <select id="file_quality" name="quality" class="own_fields populate placeholder">
+                                        {% if attribute(app, 'quality') is defined and app['quality'] %}
+                                            {% for item in app['quality'] %}
+                                                <option value="{{ item.id }}">{{ item.num_title }}{{ item.text_title ? (' (' ~ item.text_title ~ ')')|trans : '' }}</option>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">{{ 'Languages'|trans }}<span class="icon-required">*</span></label>
+                            <div class="col-xs-9 col-sm-9">
+                                <span class="col-xs-12 col-sm-12">
+                                    <select id="file_languages" name="languages" class="own_fields populate placeholder" multiple="multiple" data-validation='required'>
+                                        {% if attribute(app, 'allLanguages') is defined %}
+                                            {% for key, item in app.allLanguages %}
+                                                <option value="{{ key }}">{{ item }}</option>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">{{ 'Volume level'|trans }}</label>
+                            <div class="col-xs-9 col-sm-9">
+                                <span class="col-xs-12 col-sm-12">
+                                    <select id="file_volume_level" name="volume_level" class="own_fields populate placeholder">
+                                        {% for item in -20..20 %}
+                                            <option value="{{ item }}">{{ item * 5 }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">{{ 'Protocol'|trans }}</label>
+                            <div class="col-xs-9 col-sm-9">
+                                <span class="col-xs-12 col-sm-12">
+                                    <select id="file_protocol" name="protocol" class="own_fields populate placeholder">
+                                        <option value="http">HTTP</option>
+                                        <option value="custom">Custom URL</option>
+                                    </select>
+                                </span>
+                            </div>
+                            <span class="help-inline col-xs-9 col-sm-9 col-xs-offset-3 col-sm-offset-3">
+                                <span class="small txt-default col-xs-11 col-sm-11">{{ 'Selecting the method of content delivery to the user (http, custom url, nfs). When using HTTP or NFS variants do not link to the content, in which case the content is stored on the server.'|trans }}</span>
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">{{ 'URL'|trans }}<span class="icon-required">*</span></label>
+                            <div class="col-xs-9 col-sm-9">
+                                <span class="col-xs-12 col-sm-12">
+                                    <input type="text" class="own_fields form-control" name="url" id="video_url" value="" data-validation = 'custom' data-validation-regexp = '^(\w+\s)?\w+\:\/\/.+$' data-validation-error-msg = "{{ 'Invalid format links'|trans }}">
+                                </span>
+                            </div>
+                            <span class="help-inline col-xs-9 col-sm-9 col-xs-offset-3 col-sm-offset-3">
+                                <span class="small txt-default col-xs-11 col-sm-11">{{ 'Example: ffmpeg http://anon.nasa-global.edgesuite.net/HD_downloads/135_launch_720p.wmv'|trans }}</span>
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">{{ 'Status'|trans }}</label>
+                            <div class="col-xs-9 col-sm-9">
+                                <span class="col-xs-12 col-sm-12">
+                                    <select id="file_accessed" name="accessed" class="own_fields populate placeholder">
+                                        <option value="0">{{ 'Not published'|trans }}</option>
+                                        <option value="1">{{ 'Published'|trans }}</option>
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">{{ 'Quality'|trans }}</label>
-                    <div class="col-xs-6 col-sm-6">
-                        <span class="col-xs-12 col-sm-12">
-                            <select id="file_quality" name="quality" class="own_fields populate placeholder">
-                                {% if attribute(app, 'quality') is defined and app['quality'] %}
-                                    {% for item in app['quality'] %}
-                                <option value="{{ item.id }}">{{ item.num_title }}{{ item.text_title ? (' (' ~ item.text_title ~ ')')|trans : '' }}</option>
-                                    {% endfor %}
-                                {% endif %}
-                            </select>
-                        </span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">{{ 'Languages'|trans }}<span class="icon-required">*</span></label>
-                    <div class="col-xs-6 col-sm-6">
-                        <span class="col-xs-12 col-sm-12">
-                            <select id="file_languages" name="languages" class="own_fields populate placeholder" multiple="multiple" data-validation='required'>
-                                {% if attribute(app, 'allLanguages') is defined %}
-                                    {% for key, item in app.allLanguages %}
-                                        <option value="{{ key }}">{{ item }}</option>
-                                    {% endfor %}
-                                {% endif %}
-                            </select>
-                        </span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">{{ 'Volume level'|trans }}</label>
-                    <div class="col-xs-6 col-sm-6">
-                        <span class="col-xs-12 col-sm-12">
-                            <select id="file_volume_level" name="volume_level" class="own_fields populate placeholder">
-                                {% for item in -20..20 %}
-                                    <option value="{{ item }}">{{ item * 5 }}</option>
-                                {% endfor %}
-                            </select>
-                        </span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">{{ 'Protocol'|trans }}</label>
-                    <div class="col-xs-6 col-sm-6">
-                        <span class="col-xs-12 col-sm-12">
-                            <select id="file_protocol" name="protocol" class="own_fields populate placeholder">
-                                <option value="http">HTTP</option>
-                                <option value="custom">Custom URL</option>
-                            </select>
-                        </span>
-                    </div>
-                    <span class="help-inline col-xs-9 col-sm-9 col-xs-offset-3 col-sm-offset-3">
-                        <span class="small txt-default col-xs-11 col-sm-11">{{ 'Selecting the method of content delivery to the user (http, custom url, nfs). When using HTTP or NFS variants do not link to the content, in which case the content is stored on the server.'|trans }}</span>
-                    </span>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">{{ 'URL'|trans }}<span class="icon-required">*</span></label>
-                    <div class="col-xs-6 col-sm-6">
-                        <span class="col-xs-12 col-sm-12">
-                            <input type="text" class="own_fields form-control" name="url" id="video_url" value="" data-validation = 'custom' data-validation-regexp = '^(\w+\s)?\w+\:\/\/.+$' data-validation-error-msg = "{{ 'Invalid format links'|trans }}">
-                        </span>
-                    </div>
-                    <span class="help-inline col-xs-9 col-sm-9 col-xs-offset-3 col-sm-offset-3">
-                        <span class="small txt-default col-xs-11 col-sm-11">{{ 'Example: ffmpeg http://anon.nasa-global.edgesuite.net/HD_downloads/135_launch_720p.wmv'|trans }}</span>
-                    </span>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">{{ 'Status'|trans }}</label>
-                    <div class="col-xs-6 col-sm-6">
-                        <span class="col-xs-12 col-sm-12">
-                            <select id="file_accessed" name="accessed" class="own_fields populate placeholder">
-                                <option value="0">{{ 'Not published'|trans }}</option>
-                                <option value="1">{{ 'Published'|trans }}</option>
-                            </select>
-                        </span>
-                    </div>
-                </div>
             </form>
         </div>
+    </script>
+
+    <script type="text/template" id="media_info_body">
+        <div class="col-sm-4" id="media_info">
+            <button class="btn btn-success btn-block disabled" disabled="disabled">{{ 'Autofill'|trans }}</button>
+        </div>
+    </script>
+
+    <script type="text/template" id="media_info_info">
+        <span class="col-sm-12 center" data-info-key="" data-info-val=""></span>
     </script>
 
     <script type="text/template" id="modal_save_form_buttons">
