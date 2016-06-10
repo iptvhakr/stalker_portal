@@ -300,6 +300,7 @@
                 "volume": true
             },
             "dependencies": {
+                "fs": "^0.0.1",
                 "ufs": "^0.0.1"
             },
             "version": "0.0.2",

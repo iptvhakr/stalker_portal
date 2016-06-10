@@ -66,7 +66,6 @@
                 "ajax": {
                     "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/stat-claims-logs-list-json"
                 },
-                "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
@@ -78,7 +77,6 @@
                 "columnDefs": [{"searchable": false, "targets": [-1, 0, 2]}],
                 "bInfo": true
             }).prev('.dataTables_processing').hide('');
-            $('#datatable-1').DataTable().ajax.reload();
         }
 
         function yelp() {

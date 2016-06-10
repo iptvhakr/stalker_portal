@@ -13,34 +13,32 @@
         </div>
 
         <div class="row">
-                <div class="box">
-					{% if attribute(app, 'dropdownAttribute') is defined %}
+            <div class="box">
+                {% if attribute(app, 'dropdownAttribute') is defined %}
                     {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
-                    {% endif %}
-                    <div class="box-content">
-                        <div class="box-content no-padding">
-                                <div class="dataTables_processing"></div>
-                                <table class="table  table-hover table-datatable" id="datatable-1">
-                                    {% if attribute(app, 'dropdownAttribute') is defined %}
-                                        {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
-                                    {% endif %}
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                        </div>
+                {% endif %}
+                <div class="box-content">
+                    <div class="box-content no-padding">
+                        <div class="dataTables_processing"></div>
+                        <table class="table  table-hover table-datatable" id="datatable-1">
+                            {% if attribute(app, 'dropdownAttribute') is defined %}
+                                {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                            {% endif %}
+                            <tbody>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+            </div>
         </div>
     </div>
 
     <script type="text/javascript" defer>
 
+        var select2Opt = {minimumResultsForSearch: -1, dropdownAutoWidth: false, width: '100%'};
+
         function DemoSelect2() {
-            $.getScript("{{ app.request.baseUrl }}/plugins/select2/i18n/{% if app["language"] %}{{ app["language"] }}{% else %}en{% endif %}.js", function() {
-                $.fn.select2.defaults.set('dropdownAutoWidth', 'false');
-                $.fn.select2.defaults.set('width', '100%');
-                $('#category_id').select2({minimumResultsForSearch: -1});
-            });
+            $('#category_id').select2(select2Opt);
         }
 
         function TestTable1() {
@@ -77,7 +75,6 @@
                 "ajax": {
                     "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/video-genres-list-json"
                 },
-                "deferLoading": [{{ app.recordsFiltered }}, {{ app.totalRecords }} ],
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
@@ -94,7 +91,6 @@
                     { "searchable": false, "targets": [-2, -1, 1, 2]}
                 ]
             }).prev('.dataTables_processing').hide('');
-            $('#datatable-1').DataTable().ajax.reload();
         }
 
         function yelp() {
@@ -218,10 +214,10 @@
             if (obj.data instanceof Array) {
                 $('#modalbox').find('.devoops-modal-inner').find('input[type="hidden"]').val(obj.data[0].id);
                 $('#modalbox').find('.devoops-modal-inner').find('input[name="title"]').val(obj.data[0].title);
-                $('#category_id').val(obj.data[0].category_alias);
+                $('#category_id option[value="' + obj.data[0].category_alias + '"]').prop('selected', 'selected');
             }
 
-            $('#category_id').select2({minimumResultsForSearch: -1});
+            $('#category_id').select2(select2Opt);
 
             $('#modalbox button[type="submit"]').removeAttr("disabled");
             $('#video_title').next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');

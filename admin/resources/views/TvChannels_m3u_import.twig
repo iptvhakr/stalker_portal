@@ -52,7 +52,11 @@
         </div>
     </div>
 
+    {% include "basic_templates/file-uploader-scripts.twig" %}
+
     <script type="text/javascript" defer>
+
+        var select2Opt = {minimumResultsForSearch: -1, dropdownAutoWidth: false, width: '100%'};
 
         var conf = {
             lang : '{{ app.language }}',
@@ -76,13 +80,6 @@
                 return false;
             }
         };
-
-        function DemoSelect2() {
-            $.getScript("{{ app.request.baseUrl }}/plugins/select2/i18n/{% if app["language"] %}{{ app["language"] }}{% else %}en{% endif %}.js", function() {
-                $.fn.select2.defaults.set('dropdownAutoWidth', 'false');
-                $.fn.select2.defaults.set('width', '100%');
-            });
-        }
 
         function initFileUploader(){
             $('#fileupload').fileupload({
@@ -120,8 +117,6 @@
 
                 $.validate(conf);
                 $("#content, #main").css("background-color", "#f2f2f2");
-
-                LoadSelect2Script(DemoSelect2);
 
                 if (typeof (loadFileUploadScripts) != 'function' || !loadFileUploadScripts(initFileUploader)){
                     JSErrorModalBox({msg: "{{ 'Cannot load File Upload plugin'|trans }}"})
@@ -216,7 +211,7 @@
 
                     $('#channels_container').append(item);
                 }
-                $('[id^="channel_s2_"]').select2({minimumResultsForSearch: -1});
+                $('[id^="channel_s2_"]').select2(select2Opt);
                 var n = $('#channels_container').children().length;
                 var i = 0;
                 while ( n-- ){
@@ -234,12 +229,11 @@
 
         var cleanM3UData = function(){
             $('#channels_container').children().each(function(i){
-                var time  = ((i + 1) * 250);
-                var _this = this;
-                setTimeout(function(){
-                    removeM3UItem(_this)
-                }, time);
+                $(this).remove();
             });
+            if ($('#channels_container').children().length == 0) {
+                $("#warning_message").closest('.row').slideUp("100", function(){ $("#warning_message").text('');} );
+            }
         };
 
         var removeM3UItem = function(obj){
@@ -277,8 +271,6 @@
         document.addEventListener("DOMContentLoaded", yelp, false);
 
     </script>
-
-    {% include "basic_templates/file-uploader-scripts.twig" %}
 
     <script type="text/template" id="channel-template" >
         <div class="box" style="display: none;">

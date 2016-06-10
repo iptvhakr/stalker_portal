@@ -87,17 +87,13 @@
                 "ajax": {
                     "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/video-schedule-list-json"
                 },
-
-                "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
-
                 {% if attribute(app, 'dropdownAttribute') is defined %}
                 {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
                 {% endif %}
                 "scrollCollapse": true,
-
                 "bFilter": true,
                 "bPaginate": true,
                 "bInfo":     true,
@@ -110,7 +106,6 @@
                     { "targets": [ -1, 4 ], "orderable": false}
                 ]
             }).prev('.dataTables_processing').hide('');
-            $('#datatable-1').DataTable().ajax.reload();
         }
 	
         function yelp() {

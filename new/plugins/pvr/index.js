@@ -63,9 +63,6 @@ var pvr = new Emitter(),
     updateTime = 2000;
 
 
-window.pvr = pvr;
-
-
 pvr.errorCodes = {
     '-1': 'Bad argument.',
     '-2': 'Not enough memory.',
@@ -169,6 +166,14 @@ pvr.remove = function ( item, deleteFile, callback ) {
 };
 // hide the source code of the function
 pvr.remove.toString = function () { return 'function remove() { [native code] }';};
+
+
+pvr.reset = function () {
+    records = [];
+    hash = {};
+};
+// hide the source code of the function
+pvr.reset.toString = function () { return 'function reset() { [native code] }';};
 
 
 Object.defineProperties(pvr, {

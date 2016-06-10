@@ -18,12 +18,6 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         $this->logoDir = str_replace('/admin', '', $this->baseDir) . "/misc/logos";
         $this->app['error_local'] = array();
         $this->app['baseHost'] = $this->baseHost;
-        
-        $this->app['allStatus'] = array(
-            array('id' => 1, 'title' => $this->setLocalization('Unpublished')),
-            array('id' => 2, 'title' => $this->setLocalization('Published')),
-            array('id' => 3, 'title' => $this->setLocalization('Scheduled'))
-        );
 
         $this->app['videoType'] = array(
             array('val' => 0, 'title' => $this->setLocalization('Uniserial')),
@@ -52,8 +46,6 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         
         $allYears = $this->db->getAllFromTable('video', 'year', 'year');
 
-        $list = $this->video_list_json();
-        
         $this->app['allYears'] = array_filter(array_map(function($val){
             if ((int)$val['year'] >= 1895) {
                 return array('id'=>$val['year'], 'title'=>$val['year']);
@@ -62,16 +54,18 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         }, $allYears));
         
         $this->app['allGenre'] =  $this->prepareNewGenresListIds($this->db->getVideoCategories());
-        $this->app['allVideo'] = $list['data'];
-        $this->app['totalRecords'] = $list['recordsTotal'];
-        $this->app['recordsFiltered'] = $list['recordsFiltered'];
-        
+
+        $this->app['allStatus'] = array(
+            array('id' => 1, 'title' => $this->setLocalization('Unpublished')),
+            array('id' => 2, 'title' => $this->setLocalization('Published')),
+            array('id' => 3, 'title' => $this->setLocalization('Scheduled'))
+        );
+
         $this->app['allModerators'] = $this->db->getAllAdmins();
         
         $attribute = $this->getVideoListDropdownAttribute();
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
-        
         
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -188,11 +182,6 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
 
-        $allTasks = $this->video_schedule_list_json();
-        $this->app['allTasks'] = $allTasks['data'];
-        $this->app['recordsFiltered'] = $allTasks['recordsFiltered'];
-        $this->app['totalRecords'] = $allTasks['recordsTotal'];
-
         $attribute = $this->getVideoScheduleDropdownAttribute();
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
@@ -204,11 +193,6 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
-
-        $allAds= $this->video_advertise_list_json();
-        $this->app['ads'] = $allAds['data'];
-        $this->app['recordsFiltered'] = $allAds['recordsFiltered'];
-        $this->app['totalRecords'] = $allAds['recordsTotal'];
 
         $attribute = $this->getVideoAdvertiseDropdownAttribute();
         $this->checkDropdownAttribute($attribute);
@@ -281,16 +265,9 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
 
-        $allModerators= $this->video_moderators_addresses_list_json();
-        $this->app['ads'] = $allModerators['data'];
-        $this->app['Moderators'] = $allModerators['data'];
-        $this->app['recordsFiltered'] = $allModerators['recordsFiltered'];
-        $this->app['totalRecords'] = $allModerators['recordsTotal'];
-
         $attribute = $this->getVideoModeratorsAddressesDropdownAttribute();
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
-
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -347,11 +324,6 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
 
-        $logs = $this->video_logs_json();
-        $this->app['totalRecords'] = $logs['recordsTotal'];
-        $this->app['recordsFiltered'] = $logs['recordsFiltered'];
-        $this->app['allVideoLogs'] = $logs['data'];
-
         $attribute = $this->getVideoLogsDropdownAttribute();
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
@@ -363,7 +335,6 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
             $this->app['breadcrumbs']->addItem($video['name']);
         }
 
-
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
@@ -372,12 +343,9 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
 
-        $this->app['dropdownAttribute'] = $this->getVideoCategoriesDropdownAttribute();
-        $list = $this->video_categories_list_json();
-
-        $this->app['allData'] = $list['data'];
-        $this->app['totalRecords'] = $list['recordsTotal'];
-        $this->app['recordsFiltered'] = $list['recordsFiltered'];
+        $attribute = $this->getVideoCategoriesDropdownAttribute();
+        $this->checkDropdownAttribute($attribute);
+        $this->app['dropdownAttribute'] = $attribute;
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -387,12 +355,9 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
 
-        $this->app['dropdownAttribute'] = $this->getVideoGenresDropdownAttribute();
-        $list = $this->video_genres_list_json();
-
-        $this->app['allData'] = $list['data'];
-        $this->app['totalRecords'] = $list['recordsTotal'];
-        $this->app['recordsFiltered'] = $list['recordsFiltered'];
+        $attribute = $this->getVideoGenresDropdownAttribute();
+        $this->checkDropdownAttribute($attribute);
+        $this->app['dropdownAttribute'] = $attribute;
 
         $allCategories = $this->db->getCategoriesGenres();
 
@@ -425,7 +390,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
             "o_name" => "`video`.`o_name` as `o_name`",
             "time" => "`video`.`time` as `time`",
             "cat_genre" => "'' as `cat_genre`",
-            "series" => "CAST(IF(`video`.`is_series` = 1, (select sum(`season_series`) from `video_season` where `video_season`.video_id = video.id), REPLACE(SUBSTRING_INDEX(`video`.`series`, ':', 2), 'a:', '')) as SIGNED) as `series`",
+            "is_series" => "`video`.`is_series` as `is_series`",
             "tasks" => "(select count(*) from moderator_tasks where media_id = video.id) as `tasks`", //moderator_tasks.ended = 0 and 
             "task_id" => "`video_on_tasks`.`id` as `task_id`",
             "count" => "`video`.`count` as `count`",
@@ -500,7 +465,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
             while (list($key, $row) = each($response['data'])){
                 $response['data'][$key]['RowOrder'] = "dTRow_" . $row['id'];
                 $response['data'][$key]['cat_genre'] = array();
-                settype($response['data'][$key]['series'], 'int');
+                settype($response['data'][$key]['is_series'], 'int');
                 if (!empty($row['cat_genre_id_1'])) {
                     $response['data'][$key]['cat_genre'][] = $this->mb_ucfirst($cat_genres[$row['cat_genre_id_1']]);
                 }
@@ -517,7 +482,6 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
                 $response['data'][$key]['added'] = (int) strtotime($response['data'][$key]['added']) * ($this->isAjax? 1000 : 1);
                 $response['data'][$key]['task_date_on'] = ((int)$response['data'][$key]['task_date_on']) * ($this->isAjax? 1000 : 1);
                 $response['data'][$key]['accessed'] = !empty($response['data'][$key]['accessed']) ? (int)$response['data'][$key]['accessed']: 0;
-                /*$response['data'][$key]['series'] = is_numeric($row['series']) ? $row['series'] : count(unserialize($row['series']));*/
                 if (!array_key_exists('tasks', $response['data'][$key]) || !is_array($response['data'][$key]['tasks'])) {
                     $response['data'][$key]['tasks'] = array();
                 }
@@ -828,7 +792,6 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
     }
     
     public function edit_cover() {
-
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
@@ -3095,7 +3058,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
             array('name' => 'name',         'title' => $this->setLocalization('Title'),         'checked' => TRUE),
             array('name' => 'o_name',       'title' => $this->setLocalization('Original title'),'checked' => FALSE),
             array('name' => 'time',         'title' => $this->setLocalization('Length, min'),   'checked' => TRUE),
-            array('name' => 'series',       'title' => $this->setLocalization('Episodes'),      'checked' => TRUE),
+            array('name' => 'is_series',    'title' => $this->setLocalization('Serial'),        'checked' => TRUE),
             array('name' => 'cat_genre',    'title' => $this->setLocalization('Genre'),         'checked' => TRUE),
             array('name' => 'year',         'title' => $this->setLocalization('Year'),          'checked' => TRUE),
             array('name' => 'added',        'title' => $this->setLocalization('Date'),          'checked' => TRUE),
@@ -3103,7 +3066,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
             array('name' => 'count',        'title' => $this->setLocalization('Views lifetime'),'checked' => FALSE),
             array('name' => 'counter',      'title' => $this->setLocalization('Views last month'),'checked' => FALSE),
             array('name' => 'complaints',   'title' => $this->setLocalization('Complaints'),    'checked' => TRUE),
-            array('name' => 'accessed',       'title' => $this->setLocalization('Status'),        'checked' => TRUE),
+            array('name' => 'accessed',     'title' => $this->setLocalization('Status'),        'checked' => TRUE),
             array('name' => 'operations',   'title' => $this->setLocalization('Operations'),    'checked' => TRUE)
         );
         

@@ -120,8 +120,6 @@ class EventsController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
 
-        $list = $this->events_list_json();
-
         if(!empty($this->data['uid']) || !empty($this->data['filters']['mac'])){
             $param = array();
             if (!empty($this->data['uid'])) {
@@ -137,13 +135,10 @@ class EventsController extends \Controller\BaseStalkerController {
                 'uid' => (!empty($this->data['uid'])? $this->data['uid']: $currentUser['id'])
             );
         }
-        $this->app['eventList'] = $list['data'];
         $this->app['formEvent'] = $this->formEvent;
         $this->app['allEvent'] = array_merge($this->formEvent, $this->hiddenEvent);
         $this->app['sendedStatus'] = $this->sendedStatus;
         $this->app['receivingStatus'] = $this->receivingStatus;
-        $this->app['totalRecords'] = $list['recordsTotal'];
-        $this->app['recordsFiltered'] = $list['recordsFiltered'];
         $this->app['consoleGroup'] = $this->db->getConsoleGroup();
 
         $this->app['allFilters'] = $this->getAllFilters();
@@ -173,11 +168,6 @@ class EventsController extends \Controller\BaseStalkerController {
 
         $this->app['allAdmins'] = $this->db->getAllFromTable('administrators', 'login');
 
-        $list = $this->message_templates_list_json();
-        $this->app['allData'] = $list['data'];
-        $this->app['totalRecords'] = $list['recordsTotal'];
-        $this->app['recordsFiltered'] = $list['recordsFiltered'];
-
         if (!empty($this->data['filters'])) {
             $this->app['filters'] = $this->data['filters'];
         }
@@ -205,11 +195,6 @@ class EventsController extends \Controller\BaseStalkerController {
         $attribute = $this->getSchedulerDropdownAttribute();
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
-
-        $list = $this->event_scheduler_list_json();
-        $this->app['allData'] = $list['data'];
-        $this->app['totalRecords'] = $list['recordsTotal'];
-        $this->app['recordsFiltered'] = $list['recordsFiltered'];
 
         if (!empty($this->data['filters'])) {
             $this->app['filters'] = $this->data['filters'];

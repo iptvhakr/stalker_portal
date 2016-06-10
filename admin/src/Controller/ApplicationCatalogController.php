@@ -34,11 +34,6 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
 
-        $list = $this->application_list_json();
-        $this->app['allData'] = $list['data'];
-        $this->app['totalRecords'] = $list['recordsTotal'];
-        $this->app['recordsFiltered'] = $list['recordsFiltered'];
-
         return $this->app['twig']->render('ApplicationCatalog_application_list.twig');
     }
 

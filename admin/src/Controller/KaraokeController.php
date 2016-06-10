@@ -10,15 +10,8 @@ use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
 
 class KaraokeController extends \Controller\BaseStalkerController {
 
-    protected $allStatus = array();
-    private $allProtocols = array(array('id' => "nfs", 'title' => 'NFS'), array('id' => "http", 'title' => 'HTTP'), array('id' => "custom", 'title' => 'Custom URL'));
-
     public function __construct(Application $app) {
         parent::__construct($app, __CLASS__);
-        $this->allStatus = array(
-            array('id' => 1, 'title' => $this->setLocalization('Unpublished')),
-            array('id' => 2, 'title' => $this->setLocalization('Published'))
-        );
     }
     
     // ------------------- action method ---------------------------------------
@@ -29,19 +22,16 @@ class KaraokeController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
         
-        $this->app['allProtocols'] = $this->allProtocols;
-        $this->app['allStatus'] = $this->allStatus;
+        $this->app['allProtocols'] = array(array('id' => "nfs", 'title' => 'NFS'), array('id' => "http", 'title' => 'HTTP'), array('id' => "custom", 'title' => 'Custom URL'));
+        $this->app['allStatus'] = array(
+            array('id' => 1, 'title' => $this->setLocalization('Unpublished')),
+            array('id' => 2, 'title' => $this->setLocalization('Published'))
+        );
         
         $attribute = $this->getDropdownAttribute();
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
-        
-        $list = $this->karaoke_list_json();
-        
-        $this->app['allKaraoke'] = $list['data'];
-        $this->app['totalRecords'] = $list['recordsTotal'];
-        $this->app['recordsFiltered'] = $list['recordsFiltered'];
-        
+
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
        

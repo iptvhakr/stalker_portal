@@ -479,22 +479,22 @@
             }
         };
 
+        var  select2Opt = select2OptMS = select2OptPH = {minimumResultsForSearch: -1, dropdownAutoWidth: false, width: '100%', allowDuplicates: false};
+        var  select2OptMS = select2Opt, select2OptPH = select2Opt;
+        select2OptMS.maximumSelectionSize = 4;
+        select2OptPH.placeholder = '';
+
         function DemoSelect2() {
-            $.getScript("{{ app.request.baseUrl }}/plugins/select2/i18n/{% if app["language"] %}{{ app["language"] }}{% else %}en{% endif %}.js", function(){
-                $.fn.select2.defaults.set('dropdownAutoWidth', false);
-                $.fn.select2.defaults.set('width', '100%');
-                $.fn.select2.defaults.set('allowDuplicates', false);
                 checkCatGenreList('#form_category_id', '#form_cat_genre_id');
-                $('#form_category_id').select2({minimumResultsForSearch: -1, placeholder: ""});
-                $('#form_cat_genre_id').select2({minimumResultsForSearch: -1, maximumSelectionLength: 4});
-                $('#form_is_series').select2({minimumResultsForSearch: -1});
-                $('#form_rating_mpaa').select2({minimumResultsForSearch: -1});
-                $('#form_age').select2({minimumResultsForSearch: -1});
-            });
+                $('#form_category_id').select2(select2OptPH);
+                $('#form_cat_genre_id').select2(select2OptMS);
+                $('#form_is_series').select2(select2Opt);
+                $('#form_rating_mpaa').select2(select2Opt);
+                $('#form_age').select2(select2Opt);
         }
 
         function setFileLanguagesSelect(){
-            var file_languages = $('#file_languages').select2({minimumResultsForSearch: -1, allowDuplicates: true, width: '100%'});
+            var file_languages = $('#file_languages').select2(select2Opt);
             if ($('#fileLangCloneList').length) {
                 $('#fileLangCloneList').remove();
             }
@@ -799,13 +799,13 @@
                         'disabled': 'disabled'
                     }).find('option[value="custom"]').prop({'selected': 'selected'});
 
-                    $('#file_type').select2({minimumResultsForSearch: -1});
-                    $('#file_quality').select2({minimumResultsForSearch: -1});
+                    $('#file_type').select2(select2Opt);
+                    $('#file_quality').select2(select2Opt);
                     setFileLanguagesSelect();
                     $('#file_volume_level option[value="0"]').prop('selected', true);
-                    $('#file_volume_level').select2({minimumResultsForSearch: -1});
-                    $('#file_protocol').select2({minimumResultsForSearch: -1});
-                    $('#file_accessed').select2({minimumResultsForSearch: -1});
+                    $('#file_volume_level').select2(select2Opt);
+                    $('#file_protocol').select2(select2Opt);
+                    $('#file_accessed').select2(select2Opt);
 
                     $('#modalbox').show();
                     if (!$(this).closest('a.collapse-link').next('.box-content').is(':visible')) {
@@ -868,14 +868,14 @@
 
                     $("#modalbox .devoops-modal-bottom").empty().append($("#modal_save_form_buttons").html());
 
-                    $('#season_counter').select2({minimumResultsForSearch: -1});
+                    $('#season_counter').select2(select2Opt);
                     $('<hr>').insertAfter($("#season_counter").closest('.form-group'));
                     $("#season_counter").closest('.form-group').next('hr').css({minWidth: "100%", clear: "both", marginTop: "40px", marginBottom: "40px"});
 
                     var selectBox = $($("#series_counter_template").html()).insertAfter($("#season_counter").closest('.form-group').next('hr'));
                     selectBox.find('select').attr({name: 'season_structure[1]', id: 'series_counter_0'});
                     selectBox.find('label').text(selectBox.find('label').text() + 1);
-                    $('#series_counter_0').select2({minimumResultsForSearch: -1});
+                    $('#series_counter_0').select2(select2Opt);
 
                     $("#modalbox").data('complete', 1).show();
                 });
@@ -901,7 +901,7 @@
                             }
                             selectBox.find('select').attr({name: 'season_structure[' + (selectBoxes.length + 1) + ']', id: 'series_counter_' + selectBoxes.length});
                             selectBox.find('label').text(selectBox.find('label').text() + (selectBoxes.length + 1));
-                            $('#series_counter_' + selectBoxes.length).select2({minimumResultsForSearch: -1});
+                            $('#series_counter_' + selectBoxes.length).select2(select2Opt);
                         }
                         selectBoxes = $("#modalbox select[id^='series_counter_']");
                     }
@@ -1274,7 +1274,7 @@
                     $(child).append('<option value="' + value.id + '" ' + ($.inArray(value.id, selChildData) != -1 ? 'selected="selected"' : '') + '>' + value.title + '</option>');
                 });
             }
-            $(child).select2({minimumResultsForSearch: -1, maximumSelectionLength: 4});
+            $(child).select2(select2OptMS);
         }
 
         function checkProtocol() {
@@ -1361,7 +1361,7 @@
                 if (fieldObj.length != 0) {
                     if (fieldObj.get(0).tagName.toLocaleUpperCase() == 'SELECT') {
                         fieldObj.find('option[value="' + fieldValue + '"]').prop('selected', 'selected');
-                        fieldObj.select2({minimumResultsForSearch: -1});
+                        fieldObj.select2(select2Opt);
                     } else {
                         if (fieldObj.get(0).type && fieldObj.get(0).type.toLocaleUpperCase() == 'CHECKBOX') {
                             fieldObj.prop('checked', !!fieldValue);
@@ -1702,11 +1702,11 @@
             }
             $('#modalbox').show();
 
-            $('#file_type').select2({minimumResultsForSearch: -1});
-            $('#file_quality').select2({minimumResultsForSearch: -1});
-            $('#file_volume_level').select2({minimumResultsForSearch: -1});
-            $('#file_protocol').select2({minimumResultsForSearch: -1});
-            $('#file_accessed').select2({minimumResultsForSearch: -1});
+            $('#file_type').select2(select2Opt);
+            $('#file_quality').select2(select2Opt);
+            $('#file_volume_level').select2(select2Opt);
+            $('#file_protocol').select2(select2Opt);
+            $('#file_accessed').select2(select2Opt);
 
             setFileLanguagesSelect();
 

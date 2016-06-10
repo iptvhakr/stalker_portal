@@ -82,7 +82,6 @@
                         });
                     }
                 },
-                "deferLoading": [{{ app.recordsFiltered }}, {{ app.totalRecords }}],
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
@@ -96,7 +95,6 @@
                     {"searchable": false, "targets": [1, 2, 4, 6, 8, 9]}
                 ]
             }).prev('.dataTables_processing').hide('');
-            $('#datatable-1').DataTable().ajax.reload();
         }
 
         function yelp() {

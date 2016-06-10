@@ -31,6 +31,10 @@
         }
     });*/
 
+if (typeof (load_page_data) !== 'function') {
+    var load_page_data = function(){};
+}
+
 $(document).on("click", "div.dropdown-menu *", function(e){
     e.stopPropagation();
 });
@@ -50,15 +54,8 @@ $('#status').removeClass('dropup');
 $('.filter').removeClass('dropup'); 
 for (var f = document.forms, i = f.length; i--;)f[i].setAttribute("novalidate", i)
 function LoadSelect2Script(callback) {
-    if (!$.fn.select2) {
-        $.getScript('plugins/select2/select2.full.js', callback);
-    }
-    else {
-        $.fn.select2.defaults.set({dropdownAutoWidth: 'false', width: 'auto'});
-
-        if (callback && typeof (callback) === "function") {
-            callback();
-        }
+    if (callback && typeof (callback) === "function") {
+        callback();
     }
 }
 //
@@ -66,66 +63,47 @@ function LoadSelect2Script(callback) {
 //  homepage: http://datatables.net v1.9.4 license - GPL or BSD
 //
 function LoadDataTablesScripts(callback) {
-    function LoadDatatables() {
-        $.getScript('plugins/datatables/jquery.dataTables.js', function () {
-            $.getScript('plugins/datatables/ZeroClipboard.js', function () {
-                $.getScript('plugins/datatables/TableTools.js', function () {
-                    $.getScript('plugins/datatables/fnReloadAjax.js', function () {
-                        $.getScript('plugins/datatables/dataTables.bootstrap.js', function(){
-                            $.fn.dataTableExt.oApi.fnDataUpdate = function ( oSettings, nRowObject, iRowIndex ){
-                                $(nRowObject).find("TD").each( function(i) {
-                                    var iColIndex = oSettings.oApi._fnVisibleToColumnIndex( oSettings, i );
-                                    oSettings.oApi._fnSetCellData( oSettings, iRowIndex, iColIndex, $(this).html() );
-                                } );
-                            };
 
-                            $.fn.dataTableExt.oApi.fnFeatureReloadButtonHtml = function ( oSettings, nRowObject, iRowIndex ){
-                                alert('jjj');
-                            };
+    $.fn.dataTableExt.oApi.fnDataUpdate = function ( oSettings, nRowObject, iRowIndex ){
+        $(nRowObject).find("TD").each( function(i) {
+            var iColIndex = oSettings.oApi._fnVisibleToColumnIndex( oSettings, i );
+            oSettings.oApi._fnSetCellData( oSettings, iRowIndex, iColIndex, $(this).html() );
+        } );
+    };
 
-                            $.fn.dataTableExt.aoFeatures.push( {
-                                "fnInit": function( oDTSettings ) {
-                                    var filterContainer = $(oDTSettings.nTableWrapper).find("#" + oDTSettings.sTableId + '_filter');
-                                    if (filterContainer.length) {
+    $.fn.dataTableExt.aoFeatures.push( {
+        "fnInit": function( oDTSettings ) {
+            var filterContainer = $(oDTSettings.nTableWrapper).find("#" + oDTSettings.sTableId + '_filter');
+            if (filterContainer.length) {
                                         filterContainer.after('<button id="dataTables_ajax_update_button" class="btn dataTables_ajax_update_button" type="button"><i class="fa fa-refresh"></i></button>');
-                                        $(document).on("click", "#dataTables_ajax_update_button", function(){
-                                            $("#" + oDTSettings.sTableId).DataTable().ajax.reload();
-                                        });
-                                    }
-                                },
-                                "cFeature": "A"
-                            } );
-                            $.fn.dataTable.defaults.sDom += "A";
-
-                            if (typeof (window.stateSaveReject) == 'undefined' || !window.stateSaveReject) {
-                                $.fn.dataTable.defaults.stateSave = true;
-                                $.fn.dataTable.defaults.stateDuration = 0;
-                                $.fn.dataTable.defaults.stateSaveCallback = function(settings,data) {
-                                    var page = window.location.href.split("/");
-                                    page = (page[page.length - 1] ? page[page.length - 1] : page[page.length - 2]).replace(/[^\w]/ig, '');
-                                    console.log(page + " dataTable save settings");
-                                    localStorage.setItem( page + 'DataTables_' + settings.sInstance, JSON.stringify(data) )
-                                };
-                                $.fn.dataTable.defaults.stateLoadCallback = function(settings) {
-                                    var page = window.location.href.split("/");
-                                    page = (page[page.length - 1] ? page[page.length - 1] : page[page.length - 2]).replace(/[^\w]/ig, '');
-                                    console.log(page + " dataTable load settings");
-                                    return JSON.parse( localStorage.getItem( page + 'DataTables_' + settings.sInstance ) )
-                                };
-                            }
-                            callback();
-                        });
-                    });
+                $(document).on("click", "#dataTables_ajax_update_button", function(){
+                    $("#" + oDTSettings.sTableId).DataTable().ajax.reload();
                 });
-            });
-        });
+            }
+        },
+        "cFeature": "A"
+    } );
+    $.fn.dataTable.defaults.sDom += "A";
+
+    if (typeof (window.stateSaveReject) == 'undefined' || !window.stateSaveReject) {
+        $.fn.dataTable.defaults.stateSave = true;
+        $.fn.dataTable.defaults.stateDuration = 0;
+        $.fn.dataTable.defaults.stateSaveCallback = function(settings,data) {
+            var page = window.location.href.split("/");
+            page = (page[page.length - 1] ? page[page.length - 1] : page[page.length - 2]).replace(/[^\w]/ig, '');
+            /*console.log(page + " dataTable save settings");*/
+            localStorage.setItem( page + 'DataTables_' + settings.sInstance, JSON.stringify(data) )
+        };
+        $.fn.dataTable.defaults.stateLoadCallback = function(settings) {
+            var page = window.location.href.split("/");
+            page = (page[page.length - 1] ? page[page.length - 1] : page[page.length - 2]).replace(/[^\w]/ig, '');
+            /*console.log(page + " dataTable load settings");*/
+            return JSON.parse( localStorage.getItem( page + 'DataTables_' + settings.sInstance ) )
+        };
     }
-    if (!$.fn.dataTables) {
-        LoadDatatables();
-    } else {
-        if (callback && typeof (callback) === "function") {
-            callback();
-        }
+
+    if (callback && typeof (callback) === "function") {
+        callback();
     }
 }
 

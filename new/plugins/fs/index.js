@@ -59,7 +59,7 @@ Fs.prototype.readDir = function ( path, callback ) {
 
         data = {
             dirs: dirs.reduce(function ( acc, item ) {
-                return acc.concat(item !== '' ? { name: item.slice(0, -1), type: 3 } : []);
+                return acc.concat(item !== '' ? { name: item.slice(0, -1), type: 9 } : []);
             }, []),
             files: files.reduce(function ( acc, item ) {
                 return item.name ? acc.concat(item) : acc;
