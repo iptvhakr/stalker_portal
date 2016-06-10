@@ -130,6 +130,8 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             $this->app['request']->getSession()->remove('channel_error');
         }
 
+        $this->app['enable_tariff_plans'] = Config::getSafe('enable_tariff_plans', false);
+
         $this->app['allGenres'] = $this->getAllGenres();
         $this->app['streamServers'] = $this->db->getAllStreamServer();
         $this->app['channelEdit'] = FALSE;
@@ -160,6 +162,9 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             $this->app['request']->getSession()->set('channel_error', TRUE);
             return $this->app->redirect('add-channel');
         }
+
+        $this->app['enable_tariff_plans'] = Config::getSafe('enable_tariff_plans', false);
+
         $this->oneChannel = array_merge($this->oneChannel, $this->getStorages($id));
         $this->oneChannel['pvr_storage_names'] = array_keys(\RemotePvr::getStoragesForChannel($id));
         settype($this->oneChannel['enable_tv_archive'], 'boolean');
@@ -433,8 +438,18 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                 try{
                     $uploaded = $this->request->files->get($f_key)->getPathname();
                     $ext = end(explode('.', $tmp['name']));
+                    if (!is_dir($img_path."/original")) {
+                        if (!mkdir($img_path."/original", 0777, TRUE)){
+                            throw new \Exception(sprintf(_('Cannot create directory %s'), $img_path."/original"));
+                        }
+                    }
                     $this->app['imagine']->open($uploaded)->save($img_path."/original/$upload_id.$ext");
                     foreach($this->logoResolutions as $res => $param){
+                        if (!is_dir($img_path."/$res")) {
+                            if (!mkdir($img_path."/$res", 0777, TRUE)){
+                                throw new \Exception(sprintf(_('Cannot create directory %s'), $img_path."/$res"));
+                            }
+                        }
                         $this->app['imagine']->open($uploaded)->resize(new Box($param['width'], $param['height']))->save($img_path."/$res/$upload_id.$ext");
                         chmod($img_path."/$res/$upload_id.$ext", 0644);
                     }
@@ -442,7 +457,8 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                     $logoHost = $this->baseHost . Config::getSafe('portal_url', '/stalker_portal/') . "misc/logos";
                     $response = $this->generateAjaxResponse(array('pic' => $logoHost . "/320/$upload_id.$ext"), $error);
                 } catch (\ImagickException $e) {
-                    $error = sprintf(_('Error save file %s'), $tmp['tmp_name']);
+                    $error = sprintf(_('Error save file %s'), $tmp['name']);
+                    $response['msg'] = $e->getMessage() . '. ' . $error;
                 }
             }
         }

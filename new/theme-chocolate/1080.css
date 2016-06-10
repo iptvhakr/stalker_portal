@@ -5,16 +5,10 @@
   z-index: 8; }
 
 .theme-favorite-icon {
-  color: #6b6b6b; }
+  color: rgba(255, 255, 255, 0.2); }
 
 .theme-favorite-icon-active {
   color: #FEC500; }
-
-.theme-favorite-icon {
-  color: transparent; }
-
-.theme-favorite-icon-active {
-  color: #ffffff; }
 
 .osdPanel {
   background-color: #3e2723;
@@ -28,12 +22,6 @@
 
 body {
   background: url(./img/1080/bg.png) no-repeat; }
-
-@font-face {
-  font-family: 'icons';
-  src: url("icons.ttf");
-  font-weight: normal;
-  font-style: normal; }
 
 .icon {
   font-family: icons; }
@@ -90,7 +78,7 @@ body {
   .component.panelEx .list .item.focus {
     background: rgba(231, 185, 0, 0.6); }
   .component.panelEx.active {
-    background: rgba(62, 39, 35, 0.97); }
+    background-color: rgba(62, 39, 35, 0.97) !important; }
     .component.panelEx.active .list .item.focus {
       background: #e7b900; }
   .component.panelEx .component.layoutList > .body > .item, .component.panelEx .component.layoutList > .body > .item .component.input {
@@ -127,7 +115,7 @@ body {
   background-size: auto 100%; }
 
 .component.panelEx > .overlay {
-  background: rgba(0, 0, 0, 0.2); }
+  background: rgba(0, 0, 0, 0.5); }
 
 @-webkit-keyframes inputCursor {
   from {
@@ -139,8 +127,10 @@ body {
   background: transparent;
   border: none;
   outline: none; }
-  .component.input > .placeholder {
-    color: #ffffff; }
+  .component.input .char {
+    color: #3e2723; }
+  .component.input > .line > .placeholder {
+    color: #3e2723 !important; }
   .component.input.focus {
     color: #3e2723; }
     .component.input.focus .char {
@@ -190,8 +180,7 @@ body {
     background-image: url("./img/1080/f4.png"); }
 
 .component.footer .central .wrapper > div.button {
-  border-right: 1px solid rgba(255, 255, 255, 0.7);
-  border-left: 1px solid white; }
+  border-right: 1px solid rgba(255, 255, 255, 0.5); }
   .component.footer .central .wrapper > div.button:last-of-type {
     border-right: none; }
   .component.footer .central .wrapper > div.button:first-of-type {
@@ -206,3 +195,22 @@ body {
 
 .infoText {
   font-size: 22px; }
+
+@font-face {
+  font-family: 'icons';
+  src: url("icons.ttf");
+  font-weight: normal;
+  font-style: normal; }
+
+.osdPanel {
+  background-color: #3e2723;
+  color: #fff; }
+
+.osdFocusItem {
+  background-color: #e7b900; }
+
+.theme-favorite-icon {
+  color: transparent; }
+
+.theme-favorite-icon-active {
+  color: #ffffff; }

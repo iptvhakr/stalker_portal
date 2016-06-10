@@ -1,20 +1,3 @@
-.osdPanel {
-  background-color: #384452;
-  color: #fff; }
-
-.osdFocusItem {
-  background-color: #2c60c6; }
-
-/*$componentBgColor: #3e2723;
-$focusItemBackground: #e7b900;
-$focusItemColor: #3e2723;
-$focusItemIconColor: #3e2723;
-.theme-favorite-icon {
-    color: transparent;
-}
-.theme-favorite-icon-active {
-    color: #ffffff;
-}*/
 .component.panelEx.right, .component.panelEx.left {
   background-color: transparent; }
   .component.panelEx.right .body, .component.panelEx.left .body {
@@ -43,22 +26,23 @@ $focusItemIconColor: #3e2723;
   left: 55px !important; }
 
 .theme-favorite-icon {
-  color: #6b6b6b; }
+  color: rgba(255, 255, 255, 0.2); }
 
 .theme-favorite-icon-active {
   color: #FEC500; }
+
+.osdPanel {
+  background-color: #384452;
+  color: #fff; }
+
+.osdFocusItem {
+  background-color: #2c60c6; }
 
 .bgDarken {
   background-color: #2e3743 !important; }
 
 body {
   background: url(./img/576/bg.jpg) no-repeat; }
-
-@font-face {
-  font-family: 'icons';
-  src: url("icons.ttf");
-  font-weight: normal;
-  font-style: normal; }
 
 .icon {
   font-family: icons; }
@@ -81,8 +65,12 @@ body {
     background-image: url("./img/576/f4.png"); }
 
 .component.button {
-  background: #234c9c;
+  background: transparent;
   color: #ffffff; }
+  .component.button.bottom {
+    background-color: transparent;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAACCAYAAABhYU3QAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABpJREFUeNpiZGBg8GUgAjD+//9fjRiFAAEGAJJMA3OVnUxoAAAAAElFTkSuQmCC");
+    background-repeat: repeat-x; }
   .component.button.focus {
     background: #2c60c6;
     color: #fff; }
@@ -152,7 +140,7 @@ body {
   background-size: auto 100%; }
 
 .component.panelEx > .overlay {
-  background: rgba(0, 0, 0, 0.2); }
+  background: rgba(0, 0, 0, 0.5); }
 
 @-webkit-keyframes inputCursor {
   from {
@@ -217,8 +205,7 @@ body {
     background-image: url("./img/576/f4.png"); }
 
 .component.footer .central .wrapper > div.button {
-  border-right: 1px solid rgba(255, 255, 255, 0.7);
-  border-left: 1px solid white; }
+  border-right: 1px solid rgba(255, 255, 255, 0.5); }
   .component.footer .central .wrapper > div.button:last-of-type {
     border-right: none; }
   .component.footer .central .wrapper > div.button:first-of-type {
@@ -233,3 +220,22 @@ body {
 
 .infoText {
   font-size: 17px; }
+
+@font-face {
+  font-family: 'icons';
+  src: url("icons.ttf");
+  font-weight: normal;
+  font-style: normal; }
+
+.osdPanel {
+  background-color: #384452;
+  color: #fff; }
+
+.osdFocusItem {
+  background-color: #2c60c6; }
+
+.theme-favorite-icon {
+  color: rgba(255, 255, 255, 0.2); }
+
+.theme-favorite-icon-active {
+  color: #FEC500; }

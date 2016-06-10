@@ -651,55 +651,6 @@ $(document).ready(function () {
         return false;
     });
 
-    $(document).on('show', ".box-content[id^='add_channel_']", function (e) {
-        e.stopPropagation();
-        e.preventDefault();
-        $(this).closest('.box').children('.box-header').find('.header_check_info').hide();
-        return false;
-    });
-    $(document).on('hide', ".box-content[id^='add_channel_']", function (e) {
-        e.stopPropagation();
-        e.preventDefault();
-        $(this).closest('.box').children('.box-header').find('.header_check_info').show();
-        return false;
-    });
-    $(document).on('show hide', "#add_channel_storage_save", function (e) {
-        e.stopPropagation();
-        e.preventDefault();
-        $(this).closest('.box').children('.box-header').find("input[type='checkbox']").prop("checked", ($(this).find("input[type='checkbox']:checked").length != 0));
-        return false;
-    });
-    $(document).on('show hide', "#add_channel_EPG", function (e) {
-        e.stopPropagation();
-        e.preventDefault();
-        $(this).closest('.box').children('.box-header').find("input[type='checkbox']").prop("checked", ($(this).find("input[type='text']").val().trim() !== ''));
-        return false;
-    });
-    $(document).on('show hide', "#add_channel_safety", function (e) {
-        e.stopPropagation();
-        e.preventDefault();
-        $(this).closest('.box').children('.box-header').find("input[type='checkbox']").prop("checked", ($(this).find("input[name='age_restriction']:checked").length != 0));
-        return false;
-    });
-    $(document).on('show hide', "#add_channel_type", function (e) {
-        e.stopPropagation();
-        e.preventDefault();
-        $(this).closest('.box').children('.box-header').find("input[type='checkbox']").prop("checked", ($(this).find("input[name='base_channel']:checked").length != 0));
-        return false;
-    });
-    $(document).on('show hide', "#add_channel_usb_store", function (e) {
-        e.stopPropagation();
-        e.preventDefault();
-        $(this).closest('.box').children('.box-header').find("input[type='checkbox']").prop("checked", ($(this).find("input[type='checkbox']:checked").length != 0));
-        return false;
-    });
-    $(document).on('show hide', "#add_channel_link_monitoring, #add_channel_load_balancing", function (e) {
-        e.stopPropagation();
-        e.preventDefault();
-        $(this).closest('.box').children('.box-header').find("input[type='checkbox']").prop("checked", ($(this).find("input[type='radio']:checked").val() == 'on'));
-        return false;
-    });
-
     $(document).on('click', "#modalbox_ad a.close-link, #modalbox_ad a.close-link .fa-times, #modalbox_ad, #modalbox_ad button[type='reset']", function (e) {
         if (e.target != e.currentTarget) {
             return;

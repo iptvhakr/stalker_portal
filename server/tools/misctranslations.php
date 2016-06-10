@@ -643,6 +643,7 @@ _('DOWNLOADS');
 _('RECORDS');
 _('WEATHER');
 _('SETTINGS');
+_('SYSTEM');
 _('PORTAL');
 _('EXCHANGE');
 _('Watch TV shows, movies, tv series, news and educational programs in digital quality.');
@@ -656,9 +657,13 @@ _('This app allows recording TV shows or watch the records made previously.');
 _('App will help you to stay up to date with the changes in rates of currencies from all over the world.');
 _('Weather forecast for three subsequent days in any city of the world.');
 _('Horoscope, city guide and many other things that can be useful for fun and useful pastime.');
-_('This menu allows setting up the parental control, region and language, remote control and network connection.');
+_('Configure the user interface appearance and set up parental control to ensure your child’s safety while he’s using a set-top box.');
+_('System settings will help you to set up network connection, graphics resolution and to change interface language.');
 _('Surf the Internet via built-in browser! To make it easier, you can use the MAGic Remote mobile app or connect the keyboard or mouse via USB port.');
 _('2048 is one of the world’s most popular puzzles. The rules are simple: you need to shuffle all the bars to one side of the game field. Your goal is to reach 2048.');
+_('Lines is the puzzle from 90-s which is still popular. The game’s goal is to remove balls by forming lines of at least five balls of the same color.');
+_('Memory is a game for memory development. Find out how much time you need to open all the matching cards.');
+_('Sudoku is a well-known Japanese puzzle. You need to fill all the cells the way there won\'t be the same two numbers in each row, column or block.');
 /**/
 
 _('The portal is temporarily unavailable.<br>Please try again later.<br>Sorry for the inconvenience.');

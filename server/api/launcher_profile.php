@@ -60,6 +60,9 @@ if ($user['status'] == 1){
     exit;
 }
 
+$profile['options']['stalkerHost'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
+    .'://'.$_SERVER['HTTP_HOST'];
+
 $profile['options']['stalkerApiHost'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
     .'://'.$_SERVER['HTTP_HOST']
     .Config::getSafe('portal_url', '/stalker_portal/')
@@ -77,7 +80,6 @@ $profile['options']['sap'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HT
 
 $profile['options']['pingTimeout'] = Config::getSafe('watchdog_timeout', 120) * 1000;
 $available_modules = array_values(array_diff($all_modules, $disabled_modules));
-$available_modules[] = 'portal';
 $available_modules[] = 'launcher';
 $available_modules[] = 'osd';
 $available_modules[] = 'osd-tv';
@@ -96,12 +98,15 @@ $module_to_app_map = array(
     'game.memory'   => 'memory',
     'game.sudoku'   => 'sudoku',
     'internet'      => 'browser',
-    'game.2048'     => '2048'
+    'game.2048'     => '2048',
+    'settings'      => 'system'
 );
 
 $available_modules = array_map(function($module) use ($module_to_app_map){
     return isset($module_to_app_map[$module]) ? $module_to_app_map[$module] : $module;
 }, $available_modules);
+
+$available_modules[] = 'settings';
 
 $apps = $profile['apps'];
 
@@ -109,7 +114,7 @@ $user_apps = array();
 
 foreach ($apps as $app){
 
-    if (!in_array(strtolower($app['name']), $available_modules)){
+    if (!in_array(strtolower($app['name']), $available_modules) && $app['name'] != 'taskManager'){
         continue;
     }
 
@@ -120,27 +125,39 @@ foreach ($apps as $app){
 }
 
 foreach ($installed_apps as $app) {
-    $user_apps[] = array(
-        'type'     => 'app',
-        'category' => 'apps',
-        'backgroundColor' => $app['icon_color'],
-        'name'     => $app['alias'],
-        'description'  => $app['description'],
-        'icons' => array(
-            'paths' => array(
-                '480'  => 'img/480/',
-                '576'  => 'img/576/',
-                '720'  => 'img/720/',
-                '1080' => 'img/1080/'
+
+    if ($app['config']){
+        $config = json_decode($app['config'], true);
+        if ($config){
+            $app['config'] = $config;
+        }
+    }
+    if ($app['config']){
+        $app['config']['url'] = $app['app_url'] . '/';
+        $user_apps[] = $app['config'];
+    }else {
+        $user_apps[] = array(
+            'type'            => 'app',
+            'category'        => 'apps',
+            'backgroundColor' => $app['icon_color'],
+            'name'            => $app['alias'],
+            'description'     => $app['description'],
+            'icons'           => array(
+                'paths'  => array(
+                    '480'  => 'img/480/',
+                    '576'  => 'img/576/',
+                    '720'  => 'img/720/',
+                    '1080' => 'img/1080/'
+                ),
+                'states' => array(
+                    'normal' => $app['icons'] . '/2015.png',
+                    'active' => $app['icons'] . '/2015.focus.png',
+                )
             ),
-            'states' => array(
-                'normal' => $app['icons'].'/2015.png',
-                'active' => $app['icons'].'/2015.focus.png',
-            )
-        ),
-        'url' => $app['app_url'].'/',
-        'legacy' => true
-    );
+            'url'             => $app['app_url'] . '/',
+            'legacy'          => true
+        );
+    }
 }
 
 $profile['apps'] = $user_apps;

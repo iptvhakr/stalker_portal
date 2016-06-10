@@ -4,14 +4,14 @@
 
 {% block content %}
     {% if app.resellerUserLimit %}
-    <div id="add_channel">
-        {{ form_start(app['form'], {'method': 'POST', 'action': (app.request.baseUrl ~ '/' ~ app.controller_alias  ~ '/' ~ app.action_alias) | trans, 'attr': {'class': 'form-horizontal', 'role': 'form', 'id': 'form_'}}) }}
-        <div class="bg-danger">
+        <div id="add_channel">
+            {{ form_start(app['form'], {'method': 'POST', 'action': (app.request.baseUrl ~ '/' ~ app.controller_alias  ~ '/' ~ app.action_alias) | trans, 'attr': {'class': 'form-horizontal', 'role': 'form', 'id': 'form_'}}) }}
             <div class="bg-danger">
-                {{ form_errors(app['form']) }}
+                <div class="bg-danger">
+                    {{ form_errors(app['form']) }}
+                </div>
             </div>
-        </div>
-        <div class="row">
+            <div class="row">
                 <div class="box">
                     <a class="collapse-link">
                         <div class="box-header">
@@ -106,40 +106,23 @@
                                     </div>
                                 </div>
                             </div>
-                            {% if app['tarifPlanFlag'] and attribute(app, 'tariff_and_service_control') is defined and app['tariff_and_service_control'] > 0 %}
+                            {% if app['tariffPlanFlag'] and attribute(app, 'tariff_and_service_control') is defined and app['tariff_and_service_control'] > 0 %}
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label ">{{ 'Tariff plan'|trans }}</label>
                                     <div class="col-xs-10 col-sm-6">
                                         <div class=" col-xs-10 col-sm-4">
                                             {% if app['tariff_and_service_control'] > 1 %}
-                                            {{ form_widget(app['form'].tariff_plan_id, {'attr': {'class': 'populate placeholder'}}) }}
-                                            <div class="bg-danger">
-                                                {{ form_errors(app['form'].tariff_plan_id) }}
-                                            </div>
+                                                {{ form_widget(app['form'].tariff_plan_id, {'attr': {'class': 'populate placeholder'}}) }}
+                                                <div class="bg-danger">
+                                                    {{ form_errors(app['form'].tariff_plan_id) }}
+                                                </div>
                                             {% else %}
-                                            <label class="control-label ">{% if app['form'].tariff_plan_id.vars.value and attribute(app, 'allTariffPlans') is defined and app['allTariffPlans'][app['form'].tariff_plan_id.vars.value] %}{{ app['allTariffPlans'][app['form'].tariff_plan_id.vars.value] }}{% else %}{{ 'None'|trans }}{% endif %}</label>
+                                                <label class="control-label ">{% if app['form'].tariff_plan_id.vars.value and attribute(app, 'allTariffPlans') is defined and app['allTariffPlans'][app['form'].tariff_plan_id.vars.value] %}{{ app['allTariffPlans'][app['form'].tariff_plan_id.vars.value] }}{% else %}{{ 'None'|trans }}{% endif %}</label>
                                             {% endif %}
                                         </div>
                                     </div>
                                 </div>
                             {% endif %}
-                        {% endif %}
-                        {% if not app['tarifPlanFlag'] and attribute(app, 'tariff_and_service_control') is defined and app['tariff_and_service_control'] > 0 %}
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label ">{{ 'Additional services'|trans }}</label>
-                                <div class="col-xs-10 col-sm-6">
-                                    <div class=" col-xs-10 col-sm-4">
-                                        {% if app['tariff_and_service_control'] > 1 %}
-                                        {{ form_widget(app['form'].additional_services_on, {'attr': {'class': 'populate placeholder'}}) }}
-                                        <div class="bg-danger">
-                                            {{ form_errors(app['form'].additional_services_on) }}
-                                        </div>
-                                        {% else %}
-                                            <label class="control-label ">{% if app['form'].additional_services_on.vars.value and attribute(app, 'additionalServices') is defined and app['additionalServices'][app['form'].additional_services_on.vars.value] %}{{ app['additionalServices'][app['form'].additional_services_on.vars.value] }}{% else %}{{ 'None'|trans }}{% endif %}</label>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </div>
                         {% endif %}
                         <div class="form-group">
                             <label class="col-sm-2 control-label ">{{ 'Status'|trans }}</label>
@@ -153,35 +136,35 @@
                             </div>
                         </div>
                         {% if attribute(app, 'enableBilling') is defined and app.enableBilling and attribute(app, 'billing_date_control') is defined and app['billing_date_control'] > 0 %}
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label ">{{ 'Expire billing date'|trans }}</label>
-                            <div class="col-xs-10 col-sm-6">
-                                <div class=" col-xs-10 col-sm-6">
-                                    {% if app['billing_date_control'] == 1 %}
-                                    <label class="control-label ">{% if app['form'].expire_billing_date.vars.value %}{{ app['form'].expire_billing_date.vars.value }}{% else %}{{ 'Unlimited'|trans }}{% endif %}</label>
-                                    {% else %}
-                                    {{ form_widget(app['form'].expire_billing_date, {'attr': {'class': 'form-control'}}) }}
-                                    {% endif %}
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label ">{{ 'Expire billing date'|trans }}</label>
+                                <div class="col-xs-10 col-sm-6">
+                                    <div class=" col-xs-10 col-sm-6">
+                                        {% if app['billing_date_control'] == 1 %}
+                                            <label class="control-label ">{% if app['form'].expire_billing_date.vars.value %}{{ app['form'].expire_billing_date.vars.value }}{% else %}{{ 'Unlimited'|trans }}{% endif %}</label>
+                                        {% else %}
+                                            {{ form_widget(app['form'].expire_billing_date, {'attr': {'class': 'form-control'}}) }}
+                                        {% endif %}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         {% endif %}
                         {% if attribute(app, 'reseller') is defined and not app['reseller'] and attribute(app, 'user_reseller_control') is defined and app['user_reseller_control'] > 0 %}
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label ">{{ 'Reseller'|trans }}</label>
-                            <div class="col-xs-10 col-sm-6">
-                                <div class=" col-xs-10 col-sm-4">
-                                    {% if app['user_reseller_control'] == 1 %}
-                                        <label class="control-label ">{% if app['form'].reseller_id.vars.value and attribute(app, 'allResellers') is defined and app['allResellers'][app['form'].reseller_id.vars.value] %}{{ app['allResellers'][app['form'].reseller_id.vars.value] }}{% else %}{{ 'Empty'|trans }}{% endif %}</label>
-                                    {% else %}
-                                    {{ form_widget(app['form'].reseller_id, {'attr': {'class': 'populate placeholder'}}) }}
-                                    <div class="bg-danger">
-                                        {{ form_errors(app['form'].reseller_id) }}
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label ">{{ 'Reseller'|trans }}</label>
+                                <div class="col-xs-10 col-sm-6">
+                                    <div class=" col-xs-10 col-sm-4">
+                                        {% if app['user_reseller_control'] == 1 %}
+                                            <label class="control-label ">{% if app['form'].reseller_id.vars.value and attribute(app, 'allResellers') is defined and app['allResellers'][app['form'].reseller_id.vars.value] %}{{ app['allResellers'][app['form'].reseller_id.vars.value] }}{% else %}{{ 'Empty'|trans }}{% endif %}</label>
+                                        {% else %}
+                                            {{ form_widget(app['form'].reseller_id, {'attr': {'class': 'populate placeholder'}}) }}
+                                            <div class="bg-danger">
+                                                {{ form_errors(app['form'].reseller_id) }}
+                                            </div>
+                                        {% endif %}
                                     </div>
-                                    {% endif %}
                                 </div>
                             </div>
-                        </div>
                         {% endif %}
                         <div class="form-group">
                             <label class="col-sm-2 control-label ">{{ "User's theme"|trans }}</label>
@@ -195,9 +178,9 @@
                             </div>
                         </div>
                         {% if app.userEdit %}
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label ">{{ 'State'|trans }}</label>
-                            <div class="col-xs-10 col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label ">{{ 'State'|trans }}</label>
+                                <div class="col-xs-10 col-sm-6">
                                 <span class="help-inline col-xs-12 col-sm-12">
                                     {% if attribute(app, 'state') is defined and app.state %}
                                         <span class="txt-success">Online</span>
@@ -205,8 +188,8 @@
                                         <span class="txt-danger">Offline</span>
                                     {% endif %}
                                 </span>
+                                </div>
                             </div>
-                        </div>
                         {% endif %}
                         <div class="form-group">
                             <label class="col-sm-2 control-label ">{{ 'Comments'|trans }}:</label>
@@ -219,6 +202,27 @@
                                 </div>
                             </div>
                         </div>
+                        {% if not app['tariffPlanFlag'] and attribute(app, 'tariff_and_service_control') is defined and app['tariff_and_service_control'] > 0 %}
+                            <p class="page-header"></p>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label ">{{ 'Additional services'|trans }}</label>
+                                <div class="col-xs-10 col-sm-6">
+                                    <div class=" col-xs-10 col-sm-4">
+                                        {% if app['tariff_and_service_control'] > 1 %}
+                                            {{ form_widget(app['form'].additional_services_on, {'attr': {'class': 'populate placeholder'}}) }}
+                                            <div class="bg-danger">
+                                                {{ form_errors(app['form'].additional_services_on) }}
+                                            </div>
+                                        {% else %}
+                                            <label class="control-label ">{% if app['form'].additional_services_on.vars.value and attribute(app, 'additionalServices') is defined and app['additionalServices'][app['form'].additional_services_on.vars.value] %}{{ app['additionalServices'][app['form'].additional_services_on.vars.value] }}{% else %}{{ 'None'|trans }}{% endif %}</label>
+                                        {% endif %}
+                                    </div>
+                                {% if app.userEdit %}
+                                    <a class="btn btn-default" id="tv_subscription"  href="{{app.request.baseUrl}}/{{app.controller_alias}}/get-subscribed-tv" data-user_id="{{ app['form'].id.vars.value }}">{{ 'User subscription on tv-channels'|trans }}{# ({{ app.channelsCost }})#}</a>
+                                {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
                 {% if app.userEdit %}
@@ -345,6 +349,10 @@
                                         </div>
                                     </div>
                                     <a class="btn btn-default pull-right" href="{{app.request.baseUrl}}/tariffs/subscribe-log?user_id={{ app['form'].id.vars.value }}">{{ 'Subscribe log'|trans }}</a>
+                                    {% if app['tariffPlanSubscriptionFlag'] %}
+                                        <span class="col-sm-1  pull-right">&nbsp;</span>
+                                        <a class="btn btn-default pull-right" id="tv_subscription"  href="{{app.request.baseUrl}}/{{app.controller_alias}}/get-subscribed-tv" data-user_id="{{ app['form'].id.vars.value }}">{{ 'User subscription on tv-channels'|trans }}{# ({{ app.channelsCost }})#}</a>
+                                    {% endif %}
                                 </div>
                             </div>
                             {% if attribute(app, 'userTPs') is defined and app['userTPs']|length > 0 %}
@@ -354,36 +362,36 @@
                                         <div class=" col-xs-12 col-sm-12">
                                             <table class="table  table-hover" id="tariff_plan_table" data-planid="{{ app['form']['tariff_plan_id'].vars.value }}">
                                                 <thead>
-                                                    <tr>
-                                                        <th>{{ 'Package title'|trans }}</th>
-                                                        <th>{{ 'Package type'|trans }}</th>
-                                                        <th>{{ 'State'|trans }}</th>
-                                                    </tr>
+                                                <tr>
+                                                    <th>{{ 'Package title'|trans }}</th>
+                                                    <th>{{ 'Package type'|trans }}</th>
+                                                    <th>{{ 'State'|trans }}</th>
+                                                </tr>
                                                 </thead>
                                                 <!-- Start: list_row -->
                                                 {% for item in app['userTPs'] %}
-                                                <tr>
-                                                    <td>
-                                                        <label><a href="{{ app.request.baseUrl }}/tariffs/edit-service-package?id={{ item.services_package_id }}" data-placement="bottom" data-toggle="tooltip" data-original-title="{{ item.description }}">{{ item.name }}</a></label>
-                                                    </td>                                                
-                                                    <td>
-                                                        <label>
-                                                            {% if item.optional == 1 %}
-                                                                <i>{{ 'Optional'|trans }}</i>
-                                                            {% else %}
-                                                                {{ '-' }}
-                                                            {% endif %}
-                                                        </label>
-                                                    </td>
-                                                    <td>
-                                                        <div class="col-sm-12">
-														<div class="mswitch">
-															<input id="tariff_plan_packages[{{ item.package_id }}]"  type="checkbox" {% if item.optional == 0 or app['tariff_and_service_control'] == 1 %}readonly="readonly" disabled="disabled"{% endif %}  {% if item.subscribed == 1 %}value="on" checked="checked"{% else %}value="off"{% endif %} name="tariff_plan_packages[{{ item.package_id }}]"/>
-															<label for="tariff_plan_packages[{{ item.package_id }}]" class="label-success"></label>
-															</div>                  
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <label><a href="{{ app.request.baseUrl }}/tariffs/edit-service-package?id={{ item.services_package_id }}" data-placement="bottom" data-toggle="tooltip" data-original-title="{{ item.description }}">{{ item.name }}</a></label>
+                                                        </td>
+                                                        <td>
+                                                            <label>
+                                                                {% if item.optional == 1 %}
+                                                                    <i>{{ 'Optional'|trans }}</i>
+                                                                {% else %}
+                                                                    {{ '-' }}
+                                                                {% endif %}
+                                                            </label>
+                                                        </td>
+                                                        <td>
+                                                            <div class="col-sm-12">
+                                                                <div class="mswitch">
+                                                                    <input id="tariff_plan_packages[{{ item.package_id }}]"  type="checkbox" {% if item.optional == 0 or app['tariff_and_service_control'] == 1 %}readonly="readonly" disabled="disabled"{% endif %}  {% if item.subscribed == 1 %}value="on" checked="checked"{% else %}value="off"{% endif %} name="tariff_plan_packages[{{ item.package_id }}]"/>
+                                                                    <label for="tariff_plan_packages[{{ item.package_id }}]" class="label-success"></label>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
                                                 {% endfor %}
                                                 <!-- End: list_row -->
                                             </table>
@@ -395,24 +403,85 @@
                         </div>
                     </div>
                 {% endif %}
-			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="box">
-                    <div class="box-content">
-                        <div class="row">
-                            <div class="pull-right">
-                                {{ form_widget(app['form'].save, { 'label': 'Save'|trans , attr: {'class': 'btn btn-success  pull-right'}}) }}
-                                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/users-list" class="btn btn-default pull-right">{{ 'Cancel'|trans }}</a>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="box">
+                        <div class="box-content">
+                            <div class="row">
+                                <div class="pull-right">
+                                    {{ form_widget(app['form'].save, { 'label': 'Save'|trans , attr: {'class': 'btn btn-success  pull-right'}}) }}
+                                    <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/users-list" class="btn btn-default pull-right">{{ 'Cancel'|trans }}</a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-             </div>
+            </div>
+            <div style="display: none;">
+                {{ form_rest(app.form) }}
+            </div>
+            {{ form_end(app['form']) }}
         </div>
-        <div style="display: none;">
-            {{ form_rest(app.form) }}
+
+        {% if app.userEdit and (not app['tariffPlanFlag'] or app['tariffPlanSubscriptionFlag']) %}
+        <div id="modalbox_ad">
+            <div class="devoops-modal channel-form">
+                <div class="devoops-modal-header">
+                    <div class="modal-header-name">
+                        <span>{{ 'User subscription on tv-channels'|trans }}</span>
+                    </div>
+                    <div class="box-icons">
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <form class="form-horizontal" role="form" action="{{app.request.baseUrl}}/{{app.controller_alias}}/save-subscribed-tv">
+                    <div class="devoops-modal-inner">
+                        <div class="box">
+                            <div class="box-content" >
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <fieldset id="letters" class="col-sm-12">
+                                            <div class="col-sm-4">
+                                                <label class="col-sm-12 text-center">{{ 'Available'|trans }}</label>
+                                                <select id="not_subscribed_tv" class="left populate placeholder col-sm-12" multiple="multiple" name="not_subscribed_tv" size="20">
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <br><br><br><br><br><br><br>
+                                                <button type="button" class="add all btn btn-block btn-default"> {{ 'all'|trans }} &gt;&gt; </button>
+                                                <button type="button" class="add btn btn-block btn-default"> &gt; </button>
+                                                <button type="button" class="remove btn btn-block btn-default"> &lt; </button>
+                                                <button type="button" class="remove all btn btn-block btn-default"> &lt;&lt; {{ 'all'|trans }}</button>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <label class="col-sm-12 text-center">{{ 'Selected'|trans }}</label>
+                                                <select id="subscribed_tv" class="right populate placeholder col-sm-12" multiple="multiple" name="subscribed_tv" size="20">
+                                                </select>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="devoops-modal-bottom">
+                        <div class="box">
+                            <div class="box-content">
+                                <div class="row">
+                                    <div class="pull-right">
+                                        <button type="submit" class="btn btn-success  pull-right">{{ 'Save'|trans }}</button>
+                                        <button type="reset" class="btn btn-default  pull-right">{{ 'Cancel'|trans }}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
-        {{ form_end(app['form']) }}
-    </div>
+        {% endif %}
+
     <script type="text/javascript" defer>
 
         var select2Opt = {minimumResultsForSearch: -1, dropdownAutoWidth: false, width: '100%'};
@@ -595,6 +664,27 @@
                     }
                     return false;
                 });
+
+                {% if app.userEdit and (not app['tariffPlanFlag'] or app['tariffPlanSubscriptionFlag']) %}
+                $(document).on('click', "#tv_subscription", function (e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    ajaxPostSend($(this).attr('href'), $(this).data());
+                });
+
+                $("#modalbox_ad").on('click', 'button[type="submit"]', function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var sendData = {
+                        user_id: $('#form_id').val(),
+                        sub_ch: []
+                    };
+                    $("#subscribed_tv option").each(function(){
+                        sendData.sub_ch.push($(this).val())
+                    });
+                    ajaxPostSend($(this).closest('form').attr('action'), sendData);
+                });
+                {% endif %}
             });
         }
         document.addEventListener("DOMContentLoaded", yelp, false);
@@ -606,6 +696,38 @@
         var resetUserFavTv = function (obj) {
             $(obj).closest('.form-group').find('input').val(0);
         };
+        {% if app.userEdit and (not app['tariffPlanFlag'] or app['tariffPlanSubscriptionFlag']) %}
+        var setSubscribedTVModal = function(data){
+/*            var tv_subs_link = $("#tv_subscription");
+            tv_subs_link.text(tv_subs_link.text().replace(/\([^\)]*//*ig, data.subscribe_tv_cost ? '(' + data.subscribe_tv_cost : '(0.00'));*/
+
+            if (data.not_subscribed_tv) {
+                $("#not_subscribed_tv").empty();
+                $.each(data.not_subscribed_tv, function(){
+                    $("#not_subscribed_tv").append('<option value="'+this.id+'">'+this.name+'</option>');
+                });
+            }
+
+            if (data.subscribed_tv) {
+                $("#subscribed_tv").empty();
+                $.each(data.subscribed_tv, function(){
+                    $("#subscribed_tv").append('<option value="'+this.id+'">'+this.name+'</option>');
+                });
+            }
+
+            $("#modalbox_ad").show();
+        };
+
+        var hideSubscribedTVModal = function(data){
+            $("#modalbox_ad").hide();
+            JSSuccessModalBox(data);
+        };
+
+        var hideSubscribedTVModalError = function(data){
+            JSErrorModalBox(data);
+        };
+
+        {% endif %}
     </script>
     {% else %}
     <div id="add_channel">

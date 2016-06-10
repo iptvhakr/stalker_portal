@@ -364,8 +364,9 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
     }
     
     public function setPlayed(){
-        $itv_id = intval($_REQUEST['itv_id']);
-        
+        $itv_id   = intval($_REQUEST['itv_id']);
+        $censored = intval($_REQUEST['censored']);
+
         $this->db->insert('played_itv', array(
                                             'itv_id'      => $itv_id,
                                             'uid'         => $this->stb->id,
@@ -376,9 +377,11 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
         $this->db->update('users',
                           array('time_last_play_tv' => 'NOW()'),
                           array('id' => $this->stb->id));
-        
-        $this->setLastId($itv_id);
-        
+
+        if (!$censored){
+            $this->setLastId($itv_id);
+        }
+
         return true;
     }
     

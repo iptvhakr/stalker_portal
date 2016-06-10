@@ -9,12 +9,12 @@
 		"": {
 			"Cancel": "Отмена",
 			"Exit": "Выход",
+			"Search": "Поиск",
 			"by name": "по имени",
 			"by number": "по номеру",
 			"menu": "меню",
 			"no stations": "нет радиостанций",
 			"radio stations": "радиостанции",
-			"search": "поиск",
 			"sorting": "сортировка"
 		}
 	}

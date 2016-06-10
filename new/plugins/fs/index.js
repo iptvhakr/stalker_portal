@@ -21,9 +21,14 @@ function Fs ( config ) {
 
     Object.defineProperty(this, 'onMount', {
         set: function ( fn ) {
-            window.parent.stbEvent.addListener('device:mount', function ( state ) {
-                //self.emit('device:mount', state);
-                fn ( state );
+            window.parent.stbEvent.addListener('message', function ( evt ) {
+                if ( evt.broadcast ) {
+                    if ( evt.message === 'storage.mount' ) {
+                        fn(true);
+                    } else if ( evt.message === 'storage.unmount' ) {
+                        fn(false);
+                    }
+                }
             });
         }
     });
@@ -54,7 +59,7 @@ Fs.prototype.readDir = function ( path, callback ) {
 
         data = {
             dirs: dirs.reduce(function ( acc, item ) {
-                return acc.concat(item !== '' ? { name: item.slice(0, -1), type: 3 } : []);
+                return acc.concat(item !== '' ? { name: item.slice(0, -1), type: 9 } : []);
             }, []),
             files: files.reduce(function ( acc, item ) {
                 return item.name ? acc.concat(item) : acc;
@@ -76,15 +81,21 @@ Fs.prototype.readDir = function ( path, callback ) {
  * @param {string} path path to the file in file system
  * @param {Function} callback method to invoke with a result of operation
  */
-function readFile ( path, callback ) {
+Fs.prototype.readFile = function ( path, callback ) {
     'use strict';
 
-    var res = gSTB.RDir('GetFile "' + uri + '"');
+    var result;
+
+    if ( typeof callback !== 'function' ) {
+        throw new Error('[Fs::readFile()] callback must be a function');
+    }
+
+    result = gSTB.RDir('GetFile "' + path + '"');
 
     setTimeout(function () {
-        callback(null, res);
+        callback(null, result);
     }, 0);
-}
+};
 
 
 /**

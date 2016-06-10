@@ -609,8 +609,6 @@ a {
   color: #FEC500;
   padding-left: 30px;
 }
-.panelEx.left .item:nth-child(n + 2) .component.layout div:last-child,
-.panelEx.right .item div:first-letter,
 .persistentMainEntries {
   text-transform: capitalize;
 }
@@ -625,10 +623,6 @@ a {
 .denseRightDisplay .component.layout,
 .denseRightDisplay .component.layout > div {
   display: block;
-}
-.denseRightDisplay .item div {
-  height: 30px !important;
-  line-height: 30px !important;
 }
 .denseRightDisplay .item div div:last-child {
   overflow: hidden;
@@ -667,14 +661,12 @@ a {
 .panelEx.main .item {
   white-space: nowrap;
 }
-.panelEx.right .component.list.layoutList {
-  position: static;
-}
 .infoStorageDiagram {
   border: 12px solid #303030;
-  margin: 0 auto;
-  position: relative;
-  top: -216px;
+  left: 50%;
+  margin-left: -151.35135135px;
+  position: absolute;
+  top: 255px;
   width: 302.7027027px !important;
   height: 302.7027027px !important;
   text-align: center;
@@ -701,14 +693,19 @@ a {
   right: 7.5px;
   top: 102px;
 }
+.filterScroll {
+  height: 306px !important;
+  position: absolute;
+  right: 7.5px;
+  top: 102px;
+}
 .cntIndicators {
   height: 30px;
   line-height: 30px !important;
   padding-left: 30px;
-  position: relative;
-  top: -236.84210526px;
+  position: absolute;
+  top: 210px;
   width: 100%;
-  text-transform: capitalize;
 }
 .allocSpaceElem,
 .freeSpaceElem {
@@ -721,11 +718,8 @@ a {
   border: 1px solid #303030;
 }
 .freeSpaceElem {
-  margin-left: 210px;
+  margin-left: 60px;
   border: 1px solid #303030;
-}
-.denseRightDisplay .body > .layoutList {
-  height: 588px;
 }
 .cancelBtn,
 .createBtn {
@@ -734,79 +728,28 @@ a {
 .authorizeBtn {
   width: 100%;
 }
-.inactiveBtn {
-  background: initial !important;
+.component.modalMessage .input {
+  padding-left: 30px;
+  text-align: left;
 }
 .input {
   color: inherit !important;
 }
-html {
-  overflow: auto;
+.component.scrollArea {
+  height: 588px;
 }
-div.develop canvas {
-  cursor: none;
-  visibility: hidden;
-  position: absolute;
-  width: 1920px;
-  height: 1080px;
+.component.scrollArea > .body > div {
+  font-size: 29.7px;
+  word-wrap: break-word;
+  word-break: break-all;
+  padding: 0 30px;
 }
-div.develop canvas.active {
-  visibility: visible;
-  z-index: 1000;
+.component.scrollArea > .body > div.title {
+  color: gold;
+  padding: 30px 30px 0 30px;
 }
-body.develop {
-  outline: 1px dashed #005000;
-  outline-offset: -1px;
-}
-body.develop .component {
-  outline: 1px dashed #005000;
-  outline-offset: -1px;
-}
-body.develop .component.focus {
-  outline: 1px dashed red;
-}
-body.develop .component.wired {
-  outline-width: 3px;
-  outline-style: dotted;
-}
-body.develop .component.wired div,
-body.develop .component.wired td {
-  outline: 1px dashed grey;
-  outline-offset: -1px;
-}
-body.develop .component.button {
-  outline: none;
-}
-body.develop .component.button .text,
-body.develop .component.button .icon {
-  outline: 1px dashed #005000;
-  outline-offset: -1px;
-}
-body.develop .component.button.focus .text,
-body.develop .component.button.focus .icon {
-  outline: 1px dashed red;
-}
-body.develop .component.list > .item {
-  outline: 1px dashed #000000;
-  outline-offset: -1px;
-}
-body.develop .component.list > .item.focus {
-  outline: 1px dashed orange;
-  outline-offset: -1px;
-}
-body.develop .component.grid td.item {
-  outline: 1px dashed #000000;
-  outline-offset: -1px;
-}
-body.develop .component.grid td.item.focus {
-  outline: 1px dashed orange;
-  outline-offset: -1px;
-}
-body.develop .component.input > .body {
-  outline: 1px dashed #000;
-}
-body.develop .component.focus.input > .body {
-  outline: 1px dashed red;
+.component.scrollArea > .body > div:last-child {
+  padding-bottom: 30px;
 }
 
 /*# sourceMappingURL=develop.1080.css.map */

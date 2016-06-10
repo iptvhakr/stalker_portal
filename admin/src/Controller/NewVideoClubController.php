@@ -2828,7 +2828,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         }
     }
     
-    private function getExternalImage($url, $video_id = FALSE, $file_num = FALSE) {
+    private function getExternalImage($url, $video_id = FALSE, $file_num = 0) {
         $cover_id = FALSE;
         try {
             $tmpfname = tempnam("/tmp", "video_cover");
@@ -2842,8 +2842,12 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
 
         if ($cover) {
 
-            if (!$cover->resizeImage(240, 320, \Imagick::FILTER_LANCZOS, 1)) {
-                $error = $this->setLocalization('Error: could not resize cover');
+            try{
+                if (!$cover->resizeImage(240, 320, \Imagick::FILTER_LANCZOS, 1)) {
+                    $error = $this->setLocalization('Error: could not resize cover');
+                }
+            } catch (\ImagickException $e) {
+                $error = $this->setLocalization('Error') . ': ' . $e->getMessage();
             }
 
             $cover_filename = substr($url, strrpos($url, '/') + 1);
@@ -2865,8 +2869,14 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
             $img_path = $this->getCoverFolder($cover_id);
             umask(0);
 
-            if (empty($error) && !$cover->writeImage($img_path . '/' . $cover_id . '.jpg')) {
+            if (empty($error) && !empty($cover_id) && $img_path != -1) {
                 $error = $this->setLocalization('Error: could not save cover image');
+            } else {
+                try{
+                    $cover->writeImage($img_path . '/' . $cover_id . '.jpg');
+                } catch (\ImagickException $e) {
+                    $error = $this->setLocalization('Error') . ': ' . $e->getMessage();
+                }
             }
 
             $cover->destroy();

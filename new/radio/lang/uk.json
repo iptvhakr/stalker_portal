@@ -9,12 +9,12 @@
 		"": {
 			"Cancel": "",
 			"Exit": "",
+			"Search": "Пошук",
 			"by name": "по імені",
 			"by number": "по номеру",
 			"menu": "меню",
 			"no stations": "немає радіостанцій",
 			"radio stations": "радіостанції",
-			"search": "пошук",
 			"sorting": "сортування"
 		}
 	}
