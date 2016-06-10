@@ -17,13 +17,13 @@
 			"Exit": "Выход",
 			"Favorite": "Избранное",
 			"Menu": "Меню",
-			"No such channel number": "",
+			"No such channel number": "Канала с таким номером нет",
 			"Play": "Смотреть",
 			"Record": "Запись",
-			"Reset filters": "",
+			"Reset filters": "Сбросить фильтры",
 			"Search": "Поиск",
 			"Sort": "Сортировка",
-			"TV": "",
+			"TV": "ТВ",
 			"Tv program": "Программа передач",
 			"Watch TV shows, movies, tv series, news and educational programs in digital quality.": "Смотрите телепередачи, фильмы, сериалы, новостные и познавательные программы в цифровом качестве."
 		}
