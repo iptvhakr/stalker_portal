@@ -115,7 +115,6 @@
                         });
                     }
                 },
-                "deferLoading": [{{ app.recordsFiltered }}, {{ app.totalRecords }}],
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
@@ -132,7 +131,6 @@
             }).prev('.dataTables_processing').hide('', function(){
                 $('.dataTables_filter').hide('');
             });
-            $('#datatable-1').DataTable().ajax.reload();
         }
 
         function yelp() {
@@ -169,6 +167,7 @@
                             default : { $("#ttl").val("{{ app['defTTL']['other'] }}"); break; }
                                 {% endif %}
                         }
+                        DemoSelect2();
                         return false;
                     });
 
@@ -231,6 +230,7 @@
             checkFields('#s2_schedule_type');
             checkFields('#s2_repeating_interval');
             checkFields('#date_type_day input');
+            DemoSelect2();
             $("#modalbox_ad").show();
             return false;
         };

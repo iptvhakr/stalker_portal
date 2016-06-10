@@ -37,12 +37,38 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
             $media_id = $tmp_arr[1];
         }elseif (preg_match("/\/media\/file_(\d+).mpg(.*)/", $_REQUEST['cmd'], $tmp_arr)){
             $file_id = $tmp_arr[1];
+
             $file = Video::getFileById($file_id);
 
             if (!empty($file)){
                 $media_id = $file['video_id'];
             }else{
                 $media_id = 0;
+            }
+
+            if (!empty($_REQUEST['series'])){
+
+                $season_id = Mysql::getInstance()->from('video_season_series')
+                    ->where(array(
+                        'id' => $file['series_id']
+                    ))
+                    ->get()
+                    ->first('season_id');
+
+                $episode = Mysql::getInstance()->from('video_season_series')
+                    ->where(array(
+                        'season_id'     => $season_id,
+                        'series_number' => intval($_REQUEST['series'])
+                    ))
+                    ->get()
+                    ->first();
+
+                $file_id = Mysql::getInstance()->from('video_series_files')
+                    ->where(array(
+                        'series_id' => $episode['id']
+                        ))
+                    ->get()
+                    ->first('id');
             }
         }
 
@@ -819,6 +845,11 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
 
         $episodes->limit(self::max_page_items, $offset);
 
+        $episodes_nums = clone $episodes;
+        $episodes_nums = $episodes_nums->nolimit()->get()->all('series_number');
+
+        //$episodes_nums = array_map('intval', $episodes_nums);
+
         $this->setResponseData($episodes);
 
         for ($i = 0; $i < count($this->response['data']); $i++) {
@@ -834,6 +865,8 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
             }
 
             $this->response['data'][$i]['is_episode'] = true;
+
+            $this->response['data'][$i]['series'] = $episodes_nums;
         }
 
         if (!empty($_REQUEST['row'])){

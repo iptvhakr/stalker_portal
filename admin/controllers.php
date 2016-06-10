@@ -1,14 +1,11 @@
 <?php
 
 namespace Controller;
+use \Silex\Application;
 
 $app['saveFiles'] = function() use ($app) {
     return new \Lib\Save($app);
 };
-
-//$app->get('/', function() use ($app) {
-//    return $app->redirect('tv-channels');
-//})->bind('homepage');
 
 $app->get('/{controller}', function($controller, $namespace = __NAMESPACE__) use ($app) {
     $action = 'index';

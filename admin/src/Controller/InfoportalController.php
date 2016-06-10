@@ -47,12 +47,6 @@ class InfoportalController extends \Controller\BaseStalkerController {
 
         $this->app['allServices'] = $this->allServices;
 
-        $list = $this->phone_book_list_json();
-        
-        $this->app['allPhone'] = $list['data'];
-        $this->app['totalRecords'] = $list['recordsTotal'];
-        $this->app['recordsFiltered'] = $list['recordsFiltered'];
-        
         $attribute = $this->getPhoneBoockDropdownAttribute();
         $attribute_filter = FALSE;
         if (empty($this->data['filters']['service'])) {
@@ -83,13 +77,7 @@ class InfoportalController extends \Controller\BaseStalkerController {
         $attribute = $this->getHumorDropdownAttribute();
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
-        
-        $list = $this->humor_list_json();
-        
-        $this->app['allData'] = $list['data'];
-        $this->app['totalRecords'] = $list['recordsTotal'];
-        $this->app['recordsFiltered'] = $list['recordsFiltered'];
-        
+
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 

@@ -84,7 +84,6 @@
                         });
                     }
                 },
-                "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
             {% if app['filters']['stat_to'] != 'genre' %}
             {% else %}
                 /*"serverSide": false,*/
@@ -109,8 +108,6 @@
                     $(".dataTables_filter").hide();
                 {% endif %}
             });
-            $('#datatable-1').DataTable().ajax.reload();
-
         }
 
         function yelp() {

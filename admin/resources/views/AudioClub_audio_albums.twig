@@ -81,7 +81,6 @@
                 "ajax": {
                     "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/audio-albums-list-json"
                 },
-                "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
@@ -98,53 +97,17 @@
                     {"className": "data-filter-status", "targets": [-2]}
                 ]
             }).prev('.dataTables_processing').hide('');
-            $('#datatable-1').DataTable().ajax.reload();
         }
 
         function yelp() {
             $(document).ready(function () {
-				
-
-		
                 $(document).on('click', "a.main_ajax", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
                     var _this = $(this);
 
-                    $.ajax({
-                        url: $(this).attr('href'),
-                        type: 'POST',
-                        data: $(this).data(),
-                        success: function (data) {
-                            if (data.success) {
-                                for (var key in data) {
-                                    _this.data(key, data[key]);
-                                }
-                            } else {
-                                alert("{{ 'Some server error'|trans }}");
-                            }
-                        },
-                        error: function (data) {
-                            var errAction = '';
-                            if (typeof (data.responseJSON) == 'object') {
-                                errAction += data.responseJSON.action + 'Error';
-                                for (var key in data.responseJSON) {
-                                    _this.data(key, data.responseJSON[key]);
-                                }
-                            }
-                            if ($.isFunction(window[errAction])) {
-                                window[errAction]($(_this));
-                            } else {
-                                alert("{{ 'Some network error or access denied'|trans }}");
-                            }
-                        },
-                        dataType: "json",
-                        async: false
-                    });
+                    ajaxPostSend($(this).attr('href'), $(this).data());
 
-                    if ($.isFunction(window[$(this).data('action')]) && !$(this).data('error')) {
-                        window[$(this).data('action')]($(this));
-                    }
                     _this.closest('div.open').removeClass('open');
                     return false;
                 });
@@ -159,9 +122,5 @@
             $('#datatable-1').DataTable().ajax.reload();
         };
 
-        var removeAudioAlbum = function (obj) {
-            var cRow = $(obj).closest('tr');
-            $('#datatable-1').DataTable().row(cRow).remove().draw(false);
-        }
     </script>
 {% endblock %}

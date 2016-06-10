@@ -11,7 +11,7 @@ class RESTCommandItv extends RESTCommand
 
     public function __construct(){
         $this->manager = \Itv::getInstance();
-        $this->allowed_fields = array_fill_keys(array('id', 'name', 'number', 'base_ch', 'hd', 'url', 'enable_monitoring'), true);
+        $this->allowed_fields = array_fill_keys(array('id', 'name', 'number', 'base_ch', 'hd', 'url', 'enable_monitoring', 'descr'), true);
     }
 
     public function get(RESTRequest $request){
@@ -34,6 +34,38 @@ class RESTCommandItv extends RESTCommand
         return $itv_list;
     }
 
+    public function create(RESTRequest $request){
+
+        $data = $request->getData();
+
+        if (empty($data)){
+            throw new RESTCommandException('HTTP POST data is empty');
+        }
+        
+        $data['modified'] = date("Y-m-d H:i:s");
+        $data['base_ch'] = 1;
+        $data['cmd'] = $url = $data['url'];
+        unset ($data['url']);
+        
+        Mysql::getInstance()->delete('ch_links', array('ch_id' => $data['id']));
+        
+        $link = array ('ch_id'=>$data['id'], 'url'=>$url, 'status'=>$data['status']);
+        Mysql::getInstance()->insert('ch_links', $link);
+        return Mysql::getInstance()->insert('itv', $data)->insert_id();
+    }
+    
+    public function delete(RESTRequest $request){
+
+        $identifiers = $request->getIdentifiers();
+
+        if (count($identifiers) != 1){
+            throw new RESTCommandException('Identifier count failed');
+        }
+
+        Mysql::getInstance()->delete('ch_links', array('ch_id' => $identifiers[0]));
+        return Mysql::getInstance()->delete('itv', array('id' => $identifiers[0]));
+    }
+ 
     public function update(RESTRequest $request){
 
         $put = $request->getPut();

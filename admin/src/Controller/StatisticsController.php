@@ -10,50 +10,10 @@ use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
 
 class StatisticsController extends \Controller\BaseStalkerController {
 
-    protected $allVideoStat = array();
-
-    protected $allAbonentStat = array();
-
-    protected $allNoActiveAbonentStat = array();
-
-    protected $taskAllState = array();
-
     protected $taskType = array();
-    
-    private $videoQuality = array(
-        0=>array('id' => '1', 'title' => 'SD'), 
-        1=>array('id' => '2', 'title' => 'HD'), 
-    );
-    
-    private $stateColor = array('primary','success','warning','danger', 'default');
-    
+
     public function __construct(Application $app) {
         parent::__construct($app, __CLASS__);
-
-        $this->allVideoStat = array(
-            array('id' => 'all',    'title' => $this->setLocalization('General')),
-            array('id' => 'daily',  'title' => $this->setLocalization('By days')),
-            array('id' => 'genre',  'title' => $this->setLocalization('By genres'))
-        );
-
-        $this->allAbonentStat = array(
-            array('id' => 'tv',     'title' => $this->setLocalization('TV')),
-            array('id' => 'video',  'title' => $this->setLocalization('Movies')),
-            array('id' => 'anec',   'title' => $this->setLocalization('Humor'))
-        );
-
-        $this->allNoActiveAbonentStat = array(
-            array('id' => 'tv',     'title' => $this->setLocalization('TV')),
-            array('id' => 'video',  'title' => $this->setLocalization('Movies'))
-        );
-
-        $this->taskAllState = array(
-            0=>array('id' => '1', 'title' => $this->setLocalization('Open')),
-            1=>array('id' => '2', 'title' => $this->setLocalization('Done')),
-            2=>array('id' => '3', 'title' => $this->setLocalization('Rejected')),
-            3=>array('id' => '4', 'title' => $this->setLocalization('Expired')),
-            4=>array('id' => '5', 'title' => $this->setLocalization('Archive'))
-        );
 
         $this->taskType = array(
             array('id' => 'moderator_tasks',    'title' => $this->setLocalization('Movies')),
@@ -96,7 +56,11 @@ class StatisticsController extends \Controller\BaseStalkerController {
         $this->app['filters'] = $this->data['filters'];
         $filter = $this->app['filters']['stat_to'];
 
-        $this->app['allVideoStat'] = $this->allVideoStat;
+        $this->app['allVideoStat'] = array(
+            array('id' => 'all',    'title' => $this->setLocalization('General')),
+            array('id' => 'daily',  'title' => $this->setLocalization('By days')),
+            array('id' => 'genre',  'title' => $this->setLocalization('By genres'))
+        );
 
         $attr_func = "getVideo" . ucfirst($filter) . "DropdownAttribute";
 
@@ -104,11 +68,6 @@ class StatisticsController extends \Controller\BaseStalkerController {
         $this->checkDropdownAttribute($attribute, $dropdown_filters);
         $this->app['dropdownAttribute'] = $attribute;
         
-        $list = $this->stat_video_list_json();
-        
-        $this->app['allStat'] = $list['data'];
-        $this->app['totalRecords'] = $list['recordsTotal'];
-        $this->app['recordsFiltered'] = $list['recordsFiltered'];
         $date_fields = $this->getBeginEndPeriod();
         $this->app['minDatepickerDate'] = $this->db->getMinDateFromTable($date_fields['target_table'], $date_fields['time_begin']);
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
@@ -126,12 +85,6 @@ class StatisticsController extends \Controller\BaseStalkerController {
         $this->app['filters'] = (array_key_exists('filters', $this->data) ? $this->data['filters'] : array());
         $this->app['allTVLocale'] = $this->db->getTVLocale();
 
-        $list = $this->stat_tv_list_json();
-        
-        $this->app['allStat'] = $list['data'];
-        $this->app['totalRecords'] = $list['recordsTotal'];
-        $this->app['recordsFiltered'] = $list['recordsFiltered'];
-
         $date_fields = $this->getBeginEndPeriod();
         $this->app['minDatepickerDate'] = $this->db->getMinDateFromTable($date_fields['target_table'], $date_fields['time_begin']);
 
@@ -146,12 +99,6 @@ class StatisticsController extends \Controller\BaseStalkerController {
         $attribute = $this->getTvArchiveDropdownAttribute();
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
-
-        $list = $this->stat_tv_archive_list_json();
-        
-        $this->app['allStat'] = $list['data'];
-        $this->app['totalRecords'] = $list['recordsTotal'];
-        $this->app['recordsFiltered'] = $list['recordsFiltered'];
 
         $date_fields = $this->getBeginEndPeriod();
         $this->app['minDatepickerDate'] = $this->db->getMinDateFromTable($date_fields['target_table'], $date_fields['time_begin']);
@@ -168,12 +115,6 @@ class StatisticsController extends \Controller\BaseStalkerController {
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
 
-        $list = $this->stat_timeshift_list_json();
-        
-        $this->app['allStat'] = $list['data'];
-        $this->app['totalRecords'] = $list['recordsTotal'];
-        $this->app['recordsFiltered'] = $list['recordsFiltered'];
-
         $date_fields = $this->getBeginEndPeriod();
         $this->app['minDatepickerDate'] = $this->db->getMinDateFromTable($date_fields['target_table'], $date_fields['time_begin']);
 
@@ -184,26 +125,24 @@ class StatisticsController extends \Controller\BaseStalkerController {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
-        $task_report_state = $this->taskAllState;
+        $task_report_state = array(
+            0=>array('id' => '1', 'title' => $this->setLocalization('Open')),
+            1=>array('id' => '2', 'title' => $this->setLocalization('Done')),
+            2=>array('id' => '3', 'title' => $this->setLocalization('Rejected')),
+            3=>array('id' => '4', 'title' => $this->setLocalization('Expired')),
+            4=>array('id' => '5', 'title' => $this->setLocalization('Archive'))
+        );
+        $this->app["allTaskState"] = $task_report_state;
         unset($task_report_state[0]);
         unset($task_report_state[3]);
         unset($task_report_state[4]);
         $this->app['taskType'] = $this->taskType;
         $this->app['taskState'] = $task_report_state;
-        $this->app["allTaskState"] = $this->taskAllState;
-        $this->app['videoQuality'] = $this->videoQuality;
+        $this->app['videoQuality'] = array(
+            0=>array('id' => '1', 'title' => 'SD'),
+            1=>array('id' => '2', 'title' => 'HD'),
+        );
         $this->app['taskAdmin'] = $this->db->getAdmins(); // getAdmins( $user_id ) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        
-        
-        $list = $this->stat_moderators_list_json();
-        
-        $this->app['allData'] = $list['data'];
-        $this->app['totalRecords'] = $list['recordsTotal'];
-        $this->app['recordsFiltered'] = $list['recordsFiltered'];
-        
-        $this->app['task_type_title'] = $this->getTaskTitle($list['table']);
-        $this->app['task_type'] = $list['table'];
-        $this->app['taskStateColor'] = $this->stateColor;
 
         if (empty($this->data['filters']['task_type'])) {
             if (empty($this->data['filters'])) {
@@ -215,12 +154,17 @@ class StatisticsController extends \Controller\BaseStalkerController {
         } else {
             $dropdown_filters = "-filters-{$this->data['filters']['task_type']}";
         }
+
+        $this->app['task_type_title'] = $this->getTaskTitle($this->data['filters']['task_type']);
+        $this->app['task_type'] = $this->data['filters']['task_type'];
+        $this->app['taskStateColor'] = array('primary','success','warning','danger', 'default');
+
         $attribute = $this->getModeratorsDropdownAttribute();
         $this->checkDropdownAttribute($attribute, $dropdown_filters);
         $this->app['dropdownAttribute'] = $attribute;
-        
+
         if ($this->data['filters']['task_type'] == 'moderator_tasks'){
-            $this->app['allVideoDuration'] = $list['videotime'];                              //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            $this->app['allVideoDuration'] = array('hd_time' => -1, 'sd_time' => -1);                              //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         }
         $allArhivedate = $this->db->getArhiveIDs((($this->data['filters']['task_type'] == 'moderator_tasks')? 'tasks': 'karaoke') . '_archive');
         $this->app['allArhivedate'] = array_reverse($allArhivedate);
@@ -252,19 +196,17 @@ class StatisticsController extends \Controller\BaseStalkerController {
         $this->app['filters'] = $this->data['filters'];
         $filter = $this->app['filters']['abon_to'];
 
-        $this->app['allAbonentStat'] = $this->allAbonentStat;
+        $this->app['allAbonentStat'] = array(
+            array('id' => 'tv',     'title' => $this->setLocalization('TV')),
+            array('id' => 'video',  'title' => $this->setLocalization('Movies')),
+            array('id' => 'anec',   'title' => $this->setLocalization('Humor'))
+        );
 
         $attr_func = "getAbonent" . ucfirst($filter) . "DropdownAttribute";
 
         $attribute = $this->$attr_func();
         $this->checkDropdownAttribute($attribute, $dropdown_filters);
         $this->app['dropdownAttribute'] = $attribute;
-
-        $list = $this->stat_abonents_list_json();
-        
-        $this->app['allStat'] = $list['data'];
-        $this->app['totalRecords'] = $list['recordsTotal'];
-        $this->app['recordsFiltered'] = $list['recordsFiltered'];
 
         $date_fields = $this->getBeginEndPeriod();
         $this->app['minDatepickerDate'] = $this->db->getMinDateFromTable($date_fields['target_table'], $date_fields['time_begin']);
@@ -291,19 +233,16 @@ class StatisticsController extends \Controller\BaseStalkerController {
         $this->app['filters'] = $this->data['filters'];
         $filter = $this->app['filters']['no_active_abonent'];
 
-        $this->app['allNoActiveAbonentStat'] = $this->allNoActiveAbonentStat;
+        $this->app['allNoActiveAbonentStat'] = array(
+            array('id' => 'tv',     'title' => $this->setLocalization('TV')),
+            array('id' => 'video',  'title' => $this->setLocalization('Movies'))
+        );
 
         $attr_func = "getNoActiveAbonent" . ucfirst($filter) . "DropdownAttribute";
 
         $attribute = $this->$attr_func();
         $this->checkDropdownAttribute($attribute, $dropdown_filters);
         $this->app['dropdownAttribute'] = $attribute;
-
-        $list = $this->stat_abonents_unactive_list_json();
-        
-        $this->app['allStat'] = $list['data'];
-        $this->app['totalRecords'] = $list['recordsTotal'];
-        $this->app['recordsFiltered'] = $list['recordsFiltered'];
 
         $date_fields = $this->getBeginEndPeriod();
         $this->app['minDatepickerDate'] = $this->db->getMinDateFromTable($date_fields['target_table'], $date_fields['time_begin']);
@@ -320,12 +259,6 @@ class StatisticsController extends \Controller\BaseStalkerController {
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
         
-        $list = $this->stat_claims_list_json();
-        
-        $this->app['allStat'] = $list['data'];
-        $this->app['totalRecords'] = $list['recordsTotal'];
-        $this->app['recordsFiltered'] = $list['recordsFiltered'];
-
         $date_fields = $this->getBeginEndPeriod();
         $this->app['minDatepickerDate'] = $this->db->getMinDateFromTable($date_fields['target_table'], $date_fields['time_begin']);
 
@@ -341,12 +274,6 @@ class StatisticsController extends \Controller\BaseStalkerController {
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
         
-        $list = $this->stat_claims_logs_list_json();
-        
-        $this->app['allStat'] = $list['data'];
-        $this->app['totalRecords'] = $list['recordsTotal'];
-        $this->app['recordsFiltered'] = $list['recordsFiltered'];
-
         $date_fields = $this->getBeginEndPeriod();
         $this->app['minDatepickerDate'] = $this->db->getMinDateFromTable($date_fields['target_table'], $date_fields['time_begin']);
 
@@ -974,7 +901,7 @@ class StatisticsController extends \Controller\BaseStalkerController {
             'table' => 'moderator_tasks'
         );
         $error = "Error";
-        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
+        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : array());
         
         $like_filter = array();
         $filter = $this->getStatisticsFilters($like_filter);

@@ -13,7 +13,6 @@ use Imagine\Image\Box;
 
 class TvChannelsController extends \Controller\BaseStalkerController {
 
-    private $logoHost;
     private $logoDir;
     private $broadcasting_keys = array(
         'cmd' => array(''),
@@ -41,26 +40,8 @@ class TvChannelsController extends \Controller\BaseStalkerController {
     public function __construct(Application $app) {
 
         parent::__construct($app, __CLASS__);
-        
-        $this->logoHost = $this->baseHost . Config::getSafe('portal_url', '/stalker_portal/') . "misc/logos";
         $this->logoDir = str_replace('/admin', '', $this->baseDir) . "/misc/logos";
-        $this->app['error_local'] = array();
         $this->app['baseHost'] = $this->baseHost;
-        $this->app['allArchive'] = array(
-            array('id' => 1, 'title' => $this->setLocalization('Yes')),
-            array('id' => 2, 'title' => $this->setLocalization('No'))
-        );
-        $this->app['allStatus'] = array(
-            array('id' => 1, 'title' => $this->setLocalization('Published')),
-            array('id' => 2, 'title' => $this->setLocalization('Unpublished'))
-        );
-
-        $this->app['allMonitoringStatus'] = array(
-            array('id' => 1, 'title' => $this->setLocalization('monitoring off')),
-            array('id' => 2, 'title' => $this->setLocalization('errors occurred')),
-            array('id' => 3, 'title' => $this->setLocalization('no errors')),
-            array('id' => 4, 'title' => $this->setLocalization('there are some problems'))
-        );
     }
 
     // ------------------- action method ---------------------------------------
@@ -83,11 +64,24 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
 
-        $allChannels = $this->iptv_list_json();
         $this->app['allChannels'] = $this->db->getAllFromTable('itv');
-        $this->app['recordsFiltered'] = $allChannels['recordsFiltered'];
-        $this->app['totalRecords'] = $allChannels['recordsTotal'];
         $this->app['allGenres'] = $this->getAllGenres();
+        $this->app['allArchive'] = array(
+            array('id' => 1, 'title' => $this->setLocalization('Yes')),
+            array('id' => 2, 'title' => $this->setLocalization('No'))
+        );
+
+        $this->app['allStatus'] = array(
+            array('id' => 1, 'title' => $this->setLocalization('Published')),
+            array('id' => 2, 'title' => $this->setLocalization('Unpublished'))
+        );
+
+        $this->app['allMonitoringStatus'] = array(
+            array('id' => 1, 'title' => $this->setLocalization('monitoring off')),
+            array('id' => 2, 'title' => $this->setLocalization('errors occurred')),
+            array('id' => 3, 'title' => $this->setLocalization('no errors')),
+            array('id' => 4, 'title' => $this->setLocalization('there are some problems'))
+        );
 
         $attribute = $this->getIptvListDropdownAttribute();
         $this->checkDropdownAttribute($attribute);
@@ -185,8 +179,6 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $this->setChannelLinks();
         $this->app['streamServers'] = $this->streamServers;
 
-        $this->app['error_local'] = array();
-
         $form = $this->buildForm($this->oneChannel);
 
         if ($this->saveChannelData($form)) {
@@ -211,12 +203,6 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
 
-        $list = $this->epg_list_json();
-
-        $this->app['allData'] = $list['data'];
-        $this->app['totalRecords'] = $list['recordsTotal'];
-        $this->app['recordsFiltered'] = $list['recordsFiltered'];
-
         $this->app['allLanguages'] = $this->getLanguageCodesEN();
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
@@ -227,12 +213,9 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
 
-        $this->app['dropdownAttribute'] = $this->getGenresDropdownAttribute();
-        $list = $this->tv_genres_list_json();
-
-        $this->app['allData'] = $list['data'];
-        $this->app['totalRecords'] = $list['recordsTotal'];
-        $this->app['recordsFiltered'] = $list['recordsFiltered'];
+        $attribute = $this->getGenresDropdownAttribute();
+        $this->checkDropdownAttribute($attribute);
+        $this->app['dropdownAttribute'] = $attribute;
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -471,8 +454,9 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                         chmod($img_path."/$res/$upload_id.$ext", 0644);
                     }
                     $error = '';
-                    $response = $this->generateAjaxResponse(array('pic' => $this->logoHost . "/320/$upload_id.$ext"), $error);
-                } catch (\Exception $e) {
+                    $logoHost = $this->baseHost . Config::getSafe('portal_url', '/stalker_portal/') . "misc/logos";
+                    $response = $this->generateAjaxResponse(array('pic' => $logoHost . "/320/$upload_id.$ext"), $error);
+                } catch (\ImagickException $e) {
                     $error = sprintf(_('Error save file %s'), $tmp['name']);
                     $response['msg'] = $e->getMessage() . '. ' . $error;
                 }

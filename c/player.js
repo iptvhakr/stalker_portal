@@ -2442,24 +2442,27 @@ player.prototype.play = function(item){
                 this.play_now(cmd);
             }
 
-            if (this.is_tv && this.cur_tv_item.lock != '1'){
+            if (this.is_tv){
 
-                this.send_last_tv_id(this.cur_tv_item.id);
+                this.send_last_tv_id(this.cur_tv_item.id, this.cur_tv_item.lock == '1');
 
-                if (stb.user.fav_itv_on){
+                if (this.cur_tv_item.lock != '1') {
 
-                    this.f_ch_idx = this.fav_channels.getIdxByVal('number', item.number);
+                    if (stb.user.fav_itv_on) {
 
-                    this.hist_f_ch_idx.push(item);
-                    this.hist_f_ch_idx.shift();
-                    _debug('this.hist_f_ch_idx', this.hist_f_ch_idx);
-                }else{
+                        this.f_ch_idx = this.fav_channels.getIdxByVal('number', item.number);
 
-                    this.ch_idx = this.channels.getIdxByVal('number', item.number);
+                        this.hist_f_ch_idx.push(item);
+                        this.hist_f_ch_idx.shift();
+                        _debug('this.hist_f_ch_idx', this.hist_f_ch_idx);
+                    } else {
 
-                    this.hist_ch_idx.push(item);
-                    this.hist_ch_idx.shift();
-                    _debug('this.hist_ch_idx', this.hist_ch_idx);
+                        this.ch_idx = this.channels.getIdxByVal('number', item.number);
+
+                        this.hist_ch_idx.push(item);
+                        this.hist_ch_idx.shift();
+                        _debug('this.hist_ch_idx', this.hist_ch_idx);
+                    }
                 }
             }
         }
@@ -3193,7 +3196,7 @@ player.prototype.show_info = function(item, direct_call){
         stb.clock.show();
         
         if (item.cur_series && parseInt(item.cur_series) > 0){
-            this.info.pos_series.innerHTML = item.cur_series + ' ' + get_word('player_series');
+            this.info.pos_series.innerHTML = (item.cur_season ? item.cur_season + ' ' + get_word('player_season') + ', ' : '') + item.cur_series + ' ' + get_word('player_series');
         }else if ((this.cur_media_item.hasOwnProperty('live_date') || this.pause.on) && this.active_time_shift){
             this.info.pos_series.innerHTML = module.time_shift.get_current_date();
         }else{
@@ -3417,9 +3420,13 @@ player.prototype.switch_channel = function(dir, show_info, do_not_invert){
     this.play(item);
 };
 
-player.prototype.send_last_tv_id = function(id){
-    _debug('send_last_tv_id', id);
-    
+player.prototype.send_last_tv_id = function(id, censored){
+    _debug('send_last_tv_id', id, censored);
+
+    censored = censored || false;
+
+    _debug('censored', censored);
+
     var self = this;
     
     window.clearTimeout(this.send_played_itv_timer);
@@ -3427,11 +3434,15 @@ player.prototype.send_last_tv_id = function(id){
     this.send_played_itv_timer = window.setTimeout(
 
         function(){
-            self.send_played_itv(id);
+            self.send_played_itv(id, censored);
         },
         
         this.send_last_tv_id_to
     );
+
+    if (censored){
+        return;
+    }
 
     _debug('this.last_tv_id', this.last_tv_id);
 
@@ -3463,13 +3474,16 @@ player.prototype.send_last_tv_id = function(id){
     )
 };
 
-player.prototype.send_played_itv = function(id){
-    
+player.prototype.send_played_itv = function(id, censored){
+
+    censored = censored || false;
+
     stb.load(
         {
             "type"   : "itv",
             "action" : "set_played",
-            "itv_id" : id
+            "itv_id" : id,
+            "censored" : censored
         },
         
         function(result){
