@@ -93,7 +93,6 @@
             "bFilter": true,
             "bPaginate": true,
             "bInfo":     true,
-            "deferLoading": [{{ app.recordsFiltered }}, {{ app.totalRecords }}],
             {% if attribute(app, 'dropdownAttribute') is defined %}
             {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
             {% endif %}
@@ -103,7 +102,6 @@
                 { "searchable": false, "targets": [ -1, -2, -3 ] }
             ]
         }).prev('.dataTables_processing').hide('');
-        $('#datatable-1').DataTable().ajax.reload();
     }
     function yelp() {
         $(document).ready(function () {

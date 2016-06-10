@@ -5,23 +5,24 @@
     <div id="iptv_list" class="dashboard">
         <div class="row" style="background: #fff none repeat scroll 0 0;">
            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
                 <button type="button" class="btn btn-success  pull-right" id="auto-update-button">{{ 'Auto-update within 59 seconds'|trans }}</button>
             </div>
         </div>
         <div class="row">
             <br>
             <div class="col-xs-12 col-sm-5">
-                <div class="box"> <a class="collapse-link">
-                    <div class="box-header">
-                        <div class="box-name">
-                            <span>{{ 'Statistisc'|trans }}</span>
-                        </div>
-                        <div class="circle-button box-icons">
+                <div class="box">
+                    <a class="collapse-link">
+                        <div class="box-header">
+                            <div class="box-name">
+                                <span>{{ 'Statistisc'|trans }}</span>
+                            </div>
+                            <div class="circle-button box-icons">
                                 <i class="fa fa-chevron-up"></i>
+                            </div>
+                            <div class="no-move"></div>
                         </div>
-                        <div class="no-move"></div>
-                    </div> </a>
+                    </a>
                     <div class="box-content">
                         <div class="dataTables_processing"></div>
                         <table class="table  table-hover table-datatable" id="datatable-1">
@@ -47,18 +48,20 @@
                     </div>
                 </div>
             </div>
-            {% if app.datatables['datatable-2'].data %}
+            {% if attribute(app, 'datatables') is defined and attribute(app.datatables, 'datatable-2') is defined and attribute(app.datatables['datatable-2'], 'data') is defined %}
             <div class="col-xs-12 col-sm-7">
-                <div class="box"><a class="collapse-link">
-                    <div class="box-header">
-                        <div class="box-name">
-                            <span>{{ 'Storages (measured in the number of the current session)'|trans }}</span>
-                        </div>
-                        <div class="circle-button box-icons">
+                <div class="box">
+                    <a class="collapse-link">
+                        <div class="box-header">
+                            <div class="box-name">
+                                <span>{{ 'Storages (measured in the number of the current session)'|trans }}</span>
+                            </div>
+                            <div class="circle-button box-icons">
                                 <i class="fa fa-chevron-up"></i>
+                            </div>
+                            <div class="no-move"></div>
                         </div>
-                        <div class="no-move"></div>
-                    </div> </a>
+                    </a>
                     <div class="box-content">
                         <div class="dataTables_processing"></div>
                         <table class="table  table-hover table-datatable" id="datatable-2">
@@ -72,7 +75,6 @@
                             </tr>
                             </thead>
                             <tbody>
-                            {% if attribute(app, 'datatables') is defined and attribute(app.datatables, 'datatable-2') is defined %}
                                 {%  autoescape false %}
                                 {% for item in app.datatables['datatable-2'].data %}
                                     <tr>
@@ -84,14 +86,13 @@
                                     </tr>
                                 {% endfor %}
                                 {% endautoescape %}
-                            {% endif %}
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
             {% endif %}
-            {% if app.datatables['datatable-3'].data %}
+            {% if attribute(app, 'datatables') is defined and attribute(app.datatables, 'datatable-3') is defined and attribute(app.datatables['datatable-3'], 'data') is defined %}
             <div class="col-xs-12 col-sm-5">
                 <div class="box">  <a class="collapse-link">
                     <div class="box-header">
@@ -114,7 +115,6 @@
                             </tr>
                             </thead>
                             <tbody>
-                            {% if attribute(app, 'datatables') is defined and attribute(app.datatables, 'datatable-3') is defined %}
                                 {%  autoescape false %}
                                 {% for item in app.datatables['datatable-3'].data %}
                                     <tr>
@@ -124,7 +124,6 @@
                                     </tr>
                                 {% endfor %}
                                 {% endautoescape %}
-                            {% endif %}
                             </tbody>
                         </table>
                     </div>
@@ -250,10 +249,13 @@
 
             {% if attribute(app, 'datatables') is defined %}
                 {% for item in app.datatables %}
-                    {% if item.data %}
-            $('#{{ item.datatableID }}').dataTable({
+                    {% if attribute(item, 'data') is defined %}
+            $('#{{ item.datatableID }}').on('xhr.dt', function (e, settings, json) {
+                /*console.log(json);*/
+            }).dataTable({
                 "ajax": {
-                    "url": "{{ app.request.baseUrl }}/index/{{ item.json_action_alias }}"
+                    "url": "{{ app.request.baseUrl }}/index/{{ item.json_action_alias }}",
+                    "data": function (d) {}
                 },
                 "deferLoading": {{ item.data|length }},
                 {% if item.data|length %}
@@ -267,7 +269,8 @@
                     /*{"width": '20%', "targets": [-3]}*/
                 ]
             }).prev('.dataTables_processing').hide('');
-            $('#{{ item.datatableID }}').DataTable().order([0, 'desc']).draw();
+            $('#{{ item.datatableID }}').DataTable().ajax.reload();
+            /*$('#{{ item.datatableID }}').DataTable().order([0, 'desc']).draw();*/
                     {% endif %}
                 {% endfor %}
             {% endif %}
@@ -275,7 +278,7 @@
 
         function DrawFlot(){
 
-            var d = [];
+            var d = [[0]];
 
             $.ajax({
                 dataType: 'json',
@@ -424,15 +427,7 @@
                 });
                 $('#datatable-1 > thead').hide();
 
-                $.getScript('//www.google.com/jsapi?autoload=' + JSON.stringify({"modules":[{"name":"visualization","version":"1","packages":["corechart"],"callback":"load_page_data"}]}));
-
-                $.getScript('{{app.request.baseUrl}}/plugins/flot/jquery.flot.js', function(){
-                    $.getScript('{{app.request.baseUrl}}/plugins/flot/jquery.flot.time.js', function(){
-                        $.getScript('{{app.request.baseUrl}}/plugins/flot/jquery.flot.navigate.js', function() {
-                            DrawFlot();
-                        });
-                    });
-                });
+                DrawFlot();
 
                 updateTimer();
                 $(document).on('click', '#auto-update-button', function(){

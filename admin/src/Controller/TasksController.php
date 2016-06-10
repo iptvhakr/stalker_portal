@@ -13,10 +13,6 @@ class TasksController extends \Controller\BaseStalkerController {
     protected $taskType = array();
     protected $taskState = array();
     protected $taskAllState = array();
-    private $videoQuality = array(
-            0=>array('id' => '1', 'title' => 'SD'), 
-            1=>array('id' => '2', 'title' => 'HD'), 
-        );
     private $stateColor = array('primary','success','warning','danger', 'default');
     
     private $uid = FALSE;
@@ -67,16 +63,7 @@ class TasksController extends \Controller\BaseStalkerController {
         $attribute = $this->getDropdownAttribute();
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
-        
-        $list = $this->tasks_list_json();
-        
-        $this->app['allData'] = $list['data'];
-        $this->app['totalRecords'] = $list['recordsTotal'];
-        $this->app['recordsFiltered'] = $list['recordsFiltered'];
-        $this->app['task_type_title'] = $this->getTaskTitle($list['table']);
-        $this->app['task_type'] = $list['table'];
-        $this->app['taskStateColor'] = $this->stateColor;
-        
+
         if (empty($this->data['filters']['task_type'])) {
             if (empty($this->data['filters'])) {
                 $this->data['filters'] = array('task_type' => 'moderator_tasks');
@@ -84,6 +71,10 @@ class TasksController extends \Controller\BaseStalkerController {
                 $this->data['filters']['task_type'] = 'moderator_tasks';
             }
         }
+
+        $this->app['task_type_title'] = $this->getTaskTitle($this->data['filters']['task_type']);
+        $this->app['task_type'] = $this->data['filters']['task_type'];
+        $this->app['taskStateColor'] = $this->stateColor;
         
         $this->app['filters'] = $this->data['filters'];
         $this->app['breadcrumbs']->addItem($this->setLocalization('List of tasks in the category') . " '{$this->app['task_type_title']}'");
@@ -99,20 +90,14 @@ class TasksController extends \Controller\BaseStalkerController {
         unset($task_report_state[3]);
         $this->app['taskType'] = $this->taskType;
         $this->app['taskState'] = $task_report_state;
-        $this->app['videoQuality'] = $this->videoQuality;
+        $this->app['videoQuality'] = array(
+            0=>array('id' => '1', 'title' => 'SD'),
+            1=>array('id' => '2', 'title' => 'HD'),
+        );
 
         $attribute = $this->getReportDropdownAttribute();
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
-        
-        $list = $this->tasks_report_json();
-        
-        $this->app['allData'] = $list['data'];
-        $this->app['totalRecords'] = $list['recordsTotal'];
-        $this->app['recordsFiltered'] = $list['recordsFiltered'];
-        $this->app['task_type_title'] = $this->getTaskTitle($list['table']);
-        $this->app['task_type'] = $list['table'];
-        $this->app['taskStateColor'] = $this->stateColor;
 
         if (empty($this->data['filters']['task_type'])) {
             if (empty($this->data['filters'])) {
@@ -121,9 +106,13 @@ class TasksController extends \Controller\BaseStalkerController {
                 $this->data['filters']['task_type'] = 'moderator_tasks';
             }
         }
-        
+
+        $this->app['task_type_title'] = $this->getTaskTitle($this->data['filters']['task_type']);
+        $this->app['task_type'] = $this->data['filters']['task_type'];
+        $this->app['taskStateColor'] = $this->stateColor;
+
         if ($this->data['filters']['task_type'] == 'moderator_tasks'){
-            $this->app['allVideoDuration'] = $list['videotime'];                              //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            $this->app['allVideoDuration'] = 0;                              //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         }
         $this->app['filters'] = $this->data['filters'];
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
@@ -186,8 +175,7 @@ class TasksController extends \Controller\BaseStalkerController {
                $last_row = $row;
             }
         }
-        
-        
+
         if (empty($last_row)) {
             $tmp = $this->app['taskAll'];
             $last_row = end($tmp);

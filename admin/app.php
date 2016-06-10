@@ -2,7 +2,6 @@
 
 use Symfony\Component\Translation\Loader\PoFileLoader;
 use Neutron\Silex\Provider\ImagineServiceProvider;
-//use Stalker\Lib\Core\Config;
 
 require_once __DIR__ . '/vendor/autoload.php';
 define('PROJECT_PATH', realpath(dirname(__FILE__) . '/../server/'));
@@ -50,8 +49,29 @@ textdomain('stb');
 bind_textdomain_codeset('stb', 'UTF-8');
 
 $app = new Silex\Application();
+$app['debug'] = Config::getSafe('admin_panel_debug', FALSE);
 
-$app['debug'] = true;
+if (Config::getSafe('admin_panel_debug_log', FALSE)) {
+    $log_date = new \DateTime();
+    $log_dir = __DIR__ . "/logs";
+    if (!is_dir($log_dir)) {
+        mkdir($log_dir);
+    }
+    if (is_dir($log_dir)) {
+        $log_file = "$log_dir/development_" . $log_date->format('Y-m-d') . ".log";
+        if (!is_file($log_file) && ($log_file_h = fopen($log_file, "a+")) !== FALSE) {
+            fclose($log_file_h);
+        }
+        if (is_file($log_file)) {
+            $app->register(new Silex\Provider\MonologServiceProvider(), array(
+                'monolog.logfile' => $log_file
+            ));
+
+            $app['monolog']->addInfo(str_pad('', 80, '-') . PHP_EOL);
+            $app['monolog']->addInfo(sprintf("Script begin timestamp - '%s'", $start_script_time) . PHP_EOL);
+        }
+    }
+}
 
 $app->register(new Silex\Provider\SessionServiceProvider());
 $app->register(new Silex\Provider\ValidatorServiceProvider());
@@ -64,10 +84,13 @@ $app->register(new Silex\Provider\TranslationServiceProvider(), array(
 ));
 $app['allowed_locales'] = $allowed_locales;
 
+$app['twig.options.cache'] = __DIR__ . '/resources/cache/twig';
+
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.options' => array(
-        'cache' => isset($app['twig.options.cache']) ? $app['twig.options.cache'] : false,
-        'strict_variables' => true
+        'cache' => isset($app['twig.options.cache']) && is_dir($app['twig.options.cache']) && is_writable($app['twig.options.cache']) ? $app['twig.options.cache'] : false,
+        'strict_variables' => true,
+        'auto_reload' => true
     ),
     'twig.path' => __DIR__ . '/resources/views',
 ));
@@ -84,14 +107,12 @@ $app['translator'] = $app->share($app->extend('translator', function($translator
             $translator->setLocale($lang);
             return $translator;
         }));
-$app["breadcrumbs.separator"] = "";        
-$app['twig'] = $app->share(
-        $app->extend(
-                'twig', function ($twig, $app) {
-            $twig->addExtension(new \nymo\Twig\Extension\BreadCrumbExtension($app));
-            return $twig;
-        }
-        )
+$app["breadcrumbs.separator"] = "";
+$app['twig'] = $app->share( $app->extend( 'twig', function ($twig, $app) {
+        $twig->addExtension(new \nymo\Twig\Extension\BreadCrumbExtension($app));
+        $twig->addExtension(new Twig_Extension_Optimizer());
+        return $twig;
+    })
 );
 
 return require_once 'controllers.php';

@@ -70,7 +70,6 @@
                 "ajax": {
                     "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/audio-years-list-json"
                 },
-                "deferLoading": [{{ app.recordsFiltered }}, {{ app.totalRecords }} ],
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
@@ -83,10 +82,10 @@
                 "aoColumnDefs": [
                     { className: "action-menu", "targets": [ -1 ] },
                     {"searchable": false, "targets": [-1]},
-                          {"sortable": false, "targets": [-1]}
+                    {"sortable": false, "targets": [-1]}
                 ]
             }).prev('.dataTables_processing').hide('');
-            $('#datatable-1').DataTable().ajax.reload();
+
         }
 
         function yelp() {
@@ -98,34 +97,7 @@
                     _this.val(_this.val().replace(/^\s+/ig, '').replace(/\s{2}$/, ' '));
                     _this.next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
                     $('#modalbox button[type="submit"]').removeAttr("disabled");
-                    $.ajax({
-                        url: '{{app.request.baseUrl}}/{{app.controller_alias}}/check-audio-years-name',
-                        type: 'POST',
-                        data: {name: _this.val()},
-                        success: function (data) {
-                            if (data.success) {
-                                $('#modalbox button[type="submit"]').removeAttr("disabled");
-                                _this.next('div').append('<i class="txt-success fa fa-check"></i> ' + data.chk_rezult).css('visibility', 'visible');
-                            } else if (data.error) {
-                                $('#modalbox button[type="submit"]').attr("disabled", "disabled");
-                                console.log(data.error);
-                            } else {
-                                $('#modalbox button[type="submit"]').removeAttr("disabled");
-                                console.log('{{ 'Some server error'|trans }}');
-                            }
-                        },
-                        error: function (data) {
-                            if (typeof (data.responseJSON) != 'undefined' && typeof (data.responseJSON.error) != 'undefined') {
-                                $('#modalbox button[type="submit"]').attr("disabled", "disabled");
-                                _this.next('div').append('<i class="txt-danger fa fa-ban"></i> ' + data.responseJSON.error).css('visibility', 'visible');
-                            } else {
-                                $('#modalbox button[type="submit"]').removeAttr("disabled");
-                                console.log('{{ 'Some network error or access denied'|trans }}');
-                            }
-                        },
-                        dataType: "json",
-                        async: false
-                    });
+                    ajaxPostSend('{{app.request.baseUrl}}/{{app.controller_alias}}/check-audio-years-name', {name: _this.val()});
                     return false;
                 });
 
@@ -162,15 +134,16 @@
                         id: $("#modalbox input[type='hidden']").val(),
                         name: $("#modalbox input[type='text']").val()
                     };
-					if( !$('#audio_years_name').val() ) {  $('#audio_years_name').css('border','1px solid red');
+					if( !$('#audio_years_name').val() ) {
+                        $('#audio_years_name').css('border','1px solid red');
 					} else {
-					$('#audio_years_name').css('border','');
-                    e.stopPropagation();
-                    e.preventDefault();
-                    ajaxPostSend($("#modalbox form").attr('action'), sendData, false);
-                    closeModalBox();
-					notty('<span>{{ 'Done'|trans }}!</span>','success');
-                    return false;
+                        $('#audio_years_name').css('border','');
+                        e.stopPropagation();
+                        e.preventDefault();
+                        ajaxPostSend($("#modalbox form").attr('action'), sendData, false);
+                        closeModalBox();
+                        notty('<span>{{ 'Done'|trans }}!</span>','success');
+                        return false;
 					}
                 });
 
@@ -181,17 +154,35 @@
         document.addEventListener("DOMContentLoaded", yelp, false);
 
         var addAudioYear = function(data){
-            $('#datatable-1').DataTable().draw();
+            $('#datatable-1').DataTable().ajax.reload();
         };
         
         var editAudioYear = function(data){
-            $('#datatable-1').DataTable().draw();
+            $('#datatable-1').DataTable().ajax.reload();
         };
         
         var removeAudioYear = function (data) {
-            $('#datatable-1').DataTable().draw();
+            $('#datatable-1').DataTable().ajax.reload();
         };
-        
+
+        var checkAudioYear = function (data) {
+            if (typeof(data) != 'undefined') {
+                $('#modalbox button[type="submit"]').removeAttr("disabled");
+                $('#audio_years_name').next('div').append('<i class="txt-success fa fa-check"></i> ' + data.chk_rezult).css('visibility', 'visible');
+            } else {
+                JSErrorModalBox();
+            }
+        };
+
+        var checkAudioYearError= function (data) {
+            if (typeof(data) != 'undefined') {
+                $('#modalbox button[type="submit"]').attr("disabled", "disabled");
+                $('#audio_years_name').next('div').append('<i class="txt-danger fa fa-ban"></i> ' + data.error).css('visibility', 'visible');
+            } else {
+                JSErrorModalBox();
+            }
+        };
+
     function closeModalBox(){
         $("#modalbox").hide();
         $('#modalbox').find('.modal-header-name span').empty();

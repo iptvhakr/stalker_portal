@@ -19,7 +19,7 @@ class TariffsController extends \Controller\BaseStalkerController {
             array("id" => "module", "title" => "module"), 
             array("id" => "option", "title" => "option")
         );
-    protected $allServices = array();
+
     protected $allServiceTypes = array();
 
     public function __construct(Application $app) {
@@ -28,21 +28,7 @@ class TariffsController extends \Controller\BaseStalkerController {
             array("id" => 'periodic', "title" => $this->setLocalization("permanent")),
             array("id" => 'single', "title" => $this->setLocalization("once-only"))
         );
-        $this->allServices = array(
-            array("id" => '2', "title" => $this->setLocalization("complete")),
-            array("id" =>  '1', "title" => $this->setLocalization("Optional"))
-        );
 
-        $this->allInitiatorRoles = array(
-            array("id" =>   'user',     "title" => $this->setLocalization("User")),
-            array("id" =>   'admin',    "title" => $this->setLocalization("Administrator")),
-            array("id" =>   'api',      "title" => $this->setLocalization("API"))
-        );
-
-        $this->allPackageStates = array(
-            array("id" =>   '1',    "title" => $this->setLocalization("off")),
-            array("id" =>   '2',    "title" => $this->setLocalization("on"))
-        );
     }
 
     // ------------------- action method ---------------------------------------
@@ -68,14 +54,11 @@ class TariffsController extends \Controller\BaseStalkerController {
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
         
-        $list = $this->service_packages_list_json();
-
         $this->app['allPackageTypes'] = $this->setLocalization($this->allPackageTypes, 'title');
-        $this->app['allServices'] = $this->setLocalization($this->allServices, 'title');
-
-        $this->app['allTariffsPackages'] = $list['data'];
-        $this->app['totalRecords'] = $list['recordsTotal'];
-        $this->app['recordsFiltered'] = $list['recordsFiltered'];
+        $this->app['allServices'] = $this->setLocalization(array(
+            array("id" => '2', "title" => $this->setLocalization("complete")),
+            array("id" =>  '1', "title" => $this->setLocalization("Optional"))
+        ), 'title');
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -152,12 +135,6 @@ class TariffsController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
 
-        $list = $this->tariff_plans_list_json();
-
-        $this->app['allTariffsPlans'] = $list['data'];
-        $this->app['totalRecords'] = $list['recordsTotal'];
-        $this->app['recordsFiltered'] = $list['recordsFiltered'];
-        
         $attribute = $this->getTariffPlansDropdownAttribute();
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
@@ -234,18 +211,19 @@ class TariffsController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
 
-        $list = $this->subscribe_log_json();
-
-        $this->app['allLogs'] = $list['data'];
-        $this->app['totalRecords'] = $list['recordsTotal'];
-        $this->app['recordsFiltered'] = $list['recordsFiltered'];
-
         $attribute = $this->getLogsDropdownAttribute();
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
 
-        $this->app['allInitiatorRoles'] = $this->allInitiatorRoles;
-        $this->app['allPackageStates'] = $this->allPackageStates;
+        $this->app['allInitiatorRoles'] = array(
+            array("id" =>   'user',     "title" => $this->setLocalization("User")),
+            array("id" =>   'admin',    "title" => $this->setLocalization("Administrator")),
+            array("id" =>   'api',      "title" => $this->setLocalization("API"))
+        );
+        $this->app['allPackageStates'] = array(
+            array("id" =>   '1',    "title" => $this->setLocalization("off")),
+            array("id" =>   '2',    "title" => $this->setLocalization("on"))
+        );
         $this->app['allPackageNames'] = $this->db->getTariffsList( array(
             'select'=>array('id', 'name as title'),
             'where' => array(),

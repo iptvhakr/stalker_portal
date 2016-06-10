@@ -70,7 +70,6 @@
                         });
                     }
                 },
-                "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
@@ -82,14 +81,12 @@
                 "bInfo": true,
                 "columnDefs": [{"searchable": false, "targets": [2]}]
             }).prev('.dataTables_processing').hide('');
-            $('#datatable-1').DataTable().ajax.reload();
         }
 
         function yelp() {
             $(document).ready(function () {
                 {{ main_macro.get_datepicker_js_script() }}
                 LoadDataTablesScripts(TestTable1);
-
             });
         }
 

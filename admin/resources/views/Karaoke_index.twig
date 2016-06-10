@@ -123,6 +123,8 @@
 
     <script type="text/javascript" defer>
 
+        var select2Opt = {minimumResultsForSearch: -1, dropdownAutoWidth: false, width: '100%'};
+
         var conf = {
             form: '#karaoke_form',
             lang : '{{ app.language }}',
@@ -160,11 +162,7 @@
         }
 
         function DemoSelect2() {
-            $.getScript("{{ app.request.baseUrl }}/plugins/select2/i18n/{% if app["language"] %}{{ app["language"] }}{% else %}en{% endif %}.js", function () {
-                $.fn.select2.defaults.set('dropdownAutoWidth', 'false');
-                $.fn.select2.defaults.set('width', '100%');
-                $('#s2_protocol').select2({minimumResultsForSearch: -1});
-            });
+            $('#s2_protocol').select2(select2Opt);
         }
 
         function checkModalProtocol(){
@@ -243,7 +241,6 @@
                 "ajax": {
                     "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/karaoke-list-json"
                 },
-                "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
@@ -260,7 +257,6 @@
                     {"sortable": false, "targets": [-1]}
                 ]
             }).prev('.dataTables_processing').hide('');
-            $('#datatable-1').DataTable().ajax.reload();
         }
 
         function yelp() {
