@@ -61,13 +61,7 @@ class SettingsController extends \Controller\BaseStalkerController {
         $attribute = $this->getCommonDropdownAttribute();
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
-        
-        $list = $this->common_list_json();
-        
-        $this->app['allData'] = $list['data'];
-        $this->app['totalRecords'] = $list['recordsTotal'];
-        $this->app['recordsFiltered'] = $list['recordsFiltered'];
-        
+
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
     

@@ -63,7 +63,6 @@
                 "ajax": {
                     "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/audio-artists-list-json"
                 },
-                "deferLoading": [{{ app.recordsFiltered }}, {{ app.totalRecords }} ],
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
@@ -79,7 +78,6 @@
                     {"sortable": false, "targets": [-1]}
                 ]
             }).prev('.dataTables_processing').hide('');
-            $('#datatable-1').DataTable().ajax.reload();
         }
 
         function yelp() {
@@ -91,34 +89,8 @@
                     _this.val(_this.val().replace(/^\s+/ig, '').replace(/\s{2}$/, ' '));
                     _this.next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
                     $('#modalbox button[type="submit"]').removeAttr("disabled");
-                    $.ajax({
-                        url: '{{app.request.baseUrl}}/{{app.controller_alias}}/check-audio-artists-name',
-                        type: 'POST',
-                        data: {name: _this.val()},
-                        success: function (data) {
-                            if (data.success) {
-                                $('#modalbox button[type="submit"]').removeAttr("disabled");
-                                _this.next('div').append('<i class="txt-success fa fa-check"></i> ' + data.chk_rezult).css('visibility', 'visible');
-                            } else if (data.error) {
-                                $('#modalbox button[type="submit"]').attr("disabled", "disabled");
-                                console.log(data.error);
-                            } else {
-                                $('#modalbox button[type="submit"]').removeAttr("disabled");
-                                console.log('{{ 'Some server error'|trans }}');
-                            }
-                        },
-                        error: function (data) {
-                            if (typeof (data.responseJSON) != 'undefined' && typeof (data.responseJSON.error) != 'undefined') {
-                                $('#modalbox button[type="submit"]').attr("disabled", "disabled");
-                                _this.next('div').append('<i class="txt-danger fa fa-ban"></i> ' + data.responseJSON.error).css('visibility', 'visible');
-                            } else {
-                                $('#modalbox button[type="submit"]').removeAttr("disabled");
-                                console.log('{{ 'Some network error or access denied'|trans }}');
-                            }
-                        },
-                        dataType: "json",
-                        async: false
-                    });
+                    ajaxPostSend('{{app.request.baseUrl}}/{{app.controller_alias}}/check-audio-artists-name', {name: _this.val()});
+
                     return false;
                 });
 
@@ -176,15 +148,33 @@
         document.addEventListener("DOMContentLoaded", yelp, false);
 
         var addAudioArtist = function(data){
-            $('#datatable-1').DataTable().draw();
+            $('#datatable-1').DataTable().ajax.reload();
         };
         
         var editAudioArtist = function(data){
-            $('#datatable-1').DataTable().draw();
+            $('#datatable-1').DataTable().ajax.reload();
         };
         
         var removeAudioArtist = function (data) {
-            $('#datatable-1').DataTable().draw();
+            $('#datatable-1').DataTable().ajax.reload();
+        };
+
+        var checkAudioArtist = function (data) {
+            if (typeof(data) != 'undefined') {
+                $('#modalbox button[type="submit"]').removeAttr("disabled");
+                $('#audio_artists_name').next('div').append('<i class="txt-success fa fa-check"></i> ' + data.chk_rezult).css('visibility', 'visible');
+            } else {
+                JSErrorModalBox();
+            }
+        };
+
+        var checkAudioArtistError= function (data) {
+            if (typeof(data) != 'undefined') {
+                $('#modalbox button[type="submit"]').attr("disabled", "disabled");
+                $('#audio_artists_name').next('div').append('<i class="txt-danger fa fa-ban"></i> ' + data.error).css('visibility', 'visible');
+            } else {
+                JSErrorModalBox();
+            }
         };
         
     function closeModalBox(){

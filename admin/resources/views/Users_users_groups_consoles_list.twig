@@ -24,30 +24,6 @@
                                             {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
                                         {% endif %}
                                         <tbody>
-                                            {% if attribute(app, 'consoleGroupList') is defined %}
-                                                <!-- Start: list_row -->
-                                                {% for item in app.consoleGroupList %}
-                                                    <tr data-consolegroupid="{{ item.stb_group_id }}">
-                                                        <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-users?id={{ item.uid }}" >{{ item.mac }}</a></td>
-                                                        <td>{{ item.uid }}</td>
-                                                        <td>
-                                                            <div class="col-xs-3 col-sm-8">
-                                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
-                                                                    <i class="pull-right fa fa-cog"></i>
-                                                                </a>
-                                                                <ul class="dropdown-menu pull-right">
-                                                                    <li>
-                                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-console-item" data-consoleid="{{ item.stb_in_group_id }}">
-                                                                            <span>{{ 'Delete'|trans }}</span>
-                                                                        </a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                {% endfor %}
-                                            {% endif %}
-                                            <!-- End: list_row -->
                                         </tbody>
                                     </table>
                                 </div>
@@ -82,10 +58,9 @@
                         }
                     }
                 },
-                "deferLoading":{{ app.totalRecords }},
-                        "language": {
-                            "url": "{{ app.datatable_lang_file }}"
-                        },
+                "language": {
+                    "url": "{{ app.datatable_lang_file }}"
+                },
                 {% if attribute(app, 'dropdownAttribute') is defined %}
                 {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
                 {% endif %}
@@ -189,7 +164,7 @@
                     e.preventDefault();
                     openModalBox($(this));
                     return false
-                })
+                });
 
                 $(document).on('click', "#modalbox button[type='reset'], #modalbox, #modalbox a.close-link, #modalbox a.close-link *", function (e) {
                     if (e.currentTarget != e.target) {
@@ -257,7 +232,7 @@
         };
 
         var addConsoleItemError = function (data) {
-            alert(data.error);
+            JSErrorModalBox(data);
         };
 
         var removeConsoleItem = function (data) {
