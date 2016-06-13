@@ -2395,24 +2395,25 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         }
 
         $data = array(
-            'action' => 'setMediaInfo'
+            'action' => 'setMediaInfo',
+            'data' => array()
         );
         /*$error = $this->setLocalization('Failed');*/
 
         $error = '';
         $url = '';
-        $id = FALSE;
+        $id = 0;
+        $video_id = intval($this->postData['video_id']);
+        if (!empty($this->postData['id'])) {
+            $id = intval($this->postData['id']);
+        } else {
+            $tmp = $this->save_video_files(TRUE);
+            $id = !empty($tmp['id']) ? $tmp['id'] : $id;
+        }
 
         if (!empty($this->postData['url'])) {
             $url = $this->postData['url'];
         } else {
-            $video_id = intval($this->postData['video_id']);
-            if (!empty($this->postData['id'])) {
-                $id = intval($this->postData['id']);
-            } else {
-                $tmp = $this->save_video_files(TRUE);
-                $id = !empty($tmp['id']) ? $tmp['id'] : $id;
-            }
             try{
                 $user = \User::getInstance(-1);
                 $master = new \VideoMaster();
@@ -2430,12 +2431,39 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
             if (!empty($url)) {
                 try{
                     $video = \FFMpeg\FFProbe::create();
-                    $data['data'] = $video->streams($url)->first()->all();
+                    foreach($video->streams($url) as $rec){
+                        switch ($rec->get('codec_type')) {
+                            case 'video' : {
+                                $data['data']['width'] = $rec->get('width');
+                                $data['data']['height'] = $rec->get('height');
+                                break;
+                            }
+                            case 'audio' : {
+                                $tags = $rec->get('tags');
+                                if (!empty($tags['language'])) {
+                                    $data['data']['languages'][] = $tags['language'];
+                                }
+                                break;
+                            }
+                        }
+                    }
                 } catch(\Exception $e){
                     $error = $this->setLocalization('Failed') . '. ' . $e->getMessage();
                 }
+
             }
         }
+        if (!empty($data['data']['height'])) {
+            $data['data']['quality'] = 0;
+            foreach ($this->db->getAllFromTable('quality', 'height') as $row) {
+                if ((int) $data['data']['height'] >= (int) $row['height']) {
+                    $data['data']['quality'] = $row['id'];
+                } else {
+                    break;
+                }
+            }
+        }
+
         $data['msg'] = $error;
         $data['id'] = $id;
         $data['url'] = $url;
