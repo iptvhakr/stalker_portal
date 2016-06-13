@@ -648,11 +648,7 @@ a {
   text-transform: capitalize;
 }
 .authorizeBtn,
-.cancelBtn,
 .createBtn {
-  text-transform: capitalize;
-}
-.placeholder {
   text-transform: capitalize;
 }
 .denseRightDisplay .component.layout,
@@ -684,6 +680,9 @@ a {
 .networkView .listDirNameField {
   width: 270px !important;
   max-width: 270px !important;
+}
+.panelEx.right {
+  overflow: hidden;
 }
 .panelEx.right .item {
   padding-top: 10px;
@@ -722,7 +721,7 @@ a {
 .hidden {
   display: none;
 }
-.scrollBar {
+.listScroll {
   height: 350px !important;
   position: absolute;
   right: 5px;
@@ -733,6 +732,12 @@ a {
   position: absolute;
   right: 5px;
   top: 50px;
+}
+.rightInfoPanelScroll {
+  height: 315px;
+  position: absolute;
+  right: 5px;
+  top: 45px;
 }
 .cntIndicators {
   height: 20px;
@@ -756,9 +761,8 @@ a {
   margin-left: 40px;
   border: 1px solid #303030;
 }
-.cancelBtn,
 .createBtn {
-  width: 50%;
+  width: 100%;
 }
 .authorizeBtn {
   width: 100%;
@@ -767,11 +771,8 @@ a {
   padding-left: 20px;
   text-align: left;
 }
-.input {
-  color: inherit !important;
-}
 .component.scrollArea {
-  height: 315px;
+  height: 295px;
 }
 .component.scrollArea > .body > div {
   font-size: 16.2px;
@@ -785,6 +786,18 @@ a {
 }
 .component.scrollArea > .body > div:last-child {
   padding-bottom: 20px;
+}
+.component.modalMessage .button.table {
+  display: table;
+  width: 100%;
+}
+.component.modalMessage .button.textLeft .text {
+  text-align: left;
+  padding-left: 20px;
+}
+.component.modalMessage .input {
+  margin-left: -3px;
+  padding-left: 0;
 }
 
 /*# sourceMappingURL=develop.576.css.map */

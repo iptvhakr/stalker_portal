@@ -8,6 +8,7 @@
 	"data": {
 		"": {
 			"April": "April",
+			"Are you sure you want to delete this location?": "",
 			"August": "August",
 			"Cancel": "Cancel",
 			"Celsius": "Celsius",
@@ -28,6 +29,7 @@
 			"NW": "NW",
 			"November": "November",
 			"October": "October",
+			"Ok": "",
 			"Press": "Press",
 			"S": "S",
 			"SE": "SE",
