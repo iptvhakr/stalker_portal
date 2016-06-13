@@ -29,7 +29,7 @@
                 "active": "active.png"
             }
         },
-        "version": "0.6.0",
+        "version": "0.6.4",
         "url": "../tv/"
     }, {
         "type": "app",
@@ -50,7 +50,7 @@
             }
         },
         "url": "../audio.club/",
-        "version": "0.2.7"
+        "version": "0.3.0"
     }, {
         "type": "app",
         "category": "media",
@@ -70,7 +70,7 @@
             }
         },
         "url": "../video.club/",
-        "version": "0.2.7"
+        "version": "0.3.0"
     }, {
         "type": "app",
         "category": "media",
@@ -90,7 +90,7 @@
             }
         },
         "url": "../radio/",
-        "version": "1.0.5"
+        "version": "1.0.6"
     }, {
         "type": "app",
         "category": "media",
@@ -114,7 +114,7 @@
     }, {
         "type": "app",
         "category": "media",
-        "backgroundColor": "#3cbb3c",
+        "backgroundColor": "#8592ff",
         "name": "EXPLORER",
         "description": "Watch movies, listen to music or view the photos, saved on your removable storages or within the local network.",
         "icons": {
@@ -136,7 +136,7 @@
         },
         "registerTypes": ["mpg", "mpeg", "mkv", "avi", "3gp", "ts", "tspinf", "m4a", "mp3", "mp4", "ac3", "mov", "vob", "wav", "ape", "mts", "m2t", "m2v", "ogg", "oga", "divx", "aiff", "m2ts", "wv", "m2p", "tp", "flv", "tta", "mod", "tod", "asf", "wma", "wmv", "flac", "ape", "cue", "iso", "aac", "txt", "srt", "sub", "ass", "m4v", "tts", "m3u", "m3u8"],
         "mountPath": "/ram/mnt",
-        "version": "1.2.1"
+        "version": "1.3.7"
     }, {
         "type": "app",
         "category": "media",
@@ -256,9 +256,6 @@
     }, {
         "name": "launcher",
         "type": "launcher",
-        "dependencies": {
-            "ufs-json": "^0.0.1"
-        },
         "version": "0.0.9",
         "url": "../launcher/"
     }, {
@@ -317,6 +314,15 @@
         "version": "0.0.1",
         "url": "../osd-pip/"
     }, {
+        "name": "osd-input",
+        "description": "input osd",
+        "version": "0.0.1",
+        "type": "osd",
+        "actions": {
+            "osd-input": true
+        },
+        "url": "../osd-input/"
+    }, {
         "type": "system",
         "name": "player",
         "description": "magsdk player",
@@ -342,30 +348,72 @@
         "version": "0.0.1",
         "url": "../app-stalker-api/"
     }, {
-        "version": "1.5.8",
-        "url": "http://youtube.infomir.com.ua/",
         "type": "app",
-        "category": "apps",
-        "backgroundColor": "#c12226",
-        "name": "Youtube",
+        "category": "games",
+        "backgroundColor": "#a1222f",
+        "name": "Lines",
+        "description": "Lines is the puzzle from 90-s which is still popular. The gameâ€™s goal is to remove balls by forming lines of at least five balls of the same color.",
+        "version": "1.0.0",
         "legacy": true,
-        "description": "Youtube.com is a world famous video hosting, which allows users to watch, upload and share videos with their friends.",
         "icons": {
             "paths": {
-                "480": "img/480/",
-                "576": "img/576/",
-                "720": "img/720/",
-                "1080": "img/1080/"
+                "480": "img/480/icons/",
+                "576": "img/576/icons/",
+                "720": "img/720/icons/",
+                "1080": "img/1080/icons/"
             },
             "states": {
-                "normal": "icons/2015.png",
-                "active": "icons/2015.focus.png"
+                "normal": "2015.png",
+                "active": "2015.png"
             }
-        }
+        },
+        "url": "https://cdn.rawgit.com/StalkerApps/lines/master/"
+    }, {
+        "type": "app",
+        "category": "games",
+        "backgroundColor": "#1dacdd",
+        "name": "Sudoku",
+        "description": "Sudoku is a well-known Japanese puzzle. You need to fill all the cells the way there won't be the same two numbers in each row, column or block.",
+        "version": "1.0.0",
+        "legacy": true,
+        "icons": {
+            "paths": {
+                "480": "img/480/icons/",
+                "576": "img/576/icons/",
+                "720": "img/720/icons/",
+                "1080": "img/1080/icons/"
+            },
+            "states": {
+                "normal": "2015.png",
+                "active": "2015.png"
+            }
+        },
+        "url": "https://cdn.rawgit.com/StalkerApps/sudoku/master/"
     }, {
         "type": "app",
         "category": "games",
         "backgroundColor": "#f9a91a",
+        "name": "Memory",
+        "description": "Memory is a game for memory development. Find out how much time you need to open all the matching cards.",
+        "version": "1.0.0",
+        "legacy": true,
+        "icons": {
+            "paths": {
+                "480": "img/480/icons/",
+                "576": "img/576/icons/",
+                "720": "img/720/icons/",
+                "1080": "img/1080/icons/"
+            },
+            "states": {
+                "normal": "2015.png",
+                "active": "2015.png"
+            }
+        },
+        "url": "https://cdn.rawgit.com/StalkerApps/memory/master/"
+    }, {
+        "type": "app",
+        "category": "games",
+        "backgroundColor": "#97897c",
         "name": "2048",
         "description": "2048 is one of the worldâ€™s most popular puzzles. The rules are simple: you need to shuffle all the bars to one side of the game field. Your goal is to reach 2048.",
         "version": "1.0.0",

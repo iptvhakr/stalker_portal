@@ -821,6 +821,12 @@ class User implements \Stalker\Lib\StbApi\User
     }
 
     public function delete(){
+
+        Mysql::getInstance()->delete('fav_itv', array('uid' => $this->id));
+        Mysql::getInstance()->delete('fav_vclub', array('uid' => $this->id));
+        Mysql::getInstance()->delete('media_favorites', array('uid' => $this->id));
+        Mysql::getInstance()->delete('access_tokens', array('uid' => $this->id));
+
         return Mysql::getInstance()->delete('users', array('id' => $this->id))->result();
     }
 
