@@ -162,7 +162,7 @@ class Vclub extends Storage
 
         $this->user->checkHome();
 
-        preg_match("/([\S\s]+)\.(".$this->media_ext_str.")$/i", $media_file, $arr);
+        preg_match("/([\S\s]+)\.(".$this->media_ext_str."|srt|sub|ass)$/i", $media_file, $arr);
 
         $ext = $arr[2];
 
