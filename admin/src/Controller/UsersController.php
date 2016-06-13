@@ -713,6 +713,8 @@ class UsersController extends \Controller\BaseStalkerController {
         $this->db->deleteUserFavItv($this->postData['userid']);
         $this->db->deleteUserFavVclub($this->postData['userid']);
         $this->db->deleteUserFavMedia($this->postData['userid']);
+        $this->db->deleteUserTokens($this->postData['userid']);
+
         $error = '';
 
         $reseller_info = $this->db->getReseller(array('where'=>array('id' => $this->app['reseller'])));
