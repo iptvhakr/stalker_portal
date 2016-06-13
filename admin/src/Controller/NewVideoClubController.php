@@ -2429,13 +2429,8 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
 
             if (!empty($url)) {
                 try{
-                    /*$video = $this->app['ffmpeg']->open($url);*/
-                   /* $ffprobe = FFProbe::create();
-                    $ffprobe->streams($url)
-                        ->videos()                      // filters video streams
-                        ->first()                       // returns the first video stream
-                        ->get('codec_name');
-                    print_r($ffprobe);exit;*/
+                    $video = \FFMpeg\FFProbe::create();
+                    $data['data'] = $video->streams($url)->first()->all();
                 } catch(\Exception $e){
                     $error = $this->setLocalization('Failed') . '. ' . $e->getMessage();
                 }
