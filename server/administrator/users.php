@@ -39,7 +39,8 @@ if (@$_GET['del'] && !Config::getSafe('deny_delete_user', false)){
     Mysql::getInstance()->delete('fav_itv', array('uid' => $id));
     Mysql::getInstance()->delete('fav_vclub', array('uid' => $id));
     Mysql::getInstance()->delete('media_favorites', array('uid' => $id));
-    
+    Mysql::getInstance()->delete('access_tokens', array('uid' => $id));
+
     header("Location: users.php?search=".$_GET['search']."&page=".$_GET['page']);
     exit();
 }
