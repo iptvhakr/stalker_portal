@@ -121,6 +121,10 @@ class UsersModel extends \Model\BaseStalkerModel {
         return $this->mysqlInstance->delete('media_favorites', array('uid' => $id))->total_rows();
     }
 
+    public function deleteUserTokens($id) {
+        return $this->mysqlInstance->delete('access_tokens', array('uid' => $id))->total_rows();
+    }
+
     public function getAllTariffPlans() {
         return $this->mysqlInstance->select('id, name, user_default')->from('tariff_plan')->orderby('name')->get()->all();
     }
