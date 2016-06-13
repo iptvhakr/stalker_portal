@@ -2436,7 +2436,6 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
                         ->first()                       // returns the first video stream
                         ->get('codec_name');
                     print_r($ffprobe);exit;*/
-                    print_r(stream_get_meta_data(fopen($url, "r")));exit;
                 } catch(\Exception $e){
                     $error = $this->setLocalization('Failed') . '. ' . $e->getMessage();
                 }
@@ -2903,7 +2902,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
     }
     
     private function getExternalImage($url, $video_id = FALSE, $file_num = 0) {
-        $cover_id = FALSE;
+        $cover_id = $cover = FALSE;
         try {
             $tmpfname = tempnam("/tmp", "video_cover");
             $cover_blob = file_get_contents($url);
@@ -2943,7 +2942,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
             $img_path = $this->getCoverFolder($cover_id);
             umask(0);
 
-            if (empty($error) && !empty($cover_id) && $img_path != -1) {
+            if (!empty($error) || empty($cover_id) || $img_path == -1) {
                 $error = $this->setLocalization('Error: could not save cover image');
             } else {
                 try{
