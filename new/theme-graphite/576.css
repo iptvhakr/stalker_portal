@@ -152,6 +152,11 @@ body {
   background: transparent;
   border: none;
   outline: none; }
+  .component.input.themeBg > .line > .placeholder {
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.2); }
+  .component.input.themeBg.focus {
+    background: #2c60c6; }
   .component.input .char {
     color: #fff; }
   .component.input > .line > .placeholder {
