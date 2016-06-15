@@ -73,6 +73,7 @@
 			"Text": "Текст",
 			"Total": "Общее количество",
 			"Type": "Тип",
+			"UPnP": "",
 			"Unable to connect to the resource with the given parameters": "",
 			"Unsaved changes": "Несохраненные изменения",
 			"Unsupported symbols": "Неподдерживаемые символы",
