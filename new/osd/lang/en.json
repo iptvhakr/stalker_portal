@@ -1,7 +1,7 @@
 {
 	"meta": {
 		"charset": "utf-8",
-		"project": "stb-app 0.0.2",
+		"project": "magsdk-osd 0.0.3",
 		"language": "en",
 		"plural": "(n != 1)"
 	},
