@@ -937,7 +937,8 @@ function common_xpcom(){
                 'hw_version'       : this.hw_version,
                 'not_valid_token'  : this.not_valid_token ? 1 : 0,
                 'metrics'          : encodeURIComponent(JSON.stringify(metrics)),
-                'hw_version_2'     : stb.GetHashVersion1 ? stb.GetHashVersion1(JSON.stringify(metrics), this.random) : ''
+                'hw_version_2'     : stb.GetHashVersion1 ? stb.GetHashVersion1(JSON.stringify(metrics), this.random) : '',
+                'timestamp'        : Math.round(new Date().getTime()/1000)
             },
 
             function(result){
