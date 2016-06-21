@@ -127,15 +127,19 @@ body {
   to {
     background-color: transparent; } }
 
+.themeFocusBg {
+  background: #2c60c6; }
+
+.component.focus.componentFocusBg {
+  background: #2c60c6; }
+
 .component.input {
   background: transparent;
   border: none;
   outline: none; }
-  .component.input.themeBg > .line > .placeholder {
+  .component.input.italicPlaceholder > .line > .placeholder {
     font-style: italic;
     color: rgba(255, 255, 255, 0.2) !important; }
-  .component.input.themeBg.focus {
-    background: #2c60c6; }
   .component.input .char {
     color: #fff; }
   .component.input > .line > .placeholder {

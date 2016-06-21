@@ -1,0 +1,16 @@
+{
+	"meta": {
+		"charset": "utf-8",
+		"project": "task manager 0.1.0",
+		"language": "uk",
+		"plural": "(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)"
+	},
+	"data": {
+		"": {
+			"Cancel": "Скасувати",
+			"Exit": "Вихід",
+			"No apps": "Немає додатків",
+			"Press OK to open or Up to close application": "Натисніть клавішу OK, щоб відкрити додаток або Вгору закрити до додатка"
+		}
+	}
+}

@@ -14,7 +14,7 @@
 
         parent.prof.themes.map(function(theme){
             themes_select.push(theme);
-            themes_select.push(theme.charAt(0).toUpperCase() + theme.slice(1).replace('_', ' '));
+            themes_select.push(theme.charAt(0).toUpperCase() + theme.slice(1).replace('_', ' ') + (theme == 'smart_launcher' ? ' (beta)' : ''));
         });
 
         menuT.push(themes_select);
