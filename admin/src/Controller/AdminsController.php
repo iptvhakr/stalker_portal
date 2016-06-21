@@ -240,7 +240,6 @@ class AdminsController extends \Controller\BaseStalkerController {
             $item['id'] = $this->postData['id'];
         }
 
-
         $new_pass = FALSE;
 
         if (empty($item[0]['pass']) || $item[0]['pass'] != $item[0]['re_pass']) {
@@ -262,9 +261,10 @@ class AdminsController extends \Controller\BaseStalkerController {
                     if (\Admin::checkAuthorization($this->admin->getLogin(), $new_pass)){
                         $data['msg'] = $this->setLocalization('Your password has been changed');
                     } else {
-                        $data['msg'] = $data['error'] = 'Need authorization';
+                        $data['msg'] = $error = $this->setLocalization('Need authorization');
                     }
                 }
+                $this->cleanSideBars();
             } else if (!empty($this->postData['login']) && $this->postData['login'] == 'admin') {
                 $data['msg'] = $error;
             } else {
@@ -293,7 +293,8 @@ class AdminsController extends \Controller\BaseStalkerController {
         $data['id'] = $this->postData['id'];        
         $error = '';    
         $this->db->deleteAdmin(array('id' => $this->postData['id']));
-        
+        $this->cleanSideBars();
+
         $response = $this->generateAjaxResponse($data);
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -495,6 +496,7 @@ class AdminsController extends \Controller\BaseStalkerController {
         if ($this->db->setAdminGroupPermissions($write_data)){
             $error = ''; 
             $data['msg'] = $this->setLocalization('Saved');
+            $this->cleanSideBars();
         }
         
         $response = $this->generateAjaxResponse($data, $error);
@@ -722,6 +724,7 @@ class AdminsController extends \Controller\BaseStalkerController {
         if (!empty($count_reseller) && $source_id !== $target_id) {
             $this->db->updateResellerMemberByID('administrators', $admin_id, $target_id);
             $data['msg'] = $this->setLocalization('Moved');
+            $this->cleanSideBars();
         } else {
             $error = $data['msg'] = empty($count_reseller) ? $this->setLocalization('Not found reseller for moving') : $this->setLocalization('Nothing to do');
         }
@@ -756,6 +759,7 @@ class AdminsController extends \Controller\BaseStalkerController {
         if (!empty($count_reseller) && $source_id !== $target_id) {
             $this->db->updateResellerMemberByID('admin_groups', $admin_id, $target_id);
             $data['msg'] = $this->setLocalization('Moved');
+            $this->cleanSideBars();
         } else {
             $error = $data['msg'] = empty($count_reseller) ? $this->setLocalization('Not found reseller for moving') : $this->setLocalization('Nothing to do');
         }
@@ -795,6 +799,7 @@ class AdminsController extends \Controller\BaseStalkerController {
                 if ($result === 0) {
                     $data['nothing_to_do'] = TRUE;
                 }
+                $this->cleanSideBars();
             }
         } else {
             if (empty($count_admins)){
@@ -839,6 +844,7 @@ class AdminsController extends \Controller\BaseStalkerController {
                 if ($result === 0) {
                     $data['nothing_to_do'] = TRUE;
                 }
+                $this->cleanSideBars();
             }
         } else {
             if (empty($count_admins)){
@@ -943,5 +949,13 @@ class AdminsController extends \Controller\BaseStalkerController {
             "users_count" => "(select count(*) from users as U where U.reseller_id = R.id) as users_count",
             "max_users" => "R.`max_users` as `max_users`"
         );
+    }
+
+    private function cleanSideBars(){
+        foreach(glob($this->baseDir . '/resources/cache/sidebar/*bar') as $file){
+            if(is_file($file)){
+                unlink($file);
+            }
+        }
     }
 }
