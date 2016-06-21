@@ -918,7 +918,6 @@ function common_xpcom(){
         _debug('metrics', JSON.stringify(metrics));
 
         this.load(
-
             {
                 'type'             : 'stb',
                 'action'           : 'get_profile',
@@ -1308,6 +1307,10 @@ function common_xpcom(){
             stb.loader.stop();
             this.cut_off(this.user.hasOwnProperty('block_msg') ? this.user['block_msg'] : '');
             loader.append('alert');
+
+            if (this.user.hasOwnProperty('enable_settings') && this.user['enable_settings']){
+                stb.EnableServiceButton(true);
+            }
 
             if (this.user['portal_disabled']){
 
