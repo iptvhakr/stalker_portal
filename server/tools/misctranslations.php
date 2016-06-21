@@ -666,10 +666,13 @@ _('Memory is a game for memory development. Find out how much time you need to o
 _('Sudoku is a well-known Japanese puzzle. You need to fill all the cells the way there won\'t be the same two numbers in each row, column or block.');
 /**/
 
+/* Core */
 _('The portal is temporarily unavailable.<br>Please try again later.<br>Sorry for the inconvenience.');
 _('Use your username and password to login or register on %s');
 _('Please contact your provider<br>to register this device.');
 _('Welcome %s<br>We are glad to see you on the Stalker portal!');
+_('Your device is not supported.');
+_('Time on the device is not synchronized.');
 
 _('Setting the tariff plans and additional services for users on edit page');
 _('Managing of billing date for users on edit page');
