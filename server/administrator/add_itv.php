@@ -33,6 +33,10 @@ if (@$_GET['del'] && !empty($_GET['id'])){
         ->use_caching(array('itv.id='.intval($_GET['id'])))
         ->delete('itv', array('id' => intval($_GET['id'])));
 
+    if (!empty($ch_links)){
+        Mysql::getInstance()->insert('deleted_channels', array('ch_id' => intval($_GET['id']), 'deleted' => 'NOW()'));
+    }
+
     header("Location: add_itv.php");
     exit;
 }
@@ -288,6 +292,7 @@ if (!$error){
                 'volume_correction'           => intval($_POST['volume_correction']),
                 'correct_time'                => intval($_POST['correct_time']),
                 'modified'                    => 'NOW()',
+                'added'                       => 'NOW()',
                 'tv_archive_duration'         => $_POST['tv_archive_duration']
             ))->insert_id();
 
