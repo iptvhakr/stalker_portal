@@ -262,7 +262,7 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
             if (!empty($storage)){
                 $cache = Cache::getInstance();
                 $cache->set($this->stb->id.'_playback',
-                    array('type' => 'video', 'id' => $link['id'], 'storage' => $storage['storage_name']), 0, 10);
+                    array('type' => 'video', 'id' => $link['id'], 'storage' => $storage['storage_name'], 'storage_id' => $storage['id']), 0, 10);
             }
         }else{
             $cache = Cache::getInstance();

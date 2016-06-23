@@ -69,7 +69,7 @@ class Karaoke extends AjaxResponse implements \Stalker\Lib\StbApi\Karaoke
             if (!empty($storage)){
                 $cache = Cache::getInstance();
                 $cache->set($this->stb->id.'_playback',
-                    array('type' => 'karaoke', 'id' => $link['id'], 'storage' => $storage['storage_name']), 0, 10);
+                    array('type' => 'karaoke', 'id' => $link['id'], 'storage' => $storage['storage_name'], 'storage_id' => $storage['id']), 0, 10);
             }
         }else{
             $cache = Cache::getInstance();
