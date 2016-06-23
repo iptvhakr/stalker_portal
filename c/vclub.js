@@ -3,8 +3,6 @@
  */
 (function(){
     
-    //stb.ajax_loader = 'http://bb2.sandbox/stalker_portal/server/load.php'
-    
     /* VCLUB */
     function vclub_constructor(){
         
@@ -837,7 +835,7 @@
 
             if (this.data_items[this.cur_row].is_movie && this.data_items[this.cur_row].has_files == '0') {
 
-                this.check_for_series(true);
+                this.check_for_pass(true);
                 return;
             }
 
@@ -1001,7 +999,7 @@
         this.check_for_pass = function(play_url, storage){
             _debug('vclub.check_for_play', play_url, storage);
             
-            _debug('lock', this.data_items[this.cur_row].lock);
+            _debug('lock', this.current_movie.lock);
 
             _debug('this.load_params[category]', this.load_params['category']);
 
@@ -1012,7 +1010,7 @@
 
             var self = this;
 
-            if (this.data_items[this.cur_row].for_rent && !this.data_items[this.cur_row].hasOwnProperty('rent_info')){
+            if (this.current_movie.for_rent && !this.current_movie.hasOwnProperty('rent_info')){
 
                 self.rent_confirm.video_id = self.data_items[self.cur_row].id;
                 self.rent_confirm.show();
@@ -1021,10 +1019,10 @@
                 this.storage  = storage;
                 this.cur_item = this.data_items[this.cur_row];
 
-            }else if (this.data_items[this.cur_row].lock){
+            }else if (this.current_movie.lock){
                 
                 this.password_input.callback = function(){
-                    this.check_for_series(play_url, storage);
+                    self.check_for_series(play_url, storage);
                 };
                 
                 this.password_input.show();

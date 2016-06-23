@@ -150,6 +150,7 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
                             'volume_correction' => (!empty($data['volume_correction'])? intval($data['volume_correction']): 0),
                             'correct_time' => (!empty($data['correct_time'])? intval($data['correct_time']): 0),
                             'modified' => 'NOW()',
+                            'added' => 'NOW()',
                             'tv_archive_duration' => (!empty($data['enable_tv_archive']) && $data['enable_tv_archive'] !== 'off' && !empty($data['tv_archive_duration'])? intval($data['tv_archive_duration']): 0)
                         ))->insert_id();
     }
@@ -252,6 +253,7 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
     }
     
     public function removeChannel($id) {
+        $this->mysqlInstance->insert('deleted_channels', array('ch_id' => (int) $id, 'deleted' => 'NOW()'));
         return $this->mysqlInstance->delete('itv', array('id' => (int) $id))->total_rows();
     }
     
