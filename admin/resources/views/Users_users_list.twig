@@ -504,7 +504,7 @@
                     { className: "action-menu", "targets": [ -1 ] },
                     {"searchable": false, "targets": [5, 6, 8, 9, 10, 11, {% if attribute(app, 'reseller') is defined and not app['reseller'] %}12, {% endif %}-1]},
                     {"sortable": false, "targets": [-1]},
-                    {className: "data-filter-status", "targets": [-{% if attribute(app, 'reseller') is defined and not app['reseller'] %}3{% else %}2{% endif %}{% if attribute(app, 'enableBilling') and app.enableBilling%}-1{% endif %} ]}
+                    {className: "data-filter-status", "targets": [-{% if attribute(app, 'reseller') is defined and not app['reseller'] %}3{% else %}2{% endif %}{% if attribute(app, 'enableBilling') is defined and app.enableBilling %}-1{% endif %} ]}
                 ]
             }).prev('.dataTables_processing').hide('');
         }
