@@ -2455,7 +2455,11 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
                         }
                     }
                 } catch(\Exception $e){
-                    $error = $this->setLocalization('Failed') . '. ' . $e->getMessage();
+                    if (class_exists('\FFMpeg\FFProbe') && !empty($video)) {
+                        $error = $this->setLocalization('Failed') . '. ' . $e->getMessage();
+                    } else {
+                        $error = $this->setLocalization('Failed') . '. ' . $this->setLocalization('Unable to load FFProbe library. Please install "ffmpeg" or other package with this library(eg "libav-tools")');
+                    }
                 }
 
             }

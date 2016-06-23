@@ -188,6 +188,9 @@ UPDATE `languages` SET `iso_639_3_code` = 'zha' WHERE `iso_639_code` = 'za';
 UPDATE `languages` SET `iso_639_3_code` = 'zho' WHERE `iso_639_code` = 'zh';
 UPDATE `languages` SET `iso_639_3_code` = 'zul' WHERE `iso_639_code` = 'zu';
 
+INSERT INTO `adm_grp_action_access`
+          (`controller_name`,         `action_name`, `is_ajax`, `description`)
+VALUES    ('new-video-club',  'get-media-info-json',         1, 'Getting media-info from source');
 
 --//@UNDO
 
