@@ -13,6 +13,7 @@ class BaseStalkerModel {
     protected $admin_login;
 
     public function __construct() {
+        //Mysql::$debug = 1;
         $this->mysqlInstance = Mysql::getInstance();
         $this->reseller_id = NULL;
         $this->admin_id = NULL;

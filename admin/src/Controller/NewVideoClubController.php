@@ -2408,6 +2408,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
             $id = intval($this->postData['id']);
         } else {
             $tmp = $this->save_video_files(TRUE);
+            $data['data']['datatable'] = !empty($tmp['datatable']) ? $tmp['datatable']: '';
             $id = !empty($tmp['id']) ? $tmp['id'] : $id;
         }
 
@@ -2431,6 +2432,8 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
             if (!empty($url)) {
                 try{
                     $video = \FFMpeg\FFProbe::create();
+                    $lang_iso = $this->db->getAllFromTable('languages');
+                    $lang_iso = array_combine($this->getFieldFromArray($lang_iso, 'iso_639_3_code'), array_values($lang_iso));
                     foreach($video->streams($url) as $rec){
                         switch ($rec->get('codec_type')) {
                             case 'video' : {
@@ -2441,7 +2444,11 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
                             case 'audio' : {
                                 $tags = $rec->get('tags');
                                 if (!empty($tags['language'])) {
-                                    $data['data']['languages'][] = $tags['language'];
+                                    if (is_string($tags['language']) && strlen($tags['language']) == 3) {
+                                        $data['data']['languages'][] = $lang_iso[$tags['language']]['iso_639_code'];
+                                    } else {
+                                        $data['data']['languages'][] = $tags['language'];
+                                    }
                                 }
                                 break;
                             }
@@ -2455,8 +2462,8 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         }
         if (!empty($data['data']['height'])) {
             $data['data']['quality'] = 0;
-            foreach ($this->db->getAllFromTable('quality', 'height') as $row) {
-                if ((int) $data['data']['height'] >= (int) $row['height']) {
+            foreach ($this->db->getAllFromTable('quality', array('height' => 'DESC')) as $row) {
+                if ((int) $data['data']['height'] <= (int) $row['height'] || $data['data']['height'] == 0) {
                     $data['data']['quality'] = $row['id'];
                 } else {
                     break;

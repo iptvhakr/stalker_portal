@@ -941,6 +941,12 @@
                 $("#modalbox").on("click", "button[type='reset']", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
+
+                    var dataTable = ($("#season_id").length != 0 && $("#series_id").length != 0) ? 'f_season_' + $("#season_id").val() + '_series_' + $("#series_id").val() + '_filedata' : "filedata";
+                    if ($("#" + dataTable).length != 0) {
+                        dataTableUpdate({datatable: dataTable});
+                    }
+
                     $.validate();
                     $("#modalbox form").get(0).reset();
                     /*$("#modalbox form").find("select.own_fields").each(function () {
@@ -1243,9 +1249,44 @@
 
                 $("#modalbox").on('blur keypress', '#video_url', function(e){
                     if (e && e.type && (e.type == "blur" || e.type == 'focusout' || (e.type == "keypress" && e.keyCode && e.keyCode == 13))) {
-                        getMediaInfo();
+                        if ($(this).val()) {
+                            getMediaInfo();
+                        }
                     }
                 });
+
+                $("#modalbox").on('click', '#media_info button', function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+
+                    var fieldData = {};
+
+                    $("#media_info span").each(function(){
+                        if ($(this).data('info-key')) {
+                            fieldData[$(this).data('info-key')] = $(this).data('info-val');
+                            /*var fieldId = "#file_" + $(this).data('info-key');
+                            if ($(fieldId).length !=0 ) {
+                                var fieldVal = $(this).data('info-val');
+                                if ($(fieldId).get(0).tagName.toUpperCase() == 'SELECT') {
+                                    $(fieldId).find('option').prop('selected', false).removeAttr('selected');
+                                    $.each(fieldVal.split(','), function(){
+                                        $(fieldId).find("option[value='"+this+"']").prop('selected', 'selected');
+                                    });
+                                    $(fieldId).select2(select2OptMS);
+                                } else {
+                                    $(fieldId).val(fieldVal);
+                                }
+                            }*/
+                        }
+                    });
+
+                    if (fieldData.languages) {
+                        fieldData.languages = fieldData.languages.split(',');
+                    }
+
+                    fillModalBoxFilesData({data: fieldData}, true);
+                });
+
             });
         }
 
@@ -1652,7 +1693,12 @@
         };
 
         var closeModalBox = function () {
-            JScloseModalBox();
+            var dataTable = ($("#season_id").length != 0 && $("#series_id").length != 0) ? 'f_season_' + $("#season_id").val() + '_series_' + $("#series_id").val() + '_filedata' : "filedata";
+            if ($("#" + dataTable).length != 0) {
+                dataTableUpdate({datatable: dataTable});
+            } else {
+                JScloseModalBox();
+            }
         };
 
         var emptyFileContainer = function (data) {
@@ -1660,7 +1706,11 @@
         };
 
         var dataTableUpdate = function (data) {
-            JSSuccessModalBox(data);
+            if (data.msg || data.error) {
+                JSSuccessModalBox(data);
+            } else {
+                JScloseModalBox();
+            }
             $("#" + data.datatable).DataTable().ajax.reload();
         };
 
@@ -1668,19 +1718,22 @@
             JSErrorModalBox(data);
         };
 
-        var fillModalBoxFilesData = function (data) {
-            $("#modalbox").hide();
-            $("#modalbox").data('complete', 1);
-            $('#modalbox').find('.modal-header-name span').text("{{ 'Edit file'|trans }}");
-            $('#modalbox').find('.devoops-modal-inner').html($("#modal_save_form_body").text());
-            $('#modalbox').find('.devoops-modal-bottom').html($("#modal_save_form_buttons").text());
+        var fillModalBoxFilesData = function (data, localFilling) {
+
+            if (!localFilling) {
+                $("#modalbox").hide();
+                $("#modalbox").data('complete', 1);
+                $('#modalbox').find('.modal-header-name span').text("{{ 'Edit file'|trans }}");
+                $('#modalbox').find('.devoops-modal-inner').html($("#modal_save_form_body").text());
+                $('#modalbox').find('.devoops-modal-bottom').html($("#modal_save_form_buttons").text());
+            }
 
             var fields = {file_id: 'id', video_id: 'video_id', season_id: 'season_id', series_id: 'series_id', status: 'status'};
             for (var key in fields) {
                 var field = fields[key];
                 if (typeof(data.data[field]) != 'undefined' && data.data[field]) {
                     $("#" + key).val(data.data[field]);
-                } else {
+                } else if(!localFilling) {
                     $("#" + key).remove();
                 }
 
@@ -1696,9 +1749,12 @@
             for (var key in fields) {
                 var field = fields[key];
                 if (typeof(data.data[field]) != 'undefined' && data.data[field]) {
-                    $("#" + key).find('option[value="' + data.data[field] + '"]').prop({'selected': 'selected'});
+                    $("#" + key + " option").prop('selected', false).removeAttr('selected');
+                    $("#" + key).find('option[value="' + data.data[field] + '"]').prop('selected', 'selected');
                 }
-                $("#" + key).removeAttr('readonly').removeAttr('disabled');
+                if(!localFilling) {
+                    $("#" + key).removeAttr('readonly').removeAttr('disabled');
+                }
             }
             $('#modalbox').show();
 
@@ -1708,10 +1764,14 @@
             $('#file_protocol').select2(select2Opt);
             $('#file_accessed').select2(select2Opt);
 
-            setFileLanguagesSelect();
+            if (!localFilling) {
+                setFileLanguagesSelect();
+            }
 
             if (typeof(data.data.languages) != 'undefined' && data.data.languages instanceof Array && data.data.languages.length) {
-                setFileLanguagesSelect();
+                if (localFilling) {
+                    $("#fileLangCloneList li.select2-selection__choice").trigger("click");
+                }
                 $("#file_languages").val(data.data.languages).trigger("change");
                 var resultList = {};
                 $.each( $("#file_languages").data().select2.data(), function(i){
@@ -1738,7 +1798,9 @@
                 $("#video_url").val(data.data.url);
             }
             checkProtocol();
-            getMediaInfo();
+            if (!localFilling) {
+                getMediaInfo();
+            }
         };
 
         var fillModalBoxFilesDataError = function (data) {
@@ -1747,7 +1809,7 @@
 
         var getMediaInfo = function() {
             var sendData = {};
-            $("#file_form_input_container").find("input,select").not(":disabled").each(function(i){
+            $("#file_form_input_container").find("input,select").each(function(i){ //.not(":disabled")
                 var val = this.tagName.toUpperCase() == 'INPUT' ? $(this).val(): $(this).find('option:selected').val();
                 if (val) {
                     sendData[$(this).attr('name')] = val;
@@ -1775,10 +1837,25 @@
                 $("#media_info").addClass('filled').find('button').removeClass('disabled').prop('disabled', false).removeAttr('disabled');
                 var infoField = $($("#media_info_info").html()).prependTo("#media_info");
                 infoField.addClass('bg-default').addClass('txt-default').text("{{ 'Media info from source'|trans }}");
+                if (data.data.datatable) {
+                    $("#" + data.data.datatable).DataTable().ajax.reload();
+                    delete data.data.datatable;
+                }
                 for(var key in data.data){
                     var infoField = $($("#media_info_info").html()).insertAfter(infoField);
-                    infoField.addClass('bg-default').addClass('txt-default').text(key + ": " + data.data[key]);
-                    infoField.data({'info-key': key, 'info-val': data.data[key]});
+                    var textVal = data.data[key];
+                    var textLabel = words && words[key] ? words[key]: key;
+                    if (key == 'languages') {
+                        textVal = [];
+                        $.each(data.data[key], function(){
+                            textVal.push($("#file_" + key + " option[value='" + this + "']").text());
+                        });
+                        textVal = textVal.join(', ');
+                    } else if (key == 'quality') {
+                        textVal = $("#file_" + key + " option[value='" + textVal + "']").text();
+                    }
+                    infoField.addClass('bg-default').addClass('txt-default').text(textLabel + ": " + textVal);
+                    infoField.data({'info-key': key, 'info-val': data.data[key] instanceof Array? data.data[key].join(','): data.data[key]});
                 }
             }
         };

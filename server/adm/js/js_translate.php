@@ -55,5 +55,9 @@ $words['Sep'] = _('Sep');
 $words['Oct'] = _('Oct');
 $words['Nov'] = _('Nov');
 $words['Dec'] = _('Dec');
+$words['width'] = _('width');
+$words['height'] = _('height');
+$words['quality'] = _('quality');
+$words['languages'] = _('languages');
 
 echo json_encode($words);

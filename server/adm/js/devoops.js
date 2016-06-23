@@ -587,7 +587,6 @@ $(document).ready(function () {
         setDropdownAttribute(sendData);
     });
     
-    
     $(document).on("click mousedown mouseup", "div.attribute_set[id!='attribute_set']  .checkbox", function (e) {
         e.stopPropagation();
     });
@@ -625,7 +624,6 @@ $(document).ready(function () {
             $(this).val('off');
         }
     });
-
 
     $(document).on("click", '#datatable-1 a', function (e) {
         if ($(this).hasClass('ajax-link')) {
