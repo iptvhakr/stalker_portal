@@ -2,6 +2,7 @@
 
 use Stalker\Lib\Core\Mysql;
 use Stalker\Lib\Core\Stb;
+use Stalker\Lib\Core\Cache;
 
 class RemotePvr extends AjaxResponse implements \Stalker\Lib\StbApi\RemotePvr
 {
@@ -25,6 +26,19 @@ class RemotePvr extends AjaxResponse implements \Stalker\Lib\StbApi\RemotePvr
         }
 
         $res = $this->getLinkByRecId($media_id);
+
+        if (!empty($res['storage_id'])){
+            $storage = Master::getStorageById($res['storage_id']);
+        }
+
+        if (!empty($storage)){
+            $cache = Cache::getInstance();
+            $cache->set($this->stb->id.'_playback',
+                array('type' => 'npvr', 'id' => $media_id, 'storage' => $storage['storage_name'], 'storage_id' => $storage['id']), 0, 10);
+        }else{
+            $cache = Cache::getInstance();
+            $cache->del($this->stb->id.'_playback');
+        }
 
         var_dump($res);
 
