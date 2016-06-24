@@ -344,18 +344,25 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         }
 
         $channel = $this->db->getChannelById($this->data['id']);
-        $response = array();
-        $response['rows'] = $this->db->removeChannel($this->data['id']);
+
+        if (!empty($channel)) {
+
+            $this->postData['logo_id'] = $channel['logo'];
+            $response = $this->delete_logo(TRUE);
+
+            $tv_archive = new \TvArchive();
+            $tv_archive->deleteTasks(intval($this->data['id']));
+
+            $ch_links = $this->db->getChannelLinksById($this->data['id']);
+            if (is_array($ch_links)) {
+                $this->db->deleteCHLink($this->getFieldFromArray($ch_links, 'id'));
+            }
+
+            $response['rows'] = $this->db->removeChannel($this->data['id']);
+        }
         $response['action'] = 'remove';
 
-        if (!empty($response['rows'])) {
-            $this->saveFiles->removeFile($this->logoDir, $channel['logo']);
-            $response['success'] = TRUE;
-            $response['error'] = FALSE;
-        } else {
-            $response['success'] = FALSE;
-            $response['error'] = TRUE;
-        }
+        $response = $this->generateAjaxResponse($response, $response['error']);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -466,15 +473,18 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
 
-    public function delete_logo() {
+    public function delete_logo($internal_use = FALSE) {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
         if (!$this->isAjax || empty($this->postData['logo_id']) || (!is_numeric($this->postData['logo_id']) && strpos($this->postData['logo_id'], 'new') === FALSE)) {
-            $this->app->abort(404, $this->setLocalization('Cannot find channel'));
+            if (!$internal_use) {
+                $this->app->abort(404, $this->setLocalization('Cannot find channel'));
+            }
         }
-
-        $channel = $this->db->getChannelById($this->postData['logo_id']);
+        if (!$internal_use) {
+            $channel = $this->db->getChannelById($this->postData['logo_id']);
+        }
 
         $logo_id = FALSE;
         $error = array();
@@ -492,7 +502,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             $full_path = "$this->logoDir/$folder";
             if (is_dir($full_path)) {
                 foreach (glob("$full_path/$logo_id") as $logo_id) {
-                    if (!@unlink($logo_id)){
+                    if (is_file($logo_id) && !@unlink($logo_id)){
                         $error[] = "Error delete file $logo_id";
                     }
                 }
@@ -502,7 +512,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $error = implode('. ', $error);
         $response = $this->generateAjaxResponse(array('data' => 0, 'action'=>'deleteLogo'), $error);
 
-        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+        return (!$internal_use) ? new Response(json_encode($response), (empty($error) ? 200 : 500)): $response;
     }
 
     public function move_apply() {
