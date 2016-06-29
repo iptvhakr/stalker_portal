@@ -439,7 +439,11 @@
 
             }
             $("#modalbox_ad input, #modalbox_ad select").removeAttr('disabled');
-            if ($("#adm_login").val() == 'admin') {
+            if ($("#adm_login").val() == 'admin' {% if attribute(app, 'userlogin') is defined %} || $("#adm_login").val() == "{{ app['userlogin'] }}" {% endif %}) {
+                if ({% if attribute(app, 'userlogin') is defined %} $("#adm_login").val() == 'admin' && 'admin' != "{{ app['userlogin'] }}" {% else %} 0 {% endif %}) {
+                    JSErrorModalBox({msg: "{{ 'You don\'t have permission for edit this record'|trans }}"});
+                    return false;
+                }
                 $("#adm_login").attr('disabled', "disabled");
                 $("#gid").attr('disabled', "disabled");
                 $('#gid').prepend("<option value=0 selected='selected'></option>");

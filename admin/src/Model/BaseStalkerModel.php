@@ -78,8 +78,11 @@ class BaseStalkerModel {
     }
     
     public function getControllerAccess($uid, $reseller){
+
+        $this->mysqlInstance->where(array('blocked<>' => 1));
+
         if ($reseller) {
-            $params['only_top_admin<>'] = 1;
+            $this->mysqlInstance->where(array('only_top_admin<>' => 1));
         }
         if (!empty($uid)){
             $params["group_id"]=$uid;

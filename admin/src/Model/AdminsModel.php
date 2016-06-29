@@ -132,7 +132,7 @@ class AdminsModel extends \Model\BaseStalkerModel {
     }
     
     public function getAdminGroupPermissions($gid = FALSE) {
-        $this->mysqlInstance->from("adm_grp_action_access")->where(array('hidden<>'=>1));
+        $this->mysqlInstance->from("adm_grp_action_access")->where(array('hidden<>'=>1, 'blocked<>' => 1));
         if ($gid !== FALSE) {
             $this->mysqlInstance->where(array('group_id'=>$gid));
         } else {
