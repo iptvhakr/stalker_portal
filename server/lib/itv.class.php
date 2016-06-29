@@ -652,8 +652,8 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
 
         $genres = $genres_query->orderby('number', 'ASC')->get()->all();
 
-        if (in_array('dvb', stb::getAvailableModulesByUid($this->stb->id))
-            && in_array(Stb::getInstance()->getParam('stb_type'), array('MAG270', 'MAG275'))){
+        if (in_array('dvb', Stb::getAvailableModulesByUid($this->stb->id))
+            && in_array(Stb::getInstance()->getParam('stb_type'), array('MAG270', 'MAG275', 'AuraHD3'))){
             array_unshift($genres, array('id' => 'dvb', 'title' => _('DVB')));
         }
 
@@ -1264,7 +1264,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
 
         $filtered_channels = self::getFilteredUserChannelsIds();
 
-        if (!empty($_COOKIE['ext_channels']) && in_array('ext_channels', stb::getAvailableModulesByUid($this->stb->id))){
+        if (!empty($_COOKIE['ext_channels']) && in_array('ext_channels', Stb::getAvailableModulesByUid($this->stb->id))){
             $ext_channels = explode(',', $_COOKIE['ext_channels']);
             $ext_channels = Mysql::getInstance()->from('itv')->where(array('bonus_ch' => 1))->in('id', $ext_channels)->get()->all('id');
             $channel_ids = array_merge($channel_ids, $ext_channels);
@@ -1739,7 +1739,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
 
         $stb_type = Stb::getInstance()->getParam('stb_type');
 
-        if ($stb_type != 'MAG270' && $stb_type != 'MAG275'){
+        if ($stb_type != 'MAG270' && $stb_type != 'MAG275' && $stb_type != 'AuraHD3'){
             return array();
         }
 
@@ -1747,7 +1747,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
             return $this->dvb_channels;
         }
 
-        if (!in_array('dvb', stb::getAvailableModulesByUid($this->stb->id))){
+        if (!in_array('dvb', Stb::getAvailableModulesByUid($this->stb->id))){
             $this->dvb_channels = array();
             return $this->dvb_channels;
         }
