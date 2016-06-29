@@ -1980,13 +1980,17 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
 
-    public function save_video_files(){
+    public function save_video_files($internal_use = FALSE){
 
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['video_id'])) {
-            $this->app->abort(404, $this->setLocalization('Page not found'));
+            if (!$internal_use) {
+                $this->app->abort(404, $this->setLocalization('Page not found'));
+            } else {
+                return $this->generateAjaxResponse();
+            }
         }
 
-        if ($no_auth = $this->checkAuth()) {
+        if (!$internal_use && $no_auth = $this->checkAuth()) {
             return $no_auth;
         }
 
@@ -2018,7 +2022,10 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
 
         $error = $this->setLocalization('Failed');
 
-        if (call_user_func_array(array($this->db, $operation), $params)) {
+        if (($result = call_user_func_array(array($this->db, $operation), $params))) {
+            if ($internal_use) {
+                $data['id'] = isset($id) ? $id : $result;
+            }
             $error = '';
         } else {
             $data['msg'] = $error;
@@ -2026,7 +2033,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
 
         $response = $this->generateAjaxResponse($data, $error);
 
-        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+        return ($internal_use) ? $response :new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
     
     public function get_one_video_file_json(){
@@ -2376,6 +2383,106 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function get_media_info_json(){
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['video_id'])) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array(
+            'action' => 'setMediaInfo',
+            'data' => array()
+        );
+        /*$error = $this->setLocalization('Failed');*/
+
+        $error = '';
+        $url = '';
+        $id = 0;
+        $video_id = intval($this->postData['video_id']);
+        if (!empty($this->postData['id'])) {
+            $id = intval($this->postData['id']);
+        } else {
+            $tmp = $this->save_video_files(TRUE);
+            $data['data']['datatable'] = !empty($tmp['datatable']) ? $tmp['datatable']: '';
+            $id = !empty($tmp['id']) ? $tmp['id'] : $id;
+        }
+
+        if (!empty($this->postData['url'])) {
+            $url = $this->postData['url'];
+        } else {
+            try{
+                $user = \User::getInstance(-1);
+                $master = new \VideoMaster();
+                $res = $master->play($video_id, 0, true, '', $id);
+                $url = $res['cmd'];
+                $error = '';
+            } catch (\Exception $e){
+                $error = $this->setLocalization('Failed') . '. ' . $e->getMessage();
+            }
+        }
+
+        if (!empty($url) && empty($error)) {
+            $url = end(explode(' ', trim($url)));
+
+            if (!empty($url)) {
+                try{
+                    $video = \FFMpeg\FFProbe::create();
+                    $lang_iso = $this->db->getAllFromTable('languages');
+                    $lang_iso = array_combine($this->getFieldFromArray($lang_iso, 'iso_639_3_code'), array_values($lang_iso));
+                    foreach($video->streams($url) as $rec){
+                        switch ($rec->get('codec_type')) {
+                            case 'video' : {
+                                $data['data']['width'] = $rec->get('width');
+                                $data['data']['height'] = $rec->get('height');
+                                break;
+                            }
+                            case 'audio' : {
+                                $tags = $rec->get('tags');
+                                if (!empty($tags['language'])) {
+                                    if (is_string($tags['language']) && strlen($tags['language']) == 3) {
+                                        $data['data']['languages'][] = $lang_iso[$tags['language']]['iso_639_code'];
+                                    } else {
+                                        $data['data']['languages'][] = $tags['language'];
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                    }
+                } catch(\Exception $e){
+                    if (class_exists('\FFMpeg\FFProbe') && !empty($video)) {
+                        $error = $this->setLocalization('Failed') . '. ' . $e->getMessage();
+                    } else {
+                        $error = $this->setLocalization('Failed') . '. ' . $this->setLocalization('Unable to load FFProbe library. Please install "ffmpeg" or other package with this library(eg "libav-tools")');
+                    }
+                }
+
+            }
+        }
+        if (!empty($data['data']['height'])) {
+            $data['data']['quality'] = 0;
+            foreach ($this->db->getAllFromTable('quality', array('height' => 'DESC')) as $row) {
+                if ((int) $data['data']['height'] <= (int) $row['height'] || $data['data']['height'] == 0) {
+                    $data['data']['quality'] = $row['id'];
+                } else {
+                    break;
+                }
+            }
+        }
+
+        $data['msg'] = $error;
+        $data['id'] = $id;
+        $data['url'] = $url;
+
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+
     }
 
     //------------------------ service method ----------------------------------
@@ -2829,7 +2936,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
     }
     
     private function getExternalImage($url, $video_id = FALSE, $file_num = 0) {
-        $cover_id = FALSE;
+        $cover_id = $cover = FALSE;
         try {
             $tmpfname = tempnam("/tmp", "video_cover");
             $cover_blob = file_get_contents($url);
@@ -2869,7 +2976,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
             $img_path = $this->getCoverFolder($cover_id);
             umask(0);
 
-            if (empty($error) && !empty($cover_id) && $img_path != -1) {
+            if (!empty($error) || empty($cover_id) || $img_path == -1) {
                 $error = $this->setLocalization('Error: could not save cover image');
             } else {
                 try{
