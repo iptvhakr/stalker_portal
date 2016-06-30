@@ -40,4 +40,37 @@ class ApplicationCatalogModel extends \Model\BaseStalkerModel {
         $data['updated'] = 'NOW()';
         return $this->mysqlInstance->delete('apps', $where)->total_rows();
     }
+
+    public function getTotalRowsSmartApplicationList($where = array(), $like = array()) {
+        $params = array(
+            /*'select' => array("*"),*/
+            'where' => $where,
+            'like' => array(),
+            'order' => array()
+        );
+        if (!empty($like)) {
+            $params['like'] = $like;
+        }
+
+        return $this->getSmartApplicationList($params, TRUE);
+    }
+
+    public function getSmartApplicationList($param, $counter = FALSE) {
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from('launcher_apps AS L_A ')->where($param['where']);
+        if (!empty($param['like'])) {
+            $this->mysqlInstance->like($param['like'], 'OR');
+        }
+        if (!empty($param['order'])) {
+            $this->mysqlInstance->orderby($param['order']);
+        }
+
+        if (!empty($param['limit']['limit'])) {
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
+        }
+
+        return ($counter) ? $this->mysqlInstance->count()->get()->counter() : $this->mysqlInstance->get()->all();
+    }
 }

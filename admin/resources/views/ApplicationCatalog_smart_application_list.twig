@@ -6,8 +6,8 @@
     <div id="iptv_list">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                {{ main_macro.get_filter('category', 'Category'|trans, 'id', 'title', app['allCategory'], 3) }}
                 {{ main_macro.get_filter('type', 'Type'|trans, 'id', 'title', app['allType'], 3) }}
+                {{ main_macro.get_filter('category', 'Category'|trans, 'id', 'title', app['allCategory'], 3) }}
                 {{ main_macro.get_filter('state', 'State'|trans, 'id', 'title', app['allState'], 3) }}
                 {{ main_macro.get_filter('status', 'Status'|trans, 'id', 'title', app['allStatus'], 3) }}
                 {{ main_macro.get_filter('compatibility', 'Compatibility'|trans, 'id', 'title', app['allCompatibility'], 3) }}
@@ -45,19 +45,19 @@
 
         function TestTable1() {
             $('#datatable-1').on('xhr.dt', function (e, settings, json) {
-                /*if (typeof (json.data) == 'object') {
+                if (typeof (json.data) == 'object') {
                     for (var i in json.data) {
                         var item = json.data[i];
                         var id = json.data[i].id;
 
-                        json.data[i].name = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-detail?id=' + id + '">' + json.data[i].name + '</a>';
+                        json.data[i].name = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-detail?id=' + id + '">' + json.data[i].name + '</a>';
                         var status = item.status;
                         if (!item.current_version) {
                             item.current_version = "{{ 'Undefined'|trans }}"
                         }
-                        if (item.installed) {
+                        if (item.state) {
                             item.current_version += ' ' + (item.available_version != item.current_version ? '&nbsp;&nbsp;&nbsp;<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-detail?id=' + id + '">{{ 'Update'|trans }}</a>' : '');
-                            item.status = item.status == '1' ? "{{ 'Active'|trans }}" : "{{ 'Disabled'|trans }}";
+                            item.status = item.status == 1 ? "{{ 'Active'|trans }}" : "{{ 'Disabled'|trans }}";
                         } else {
                             item.current_version = ' ' + '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-detail?id=' + id + '">{{ 'Install'|trans }}</a>';
                             item.status = "{{ 'Not installed'|trans }}";
@@ -69,12 +69,12 @@
                                                         </a>\n\
                                                         <ul class='dropdown-menu pull-right'>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' " + (!item.installed ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-toggle-state' data-id='" + id + "' data-status='" + (status == '1' ? '0': '1') + "'>\n\
-                                                                    <span> " + (status != '1' ? "{{ 'Activate'|trans }}" : "{{ 'Deactivate'|trans }}") + " </span>\n\
+                                                                <a class='main_ajax' " + (!item.state ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-toggle-state' data-id='" + id + "' data-status='" + (status == '1' ? '0': '1') + "'>\n\
+                                                                    <span> " + (status != 1 ? "{{ 'Activate'|trans }}" : "{{ 'Deactivate'|trans }}") + " </span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' " + (status == '1' ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-delete' data-id='" + id + "'>\n\
+                                                                <a class='main_ajax' " + (status == 1 ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-delete' data-id='" + id + "'>\n\
                                                                     <span> {{ 'Delete'|trans }} </span>\n\
                                                                 </a>\n\
                                                             </li>\n\
@@ -82,13 +82,9 @@
                                                     </div>";
                     }
                 }
-                var wrapper = $("#" + $(this).attr('id') + "_wrapper");
-                if (wrapper.prev('.dataTables_processing').is(":visible")) {
-                    wrapper.prev('.dataTables_processing').hide('');
-                }*/
             }).dataTable({
                 "processing": true,
-                "serverSide": false,
+                "serverSide": true,
                 "ajax": {
                     "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-list-json",
                     "data": function (d) {
@@ -105,8 +101,8 @@
                 "bInfo": true,
                 "aoColumnDefs": [
                     {className: "action-menu", "targets": [-1]},
-                    {"searchable": false, "targets": [0, 2, 3, 6, 8, -1]},
-                    {"sortable": false, "targets": [0, -1]}
+                    {"searchable": false, "targets": [0, 2, 3, 5, 6, 8, -1]},
+                    {"sortable": false, "targets": [0, 5, 6, -1]}
                 ]
             }).prev('.dataTables_processing').hide('');
         }

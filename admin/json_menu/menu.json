@@ -3,7 +3,7 @@
         "name": _("Applications"),
         "alias": "application-catalog",
         "icon": "fa fa-rocket",
-        "icon2": "pull-right",
+        "icon2": "pull-right fa fa-chevron-left",
         "action": {
             "1": {
                 "name": _("Stalker applications"),
