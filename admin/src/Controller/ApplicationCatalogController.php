@@ -18,6 +18,18 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
 
     public function index() {
 
+        if (empty($this->app['action_alias'])) {
+            return $this->app->redirect($this->app['controller_alias'] . '/application-list');
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+        return $this->app['twig']->render($this->getTemplateName(__METHOD__));
+    }
+
+    public function application_list() {
+
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
@@ -34,7 +46,49 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
 
-        return $this->app['twig']->render('ApplicationCatalog_application_list.twig');
+        return $this->app['twig']->render($this->getTemplateName(__METHOD__));
+    }
+
+    public function smart_application_list() {
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $attribute = $this->getSmartApplicationListDropdownAttribute();
+        $this->checkDropdownAttribute($attribute);
+        $this->app['dropdownAttribute'] = $attribute;
+
+        $this->app['allCategory'] = array(
+            array('id' => 1, 'title' => $this->setLocalization('Application')),
+            array('id' => 2, 'title' => $this->setLocalization('System'))
+        );
+
+        $this->app['allType'] = array(
+            array('id' => "media",          'title' => $this->setLocalization('Media')),
+            array('id' => "apps",           'title' => $this->setLocalization('Application')),
+            array('id' => "games",          'title' => $this->setLocalization('Games')),
+            array('id' => "notification",   'title' => $this->setLocalization('Notification'))
+        );
+
+        $this->app['allState'] = array(
+            array('id' => 1, 'title' => $this->setLocalization('Not installed')),
+            array('id' => 2, 'title' => $this->setLocalization('Installed'))
+        );
+
+        $this->app['allStatus'] = array(
+            array('id' => 1, 'title' => $this->setLocalization('Off')),
+            array('id' => 2, 'title' => $this->setLocalization('On'))
+        );
+
+        $this->app['allCompatibility'] = array(
+            array('id' => 1, 'title' => $this->setLocalization('Incompatible')),
+            array('id' => 2, 'title' => $this->setLocalization('Compatible'))
+        );
+
+        $this->getSmartApplicationFilters();
+
+        return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
     public function accept_tos() {
@@ -88,6 +142,36 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         }
 
         $response['recordsTotal'] = $response['recordsFiltered'] = count($response['data']);
+
+        $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
+        $error = '';
+
+        if ($this->isAjax) {
+            $response = $this->generateAjaxResponse($response);
+            return new Response(json_encode($response), (empty($error) ? 200 : 500));
+        } else {
+            return $response;
+        }
+    }
+
+    public function smart_application_list_json(){
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+        $response = array(
+            'data' => array(),
+            'recordsTotal' => 0,
+            'recordsFiltered' => 0
+        );
+
+/*        try{
+            $apps_list = new \AppsManager();
+            $response['data'] = $apps_list->getList();
+        } catch (\Exception $e){
+            $response['error'] = $error = $this->setLocalization('Failed to get the list of applications');
+        }
+
+        $response['recordsTotal'] = $response['recordsFiltered'] = count($response['data']);*/
 
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         $error = '';
@@ -420,5 +504,53 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             array('name' => 'operations',   'title' => $this->setLocalization('Operations'),            'checked' => TRUE)
         );
         return $attribute;
+    }
+
+    private function getSmartApplicationListDropdownAttribute(){
+        $attribute = array(
+            array('name' => 'logo',             'title' => $this->setLocalization('Logo'),              'checked' => TRUE),
+            array('name' => 'name',             'title' => $this->setLocalization('Application'),       'checked' => TRUE),
+            array('name' => 'type',             'title' => $this->setLocalization('Type'),              'checked' => TRUE),
+            array('name' => 'category',         'title' => $this->setLocalization('Category'),          'checked' => TRUE),
+            array('name' => 'current_version',  'title' => $this->setLocalization('Current version'),   'checked' => TRUE),
+            array('name' => 'available_version','title' => $this->setLocalization('Actual version'),    'checked' => TRUE),
+            array('name' => 'compatibility',    'title' => $this->setLocalization('Compatibility'),     'checked' => TRUE),
+            array('name' => 'publisher',        'title' => $this->setLocalization('Publisher'),         'checked' => TRUE),
+            array('name' => 'status',           'title' => $this->setLocalization('State'),             'checked' => TRUE),
+            array('name' => 'description',      'title' => $this->setLocalization('Description'),       'checked' => TRUE),
+            array('name' => 'operations',       'title' => $this->setLocalization('Operations'),        'checked' => TRUE)
+        );
+        return $attribute;
+    }
+
+    private function getSmartApplicationFilters() {
+        $return = array();
+
+        if (!empty($this->data['filters'])){
+            if (array_key_exists('category', $this->data['filters']) && $this->data['filters']['category']!= 0) {
+                /*$return['`karaoke`.`accessed`'] = $this->data['filters']['status'] - 1;*/
+            }
+
+            if (array_key_exists('type', $this->data['filters']) && !empty($this->data['filters']['type'])) {
+                /*$return['`karaoke`.`protocol`'] = $this->data['filters']['protocol'];*/
+            }
+
+            if (array_key_exists('state', $this->data['filters']) && $this->data['filters']['state']!= 0) {
+                /*$return['`karaoke`.`accessed`'] = $this->data['filters']['status'] - 1;*/
+            }
+
+            if (array_key_exists('status', $this->data['filters']) && $this->data['filters']['status']!= 0) {
+                /*$return['`karaoke`.`accessed`'] = $this->data['filters']['status'] - 1;*/
+            }
+
+            if (array_key_exists('compatibility', $this->data['filters']) && $this->data['filters']['compatibility']!= 0) {
+                /*$return['`karaoke`.`accessed`'] = $this->data['filters']['status'] - 1;*/
+            }
+
+            $this->app['filters'] = $this->data['filters'];
+        } else {
+            $this->app['filters'] = array();
+        }
+        return $return;
     }
 }
