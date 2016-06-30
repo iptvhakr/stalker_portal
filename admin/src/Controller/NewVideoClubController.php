@@ -96,7 +96,11 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         }
 
         $allLanguages = $this->getLanguageCodesEN();
-        sort($allLanguages);
+        if (is_array($allLanguages)) {
+            asort($allLanguages);
+        } else {
+            $allLanguages = array();
+        }
         $this->app['allLanguages'] = $allLanguages;
 
         $this->app['videoEdit'] = FALSE;
@@ -167,7 +171,11 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         $this->app['quality'] = $this->setLocalization($quality, 'text_title');
 
         $allLanguages = $this->getLanguageCodesEN();
-        asort($allLanguages);
+        if (is_array($allLanguages)) {
+            asort($allLanguages);
+        } else {
+            $allLanguages = array();
+        }
 
         $this->app['allLanguages'] = $allLanguages;
 
