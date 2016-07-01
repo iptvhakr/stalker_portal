@@ -113,6 +113,9 @@ class Npm
                 }
 
                 rename($full_path, $target_path);
+
+                $app_manager = new SmartLauncherAppsManager();
+                $app_manager->addApplication($dir);
             }
         }
     }
