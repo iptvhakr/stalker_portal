@@ -8,7 +8,7 @@
 
     <target name="build" description="Build task">
 
-        <exec command="apt-get -y install php-soap php5-intl php-gettext php5-memcache php5-curl php5-mysql php5-mcrypt php5-tidy php5-imagick php5-geoip curl"
+        <exec command="apt-get -y install php-soap php5-intl php-gettext php5-memcache php5-curl php5-mysql php5-mcrypt php5-tidy php5-imagick php5-geoip curl npm"
               level="info" outputProperty="install.error.msg" returnProperty="install.error.code"/>
 
         <if>
@@ -272,6 +272,8 @@
         <exec command="mkdir ${project_path}/deploy/composer" level="info"/>
         <exec command="mkdir ${project_path}/../${apps_path}" level="info"/>
         <chmod file="${project_path}/../${apps_path}" mode="0777" />
+        <exec command="mkdir ${project_path}/../${launcher_apps_path}" level="info"/>
+        <chmod file="${project_path}/../${launcher_apps_path}" mode="0777" />
 
         <exec command="php ${project_path}/deploy/composer/composer.phar install" level="info" outputProperty="install.error.msg" returnProperty="install.error.code"/>
 
