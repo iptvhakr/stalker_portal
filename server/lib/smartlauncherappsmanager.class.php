@@ -136,10 +136,6 @@ class SmartLauncherAppsManager
             $update_data['alias'] = $info['name'];
         }
 
-        if (empty($app['name']) && isset($info['config']['name'])){
-            $update_data['name'] = $info['config']['name'];
-        }
-
         $update_data['author']    = isset($info['author']) ? $info['author'] : '';
         $update_data['type']      = isset($info['config']['type']) ? $info['config']['type'] : null;
         $update_data['category']  = isset($info['config']['category']) ? $info['config']['category'] : null;
@@ -281,6 +277,10 @@ class SmartLauncherAppsManager
         foreach ($need_to_update as $app){
             $this->updateApp($app['id']);
         }
+    }
+
+    public function getFullAppDependencies($app_id){
+
     }
 
     private static function delTree($dir) {
