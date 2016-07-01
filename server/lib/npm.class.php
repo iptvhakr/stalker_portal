@@ -18,7 +18,7 @@ class Npm
             $package .= '@'.$version;
         }
 
-        system('cd '.$this->app_path.'; npm install '.escapeshellarg($package).' --production');
+        system('cd '.$this->app_path.'; npm install '.escapeshellarg($package).' --production 2>/dev/null');
 
         $plain = trim(ob_get_contents());
         ob_clean();
@@ -32,7 +32,7 @@ class Npm
 
         ob_start();
 
-        system('cd '.$this->app_path.'; npm update '.escapeshellarg($package).' --depth 0');
+        system('cd '.$this->app_path.'; npm update '.escapeshellarg($package).' --depth 0 2>/dev/null');
 
         $plain = trim(ob_get_contents());
         ob_clean();
@@ -50,7 +50,7 @@ class Npm
             $package .= '@'.$version;
         }
 
-        system('npm view '.escapeshellarg($package).' --json');
+        system('npm view '.escapeshellarg($package).' --json 2>/dev/null');
 
         $plain = trim(ob_get_contents());
         ob_clean();
