@@ -1,7 +1,5 @@
 <?php
 
-//require_once "../common.php"; // todo: remove
-
 use Stalker\Lib\Core\Mysql;
 use Stalker\Lib\Core\Config;
 
@@ -257,6 +255,23 @@ class SmartLauncherAppsManager
         }
 
         return $app_localizations;
+    }
+
+    public function addApplication($url){
+
+        $app = Mysql::getInstance()->from('launcher_apps')->where(array('url' => $url))->get()->first();
+
+        if (!empty($app)){
+            return false;
+        }
+
+        $app_id = Mysql::getInstance()->insert('launcher_apps', array(
+            'url' => $url
+        ))->insert_id();
+
+        $this->getAppInfo($app_id);
+
+        return $app_id;
     }
 
     public function startAutoUpdate(){
