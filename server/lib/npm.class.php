@@ -7,12 +7,16 @@ class Npm
     private $app_path;
 
     public function __construct() {
-        $this->app_path = PROJECT_PATH.'/../../'.Config::getSafe('apps_path', 'stalker_apps/');
+        $this->app_path = PROJECT_PATH.'/../../'.Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/');
     }
 
-    public function install($package){
+    public function install($package, $version = null){
 
         ob_start();
+
+        if (!is_null($version)){
+            $package .= '@'.$version;
+        }
 
         system('cd '.$this->app_path.'; npm install '.escapeshellarg($package).' --production');
 
@@ -38,9 +42,13 @@ class Npm
         return !empty($plain);
     }
 
-    public function info($package){
+    public function info($package, $version = null){
 
         ob_start();
+
+        if (!is_null($version)){
+            $package .= '@'.$version;
+        }
 
         system('npm view '.escapeshellarg($package).' --json');
 
