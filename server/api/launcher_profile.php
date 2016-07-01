@@ -117,6 +117,8 @@ foreach ($apps as $app){
     $user_apps[] = $app;
 }
 
+$app_manager = new SmartLauncherAppsManager();
+
 foreach ($installed_apps as $app) {
 
     if ($app['config']){
@@ -127,6 +129,10 @@ foreach ($installed_apps as $app) {
     }
     if ($app['config']){
         $app['config']['url'] = $app['app_url'] . '/';
+
+        //todo: dependencies
+        $app['config']['dependencies'] = $app_manager->getFullAppDependencies();
+
         $user_apps[] = $app['config'];
     }else {
         $user_apps[] = array(
