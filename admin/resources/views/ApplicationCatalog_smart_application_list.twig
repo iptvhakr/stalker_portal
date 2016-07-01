@@ -8,7 +8,7 @@
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 {{ main_macro.get_filter('type', 'Type'|trans, 'id', 'title', app['allType'], 3) }}
                 {{ main_macro.get_filter('category', 'Category'|trans, 'id', 'title', app['allCategory'], 3) }}
-                {{ main_macro.get_filter('state', 'State'|trans, 'id', 'title', app['allState'], 3) }}
+                {{ main_macro.get_filter('installed', 'State'|trans, 'id', 'title', app['allInstalled'], 3) }}
                 {{ main_macro.get_filter('status', 'Status'|trans, 'id', 'title', app['allStatus'], 3) }}
                 {{ main_macro.get_filter('compatibility', 'Compatibility'|trans, 'id', 'title', app['allCompatibility'], 3) }}
 
@@ -55,7 +55,7 @@
                         if (!item.current_version) {
                             item.current_version = "{{ 'Undefined'|trans }}"
                         }
-                        if (item.state) {
+                        if (item.installed) {
                             item.current_version += ' ' + (item.available_version != item.current_version ? '&nbsp;&nbsp;&nbsp;<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-detail?id=' + id + '">{{ 'Update'|trans }}</a>' : '');
                             item.status = item.status == 1 ? "{{ 'Active'|trans }}" : "{{ 'Disabled'|trans }}";
                         } else {
@@ -69,7 +69,7 @@
                                                         </a>\n\
                                                         <ul class='dropdown-menu pull-right'>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' " + (!item.state ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-toggle-state' data-id='" + id + "' data-status='" + (status == '1' ? '0': '1') + "'>\n\
+                                                                <a class='main_ajax' " + (!item.installed ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-toggle-state' data-id='" + id + "' data-status='" + (status == '1' ? '0': '1') + "'>\n\
                                                                     <span> " + (status != 1 ? "{{ 'Activate'|trans }}" : "{{ 'Deactivate'|trans }}") + " </span>\n\
                                                                 </a>\n\
                                                             </li>\n\

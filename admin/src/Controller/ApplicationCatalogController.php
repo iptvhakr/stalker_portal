@@ -71,7 +71,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             array('id' => "notification",   'title' => $this->setLocalization('Notification'))
         );
 
-        $this->app['allState'] = array(
+        $this->app['allInstalled'] = array(
             array('id' => 1, 'title' => $this->setLocalization('Not installed')),
             array('id' => 2, 'title' => $this->setLocalization('Installed'))
         );
@@ -241,14 +241,17 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             $query_param['limit']['limit'] = FALSE;
         }
 
-        $response["data"] = array_map(function($row){
-            $row['name'] = 'get from class';
-            $row['description'] = 'get from class';
-            $row['available_version'] = 'get from class';
-            $row['compatibility'] = 'get from class';
-            $row['logo'] = 'get from class';
+        $apps_manager = new \SmartLauncherAppsManager();
+
+        $response["data"] = array_map(function($row) use ($apps_manager){
+            $info = $apps_manager->getAppInfo($row['id']);
+            $row['name'] = $info['name'];
+            $row['description'] = $info['description'];
+            $row['available_version'] = $info['available_version'];
+            $row['compatibility'] = 'from class';//$info['compatibility'];
+            $row['logo'] = 'from class';//$info['logo'];
             settype($row['status'], 'int');
-            $row['state'] = round(rand(0, 1));
+            $row['installed'] = $info['installed'];
             return $row;
         },$this->db->getSmartApplicationList($query_param));
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
@@ -404,14 +407,13 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             $response['action'] = 'createOptionForm';
         }
 
-        /*try{
-            $apps_list = new \AppsManager();
+        try{
+            $apps_list = new \SmartLauncherAppsManager();
             $app = $apps_list->getAppInfo($id);
         } catch (\Exception $e){
             $response['error'] = $error = $this->setLocalization('Failed to get the list of versions of this applications') . '. ' . $e->getMessage();
             $app = FALSE;
-        }*/
-        $app = FALSE;
+        }
         if ($app !== FALSE) {
             $response["data"] = array_values(array_filter(array_map(function($row) use ($version){
                 if ($version === FALSE || $version == $row['version']) {
@@ -704,7 +706,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
                 $return['`launcher_apps`.`category`'] = $this->data['filters']['category'];
             }
 
-            if (array_key_exists('state', $this->data['filters']) && $this->data['filters']['state']!= 0) {
+            if (array_key_exists('installed', $this->data['filters']) && $this->data['filters']['installed']!= 0) {
                 /*$return['`launcher_apps`.`state`'] = $this->data['filters']['state'] - 1;*/
             }
 
