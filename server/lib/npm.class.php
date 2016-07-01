@@ -105,14 +105,26 @@ class Npm
 
                 $this->relocatePackages($full_path);
 
-                $target_path = $this->app_path.'/'.$dir.'/'.$ver;
-
                 umask(0);
-                if (!is_dir($target_path)){
-                    mkdir($target_path, 0777, true);
+
+                if (isset($info['config']['type']) && $info['config']['type'] == 'plugin'){
+
+                    $plugins_path = $this->app_path.'/plugins';
+
+                    if (!is_dir($plugins_path)){
+                        mkdir($plugins_path, 0777, true);
+                    }
+
+                    $target_path = $plugins_path.'/'.$dir.'/'.$ver;
+                }else{
+                    $target_path = $this->app_path.'/'.$dir.'/'.$ver;
                 }
 
-                rename($full_path, $target_path);
+                if (!is_dir($target_path)){
+                    mkdir($target_path, 0777, true);
+                    rename($full_path, $target_path);
+                }
+
 
                 $app_manager = new SmartLauncherAppsManager();
                 $app_manager->addApplication($dir);
