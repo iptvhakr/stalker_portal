@@ -14,6 +14,31 @@ class SmartLauncherAppsManager
         $this->lang = $lang ? $lang : 'en';
     }
 
+    public static function getLauncherUrl(){
+
+        $core = Mysql::getInstance()->from('launcher_apps')->where(array('type' => 'core'))->get()->first();
+
+        if (empty($core)){
+            return false;
+        }
+
+        $url = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
+        .'://'.$_SERVER['HTTP_HOST']
+        .'/'.Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/')
+        .$core['alias']
+        .'/'.$core['current_version'].'/app/';
+
+        return $url;
+    }
+
+    public static function getLauncherProfileUrl(){
+
+        return 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
+            .'://'.$_SERVER['HTTP_HOST']
+            .'/'.Config::getSafe('portal_url', '/stalker_portal/')
+            .'/server/api/launcher_profile.php';
+    }
+
     /**
      * @param int $app_id
      * @return mixed
@@ -101,6 +126,10 @@ class SmartLauncherAppsManager
         }
 
         $app['versions'] = array();
+
+        if (isset($info['versions']) && is_string($info['versions'])){
+            $info['versions'] = array($info['versions']);
+        }
 
         if (isset($info['versions']) && is_array($info['versions'])){
 
@@ -288,7 +317,7 @@ class SmartLauncherAppsManager
         return $app_localizations;
     }
 
-    public function addApplication($url){
+    public function addApplication($url, $autoinstall = false){
 
         $app = Mysql::getInstance()->from('launcher_apps')->where(array('url' => $url))->get()->first();
 
@@ -297,10 +326,15 @@ class SmartLauncherAppsManager
         }
 
         $app_id = Mysql::getInstance()->insert('launcher_apps', array(
-            'url' => $url
+            'url'   => $url,
+            'added' => 'NOW()'
         ))->insert_id();
 
-        $this->getAppInfo($app_id);
+        if ($autoinstall){
+            $this->installApp($app_id);
+        }else{
+            $this->getAppInfo($app_id);
+        }
 
         return $app_id;
     }
@@ -352,7 +386,8 @@ class SmartLauncherAppsManager
             $range = new SemVerExpression($version_expression);
 
             if ($range->satisfiedBy(new SemVer($dep_app['current_version']))){
-                $full_dependencies[$package] = '../'.($dep_app['type'] == 'plugin' ? 'plugins/' : '').$package.'/'.$dep_app['current_version'].'/';
+                //$full_dependencies[$package] = '../../../'.($dep_app['type'] == 'plugin' ? 'plugins/' : '').$package.'/'.$dep_app['current_version'].'/';
+                $full_dependencies[$package] = $dep_app['current_version'];
             }else{
                 $dep_app_path = realpath(PROJECT_PATH.'/../../'
                     .Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/')
@@ -380,6 +415,8 @@ class SmartLauncherAppsManager
                 if (is_null($max_version)){
                     throw new SmartLauncherAppsManagerException('Unresolved dependency '.$dep_app['alias'].' for '.$app['alias']);
                 }
+
+                $full_dependencies[$package] = $max_version;
             }
 
         }
@@ -441,7 +478,7 @@ class SmartLauncherAppsManager
 
     public function getSystemApps(){
 
-        $apps = Mysql::getInstance()->from('launcher_apps')->where(array('type!=' => 'app'))->get()->all();
+        $apps = Mysql::getInstance()->from('launcher_apps')->not_in('type', array('app', 'theme'))->get()->all();
 
         return array_values(array_filter($apps, function($app){
             return !empty($app['alias']) && $app['status'] == 1 && is_dir(realpath(PROJECT_PATH.'/../../'
@@ -458,28 +495,38 @@ class SmartLauncherAppsManager
         }
         return rmdir($dir);
     }
-}
 
-class SmartLauncherApp
-{
-    public function __construct() {
+    public function syncApps(){
 
-    }
+        $repos = Config::getSafe('launcher_apps_repos', array());
 
-    public function getName(){
+        foreach ($repos as $repo){
+            $info = file_get_contents($repo);
 
-    }
+            if (!$info){
+                continue;
+            }
 
-    public function getDescription(){
+            $info = json_decode($info, true);
 
+            if (!$info){
+                continue;
+            }
+
+            $apps = isset($info['dependencies']) ? $info['dependencies'] : array();
+
+            if (is_string($apps)){
+                $apps = array($apps);
+            }
+
+            foreach ($apps as $app => $ver){
+                $this->addApplication($app);
+            }
+        }
     }
 }
 
 class SmartLauncherAppsManagerException extends Exception{}
 
 /*$manager = new SmartLauncherAppsManager();
-$manager->installApp(3);
-$manager->installApp(7);
-$manager->installApp(8);
-$manager->installApp(9);
-$manager->installApp(10);*/
+$manager->installApp(1);*/

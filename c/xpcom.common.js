@@ -424,14 +424,14 @@ function common_xpcom(){
                     return self.disabled_modules.indexOf(module) == -1;
                 });
 
-                if (result.template == 'smart_launcher'){
+                if (result.template == 'smart_launcher' && result['launcher_url']){
 
                     if (single_module.length == 0) {
                         _debug('redirect to the new launcher');
                         window.stop();
                         document.body.hide();
-                        _debug('../new/?config=' + encodeURIComponent('../../server/api/launcher_profile.php?uid=' + this.user['id'] + '&language='+this.stb_lang));
-                        window.location = '../new/?config=' + encodeURIComponent('../../server/api/launcher_profile.php?uid=' + this.user['id'] + '&language='+this.stb_lang);
+                        _debug(result['launcher_url']+'?config=' + encodeURIComponent(result['launcher_profile_url']+'?uid=' + this.user['id'] + '&language='+this.stb_lang));
+                        window.location = result['launcher_url']+'?config=' + encodeURIComponent(result['launcher_profile_url']+'?uid=' + this.user['id'] + '&language='+this.stb_lang);
                         return;
                     }else{
                         result.template = 'default';
@@ -1094,8 +1094,8 @@ function common_xpcom(){
                 _debug('redirect to the new launcher');
                 window.stop();
                 document.body.hide();
-                _debug('../new/?config=' + encodeURIComponent('../../server/api/launcher_profile.php?uid=' + this.user['id'] + '&language='+this.stb_lang));
-                window.location = '../new/?config=' + encodeURIComponent('../../server/api/launcher_profile.php?uid=' + this.user['id'] + '&language='+this.stb_lang);
+                _debug(this.user['launcher_url']+'?config=' + encodeURIComponent(this.user['launcher_profile_url']+'?uid=' + this.user['id'] + '&language='+this.stb_lang));
+                window.location = this.user['launcher_url']+'?config=' + encodeURIComponent(this.user['launcher_profile_url']+'?uid=' + this.user['id'] + '&language='+this.stb_lang);
                 return;
             }
 

@@ -56,7 +56,7 @@ if ($user['status'] == 1){
     exit;
 }
 
-$config['options']['pluginsPath'] = '../plugins/';
+$config['options']['pluginsPath'] = '../../../plugins/';
 
 $config['options']['stalkerHost'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
     .'://'.$_SERVER['HTTP_HOST'];
@@ -84,7 +84,7 @@ $themes = $app_manager->getInstalledApps('theme');
 if (!empty($themes)){
 
     foreach ($themes as $theme){
-        $config['themes'][$theme['alias']] = '../'.$theme['alias'].'/'.$theme['current_version'].'/';
+        $config['themes'][$theme['alias']] = '../../../'.$theme['alias'].'/'.$theme['current_version'].'/';
     }
 }
 
