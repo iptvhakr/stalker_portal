@@ -4,6 +4,7 @@
 
 use Stalker\Lib\Core\Mysql;
 use Stalker\Lib\Core\Config;
+use Stalker\Lib\Core\Cache;
 
 class SmartLauncherAppsManager
 {
@@ -26,11 +27,23 @@ class SmartLauncherAppsManager
             throw new SmartLauncherAppsManagerException('App not found, id='.$app_id);
         }
 
-        $npm = new Npm();
-        $info = $npm->info($app['url']);
+        $cache = Cache::getInstance();
+
+        $cached_info = $cache->get($app_id.'_launcher_app_info');
+
+        if (empty($cached_info)){
+            $npm = new Npm();
+            $info = $npm->info($app['url']);
+        }else{
+            $info = $cached_info;
+        }
 
         if (empty($info)){
             throw new SmartLauncherAppsManagerException('Unable to get info for '.$app['url']);
+        }
+
+        if (empty($cached_info)){
+            $cache->set($app_id.'_launcher_app_info', $info, 0, rand(1000, 3600));
         }
 
         $app['alias'] = $info['name'];
@@ -374,6 +387,46 @@ class SmartLauncherAppsManager
         return $full_dependencies;
     }
 
+    public function getConflicts($app_id, $version = null) {
+
+        $app = $original_app = Mysql::getInstance()->from('launcher_apps')->where(array('id' => $app_id))->get()->first();
+
+        if (empty($app)) {
+            throw new SmartLauncherAppsManagerException('App not found, id=' . $app_id);
+        }
+
+        $npm = new Npm();
+        $info = $npm->info($app['url'], $version);
+
+        if (empty($info)){
+            throw new SmartLauncherAppsManagerException('Unable to get info for '.$app['url']);
+        }
+
+        $dependencies = isset($info['dependencies']) ? $info['dependencies'] : array();
+
+        $conflicts = array();
+
+        foreach ($dependencies as $package => $version_expression) {
+
+            $dep_app = Mysql::getInstance()->from('launcher_apps')->where(array('alias' => $package))->get()->first();
+
+            if (empty($dep_app) || empty($dep_app['current_version']) || !$dep_app['unique']) {
+                continue;
+            }
+
+            $range = new SemVerExpression($version_expression);
+
+            if (!$range->satisfiedBy(new SemVer($dep_app['current_version']))){
+                $conflicts[] = array(
+                    'alias'           => $package,
+                    'current_version' => $dep_app['current_version']
+                );
+            }
+        }
+
+        return $conflicts;
+    }
+
     public function getInstalledApps($type = 'app'){
 
         $apps = Mysql::getInstance()->from('launcher_apps')->where(array('type' => $type))->get()->all();
@@ -404,6 +457,21 @@ class SmartLauncherAppsManager
             (is_dir("$dir/$file")) ? self::delTree("$dir/$file") : unlink("$dir/$file");
         }
         return rmdir($dir);
+    }
+}
+
+class SmartLauncherApp
+{
+    public function __construct() {
+
+    }
+
+    public function getName(){
+
+    }
+
+    public function getDescription(){
+
     }
 }
 
