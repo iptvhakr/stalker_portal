@@ -1,7 +1,5 @@
 <?php
 
-//require_once '../common.php';
-
 use Stalker\Lib\Core\Mysql;
 use Stalker\Lib\Core\Config;
 use Stalker\Lib\Core\Cache;
@@ -489,6 +487,9 @@ class SmartLauncherAppsManager
     }
 
     private static function delTree($dir) {
+        if (!is_dir($dir)){
+            return false;
+        }
         $files = array_diff(scandir($dir), array('.','..'));
         foreach ($files as $file) {
             (is_dir("$dir/$file")) ? self::delTree("$dir/$file") : unlink("$dir/$file");
@@ -524,9 +525,51 @@ class SmartLauncherAppsManager
             }
         }
     }
+
+    public function initApps(){
+        $apps = Mysql::getInstance()->from('launcher_apps')->count()->get()->counter();
+
+        if ($apps == 0){
+            return $this->resetApps();
+        }
+
+        return false;
+    }
+
+    public function resetApps(){
+
+        $metapackage = Config::getSafe('launcher_apps_metapackage', 'mag-apps-base');
+
+        if (empty($metapackage)){
+            return false;
+        }
+
+        $npm = new Npm();
+        $info = $npm->info($metapackage);
+
+        if (!$info){
+            return false;
+        }
+
+        Mysql::getInstance()->truncate('launcher_apps');
+
+        $apps_path = realpath(PROJECT_PATH.'/../../'.Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/'));
+
+        if ($apps_path){
+            $files = array_diff(scandir($apps_path), array('.','..'));
+            foreach ($files as $file){
+                self::delTree($file);
+            }
+        }
+
+        $result = $this->addApplication($metapackage, true);
+
+        Mysql::getInstance()->delete('launcher_apps', array('url' => $metapackage));
+
+        $this->syncApps();
+
+        return boolval($result);
+    }
 }
 
 class SmartLauncherAppsManagerException extends Exception{}
-
-/*$manager = new SmartLauncherAppsManager();
-$manager->installApp(1);*/

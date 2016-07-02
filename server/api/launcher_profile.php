@@ -100,6 +100,10 @@ foreach ($installed_apps as $app) {
         continue;
     }
 
+    if ($app['type'] == 'core'){
+        continue;
+    }
+
     if ($app['config']){
         $app_config = json_decode($app['config'], true);
         if ($app_config){
