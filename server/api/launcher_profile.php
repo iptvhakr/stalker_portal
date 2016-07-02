@@ -109,11 +109,13 @@ foreach ($installed_apps as $app) {
 
     if ($app['config']){
 
+        $app['config']['version'] = $app['current_version'];
+
         $app['config']['url'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
             .'://'.$_SERVER['HTTP_HOST']
             .'/'.Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/')
             .$app['alias']
-            .'/'.$app['current_version'];
+            .'/'.$app['current_version'].'/app/';
 
         $app['config']['dependencies'] = $app_manager->getFullAppDependencies($app['id']);
 
