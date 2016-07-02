@@ -73,4 +73,29 @@ class ApplicationCatalogModel extends \Model\BaseStalkerModel {
 
         return ($counter) ? $this->mysqlInstance->count()->get()->counter() : $this->mysqlInstance->get()->all();
     }
+
+    public function getSmartApplication($where){
+        return $this->mysqlInstance->from('launcher_apps')->where($where)->get()->all();
+    }
+
+    public function insertSmartApplication($data){
+        $data['added'] = 'NOW()';
+        return $this->mysqlInstance->insert('launcher_apps', $data)->total_rows();
+    }
+
+    public function updateSmartApplication($data, $where){
+        if (!is_array($where) && is_numeric($where)) {
+            $where = array('id' => $where);
+        }
+        $data['updated'] = 'NOW()';
+        return $this->mysqlInstance->update('launcher_apps', $data, $where)->total_rows();
+    }
+
+    public function deleteSmartApplication($where){
+        if (!is_array($where) && is_numeric($where)) {
+            $where = array('id' => $where);
+        }
+        $data['updated'] = 'NOW()';
+        return $this->mysqlInstance->delete('launcher_apps', $where)->total_rows();
+    }
 }

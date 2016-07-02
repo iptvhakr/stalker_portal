@@ -117,6 +117,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         $this->app['dropdownAttribute'] = $attribute;
 
         $this->app['app_info'] = $this->application_version_list_json();
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Stalker applications'), 'application-catalog/application-list');
         $this->app['breadcrumbs']->addItem(!empty($this->app['app_info']['info']['name']) ? $this->app['app_info']['info']['name'] : $this->setLocalization('Undefined'));
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
@@ -136,6 +137,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         $this->app['dropdownAttribute'] = $attribute;
 
         $this->app['app_info'] = $this->smart_application_version_list_json();
+        $this->app['breadcrumbs']->addItem($this->setLocalization('SmartLauncher applications'), 'application-catalog/smart-application-list');
         $this->app['breadcrumbs']->addItem(!empty($this->app['app_info']['info']['name']) ? $this->app['app_info']['info']['name'] : $this->setLocalization('Undefined'));
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
@@ -203,7 +205,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
 
         $filter = $this->getSmartApplicationFilters();
 
-        $query_param = $this->prepareDataTableParams($param, array('operations', /*'logo', 'name', 'available_version', 'compatibility', 'description',*/ 'RowOrder', '_'));
+        $query_param = $this->prepareDataTableParams($param, array('operations', /*'logo', 'name', 'available_version', 'conflicts', 'description',*/ 'RowOrder', '_'));
 
         if (!isset($query_param['where'])) {
             $query_param['where'] = array();
@@ -216,8 +218,11 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         }
         $this->cleanQueryParams($query_param, array_keys($filds_for_select), $filds_for_select);
 
+        $get_conflicts = FALSE;
         if (!empty($param['id'])) {
             $query_param['where']['L_A.`id`'] = $param['id'];
+            $response['action'] = 'buildModalByAlias';
+            $get_conflicts = TRUE;
         }
 
         if (!empty($query_param['like'])) {
@@ -231,6 +236,9 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         if (!array_search('L_A.`id` as `id`', $query_param['select'])) {
             $query_param['select'][] = 'L_A.`id` as `id`';
         }
+        if (!array_search('L_A.`alias` as `alias`', $query_param['select'])) {
+            $query_param['select'][] = 'L_A.`alias` as `alias`';
+        }
 
         $response['recordsTotal'] = $this->db->getTotalRowsSmartApplicationList();
         $response["recordsFiltered"] = $this->db->getTotalRowsSmartApplicationList($query_param['where'], $query_param['like']);
@@ -243,12 +251,20 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
 
         $apps_manager = new \SmartLauncherAppsManager();
 
-        $response["data"] = array_map(function($row) use ($apps_manager){
+        $response["data"] = array_map(function($row) use ($apps_manager, $get_conflicts){
             $info = $apps_manager->getAppInfo($row['id']);
             $row['name'] = $info['name'];
             $row['description'] = $info['description'];
             $row['available_version'] = $info['available_version'];
-            $row['compatibility'] = 'from class';//$info['compatibility'];
+            $row['conflicts'] = $row['available_version_conflicts'] = array();
+            if ($get_conflicts){
+                if (!empty($row['current_version'])) {
+                    $row['conflicts'] = $apps_manager->getConflicts($row['id'], $row['current_version']);
+                }
+                if (!empty($row['available_version']) && (empty($row['current_version']) || $row['current_version'] != $row['available_version'])) {
+                    $row['available_version_conflicts'] = $apps_manager->getConflicts($row['id'], $row['available_version']);
+                }
+            }
             $row['logo'] = 'from class';//$info['logo'];
             settype($row['status'], 'int');
             $row['installed'] = $info['installed'];
@@ -292,6 +308,34 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
 
+    public function smart_application_get_data_from_repo(){
+
+        if (!$this->isAjax || $this->method != 'POST' || (empty($this->postData['apps']['url']) && empty($this->postData['alias']))) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $response['action'] = (!empty($this->postData['alias']) ? 'buildModalByAlias': 'buildSaveForm');
+        $response['data'] = array();
+        $response['error'] = '';
+        try{
+            $search_str = !empty($this->postData['apps']['url']) ? $this->postData['apps']['url']: $this->postData['alias'];
+            $repo =  new \Npm();
+            $response['data'] = $repo->info($search_str, (!empty($this->postData['version'])? $this->postData['version']: NULL));
+            if ((!array_key_exists('repository', $response['data']) || empty($response['data']['repository']['url'])) && !empty($this->postData['apps']['url'])) {
+                $response['data']['repository']['url'] = $this->postData['apps']['url'];
+            }
+        } catch(\Exception $e){
+            $response['error'] = $this->setLocalization($e->getMessage());
+        }
+
+        $response = $this->generateAjaxResponse($response);
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
     public function application_add(){
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['apps'])) {
             $this->app->abort(404, $this->setLocalization('Page not found'));
@@ -312,6 +356,32 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             }
         } else {
             $response['error'] = $error = $this->setLocalization('URL of application is not defined');
+        }
+
+        $response = $this->generateAjaxResponse($response);
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function smart_application_add(){
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['apps'])) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $response['action'] = 'manageList';
+        $postData = $this->postData['apps'];
+        if (!empty($postData['url'])) {
+            $app = $this->db->getSmartApplication(array('url' => $postData['url']));
+            if (empty($app) && $this->db->insertSmartApplication($postData)) {
+                $response['error'] = $error = '';
+            } else {
+                $response['error'] = $error = $this->setLocalization('Perhaps the application is already installed. You can update it if the new version is available or uninstall and install again');
+            }
+        } else {
+            $response['error'] = $error = $this->setLocalization('Package name is not defined');
         }
 
         $response = $this->generateAjaxResponse($response);
@@ -415,10 +485,12 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             $app = FALSE;
         }
         if ($app !== FALSE) {
-            $response["data"] = array_values(array_filter(array_map(function($row) use ($version){
+            $id = $app['id'];
+            $response["data"] = array_values(array_filter(array_map(function($row) use ($version, $apps_list, $id){
                 if ($version === FALSE || $version == $row['version']) {
-                    $row['published'] = (int)strtotime($row['published']);
+                    /*$row['published'] = (int)strtotime($row['published']);*/
                     $row['published'] = $row['published'] < 0 ? 0 : $row['published'];
+                    $row['conflicts'] = $apps_list->getConflicts($id, $row['current_version']);
                     return $row;
                 }
             }, $app['versions'])));
@@ -513,6 +585,47 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
 
+    public function smart_application_version_install(){
+
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData)) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $response['action'] = 'manageList';
+        if (!empty($this->postData['id'])) {
+            ignore_user_abort(true);
+            set_time_limit(0);
+
+            try{
+                $apps = new \SmartLauncherAppsManager();
+                if (empty($this->postData['version'])) {
+                    $result = $apps->installApp($this->postData['id']);
+                } else {
+                    $result = $apps->updateApp($this->postData['id'], $this->postData['version']);
+                }
+                if ($result !==FALSE ) {
+                    $response['error'] = $error = '';
+                    $response['installed'] = 1;
+                } else {
+                    $response['error'] = $error = $this->setLocalization('Error of installing the application');
+                }
+            } catch(\PharException $e){
+                $response['error'] = $this->setLocalization($e->getMessage());
+            } catch(\Exception $e){
+                $response['error'] = $this->setLocalization($e->getMessage());
+            }
+        } else {
+            $response['error'] = $error = $this->setLocalization('Application is undefined');
+        }
+
+        $response = $this->generateAjaxResponse($response);
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
     public function application_version_delete(){
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData)) {
             $this->app->abort(404, $this->setLocalization('Page not found'));
@@ -531,6 +644,43 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
 
             try{
                 $apps = new \AppsManager();
+                $apps->deleteApp($this->postData['id'], $this->postData['version']);
+                $response['error'] = $error = '';
+
+                if ($app_db[0]['current_version'] == $this->postData['version']) {
+                    $response['installed'] = 0;
+                }
+
+            } catch(\Exception $e){
+                $response['error'] = $error = $this->setLocalization('Error of uninstalling the application.');
+                $response['error'] .= ' ' . $this->setLocalization($e->getMessage());
+            }
+        } else {
+            $response['error'] = $error = $this->setLocalization('Application is undefined');
+        }
+
+        $response = $this->generateAjaxResponse($response);
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function smart_application_version_delete(){
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData)) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $response['action'] = 'manageList';
+        if (!empty($this->postData['id'])) {
+            ignore_user_abort(true);
+            set_time_limit(0);
+
+            $app_db = $this->db->getSmartApplication(array('id' => $this->postData['id']));
+
+            try{
+                $apps = new \SmartLauncherAppsManager();
                 $apps->deleteApp($this->postData['id'], $this->postData['version']);
                 $response['error'] = $error = '';
 
@@ -600,6 +750,56 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
 
+    public function smart_application_toggle_state(){
+
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData)) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $response['action'] = 'changeStatus';
+        $response['field'] = 'app_status';
+        $postData = $this->postData;
+        $id = $postData['id'];
+        $key = '';
+        if (array_key_exists('status', $postData)) {
+            $postData['status'] = !empty($postData['status']) && $postData['status'] != 'false' && $postData['status'] !== FALSE ? 1: 0;
+            $key = 'status';
+        }
+
+        if (array_key_exists('autoupdate', $postData)) {
+            $postData['autoupdate'] = !empty($postData['autoupdate']) && $postData['autoupdate'] != 'false' && $postData['autoupdate'] !== FALSE ? 1: 0;
+            $response['field'] = 'app_autoupdate';
+            $key = 'autoupdate';
+        }
+
+        unset($postData['id']);
+
+        $result = $this->db->updateSmartApplication($postData, $id);
+        if (is_numeric($result)) {
+            $response['error'] = $error = '';
+            if (!empty($postData['current_version'])) {
+                $response['msg'] = $this->setLocalization('Activated. Current version') . ' ' . $postData['current_version'];
+            }
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
+            $response['installed'] = !empty($postData[$key]) && $postData[$key] != 'false' && $postData[$key] !== FALSE? 1: 0;;
+        } else {
+            $response['error'] = $error = $this->setLocalization('Failed to activated of application.');
+            if (!empty($postData['current_version'])) {
+                $response['error'] = $error .= $this->setLocalization('Version') . ' ' . $postData['current_version'];
+            }
+            $response['installed'] = (int)!(!empty($postData[$key]) && $postData[$key] != 'false' && $postData[$key] !== FALSE? 1: 0);
+        }
+
+        $response = $this->generateAjaxResponse($response);
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
     public function application_delete(){
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData)) {
             $this->app->abort(404, $this->setLocalization('Page not found'));
@@ -618,6 +818,41 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             $response['error'] = $error = $this->setLocalization('Failed to delete application.');
         }
 
+        $response = $this->generateAjaxResponse($response);
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function smart_application_delete(){
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData)) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $response['action'] = 'manageList';
+
+        if ($this->db->deleteSmartApplication($this->postData)) {
+            $response['error'] = $error = '';
+            $response['msg'] = $this->setLocalization('Application has been deleted');
+        } else {
+            $response['error'] = $error = $this->setLocalization('Failed to delete application.');
+        }
+
+        $response = $this->generateAjaxResponse($response);
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function smart_application_reset_all(){
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+        $response = array('action' => 'manageList');
+        $error = $this->setLocalization('Failed');
+
+        $apps = new \SmartLauncherAppsManager();
+        $error = '';
         $response = $this->generateAjaxResponse($response);
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -649,13 +884,13 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
 
     private function getSmartApplicationListDropdownAttribute(){
         $attribute = array(
-            array('name' => 'logo',             'title' => $this->setLocalization('Logo'),              'checked' => TRUE),
+            /*array('name' => 'logo',             'title' => $this->setLocalization('Logo'),              'checked' => TRUE),*/
             array('name' => 'name',             'title' => $this->setLocalization('Application'),       'checked' => TRUE),
             array('name' => 'type',             'title' => $this->setLocalization('Type'),              'checked' => TRUE),
             array('name' => 'category',         'title' => $this->setLocalization('Category'),          'checked' => TRUE),
             array('name' => 'current_version',  'title' => $this->setLocalization('Current version'),   'checked' => TRUE),
             array('name' => 'available_version','title' => $this->setLocalization('Actual version'),    'checked' => TRUE),
-            array('name' => 'compatibility',    'title' => $this->setLocalization('Compatibility'),     'checked' => TRUE),
+            /*array('name' => 'conflicts',    'title' => $this->setLocalization('Compatibility'),     'checked' => TRUE),*/
             array('name' => 'author',           'title' => $this->setLocalization('Publisher'),         'checked' => TRUE),
             array('name' => 'status',           'title' => $this->setLocalization('State'),             'checked' => TRUE),
             array('name' => 'description',      'title' => $this->setLocalization('Description'),       'checked' => TRUE),
@@ -666,9 +901,9 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
 
     private function getSmartApplicationDetailDropdownAttribute(){
         $attribute = array(
-            array('name' => 'current_version',  'title' => $this->setLocalization('Current version'),   'checked' => TRUE),
-            array('name' => 'added',            'title' => $this->setLocalization('Date'),              'checked' => TRUE),
-            array('name' => 'compatibility',    'title' => $this->setLocalization('Compatibility'),     'checked' => TRUE),
+            array('name' => 'version',          'title' => $this->setLocalization('Current version'),   'checked' => TRUE),
+            array('name' => 'published',        'title' => $this->setLocalization('Date'),              'checked' => TRUE),
+            array('name' => 'conflicts',        'title' => $this->setLocalization('Compatibility'),     'checked' => TRUE),
             array('name' => 'status',           'title' => $this->setLocalization('State'),             'checked' => TRUE),
             array('name' => 'operations',       'title' => $this->setLocalization('Operations'),        'checked' => TRUE)
         );
@@ -684,7 +919,8 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             'category' => 'L_A.`category` as `category`',
             'current_version' => 'L_A.`current_version` as `current_version`',
             'available_version' => '"" as `available_version`',
-            'compatibility' => '"" as `compatibility`',
+            'alias' => 'L_A.`alias` as `alias`',
+            'conflicts' => '"" as `conflicts`',
             'author' => 'L_A.`author` as `author`',
             'status' => 'L_A.`status` as `status`',
             'localization' => 'L_A.`localization` as `localization`',
@@ -714,8 +950,8 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
                 $return['`launcher_apps`.`status`'] = $this->data['filters']['status'] - 1;
             }
 
-            if (array_key_exists('compatibility', $this->data['filters']) && $this->data['filters']['compatibility']!= 0) {
-                /*$return['`launcher_apps`.`compatibility`'] = $this->data['filters']['compatibility'] - 1;*/
+            if (array_key_exists('conflicts', $this->data['filters']) && $this->data['filters']['conflicts']!= 0) {
+                /*$return['`launcher_apps`.`conflicts`'] = $this->data['filters']['conflicts'] - 1;*/
             }
 
             $this->app['filters'] = $this->data['filters'];

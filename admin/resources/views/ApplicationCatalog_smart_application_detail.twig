@@ -116,15 +116,25 @@
                             json.data[i]['published'] = '---';
                         }
 
+                        if (item.conflicts && item.conflicts.length !=0) {
+                            var conflicts = '<p class="text-danger">{{ 'conflicts with'|trans }}<br/>';
+                            for(var j in item.conflicts) {
+                                conflicts += item.conflicts[j]['alias'] + ' ' + item.conflicts[j]['current_version'] + '<br>';
+                            }
+                            json.data[i].conflicts = conflicts + '</p>';
+                        } else {
+                            json.data[i].conflicts = '<p class="text-default">{{ 'no conflicts'|trans }}</p>';
+                        }
+
                         json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
                                                         <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\
                                                         <ul class='dropdown-menu pull-right'>";
-                        if (item.current) {
+                        if (item.current && 0) { //
                             json.data[i].operations += "\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-version-list-json' data-id='" + id + "' data-version='" + item.version + "'>\n\
+                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-version-list-json' data-id='" + id + "' data-version='" + item.version + "'>\n\
                                                                     <span> {{ 'More details'|trans }} </span>\n\
                                                                 </a>\n\
                                                             </li>";
@@ -132,21 +142,21 @@
                         if (!item.installed) {
                             json.data[i].operations +=      "\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-version-install' data-id='" + id + "' data-version='" + item.version + "'>\n\
+                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-version-install' data-id='" + id + "' data-version='" + item.version + "'>\n\
                                                                     <span> " + "{{ 'Install'|trans }}" + " </span>\n\
                                                                 </a>\n\
                                                             </li>";
                         } else {
                             json.data[i].operations +=      "\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-toggle-state' data-id='" + id + "' " + ( current ? " data-status='" + (status == '1' ? '0': '1') + "'" : " data-current_version='" + item.version + "' data-status='1'") + ">\n\
+                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-toggle-state' data-id='" + id + "' " + ( current ? " data-status='" + (status == '1' ? '0': '1') + "'" : " data-current_version='" + item.version + "' data-status='1'") + ">\n\
                                                                     <span> " + (status != '1' || !current ? "{{ 'Activate'|trans }}" : "{{ 'Deactivate'|trans }}") + " </span>\n\
                                                                 </a>\n\
                                                             </li>";
                         }
                         json.data[i].operations +=          "\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' " + (!item.installed || current? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-version-delete' data-id='" + id + "' data-version='" + item.version + "'>\n\
+                                                                <a class='main_ajax' " + (!item.installed || current? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-version-delete' data-id='" + id + "' data-version='" + item.version + "'>\n\
                                                                     <span> {{ 'Delete'|trans }} </span>\n\
                                                                 </a>\n\
                                                             </li>\n\
@@ -159,7 +169,7 @@
                 "processing": true,
                 "serverSide": false,
                 "ajax": {
-                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-version-list-json?id={% if attribute(app, 'app_info') is defined and app.app_info.info|length > 0 %}{{ app.app_info.info.id }}{% endif %}",
+                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-version-list-json?id={% if attribute(app, 'app_info') is defined and app.app_info.info|length > 0 %}{{ app.app_info.info.id }}{% endif %}",
                     "data": function (d) {
                     }
                 },
@@ -230,13 +240,13 @@
                         JSErrorModalBox({msg: "{{ 'Perhaps the application is not installed. Before activate this application is necessary to install any version of the application.'|trans}}"});
                     }
                     {% if attribute(app, 'app_info') is defined and app.app_info.info|length > 0 %}
-                    ajaxPostSend('{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-toggle-state', {status: $(this).is(':checked'), id: {{ app.app_info.info.id }} });
+                    ajaxPostSend('{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-toggle-state', {status: $(this).is(':checked'), id: {{ app.app_info.info.id }} });
                     {% endif %}
                 });
 
                 $(document).on('click', '#app_autoupdate', function(){
                     {% if attribute(app, 'app_info') is defined and app.app_info.info|length > 0 %}
-                    ajaxPostSend('{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-toggle-state', {autoupdate: $(this).is(':checked'), id: {{ app.app_info.info.id }} });
+                    ajaxPostSend('{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-toggle-state', {autoupdate: $(this).is(':checked'), id: {{ app.app_info.info.id }} });
                     {% endif %}
                 });
 
@@ -352,7 +362,7 @@
 
     <script type="text/template" id="modal_option_form_body">
         <div class="box-content">
-            <form class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-version-save-option">
+            <form class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-version-save-option">
                 <div class="form-group">
                     <label class="col-sm-3 control-label">{{ 'Version'|trans }}</label>
                     <div class="col-xs-8 col-sm-8">
