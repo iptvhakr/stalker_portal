@@ -257,7 +257,12 @@ class SmartLauncherAppsManager
             $version = $app['current_version'];
         }
 
-        $path = realpath(PROJECT_PATH.'/../../'.Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/').$app['alias'].'/'.$version);
+        $path = realpath(PROJECT_PATH.'/../../'
+            .Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/')
+            .($app['type'] == 'plugin' ? 'plugins/' : '')
+            .$app['alias']
+            .'/'.$version
+        );
 
         if (is_dir($path)){
             self::delTree($path);
@@ -364,6 +369,7 @@ class SmartLauncherAppsManager
 
         $info = file_get_contents(realpath(PROJECT_PATH.'/../../'
             .Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/')
+            .($app['type'] == 'plugin' ? 'plugins/' : '')
             .$app['alias']
             .'/'.$app['current_version'].'/package.json'));
 
@@ -397,6 +403,7 @@ class SmartLauncherAppsManager
             }else{
                 $dep_app_path = realpath(PROJECT_PATH.'/../../'
                     .Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/')
+                    .($app['type'] == 'plugin' ? 'plugins/' : '')
                     .$dep_app['alias']);
 
                 $files = array_diff(scandir($dep_app_path), array('.','..'));
@@ -477,6 +484,7 @@ class SmartLauncherAppsManager
         return array_values(array_filter($apps, function($app){
             return !empty($app['alias']) && $app['status'] == 1 && is_dir(realpath(PROJECT_PATH.'/../../'
                 .Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/')
+                .($app['type'] == 'plugin' ? 'plugins/' : '')
                 .$app['alias']
                 .'/'.$app['current_version']));
         }));
@@ -489,6 +497,7 @@ class SmartLauncherAppsManager
         return array_values(array_filter($apps, function($app){
             return !empty($app['alias']) && $app['status'] == 1 && is_dir(realpath(PROJECT_PATH.'/../../'
                 .Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/')
+                .($app['type'] == 'plugin' ? 'plugins/' : '')
                 .$app['alias']
                 .'/'.$app['current_version']));
         }));
