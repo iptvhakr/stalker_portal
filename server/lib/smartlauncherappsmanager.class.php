@@ -104,12 +104,34 @@ class SmartLauncherAppsManager
             Mysql::getInstance()->update('launcher_apps', $update_data, array('id' => $app_id));
         }
 
+        $app['icon'] = '';
+        $app['backgroundColor'] = '';
+
         if ($app['current_version']){
-            $app['installed'] = is_dir(realpath(PROJECT_PATH.'/../../'
+
+            $app_path = realpath(PROJECT_PATH.'/../../'
                 .Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/')
                 .($app['type'] == 'plugin' ? 'plugins/' : '')
                 .$app['url']
-                .'/'.$app['current_version']));
+                .'/'.$app['current_version']);
+
+            $app['installed'] = $app_path && is_dir($app_path);
+
+            if ($app['installed'] && isset($info['config']['icons']['paths']['720']) && isset($info['config']['icons']['states']['normal'])){
+                $icon_path = realpath($app_path.'/app/'.$info['config']['icons']['paths']['720'].$info['config']['icons']['states']['normal']);
+                $app['icon'] = $icon_path && is_readable($icon_path) ?
+                        'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
+                        .'://'.$_SERVER['HTTP_HOST']
+                        .'/'.Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/')
+                        .$app['alias']
+                        .'/'.$app['current_version'].'/app/'
+                        .$info['config']['icons']['paths']['720'].$info['config']['icons']['states']['normal']
+                    : '';
+
+                if ($app['icon']){
+                    $app['backgroundColor'] = isset($info['config']['backgroundColor']) ? $info['config']['backgroundColor'] : '';
+                }
+            }
         }else{
             $app['installed'] = false;
         }
@@ -460,11 +482,31 @@ class SmartLauncherAppsManager
 
             $dep_app = Mysql::getInstance()->from('launcher_apps')->where(array('alias' => $package))->get()->first();
 
+            $range = new SemVerExpression($version_expression);
+
+            if ($package == 'mag-app-stalker-api'){
+
+                $sap_path = realpath(PROJECT_PATH.'/../deploy/src/sap/');
+                $sap_versions = array_diff(scandir($sap_path), array('.','..'));
+
+                foreach ($sap_versions as $sap_version) {
+                    if ($range->satisfiedBy(new SemVer($sap_version))){
+                        $suitable_sap = $sap_version;
+                        break;
+                    }
+                }
+
+                if (empty($suitable_sap)){
+                    $conflicts[] = array(
+                        'alias'           => $package,
+                        'current_version' => $version_expression
+                    );
+                }
+            }
+
             if (empty($dep_app) || empty($dep_app['current_version']) || !$dep_app['is_unique']) {
                 continue;
             }
-
-            $range = new SemVerExpression($version_expression);
 
             if (!$range->satisfiedBy(new SemVer($dep_app['current_version']))){
                 $conflicts[] = array(
