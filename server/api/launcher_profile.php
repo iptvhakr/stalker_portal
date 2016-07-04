@@ -10,9 +10,11 @@ if (empty($_GET['uid'])){
 use Stalker\Lib\Core\Config;
 use Stalker\Lib\Core\Stb;
 
-$file = file_get_contents('../../new/core/config.json');
-
-$profile = json_decode($file, true);
+$config = array(
+    'options' => array(),
+    'themes'  => array(),
+    'apps'    => array()
+);
 
 $language = isset($_GET['language']) ? $_GET['language'] : 'en';
 
@@ -35,15 +37,11 @@ if (isset($allowed_languages_map[$language])){
 setlocale(LC_MESSAGES, $locale);
 putenv('LC_MESSAGES='.$locale);
 
-$apps = new AppsManager($language);
-$external_apps = $apps->getList(true);
-
-$installed_apps = array_values(array_filter($external_apps, function($app){
-    return $app['installed'] == 1 && $app['status'] == 1 && !empty($app['alias']);
-}));
+$app_manager = new SmartLauncherAppsManager($language);
+$installed_apps = $app_manager->getInstalledApps();
 
 $installed_apps_names = array_map(function($app){
-    return 'external_'.$app['alias'];
+    return 'launcher_'.$app['alias'];
 }, $installed_apps);
 
 $all_modules = array_merge(Config::get('all_modules'), $installed_apps_names);
@@ -54,105 +52,81 @@ $user = Stb::getById((int) $_GET['uid']);
 // if user is off - return empty menu
 if ($user['status'] == 1){
 
-    $profile['menu'] = array();
-
-    echo json_encode($profile);
+    echo json_encode($config);
     exit;
 }
 
-$profile['options']['stalkerHost'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
+$config['options']['pluginsPath'] = '../../../plugins/';
+
+$config['options']['stalkerHost'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
     .'://'.$_SERVER['HTTP_HOST'];
 
-$profile['options']['stalkerApiHost'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
+$config['options']['stalkerApiHost'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
     .'://'.$_SERVER['HTTP_HOST']
     .Config::getSafe('portal_url', '/stalker_portal/')
     .'api/v3/';
 
-$profile['options']['stalkerAuthHost'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
+$config['options']['stalkerAuthHost'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
     .'://'.$_SERVER['HTTP_HOST']
     .Config::getSafe('portal_url', '/stalker_portal/')
     .'auth/token.php';
 
-$profile['options']['sap'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
+$config['options']['sap'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
     .'://'.$_SERVER['HTTP_HOST']
     .Config::getSafe('portal_url', '/stalker_portal/')
     .'server/api/sap.php';
 
-$profile['options']['pingTimeout'] = Config::getSafe('watchdog_timeout', 120) * 1000;
+$config['options']['pingTimeout'] = Config::getSafe('watchdog_timeout', 120) * 1000;
 $available_modules = array_values(array_diff($all_modules, $disabled_modules));
 
-$module_to_app_map = array(
-    'vclub'         => 'video club',
-    'audioclub'     => 'audio club',
-    'media_browser' => 'explorer',
-    'weather.day'   => 'weather',
-    'ex'            => 'ex.ua',
-    'game.lines'    => 'lines',
-    'game.memory'   => 'memory',
-    'game.sudoku'   => 'sudoku',
-    'internet'      => 'browser',
-    'game.2048'     => '2048',
-    'settings'      => 'system'
-);
+$themes = $app_manager->getInstalledApps('theme');
 
-$available_modules = array_map(function($module) use ($module_to_app_map){
-    return isset($module_to_app_map[$module]) ? $module_to_app_map[$module] : $module;
-}, $available_modules);
+if (!empty($themes)){
 
-$available_modules[] = 'settings';
-
-$apps = $profile['apps'];
+    foreach ($themes as $theme){
+        $config['themes'][$theme['alias']] = '../../../'.$theme['alias'].'/'.$theme['current_version'].'/';
+    }
+}
 
 $user_apps = array();
 
-foreach ($apps as $app){
+$system_apps = $app_manager->getSystemApps();
 
-    if (!in_array(strtolower($app['name']), $available_modules) && $app['type'] == 'app'){
-        continue;
-    }
-
-    $app['name'] = !empty($app['name']) ? _($app['name']) : '';
-    $app['description'] = !empty($app['description']) ? _($app['description']) : '';
-
-    $user_apps[] = $app;
-}
+$installed_apps = array_merge($system_apps, $installed_apps);
 
 foreach ($installed_apps as $app) {
 
+    if (!in_array('launcher_'.$app['alias'], $available_modules) && $app['type'] == 'app'){
+        continue;
+    }
+
+    if ($app['type'] == 'core'){
+        continue;
+    }
+
     if ($app['config']){
-        $config = json_decode($app['config'], true);
-        if ($config){
-            $app['config'] = $config;
+        $app_config = json_decode($app['config'], true);
+        if ($app_config){
+            $app['config'] = $app_config;
         }
     }
+
     if ($app['config']){
-        $app['config']['url'] = $app['app_url'] . '/';
+
+        $app['config']['version'] = $app['current_version'];
+
+        $app['config']['url'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
+            .'://'.$_SERVER['HTTP_HOST']
+            .'/'.Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/')
+            .$app['alias']
+            .'/'.$app['current_version'].'/app/';
+
+        $app['config']['dependencies'] = $app_manager->getFullAppDependencies($app['id']);
+
         $user_apps[] = $app['config'];
-    }else {
-        $user_apps[] = array(
-            'type'            => 'app',
-            'category'        => 'apps',
-            'backgroundColor' => $app['icon_color'],
-            'name'            => $app['alias'],
-            'description'     => $app['description'],
-            'icons'           => array(
-                'paths'  => array(
-                    '480'  => 'img/480/',
-                    '576'  => 'img/576/',
-                    '720'  => 'img/720/',
-                    '1080' => 'img/1080/'
-                ),
-                'states' => array(
-                    'normal' => $app['icons'] . '/2015.png',
-                    'active' => $app['icons'] . '/2015.focus.png',
-                )
-            ),
-            'url'             => $app['app_url'] . '/',
-            'legacy'          => true
-        );
     }
 }
 
-$profile['apps'] = $user_apps;
+$config['apps'] = $user_apps;
 header('Content-Type: application/json');
-echo json_encode($profile, 192);
+echo json_encode($config, 192);

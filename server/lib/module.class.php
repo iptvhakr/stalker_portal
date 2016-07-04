@@ -17,9 +17,20 @@ class Module
             return array(
                 'id'   => 'external_'.$app['alias'],
                 'name' => $app['alias'],
-                'external' => 1
+                'external' => 1,
             );
         }, $installed_apps);
+
+        $launcher_apps_manager = new SmartLauncherAppsManager();
+        $launcher_apps = $launcher_apps_manager->getInstalledApps();
+
+        $launcher_apps_list = array_map(function($app){
+            return array(
+                'id'   => 'launcher_'.$app['alias'],
+                'name' => $app['alias'],
+                'launcher' => 1,
+            );
+        }, $launcher_apps);
 
         $modules = Config::getSafe('disabled_modules', array());
 
@@ -35,7 +46,7 @@ class Module
             return array('id' => $module, 'name' => $module);
         }, $modules);
 
-        $modules = array_merge($modules, $external_apps_list);
+        $modules = array_merge($modules, $external_apps_list, $launcher_apps_list);
 
         return $modules;
     }

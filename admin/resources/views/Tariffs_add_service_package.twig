@@ -357,9 +357,9 @@
                 $.each(data.services, function(index, item){
                     var id = !isNaN(parseInt(item.id, 10)) ? parseInt(item.id, 10) : item.id;
                     if (disabled_services_json.indexOf(id) !== -1 || !$("#form_disabled_services_json").val()) {
-                        $('#form_disabled_services').append('<option class="new" value='+item.id+'>'+ item.name + (item.external ? ' (external)' : '') + '</option>');
+                        $('#form_disabled_services').append('<option class="new" value='+item.id+'>'+ item.name + (item.external ? ' (external)' : '') + (item.launcher ? ' (launcher)' : '') + '</option>');
                     } else {
-                        $('#form_services').append('<option class="new" value='+item.id+'>'+ item.name + (item.external ? ' (external)' : '') + '</option>');
+                        $('#form_services').append('<option class="new" value='+item.id+'>'+ item.name + (item.external ? ' (external)' : '') + (item.launcher ? ' (launcher)' : '') + '</option>');
                     }
                 })
             }
