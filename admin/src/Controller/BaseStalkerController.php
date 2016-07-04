@@ -88,8 +88,8 @@ class BaseStalkerController {
         }
 
         $this->sidebar_cache_time = Config::getSafe('admin_panel_sidebar_cache_time', 0);
+        $this->setDataTablePluginSettings();
         if (!$this->isAjax) {
-            $this->setDataTablePluginSettings();
             if ($this->db !== FALSE && !empty($uid)) {
                 $this->app['userTaskMsgs'] = $this->db->getCountUnreadedMsgsByUid($uid);
             }

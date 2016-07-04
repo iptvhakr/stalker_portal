@@ -205,6 +205,12 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
 
         $filter = $this->getSmartApplicationFilters();
 
+        $installed = NULL;
+        if (array_key_exists('installed', $filter)) {
+            $installed = (bool) $filter['installed'];
+            unset($filter['installed']);
+        }
+
         $query_param = $this->prepareDataTableParams($param, array('operations', /*'logo', 'name', 'available_version', 'conflicts', 'description',*/ 'RowOrder', '_'));
 
         if (!isset($query_param['where'])) {
@@ -251,8 +257,11 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
 
         $apps_manager = new \SmartLauncherAppsManager();
 
-        $response["data"] = array_map(function($row) use ($apps_manager, $get_conflicts){
+        $response["data"] = array_filter(array_map(function($row) use ($apps_manager, $get_conflicts, $installed){
             $info = $apps_manager->getAppInfo($row['id']);
+            if ($installed !== NULL && $installed !== $info['installed']) {
+                return FALSE;
+            }
             $row['name'] = $info['name'];
             $row['description'] = $info['description'];
             $row['available_version'] = $info['available_version'];
@@ -269,7 +278,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             settype($row['status'], 'int');
             $row['installed'] = $info['installed'];
             return $row;
-        },$this->db->getSmartApplicationList($query_param));
+        },$this->db->getSmartApplicationList($query_param)));
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
 
         $error = "";
@@ -490,7 +499,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
                 if ($version === FALSE || $version == $row['version']) {
                     /*$row['published'] = (int)strtotime($row['published']);*/
                     $row['published'] = $row['published'] < 0 ? 0 : $row['published'];
-                    $row['conflicts'] = $apps_list->getConflicts($id, $row['current_version']);
+                    $row['conflicts'] = $apps_list->getConflicts($id, $row['version']);
                     return $row;
                 }
             }, $app['versions'])));
@@ -615,6 +624,15 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
                 }
             } catch(\PharException $e){
                 $response['error'] = $this->setLocalization($e->getMessage());
+            } catch(\SmartLauncherAppsManagerException $e){
+                $response['error'] = $this->setLocalization($e->getMessage());
+            } catch(\SmartLauncherAppsManagerConflictException $e){
+                $response['error'] = $this->setLocalization($e->getMessage());
+                foreach($e->getConflicts() as $row){
+                    list($app, $ver) = each($row);
+                    $response['error'] .= "<br> $app $ver " . PHP_EOL;
+                }
+                $response['msg'] = $response['error'];
             } catch(\Exception $e){
                 $response['error'] = $this->setLocalization($e->getMessage());
             }
@@ -845,14 +863,23 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
     }
 
     public function smart_application_reset_all(){
+        if (!$this->isAjax) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
         $response = array('action' => 'manageList');
         $error = $this->setLocalization('Failed');
 
-        $apps = new \SmartLauncherAppsManager();
-        $error = '';
+        try{
+            $apps = new \SmartLauncherAppsManager();
+            if ($apps->resetApps()){
+                $error = '';
+            }
+        } catch (\Exception $e) {
+            $response['msg'] = $error = $e->getMessage();
+        }
         $response = $this->generateAjaxResponse($response);
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -891,7 +918,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             array('name' => 'current_version',  'title' => $this->setLocalization('Current version'),   'checked' => TRUE),
             array('name' => 'available_version','title' => $this->setLocalization('Actual version'),    'checked' => TRUE),
             /*array('name' => 'conflicts',    'title' => $this->setLocalization('Compatibility'),     'checked' => TRUE),*/
-            array('name' => 'author',           'title' => $this->setLocalization('Publisher'),         'checked' => TRUE),
+            array('name' => 'author',           'title' => $this->setLocalization('Author'),            'checked' => TRUE),
             array('name' => 'status',           'title' => $this->setLocalization('State'),             'checked' => TRUE),
             array('name' => 'description',      'title' => $this->setLocalization('Description'),       'checked' => TRUE),
             array('name' => 'operations',       'title' => $this->setLocalization('Operations'),        'checked' => TRUE)
@@ -935,23 +962,24 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         if (!empty($this->data['filters'])){
 
             if (array_key_exists('type', $this->data['filters']) && $this->data['filters']['type'] != 0) {
-                $return['`launcher_apps`.`type`' . ($this->data['filters']['type'] == 1? '=': '<>')] = 'app';
+                $return['`L_A`.`type`' . ($this->data['filters']['type'] == 1? '=': '<>')] = 'app';
             }
 
-            if (array_key_exists('category', $this->data['filters']) && $this->data['filters']['category']!= 0) {
-                $return['`launcher_apps`.`category`'] = $this->data['filters']['category'];
+
+            if (array_key_exists('category', $this->data['filters']) && !is_numeric($this->data['filters']['category'])) {
+                $return['`L_A`.`category`'] = $this->data['filters']['category'];
             }
 
             if (array_key_exists('installed', $this->data['filters']) && $this->data['filters']['installed']!= 0) {
-                /*$return['`launcher_apps`.`state`'] = $this->data['filters']['state'] - 1;*/
+                $return['installed'] = $this->data['filters']['installed'] - 1;
             }
 
             if (array_key_exists('status', $this->data['filters']) && $this->data['filters']['status']!= 0) {
-                $return['`launcher_apps`.`status`'] = $this->data['filters']['status'] - 1;
+                $return['`L_A`.`status`'] = $this->data['filters']['status'] - 1;
             }
 
             if (array_key_exists('conflicts', $this->data['filters']) && $this->data['filters']['conflicts']!= 0) {
-                /*$return['`launcher_apps`.`conflicts`'] = $this->data['filters']['conflicts'] - 1;*/
+                /*$return['conflicts'] = $this->data['filters']['conflicts'] - 1;*/
             }
 
             $this->app['filters'] = $this->data['filters'];

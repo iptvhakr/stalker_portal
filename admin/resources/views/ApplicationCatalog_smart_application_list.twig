@@ -10,10 +10,10 @@
                 {{ main_macro.get_filter('category', 'Category'|trans, 'id', 'title', app['allCategory'], 3) }}
                 {{ main_macro.get_filter('installed', 'State'|trans, 'id', 'title', app['allInstalled'], 3) }}
                 {{ main_macro.get_filter('status', 'Status'|trans, 'id', 'title', app['allStatus'], 3) }}
-                {#{{ main_macro.get_filter('compatibility', 'Compatibility'|trans, 'id', 'title', app['allCompatibility'], 3) }}#}
+                {#{{ main_macro.get_filter('conflicts', 'Compatibility'|trans, 'id', 'title', app['allCompatibility'], 3) }}#}
 
                 <a id="add_apps" href="#" class="btn btn-success pull-right">{{ 'Add application by package name'|trans }}</a>
-                <a id="reset_all_apps" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-reset-all" class="main_ajax btn btn-success pull-right">{{ 'Reset all application'|trans }}</a>
+                <a id="reset_all_apps" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-reset-all" class="btn btn-success pull-right">{{ 'Reset all application'|trans }}</a>
             </div>
         </div>
         <div class="row">
@@ -94,8 +94,8 @@
                 "serverSide": true,
                 "ajax": {
                     "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-list-json",
-                    "data": function (d) {
-                    }
+                    /*"data": function (d) {
+                    }*/
                 },
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
@@ -200,13 +200,19 @@
                     e.stopPropagation();
                     e.preventDefault();
                     JScloseModalBox();
-                    $('#modalbox').find('.modal-header-name span').text('{{ 'Warning'|trans }}' + '!');
+                    $('#modalbox').find('.modal-header-name span').addClass('txt-danger').text('{{ 'Warning'|trans }}' + '!');
                     $('#modalbox').find('.devoops-modal-inner').html($("#modal_reset_all_body").text());
                     $('#modalbox').find('.devoops-modal-bottom').html($("#modal_reset_all_buttons").text());
+                    $('#modalbox').show();
                     return false;
                 });
 
-
+               /* $(document).on('click', '#reset_all_apps_btn', function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    JScloseModalBox();
+                    ajaxPostSend('{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-reset-all', {reset_all: 1});
+                });*/
 
                 LoadDataTablesScripts(TestTable1);
             });
@@ -491,13 +497,13 @@
 
     <script type="text/template" id="modal_reset_all_body">
         <div class="col-md-12">
-            <h3 class="col-md-12"><strong>{{ 'Do you realy want reset all applications?'|trans }}</strong></h3>
+            <span class="col-md-12 txt-default">{{ 'Do you realy want reset all applications?'|trans }}</span>
         </div>
     </script>
 
     <script type="text/template" id="modal_reset_all_buttons">
         <div class="pull-right no-padding">
-            <button type="submit" class="btn btn-success pull-right">{{ 'Reset'|trans }}</button>
+            <a id="reset_all_apps_btn" type="button" class="main_ajax btn btn-danger pull-right" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-reset-all">{{ 'Reset'|trans }}</a>
             <button type="reset" id="reset_all_apps_button" class="btn btn-success pull-right">{{ 'Cancel'|trans }}</button>
         </div>
     </script>

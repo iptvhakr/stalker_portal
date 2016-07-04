@@ -570,13 +570,13 @@ _('Application for SmartLauncher. List of applications');
 _('Application for SmartLauncher. Application info and list of available application versions');
 _('Application for SmartLauncher. List of applications  by page + filters');
 _('Application for SmartLauncher. Getting application info from repository');
-_('Application for SmartLauncher. Add new application by URL of the repository');
+_('Application for SmartLauncher. Add new application by package name');
 _('Application for SmartLauncher. List of application versions');
 _('Application for SmartLauncher. Install available application version');
 _('Application for SmartLauncher. Delete installed application version');
 _('Application for SmartLauncher. Enable and disable application');
 _('Application for SmartLauncher. Delete application');
-_('Application for SmartLauncher. Reset all applications');
+_('Application for SmartLauncher. Uninstalling all old applications and installation of latest base apps');
 
 _('once');
 _('every');
