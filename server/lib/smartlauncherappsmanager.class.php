@@ -107,6 +107,7 @@ class SmartLauncherAppsManager
         if ($app['current_version']){
             $app['installed'] = is_dir(realpath(PROJECT_PATH.'/../../'
                 .Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/')
+                .($app['type'] == 'plugin' ? 'plugins/' : '')
                 .$app['url']
                 .'/'.$app['current_version']));
         }else{
@@ -137,6 +138,7 @@ class SmartLauncherAppsManager
                     'published'   => isset($info['time'][$ver]) ? strtotime($info['time'][$ver]) : 0,
                     'installed'   => is_dir(realpath(PROJECT_PATH.'/../../'
                         .Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/')
+                        .($app['type'] == 'plugin' ? 'plugins/' : '')
                         .$app['alias']
                         .'/'.$ver)),
                     'current'     => $ver == $app['current_version'],
@@ -172,6 +174,12 @@ class SmartLauncherAppsManager
 
         if ($app['current_version'] == $info['version']){
             throw new SmartLauncherAppsManagerException('Nothing to install');
+        }
+
+        $conflicts = $this->getConflicts($app_id, $info['version']);
+
+        if (!empty($conflicts)){
+            throw new SmartLauncherAppsManagerConflictException('Conflicts detected', $conflicts);
         }
 
         $result = $npm->install($app['url'], $version);
@@ -445,7 +453,7 @@ class SmartLauncherAppsManager
 
             $dep_app = Mysql::getInstance()->from('launcher_apps')->where(array('alias' => $package))->get()->first();
 
-            if (empty($dep_app) || empty($dep_app['current_version']) || !$dep_app['unique']) {
+            if (empty($dep_app) || empty($dep_app['current_version']) || !$dep_app['is_unique']) {
                 continue;
             }
 
@@ -551,6 +559,13 @@ class SmartLauncherAppsManager
             return false;
         }
 
+        $cache = Cache::getInstance();
+
+        $apps_id = Mysql::getInstance()->from('launcher_apps')->get()->all('id');
+        foreach ($apps_id as $app_id){
+            $cache->del($app_id.'_launcher_app_info');
+        }
+
         Mysql::getInstance()->truncate('launcher_apps');
 
         $apps_path = realpath(PROJECT_PATH.'/../../'.Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/'));
@@ -558,7 +573,7 @@ class SmartLauncherAppsManager
         if ($apps_path){
             $files = array_diff(scandir($apps_path), array('.','..'));
             foreach ($files as $file){
-                self::delTree($file);
+                self::delTree($apps_path.'/'.$file);
             }
         }
 
@@ -573,3 +588,24 @@ class SmartLauncherAppsManager
 }
 
 class SmartLauncherAppsManagerException extends Exception{}
+
+class SmartLauncherAppsManagerConflictException extends SmartLauncherAppsManagerException{
+    protected $conflicts;
+
+    /**
+     * SmartLauncherAppsManagerException constructor.
+     * @param string $message
+     * @param array $conflicts
+     */
+    public function __construct($message, $conflicts) {
+        parent::__construct($message);
+        $this->conflicts = $conflicts;
+    }
+
+    /**
+     * @return array
+     */
+    public function getConflicts(){
+        return $this->conflicts;
+    }
+}
