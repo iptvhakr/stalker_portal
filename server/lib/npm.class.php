@@ -123,13 +123,26 @@ class Npm
                 if (!is_dir($target_path)){
                     mkdir($target_path, 0777, true);
                     rename($full_path, $target_path);
+                }else{
+                    self::delTree($full_path);
                 }
 
 
                 $app_manager = new SmartLauncherAppsManager();
-                $app_manager->addApplication($dir);
+                $app_manager->addApplication($dir, true);
             }
         }
+    }
+
+    private static function delTree($dir) {
+        if (!is_dir($dir)){
+            return false;
+        }
+        $files = array_diff(scandir($dir), array('.','..'));
+        foreach ($files as $file) {
+            (is_dir("$dir/$file")) ? self::delTree("$dir/$file") : unlink("$dir/$file");
+        }
+        return rmdir($dir);
     }
 }
 
