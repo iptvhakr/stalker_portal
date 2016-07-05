@@ -574,7 +574,7 @@ class BaseStalkerController {
 
         $return_array = $this->setLocalization(array_combine($this->getFieldFromArray($return_array, 'iso_639_code'), $this->getFieldFromArray($return_array, 'name')));
 
-        return ($code !== FALSE) ? (array_key_exists($code, $return_array) ? $return_array[$code]: '') : $return_array;
+        return ($code !== FALSE) ? (is_array($return_array) && array_key_exists($code, $return_array) ? $return_array[$code]: '') : $return_array;
     }
 
     private function checkCachedMenu($menu_name) {

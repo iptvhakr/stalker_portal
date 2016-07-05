@@ -83,6 +83,8 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             array('id' => 4, 'title' => $this->setLocalization('there are some problems'))
         );
 
+        $this->getIPTVfilters();
+
         $attribute = $this->getIptvListDropdownAttribute();
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;

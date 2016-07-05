@@ -96,7 +96,11 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         }
 
         $allLanguages = $this->getLanguageCodesEN();
-        sort($allLanguages);
+        if (is_array($allLanguages)) {
+            asort($allLanguages);
+        } else {
+            $allLanguages = array();
+        }
         $this->app['allLanguages'] = $allLanguages;
 
         $this->app['videoEdit'] = FALSE;
@@ -167,7 +171,11 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         $this->app['quality'] = $this->setLocalization($quality, 'text_title');
 
         $allLanguages = $this->getLanguageCodesEN();
-        asort($allLanguages);
+        if (is_array($allLanguages)) {
+            asort($allLanguages);
+        } else {
+            $allLanguages = array();
+        }
 
         $this->app['allLanguages'] = $allLanguages;
 
@@ -524,8 +532,12 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
             if (empty($_SERVER['TARGET'])) {
                 $_SERVER['TARGET'] = 'ADM';
             }
-            $master = new \VideoMaster();
-            $good_storages = $master->getAllGoodStoragesForMediaFromNet($this->postData['videoid'], 0);
+            try{
+                $master = new \VideoMaster();
+                $good_storages = $master->getAllGoodStoragesForMediaFromNet($this->postData['videoid'], 0);
+            } catch (\Exception $e) {
+                $good_storages = array();
+            }
             if (!empty($good_storages)) {
                 $data['base_info'] = array();
 
@@ -1790,8 +1802,12 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         if (empty($_SERVER['TARGET'])) {
             $_SERVER['TARGET'] = 'ADM';
         }
-        $master = new \VideoMaster();
-        $storages = $master->getAllGoodStoragesForMediaFromNet($video_id, 0);
+        try{
+            $master = new \VideoMaster();
+            $storages = $master->getAllGoodStoragesForMediaFromNet($video_id, 0);
+        } catch (\Exception $e) {
+            $storages = array();
+        }
         if (!empty($storages)) {
             $storages = call_user_func_array('array_replace_recursive', $storages);
         } else {
@@ -1910,8 +1926,12 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         if (empty($_SERVER['TARGET'])) {
             $_SERVER['TARGET'] = 'ADM';
         }
-        $master = new \VideoMaster();
-        $storages = $master->getAllGoodStoragesForMediaFromNet($video_id, 0);
+        try{
+            $master = new \VideoMaster();
+            $storages = $master->getAllGoodStoragesForMediaFromNet($video_id, 0);
+        } catch(\Exception $e) {
+            $storages = array();
+        }
         if (!empty($storages)) {
             $storages = call_user_func_array('array_replace_recursive', $storages);
         } else {
@@ -1971,7 +1991,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         if (!empty($this->data['seasonnumber']) && !empty($this->data['seriesnumber']) && isset($tv_series['seasons'][$this->data['seasonnumber']]['episodes'][$this->data['seriesnumber']])) {
             $added_files = $tv_series['seasons'][$this->data['seasonnumber']]['episodes'][$this->data['seriesnumber']];
             $data['data'] = $this->fillVideoFilesData($video_id, $added_files, $path, $data['data']);
-        } elseif (!isset($this->data['seasonnumber']) && !isset($this->data['seriesnumber'])) {
+        } elseif (!isset($this->data['seasonnumber']) && !isset($this->data['seriesnumber']) && array_key_exists('files', $storages)) {
             $data['data'] = $this->fillVideoFilesData($video_id, $storages['files'], $path, $data['data']);
         }
 
@@ -2072,10 +2092,14 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
             if (empty($_SERVER['TARGET'])) {
                 $_SERVER['TARGET'] = 'ADM';
             }
-            $master = new \VideoMaster();
-            $storages = $master->getAllGoodStoragesForMediaFromNet($video_id, 0);
-            $storages = call_user_func_array('array_replace_recursive', $storages);
-            $files = ($season_number !== FALSE && $series_number !== FALSE) ? $storages['tv_series']['seasons'][$season_number]['episodes'][$series_number]:$storages['files'];
+            try{
+                $master = new \VideoMaster();
+                $storages = $master->getAllGoodStoragesForMediaFromNet($video_id, 0);
+                $storages = call_user_func_array('array_replace_recursive', $storages);
+                $files = ($season_number !== FALSE && $series_number !== FALSE) ? $storages['tv_series']['seasons'][$season_number]['episodes'][$series_number]:$storages['files'];
+            } catch (\Exception $e) {
+                $files = array();
+            }
             $path = substr($files[0]['name'], 0, strripos($files[0]['name'], '/'));
 
             if ($file_name !== FALSE) {
