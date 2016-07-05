@@ -832,6 +832,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
 
         $response['action'] = 'changeStatus';
         $response['field'] = 'app_status';
+        $response['conflicts'] = FALSE;
         $postData = $this->postData;
         $id = $postData['id'];
         $key = '';
@@ -856,22 +857,26 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
 
         unset($postData['id']);
 
-        $result = $this->db->updateSmartApplication($postData, $id);
-        if (is_numeric($result)) {
-            $response['error'] = $error = '';
-            if (!empty($postData['current_version'])) {
-                $response['msg'] = $this->setLocalization('Activated. Current version') . ' ' . $postData['current_version'];
+        if (!$response['conflicts'] || !$postData['status']) {
+            $result = $this->db->updateSmartApplication($postData, $id);
+            if (is_numeric($result)) {
+                $response['error'] = $error = '';
+                if (!empty($postData['current_version'])) {
+                    $response['msg'] = $this->setLocalization('Activated. Current version') . ' ' . $postData['current_version'];
+                }
+                if ($result === 0) {
+                    $response['nothing_to_do'] = TRUE;
+                }
+                $response['installed'] = !empty($postData[$key]) && $postData[$key] != 'false' && $postData[$key] !== FALSE? 1: 0;;
+            } else {
+                $response['error'] = $error = $this->setLocalization('Failed to activated of application.');
+                if (!empty($postData['current_version'])) {
+                    $response['error'] = $error .= $this->setLocalization('Version') . ' ' . $postData['current_version'];
+                }
+                $response['installed'] = (int)!(!empty($postData[$key]) && $postData[$key] != 'false' && $postData[$key] !== FALSE? 1: 0);
             }
-            if ($result === 0) {
-                $response['nothing_to_do'] = TRUE;
-            }
-            $response['installed'] = !empty($postData[$key]) && $postData[$key] != 'false' && $postData[$key] !== FALSE? 1: 0;;
         } else {
-            $response['error'] = $error = $this->setLocalization('Failed to activated of application.');
-            if (!empty($postData['current_version'])) {
-                $response['error'] = $error .= $this->setLocalization('Version') . ' ' . $postData['current_version'];
-            }
-            $response['installed'] = (int)!(!empty($postData[$key]) && $postData[$key] != 'false' && $postData[$key] !== FALSE? 1: 0);
+            $response['msg'] = $error = $this->setLocalization('This application version has conflicts');
         }
 
         $response = $this->generateAjaxResponse($response);
