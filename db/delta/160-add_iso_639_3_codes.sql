@@ -194,6 +194,6 @@ VALUES    ('new-video-club',  'get-media-info-json',         1, 'Getting media-i
 
 --//@UNDO
 
-ALTER TABLE `languages` DROP INDEX `iso_639_3_code`;
+ALTER TABLE `languages` DROP COLUMN `iso_639_3_code`;
 
 --
