@@ -55,7 +55,7 @@ class ApplicationCatalogModel extends \Model\BaseStalkerModel {
         return $this->getSmartApplicationList($params, TRUE);
     }
 
-    public function getSmartApplicationList($param, $counter = FALSE) {
+    public function getSmartApplicationList($param, $counter = FALSE, $get_object = FALSE) {
         if (!empty($param['select'])) {
             $this->mysqlInstance->select($param['select']);
         }
@@ -67,11 +67,11 @@ class ApplicationCatalogModel extends \Model\BaseStalkerModel {
             $this->mysqlInstance->orderby($param['order']);
         }
 
-        if (!empty($param['limit']['limit'])) {
+        if (!empty($param['limit']['limit']) && !$get_object) {
             $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
 
-        return ($counter) ? $this->mysqlInstance->count()->get()->counter() : $this->mysqlInstance->get()->all();
+        return ($counter) ? $this->mysqlInstance->count()->get()->counter() : ($get_object ? $this->mysqlInstance->get(): $this->mysqlInstance->get()->all());
     }
 
     public function getSmartApplication($where){

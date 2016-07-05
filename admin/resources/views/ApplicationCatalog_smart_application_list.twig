@@ -51,6 +51,10 @@
                         var item = json.data[i];
                         var id = json.data[i].id;
 
+                        var icon = json.data[i].icon ? json.data[i].icon: "img/no_image.png";
+                        var backgroundColor = json.data[i].icon ? json.data[i].backgroundColor: "#FFFFFF";
+
+                        json.data[i].icon = "<img src='" + icon + "' style='background-color: " + backgroundColor + "'>";
                         json.data[i].name = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-detail?id=' + id + '">' + json.data[i].name + '</a>';
                         var status = item.status;
                         var current_version = item.current_version;
@@ -308,6 +312,10 @@
                     $('#info_apps_action').prop('disabled', 'disabled').addClass('disabled');
                     $('#modalbox .devoops-modal-inner [data-item="available_version"]').hide();
                 }
+                var icon = info.icon ? info.icon: "img/no_image.png";
+                var backgroundColor = info.icon ? info.backgroundColor: "#FFFFFF";
+                $('#modalbox .devoops-modal-inner img').attr('src', icon).css({backgroundColor: backgroundColor});
+
                 $('#modalbox').show();
             }
         }
@@ -465,7 +473,7 @@
 
     <script type="text/template" id="modal_info_body">
         <div class="col-md-2 col-md-offset-1">
-            {#<img src="img/active.png">#}
+            <img src="img/no_image.png" style="background-color: #ffffff">
         </div>
         <div class="col-md-9">
             <h3 class="col-md-12"><strong data-item="name"></strong></h3>

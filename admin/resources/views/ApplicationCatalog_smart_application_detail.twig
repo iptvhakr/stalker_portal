@@ -10,50 +10,59 @@
                 <div class="box-content">
                     {% if attribute(app, 'app_info') is defined and app.app_info.info|length > 0 %}
                     <div class="form-horizontal">
-                        <div class="form-group">
-                            <span class="col-sm-2 no-modified text-right"><b>{{ 'Application'|trans }}</b></span>
-                            <div class="col-xs-10 col-sm-10">
-                                <span class="col-xs-12 col-sm-12">
-                                    {{ app.app_info.info.name }}
-                                </span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <span class="col-sm-2 no-modified text-right"><b>{{ 'About app'|trans }}</b></span>
-                            <div class="col-xs-10 col-sm-10">
-                                <span class="col-xs-6 col-sm-6">
-                                    <p>{{ app.app_info.info.description }}</p>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <span class="col-sm-2 no-modified text-right"><b>{{ 'URL'|trans }}</b></span>
-                            <div class="col-xs-10 col-sm-10">
-                                <span class="col-xs-12 col-sm-12">
-                                    {{ app.app_info.info.url }}
-                                </span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <span class="col-sm-2 no-modified text-right"><b>{{ 'Active'|trans }}</b></span>
-                            <div class="col-xs-10 col-sm-10">
-                                <span class="col-xs-12 col-sm-12">
-                                    <div class="mswitch">
-                                        <input type="checkbox" value="1" name="status" id="app_status" {% if app.app_info.info.status and app.app_info.info.installed %}checked="checked"{% endif %} {% if not app.app_info.info.installed %}disabled="disabled" readonly="readonly" {% endif %}>
-                                        <label class="label-success" for="app_status"></label>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <span class="col-sm-3 text-right"><b>{{ 'Application'|trans }}</b></span>
+                                    <div class="col-xs-9 col-sm-9">
+                                        <span class="col-xs-12 col-sm-12">
+                                            {{ app.app_info.info.name }}
+                                        </span>
                                     </div>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <span class="col-sm-2 no-modified text-right"><b>{{ 'Auto-update'|trans }}</b></span>
-                            <div class="col-xs-10 col-sm-10">
-                                <span class="col-xs-12 col-sm-12">
-                                    <div class="mswitch">
-                                        <input type="checkbox" value="1" name="autoupdate" id="app_autoupdate" {% if app.app_info.info.autoupdate %}checked="checked"{% endif %} {% if not app.app_info.info.installed %}disabled="disabled" readonly="readonly" {% endif %}>
-                                        <label class="label-success" for="app_autoupdate"></label>
+                                </div>
+                                <div class="form-group">
+                                    <span class="col-sm-3 text-right"><b>{{ 'About app'|trans }}</b></span>
+                                    <div class="col-xs-9 col-sm-9">
+                                        <span class="col-xs-6 col-sm-6">
+                                            <p>{{ app.app_info.info.description }}</p>
+                                        </span>
                                     </div>
-                                </span>
+                                </div>
+                                <div class="form-group">
+                                    <span class="col-sm-3 text-right"><b>{{ 'URL'|trans }}</b></span>
+                                    <div class="col-xs-9 col-sm-9">
+                                        <span class="col-xs-12 col-sm-12">
+                                            {{ app.app_info.info.url }}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <span class="col-sm-3 text-right"><b>{{ 'Active'|trans }}</b></span>
+                                    <div class="col-xs-9 col-sm-9">
+                                        <span class="col-xs-12 col-sm-12">
+                                            <div class="mswitch">
+                                                <input type="checkbox" value="1" name="status" id="app_status" {% if app.app_info.info.status and app.app_info.info.installed %}checked="checked"{% endif %} {% if not app.app_info.info.installed %}disabled="disabled" readonly="readonly" {% endif %}>
+                                                <label class="label-success" for="app_status"></label>
+                                            </div>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                <span class="col-sm-3 text-right"><b>{{ 'Auto-update'|trans }}</b></span>
+                                <div class="col-xs-9 col-sm-9">
+                                    <span class="col-xs-12 col-sm-12">
+                                        <div class="mswitch">
+                                            <input type="checkbox" value="1" name="autoupdate" id="app_autoupdate" {% if app.app_info.info.autoupdate %}checked="checked"{% endif %} {% if not app.app_info.info.installed %}disabled="disabled" readonly="readonly" {% endif %}>
+                                            <label class="label-success" for="app_autoupdate"></label>
+                                        </div>
+                                    </span>
+                                </div>
+                            </div>
+                            </div>
+                            <div class="col-md-4">
+                                {% if attribute(app.app_info.info, 'icon') is defined and app.app_info.info.icon %}
+                                    <img src="{{ app.app_info.info.icon }}" style="margin: 20px 0 0; {% if attribute(app.app_info.info, 'backgroundColor') is defined and app.app_info.info.backgroundColor %} background-color: {{ app.app_info.info.backgroundColor }}{% endif %}">
+                                {% endif %}
                             </div>
                         </div>
                         <div class="form-group">

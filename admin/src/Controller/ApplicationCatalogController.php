@@ -247,7 +247,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         }
 
         $response['recordsTotal'] = $this->db->getTotalRowsSmartApplicationList();
-        $response["recordsFiltered"] = $this->db->getTotalRowsSmartApplicationList($query_param['where'], $query_param['like']);
+        $response["recordsFiltered"] = 0;//$this->db->getTotalRowsSmartApplicationList($query_param['where'], $query_param['like']);
 
         if (empty($query_param['limit']['limit'])) {
             $query_param['limit']['limit'] = 50;
@@ -257,28 +257,39 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
 
         $apps_manager = new \SmartLauncherAppsManager();
 
-        $response["data"] = array_filter(array_map(function($row) use ($apps_manager, $get_conflicts, $installed){
-            $info = $apps_manager->getAppInfo($row['id']);
-            if ($installed !== NULL && $installed !== $info['installed']) {
-                return FALSE;
-            }
-            $row['name'] = $info['name'];
-            $row['description'] = $info['description'];
-            $row['available_version'] = $info['available_version'];
-            $row['conflicts'] = $row['available_version_conflicts'] = array();
-            if ($get_conflicts){
-                if (!empty($row['current_version'])) {
-                    $row['conflicts'] = $apps_manager->getConflicts($row['id'], $row['current_version']);
+        $base_obj = $this->db->getSmartApplicationList($query_param, FALSE, TRUE);
+
+        while($row = $base_obj->next()) {
+                try {
+                    $info = $apps_manager->getAppInfo($row['id']);
+                    if ($installed !== NULL && $installed !== $info['installed']) {
+                        continue;
+                    }
+                    $row['name'] = $info['name'];
+                    $row['description'] = $info['description'];
+                    $row['available_version'] = $info['available_version'];
+                    $row['conflicts'] = $row['available_version_conflicts'] = array();
+                    if ($get_conflicts) {
+                        if (!empty($row['current_version'])) {
+                            $row['conflicts'] = $apps_manager->getConflicts($row['id'], $row['current_version']);
+                        }
+                        if (!empty($row['available_version']) && (empty($row['current_version']) || $row['current_version'] != $row['available_version'])) {
+                            $row['available_version_conflicts'] = $apps_manager->getConflicts($row['id'], $row['available_version']);
+                        }
+                    }
+                    $row['icon'] = $info['icon'];
+                    $row['backgroundColor'] = $info['backgroundColor'];
+                    settype($row['status'], 'int');
+                    $row['installed'] = $info['installed'];
+                    if (count($response["data"]) <= 50) {
+                        $response["data"][] = $row;
+                    }
+                } catch (\Exception $e) {
+                    continue;
                 }
-                if (!empty($row['available_version']) && (empty($row['current_version']) || $row['current_version'] != $row['available_version'])) {
-                    $row['available_version_conflicts'] = $apps_manager->getConflicts($row['id'], $row['available_version']);
-                }
-            }
-            $row['logo'] = 'from class';//$info['logo'];
-            settype($row['status'], 'int');
-            $row['installed'] = $info['installed'];
-            return $row;
-        },$this->db->getSmartApplicationList($query_param)));
+            $response["recordsFiltered"]++;
+        }
+
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
 
         $error = "";
@@ -334,9 +345,8 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             $search_str = !empty($this->postData['apps']['url']) ? $this->postData['apps']['url']: $this->postData['alias'];
             $repo =  new \Npm();
             $response['data'] = $repo->info($search_str, (!empty($this->postData['version'])? $this->postData['version']: NULL));
-            if ((!array_key_exists('repository', $response['data']) || empty($response['data']['repository']['url'])) && !empty($this->postData['apps']['url'])) {
-                $response['data']['repository']['url'] = $this->postData['apps']['url'];
-            }
+            $response['data']['repository']['url'] = $search_str;
+
         } catch(\Exception $e){
             $response['error'] = $this->setLocalization($e->getMessage());
         }
@@ -911,7 +921,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
 
     private function getSmartApplicationListDropdownAttribute(){
         $attribute = array(
-            /*array('name' => 'logo',             'title' => $this->setLocalization('Logo'),              'checked' => TRUE),*/
+            array('name' => 'icon',             'title' => $this->setLocalization('Logo'),              'checked' => TRUE),
             array('name' => 'name',             'title' => $this->setLocalization('Application'),       'checked' => TRUE),
             array('name' => 'type',             'title' => $this->setLocalization('Type'),              'checked' => TRUE),
             array('name' => 'category',         'title' => $this->setLocalization('Category'),          'checked' => TRUE),
@@ -940,7 +950,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
     private function getSmartApplicationFields(){
         $attribute = array(
             'id' => 'L_A.`id` as `id`',
-            'logo' => '"" as `logo`',
+            'icon' => '"" as `icon`',
             'name' => '"" as `name`',
             'type' => 'L_A.`type` as `type`',
             'category' => 'L_A.`category` as `category`',
