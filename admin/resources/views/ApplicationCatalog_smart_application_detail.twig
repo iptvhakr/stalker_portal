@@ -60,8 +60,8 @@
                             </div>
                             </div>
                             <div class="col-md-4">
-                                {% if attribute(app.app_info.info, 'icon') is defined and app.app_info.info.icon %}
-                                    <img src="{{ app.app_info.info.icon }}" style="margin: 20px 0 0; {% if attribute(app.app_info.info, 'backgroundColor') is defined and app.app_info.info.backgroundColor %} background-color: {{ app.app_info.info.backgroundColor }}{% endif %}">
+                                {% if attribute(app.app_info.info, 'icon_big') is defined and app.app_info.info.icon %}
+                                    <img src="{{ app.app_info.info.icon_big }}" style="margin: 20px 0 0; {% if attribute(app.app_info.info, 'backgroundColor') is defined and app.app_info.info.backgroundColor %} background-color: {{ app.app_info.info.backgroundColor }}{% endif %}">
                                 {% endif %}
                             </div>
                         </div>
