@@ -340,12 +340,16 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
 
         $response['action'] = (!empty($this->postData['alias']) ? 'buildModalByAlias': 'buildSaveForm');
         $response['data'] = array();
-        $response['error'] = '';
+        $error = '';
         try{
             $search_str = !empty($this->postData['apps']['url']) ? $this->postData['apps']['url']: $this->postData['alias'];
             $repo =  new \Npm();
             $response['data'] = $repo->info($search_str, (!empty($this->postData['version'])? $this->postData['version']: NULL));
-            $response['data']['repository']['url'] = $search_str;
+            if (!empty($response['data'])) {
+                $response['data']['repository']['url'] = $search_str;
+            } else {
+                $response['msg'] = $error = $this->setLocalization('No data about this apps');
+            }
 
         } catch(\Exception $e){
             $response['error'] = $this->setLocalization($e->getMessage());
