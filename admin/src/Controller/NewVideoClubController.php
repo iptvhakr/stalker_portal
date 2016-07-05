@@ -66,7 +66,9 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         $attribute = $this->getVideoListDropdownAttribute();
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
-        
+
+        $this->getVideoListFilters();
+
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
