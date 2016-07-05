@@ -343,12 +343,16 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         $error = '';
         try{
             $search_str = !empty($this->postData['apps']['url']) ? $this->postData['apps']['url']: $this->postData['alias'];
-            $repo =  new \Npm();
-            $response['data'] = $repo->info($search_str, (!empty($this->postData['version'])? $this->postData['version']: NULL));
-            if (!empty($response['data'])) {
-                $response['data']['repository']['url'] = $search_str;
+            if (strpos($search_str, "://") === FALSE) {
+                $repo =  new \Npm();
+                $response['data'] = $repo->info($search_str, (!empty($this->postData['version'])? $this->postData['version']: NULL));
+                if (!empty($response['data'])) {
+                    $response['data']['repository']['url'] = $search_str;
+                } else {
+                    $response['msg'] = $error = $this->setLocalization('No data about this apps');
+                }
             } else {
-                $response['msg'] = $error = $this->setLocalization('No data about this apps');
+                $response['msg'] = $error = $this->setLocalization('Invalid package name');
             }
 
         } catch(\Exception $e){
