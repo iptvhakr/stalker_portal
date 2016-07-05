@@ -563,6 +563,40 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
 
+    public function smart_application_version_save_option(){
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['apps'])) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $response['action'] = 'manageList';
+        $postData = $this->postData['apps'];
+        if (!empty($postData['id'])) {
+            $app_id = $postData['id'];
+            unset($postData['id']);
+            $option = json_encode($postData);
+
+            $result = $this->db->updateSmartApplication(array('options' => $option), $app_id);
+            if (is_numeric($result)) {
+                $response['error'] = $error = '';
+                if ($result === 0) {
+                    $response['nothing_to_do'] = TRUE;
+                }
+            } else {
+                $response['error'] = $error = $this->setLocalization('Failed to update the parameters of application launch');
+            }
+        } else {
+            $response['error'] = $error = $this->setLocalization('Application is undefined');
+        }
+
+        $response = $this->generateAjaxResponse($response);
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+
     public function application_version_install(){
 
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData)) {
