@@ -105,6 +105,7 @@ class SmartLauncherAppsManager
         }
 
         $app['icon'] = '';
+        $app['icon_big'] = '';
         $app['backgroundColor'] = '';
 
         if ($app['current_version']){
@@ -128,7 +129,18 @@ class SmartLauncherAppsManager
                         .$info['config']['icons']['paths']['720'].$info['config']['icons']['states']['normal']
                     : '';
 
-                if ($app['icon']){
+                $icon_big_path = realpath($app_path.'/app/'.$info['config']['icons']['paths']['1080'].$info['config']['icons']['states']['normal']);
+
+                $app['icon_big'] = $icon_big_path && is_readable($icon_big_path) ?
+                    'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
+                    .'://'.$_SERVER['HTTP_HOST']
+                    .'/'.Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/')
+                    .$app['alias']
+                    .'/'.$app['current_version'].'/app/'
+                    .$info['config']['icons']['paths']['1080'].$info['config']['icons']['states']['normal']
+                    : '';
+
+                if ($app['icon'] || $app['icon_big']){
                     $app['backgroundColor'] = isset($info['config']['backgroundColor']) ? $info['config']['backgroundColor'] : '';
                 }
             }
