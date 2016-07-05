@@ -78,6 +78,12 @@ class SmartLauncherAppsManager
         $app['category'] = isset($info['config']['category']) ? $info['config']['category'] : null;
         $app['is_unique'] = isset($info['config']['unique']) && $info['config']['unique'] ? 1 : 0;
 
+        $option_values = json_decode($app['options'], true);
+
+        if (empty($option_values)){
+            $option_values = array();
+        }
+
         $update_data = array();
 
         if (!$original_app['alias'] && $app['alias']){
@@ -103,6 +109,8 @@ class SmartLauncherAppsManager
         if (!empty($update_data)){
             Mysql::getInstance()->update('launcher_apps', $update_data, array('id' => $app_id));
         }
+
+        unset($app['options']);
 
         $app['icon'] = '';
         $app['icon_big'] = '';
@@ -166,6 +174,9 @@ class SmartLauncherAppsManager
 
         if (isset($info['versions']) && is_array($info['versions'])){
 
+            $npm = new Npm();
+            $cache = Cache::getInstance();
+
             foreach ($info['versions'] as $ver){
                 $version = array(
                     'version'     => $ver,
@@ -177,6 +188,37 @@ class SmartLauncherAppsManager
                         .'/'.$ver)),
                     'current'     => $ver == $app['current_version'],
                 );
+
+                $cached_info = $cache->get($app_id.'_'.$ver.'_launcher_app_info');
+
+                if (empty($cached_info)){
+                    $info = $npm->info($app['url'], $ver);
+                }else{
+                    $info = $cached_info;
+                }
+
+                if (empty($cached_info)){
+                    $cache->set($app_id.'_'.$ver.'_launcher_app_info', $info, 0, rand(3600, 36000));
+                }
+
+                $option_list = isset($info['config']['options']) ? $info['config']['options'] : array();
+
+                $option_list = array_map(function($option) use ($option_values){
+
+                    if (isset($option_values[$option['name']])){
+                        $option['value'] = $option_values[$option['name']];
+                    }elseif (!isset($option['value'])){
+                        $option['value'] = null;
+                    }
+
+                    if (isset($option['info'])){
+                        $option['desc'] = $option['info'];
+                    }
+
+                    return $option;
+                }, $option_list);
+
+                $version['options'] = $option_list;
 
                 $app['versions'][] = $version;
             }
@@ -240,6 +282,7 @@ class SmartLauncherAppsManager
         $update_data['type']      = isset($info['config']['type']) ? $info['config']['type'] : null;
         $update_data['category']  = isset($info['config']['category']) ? $info['config']['category'] : null;
         $update_data['is_unique'] = isset($info['config']['unique']) && $info['config']['unique'] ? 1 : 0;
+        $update_data['status'] = 1;
 
         if (!empty($info['config'])){
             $update_data['config'] = json_encode($info['config']);

@@ -123,13 +123,19 @@
                 $(document).on('click', "a.main_ajax", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
+                    var _this = this;
                     $("#modalbox").data('complete', 0);
-                    var sendData = $(this).data();
-                    if ($(this).attr("disabled")) {
+                    var sendData = $(_this).data();
+                    if ($(_this).attr("disabled")) {
                         JSErrorModalBox({msg: "{{ 'Action is not available'|trans }}"});
                     } else {
                         showModalBox();
-                        ajaxPostSend($(this).attr('href'), sendData, false );
+                        var timer = setInterval(function(){
+                            if ($("#reset_all_apps_button").length == 0 || !$("#reset_all_apps_button").is(":visible")) {
+                                ajaxPostSend($(_this).attr('href'), sendData, false );
+                                clearInterval(timer);
+                            }
+                        }, 10);
                     }
                     $(this).closest('div.open').removeClass('open');
                     return false;
@@ -186,6 +192,7 @@
                 $(document).on('click', "#modalbox button[type='reset']", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
+                    $('#modalbox').find('.modal-header-name span').removeClass('txt-danger');
                     JScloseModalBox();
                     return false;
                 });
@@ -211,13 +218,6 @@
                     return false;
                 });
 
-               /* $(document).on('click', '#reset_all_apps_btn', function(e){
-                    e.stopPropagation();
-                    e.preventDefault();
-                    JScloseModalBox();
-                    ajaxPostSend('{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-reset-all', {reset_all: 1});
-                });*/
-
                 LoadDataTablesScripts(TestTable1);
             });
         }
@@ -231,13 +231,13 @@
 
         function closeModalBox() {
             $("#modalbox").hide();
-            $('#modalbox').find('.modal-header-name span').empty();
+            $('#modalbox').find('.modal-header-name span').removeClass('txt-danger').empty();
             $('#modalbox').find('.devoops-modal-inner').empty();
             $('#modalbox').find('.devoops-modal-bottom').empty();
         }
 
         function showModalBox() {
-            $('#modalbox').find('.modal-header-name span').text('{{ 'Wait'|trans }}...');
+            $('#modalbox').find('.modal-header-name span').removeClass('txt-danger').text('{{ 'Wait'|trans }}...');
             $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Request is being processed'|trans }}...</span>');
             $('#modalbox').find('.devoops-modal-bottom').empty();
             $("#modalbox").show();
@@ -299,12 +299,12 @@
                 });
                 $('#info_apps_action').data('id', info.id);
                 if (!info.installed) {
-                    $('#info_apps_action').text("{{ 'Install'|trans }}")
+                    $('#info_apps_action').text("{{ 'Install'|trans }}");
                     if (info.available_version_conflicts && info.available_version_conflicts.length != 0) {
                         $('#info_apps_action').prop('disabled', 'disabled').addClass('disabled');
                     }
                 } else if (info.current_version != info.available_version){
-                    $('#info_apps_action').text("{{ 'Update'|trans }}")
+                    $('#info_apps_action').text("{{ 'Update'|trans }}");
                     if (info.available_version_conflicts && info.available_version_conflicts.length != 0) {
                         $('#info_apps_action').prop('disabled', 'disabled').addClass('disabled');
                     }
