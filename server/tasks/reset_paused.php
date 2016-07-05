@@ -2,6 +2,11 @@
 /*
     
 */
+
+if (php_sapi_name() != "cli") {
+    exit;
+}
+
 error_reporting(E_ALL);
 
 include "./common.php";
@@ -25,8 +30,9 @@ if (count($uid_arr) > 0){
     $event->sendResetPaused();
 }
 
-echo count($uid_arr);
+if (count($argv) == 1){
+    sleep(rand(0, 600));
+}
 
-sleep(rand(0, 600));
 
 \Stalker\Lib\Core\Middleware::checkUpdates();
