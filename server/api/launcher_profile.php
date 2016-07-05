@@ -44,17 +44,19 @@ $installed_apps_names = array_map(function($app){
     return 'launcher_'.$app['alias'];
 }, $installed_apps);
 
-$all_modules = array_merge(Config::get('all_modules'), $installed_apps_names);
-$disabled_modules = Stb::getDisabledModulesByUid((int) $_GET['uid']);
-
 $user = Stb::getById((int) $_GET['uid']);
 
 // if user is off - return empty menu
-if ($user['status'] == 1){
+if (empty($user) || $user['status'] == 1){
 
     echo json_encode($config);
     exit;
 }
+
+User::getInstance($user['id']);
+
+$all_modules = array_merge(Config::get('all_modules'), $installed_apps_names);
+$disabled_modules = Stb::getDisabledModulesByUid((int) $_GET['uid']);
 
 $config['options']['pluginsPath'] = '../../../plugins/';
 
