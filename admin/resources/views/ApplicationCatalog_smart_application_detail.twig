@@ -41,7 +41,7 @@
                                     <div class="col-xs-9 col-sm-9">
                                         <span class="col-xs-12 col-sm-12">
                                             <div class="mswitch">
-                                                <input type="checkbox" value="1" name="status" id="app_status" {% if app.app_info.info.status and app.app_info.info.installed %}checked="checked"{% endif %} {% if not app.app_info.info.installed %}disabled="disabled" readonly="readonly" {% endif %}>
+                                                <input type="checkbox" value="1" name="status" id="app_status" {% if app.app_info.info.status and app.app_info.info.installed %}checked="checked"{% endif %} {% if not app.app_info.info.installed or (app.app_info.info.conflicts|length and not app.app_info.info.status ) %}disabled="disabled" readonly="readonly" {% endif %}>
                                                 <label class="label-success" for="app_status"></label>
                                             </div>
                                         </span>
@@ -52,7 +52,7 @@
                                 <div class="col-xs-9 col-sm-9">
                                     <span class="col-xs-12 col-sm-12">
                                         <div class="mswitch">
-                                            <input type="checkbox" value="1" name="autoupdate" id="app_autoupdate" {% if app.app_info.info.autoupdate %}checked="checked"{% endif %} {% if not app.app_info.info.installed %}disabled="disabled" readonly="readonly" {% endif %}>
+                                            <input type="checkbox" value="1" name="autoupdate" id="app_autoupdate" {% if app.app_info.info.autoupdate %}checked="checked"{% endif %} {% if not app.app_info.info.installed or (app.app_info.info.conflicts|length and not app.app_info.info.autoupdate ) %}disabled="disabled" readonly="readonly" {% endif %}>
                                             <label class="label-success" for="app_autoupdate"></label>
                                         </div>
                                     </span>
@@ -207,16 +207,21 @@
                 $(document).on('click', "a.main_ajax", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
-                    var _this = $(this);
-
-                    if ($(this).attr("disabled")) {
+                    var _this = this;
+                    $("#modalbox").data('complete', 0);
+                    var sendData = $(_this).data();
+                    if ($(_this).attr("disabled")) {
                         JSErrorModalBox({msg: "{{ 'Action is not available'|trans }}"});
                     } else {
-                        JSshowModalBox();
-                        ajaxPostSend(_this.attr('href'), _this.data(), false );
+                        showModalBox();
+                        var timer = setInterval(function(){
+                            if ($("#modalbox").is(":visible")) {
+                                ajaxPostSend($(_this).attr('href'), sendData, false );
+                                clearInterval(timer);
+                            }
+                        }, 10);
                     }
-
-                    _this.closest('div.open').removeClass('open');
+                    $(this).closest('div.open').removeClass('open');
                     return false;
                 });
 
@@ -357,6 +362,9 @@
             }
             if ( typeof(obj.field) != 'undefined') {
                 $('#' + obj.field).prop('checked', obj.installed ? true: false);
+                if ( typeof(obj.conflicts) != 'undefined' && obj.conflicts) {
+                    $('#' + obj.field).prop('disabled', 'disabled').prop('readonly', 'readonly');
+                }
             }
         };
 
@@ -366,6 +374,20 @@
                 $('#' + obj.field).prop('checked', obj.installed ? true: false);
             }
         };
+
+        function showModalBox() {
+            $('#modalbox').find('.modal-header-name span').removeClass('txt-danger').text('{{ 'Wait'|trans }}...');
+            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Request is being processed'|trans }}...</span>');
+            $('#modalbox').find('.devoops-modal-bottom').empty();
+            $("#modalbox").show();
+        }
+
+        function closeModalBox() {
+            $("#modalbox").hide();
+            $('#modalbox').find('.modal-header-name span').removeClass('txt-danger').empty();
+            $('#modalbox').find('.devoops-modal-inner').empty();
+            $('#modalbox').find('.devoops-modal-bottom').empty();
+        }
 
         document.addEventListener("DOMContentLoaded", yelp, false);
     </script>

@@ -499,6 +499,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         try{
             $apps_list = new \SmartLauncherAppsManager();
             $app = $apps_list->getAppInfo($id);
+            $app['conflicts'] = $apps_list->getConflicts($id, $version);
         } catch (\Exception $e){
             $response['error'] = $error = $this->setLocalization('Failed to get the list of versions of this applications') . '. ' . $e->getMessage();
             $app = FALSE;
@@ -595,7 +596,6 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         $response = $this->generateAjaxResponse($response);
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
-
 
     public function application_version_install(){
 
@@ -838,6 +838,14 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             $key = 'autoupdate';
         }
 
+        try{
+            $apps_list = new \SmartLauncherAppsManager();
+            $conflicts = $apps_list->getConflicts($id, (!empty($postData['current_version']) ? $postData['current_version']: NULL));
+            $response['conflicts'] = !empty($conflicts);
+        } catch (\Exception $e){
+
+        }
+
         unset($postData['id']);
 
         $result = $this->db->updateSmartApplication($postData, $id);
@@ -847,7 +855,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
                 $response['msg'] = $this->setLocalization('Activated. Current version') . ' ' . $postData['current_version'];
             }
             if ($result === 0) {
-                $data['nothing_to_do'] = TRUE;
+                $response['nothing_to_do'] = TRUE;
             }
             $response['installed'] = !empty($postData[$key]) && $postData[$key] != 'false' && $postData[$key] !== FALSE? 1: 0;;
         } else {
