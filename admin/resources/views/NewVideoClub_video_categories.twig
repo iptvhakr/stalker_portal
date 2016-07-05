@@ -65,7 +65,7 @@
 
                         json.data[i].censored = censored ? "{{ 'Yes'|trans }}": "{{ 'No'|trans }}";
 
-                        json.data[i].category_name = "<a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-video-categories' data-categoriesid='" + id + "' id='edit_video_categories_" + id + "' >" + category_name + "</a>";
+                        json.data[i].category_name = "<a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-video-categories' data-categoriesid='" + id + "' data-cat-censored='" + censored + "' id='edit_video_categories_" + id + "' >" + category_name + "</a>";
                     }
                 }
             }).dataTable({
