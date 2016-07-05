@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-07-05 16:20+0300\n"
-"PO-Revision-Date: 2016-07-05 16:21+0300\n"
+"POT-Creation-Date: 2016-07-05 16:42+0300\n"
+"PO-Revision-Date: 2016-07-05 16:42+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -329,19 +329,19 @@ msgstr "TV Archive has been restarted."
 #: ../../../../admin/src/Controller/BroadcastServersController.php:315
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:307
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:334
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:364
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:390
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:539
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:572
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:607
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:648
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:697
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:734
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:772
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:822
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:871
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:893
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:915
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:368
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:394
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:543
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:576
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:611
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:652
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:701
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:738
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:776
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:826
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:875
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:897
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:919
 #: ../../../../admin/src/Controller/AudioClubController.php:241
 #: ../../../../admin/src/Controller/AudioClubController.php:309
 #: ../../../../admin/src/Controller/AudioClubController.php:333
@@ -491,7 +491,7 @@ msgstr "Page not found"
 #: ../../../../admin/src/Controller/VideoClubController.php:1478
 #: ../../../../admin/src/Controller/VideoClubController.php:1651
 #: ../../../../admin/src/Controller/VideoClubController.php:1695
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:921
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:925
 #: ../../../../admin/src/Controller/SettingsController.php:189
 #: ../../../../admin/src/Controller/AudioClubController.php:318
 #: ../../../../admin/src/Controller/AudioClubController.php:342
@@ -653,7 +653,7 @@ msgstr "This number is already in use"
 #: ../../../../admin/src/Controller/VideoClubController.php:2426
 #: ../../../../admin/src/Controller/BroadcastServersController.php:371
 #: ../../../../admin/src/Controller/BroadcastServersController.php:390
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:939
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:943
 #: ../../../../admin/src/Controller/SettingsController.php:246
 #: ../../../../admin/src/Controller/NewVideoClubController.php:3089
 #: ../../../../admin/src/Controller/NewVideoClubController.php:3231
@@ -703,7 +703,7 @@ msgid "Number"
 msgstr "Number"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1758
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:962
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:966
 #: ../../../administrator/add_itv.php:1799
 msgid "Logo"
 msgstr "Logo"
@@ -814,7 +814,7 @@ msgstr "Archive"
 #: ../../../../admin/src/Controller/TvChannelsController.php:1762
 #: ../../../../admin/src/Controller/TvChannelsController.php:1812
 #: ../../../../admin/src/Controller/BroadcastServersController.php:392
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:942
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:946
 #: ../../../../admin/src/Controller/AudioClubController.php:1338
 #: ../../../../admin/src/Controller/KaraokeController.php:338
 #: ../../../../admin/src/Controller/RadioController.php:389
@@ -892,10 +892,10 @@ msgstr "Status"
 #: ../../../../admin/src/Controller/VideoClubController.php:2311
 #: ../../../../admin/src/Controller/VideoClubController.php:2324
 #: ../../../../admin/src/Controller/BroadcastServersController.php:396
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:945
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:955
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:972
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:983
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:949
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:959
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:976
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:987
 #: ../../../../admin/src/Controller/SettingsController.php:256
 #: ../../../../admin/src/Controller/NewVideoClubController.php:3103
 #: ../../../../admin/src/Controller/NewVideoClubController.php:3116
@@ -932,10 +932,10 @@ msgstr "Update date"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1815
 #: ../../../../admin/src/Controller/EventsController.php:877
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:944
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:954
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:970
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:982
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:948
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:958
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:974
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:986
 #: ../../../../admin/src/Controller/StatisticsController.php:1368
 #: ../../../../admin/src/Controller/TasksController.php:558
 #: ../../../../admin/src/Controller/TasksController.php:573
@@ -1655,7 +1655,7 @@ msgid "Filter"
 msgstr "Filter"
 
 #: ../../../../admin/src/Controller/EventsController.php:825
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:969
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:973
 #: ../../../../admin/src/Controller/StatisticsController.php:1277
 #: ../../../../admin/src/Controller/UsersController.php:2149
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:646
@@ -1739,7 +1739,7 @@ msgid "Recipient"
 msgstr "Recipient"
 
 #: ../../../../admin/src/Controller/EventsController.php:871
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:964
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:968
 #: ../../../../admin/src/Controller/NewVideoClubController.php:3241
 #: ../../../../admin/src/Controller/StatisticsController.php:1276
 #: ../../../../admin/src/Controller/StatisticsController.php:1361
@@ -2093,7 +2093,7 @@ msgstr "Episodes"
 #: ../../../../admin/src/Controller/VideoClubController.php:2292
 #: ../../../../admin/src/Controller/VideoClubController.php:2305
 #: ../../../../admin/src/Controller/VideoClubController.php:2427
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:980
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:984
 #: ../../../../admin/src/Controller/NewVideoClubController.php:3097
 #: ../../../../admin/src/Controller/NewVideoClubController.php:3110
 #: ../../../../admin/src/Controller/NewVideoClubController.php:3232
@@ -2186,7 +2186,7 @@ msgid "Movies in category"
 msgstr "Movies in category"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:2372
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:965
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:969
 #: ../../../../admin/src/Controller/NewVideoClubController.php:3177
 #: ../../../../admin/src/Controller/StatisticsController.php:1274
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:45
@@ -2301,8 +2301,8 @@ msgstr "Maximum users"
 
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:63
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:69
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:940
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:963
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:944
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:967
 #: ../../../../admin/resources/cache/twig/f6/f634bdbe3484c2bb215ff39948453beec6da8e62f5a2118aad8d727d3e886cfc.php:472
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:597
 #: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:600
@@ -2395,12 +2395,16 @@ msgstr "SmartLauncher applications"
 msgid "Failed to get the list of applications"
 msgstr "Failed to get the list of applications"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:351
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:352
 msgid "No data about this apps"
 msgstr "No data about this apps"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:378
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:404
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:355
+msgid "Invalid package name"
+msgstr "Invalid package name"
+
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:382
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:408
 msgid ""
 "Perhaps the application is already installed. You can update it if the new "
 "version is available or uninstall and install again"
@@ -2408,55 +2412,55 @@ msgstr ""
 "Perhaps the application is already installed. You can update it if the new "
 "version is available or uninstall and install again"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:381
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:385
 msgid "URL of application is not defined"
 msgstr "URL of application is not defined"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:407
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:411
 msgid "Package name is not defined"
 msgstr "Package name is not defined"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:446
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:507
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:450
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:511
 msgid "Failed to get the list of versions of this applications"
 msgstr "Failed to get the list of versions of this applications"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:560
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:593
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:564
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:597
 msgid "Failed to update the parameters of application launch"
 msgstr "Failed to update the parameters of application launch"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:563
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:596
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:638
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:688
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:725
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:762
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:567
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:600
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:642
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:692
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:729
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:766
 msgid "Application is undefined"
 msgstr "Application is undefined"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:630
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:671
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:634
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:675
 msgid "Error of installing the application"
 msgstr "Error of installing the application"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:721
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:758
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:725
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:762
 msgid "Error of uninstalling the application."
 msgstr "Error of uninstalling the application."
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:801
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:851
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:805
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:855
 msgid "Activated. Current version"
 msgstr "Activated. Current version"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:808
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:858
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:812
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:862
 msgid "Failed to activated of application."
 msgstr "Failed to activated of application."
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:810
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:860
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:814
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:864
 #: ../../../../admin/resources/cache/twig/f6/f634bdbe3484c2bb215ff39948453beec6da8e62f5a2118aad8d727d3e886cfc.php:484
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:633
 #: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:636
@@ -2468,44 +2472,44 @@ msgstr "Failed to activated of application."
 msgid "Version"
 msgstr "Version"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:882
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:904
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:886
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:908
 msgid "Application has been deleted"
 msgstr "Application has been deleted"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:884
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:906
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:888
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:910
 msgid "Failed to delete application."
 msgstr "Failed to delete application."
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:943
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:966
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:979
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:947
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:970
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:983
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:690
 #: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:692
 msgid "Current version"
 msgstr "Current version"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:952
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:956
 msgid "Application version"
 msgstr "Application version"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:953
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:957
 msgid "Release date"
 msgstr "Release date"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:967
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:971
 msgid "Actual version"
 msgstr "Actual version"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:971
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:975
 #: ../../../../admin/resources/cache/twig/ce/ce8eedc670c757a5f716ee6414794ee4bba9a945747d443c512324bed695207f.php:1568
 #: ../../../administrator/add_video.php:2099 ../../../lang/stb.php:243
 #: ../../../lang/stb.php:399
 msgid "Description"
 msgstr "Description"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:981
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:985
 msgid "Compatibility"
 msgstr "Compatibility"
 
