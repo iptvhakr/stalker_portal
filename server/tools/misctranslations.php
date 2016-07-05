@@ -577,6 +577,7 @@ _('Application for SmartLauncher. Delete installed application version');
 _('Application for SmartLauncher. Enable and disable application');
 _('Application for SmartLauncher. Delete application');
 _('Application for SmartLauncher. Uninstalling all old applications and installation of latest base apps');
+_('Application for SmartLauncher. Editing the options of application');
 
 _('once');
 _('every');
