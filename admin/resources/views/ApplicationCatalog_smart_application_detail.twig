@@ -109,7 +109,7 @@
                     var id = json.info.id;
                     for (var i in json.data) {
                         var item = json.data[i];
-
+                        var is_conflicts = false;
                         var current = item.current;
                         if (item.installed) {
                             item.status = (current && status == '1' ? "{{ 'Active'|trans }}" : "{{ 'Installed'|trans }}");
@@ -131,6 +131,7 @@
                                 conflicts += item.conflicts[j]['alias'] + ' ' + item.conflicts[j]['current_version'] + '<br>';
                             }
                             json.data[i].conflicts = conflicts + '</p>';
+                            is_conflicts = true;
                         } else {
                             json.data[i].conflicts = '<p class="text-default">{{ 'no conflicts'|trans }}</p>';
                         }
@@ -140,7 +141,7 @@
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\
                                                         <ul class='dropdown-menu pull-right'>";
-                        if (item.current && 0) { //
+                        if (item.current) { //
                             json.data[i].operations += "\n\
                                                             <li>\n\
                                                                 <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-version-list-json' data-id='" + id + "' data-version='" + item.version + "'>\n\
@@ -151,14 +152,14 @@
                         if (!item.installed) {
                             json.data[i].operations +=      "\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-version-install' data-id='" + id + "' data-version='" + item.version + "'>\n\
+                                                                <a class='main_ajax' " + (is_conflicts ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-version-install' data-id='" + id + "' data-version='" + item.version + "'>\n\
                                                                     <span> " + "{{ 'Install'|trans }}" + " </span>\n\
                                                                 </a>\n\
                                                             </li>";
                         } else {
                             json.data[i].operations +=      "\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-toggle-state' data-id='" + id + "' " + ( current ? " data-status='" + (status == '1' ? '0': '1') + "'" : " data-current_version='" + item.version + "' data-status='1'") + ">\n\
+                                                                <a class='main_ajax' " + (is_conflicts && (status != '1' || !current) ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-toggle-state' data-id='" + id + "' " + ( current ? " data-status='" + (status == '1' ? '0': '1') + "'" : " data-current_version='" + item.version + "' data-status='1'") + ">\n\
                                                                     <span> " + (status != '1' || !current ? "{{ 'Activate'|trans }}" : "{{ 'Deactivate'|trans }}") + " </span>\n\
                                                                 </a>\n\
                                                             </li>";
