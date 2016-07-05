@@ -1,0 +1,434 @@
+{% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
+{% set title = ('Applications'|trans ~ ': ' ~ 'application'|trans ~ ' ' ~ (attribute(app, 'app_info') is defined and app.app_info.info|length > 0 ? app.app_info.info.name : '')) | trans %}
+
+{% block content %}
+    <div id="iptv_list">
+        <div class=""></div>
+        <div class="row">
+            <div class="box">
+                <div class="box-content">
+                    {% if attribute(app, 'app_info') is defined and app.app_info.info|length > 0 %}
+                    <div class="form-horizontal">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <span class="col-sm-3 text-right"><b>{{ 'Application'|trans }}</b></span>
+                                    <div class="col-xs-9 col-sm-9">
+                                        <span class="col-xs-12 col-sm-12">
+                                            {{ app.app_info.info.name }}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <span class="col-sm-3 text-right"><b>{{ 'About app'|trans }}</b></span>
+                                    <div class="col-xs-9 col-sm-9">
+                                        <span class="col-xs-6 col-sm-6">
+                                            <p>{{ app.app_info.info.description }}</p>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <span class="col-sm-3 text-right"><b>{{ 'URL'|trans }}</b></span>
+                                    <div class="col-xs-9 col-sm-9">
+                                        <span class="col-xs-12 col-sm-12">
+                                            {{ app.app_info.info.url }}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <span class="col-sm-3 text-right"><b>{{ 'Active'|trans }}</b></span>
+                                    <div class="col-xs-9 col-sm-9">
+                                        <span class="col-xs-12 col-sm-12">
+                                            <div class="mswitch">
+                                                <input type="checkbox" value="1" name="status" id="app_status" {% if app.app_info.info.status and app.app_info.info.installed %}checked="checked"{% endif %} {% if not app.app_info.info.installed %}disabled="disabled" readonly="readonly" {% endif %}>
+                                                <label class="label-success" for="app_status"></label>
+                                            </div>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                <span class="col-sm-3 text-right"><b>{{ 'Auto-update'|trans }}</b></span>
+                                <div class="col-xs-9 col-sm-9">
+                                    <span class="col-xs-12 col-sm-12">
+                                        <div class="mswitch">
+                                            <input type="checkbox" value="1" name="autoupdate" id="app_autoupdate" {% if app.app_info.info.autoupdate %}checked="checked"{% endif %} {% if not app.app_info.info.installed %}disabled="disabled" readonly="readonly" {% endif %}>
+                                            <label class="label-success" for="app_autoupdate"></label>
+                                        </div>
+                                    </span>
+                                </div>
+                            </div>
+                            </div>
+                            <div class="col-md-4">
+                                {% if attribute(app.app_info.info, 'icon_big') is defined and app.app_info.info.icon %}
+                                    <img src="{{ app.app_info.info.icon_big }}" style="margin: 20px 0 0; {% if attribute(app.app_info.info, 'backgroundColor') is defined and app.app_info.info.backgroundColor %} background-color: {{ app.app_info.info.backgroundColor }}{% endif %}">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <span class="col-sm-2 no-modified text-right"><b>{{ 'Versions'|trans }}</b></span>
+                            <div class="col-xs-10 col-sm-10" id="applications_version_table">
+                                <div class="dataTables_processing" style="margin-top: 0; z-index: 321;"></div>
+                                <table class="table  table-hover table-datatable" id="datatable-1">
+                                    {% if attribute(app, 'dropdownAttribute') is defined %}
+                                        {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                                    {% endif %}
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="col-xs-10 col-sm-10">
+                        <h3 class="txt-danger">
+                            {% if attribute(app,'app_info') is defined and attribute(app['app_info'], 'error') is defined %}
+                                {{ app.app_info.error }}
+                            {% endif %}
+                        </h3>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" defer="defer">
+
+        var select2Opt = {minimumResultsForSearch: -1, dropdownAutoWidth: false, width: '100%'};
+
+        function DemoSelect2() {
+            $('select[id^="app_"]').select2(select2Opt);
+        }
+
+        function TestTable1() {
+            $('#datatable-1').on('xhr.dt', function (e, settings, json) {
+                var status = json.info.status;
+                if (typeof (json.data) == 'object') {
+                    var id = json.info.id;
+                    for (var i in json.data) {
+                        var item = json.data[i];
+
+                        var current = item.current;
+                        if (item.installed) {
+                            item.status = (current && status == '1' ? "{{ 'Active'|trans }}" : "{{ 'Installed'|trans }}");
+                        } else {
+                            item.status = "{{ 'Not installed'|trans }}";
+                        }
+
+                        date = json.data[i]['published'];
+                        if (date > 0) {
+                            date = new Date(date * 1000);
+                            json.data[i]['published'] = date.toLocaleFormat("%b %d, %Y %H:%M");
+                        } else {
+                            json.data[i]['published'] = '---';
+                        }
+
+                        if (item.conflicts && item.conflicts.length !=0) {
+                            var conflicts = '<p class="text-danger">{{ 'conflicts with'|trans }}<br/>';
+                            for(var j in item.conflicts) {
+                                conflicts += item.conflicts[j]['alias'] + ' ' + item.conflicts[j]['current_version'] + '<br>';
+                            }
+                            json.data[i].conflicts = conflicts + '</p>';
+                        } else {
+                            json.data[i].conflicts = '<p class="text-default">{{ 'no conflicts'|trans }}</p>';
+                        }
+
+                        json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
+                                                        <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                                            <i class='pull-right fa fa-cog'></i>\n\
+                                                        </a>\n\
+                                                        <ul class='dropdown-menu pull-right'>";
+                        if (item.current && 0) { //
+                            json.data[i].operations += "\n\
+                                                            <li>\n\
+                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-version-list-json' data-id='" + id + "' data-version='" + item.version + "'>\n\
+                                                                    <span> {{ 'More details'|trans }} </span>\n\
+                                                                </a>\n\
+                                                            </li>";
+                        }
+                        if (!item.installed) {
+                            json.data[i].operations +=      "\n\
+                                                            <li>\n\
+                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-version-install' data-id='" + id + "' data-version='" + item.version + "'>\n\
+                                                                    <span> " + "{{ 'Install'|trans }}" + " </span>\n\
+                                                                </a>\n\
+                                                            </li>";
+                        } else {
+                            json.data[i].operations +=      "\n\
+                                                            <li>\n\
+                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-toggle-state' data-id='" + id + "' " + ( current ? " data-status='" + (status == '1' ? '0': '1') + "'" : " data-current_version='" + item.version + "' data-status='1'") + ">\n\
+                                                                    <span> " + (status != '1' || !current ? "{{ 'Activate'|trans }}" : "{{ 'Deactivate'|trans }}") + " </span>\n\
+                                                                </a>\n\
+                                                            </li>";
+                        }
+                        json.data[i].operations +=          "\n\
+                                                            <li>\n\
+                                                                <a class='main_ajax' " + (!item.installed || current? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-version-delete' data-id='" + id + "' data-version='" + item.version + "'>\n\
+                                                                    <span> {{ 'Delete'|trans }} </span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                        </ul>\n\
+                                                    </div>";
+                    }
+                }
+                $('#datatable-1').closest('.form-group').find('.dataTables_processing').hide('');
+            }).dataTable({
+                "processing": true,
+                "serverSide": false,
+                "ajax": {
+                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-version-list-json?id={% if attribute(app, 'app_info') is defined and app.app_info.info|length > 0 %}{{ app.app_info.info.id }}{% endif %}",
+                    "data": function (d) {
+                    }
+                },
+                "deferLoading": [{{ app.app_info.recordsFiltered }}, {{ app.app_info.recordsTotal }}],
+                "language": {
+                    "url": "{{ app.datatable_lang_file }}"
+                },
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
+                {% endif %}
+                "bFilter": true,
+                "bPaginate": true,
+                "bInfo": false,
+                "columnDefs": [
+                    {className: "action-menu", "targets": [-1]},
+                    {"searchable": false, "targets": [-1]},
+                    {"sortable": false, "targets": [-1]}
+                ]
+            });
+        }
+
+        function yelp() {
+            $(document).ready(function () {
+
+                $(document).on('click', "a.main_ajax", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var _this = $(this);
+
+                    if ($(this).attr("disabled")) {
+                        JSErrorModalBox({msg: "{{ 'Action is not available'|trans }}"});
+                    } else {
+                        JSshowModalBox();
+                        ajaxPostSend(_this.attr('href'), _this.data(), false );
+                    }
+
+                    _this.closest('div.open').removeClass('open');
+                    return false;
+                });
+
+                $(document).on('click', "#modalbox button[type='submit']", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var sendData = new Object();
+                    var form_fields = $("#modalbox").find('form').find(".own_fields:not(:disabled)");
+                    form_fields.each(function () {
+                        if ($(this).val()) {
+                            if (this.type.toUpperCase() != 'CHECKBOX' || this.checked) {
+                                sendData[this.name] = $(this).val();
+                            }
+                        }
+                    });
+                    var action = $("#modalbox").find('form').attr('action');
+                    JSshowModalBox();
+                    ajaxPostSend(action, sendData, false, false);
+                    return false;
+                });
+
+                $(document).on('click', "#modalbox button[type='reset']", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    JScloseModalBox();
+                    return false;
+                });
+
+                $(document).on('click', '#app_status', function(){
+                    if ($(this).prop('disabled') || $(this).prop('readonly')) {
+                        JSErrorModalBox({msg: "{{ 'Perhaps the application is not installed. Before activate this application is necessary to install any version of the application.'|trans}}"});
+                    }
+                    {% if attribute(app, 'app_info') is defined and app.app_info.info|length > 0 %}
+                    ajaxPostSend('{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-toggle-state', {status: $(this).is(':checked'), id: {{ app.app_info.info.id }} });
+                    {% endif %}
+                });
+
+                $(document).on('click', '#app_autoupdate', function(){
+                    {% if attribute(app, 'app_info') is defined and app.app_info.info|length > 0 %}
+                    ajaxPostSend('{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-toggle-state', {autoupdate: $(this).is(':checked'), id: {{ app.app_info.info.id }} });
+                    {% endif %}
+                });
+
+                $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function (e) {
+                    if (e.currentTarget != e.target) {
+                        return;
+                    }
+                    e.stopPropagation();
+                    e.preventDefault();
+                    if ($("#modalbox").data('complete') && $("#modalbox").data('complete') == 1) {
+                        JScloseModalBox();
+                    } else {
+                        for (i = 0; i < 3; i++) {
+                            $('#modalbox > div').fadeTo('slow', 0.5).fadeTo('slow', 1.0);
+                        }
+                    }
+                    return false;
+                });
+
+                LoadDataTablesScripts(TestTable1);
+                LoadSelect2Script(DemoSelect2);
+            });
+        }
+
+        var manageList = function (obj) {
+            $('#datatable-1').DataTable().ajax.reload();
+            JSSuccessModalBox(obj);
+            if (typeof (obj.installed) != 'undefined' ) {
+                if (obj.installed == '1') {
+                    $("#app_status").removeAttr('disabled').removeAttr('readonly');
+                    $("#app_autoupdate").removeAttr('app_autoupdate').removeAttr('app_autoupdate');
+                }
+            }
+        };
+
+        var manageListError = function (obj) {
+            JSErrorModalBox(obj);
+        };
+
+        var createOptionForm = function(obj){
+            $("#modalbox").hide();
+            $("#modalbox").data('complete', 1);
+            $('#modalbox').find('.modal-header-name span').text(obj.info.name);
+            $('#modalbox').find('.devoops-modal-inner').html($("#modal_option_form_body").text());
+            $('#modalbox').find('.devoops-modal-bottom').html($("#modal_form_buttons").text());
+            if (obj.data.length == 1 && obj.data[0].options.length > 0) {
+                fillModalForm(obj.data[0].options);
+            } else {
+                $('#modalbox .devoops-modal-bottom').find("button[type=submit]").hide();
+                $('#modalbox .devoops-modal-bottom').find("button[type=reset]").removeClass('pull-left').addClass('pull-right').text("{{ 'Close'|trans }}");
+            }
+            $('#current_version').text(obj.data.length == 1 ? obj.data[0].version : '');
+            $('#apps_id').val(obj.info.id);
+            $('#description').text(obj.data.length == 1 ? obj.data[0].description : '');
+            $('#modalbox').show();
+        };
+
+        var fillModalForm = function(option){
+            if (!option) {
+                return;
+            }
+            var container, field, type, tagName, currValue;
+            var field_types = ["input", "select"];
+            $.each(option, function(){
+                type = field_types[this.valueList ? 1: 0];
+                container = $($("#modal_form_"+type).text()).appendTo($('#modalbox form'));
+                for(var fieldName in this){
+                    field = container.find("[data-option-field='"+fieldName+"']");
+                    tagName = field.get(0).tagName.toLowerCase();
+                    currValue = this.value;
+                    if (field_types.indexOf(tagName) == -1) {
+                        field.text(this[fieldName]);
+                    } else {
+                        field.attr('name', "apps["+this.name+"]");
+                        field.attr('id', "apps_"+this.name);
+                        if (field_types.indexOf(tagName) == 0) {
+                            field.val(currValue);
+                        } else if (field_types.indexOf(tagName) == 1) {
+                            $.each(this.valueList, function(){
+                                field.append('<option value="'+this+'" '+(currValue == this?'selected="selected"':'')+' >'+this+'</option>');
+                            });
+                        }
+                    }
+                }
+            });
+            DemoSelect2();
+        };
+
+        var createOptionFormError = function(obj){
+            JSErrorModalBox(obj);
+        };
+
+        var changeStatus = function(obj){
+            if ( typeof(obj.field) != 'undefined' && obj.field == 'app_autoupdate') {
+                JSSuccessModalBox(obj);
+            } else {
+                manageList(obj);
+            }
+            if ( typeof(obj.field) != 'undefined') {
+                $('#' + obj.field).prop('checked', obj.installed ? true: false);
+            }
+        };
+
+        var changeStatusError = function(obj){
+            JSErrorModalBox(obj);
+            if ( typeof(obj.field) != 'undefined') {
+                $('#' + obj.field).prop('checked', obj.installed ? true: false);
+            }
+        };
+
+        document.addEventListener("DOMContentLoaded", yelp, false);
+    </script>
+
+    <script type="text/template" id="modal_option_form_body">
+        <div class="box-content">
+            <form class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-version-save-option">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">{{ 'Version'|trans }}</label>
+                    <div class="col-xs-8 col-sm-8">
+                        <span class="col-xs-12 col-sm-12">
+                            <h5 id="current_version"></h5>
+                            <input type="hidden" class="own_fields form-control" name="apps[id]" id="apps_id" value="" readonly="readonly">
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">{{ 'Whath\'s new'|trans }}</label>
+                    <div class="col-xs-8 col-sm-8">
+                        <span class="col-xs-12 col-sm-12">
+                            <p id="description"></p>
+                        </span>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </script>
+
+    <script type="text/template" id="modal_form_buttons">
+        <div class="pull-left no-padding">&nbsp;</div>
+        <div class="pull-right no-padding">
+            <button type="reset" class="btn btn-default pull-left">{{ 'Cancel'|trans }}</button>
+            <button type="submit" class="btn btn-success pull-right">{{ 'Save'|trans }}</button>
+        </div>
+    </script>
+
+    <script type="text/template" id="modal_form_input">
+        <div class="form-group">
+            <label class="col-sm-3 control-label" data-option-field="name"></label>
+            <div class="col-xs-8 col-sm-8">
+                <span class="col-xs-12 col-sm-12">
+                    <input type="text" class="own_fields form-control" name="" value="" data-option-field="value">
+                </span>
+                <span class="help-inline col-xs-12 col-sm-12">
+                    <span class="small txt-default" data-option-field="desc"></span>
+                </span>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/template" id="modal_form_select">
+        <div class="form-group">
+            <label class="col-sm-3 control-label" data-option-field="name"></label>
+            <div class="col-xs-8 col-sm-8">
+                <span class="col-xs-12 col-sm-12">
+                    <select name="" id="" class="populate placeholder own_fields" data-option-field="value">
+                        <option value="" ></option>
+                    </select>
+                </span>
+                <span class="help-inline col-xs-12 col-sm-12">
+                    <span class="small txt-default" data-option-field="desc"></span>
+                </span>
+            </div>
+        </div>
+    </script>
+{% endblock %}
