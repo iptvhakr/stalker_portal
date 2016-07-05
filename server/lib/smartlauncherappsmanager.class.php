@@ -240,6 +240,7 @@ class SmartLauncherAppsManager
         $update_data['type']      = isset($info['config']['type']) ? $info['config']['type'] : null;
         $update_data['category']  = isset($info['config']['category']) ? $info['config']['category'] : null;
         $update_data['is_unique'] = isset($info['config']['unique']) && $info['config']['unique'] ? 1 : 0;
+        $update_data['status'] = 1;
 
         if (!empty($info['config'])){
             $update_data['config'] = json_encode($info['config']);
