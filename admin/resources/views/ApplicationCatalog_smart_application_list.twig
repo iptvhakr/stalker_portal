@@ -1,0 +1,518 @@
+{% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
+{% set title = ('Applications'|trans ~ ': ' ~ 'applications catalog'|trans) | trans %}
+
+{% block content %}
+    <div id="iptv_list">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                {{ main_macro.get_filter('type', 'Type'|trans, 'id', 'title', app['allType'], 3) }}
+                {{ main_macro.get_filter('category', 'Category'|trans, 'id', 'title', app['allCategory'], 3) }}
+                {{ main_macro.get_filter('installed', 'State'|trans, 'id', 'title', app['allInstalled'], 3) }}
+                {{ main_macro.get_filter('status', 'Status'|trans, 'id', 'title', app['allStatus'], 3) }}
+                {#{{ main_macro.get_filter('conflicts', 'Compatibility'|trans, 'id', 'title', app['allCompatibility'], 3) }}#}
+
+                <a id="add_apps" href="#" class="btn btn-success pull-right">{{ 'Add application by package name'|trans }}</a>
+                <a id="reset_all_apps" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-reset-all" class="btn btn-success pull-right">{{ 'Reset all application'|trans }}</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="box">
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                    {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
+                {% endif %}
+                <div class="box-content">
+                    <div class="box-content no-padding">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12">
+                                <div class="dataTables_processing"></div>
+                                <table class="table  table-hover table-datatable" id="datatable-1">
+                                    {% if attribute(app, 'dropdownAttribute') is defined %}
+                                        {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                                    {% endif %}
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" defer="defer">
+
+        function TestTable1() {
+            $('#datatable-1').on('xhr.dt', function (e, settings, json) {
+                if (typeof (json.data) == 'object') {
+                    for (var i in json.data) {
+                        var item = json.data[i];
+                        var id = json.data[i].id;
+
+                        var icon = json.data[i].icon ? json.data[i].icon: "img/no_image.png";
+                        var backgroundColor = json.data[i].icon ? json.data[i].backgroundColor: "#FFFFFF";
+
+                        json.data[i].icon = "<img src='" + icon + "' style='background-color: " + backgroundColor + "'>";
+                        json.data[i].name = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-detail?id=' + id + '">' + json.data[i].name + '</a>';
+                        var status = item.status;
+                        var current_version = item.current_version;
+                        if (!item.current_version) {
+                            item.current_version = "{{ 'Undefined'|trans }}"
+                        }
+                        if (item.installed) {
+                            item.current_version += ' ' + (item.available_version != item.current_version ? '&nbsp;&nbsp;&nbsp;<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-detail?id=' + id + '">{{ 'Update'|trans }}</a>' : '');
+                            item.status = item.status == 1 ? "{{ 'Active'|trans }}" : "{{ 'Disabled'|trans }}";
+                        } else {
+                            item.current_version = ' ' + '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-detail?id=' + id + '">{{ 'Install'|trans }}</a>';
+                            item.status = "{{ 'Not installed'|trans }}";
+                        }
+
+                        json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
+                                                        <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                                            <i class='pull-right fa fa-cog'></i>\n\
+                                                        </a>\n\
+                                                        <ul class='dropdown-menu pull-right'>\n\
+                                                            <li>\n\
+                                                                <a class='main_ajax' " + (!item.installed ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-toggle-state' data-id='" + id + "' data-status='" + (status == '1' ? '0': '1') + "'>\n\
+                                                                    <span> " + (status != 1 ? "{{ 'Activate'|trans }}" : "{{ 'Deactivate'|trans }}") + " </span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                            <li>\n\
+                                                                <a class='main_ajax' " + (status == 1 ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-delete' data-id='" + id + "'>\n\
+                                                                    <span> {{ 'Delete'|trans }} </span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                            <li>\n\
+                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-list-json' data-id='" + id + "' data-alias='" + item.alias + "' data-version='"+ current_version +"'>\n\
+                                                                    <span> {{ 'Details'|trans }} </span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                        </ul>\n\
+                                                    </div>";
+                    }
+                }
+            }).dataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-list-json",
+                    /*"data": function (d) {
+                    }*/
+                },
+                "language": {
+                    "url": "{{ app.datatable_lang_file }}"
+                },
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
+                {% endif %}
+                "bFilter": true,
+                "bPaginate": true,
+                "bInfo": true,
+                "aoColumnDefs": [
+                    {className: "action-menu", "targets": [-1]},
+                    {"searchable": false, "targets": [0, 2, 3, 5, 6, 8, -1]},
+                    {"sortable": false, "targets": [0, 5, 6, -1]}
+                ]
+            }).prev('.dataTables_processing').hide('');
+        }
+
+        function yelp() {
+            $(document).ready(function () {
+                $(document).on('click', "a.main_ajax", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $("#modalbox").data('complete', 0);
+                    var sendData = $(this).data();
+                    if ($(this).attr("disabled")) {
+                        JSErrorModalBox({msg: "{{ 'Action is not available'|trans }}"});
+                    } else {
+                        showModalBox();
+                        ajaxPostSend($(this).attr('href'), sendData, false );
+                    }
+                    $(this).closest('div.open').removeClass('open');
+                    return false;
+                });
+
+                $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function (e) {
+                    if (e.currentTarget != e.target) {
+                        return;
+                    }
+                    e.stopPropagation();
+                    e.preventDefault();
+                    if ($("#modalbox").data('complete') && $("#modalbox").data('complete') == 1) {
+                        closeModalBox();
+                    } else {
+                        for (i = 0; i < 3; i++) {
+                            $('#modalbox > div').fadeTo('slow', 0.5).fadeTo('slow', 1.0);
+                        }
+                    }
+                    return false;
+                });
+
+                $(document).on("click", "#add_apps", function (e) {
+                    if (e.currentTarget != e.target) {
+                        return;
+                    }
+                    e.stopPropagation();
+                    e.preventDefault();
+
+                    buildGetForm();
+
+                    $('#modalbox').show();
+
+                    return false;
+                });
+
+                $(document).on('click', "#modalbox button[type='submit']", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var sendData = new Object();
+                    var form_fields = $("#modalbox").find('form').find(".own_fields:not(:disabled)");
+                    form_fields.each(function () {
+                        if ($(this).val()) {
+                            if (this.type.toUpperCase() != 'CHECKBOX' || this.checked) {
+                                sendData[this.name] = $(this).val();
+                            }
+                        }
+                    });
+                    var action = $("#modalbox").find('form').attr('action');
+                    JSshowModalBox();
+                    ajaxPostSend(action, sendData, false, false);
+                    return false;
+                });
+
+                $(document).on('click', "#modalbox button[type='reset']", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    JScloseModalBox();
+                    return false;
+                });
+
+                $(document).on('click', '#add_apps_back', function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var url = $('#apps_url').val();
+                    JScloseModalBox();
+                    buildGetForm();
+                    $('#apps_url').val(url);
+                    return false;
+                });
+
+                $(document).on('click', '#reset_all_apps', function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    JScloseModalBox();
+                    $('#modalbox').find('.modal-header-name span').addClass('txt-danger').text('{{ 'Warning'|trans }}' + '!');
+                    $('#modalbox').find('.devoops-modal-inner').html($("#modal_reset_all_body").text());
+                    $('#modalbox').find('.devoops-modal-bottom').html($("#modal_reset_all_buttons").text());
+                    $('#modalbox').show();
+                    return false;
+                });
+
+               /* $(document).on('click', '#reset_all_apps_btn', function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    JScloseModalBox();
+                    ajaxPostSend('{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-reset-all', {reset_all: 1});
+                });*/
+
+                LoadDataTablesScripts(TestTable1);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", yelp, false);
+
+        var manageList = function (obj) {
+            JSSuccessModalBox(obj);
+            $('#datatable-1').DataTable().ajax.reload();
+        };
+
+        function closeModalBox() {
+            $("#modalbox").hide();
+            $('#modalbox').find('.modal-header-name span').empty();
+            $('#modalbox').find('.devoops-modal-inner').empty();
+            $('#modalbox').find('.devoops-modal-bottom').empty();
+        }
+
+        function showModalBox() {
+            $('#modalbox').find('.modal-header-name span').text('{{ 'Wait'|trans }}...');
+            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Request is being processed'|trans }}...</span>');
+            $('#modalbox').find('.devoops-modal-bottom').empty();
+            $("#modalbox").show();
+        }
+
+        var manageListError = function (obj) {
+            JSErrorModalBox(obj);
+        };
+
+        var errAction = function (obj) {
+            JSErrorModalBox(typeof(obj) != 'undefined' ? obj: {});
+        };
+
+        var buildSaveFormError = function(obj){
+            JSErrorModalBox(obj);
+        };
+
+        function buildGetForm() {
+            $("#modalbox").hide();
+            $("#modalbox").data('complete', 1);
+            $('#modalbox').find('.modal-header-name span').text('{{ 'Add application by package name (Step 1)'|trans }}');
+            $('#modalbox').find('.devoops-modal-inner').html($("#modal_get_form_body").text());
+            $('#modalbox').find('.devoops-modal-bottom').html($("#modal_get_form_buttons").text());
+            $('#modalbox').show();
+        }
+
+        function buildSaveForm(data) {
+            $("#modalbox").hide();
+            $("#modalbox").data('complete', 1);
+            $('#modalbox').find('.modal-header-name span').text('{{ 'Add application by package name (Step 2)'|trans }}');
+            $('#modalbox').find('.devoops-modal-inner').html($("#modal_save_form_body").text());
+            $('#modalbox').find('.devoops-modal-bottom').html($("#modal_save_form_buttons").text());
+            fillModalForm(data.data);
+            $('#modalbox').show();
+        }
+
+        function buildModalByAlias(data){
+            $("#modalbox").hide();
+            $("#modalbox").data('complete', 1);
+            if (data && data.data && data.data.length == 1) {
+                var info = data.data[0];
+                $('#modalbox').find('.modal-header-name span').text('{{ 'About'|trans }}' + ' "' + info.name + '"');
+                $('#modalbox').find('.devoops-modal-inner').html($("#modal_info_body").text());
+                $('#modalbox').find('.devoops-modal-bottom').html($("#modal_info_buttons").text());
+                $('#modalbox .devoops-modal-inner img').css('backgroundColor', "#aaaaaa");
+                $('#modalbox .devoops-modal-inner [data-item]').each(function(){
+                    var field = $(this).data('item');
+                    if (info[field] && info[field].length != 0) {
+                        if (info[field] instanceof Array || info[field] instanceof Object) {
+                            for(var i in info[field]) {
+                                $(this).html($(this).html() + info[field][i]['alias'] + ' ' + info[field][i]['current_version'] + '<br>');
+                            }
+                        } else {
+                            $(this).text($(this).text() + info[field]);
+                        }
+                    } else {
+                        $(this).hide();
+                    }
+                });
+                $('#info_apps_action').data('id', info.id);
+                if (!info.installed) {
+                    $('#info_apps_action').text("{{ 'Install'|trans }}")
+                    if (info.available_version_conflicts && info.available_version_conflicts.length != 0) {
+                        $('#info_apps_action').prop('disabled', 'disabled').addClass('disabled');
+                    }
+                } else if (info.current_version != info.available_version){
+                    $('#info_apps_action').text("{{ 'Update'|trans }}")
+                    if (info.available_version_conflicts && info.available_version_conflicts.length != 0) {
+                        $('#info_apps_action').prop('disabled', 'disabled').addClass('disabled');
+                    }
+                } else {
+                    $('#info_apps_action').prop('disabled', 'disabled').addClass('disabled');
+                    $('#modalbox .devoops-modal-inner [data-item="available_version"]').hide();
+                }
+                var icon = info.icon ? info.icon: "img/no_image.png";
+                var backgroundColor = info.icon ? info.backgroundColor: "#FFFFFF";
+                $('#modalbox .devoops-modal-inner img').attr('src', icon).css({backgroundColor: backgroundColor});
+
+                $('#modalbox').show();
+            }
+        }
+
+
+        var fillModalForm = function (data) {
+            if (data.repository && data.repository.url) {
+                var regExp = new RegExp('\\.git$', 'gi');
+                $('#apps_url').val(data.repository.url.replace(regExp, ''));
+            }
+            if (data.name) {
+                $('#apps_name').val(data.name).next('h5').text(data.name);
+            }
+            if (data.config) {
+                if (data.config.type) {
+                    $('#apps_type').val(data.config.type).next('h5').text(data.config.type);
+                }
+                if (data.config.category) {
+                    $('#apps_category').val(data.config.category).next('h5').text(data.config.category);
+                }
+            }
+            if (data.version) {
+                $('#apps_version').val(data.version).next('h5').text(data.version);
+            }
+            if (data.options) {
+                $('#apps_options').val(JSON.stringify(data.options));
+            }
+            if (data.author) {
+                $('#apps_author').val(data.author).next('h5').text(data.author);
+            }
+            if (data.dependencies) {
+                $('#apps_dependencies').text(Object.keys(data.dependencies).join(';\n') + ';');
+            }
+            if (data.description) {
+                $('#apps_description').text(data.description);
+            }
+        };
+
+        var changeStatus = function(obj){
+            manageList(obj);
+        };
+
+        var changeStatusError = function(obj){
+            JSErrorModalBox(obj);
+            $('#app_status').prop('checked', !$('#app_status').is(':checked'));
+        };
+
+    </script>
+
+    <script type="text/template" id="modal_get_form_body">
+        <div class="box-content">
+            <form class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-get-data-from-repo">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label col-sm-offset-1">{{ 'Package name'|trans }}</label>
+                    <div class="col-xs-10 col-sm-8">
+                        <span class="col-xs-12 col-sm-12">
+                            <input type="text" class="own_fields form-control" name="apps[url]" value="" id="apps_url">
+                        </span>
+                        <span class="help-inline col-xs-12 col-sm-12">
+                            <span class="small txt-default">{{ 'Enter the package name'|trans }}</span>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </script>
+
+    <script type="text/template" id="modal_get_form_buttons">
+        <div class="pull-right no-padding">&nbsp;</div>
+        <div class="pull-right no-padding">
+            <button type="submit" class="btn btn-success pull-right">{{ 'Next'|trans }}</button>
+            <button type="reset" class="btn btn-default pull-right">{{ 'Cancel'|trans }}</button>
+        </div>
+    </script>
+
+    <script type="text/template" id="modal_save_form_body">
+        <div class="box-content">
+            <form class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-add">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label col-sm-offset-1">{{ 'Package name'|trans }}</label>
+                    <div class="col-xs-10 col-sm-8">
+                        <span class="col-xs-12 col-sm-12">
+                            <input type="text" class="own_fields form-control" name="apps[url]" id="apps_url" value="" readonly="readonly">
+                        </span>
+{#                        <span class="help-inline col-xs-12 col-sm-12">
+                            <span class="small txt-default">{{ 'Enter the package name'|trans }}</span>
+                        </span>#}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label col-sm-offset-1">{{ 'Application'|trans }}</label>
+                    <div class="col-xs-10 col-sm-8">
+                        <span class="col-xs-12 col-sm-12">
+                            <input type="hidden" class="own_fields form-control" name="apps[alias]" id="apps_name" value="" readonly="readonly">
+                            <h5></h5>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label col-sm-offset-1">{{ 'Type'|trans }}</label>
+                    <div class="col-xs-10 col-sm-8">
+                        <span class="col-xs-12 col-sm-12">
+                            <input type="hidden" class="own_fields form-control" name="apps[type]" id="apps_type" value="" readonly="readonly">
+                            <h5></h5>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label col-sm-offset-1">{{ 'Category'|trans }}</label>
+                    <div class="col-xs-10 col-sm-8">
+                        <span class="col-xs-12 col-sm-12">
+                            <input type="hidden" class="own_fields form-control" name="apps[category]" id="apps_category" value="" readonly="readonly">
+                            <h5></h5>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label col-sm-offset-1">{{ 'Version'|trans }}</label>
+                    <div class="col-xs-10 col-sm-8">
+                        <span class="col-xs-12 col-sm-12">
+                            <input type="hidden" class="own_fields form-control" name="apps[options]" id="apps_options" value="" readonly="readonly" disabled="disabled">
+                            <input type="hidden" class="own_fields form-control" name="apps[current_version]" value="" id="apps_version" readonly="readonly" disabled="disabled">
+                            <h5></h5>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label col-sm-offset-1">{{ 'Author'|trans }}</label>
+                    <div class="col-xs-10 col-sm-8">
+                        <span class="col-xs-12 col-sm-12">
+                            <input type="hidden" class="own_fields form-control" name="apps[author]" id="apps_author" value="" readonly="readonly">
+                            <h5></h5>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label col-sm-offset-1">{{ 'Dependencies'|trans }}</label>
+                    <div class="col-xs-10 col-sm-8">
+                        <span class="col-xs-12 col-sm-12">
+                            <textarea class="own_fields form-control" name="apps[dependencies]" id="apps_dependencies" readonly="readonly" rows="5" disabled="disabled"></textarea>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label col-sm-offset-1">{{ 'About app'|trans }}</label>
+                    <div class="col-xs-10 col-sm-8">
+                        <span class="col-xs-12 col-sm-12">
+                            <textarea class="own_fields form-control" name="apps[description]" id="apps_description" readonly="readonly" rows="5" disabled="disabled"></textarea>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </script>
+
+    <script type="text/template" id="modal_info_body">
+        <div class="col-md-2 col-md-offset-1">
+            <img src="img/no_image.png" style="background-color: #ffffff">
+        </div>
+        <div class="col-md-9">
+            <h3 class="col-md-12"><strong data-item="name"></strong></h3>
+            <span class="col-md-12" data-item="current_version">{{ 'Current version'|trans }} </span>
+            <p class="col-md-12 text-danger" data-item="conflicts">{{ 'The current version of package is conflicts with'|trans }}<br/></p>
+            <span class="col-md-12" data-item="available_version">{{ 'Available version'|trans }} </span>
+            <p class="col-md-12 text-danger" data-item="available_version_conflicts">{{ 'The available version of package is conflicts with'|trans }}<br/></p>
+            <span class="col-md-12" data-item="author">{{ 'Author'|trans }} </span>
+            <p class="col-md-12" data-item="description"></p>
+        </div>
+    </script>
+
+    <script type="text/template" id="modal_info_buttons">
+        <div class="pull-right no-padding">
+            <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-version-install" id="info_apps_action" class="main_ajax btn btn-success pull-right">{{ 'Install'|trans }}</a>
+            <button type="reset" class="btn btn-default pull-right">{{ 'Close'|trans }}</button>
+        </div>
+    </script>
+
+    <script type="text/template" id="modal_save_form_buttons">
+        <div class="pull-left no-padding">
+            <button type="reset" class="btn btn-default pull-left">{{ 'Cancel'|trans }}</button>
+        </div>
+        <div class="pull-right no-padding">
+            <button type="submit" class="btn btn-success pull-right">{{ 'Save'|trans }}</button>
+            <button type="button" id="add_apps_back" class="btn btn-success pull-right">{{ 'Back'|trans }}</button>
+        </div>
+    </script>
+
+    <script type="text/template" id="modal_reset_all_body">
+        <div class="col-md-12">
+            <span class="col-md-12 txt-default">{{ 'Do you realy want reset all applications?'|trans }}</span>
+        </div>
+    </script>
+
+    <script type="text/template" id="modal_reset_all_buttons">
+        <div class="pull-right no-padding">
+            <a id="reset_all_apps_btn" type="button" class="main_ajax btn btn-danger pull-right" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-reset-all">{{ 'Reset'|trans }}</a>
+            <button type="reset" id="reset_all_apps_button" class="btn btn-success pull-right">{{ 'Cancel'|trans }}</button>
+        </div>
+    </script>
+{% endblock %}

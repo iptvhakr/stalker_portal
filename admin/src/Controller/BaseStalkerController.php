@@ -88,8 +88,8 @@ class BaseStalkerController {
         }
 
         $this->sidebar_cache_time = Config::getSafe('admin_panel_sidebar_cache_time', 0);
+        $this->setDataTablePluginSettings();
         if (!$this->isAjax) {
-            $this->setDataTablePluginSettings();
             if ($this->db !== FALSE && !empty($uid)) {
                 $this->app['userTaskMsgs'] = $this->db->getCountUnreadedMsgsByUid($uid);
             }
@@ -535,7 +535,7 @@ class BaseStalkerController {
     protected function getParentActionAccess() {
         $return = FALSE;
         if ($this->app['userlogin'] !== 'admin' && $this->isAjax && preg_match("/-json$/", $this->app['action_alias'])) {
-            $action_alias = preg_replace(array('/-composition/i', '/-datatable\d/i'), '', $this->app['action_alias'], 1);
+            $action_alias = preg_replace(array('/-composition/i', '/-datatable\d/i', '/-version/'), '', $this->app['action_alias'], 1);
             $parent_1 = str_replace('-json', '', $action_alias);
             $parent_2 = str_replace('-list-json', '', $action_alias);
             $parent_access = 0;

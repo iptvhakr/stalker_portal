@@ -146,6 +146,12 @@ var loader = {
                 _script.src  = module + ".js";
             }
         }
+
+        _script.onerror = function() {
+            _debug('Error loading script', _script.src);
+            loader.next();
+        };
+
         this.head.appendChild(_script);
         _debug('append', _script.src);
     }
