@@ -52,6 +52,8 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
 
         $default_zone = $this->db->getZoneList(array('select'=>array('S_Z.*'), 'where'=>array('S_Z.default_zone' => 1)));
         $this->app['default_zone'] = (!empty($default_zone) ? $default_zone[0]: FALSE);
+        $like_filter = array();
+        $this->getStatisticsFilters($like_filter);
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }

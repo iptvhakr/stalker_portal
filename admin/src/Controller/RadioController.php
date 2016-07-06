@@ -39,6 +39,8 @@ class RadioController extends \Controller\BaseStalkerController {
             array('id' => 2, 'title' => $this->setLocalization('Published'))
         );
 
+        $this->getRadioFilters();
+
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 

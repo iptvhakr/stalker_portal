@@ -371,6 +371,8 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
 
         $allCategories = $this->db->getCategoriesGenres();
 
+        $this->getVideoListFilters();
+
         if (isset($allCategories) && is_array($allCategories) && count($allCategories) > 0) {
             $this->app['allCategories'] = $this->setLocalization($allCategories, 'category_name');
         } else {

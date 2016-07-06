@@ -153,6 +153,8 @@ class EventsController extends \Controller\BaseStalkerController {
             $this->app['breadcrumbs']->addItem($this->setLocalization('Users events') . " {$this->app['currentUser']['name']} ({$this->app['currentUser']['mac']})");
         }
 
+        $this->getEventsFilters();
+
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 

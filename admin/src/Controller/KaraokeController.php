@@ -32,6 +32,9 @@ class KaraokeController extends \Controller\BaseStalkerController {
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
 
+        $like_filter = array();
+        $this->getKaraokeFilters($like_filter);
+
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
        
