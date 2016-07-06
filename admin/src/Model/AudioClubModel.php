@@ -113,9 +113,22 @@ class AudioClubModel extends \Model\BaseStalkerModel {
    
     public function getAudioArtistList($param) {
         if (!empty($param['select'])) {
+            if (($num = array_search('id', $param['select'])) !== FALSE){
+                $param['select'][$num] = 'audio_performers.' . $param['select'][$num];
+            }
+            if (($num = array_search('name', $param['select'])) !== FALSE){
+                $param['select'][$num] = 'audio_performers.' . $param['select'][$num];
+            }
+            if (($num = array_search('albums_count', $param['select'])) != FALSE) {
+                $param['select'][$num] = 'COUNT(`performer_id`) as `albums_count`';
+                $this->mysqlInstance->join('audio_albums', 'audio_performers.id', 'audio_albums.performer_id', 'LEFT');
+                $this->mysqlInstance->groupby('audio_performers.id');
+            }
             $this->mysqlInstance->select($param['select']);
         }
+
         $this->mysqlInstance->from('audio_performers');
+
         if (!empty($param['where'])) {
             $this->mysqlInstance->where($param['where']);
         }
