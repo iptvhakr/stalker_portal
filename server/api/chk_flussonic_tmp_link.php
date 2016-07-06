@@ -2,9 +2,14 @@
 
 include "./common.php";
 
-$uid = Itv::checkTemporaryLink(@$_GET['token']);
+if (empty($_GET['token'])){
+    header($_SERVER["SERVER_PROTOCOL"]." 403 Forbidden");
+    exit;
+}
 
-if (!$uid || empty($_GET['token'])){
+$uid = Itv::checkTemporaryLink($_GET['token']);
+
+if (!$uid){
     header($_SERVER["SERVER_PROTOCOL"]." 403 Forbidden");
 }else{
     header("X-AuthDuration: 36000");
