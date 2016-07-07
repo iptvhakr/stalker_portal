@@ -1019,33 +1019,35 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
     private function getSmartApplicationFilters() {
         $return = array();
 
-        if (!empty($this->data['filters'])){
-
-            if (array_key_exists('type', $this->data['filters']) && $this->data['filters']['type'] != 0) {
-                $return['`L_A`.`type`' . ($this->data['filters']['type'] == 1? '=': '<>')] = 'app';
-            }
-
-
-            if (array_key_exists('category', $this->data['filters']) && !is_numeric($this->data['filters']['category'])) {
-                $return['`L_A`.`category`'] = $this->data['filters']['category'];
-            }
-
-            if (array_key_exists('installed', $this->data['filters']) && $this->data['filters']['installed']!= 0) {
-                $return['installed'] = $this->data['filters']['installed'] - 1;
-            }
-
-            if (array_key_exists('status', $this->data['filters']) && $this->data['filters']['status']!= 0) {
-                $return['`L_A`.`status`'] = $this->data['filters']['status'] - 1;
-            }
-
-            if (array_key_exists('conflicts', $this->data['filters']) && $this->data['filters']['conflicts']!= 0) {
-                /*$return['conflicts'] = $this->data['filters']['conflicts'] - 1;*/
-            }
-
-            $this->app['filters'] = $this->data['filters'];
-        } else {
-            $this->app['filters'] = array();
+        if (empty($this->data['filters'])){
+            $this->data['filters'] = array();
         }
+        if (!array_key_exists('type', $this->data['filters'])) {
+            $this->data['filters']['type'] ='1';
+        }
+
+        if ((string)$this->data['filters']['type'] != "0") {
+            $return['`L_A`.`type`' . ($this->data['filters']['type'] == 1? '=': '<>')] = 'app';
+        }
+
+        if (array_key_exists('category', $this->data['filters']) && (string)$this->data['filters']['category'] != "0") {
+            $return['`L_A`.`category`'] = $this->data['filters']['category'];
+        }
+
+        if (array_key_exists('installed', $this->data['filters']) && (string)$this->data['filters']['installed']!= "0") {
+            $return['installed'] = $this->data['filters']['installed'] - 1;
+        }
+
+        if (array_key_exists('status', $this->data['filters']) && (string)$this->data['filters']['status']!= "0") {
+            $return['`L_A`.`status`'] = $this->data['filters']['status'] - 1;
+        }
+
+        if (array_key_exists('conflicts', $this->data['filters']) && (string)$this->data['filters']['conflicts']!= "0") {
+            /*$return['conflicts'] = $this->data['filters']['conflicts'] - 1;*/
+        }
+
+        $this->app['filters'] = $this->data['filters'];
+
         return $return;
     }
 }
