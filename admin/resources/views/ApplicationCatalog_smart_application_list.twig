@@ -75,7 +75,7 @@
                                                         </a>\n\
                                                         <ul class='dropdown-menu pull-right'>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' " + (!item.installed ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-toggle-state' data-id='" + id + "' data-status='" + (status == '1' ? '0': '1') + "'>\n\
+                                                                <a class='smart-application-toggle-state' " + (!item.installed ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-toggle-state' data-type='" + json.data[i].type + "' data-id='" + id + "' data-status='" + (status == '1' ? '0': '1') + "'>\n\
                                                                     <span> " + (status != 1 ? "{{ 'Activate'|trans }}" : "{{ 'Deactivate'|trans }}") + " </span>\n\
                                                                 </a>\n\
                                                             </li>\n\
@@ -218,6 +218,17 @@
                     return false;
                 });
 
+                $(document).on('on', 'a.smart-application-toggle-state', function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    JScloseModalBox();
+                    $('#modalbox').find('.modal-header-name span').addClass('txt-danger').text('{{ 'Warning'|trans }}' + '!');
+                    $('#modalbox').find('.devoops-modal-inner').html($("#modal_reset_all_body").text());
+                    $('#modalbox').find('.devoops-modal-bottom').html($("#modal_reset_all_buttons").text());
+                    $('#modalbox').show();
+                    return false;
+                });
+
                 LoadDataTablesScripts(TestTable1);
             });
         }
@@ -319,7 +330,6 @@
                 $('#modalbox').show();
             }
         }
-
 
         var fillModalForm = function (data) {
             if (data.repository && data.repository.url) {
