@@ -64,10 +64,14 @@ class Npm
         return $info;
     }
 
-    private function relocatePackages($path = null){
+    private function relocatePackages($path = null, $package_order = null){
 
         if (is_null($path)){
             $path = $this->app_path;
+        }
+
+        if (is_null($package_order)){
+            $package_order = array();
         }
 
         $packages_path = realpath($path.'/node_modules');
@@ -78,10 +82,11 @@ class Npm
 
         $scanned_directory = array_diff(scandir($packages_path), array('..', '.'));
 
+        $scanned_directory = array_merge($package_order, array_diff($scanned_directory, $package_order));
+
         foreach ($scanned_directory as $dir) {
 
             $full_path = $packages_path.'/'.$dir;
-
             if (is_dir($full_path)){
 
                 if(is_readable($full_path.'/package.json')){
@@ -103,7 +108,9 @@ class Npm
                     throw new NodeException($e->getMessage());
                 }
 
-                $this->relocatePackages($full_path);
+                $package_order = isset($info['dependencies']) ? array_keys($info['dependencies']) : null;
+
+                $this->relocatePackages($full_path, $package_order);
 
                 umask(0);
 
