@@ -218,14 +218,21 @@
                     return false;
                 });
 
-                $(document).on('on', 'a.smart-application-toggle-state', function(e){
+                $(document).on('click', 'a.smart-application-toggle-state', function(e){
                     e.stopPropagation();
                     e.preventDefault();
                     JScloseModalBox();
-                    $('#modalbox').find('.modal-header-name span').addClass('txt-danger').text('{{ 'Warning'|trans }}' + '!');
-                    $('#modalbox').find('.devoops-modal-inner').html($("#modal_reset_all_body").text());
-                    $('#modalbox').find('.devoops-modal-bottom').html($("#modal_reset_all_buttons").text());
-                    $('#modalbox').show();
+                    $(this).closest('.open').removeClass('open');
+                    if ($(this).data('type') != 'app' && $(this).data('status') != '1') {
+                        $('#modalbox').find('.modal-header-name span').addClass('txt-danger').text('{{ 'Warning'|trans }}' + '!');
+                        $('#modalbox').find('.devoops-modal-inner').html($("#modal_reset_all_body").text());
+                        $('#modalbox .devoops-modal-inner span').text("{{ 'This is system apps. Disabling this application can lead to failures in other applications. Do really want deactivate this application?'|trans }}")
+                        $('#modalbox').find('.devoops-modal-bottom').html($("#modal_reset_all_buttons").text());
+                        $("#reset_all_apps_btn").text("{{ 'Deactivate'|trans }}").attr("href", $(this).attr('href')).data($(this).data());
+                        $('#modalbox').show();
+                    } else {
+                        ajaxPostSend($(this).attr('href'), $(this).data());
+                    }
                     return false;
                 });
 
