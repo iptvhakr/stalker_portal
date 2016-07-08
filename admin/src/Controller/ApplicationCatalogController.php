@@ -226,9 +226,13 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
 
         $get_conflicts = FALSE;
         if (!empty($param['id'])) {
-            $query_param['where']['L_A.`id`'] = $param['id'];
+            $query_param['where'] = array('L_A.`id`' => $param['id']);
             $response['action'] = 'buildModalByAlias';
             $get_conflicts = TRUE;
+            if (array_key_exists('curr_row', $param)) {
+                $response['curr_row'] = $param['curr_row'];
+                $response['action'] = 'oneRowRender';
+            }
         }
 
         if (!empty($query_param['like'])) {
@@ -239,10 +243,10 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             }
         }
 
-        if (!array_search('L_A.`id` as `id`', $query_param['select'])) {
+        if (!in_array('L_A.`id` as `id`', $query_param['select'])) {
             $query_param['select'][] = 'L_A.`id` as `id`';
         }
-        if (!array_search('L_A.`alias` as `alias`', $query_param['select'])) {
+        if (!in_array('L_A.`alias` as `alias`', $query_param['select'])) {
             $query_param['select'][] = 'L_A.`alias` as `alias`';
         }
 
@@ -255,41 +259,47 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             $query_param['limit']['limit'] = FALSE;
         }
 
-        $apps_manager = new \SmartLauncherAppsManager();
-
         $base_obj = $this->db->getSmartApplicationList($query_param, FALSE, TRUE);
 
-        while($row = $base_obj->next()) {
-                try {
-                    $info = $apps_manager->getAppInfo($row['id']);
-                    if ($installed !== NULL && $installed !== $info['installed']) {
+        if ($get_conflicts) {
+            $response["recordsFiltered"] = 0;
+            $apps_manager = new \SmartLauncherAppsManager();
+
+            while($row = $base_obj->next()) {
+                    try {
+                        $info = $apps_manager->getAppInfo($row['id']);
+                        if ($installed !== NULL && $installed !== $info['installed']) {
+                            continue;
+                        }
+                        $row['name'] = $info['name'];
+                        $row['description'] = $info['description'];
+                        $row['available_version'] = $info['available_version'];
+                        $row['conflicts'] = $row['available_version_conflicts'] = array();
+                        if ($get_conflicts) {
+                            if (!empty($row['current_version'])) {
+                                $row['conflicts'] = $apps_manager->getConflicts($row['id'], $row['current_version']);
+                            }
+                            if (!empty($row['available_version']) && (empty($row['current_version']) || $row['current_version'] != $row['available_version'])) {
+                                $row['available_version_conflicts'] = $apps_manager->getConflicts($row['id'], $row['available_version']);
+                            }
+                        }
+                        $row['icon'] = !empty($info['icon']) ? $info['icon']: $this->getIconByType($row['type']);
+                        $row['backgroundColor'] = $info['backgroundColor'];
+                        settype($row['status'], 'int');
+                        $row['installed'] = $info['installed'];
+                        $row['rerendered'] = TRUE;
+                        if (count($response["data"]) <= 50) {
+                            $response["data"][] = $row;
+                        }
+                    } catch (\Exception $e) {
                         continue;
                     }
-                    $row['name'] = $info['name'];
-                    $row['description'] = $info['description'];
-                    $row['available_version'] = $info['available_version'];
-                    $row['conflicts'] = $row['available_version_conflicts'] = array();
-                    if ($get_conflicts) {
-                        if (!empty($row['current_version'])) {
-                            $row['conflicts'] = $apps_manager->getConflicts($row['id'], $row['current_version']);
-                        }
-                        if (!empty($row['available_version']) && (empty($row['current_version']) || $row['current_version'] != $row['available_version'])) {
-                            $row['available_version_conflicts'] = $apps_manager->getConflicts($row['id'], $row['available_version']);
-                        }
-                    }
-                    $row['icon'] = $info['icon'];
-                    $row['backgroundColor'] = $info['backgroundColor'];
-                    settype($row['status'], 'int');
-                    $row['installed'] = $info['installed'];
-                    if (count($response["data"]) <= 50) {
-                        $response["data"][] = $row;
-                    }
-                } catch (\Exception $e) {
-                    continue;
-                }
-            $response["recordsFiltered"]++;
+                $response["recordsFiltered"]++;
+            }
+        } else {
+            $response["recordsFiltered"] = $this->db->getTotalRowsSmartApplicationList($query_param['where'], $query_param['like']);
+            $response["data"] = $base_obj->all();
         }
-
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
 
         $error = "";
@@ -1001,7 +1011,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         $attribute = array(
             'id' => 'L_A.`id` as `id`',
             'icon' => '"" as `icon`',
-            'name' => '"" as `name`',
+            'name' => 'L_A.`name` as `name`',
             'type' => 'L_A.`type` as `type`',
             'category' => 'L_A.`category` as `category`',
             'current_version' => 'L_A.`current_version` as `current_version`',
@@ -1049,5 +1059,31 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         $this->app['filters'] = $this->data['filters'];
 
         return $return;
+    }
+
+    private function getIconByType($type){
+        switch ($type){
+            case 'core':{
+                return 'img/Core_icon2.png';
+            }
+            case 'launcher':{
+                return 'img/Launcher_icon2.png';
+            }
+            case 'osd':{
+                return 'img/OSD_icon2.png';
+            }
+            case 'plugin':{
+                return 'img/Plugin_icon2.png';
+            }
+            case 'system':{
+                return 'img/System_icon2.png';
+            }
+            case 'theme':{
+                return 'img/Theme_icon2.png';
+            }
+            default:{
+                return 'img/no_image.png';
+            }
+        }
     }
 }
