@@ -62,7 +62,7 @@
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-audio-albums' data-albumsid='" + id + "'>\n\
+                                                                <a class='remove-audio-albums'  data-albumsid='" + id + "'>\n\
                                                                     <span>{{ 'Delete'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
@@ -104,11 +104,40 @@
                 $(document).on('click', "a.main_ajax", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
-                    var _this = $(this);
+                    var _this = this;
+                    $("#modalbox").data('complete', 0);
+                    var sendData = $(_this).data();
+                    if ($(_this).attr("disabled")) {
+                        JSErrorModalBox({msg: "{{ 'Action is not available'|trans }}! " + ($(_this).attr('warning_msg') ? $(_this).attr('warning_msg') : '')});
+                    } else {
+                        showModalBox();
+                        var timer = setInterval(function(){
+                            if ($("#modalbox").is(":visible")) {
+                                ajaxPostSend($(_this).attr('href'), sendData, false );
+                                clearInterval(timer);
+                            }
+                        }, 10);
+                    }
+                    $(this).closest('div.open').removeClass('open');
+                    return false;
+                });
 
-                    ajaxPostSend($(this).attr('href'), $(this).data());
+                $(document).on('click', "a.remove-audio-albums", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var _this = this;
+                    if ($(_this).attr("disabled")) {
+                        JSErrorModalBox({msg: "{{ 'Action is not available'|trans }}! " + ($(_this).attr('warning_msg') ? $(_this).attr('warning_msg') : '')});
+                        return false;
+                    }
+                    JScloseModalBox();
+                    $('#modalbox').find('.modal-header-name span').addClass('txt-danger').text('{{ 'Warning'|trans }}' + '!');
+                    $('#modalbox').find('.devoops-modal-inner').html($("#modal_del_body").text());
+                    $('#modalbox').find('.devoops-modal-bottom').html($("#modal_del_buttons").text());
 
-                    _this.closest('div.open').removeClass('open');
+                    $('#del_album_btn').data($(_this).data());
+
+                    $('#modalbox').show();
                     return false;
                 });
 
@@ -119,8 +148,36 @@
         document.addEventListener("DOMContentLoaded", yelp, false);
 
         var manageAudioAlbum = function (obj) {
+            closeModalBox();
             $('#datatable-1').DataTable().ajax.reload();
         };
 
+        function closeModalBox() {
+            $("#modalbox").hide();
+            $('#modalbox').find('.modal-header-name span').removeClass('txt-danger').empty();
+            $('#modalbox').find('.devoops-modal-inner').empty();
+            $('#modalbox').find('.devoops-modal-bottom').empty();
+        }
+
+        function showModalBox() {
+            $('#modalbox').find('.modal-header-name span').removeClass('txt-danger').text('{{ 'Wait'|trans }}...');
+            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Request is being processed'|trans }}...</span>');
+            $('#modalbox').find('.devoops-modal-bottom').empty();
+            $("#modalbox").show();
+        }
+
+    </script>
+
+    <script type="text/template" id="modal_del_body">
+        <div class="col-md-12">
+            <span class="col-md-12 txt-default">{{ 'Do you really want delete this album and all compositions?'|trans }}</span>
+        </div>
+    </script>
+
+    <script type="text/template" id="modal_del_buttons">
+        <div class="pull-right no-padding">
+            <a id="del_album_btn" type="button" class="main_ajax btn btn-danger pull-right" href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-audio-albums'>{{ 'Delete'|trans }}</a>
+            <button type="reset" id="del_album_button" class="btn btn-success pull-right">{{ 'Cancel'|trans }}</button>
+        </div>
     </script>
 {% endblock %}

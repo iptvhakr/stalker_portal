@@ -12,6 +12,9 @@
         </div>
         <div class="row">
             <div class="box">
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                    {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
+                {% endif %}
                 <div class="box-content">
                     <div class="box-content no-padding">
                         <div class="dataTables_processing"></div>
@@ -36,6 +39,7 @@
                 if (typeof (json.data) == 'object') {
                     for (var i in json.data) {
                         var id = json.data[i].id;
+                        var albums_count = json.data[i].albums_count;
                         json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
                                                         <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
@@ -47,7 +51,7 @@
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-audio-artists' data-artistsid='" + id + "'>\n\
+                                                                <a " + (albums_count != "0" ? "disabled='disabled' warning_msg='{{ 'First, remove all the albums of this performer'|trans }}'" : "") + " href='#' class='remove-audio-artists' data-artistsid='" + id + "'>\n\
                                                                     <span>{{ 'Delete'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
@@ -74,7 +78,7 @@
                 "bInfo": true,
                 "aoColumnDefs": [
                     { className: "action-menu", "targets": [ -1 ] },
-                    {"searchable": false, "targets": [-1]},
+                    {"searchable": false, "targets": [-2, -1]},
                     {"sortable": false, "targets": [-1]}
                 ]
             }).prev('.dataTables_processing').hide('');
@@ -97,7 +101,20 @@
                 $(document).on('click', "a.main_ajax", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
-                    ajaxPostSend($(this).attr('href'), $(this).data(), false);
+                    var _this = this;
+                    $("#modalbox").data('complete', 0);
+                    var sendData = $(_this).data();
+                    if ($(_this).attr("disabled")) {
+                        JSErrorModalBox({msg: "{{ 'Action is not available'|trans }}! " + ($(_this).attr('warning_msg') ? $(_this).attr('warning_msg') : '')});
+                    } else {
+                        showModalBox();
+                        var timer = setInterval(function(){
+                            if ($("#modalbox").is(":visible")) {
+                                ajaxPostSend($(_this).attr('href'), sendData, false );
+                                clearInterval(timer);
+                            }
+                        }, 10);
+                    }
                     $(this).closest('div.open').removeClass('open');
                     return false;
                 });
@@ -124,21 +141,41 @@
                     if (e.currentTarget != e.target) {
                         return;
                     }
-					if( !$('#audio_artists_name').val() ) {  $('#audio_artists_name').css('border','1px solid red');
+					if( !$('#audio_artists_name').val() ) {
+                        $('#audio_artists_name').css('border','1px solid red');
 					} else {
-					$('#audio_artists_name').css('border','');
-                    var sendData = {
-                        id: $("#modalbox input[type='hidden']").val(),
-                        name: $("#modalbox input[type='text']").val()
-                    };
+                        $('#audio_artists_name').css('border','');
+                        var sendData = {
+                            id: $("#modalbox input[type='hidden']").val(),
+                            name: $("#modalbox input[type='text']").val()
+                        };
 
+                        e.stopPropagation();
+                        e.preventDefault();
+                        ajaxPostSend($("#modalbox form").attr('action'), sendData, false);
+                        closeModalBox();
+                        notty('<span>{{ 'Done'|trans }}!</span>','success');
+                        return false;
+					}
+                });
+
+                $(document).on('click', "a.remove-audio-artists", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
-                    ajaxPostSend($("#modalbox form").attr('action'), sendData, false);
-                    closeModalBox();
-					notty('<span>{{ 'Done'|trans }}!</span>','success');
+                    var _this = this;
+                    if ($(_this).attr("disabled")) {
+                        JSErrorModalBox({msg: "{{ 'Action is not available'|trans }}! " + ($(_this).attr('warning_msg') ? $(_this).attr('warning_msg') : '')});
+                        return false;
+                    }
+                    JScloseModalBox();
+                    $('#modalbox').find('.modal-header-name span').addClass('txt-danger').text('{{ 'Warning'|trans }}' + '!');
+                    $('#modalbox').find('.devoops-modal-inner').html($("#modal_del_body").text());
+                    $('#modalbox').find('.devoops-modal-bottom').html($("#modal_del_buttons").text());
+
+                    $('#del_artist_btn').data($(_this).data());
+
+                    $('#modalbox').show();
                     return false;
-					}
                 });
 
                 LoadDataTablesScripts(TestTable1);
@@ -148,14 +185,17 @@
         document.addEventListener("DOMContentLoaded", yelp, false);
 
         var addAudioArtist = function(data){
+            closeModalBox();
             $('#datatable-1').DataTable().ajax.reload();
         };
         
         var editAudioArtist = function(data){
+            closeModalBox();
             $('#datatable-1').DataTable().ajax.reload();
         };
         
         var removeAudioArtist = function (data) {
+            closeModalBox();
             $('#datatable-1').DataTable().ajax.reload();
         };
 
@@ -176,47 +216,74 @@
                 JSErrorModalBox();
             }
         };
-        
-    function closeModalBox(){
-        $("#modalbox").hide();
-        $('#modalbox').find('.modal-header-name span').empty();
-        $('#modalbox').find('.devoops-modal-inner').find('input').val('');
-    }
-    
-    function openModalBox(obj){
-        $('#modalbox').find('.modal-header-name span').text((obj.data('artistsid')? '{{ 'Edit'|trans }}': '{{ 'Add'|trans }}') + ' {{ 'artist'|trans }}');
-        if ($('#modalbox').find('.devoops-modal-inner').find('input').length == 0) {
-            $('#modalbox').find('.devoops-modal-inner').html('\n\
-                <div class="box-content">\n\
-                    <form class="form-horizontal" id="form" role="form">\n\
-                        <div class="form-group">\n\
-                            <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Artist'|trans }}<span class="icon-required">*</span></label>\n\
-                            <div class="col-xs-10 col-sm-8">\n\
-                                <span class="col-xs-8 col-sm-8">\n\
-                                    <input type="hidden" name="id">\n\
-                                    <input type="text"  data-validation="required"  class="form-control own_fields" name="name" id="audio_artists_name">\n\
-                                    <div class="bg-danger"></div>\n\
-                                </span>\n\
+
+        function closeModalBox() {
+            $("#modalbox").hide();
+            $('#modalbox').find('.modal-header-name span').removeClass('txt-danger').empty();
+            $('#modalbox').find('.devoops-modal-inner').empty();
+            $('#modalbox').find('.devoops-modal-bottom').empty();
+        }
+
+        function showModalBox() {
+            $('#modalbox').find('.modal-header-name span').removeClass('txt-danger').text('{{ 'Wait'|trans }}...');
+            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Request is being processed'|trans }}...</span>');
+            $('#modalbox').find('.devoops-modal-bottom').empty();
+            $("#modalbox").show();
+        }
+
+/*        function closeModalBox(){
+            $("#modalbox").hide();
+            $('#modalbox').find('.modal-header-name span').empty();
+            $('#modalbox').find('.devoops-modal-inner').find('input').val('');
+        }*/
+
+        function openModalBox(obj){
+            $('#modalbox').find('.modal-header-name span').text((obj.data('artistsid')? '{{ 'Edit'|trans }}': '{{ 'Add'|trans }}') + ' {{ 'artist'|trans }}');
+            if ($('#modalbox').find('.devoops-modal-inner').find('input').length == 0) {
+                $('#modalbox').find('.devoops-modal-inner').html('\n\
+                    <div class="box-content">\n\
+                        <form class="form-horizontal" id="form" role="form">\n\
+                            <div class="form-group">\n\
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Artist'|trans }}<span class="icon-required">*</span></label>\n\
+                                <div class="col-xs-10 col-sm-8">\n\
+                                    <span class="col-xs-8 col-sm-8">\n\
+                                        <input type="hidden" name="id">\n\
+                                        <input type="text"  data-validation="required"  class="form-control own_fields" name="name" id="audio_artists_name">\n\
+                                        <div class="bg-danger"></div>\n\
+                                    </span>\n\
+                                </div>\n\
                             </div>\n\
-                        </div>\n\
-                   \n\
-                </div>');
-            $('#modalbox').find('.devoops-modal-bottom').html('<div class="pull-right no-padding">&nbsp;</div>\n\
-                        <div class=" pull-right no-padding">\n\
-                            <button type="submit" class="btn btn-success pull-right">{{ 'Save'|trans }}</button>\n\
-                            <button type="reset" class="btn btn-default pull-right" >{{ 'Cancel'|trans }}</button>\n\
-                        </div> </form>');
+                       \n\
+                    </div>');
+                $('#modalbox').find('.devoops-modal-bottom').html('<div class="pull-right no-padding">&nbsp;</div>\n\
+                            <div class=" pull-right no-padding">\n\
+                                <button type="submit" class="btn btn-success pull-right">{{ 'Save'|trans }}</button>\n\
+                                <button type="reset" class="btn btn-default pull-right" >{{ 'Cancel'|trans }}</button>\n\
+                            </div> </form>');
+            }
+
+            if (obj.data('artistsid')) {
+                $('#modalbox').find('.devoops-modal-inner').find('input[type="hidden"]').val(obj.data('artistsid'));
+                $('#modalbox').find('.devoops-modal-inner').find('input[type="text"]').val(obj.closest('tr').find('td:first a').text());
+            }
+            $('#modalbox button[type="submit"]').removeAttr("disabled");
+            $('#audio_artists_name').next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
+            $('#modalbox form').attr('action', obj.attr('href'));
+            $("#modalbox").show();
+            obj.closest('div.open').removeClass('open');
         }
-        
-        if (obj.data('artistsid')) {
-            $('#modalbox').find('.devoops-modal-inner').find('input[type="hidden"]').val(obj.data('artistsid'));
-            $('#modalbox').find('.devoops-modal-inner').find('input[type="text"]').val(obj.closest('tr').find('td:first a').text());
-        }
-        $('#modalbox button[type="submit"]').removeAttr("disabled");
-        $('#audio_artists_name').next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
-        $('#modalbox form').attr('action', obj.attr('href'));
-        $("#modalbox").show();
-        obj.closest('div.open').removeClass('open');
-    }
+    </script>
+
+    <script type="text/template" id="modal_del_body">
+        <div class="col-md-12">
+            <span class="col-md-12 txt-default">{{ 'Do you really want delete this performer?'|trans }}</span>
+        </div>
+    </script>
+
+    <script type="text/template" id="modal_del_buttons">
+        <div class="pull-right no-padding">
+            <a id="del_artist_btn" type="button" class="main_ajax btn btn-danger pull-right" href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-audio-artists'>{{ 'Delete'|trans }}</a>
+            <button type="reset" id="del_artist_button" class="btn btn-success pull-right">{{ 'Cancel'|trans }}</button>
+        </div>
     </script>
 {% endblock %}
