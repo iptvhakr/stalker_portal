@@ -7,9 +7,25 @@ use Stalker\Lib\Core\Cache;
 class SmartLauncherAppsManager
 {
     private $lang;
+    private $callback;
 
     public function __construct($lang = null){
         $this->lang = $lang ? $lang : 'en';
+    }
+
+    public function setNotificationCallback($callback){
+        if (!is_callable($callback)){
+            throw new SmartLauncherAppsManagerException('Not valid callback');
+        }
+        $this->callback = $callback;
+    }
+
+    public function sendToCallback($msg){
+        if (is_null($this->callback)){
+            return;
+        }
+
+        call_user_func($this->callback, $msg);
     }
 
     public static function getLauncherUrl(){
@@ -69,12 +85,12 @@ class SmartLauncherAppsManager
             $cache->set($app_id.'_launcher_app_info', $info, 0, rand(1000, 3600));
         }
 
+        $app['type']   = isset($info['config']['type']) ? $info['config']['type'] : null;
         $app['alias'] = $info['name'];
-        $app['name']  = isset($info['config']['name']) ? $info['config']['name'] : $info['name'];
-        $app['description'] = isset($info['config']['description']) ? $info['config']['description'] : '';
+        $app['name']  = $app['type'] == 'app' && isset($info['config']['name']) ? $info['config']['name'] : $info['name'];
+        $app['description'] = isset($info['config']['description']) ? $info['config']['description'] : (isset($info['description']) ? $info['description'] : '');
         $app['available_version'] = isset($info['version']) ? $info['version'] : '';
         $app['author'] = isset($info['author']) ? $info['author'] : '';
-        $app['type']   = isset($info['config']['type']) ? $info['config']['type'] : null;
         $app['category'] = isset($info['config']['category']) ? $info['config']['category'] : null;
         $app['is_unique'] = isset($info['config']['unique']) && $info['config']['unique'] ? 1 : 0;
 
@@ -177,10 +193,14 @@ class SmartLauncherAppsManager
             $npm = new Npm();
             $cache = Cache::getInstance();
 
-            foreach ($info['versions'] as $ver){
+            unset($info['time']['modified']);
+            unset($info['time']['created']);
+
+            foreach ($info['time'] as $ver => $time){
+
                 $version = array(
                     'version'     => $ver,
-                    'published'   => isset($info['time'][$ver]) ? strtotime($info['time'][$ver]) : 0,
+                    'published'   => strtotime($time),
                     'installed'   => is_dir(realpath(PROJECT_PATH.'/../../'
                         .Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/')
                         .($app['type'] == 'plugin' ? 'plugins/' : '')
@@ -257,6 +277,8 @@ class SmartLauncherAppsManager
         if (!empty($conflicts)){
             throw new SmartLauncherAppsManagerConflictException('Conflicts detected', $conflicts);
         }
+
+        $this->sendToCallback("Installing ".$app['url']."...");
 
         $result = $npm->install($app['url'], $version);
 
@@ -672,6 +694,8 @@ class SmartLauncherAppsManager
             $cache->del($app_id.'_launcher_app_info');
         }
 
+        $this->sendToCallback("Removing apps...");
+
         Mysql::getInstance()->truncate('launcher_apps');
 
         $apps_path = realpath(PROJECT_PATH.'/../../'.Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/'));
@@ -682,6 +706,8 @@ class SmartLauncherAppsManager
                 self::delTree($apps_path.'/'.$file);
             }
         }
+
+        $this->sendToCallback("Installing metapackage ".$metapackage."...");
 
         $result = $this->addApplication($metapackage, true);
 

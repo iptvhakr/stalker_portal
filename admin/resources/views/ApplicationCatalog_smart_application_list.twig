@@ -48,49 +48,7 @@
             $('#datatable-1').on('xhr.dt', function (e, settings, json) {
                 if (typeof (json.data) == 'object') {
                     for (var i in json.data) {
-                        var item = json.data[i];
-                        var id = json.data[i].id;
-
-                        var icon = json.data[i].icon ? json.data[i].icon: "img/no_image.png";
-                        var backgroundColor = json.data[i].icon ? json.data[i].backgroundColor: "#FFFFFF";
-
-                        json.data[i].icon = "<img src='" + icon + "' style='background-color: " + backgroundColor + "'>";
-                        json.data[i].name = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-detail?id=' + id + '">' + json.data[i].name + '</a>';
-                        var status = item.status;
-                        var current_version = item.current_version;
-                        if (!item.current_version) {
-                            item.current_version = "{{ 'Undefined'|trans }}"
-                        }
-                        if (item.installed) {
-                            item.current_version += ' ' + (item.available_version != item.current_version ? '&nbsp;&nbsp;&nbsp;<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-detail?id=' + id + '">{{ 'Update'|trans }}</a>' : '');
-                            item.status = item.status == 1 ? "{{ 'Active'|trans }}" : "{{ 'Disabled'|trans }}";
-                        } else {
-                            item.current_version = ' ' + '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-detail?id=' + id + '">{{ 'Install'|trans }}</a>';
-                            item.status = "{{ 'Not installed'|trans }}";
-                        }
-
-                        json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
-                                                        <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
-                                                            <i class='pull-right fa fa-cog'></i>\n\
-                                                        </a>\n\
-                                                        <ul class='dropdown-menu pull-right'>\n\
-                                                            <li>\n\
-                                                                <a class='main_ajax' " + (!item.installed ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-toggle-state' data-id='" + id + "' data-status='" + (status == '1' ? '0': '1') + "'>\n\
-                                                                    <span> " + (status != 1 ? "{{ 'Activate'|trans }}" : "{{ 'Deactivate'|trans }}") + " </span>\n\
-                                                                </a>\n\
-                                                            </li>\n\
-                                                            <li>\n\
-                                                                <a class='main_ajax' " + (status == 1 ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-delete' data-id='" + id + "'>\n\
-                                                                    <span> {{ 'Delete'|trans }} </span>\n\
-                                                                </a>\n\
-                                                            </li>\n\
-                                                            <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-list-json' data-id='" + id + "' data-alias='" + item.alias + "' data-version='"+ current_version +"'>\n\
-                                                                    <span> {{ 'Details'|trans }} </span>\n\
-                                                                </a>\n\
-                                                            </li>\n\
-                                                        </ul>\n\
-                                                    </div>";
+                        json.data[i] = rowDataPrepare(json.data[i]);
                     }
                 }
             }).dataTable({
@@ -112,9 +70,18 @@
                 "bInfo": true,
                 "aoColumnDefs": [
                     {className: "action-menu", "targets": [-1]},
-                    {"searchable": false, "targets": [0, 2, 3, 5, 7, -1]},
+                    {width: "35%", "targets": [-2]},
+                    {"searchable": false, "targets": [0, 2, 3, 5, 7, 8, -1]},
                     {"sortable": false, "targets": [0, 5, 6, -1]}
-                ]
+                ],
+                "createdRow": function ( row, data, index ) {
+                    if (!data.rerendered) {
+                        var _this = this;
+                        setTimeout(function(){
+                            ajaxPostSend(_this.DataTable().ajax.url(), {id: data.id, curr_row: index});
+                        }, 200);
+                    }
+                }
             }).prev('.dataTables_processing').hide('');
         }
 
@@ -215,6 +182,24 @@
                     $('#modalbox').find('.devoops-modal-inner').html($("#modal_reset_all_body").text());
                     $('#modalbox').find('.devoops-modal-bottom').html($("#modal_reset_all_buttons").text());
                     $('#modalbox').show();
+                    return false;
+                });
+
+                $(document).on('click', 'a.smart-application-toggle-state', function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    JScloseModalBox();
+                    $(this).closest('.open').removeClass('open');
+                    if ($(this).data('type') != 'app' && $(this).data('status') != '1') {
+                        $('#modalbox').find('.modal-header-name span').addClass('txt-danger').text('{{ 'Warning'|trans }}' + '!');
+                        $('#modalbox').find('.devoops-modal-inner').html($("#modal_reset_all_body").text());
+                        $('#modalbox .devoops-modal-inner span').text("{{ 'This is system apps. Disabling this application can lead to failures in other applications. Do really want deactivate this application?'|trans }}")
+                        $('#modalbox').find('.devoops-modal-bottom').html($("#modal_reset_all_buttons").text());
+                        $("#reset_all_apps_btn").text("{{ 'Deactivate'|trans }}").attr("href", $(this).attr('href')).data($(this).data());
+                        $('#modalbox').show();
+                    } else {
+                        ajaxPostSend($(this).attr('href'), $(this).data());
+                    }
                     return false;
                 });
 
@@ -320,7 +305,6 @@
             }
         }
 
-
         var fillModalForm = function (data) {
             if (data.repository && data.repository.url) {
                 var regExp = new RegExp('\\.git$', 'gi');
@@ -363,6 +347,63 @@
             $('#app_status').prop('checked', !$('#app_status').is(':checked'));
         };
 
+        function rowDataPrepare(item){
+            var id = item.id;
+            var icon = item.icon ? item.icon: "img/preloader.gif";
+            var backgroundColor = item.icon ? item.backgroundColor: "#FFFFFF";
+            var status = item.status;
+            var current_version = item.current_version;
+
+            item.icon = "<img src='" + icon + "' style='background-color: " + backgroundColor + "'>";
+            item.name = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-detail?id=' + id + '">' + item.name + '</a>';
+            if (!item.current_version) {
+                item.current_version = "{{ 'Undefined'|trans }}"
+            }
+            if (item.installed) {
+                item.current_version += ' ' + (item.available_version != item.current_version ? '&nbsp;&nbsp;&nbsp;<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-detail?id=' + id + '">{{ 'Update'|trans }}</a>' : '');
+                item.status = item.status == 1 ? "{{ 'Active'|trans }}" : "{{ 'Disabled'|trans }}";
+            } else {
+                item.current_version = ' ' + '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-detail?id=' + id + '">{{ 'Install'|trans }}</a>';
+                item.status = "{{ 'Not installed'|trans }}";
+            }
+
+            if (!item.available_version){
+                item.available_version = '...';
+            }
+
+            item.operations = "<div class='col-xs-3 col-sm-8'>\n\
+                                    <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                        <i class='pull-right fa fa-cog'></i>\n\
+                                    </a>\n\
+                                    <ul class='dropdown-menu pull-right'>\n\
+                                        <li>\n\
+                                            <a class='smart-application-toggle-state' " + (!item.installed ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-toggle-state' data-type='" + item.type + "' data-id='" + id + "' data-status='" + (status == '1' ? '0': '1') + "'>\n\
+                                                <span> " + (status != 1 ? "{{ 'Activate'|trans }}" : "{{ 'Deactivate'|trans }}") + " </span>\n\
+                                            </a>\n\
+                                        </li>\n\
+                                        <li>\n\
+                                            <a class='main_ajax' " + (status == 1 ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-delete' data-id='" + id + "'>\n\
+                                                <span> {{ 'Delete'|trans }} </span>\n\
+                                            </a>\n\
+                                        </li>\n\
+                                        <li>\n\
+                                            <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-list-json' data-id='" + id + "' data-alias='" + item.alias + "' data-version='"+ current_version +"'>\n\
+                                                <span> {{ 'Details'|trans }} </span>\n\
+                                            </a>\n\
+                                        </li>\n\
+                                    </ul>\n\
+                                </div>";
+            return item;
+        }
+
+        var oneRowRender = function(data){
+            if (data.data && data.data.length == 1) {
+                var newData = rowDataPrepare(data.data[0]);
+                newData.rerendered = true;
+                $('#datatable-1').DataTable().row( data.curr_row ).invalidate(newData);
+                $('#datatable-1').dataTable().fnUpdate(newData, data.curr_row, null, false, false);
+            }
+        }
     </script>
 
     <script type="text/template" id="modal_get_form_body">
