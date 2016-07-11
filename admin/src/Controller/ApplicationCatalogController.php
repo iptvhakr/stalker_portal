@@ -933,7 +933,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
     }
 
     public function smart_application_reset_all(){
-        if (!$this->isAjax) {
+        if ($this->isAjax) {
             $this->app->abort(404, $this->setLocalization('Page not found'));
         }
         if ($no_auth = $this->checkAuth()) {
@@ -941,9 +941,25 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         }
         $response = array('action' => 'manageList');
         $error = $this->setLocalization('Failed');
-
+        set_time_limit(0);
+        while(ob_get_level()){
+            ob_end_clean();
+        }
+        ob_end_clean();
+        /*ob_start();
+        ob_implicit_flush (TRUE);*/
+        header('Content-Type: text/html');
+        ob_flush();
         try{
             $apps = new \SmartLauncherAppsManager();
+            echo "<!DOCTYPE HTML>\n
+                    <html>\n
+                      <body>\n";
+            ob_flush();
+            $apps->setNotificationCallback(function($msg){
+                echo "<script type='text/javascript'>parent.setModalMessage('$msg')</script>";
+                ob_flush();
+            });
             if ($apps->resetApps()){
                 $error = '';
             }
@@ -951,7 +967,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             $response['msg'] = $error = $e->getMessage();
         }
         $response = $this->generateAjaxResponse($response);
-        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+        return new Response("<script type='text/javascript'>parent.manageList(" . json_encode($response) . ");</script></body></html>", (empty($error) ? 200 : 500));
     }
 
     //------------------------ service method ----------------------------------

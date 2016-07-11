@@ -1042,11 +1042,11 @@ function ajaxError(data, alertMsg, consoleMsg){
     }
 }
 
-function ajaxPostSend(url, sendData, alertMsg, consoleMsg, async){
+function ajaxPostSend(url, sendData, alertMsg, consoleMsg, async, adOptions){
     var alertMsg = typeof(alertMsg) != 'undefined'? alertMsg: false;
     var consoleMsg = typeof(consoleMsg) != 'undefined'? consoleMsg: false;
     var async = typeof(async) != 'undefined' ? async: false;
-    $.ajax({
+    var ajaxOptions ={
         url: url,
         type: 'POST',
         data: sendData,
@@ -1063,7 +1063,13 @@ function ajaxPostSend(url, sendData, alertMsg, consoleMsg, async){
         timeout: 0,
         dataType: "json",
         async: async
-    });
+    };
+
+    if (typeof (adOptions) == 'object') {
+        ajaxOptions = $.extend(ajaxOptions, adOptions);
+    }
+
+    $.ajax(ajaxOptions);
 }
 
 (function ($) {

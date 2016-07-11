@@ -78,7 +78,7 @@
                     if (!data.rerendered) {
                         var _this = this;
                         setTimeout(function(){
-                            ajaxPostSend(_this.DataTable().ajax.url(), {id: data.id, curr_row: index});
+                            ajaxPostSend(_this.DataTable().ajax.url(), {id: data.id, curr_row: index}, false, false, true);
                         }, 200);
                     }
                 }
@@ -203,6 +203,28 @@
                     return false;
                 });
 
+                $("#modalbox").on('click', "#reset_all_apps_btn", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var _this = this;
+                    $("#modalbox").data('complete', 0);
+                    var sendData = $(_this).data();
+                    if ($(_this).attr("disabled")) {
+                        JSErrorModalBox({msg: "{{ 'Action is not available'|trans }}"});
+                    } else {
+                        showModalBox();
+                        var timer = setInterval(function(){
+                            if ($("#reset_all_apps_button").length == 0 || !$("#reset_all_apps_button").is(":visible")) {
+                                $("body").append("<iframe id='long_frame' style='width:0; height:0; visibility: hidden;'></iframe>");
+                                $("#long_frame").prop('src', $(_this).attr('href'));
+                                clearInterval(timer);
+                            }
+                        }, 10);
+                    }
+                    $(this).closest('div.open').removeClass('open');
+                    return false;
+                });
+
                 LoadDataTablesScripts(TestTable1);
             });
         }
@@ -212,7 +234,14 @@
         var manageList = function (obj) {
             JSSuccessModalBox(obj);
             $('#datatable-1').DataTable().ajax.reload();
+            if ($("#long_frame").length != 0) {
+                $("#long_frame").remove();
+            }
         };
+
+        function setModalMessage(mgs){
+            $('#modalbox .devoops-modal-inner span').text(msg);
+        }
 
         function closeModalBox() {
             $("#modalbox").hide();
