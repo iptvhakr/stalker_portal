@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-07-07 13:38+0300\n"
-"PO-Revision-Date: 2016-07-07 13:38+0300\n"
+"POT-Creation-Date: 2016-07-11 11:24+0300\n"
+"PO-Revision-Date: 2016-07-11 11:24+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -356,21 +356,21 @@ msgstr "TV Archive has been restarted."
 #: ../../../../admin/src/Controller/BroadcastServersController.php:276
 #: ../../../../admin/src/Controller/BroadcastServersController.php:297
 #: ../../../../admin/src/Controller/BroadcastServersController.php:317
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:307
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:334
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:368
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:394
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:544
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:577
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:611
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:652
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:701
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:738
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:776
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:826
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:888
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:910
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:932
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:317
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:344
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:378
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:404
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:554
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:587
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:621
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:662
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:711
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:748
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:786
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:836
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:898
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:920
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:942
 #: ../../../../admin/src/Controller/AudioClubController.php:264
 #: ../../../../admin/src/Controller/AudioClubController.php:349
 #: ../../../../admin/src/Controller/AudioClubController.php:373
@@ -520,7 +520,7 @@ msgstr "Page not found"
 #: ../../../../admin/src/Controller/VideoClubController.php:1478
 #: ../../../../admin/src/Controller/VideoClubController.php:1651
 #: ../../../../admin/src/Controller/VideoClubController.php:1695
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:938
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:950
 #: ../../../../admin/src/Controller/SettingsController.php:189
 #: ../../../../admin/src/Controller/AudioClubController.php:358
 #: ../../../../admin/src/Controller/AudioClubController.php:382
@@ -693,7 +693,7 @@ msgstr "This number is already in use"
 #: ../../../../admin/src/Controller/VideoClubController.php:2426
 #: ../../../../admin/src/Controller/BroadcastServersController.php:373
 #: ../../../../admin/src/Controller/BroadcastServersController.php:392
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:956
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:974
 #: ../../../../admin/src/Controller/SettingsController.php:246
 #: ../../../../admin/src/Controller/NewVideoClubController.php:3117
 #: ../../../../admin/src/Controller/NewVideoClubController.php:3259
@@ -743,7 +743,7 @@ msgid "Number"
 msgstr "Number"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1760
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:979
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:997
 #: ../../../administrator/add_itv.php:1799
 msgid "Logo"
 msgstr "Logo"
@@ -863,7 +863,7 @@ msgstr "Archive"
 #: ../../../../admin/src/Controller/TvChannelsController.php:1764
 #: ../../../../admin/src/Controller/TvChannelsController.php:1814
 #: ../../../../admin/src/Controller/BroadcastServersController.php:394
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:959
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:977
 #: ../../../../admin/src/Controller/AudioClubController.php:1429
 #: ../../../../admin/src/Controller/KaraokeController.php:341
 #: ../../../../admin/src/Controller/RadioController.php:391
@@ -951,10 +951,10 @@ msgstr "Status"
 #: ../../../../admin/src/Controller/VideoClubController.php:2311
 #: ../../../../admin/src/Controller/VideoClubController.php:2324
 #: ../../../../admin/src/Controller/BroadcastServersController.php:398
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:962
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:972
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:989
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1000
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:980
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:990
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1007
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1018
 #: ../../../../admin/src/Controller/SettingsController.php:256
 #: ../../../../admin/src/Controller/NewVideoClubController.php:3131
 #: ../../../../admin/src/Controller/NewVideoClubController.php:3144
@@ -993,10 +993,10 @@ msgstr "Update date"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1817
 #: ../../../../admin/src/Controller/EventsController.php:879
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:961
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:971
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:987
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:999
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:979
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:989
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1005
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1017
 #: ../../../../admin/src/Controller/StatisticsController.php:1368
 #: ../../../../admin/src/Controller/TasksController.php:558
 #: ../../../../admin/src/Controller/TasksController.php:573
@@ -1805,14 +1805,14 @@ msgid "Filter"
 msgstr "Filter"
 
 #: ../../../../admin/src/Controller/EventsController.php:827
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:986
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1004
 #: ../../../../admin/src/Controller/StatisticsController.php:1277
 #: ../../../../admin/src/Controller/UsersController.php:2149
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:649
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:708
 #: ../../../../admin/resources/cache/twig/1a/1a23982dea02f630b50f2522de09f6b3ed73b5eeee99da387ad37b1893e8ba9d.php:41
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:649
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:708
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:712
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:771
 #: ../../../../admin/resources/cache/twig/50/50549c9756199b02a5e1bf4f39e139695f724f5cccf65edb5b313ba7947f6d42.php:41
 #: ../../../administrator/add_karaoke.php:815
 msgid "Author"
@@ -1896,7 +1896,7 @@ msgid "Recipient"
 msgstr "Recipient"
 
 #: ../../../../admin/src/Controller/EventsController.php:873
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:981
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:999
 #: ../../../../admin/src/Controller/NewVideoClubController.php:3269
 #: ../../../../admin/src/Controller/StatisticsController.php:1276
 #: ../../../../admin/src/Controller/StatisticsController.php:1361
@@ -1910,7 +1910,7 @@ msgstr "Recipient"
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:41
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:612
 #: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:41
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:612
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:675
 #: ../../../../admin/resources/cache/twig/5d/5d87c45da69d61540677ab34c74e5f0758c9a907d3f00e946363cb7cefc4f652.php:269
 #: ../../../../admin/resources/cache/twig/d9/d9ad168bc679a09ccffce2acbd9e9eb9b5d1365812ebc89bc1ab3b671c1b716f.php:179
 #: ../../../../admin/resources/cache/twig/7b/7bee21195352be9830fffabbe473815d48d3d69de3073f908d7bc0a36abee5f9.php:45
@@ -2262,7 +2262,7 @@ msgstr "Episodes"
 #: ../../../../admin/src/Controller/VideoClubController.php:2292
 #: ../../../../admin/src/Controller/VideoClubController.php:2305
 #: ../../../../admin/src/Controller/VideoClubController.php:2427
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:997
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1015
 #: ../../../../admin/src/Controller/NewVideoClubController.php:3125
 #: ../../../../admin/src/Controller/NewVideoClubController.php:3138
 #: ../../../../admin/src/Controller/NewVideoClubController.php:3260
@@ -2357,13 +2357,13 @@ msgid "Movies in category"
 msgstr "Movies in category"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:2372
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:982
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1000
 #: ../../../../admin/src/Controller/NewVideoClubController.php:3205
 #: ../../../../admin/src/Controller/StatisticsController.php:1274
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:45
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:624
 #: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:45
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:624
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:687
 #: ../../../../admin/resources/cache/twig/28/2818be758e48e9b0e1244cd3c1dacca1258db535629608d804d6e7d88a07ec31.php:68
 #: ../../../../admin/resources/cache/twig/44/44ad42d96a24dba2da7e568fe76269fb3770dc485622a23b9d62d375bf617360.php:384
 #: ../../../../admin/resources/cache/twig/ce/ce6ce9643470762014c074c5152929959cf0d9a204fae115a9d25c61a000d8d7.php:41
@@ -2480,11 +2480,11 @@ msgstr "Maximum users"
 
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:63
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:69
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:957
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:980
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:975
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:998
 #: ../../../../admin/resources/cache/twig/f6/f634bdbe3484c2bb215ff39948453beec6da8e62f5a2118aad8d727d3e886cfc.php:472
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:600
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:600
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:663
 #: ../../../../admin/resources/cache/twig/78/78c06e2c20390a051128cddc3b1aef7a43d98a43074001e2a0f785aed340b08e.php:49
 #: ../../../../admin/resources/cache/twig/88/88821d49d9594835a34e409e91c55289e33e91e59d020203a1bd4ded66b9cae4.php:49
 #: ../../../../admin/resources/cache/twig/d9/d94a06e6cfa96057d8825fc48e5b3d7efb832ee2374f594f89dbe861351b7e56.php:472
@@ -2516,7 +2516,7 @@ msgstr "Notification"
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:75
 #: ../../../../admin/resources/cache/twig/f6/f634bdbe3484c2bb215ff39948453beec6da8e62f5a2118aad8d727d3e886cfc.php:133
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:165
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:165
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:501
 #: ../../../../admin/resources/cache/twig/78/78c06e2c20390a051128cddc3b1aef7a43d98a43074001e2a0f785aed340b08e.php:211
 #: ../../../../admin/resources/cache/twig/88/88821d49d9594835a34e409e91c55289e33e91e59d020203a1bd4ded66b9cae4.php:211
 #: ../../../../admin/resources/cache/twig/d9/d94a06e6cfa96057d8825fc48e5b3d7efb832ee2374f594f89dbe861351b7e56.php:133
@@ -2562,7 +2562,7 @@ msgstr "Stalker applications"
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:141
 #: ../../../../admin/resources/cache/twig/f6/f634bdbe3484c2bb215ff39948453beec6da8e62f5a2118aad8d727d3e886cfc.php:104
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:136
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:136
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:472
 #: ../../../../admin/resources/cache/twig/d9/d94a06e6cfa96057d8825fc48e5b3d7efb832ee2374f594f89dbe861351b7e56.php:104
 msgid "Undefined"
 msgstr "Undefined"
@@ -2576,16 +2576,16 @@ msgstr "SmartLauncher applications"
 msgid "Failed to get the list of applications"
 msgstr "Failed to get the list of applications"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:352
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:362
 msgid "No data about this apps"
 msgstr "No data about this apps"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:355
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:365
 msgid "Invalid package name"
 msgstr "Invalid package name"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:382
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:408
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:392
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:418
 msgid ""
 "Perhaps the application is already installed. You can update it if the new "
 "version is available or uninstall and install again"
@@ -2593,58 +2593,58 @@ msgstr ""
 "Perhaps the application is already installed. You can update it if the new "
 "version is available or uninstall and install again"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:385
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:395
 msgid "URL of application is not defined"
 msgstr "URL of application is not defined"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:411
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:421
 msgid "Package name is not defined"
 msgstr "Package name is not defined"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:450
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:512
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:460
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:522
 msgid "Failed to get the list of versions of this applications"
 msgstr "Failed to get the list of versions of this applications"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:565
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:598
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:575
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:608
 msgid "Failed to update the parameters of application launch"
 msgstr "Failed to update the parameters of application launch"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:568
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:601
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:642
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:692
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:729
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:766
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:578
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:611
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:652
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:702
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:739
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:776
 msgid "Application is undefined"
 msgstr "Application is undefined"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:634
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:675
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:644
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:685
 msgid "Error of installing the application"
 msgstr "Error of installing the application"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:725
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:762
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:735
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:772
 msgid "Error of uninstalling the application."
 msgstr "Error of uninstalling the application."
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:805
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:865
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:815
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:875
 msgid "Activated. Current version"
 msgstr "Activated. Current version"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:812
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:872
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:822
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:882
 msgid "Failed to activated of application."
 msgstr "Failed to activated of application."
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:814
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:874
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:824
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:884
 #: ../../../../admin/resources/cache/twig/f6/f634bdbe3484c2bb215ff39948453beec6da8e62f5a2118aad8d727d3e886cfc.php:484
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:636
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:636
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:699
 #: ../../../../admin/resources/cache/twig/78/78c06e2c20390a051128cddc3b1aef7a43d98a43074001e2a0f785aed340b08e.php:557
 #: ../../../../admin/resources/cache/twig/88/88821d49d9594835a34e409e91c55289e33e91e59d020203a1bd4ded66b9cae4.php:557
 #: ../../../../admin/resources/cache/twig/bb/bbd3adbeabaa8c5f4d10782d4f2a4711df96651aeb0e3585e956a2ee6296dc33.php:653
@@ -2654,48 +2654,48 @@ msgstr "Failed to activated of application."
 msgid "Version"
 msgstr "Version"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:879
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:889
 msgid "This application version has conflicts"
 msgstr "This application version has conflicts"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:899
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:921
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:909
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:931
 msgid "Application has been deleted"
 msgstr "Application has been deleted"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:901
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:923
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:911
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:933
 msgid "Failed to delete application."
 msgstr "Failed to delete application."
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:960
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:983
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:996
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:978
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1001
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1014
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:692
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:692
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:755
 msgid "Current version"
 msgstr "Current version"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:969
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:987
 msgid "Application version"
 msgstr "Application version"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:970
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:988
 msgid "Release date"
 msgstr "Release date"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:984
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1002
 msgid "Actual version"
 msgstr "Actual version"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:988
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1006
 #: ../../../../admin/resources/cache/twig/ce/ce8eedc670c757a5f716ee6414794ee4bba9a945747d443c512324bed695207f.php:1568
 #: ../../../administrator/add_video.php:2099 ../../../lang/stb.php:243
 #: ../../../lang/stb.php:399
 msgid "Description"
 msgstr "Description"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:998
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1016
 msgid "Compatibility"
 msgstr "Compatibility"
 
@@ -3659,8 +3659,8 @@ msgstr "Tariff name"
 #: ../../../../admin/src/Controller/TariffsController.php:856
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:544
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:587
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:544
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:587
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:607
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:650
 #: ../../../../admin/resources/cache/twig/7d/7ddeef653af9cb357385bd6488026cee9f350e264d09d3ad6337eed8fb49a4b0.php:49
 msgid "Package name"
 msgstr "Package name"
@@ -3830,7 +3830,7 @@ msgstr "Task description"
 #: ../../../../admin/resources/cache/twig/f6/f634bdbe3484c2bb215ff39948453beec6da8e62f5a2118aad8d727d3e886cfc.php:519
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:741
 #: ../../../../admin/resources/cache/twig/1a/1a23982dea02f630b50f2522de09f6b3ed73b5eeee99da387ad37b1893e8ba9d.php:397
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:741
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:804
 #: ../../../../admin/resources/cache/twig/9d/9d18c61ced41ed579a42547616355e5e4b464dc5f33262781a4f35439dadcd9b.php:455
 #: ../../../../admin/resources/cache/twig/4b/4bbce7e0f0e764a8ca240e1083359643e9c984361e5946ebfed72c42a17688be.php:213
 #: ../../../../admin/resources/cache/twig/66/6626781c870e1ba959c95d254a5cff3b5350f0ae996c235a7742fa2d2bbc2a02.php:213
@@ -3920,9 +3920,9 @@ msgstr "Save"
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:735
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:771
 #: ../../../../admin/resources/cache/twig/1a/1a23982dea02f630b50f2522de09f6b3ed73b5eeee99da387ad37b1893e8ba9d.php:401
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:571
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:735
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:771
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:634
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:798
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:834
 #: ../../../../admin/resources/cache/twig/9d/9d18c61ced41ed579a42547616355e5e4b464dc5f33262781a4f35439dadcd9b.php:459
 #: ../../../../admin/resources/cache/twig/a7/a79a02c2066e682d8cd2e47fdda9ece1f49a0c8db576246d345be6f259d10fee.php:312
 #: ../../../../admin/resources/cache/twig/4b/4bbce7e0f0e764a8ca240e1083359643e9c984361e5946ebfed72c42a17688be.php:217
@@ -4159,7 +4159,7 @@ msgstr "Add zone"
 #: ../../../../admin/resources/cache/twig/6a/6af018057ab0048a0d182ea2c3692b10655471b313c656c4653e2777d00767ec.php:195
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:198
 #: ../../../../admin/resources/cache/twig/1a/1a23982dea02f630b50f2522de09f6b3ed73b5eeee99da387ad37b1893e8ba9d.php:170
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:198
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:538
 #: ../../../../admin/resources/cache/twig/9d/9d18c61ced41ed579a42547616355e5e4b464dc5f33262781a4f35439dadcd9b.php:561
 #: ../../../../admin/resources/cache/twig/a7/a79a02c2066e682d8cd2e47fdda9ece1f49a0c8db576246d345be6f259d10fee.php:145
 #: ../../../../admin/resources/cache/twig/a7/a79a02c2066e682d8cd2e47fdda9ece1f49a0c8db576246d345be6f259d10fee.php:308
@@ -4395,7 +4395,7 @@ msgstr "First, delete or modify all the tracks in this language"
 #: ../../../../admin/resources/cache/twig/b7/b79b98954112646553f1164c1a234c1746ad2e9e8094f370c97b58c40063d0fc.php:259
 #: ../../../../admin/resources/cache/twig/f6/f634bdbe3484c2bb215ff39948453beec6da8e62f5a2118aad8d727d3e886cfc.php:227
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:270
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:270
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:181
 #: ../../../../admin/resources/cache/twig/a7/a79a02c2066e682d8cd2e47fdda9ece1f49a0c8db576246d345be6f259d10fee.php:218
 #: ../../../../admin/resources/cache/twig/a7/a79a02c2066e682d8cd2e47fdda9ece1f49a0c8db576246d345be6f259d10fee.php:240
 #: ../../../../admin/resources/cache/twig/33/330dcd5925ed634ecff5672f3e920cc284ea459220c5b61294ba91254c4ed257.php:195
@@ -4414,7 +4414,8 @@ msgstr "Action is not available"
 
 #: ../../../../admin/resources/cache/twig/b7/b79b98954112646553f1164c1a234c1746ad2e9e8094f370c97b58c40063d0fc.php:266
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:357
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:357
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:271
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:573
 #: ../../../../admin/resources/cache/twig/a7/a79a02c2066e682d8cd2e47fdda9ece1f49a0c8db576246d345be6f259d10fee.php:247
 #: ../../../../admin/resources/cache/twig/33/330dcd5925ed634ecff5672f3e920cc284ea459220c5b61294ba91254c4ed257.php:265
 #: ../../../../admin/resources/cache/twig/0e/0e17d5652504c09666933963100c546b97118d1d1f3bb638e50b78475db0a3ea.php:271
@@ -4425,7 +4426,7 @@ msgstr "Warning"
 #: ../../../../admin/resources/cache/twig/b7/b79b98954112646553f1164c1a234c1746ad2e9e8094f370c97b58c40063d0fc.php:326
 #: ../../../../admin/resources/cache/twig/f6/f634bdbe3484c2bb215ff39948453beec6da8e62f5a2118aad8d727d3e886cfc.php:323
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:386
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:386
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:311
 #: ../../../../admin/resources/cache/twig/a7/a79a02c2066e682d8cd2e47fdda9ece1f49a0c8db576246d345be6f259d10fee.php:279
 #: ../../../../admin/resources/cache/twig/33/330dcd5925ed634ecff5672f3e920cc284ea459220c5b61294ba91254c4ed257.php:325
 #: ../../../../admin/resources/cache/twig/0e/0e545fbd504deeff4effa3d77f0455023e58413cffe68933c725f309ca428b67.php:330
@@ -4441,7 +4442,7 @@ msgstr "Wait"
 #: ../../../../admin/resources/cache/twig/b7/b79b98954112646553f1164c1a234c1746ad2e9e8094f370c97b58c40063d0fc.php:330
 #: ../../../../admin/resources/cache/twig/f6/f634bdbe3484c2bb215ff39948453beec6da8e62f5a2118aad8d727d3e886cfc.php:327
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:390
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:390
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:315
 #: ../../../../admin/resources/cache/twig/a7/a79a02c2066e682d8cd2e47fdda9ece1f49a0c8db576246d345be6f259d10fee.php:283
 #: ../../../../admin/resources/cache/twig/33/330dcd5925ed634ecff5672f3e920cc284ea459220c5b61294ba91254c4ed257.php:329
 #: ../../../../admin/resources/cache/twig/0a/0a964c6b57cc08bbef3e9492823a743c1a93544a64c1575f2d979fded475409c.php:228
@@ -4592,15 +4593,15 @@ msgstr "Add application by URL"
 #: ../../../../admin/resources/cache/twig/f6/f634bdbe3484c2bb215ff39948453beec6da8e62f5a2118aad8d727d3e886cfc.php:114
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:146
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:471
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:146
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:471
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:396
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:482
 #: ../../../../admin/resources/cache/twig/d9/d94a06e6cfa96057d8825fc48e5b3d7efb832ee2374f594f89dbe861351b7e56.php:114
 msgid "Update"
 msgstr "Update"
 
 #: ../../../../admin/resources/cache/twig/f6/f634bdbe3484c2bb215ff39948453beec6da8e62f5a2118aad8d727d3e886cfc.php:118
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:150
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:150
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:486
 #: ../../../../admin/resources/cache/twig/78/78c06e2c20390a051128cddc3b1aef7a43d98a43074001e2a0f785aed340b08e.php:91
 #: ../../../../admin/resources/cache/twig/78/78c06e2c20390a051128cddc3b1aef7a43d98a43074001e2a0f785aed340b08e.php:204
 #: ../../../../admin/resources/cache/twig/88/88821d49d9594835a34e409e91c55289e33e91e59d020203a1bd4ded66b9cae4.php:91
@@ -4615,7 +4616,7 @@ msgstr "Active"
 
 #: ../../../../admin/resources/cache/twig/f6/f634bdbe3484c2bb215ff39948453beec6da8e62f5a2118aad8d727d3e886cfc.php:120
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:152
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:152
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:488
 #: ../../../../admin/resources/cache/twig/d9/d94a06e6cfa96057d8825fc48e5b3d7efb832ee2374f594f89dbe861351b7e56.php:120
 #: ../../../administrator/profile.php:299 ../../../lang/stb.php:316
 msgid "Disabled"
@@ -4625,9 +4626,9 @@ msgstr "Disabled"
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:161
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:463
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:722
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:161
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:463
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:722
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:388
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:497
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:785
 #: ../../../../admin/resources/cache/twig/78/78c06e2c20390a051128cddc3b1aef7a43d98a43074001e2a0f785aed340b08e.php:255
 #: ../../../../admin/resources/cache/twig/88/88821d49d9594835a34e409e91c55289e33e91e59d020203a1bd4ded66b9cae4.php:255
 #: ../../../../admin/resources/cache/twig/d9/d94a06e6cfa96057d8825fc48e5b3d7efb832ee2374f594f89dbe861351b7e56.php:129
@@ -4638,7 +4639,7 @@ msgstr "Install"
 
 #: ../../../../admin/resources/cache/twig/f6/f634bdbe3484c2bb215ff39948453beec6da8e62f5a2118aad8d727d3e886cfc.php:151
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:183
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:183
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:523
 #: ../../../../admin/resources/cache/twig/78/78c06e2c20390a051128cddc3b1aef7a43d98a43074001e2a0f785aed340b08e.php:270
 #: ../../../../admin/resources/cache/twig/88/88821d49d9594835a34e409e91c55289e33e91e59d020203a1bd4ded66b9cae4.php:270
 #: ../../../../admin/resources/cache/twig/d9/d94a06e6cfa96057d8825fc48e5b3d7efb832ee2374f594f89dbe861351b7e56.php:151
@@ -4649,7 +4650,8 @@ msgstr "Activate"
 
 #: ../../../../admin/resources/cache/twig/f6/f634bdbe3484c2bb215ff39948453beec6da8e62f5a2118aad8d727d3e886cfc.php:153
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:185
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:185
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:281
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:525
 #: ../../../../admin/resources/cache/twig/78/78c06e2c20390a051128cddc3b1aef7a43d98a43074001e2a0f785aed340b08e.php:272
 #: ../../../../admin/resources/cache/twig/88/88821d49d9594835a34e409e91c55289e33e91e59d020203a1bd4ded66b9cae4.php:272
 #: ../../../../admin/resources/cache/twig/d9/d94a06e6cfa96057d8825fc48e5b3d7efb832ee2374f594f89dbe861351b7e56.php:153
@@ -4677,14 +4679,14 @@ msgstr "Enter URL to the application repository"
 
 #: ../../../../admin/resources/cache/twig/f6/f634bdbe3484c2bb215ff39948453beec6da8e62f5a2118aad8d727d3e886cfc.php:435
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:567
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:567
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:630
 #: ../../../../admin/resources/cache/twig/d9/d94a06e6cfa96057d8825fc48e5b3d7efb832ee2374f594f89dbe861351b7e56.php:435
 msgid "Next"
 msgstr "Next"
 
 #: ../../../../admin/resources/cache/twig/f6/f634bdbe3484c2bb215ff39948453beec6da8e62f5a2118aad8d727d3e886cfc.php:497
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:672
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:672
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:735
 #: ../../../../admin/resources/cache/twig/78/78c06e2c20390a051128cddc3b1aef7a43d98a43074001e2a0f785aed340b08e.php:63
 #: ../../../../admin/resources/cache/twig/88/88821d49d9594835a34e409e91c55289e33e91e59d020203a1bd4ded66b9cae4.php:63
 #: ../../../../admin/resources/cache/twig/d9/d94a06e6cfa96057d8825fc48e5b3d7efb832ee2374f594f89dbe861351b7e56.php:497
@@ -4695,7 +4697,7 @@ msgstr "About app"
 
 #: ../../../../admin/resources/cache/twig/f6/f634bdbe3484c2bb215ff39948453beec6da8e62f5a2118aad8d727d3e886cfc.php:523
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:745
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:745
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:808
 #: ../../../../admin/resources/cache/twig/d9/d94a06e6cfa96057d8825fc48e5b3d7efb832ee2374f594f89dbe861351b7e56.php:523
 #: ../../../administrator/stat_tv_users.php:71
 #: ../../../administrator/tariffs.php:295
@@ -4831,53 +4833,53 @@ msgid "Reset all application"
 msgstr "Reset all application"
 
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:211
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:211
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:551
 #: ../../../../admin/resources/cache/twig/ce/ce8eedc670c757a5f716ee6414794ee4bba9a945747d443c512324bed695207f.php:801
 msgid "Details"
 msgstr "Details"
 
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:413
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:413
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:338
 msgid "Add application by package name (Step 1)"
 msgstr "Add application by package name (Step 1)"
 
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:425
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:425
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:350
 msgid "Add application by package name (Step 2)"
 msgstr "Add application by package name (Step 2)"
 
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:440
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:440
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:365
 msgid "About"
 msgstr "About"
 
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:553
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:553
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:616
 msgid "Enter the package name"
 msgstr "Enter the package name"
 
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:661
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:661
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:724
 msgid "Dependencies"
 msgstr "Dependencies"
 
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:696
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:696
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:759
 msgid "The current version of package is conflicts with"
 msgstr "The current version of package is conflicts with"
 
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:700
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:700
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:763
 msgid "Available version"
 msgstr "Available version"
 
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:704
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:704
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:767
 msgid "The available version of package is conflicts with"
 msgstr "The available version of package is conflicts with"
 
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:726
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:726
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:789
 #: ../../../../admin/resources/cache/twig/4b/4bbce7e0f0e764a8ca240e1083359643e9c984361e5946ebfed72c42a17688be.php:593
 #: ../../../../admin/resources/cache/twig/66/6626781c870e1ba959c95d254a5cff3b5350f0ae996c235a7742fa2d2bbc2a02.php:593
 #: ../../../../admin/resources/cache/twig/78/78c06e2c20390a051128cddc3b1aef7a43d98a43074001e2a0f785aed340b08e.php:481
@@ -4889,12 +4891,12 @@ msgid "Close"
 msgstr "Close"
 
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:754
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:754
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:817
 msgid "Do you realy want reset all applications?"
 msgstr "Do you realy want reset all applications?"
 
 #: ../../../../admin/resources/cache/twig/ba/baf82f99cf2f9244918d0b4f39313be34c383d88c0a3f8281aa6550cc2db0efc.php:767
-#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:767
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:830
 #: ../../../../admin/resources/cache/twig/33/33ac7b841d45fb1437caa6c101abe99eadc8770a177a0fb6e62b4ed4cc695bd4.php:605
 #: ../../../../admin/resources/cache/twig/16/1630e067746d25d0a472bf0dccf4aae8b4a293a0540314efeb5cadfdfed2dcde.php:605
 #: ../../../../admin/resources/cache/twig/bb/bbd3adbeabaa8c5f4d10782d4f2a4711df96651aeb0e3585e956a2ee6296dc33.php:593
@@ -4930,6 +4932,22 @@ msgstr "Template name"
 #: ../../../../admin/resources/cache/twig/1a/1a23982dea02f630b50f2522de09f6b3ed73b5eeee99da387ad37b1893e8ba9d.php:369
 msgid "Header"
 msgstr "Header"
+
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:276
+msgid ""
+"This is system apps. Disabling this application can lead to failures in "
+"other applications. Do really want deactivate this application?"
+msgstr ""
+"This is system apps. Disabling this application can lead to failures in "
+"other applications. Do really want deactivate this application?"
+
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:581
+msgid "The next apps has been installed manually and will be removed."
+msgstr "The next apps has been installed manually and will be removed."
+
+#: ../../../../admin/resources/cache/twig/22/226251e7a6f2baca6174b73839df1cf3cd37194bf142a016ca7d714a87609d82.php:586
+msgid "current version"
+msgstr "current version"
 
 #: ../../../../admin/resources/cache/twig/c6/c689e185acd660a92126dec4fdd8a07d58727035373942cafabf6bd5889e54f2.php:27
 #: ../../../../admin/resources/cache/twig/33/330dcd5925ed634ecff5672f3e920cc284ea459220c5b61294ba91254c4ed257.php:27

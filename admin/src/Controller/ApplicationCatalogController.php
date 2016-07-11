@@ -944,16 +944,24 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
+        ignore_user_abort(true);
+        set_time_limit(0);
         $response = array('action' => 'manageList');
         $error = $this->setLocalization('Failed');
 
-        try{
-            $apps = new \SmartLauncherAppsManager();
-            if ($apps->resetApps()){
-                $error = '';
+        if (!empty($this->postData['info'])) {
+            $response['action'] = 'resetAllWarning';
+            $response['data'] = $this->db->getSmartApplication(array('manual_install' => 1));
+            $error = '';
+        } else {
+            try{
+                $apps = new \SmartLauncherAppsManager();
+                if ($apps->resetApps()){
+                    $error = '';
+                }
+            } catch (\Exception $e) {
+                $response['msg'] = $error = $e->getMessage();
             }
-        } catch (\Exception $e) {
-            $response['msg'] = $error = $e->getMessage();
         }
         $response = $this->generateAjaxResponse($response);
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
