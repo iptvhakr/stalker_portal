@@ -13,7 +13,7 @@
                 {#{{ main_macro.get_filter('conflicts', 'Compatibility'|trans, 'id', 'title', app['allCompatibility'], 3) }}#}
 
                 <a id="add_apps" href="#" class="btn btn-success pull-right">{{ 'Add application by package name'|trans }}</a>
-                <a id="reset_all_apps" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-reset-all" class="btn btn-success pull-right">{{ 'Reset all application'|trans }}</a>
+                <a id="reset_all_apps" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-reset-all" data-info = '1' class="main_ajax btn btn-success pull-right">{{ 'Reset all application'|trans }}</a>
             </div>
         </div>
         <div class="row">
@@ -78,7 +78,7 @@
                     if (!data.rerendered) {
                         var _this = this;
                         setTimeout(function(){
-                            ajaxPostSend(_this.DataTable().ajax.url(), {id: data.id, curr_row: index});
+                            ajaxPostSend(_this.DataTable().ajax.url(), {id: data.id, curr_row: index}, false, false, true);
                         }, 200);
                     }
                 }
@@ -174,16 +174,6 @@
                     return false;
                 });
 
-                $(document).on('click', '#reset_all_apps', function(e){
-                    e.stopPropagation();
-                    e.preventDefault();
-                    JScloseModalBox();
-                    $('#modalbox').find('.modal-header-name span').addClass('txt-danger').text('{{ 'Warning'|trans }}' + '!');
-                    $('#modalbox').find('.devoops-modal-inner').html($("#modal_reset_all_body").text());
-                    $('#modalbox').find('.devoops-modal-bottom').html($("#modal_reset_all_buttons").text());
-                    $('#modalbox').show();
-                    return false;
-                });
 
                 $(document).on('click', 'a.smart-application-toggle-state', function(e){
                     e.stopPropagation();
@@ -403,6 +393,23 @@
                 $('#datatable-1').DataTable().row( data.curr_row ).invalidate(newData);
                 $('#datatable-1').dataTable().fnUpdate(newData, data.curr_row, null, false, false);
             }
+        };
+
+        var resetAllWarning = function(data){
+            JScloseModalBox();
+            $('#modalbox').find('.modal-header-name span').addClass('txt-danger').text('{{ 'Warning'|trans }}' + '!');
+            $('#modalbox').find('.devoops-modal-inner').html($("#modal_reset_all_body").text());
+            $('#modalbox').find('.devoops-modal-bottom').html($("#modal_reset_all_buttons").text());
+
+            if (data.data && data.data.length != 0 ) {
+                var infoBlock = $("<span class='col-md-12 txt-default'>{{ 'The next apps has been installed manually and will be removed.'|trans }}</span>").prependTo('#modalbox .devoops-modal-inner div');
+                for (var i in data.data) {
+                    var infoBlock = $("<span class='col-md-12 txt-danger'>"+ data.data[i]['alias'] + " {{ 'current version'|trans }} " + data.data[i]['current_version'] +"</span>").insertAfter(infoBlock);
+                }
+            }
+
+            $('#modalbox').show();
+            return false;
         }
     </script>
 

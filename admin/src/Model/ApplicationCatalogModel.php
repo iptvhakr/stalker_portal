@@ -80,6 +80,7 @@ class ApplicationCatalogModel extends \Model\BaseStalkerModel {
 
     public function insertSmartApplication($data){
         $data['added'] = 'NOW()';
+        $data['manual_install'] = '1';
         return $this->mysqlInstance->insert('launcher_apps', $data)->total_rows();
     }
 
