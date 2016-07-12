@@ -73,6 +73,17 @@ class AudioClubModel extends \Model\BaseStalkerModel {
    
     public function getAudioGenresList($param) {
         if (!empty($param['select'])) {
+            if (($num = array_search('id', $param['select'])) !== FALSE){
+                $param['select'][$num] = 'audio_genres.' . $param['select'][$num];
+            }
+            if (($num = array_search('name', $param['select'])) !== FALSE){
+                $param['select'][$num] = 'audio_genres.' . $param['select'][$num];
+            }
+            if (($num = array_search('albums_count', $param['select'])) != FALSE) {
+                $param['select'][$num] = 'COUNT(`album_id`) as `albums_count`';
+                $this->mysqlInstance->join('audio_genre', 'audio_genres.id', 'audio_genre.genre_id', 'LEFT');
+                $this->mysqlInstance->groupby('audio_genres.id');
+            }
             $this->mysqlInstance->select($param['select']);
         }
         $this->mysqlInstance->from('audio_genres');
@@ -113,9 +124,22 @@ class AudioClubModel extends \Model\BaseStalkerModel {
    
     public function getAudioArtistList($param) {
         if (!empty($param['select'])) {
+            if (($num = array_search('id', $param['select'])) !== FALSE){
+                $param['select'][$num] = 'audio_performers.' . $param['select'][$num];
+            }
+            if (($num = array_search('name', $param['select'])) !== FALSE){
+                $param['select'][$num] = 'audio_performers.' . $param['select'][$num];
+            }
+            if (($num = array_search('albums_count', $param['select'])) != FALSE) {
+                $param['select'][$num] = 'COUNT(`performer_id`) as `albums_count`';
+                $this->mysqlInstance->join('audio_albums', 'audio_performers.id', 'audio_albums.performer_id', 'LEFT');
+                $this->mysqlInstance->groupby('audio_performers.id');
+            }
             $this->mysqlInstance->select($param['select']);
         }
+
         $this->mysqlInstance->from('audio_performers');
+
         if (!empty($param['where'])) {
             $this->mysqlInstance->where($param['where']);
         }
@@ -154,6 +178,17 @@ class AudioClubModel extends \Model\BaseStalkerModel {
    
     public function getAudioLanguageList($param) {
         if (!empty($param['select'])) {
+            if (($num = array_search('id', $param['select'])) !== FALSE){
+                $param['select'][$num] = 'audio_languages.' . $param['select'][$num];
+            }
+            if (($num = array_search('name', $param['select'])) !== FALSE){
+                $param['select'][$num] = 'audio_languages.' . $param['select'][$num];
+            }
+            if (($num = array_search('track_count', $param['select'])) != FALSE) {
+                $param['select'][$num] = 'COUNT(`language_id`) as `track_count`';
+                $this->mysqlInstance->join('audio_compositions', 'audio_languages.id', 'audio_compositions.language_id', 'LEFT');
+                $this->mysqlInstance->groupby('audio_languages.id');
+            }
             $this->mysqlInstance->select($param['select']);
         }
         $this->mysqlInstance->from('audio_languages');
@@ -195,6 +230,17 @@ class AudioClubModel extends \Model\BaseStalkerModel {
    
     public function getAudioYearList($param) {
         if (!empty($param['select'])) {
+            if (($num = array_search('id', $param['select'])) !== FALSE){
+                $param['select'][$num] = 'audio_years.' . $param['select'][$num];
+            }
+            if (($num = array_search('name', $param['select'])) !== FALSE){
+                $param['select'][$num] = 'audio_years.' . $param['select'][$num];
+            }
+            if (($num = array_search('albums_count', $param['select'])) != FALSE) {
+                $param['select'][$num] = 'COUNT(`year_id`) as `albums_count`';
+                $this->mysqlInstance->join('audio_albums', 'audio_years.id', 'audio_albums.year_id', 'LEFT');
+                $this->mysqlInstance->groupby('audio_years.id');
+            }
             $this->mysqlInstance->select($param['select']);
         }
         $this->mysqlInstance->from('audio_years');

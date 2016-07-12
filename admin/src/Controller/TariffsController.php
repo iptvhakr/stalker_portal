@@ -60,6 +60,8 @@ class TariffsController extends \Controller\BaseStalkerController {
             array("id" =>  '1', "title" => $this->setLocalization("Optional"))
         ), 'title');
 
+        $this->getTariffsFilters();
+
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
@@ -240,6 +242,8 @@ class TariffsController extends \Controller\BaseStalkerController {
             );
             $this->app['breadcrumbs']->addItem($this->setLocalization('Log of user') . " " . " {$this->app['currentUser']['name']} ({$this->app['currentUser']['mac']})");
         }
+
+        $this->getTariffsFilters();
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }

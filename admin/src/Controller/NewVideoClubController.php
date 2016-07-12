@@ -66,7 +66,9 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         $attribute = $this->getVideoListDropdownAttribute();
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
-        
+
+        $this->getVideoListFilters();
+
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
@@ -368,6 +370,8 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         $this->app['dropdownAttribute'] = $attribute;
 
         $allCategories = $this->db->getCategoriesGenres();
+
+        $this->getVideoListFilters();
 
         if (isset($allCategories) && is_array($allCategories) && count($allCategories) > 0) {
             $this->app['allCategories'] = $this->setLocalization($allCategories, 'category_name');

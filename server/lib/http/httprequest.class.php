@@ -105,7 +105,16 @@ class HTTPRequest implements IHTTPRequest
     }
 
     public function getServerPort(){
-        return !empty($_SERVER["SERVER_PORT"]) ? $_SERVER["SERVER_PORT"] : "";
+
+        $host = !empty($_SERVER["HTTP_HOST"]) ? $_SERVER["HTTP_HOST"] : "";
+
+        $host_parts = explode(":", $host);
+
+        if (count($host_parts) == 2){
+            return $host_parts[1];
+        }else{
+            return !empty($_SERVER["SERVER_PORT"]) ? $_SERVER["SERVER_PORT"] : "";
+        }
     }
 
     public function getParam($name){

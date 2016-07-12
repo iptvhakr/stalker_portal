@@ -131,10 +131,10 @@ class IndexController extends \Controller\BaseStalkerController {
             $row['category'] = $this->setLocalization('Karaoke songs');
             $row['number'] = $this->db->getCountForStatistics('karaoke', array('status' => 1));
             $data['data'][] = $row;
-
+/*
             $row['category'] = $this->setLocalization('Installed applications');
             $row['number'] = 0;
-            $data['data'][] = $row;
+            $data['data'][] = $row;*/
 
             $data["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
 

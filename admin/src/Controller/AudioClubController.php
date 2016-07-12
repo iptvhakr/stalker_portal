@@ -50,6 +50,9 @@ class AudioClubController extends \Controller\BaseStalkerController {
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
 
+        $like_filter = array();
+        $this->getAudioFilters($like_filter);
+
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
     
@@ -118,8 +121,13 @@ class AudioClubController extends \Controller\BaseStalkerController {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
-        
-        $this->app['dropdownAttribute'] = $this->getShortDropdownAttribute();
+
+        $attribute = $this->getShortDropdownAttribute(array(
+            array('name'=>'albums_count',     'title'=>$this->setLocalization('Albums count'),   'checked' => TRUE)
+        ));
+
+        $this->checkDropdownAttribute($attribute);
+        $this->app['dropdownAttribute'] = $attribute;
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -129,7 +137,12 @@ class AudioClubController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
 
-        $this->app['dropdownAttribute'] = $this->getShortDropdownAttribute();
+        $attribute = $this->getShortDropdownAttribute(array(
+            array('name'=>'albums_count',     'title'=>$this->setLocalization('Albums count'),   'checked' => TRUE)
+        ));
+
+        $this->checkDropdownAttribute($attribute);
+        $this->app['dropdownAttribute'] = $attribute;
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -139,7 +152,12 @@ class AudioClubController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
 
-        $this->app['dropdownAttribute'] = $this->getShortDropdownAttribute();
+        $attribute = $this->getShortDropdownAttribute(array(
+            array('name'=>'track_count',     'title'=>$this->setLocalization('Tracks count'),   'checked' => TRUE)
+        ));
+
+        $this->checkDropdownAttribute($attribute);
+        $this->app['dropdownAttribute'] = $attribute;
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -149,7 +167,12 @@ class AudioClubController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
 
-        $this->app['dropdownAttribute'] = $this->getShortDropdownAttribute();
+        $attribute = $this->getShortDropdownAttribute(array(
+            array('name'=>'albums_count',     'title'=>$this->setLocalization('Albums count'),   'checked' => TRUE)
+        ));
+
+        $this->checkDropdownAttribute($attribute);
+        $this->app['dropdownAttribute'] = $attribute;
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -275,6 +298,23 @@ class AudioClubController extends \Controller\BaseStalkerController {
 
         if (!isset($query_param['where'])) {
             $query_param['where'] = array();
+        } elseif (array_key_exists('name', $query_param['where'])) {
+            $query_param['where']['audio_genres.name'] = $query_param['where']['name'];
+            unset($query_param['where']['name']);
+        }
+
+        if (!isset($query_param['like'])) {
+            $query_param['like'] = array();
+        } elseif (array_key_exists('name', $query_param['like'])) {
+            $query_param['like']['audio_genres.name'] = $query_param['like']['name'];
+            unset($query_param['like']['name']);
+        }
+
+        if (!isset($query_param['order'])) {
+            $query_param['order'] = array();
+        } elseif (array_key_exists('name', $query_param['order'])) {
+            $query_param['order']['audio_genres.name'] = $query_param['order']['name'];
+            unset($query_param['order']['name']);
         }
         
         $response['recordsTotal'] = $this->db->getTotalRowsAudioGenresList();
@@ -414,6 +454,23 @@ class AudioClubController extends \Controller\BaseStalkerController {
 
         if (!isset($query_param['where'])) {
             $query_param['where'] = array();
+        } elseif (array_key_exists('name', $query_param['where'])) {
+            $query_param['where']['audio_performers.name'] = $query_param['where']['name'];
+            unset($query_param['where']['name']);
+        }
+
+        if (!isset($query_param['like'])) {
+            $query_param['like'] = array();
+        } elseif (array_key_exists('name', $query_param['like'])) {
+            $query_param['like']['audio_performers.name'] = $query_param['like']['name'];
+            unset($query_param['like']['name']);
+        }
+
+        if (!isset($query_param['order'])) {
+            $query_param['order'] = array();
+        } elseif (array_key_exists('name', $query_param['order'])) {
+            $query_param['order']['audio_performers.name'] = $query_param['order']['name'];
+            unset($query_param['order']['name']);
         }
         
         $response['recordsTotal'] = $this->db->getTotalRowsAudioArtistList();
@@ -553,6 +610,23 @@ class AudioClubController extends \Controller\BaseStalkerController {
 
         if (!isset($query_param['where'])) {
             $query_param['where'] = array();
+        } elseif (array_key_exists('name', $query_param['where'])) {
+            $query_param['where']['audio_languages.name'] = $query_param['where']['name'];
+            unset($query_param['where']['name']);
+        }
+
+        if (!isset($query_param['like'])) {
+            $query_param['like'] = array();
+        } elseif (array_key_exists('name', $query_param['like'])) {
+            $query_param['like']['audio_languages.name'] = $query_param['like']['name'];
+            unset($query_param['like']['name']);
+        }
+
+        if (!isset($query_param['order'])) {
+            $query_param['order'] = array();
+        } elseif (array_key_exists('name', $query_param['order'])) {
+            $query_param['order']['audio_languages.name'] = $query_param['order']['name'];
+            unset($query_param['order']['name']);
         }
         
         $response['recordsTotal'] = $this->db->getTotalRowsAudioLanguageList();
@@ -692,8 +766,25 @@ class AudioClubController extends \Controller\BaseStalkerController {
 
         if (!isset($query_param['where'])) {
             $query_param['where'] = array();
+        } elseif (array_key_exists('name', $query_param['where'])) {
+            $query_param['where']['audio_years.name'] = $query_param['where']['name'];
+            unset($query_param['where']['name']);
         }
-        
+
+        if (!isset($query_param['like'])) {
+            $query_param['like'] = array();
+        } elseif (array_key_exists('name', $query_param['like'])) {
+            $query_param['like']['audio_years.name'] = $query_param['like']['name'];
+            unset($query_param['like']['name']);
+        }
+
+        if (!isset($query_param['order'])) {
+            $query_param['order'] = array();
+        } elseif (array_key_exists('name', $query_param['order'])) {
+            $query_param['order']['audio_years.name'] = $query_param['order']['name'];
+            unset($query_param['order']['name']);
+        }
+
         $response['recordsTotal'] = $this->db->getTotalRowsAudioYearList();
         $response["recordsFiltered"] = $this->db->getTotalRowsAudioYearList($query_param['where'], $query_param['like']);
 
@@ -1342,10 +1433,14 @@ class AudioClubController extends \Controller\BaseStalkerController {
         );
     }
 
-    private function getShortDropdownAttribute(){
-        return array(
-            array('name'=>'name',           'title'=>$this->setLocalization('Title'),       'checked' => TRUE),
-            array('name'=>'operations',     'title'=>$this->setLocalization('Operation'),   'checked' => TRUE)
+    private function getShortDropdownAttribute($adding_fields = array()){
+        $return =  array(
+            array('name'=>'name',           'title'=>$this->setLocalization('Title'),       'checked' => TRUE)
         );
+        if (!empty($adding_fields)) {
+            $return = array_merge($return, $adding_fields);
+        }
+        $return[] = array('name'=>'operations',     'title'=>$this->setLocalization('Operation'),   'checked' => TRUE);
+        return $return;
     }
 }
