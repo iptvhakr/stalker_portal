@@ -71,7 +71,7 @@ class SmartLauncherAppsManager
         $cached_info = $cache->get($app_id.'_launcher_app_info');
 
         if (empty($cached_info)){
-            $npm = new Npm();
+            $npm = Npm::getInstance();
             $info = $npm->info($app['url']);
         }else{
             $info = $cached_info;
@@ -190,7 +190,7 @@ class SmartLauncherAppsManager
 
         if (isset($info['versions']) && is_array($info['versions'])){
 
-            $npm = new Npm();
+            $npm = Npm::getInstance();
             $cache = Cache::getInstance();
 
             unset($info['time']['modified']);
@@ -261,7 +261,7 @@ class SmartLauncherAppsManager
             throw new SmartLauncherAppsManagerException('App not found, id='.$app_id);
         }
 
-        $npm = new Npm();
+        $npm = Npm::getInstance();
         $info = $npm->info($app['url'], $version);
 
         if (empty($info)){
@@ -544,7 +544,7 @@ class SmartLauncherAppsManager
             throw new SmartLauncherAppsManagerException('App not found, id=' . $app_id);
         }
 
-        $npm = new Npm();
+        $npm = Npm::getInstance();
         $info = $npm->info($app['url'], $version);
 
         if (empty($info)){
@@ -680,7 +680,7 @@ class SmartLauncherAppsManager
             return false;
         }
 
-        $npm = new Npm();
+        $npm = Npm::getInstance();
         $info = $npm->info($metapackage);
 
         if (!$info){

@@ -6,8 +6,20 @@ class Npm
 {
     private $app_path;
 
+    private static $instance = null;
+
+    public static function getInstance(){
+        if (self::$instance == NULL)
+        {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
     public function __construct() {
         $this->app_path = PROJECT_PATH.'/../../'.Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/');
+
+        system('npm set registry '.escapeshellarg(Config::getSafe('npm_registry', 'http://registry.npmjs.org/')).' 2>/dev/null');
     }
 
     public function install($package, $version = null){
