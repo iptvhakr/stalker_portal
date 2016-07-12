@@ -99,8 +99,8 @@
                         showModalBox();
                         var timer = setInterval(function(){
                             if ($("#reset_all_apps_button").length == 0 || !$("#reset_all_apps_button").is(":visible")) {
-                                ajaxPostSend($(_this).attr('href'), sendData, false );
                                 clearInterval(timer);
+                                ajaxPostSend($(_this).attr('href'), sendData, false );
                             }
                         }, 10);
                     }
@@ -185,11 +185,35 @@
                         $('#modalbox').find('.devoops-modal-inner').html($("#modal_reset_all_body").text());
                         $('#modalbox .devoops-modal-inner span').text("{{ 'This is system apps. Disabling this application can lead to failures in other applications. Do really want deactivate this application?'|trans }}")
                         $('#modalbox').find('.devoops-modal-bottom').html($("#modal_reset_all_buttons").text());
-                        $("#reset_all_apps_btn").text("{{ 'Deactivate'|trans }}").attr("href", $(this).attr('href')).data($(this).data());
+                        $("#reset_all_apps_btn").text("{{ 'Deactivate'|trans }}").addClass('main_ajax').attr("href", $(this).attr('href')).data($(this).data());
                         $('#modalbox').show();
                     } else {
                         ajaxPostSend($(this).attr('href'), $(this).data());
                     }
+                    return false;
+                });
+
+                $("#modalbox").on('click', "#reset_all_apps_btn", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var _this = this;
+                    $("#modalbox").data('complete', 0);
+                    var sendData = $(_this).data();
+                    if ($(_this).attr("disabled")) {
+                        JSErrorModalBox({msg: "{{ 'Action is not available'|trans }}"});
+                    } else {
+                        showModalBox();
+                        var timer = setInterval(function(){
+                            if ($(_this).hasClass('main_ajax')) {
+                                clearInterval(timer);
+                                ajaxPostSend($(_this).attr('href'), sendData);
+                            }else if ($("#reset_all_apps_btn").length == 0 || !$("#reset_all_apps_btn").is(":visible")) {
+                                clearInterval(timer);
+                                createIFrame('cometFrame', $(_this).attr('href'));
+                            }
+                        }, 10);
+                    }
+                    $(this).closest('div.open').removeClass('open');
                     return false;
                 });
 
@@ -200,8 +224,17 @@
         document.addEventListener("DOMContentLoaded", yelp, false);
 
         var manageList = function (obj) {
-            JSSuccessModalBox(obj);
+            if (!obj.error) {
+                JSSuccessModalBox(obj);
+            } else {
+                JSErrorModalBox(obj);
+            }
             $('#datatable-1').DataTable().ajax.reload();
+            cleanIframe();
+        };
+
+        var setModalMessage = function(mgs){
+            $('#modalbox .devoops-modal-inner span').text(msg);
         };
 
         function closeModalBox() {
@@ -410,7 +443,68 @@
 
             $('#modalbox').show();
             return false;
+        };
+
+        var isIE = '\v' == 'v';
+
+        function getIframeDocument(iframeNode) {
+            if (iframeNode.contentDocument) {
+                return iframeNode.contentDocument;
+            }
+            if (iframeNode.contentWindow) {
+                return iframeNode.contentWindow.document;
+            }
+            return iframeNode.document
         }
+
+        function setIframeSrc(iframeNode, src) {
+            var doc = getIframeDocument(iframeNode);
+            doc.location.replace(src)
+        }
+
+        function createIFrameNoIE(fname, src) {
+
+            if (isIE) {
+                var cframe = document.createElement('<iframe name="' + fname + '">');
+            } else {
+                cframe = document.createElement('iframe');
+                cframe.setAttribute("name", fname);
+            }
+
+            cframe.style.display = 'none';
+
+            document.body.appendChild(cframe);
+
+            setIframeSrc(cframe, src);
+        }
+
+        function createIFrameIE(fname, src) {
+            var rcvNode = new ActiveXObject("htmlfile");
+            rcvNode.open();
+            rcvNode.close();
+
+            rcvNode.parentWindow.deliver = deliver;
+
+            var cframe = rcvNode.createElement("<iframe name='" + fname + "' src='" + src + "'></iframe>");
+
+            rcvNode.appendChild(cframe)
+        }
+
+        function createIFrame(fname, src) {
+            cleanIframe();
+            isIE ? createIFrameIE(fname, src) : createIFrameNoIE(fname, src);
+        }
+
+        function cleanIframe(){
+            $('iframe[name="cometFrame"]').remove();
+        }
+
+        function deliver(callback, data) {
+            if (typeof (window[callback]) == 'function') {
+                window[callback](data);
+            }
+        }
+
     </script>
 
     <script type="text/template" id="modal_get_form_body">
@@ -559,7 +653,7 @@
 
     <script type="text/template" id="modal_reset_all_buttons">
         <div class="pull-right no-padding">
-            <a id="reset_all_apps_btn" type="button" class="main_ajax btn btn-danger pull-right" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-reset-all">{{ 'Reset'|trans }}</a>
+            <a id="reset_all_apps_btn" type="button" class="btn btn-danger pull-right" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-reset-all">{{ 'Reset'|trans }}</a>
             <button type="reset" id="reset_all_apps_button" class="btn btn-success pull-right">{{ 'Cancel'|trans }}</button>
         </div>
     </script>

@@ -5,6 +5,7 @@ namespace Controller;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response as Response;
+use Symfony\Component\HttpFoundation\StreamedResponse as StreamedResponse;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
 
@@ -832,7 +833,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
 
     public function smart_application_toggle_state(){
 
-        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData)) {
+        if (!$this->isAjax) {
             $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
@@ -938,14 +939,11 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
     }
 
     public function smart_application_reset_all(){
-        if (!$this->isAjax) {
-            $this->app->abort(404, $this->setLocalization('Page not found'));
-        }
+
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
-        ignore_user_abort(true);
-        set_time_limit(0);
+
         $response = array('action' => 'manageList');
         $error = $this->setLocalization('Failed');
 
@@ -955,16 +953,47 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             $error = '';
         } else {
             try{
+                ignore_user_abort(TRUE);
+                set_time_limit(0);
+                $response = array('action' => '');
+                error_reporting(-1);
+                ini_set('display_errors','On');
+                ini_set('output_buffering', 'Off');
+                ini_set('output_handler', '');
+                ini_set('zlib.output_compression', 'Off');
+                ini_set('implicit_flush', 'On');
+                ob_implicit_flush(true);
+                ob_start();
+                header($_SERVER["SERVER_PROTOCOL"]." 200 Ok");
+                header('X-Accel-Buffering: no');
+                header('Content-Type: text/html');
+                ob_flush();
+                echo '<html>
+                            <head>\n';
+                ob_flush();
                 $apps = new \SmartLauncherAppsManager();
+                $apps->setNotificationCallback(array($this, 'msgEcho'));
                 if ($apps->resetApps()){
                     $error = '';
                 }
             } catch (\Exception $e) {
                 $response['msg'] = $error = $e->getMessage();
+                $this->postData['info'] = 1;
             }
         }
         $response = $this->generateAjaxResponse($response);
-        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+        $response = json_encode($response);
+        if (empty($this->postData['info'])) {
+            echo "<script> parent.deliver('manageList',$response) </script>\n";
+            echo '</head>
+                <body>
+                </body>
+            </html>';
+            ob_end_flush();
+            exit;
+        }
+
+        return new Response($response, (empty($error) ? 200 : 500));
     }
 
     //------------------------ service method ----------------------------------
@@ -1098,5 +1127,10 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
                 return 'img/no_image.png';
             }
         }
+    }
+
+    static public function msgEcho($msg){
+        echo "<script> parent.deliver('setModalMessage','$msg') </script>\n";
+        ob_flush();
     }
 }
