@@ -13,7 +13,7 @@
                 {#{{ main_macro.get_filter('conflicts', 'Compatibility'|trans, 'id', 'title', app['allCompatibility'], 3) }}#}
 
                 <a id="add_apps" href="#" class="btn btn-success pull-right">{{ 'Add application by package name'|trans }}</a>
-                <a id="reset_all_apps" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-reset-all" class="btn btn-success pull-right">{{ 'Reset all application'|trans }}</a>
+                <a id="reset_all_apps" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-reset-all" data-info = '1' class="main_ajax btn btn-success pull-right">{{ 'Reset all application'|trans }}</a>
             </div>
         </div>
         <div class="row">
@@ -71,7 +71,7 @@
                 "aoColumnDefs": [
                     {className: "action-menu", "targets": [-1]},
                     {width: "35%", "targets": [-2]},
-                    {"searchable": false, "targets": [0, 2, 3, 5, 7, 8, -1]},
+                    {"searchable": false, "targets": [0, 2, 3, 5, 7, -1]},
                     {"sortable": false, "targets": [0, 5, 6, -1]}
                 ],
                 "createdRow": function ( row, data, index ) {
@@ -99,8 +99,8 @@
                         showModalBox();
                         var timer = setInterval(function(){
                             if ($("#reset_all_apps_button").length == 0 || !$("#reset_all_apps_button").is(":visible")) {
-                                ajaxPostSend($(_this).attr('href'), sendData, false );
                                 clearInterval(timer);
+                                ajaxPostSend($(_this).attr('href'), sendData, false );
                             }
                         }, 10);
                     }
@@ -174,16 +174,6 @@
                     return false;
                 });
 
-                $(document).on('click', '#reset_all_apps', function(e){
-                    e.stopPropagation();
-                    e.preventDefault();
-                    JScloseModalBox();
-                    $('#modalbox').find('.modal-header-name span').addClass('txt-danger').text('{{ 'Warning'|trans }}' + '!');
-                    $('#modalbox').find('.devoops-modal-inner').html($("#modal_reset_all_body").text());
-                    $('#modalbox').find('.devoops-modal-bottom').html($("#modal_reset_all_buttons").text());
-                    $('#modalbox').show();
-                    return false;
-                });
 
                 $(document).on('click', 'a.smart-application-toggle-state', function(e){
                     e.stopPropagation();
@@ -195,7 +185,7 @@
                         $('#modalbox').find('.devoops-modal-inner').html($("#modal_reset_all_body").text());
                         $('#modalbox .devoops-modal-inner span').text("{{ 'This is system apps. Disabling this application can lead to failures in other applications. Do really want deactivate this application?'|trans }}")
                         $('#modalbox').find('.devoops-modal-bottom').html($("#modal_reset_all_buttons").text());
-                        $("#reset_all_apps_btn").text("{{ 'Deactivate'|trans }}").attr("href", $(this).attr('href')).data($(this).data());
+                        $("#reset_all_apps_btn").text("{{ 'Deactivate'|trans }}").addClass('main_ajax').attr("href", $(this).attr('href')).data($(this).data());
                         $('#modalbox').show();
                     } else {
                         ajaxPostSend($(this).attr('href'), $(this).data());
@@ -215,9 +205,8 @@
                         showModalBox();
                         var timer = setInterval(function(){
                             if ($("#reset_all_apps_button").length == 0 || !$("#reset_all_apps_button").is(":visible")) {
-                                $("body").append("<iframe id='long_frame' style='width:0; height:0; visibility: hidden;'></iframe>");
-                                $("#long_frame").prop('src', $(_this).attr('href'));
                                 clearInterval(timer);
+                                createIFrame('cometFrame', $(_this).attr('href'));
                             }
                         }, 10);
                     }
@@ -232,16 +221,18 @@
         document.addEventListener("DOMContentLoaded", yelp, false);
 
         var manageList = function (obj) {
-            JSSuccessModalBox(obj);
-            $('#datatable-1').DataTable().ajax.reload();
-            if ($("#long_frame").length != 0) {
-                $("#long_frame").remove();
+            if (!obj.error) {
+                JSSuccessModalBox(obj);
+            } else {
+                JSErrorModalBox(obj);
             }
+            $('#datatable-1').DataTable().ajax.reload();
+            cleanIframe();
         };
 
-        function setModalMessage(mgs){
+        var setModalMessage = function(mgs){
             $('#modalbox .devoops-modal-inner span').text(msg);
-        }
+        };
 
         function closeModalBox() {
             $("#modalbox").hide();
@@ -432,7 +423,85 @@
                 $('#datatable-1').DataTable().row( data.curr_row ).invalidate(newData);
                 $('#datatable-1').dataTable().fnUpdate(newData, data.curr_row, null, false, false);
             }
+        };
+
+        var resetAllWarning = function(data){
+            JScloseModalBox();
+            $('#modalbox').find('.modal-header-name span').addClass('txt-danger').text('{{ 'Warning'|trans }}' + '!');
+            $('#modalbox').find('.devoops-modal-inner').html($("#modal_reset_all_body").text());
+            $('#modalbox').find('.devoops-modal-bottom').html($("#modal_reset_all_buttons").text());
+
+            if (data.data && data.data.length != 0 ) {
+                var infoBlock = $("<span class='col-md-12 txt-default'>{{ 'The next apps has been installed manually and will be removed.'|trans }}</span>").prependTo('#modalbox .devoops-modal-inner div');
+                for (var i in data.data) {
+                    var infoBlock = $("<span class='col-md-12 txt-danger'>"+ data.data[i]['alias'] + " {{ 'current version'|trans }} " + data.data[i]['current_version'] +"</span>").insertAfter(infoBlock);
+                }
+            }
+
+            $('#modalbox').show();
+            return false;
+        };
+
+        var isIE = '\v' == 'v';
+
+        function getIframeDocument(iframeNode) {
+            if (iframeNode.contentDocument) {
+                return iframeNode.contentDocument;
+            }
+            if (iframeNode.contentWindow) {
+                return iframeNode.contentWindow.document;
+            }
+            return iframeNode.document
         }
+
+        function setIframeSrc(iframeNode, src) {
+            var doc = getIframeDocument(iframeNode);
+            doc.location.replace(src)
+        }
+
+        function createIFrameNoIE(fname, src) {
+
+            if (isIE) {
+                var cframe = document.createElement('<iframe name="' + fname + '">');
+            } else {
+                cframe = document.createElement('iframe');
+                cframe.setAttribute("name", fname);
+            }
+
+            cframe.style.display = 'none';
+
+            document.body.appendChild(cframe);
+
+            setIframeSrc(cframe, src);
+        }
+
+        function createIFrameIE(fname, src) {
+            var rcvNode = new ActiveXObject("htmlfile");
+            rcvNode.open();
+            rcvNode.close();
+
+            rcvNode.parentWindow.deliver = deliver;
+
+            var cframe = rcvNode.createElement("<iframe name='" + fname + "' src='" + src + "'></iframe>");
+
+            rcvNode.appendChild(cframe)
+        }
+
+        function createIFrame(fname, src) {
+            cleanIframe();
+            isIE ? createIFrameIE(fname, src) : createIFrameNoIE(fname, src);
+        }
+
+        function cleanIframe(){
+            $('iframe[name="cometFrame"]').remove();
+        }
+
+        function deliver(callback, data) {
+            if (typeof (window[callback]) == 'function') {
+                window[callback](data);
+            }
+        }
+
     </script>
 
     <script type="text/template" id="modal_get_form_body">
@@ -581,7 +650,7 @@
 
     <script type="text/template" id="modal_reset_all_buttons">
         <div class="pull-right no-padding">
-            <a id="reset_all_apps_btn" type="button" class="main_ajax btn btn-danger pull-right" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-reset-all">{{ 'Reset'|trans }}</a>
+            <a id="reset_all_apps_btn" type="button" class="btn btn-danger pull-right" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-reset-all">{{ 'Reset'|trans }}</a>
             <button type="reset" id="reset_all_apps_button" class="btn btn-success pull-right">{{ 'Cancel'|trans }}</button>
         </div>
     </script>

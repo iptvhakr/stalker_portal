@@ -5,6 +5,7 @@ namespace Controller;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response as Response;
+use Symfony\Component\HttpFoundation\StreamedResponse as StreamedResponse;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
 
@@ -842,6 +843,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
 
         $response['action'] = 'changeStatus';
         $response['field'] = 'app_status';
+        $response['conflicts'] = FALSE;
         $postData = $this->postData;
         $id = $postData['id'];
         $key = '';
@@ -866,22 +868,26 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
 
         unset($postData['id']);
 
-        $result = $this->db->updateSmartApplication($postData, $id);
-        if (is_numeric($result)) {
-            $response['error'] = $error = '';
-            if (!empty($postData['current_version'])) {
-                $response['msg'] = $this->setLocalization('Activated. Current version') . ' ' . $postData['current_version'];
+        if (!$response['conflicts'] || !$postData['status']) {
+            $result = $this->db->updateSmartApplication($postData, $id);
+            if (is_numeric($result)) {
+                $response['error'] = $error = '';
+                if (!empty($postData['current_version'])) {
+                    $response['msg'] = $this->setLocalization('Activated. Current version') . ' ' . $postData['current_version'];
+                }
+                if ($result === 0) {
+                    $response['nothing_to_do'] = TRUE;
+                }
+                $response['installed'] = !empty($postData[$key]) && $postData[$key] != 'false' && $postData[$key] !== FALSE? 1: 0;;
+            } else {
+                $response['error'] = $error = $this->setLocalization('Failed to activated of application.');
+                if (!empty($postData['current_version'])) {
+                    $response['error'] = $error .= $this->setLocalization('Version') . ' ' . $postData['current_version'];
+                }
+                $response['installed'] = (int)!(!empty($postData[$key]) && $postData[$key] != 'false' && $postData[$key] !== FALSE? 1: 0);
             }
-            if ($result === 0) {
-                $response['nothing_to_do'] = TRUE;
-            }
-            $response['installed'] = !empty($postData[$key]) && $postData[$key] != 'false' && $postData[$key] !== FALSE? 1: 0;;
         } else {
-            $response['error'] = $error = $this->setLocalization('Failed to activated of application.');
-            if (!empty($postData['current_version'])) {
-                $response['error'] = $error .= $this->setLocalization('Version') . ' ' . $postData['current_version'];
-            }
-            $response['installed'] = (int)!(!empty($postData[$key]) && $postData[$key] != 'false' && $postData[$key] !== FALSE? 1: 0);
+            $response['msg'] = $error = $this->setLocalization('This application version has conflicts');
         }
 
         $response = $this->generateAjaxResponse($response);
@@ -933,41 +939,61 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
     }
 
     public function smart_application_reset_all(){
-        if ($this->isAjax) {
-            $this->app->abort(404, $this->setLocalization('Page not found'));
-        }
+
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
+
         $response = array('action' => 'manageList');
         $error = $this->setLocalization('Failed');
-        set_time_limit(0);
-        while(ob_get_level()){
-            ob_end_clean();
-        }
-        ob_end_clean();
-        /*ob_start();
-        ob_implicit_flush (TRUE);*/
-        header('Content-Type: text/html');
-        ob_flush();
-        try{
-            $apps = new \SmartLauncherAppsManager();
-            echo "<!DOCTYPE HTML>\n
-                    <html>\n
-                      <body>\n";
-            ob_flush();
-            $apps->setNotificationCallback(function($msg){
-                echo "<script type='text/javascript'>parent.setModalMessage('$msg')</script>";
+
+        if (!empty($this->postData['info'])) {
+            $response['action'] = 'resetAllWarning';
+            $response['data'] = $this->db->getSmartApplication(array('manual_install' => 1));
+            $error = '';
+        } else {
+            try{
+                ignore_user_abort(TRUE);
+                set_time_limit(0);
+                $response = array('action' => '');
+                error_reporting(-1);
+                ini_set('display_errors','On');
+                ini_set('output_buffering', 'Off');
+                ini_set('output_handler', '');
+                ini_set('zlib.output_compression', 'Off');
+                ini_set('implicit_flush', 'On');
+                ob_implicit_flush(true);
+                ob_start();
+                header($_SERVER["SERVER_PROTOCOL"]." 200 Ok");
+                header('X-Accel-Buffering: no');
+                header('Content-Type: text/html');
                 ob_flush();
-            });
-            if ($apps->resetApps()){
-                $error = '';
+                echo '<html>
+                            <head>\n';
+                ob_flush();
+                $apps = new \SmartLauncherAppsManager();
+                $apps->setNotificationCallback(array($this, 'msgEcho'));
+                if ($apps->resetApps()){
+                    $error = '';
+                }
+            } catch (\Exception $e) {
+                $response['msg'] = $error = $e->getMessage();
+                $this->postData['info'] = 1;
             }
-        } catch (\Exception $e) {
-            $response['msg'] = $error = $e->getMessage();
         }
         $response = $this->generateAjaxResponse($response);
-        return new Response("<script type='text/javascript'>parent.manageList(" . json_encode($response) . ");</script></body></html>", (empty($error) ? 200 : 500));
+        $response = json_encode($response);
+        if (empty($this->postData['info'])) {
+            echo "<script> parent.deliver('manageList',$response) </script>\n";
+            echo '</head>
+                <body>
+                </body>
+            </html>';
+            ob_end_flush();
+            exit;
+        }
+
+        return new Response($response, (empty($error) ? 200 : 500));
     }
 
     //------------------------ service method ----------------------------------
@@ -1101,5 +1127,10 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
                 return 'img/no_image.png';
             }
         }
+    }
+
+    static public function msgEcho($msg){
+        echo "<script> parent.deliver('setModalMessage','$msg') </script>\n";
+        ob_flush();
     }
 }
