@@ -833,7 +833,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
 
     public function smart_application_toggle_state(){
 
-        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData)) {
+        if (!$this->isAjax) {
             $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 

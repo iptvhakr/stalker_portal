@@ -1,23 +1,5 @@
 {
     "1": {
-        "name": _("Applications"),
-        "alias": "application-catalog",
-        "icon": "fa fa-rocket",
-        "icon2": "pull-right fa fa-chevron-left",
-        "action": {
-            "1": {
-                "name": _("Stalker applications"),
-                "alias": "application-list",
-                "icon": ""
-            },
-            "2": {
-                "name": _("SmartLauncher applications"),
-                "alias": "smart-application-list",
-                "icon": ""
-            }
-        }
-    },
-    "2": {
         "name": _("IPTV channels"),
         "alias": "tv-channels",
         "icon": "fa fa-desktop",
@@ -51,7 +33,7 @@
             }
         }
     },
-    "3": {
+    "2": {
         "name": _("New Video club"),
         "alias": "new-video-club",
         "icon": "fa fa-video-camera",
@@ -94,7 +76,7 @@
             }
         }
     },
-    "4": {
+    "3": {
         "name": _("Audio club"),
         "alias": "audio-club",
         "icon": "fa fa-music",
@@ -127,7 +109,7 @@
             }
         }
     },
-    "5": {
+    "4": {
         "name": _("Karaoke"),
         "alias": "karaoke",
         "icon": "fa fa-microphone",
@@ -135,7 +117,7 @@
         "action": {
         }
     },
-    "6": {
+    "5": {
         "name": _("Radio"),
         "alias": "radio",
         "icon": "fa fa-bullhorn",
@@ -143,7 +125,7 @@
         "action": {
         }
     },
-    "7": {
+    "6": {
         "name": _("Tariffs"),
         "alias": "tariffs",
         "icon": "fa fa-calculator",
@@ -166,7 +148,7 @@
             }
         }
     },
-    "8": {
+    "7": {
         "name": _("Users"),
         "alias": "users",
         "icon": "fa  fa-users",
@@ -195,6 +177,24 @@
             "5": {
                 "name": _("Report"),
                 "alias": "users-consoles-report",
+                "icon": ""
+            }
+        }
+    },
+    "8": {
+        "name": _("Applications"),
+        "alias": "application-catalog",
+        "icon": "fa fa-rocket",
+        "icon2": "pull-right fa fa-chevron-left",
+        "action": {
+            "1": {
+                "name": _("Stalker applications"),
+                "alias": "application-list",
+                "icon": ""
+            },
+            "2": {
+                "name": _("Applications of Stalker 5x"),
+                "alias": "smart-application-list",
                 "icon": ""
             }
         }

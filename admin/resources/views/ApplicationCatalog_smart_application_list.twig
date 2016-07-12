@@ -204,7 +204,10 @@
                     } else {
                         showModalBox();
                         var timer = setInterval(function(){
-                            if ($("#reset_all_apps_button").length == 0 || !$("#reset_all_apps_button").is(":visible")) {
+                            if ($(_this).hasClass('main_ajax')) {
+                                clearInterval(timer);
+                                ajaxPostSend($(_this).attr('href'), sendData);
+                            }else if ($("#reset_all_apps_btn").length == 0 || !$("#reset_all_apps_btn").is(":visible")) {
                                 clearInterval(timer);
                                 createIFrame('cometFrame', $(_this).attr('href'));
                             }
