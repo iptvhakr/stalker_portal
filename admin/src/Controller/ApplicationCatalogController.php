@@ -692,8 +692,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             } catch(\SmartLauncherAppsManagerConflictException $e){
                 $response['error'] = $this->setLocalization($e->getMessage());
                 foreach($e->getConflicts() as $row){
-                    list($app, $ver) = each($row);
-                    $response['error'] .= "<br> $app $ver " . PHP_EOL;
+                    $response['error'] .= "<br>"  . (!empty($row['target'])? " $row[target] with ": '') . " $row[alias] $row[current_version]" . PHP_EOL;
                 }
                 $response['msg'] = $response['error'];
             } catch(\Exception $e){
@@ -976,15 +975,22 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
                 if ($apps->resetApps()){
                     $error = '';
                 }
-            } catch (\Exception $e) {
+            } catch (\SmartLauncherAppsManagerConflictException $e) {
                 $response['msg'] = $error = $e->getMessage();
-                $this->postData['info'] = 1;
+                foreach($e->getConflicts() as $row){
+                    $error .= "<br>" . (!empty($row['target'])? "$row[target] with ": '') . " $row[alias] $row[current_version]";
+                }
             }
         }
         $response = $this->generateAjaxResponse($response);
         $response = json_encode($response);
         if (empty($this->postData['info'])) {
-            echo "<script> parent.deliver('manageList',$response) </script>\n";
+            if (empty($error)) {
+                echo "<script> parent.deliver('manageList',$response) </script>\n";
+            } else {
+                $this->msgEcho($error);
+                echo "<script> parent.deliver('manageListError',$response) </script>\n";
+            }
             echo '</head>
                 <body>
                 </body>
@@ -1129,7 +1135,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         }
     }
 
-    static public function msgEcho($msg){
+    public function msgEcho($msg){
         echo "<script> parent.deliver('setModalMessage','$msg') </script>\n";
         ob_flush();
     }

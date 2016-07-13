@@ -1055,10 +1055,12 @@ function ajaxPostSend(url, sendData, alertMsg, consoleMsg, async, adOptions){
             ajaxSuccess(data, alertMsg, consoleMsg);
         },
         error: function (data) {
-            if (typeof(data.nothing_to_do) != 'undefined' && data.nothing_to_do) {
-                JScloseModalBox();
-            } else {
-                ajaxError(data, alertMsg, consoleMsg);
+            if (data.readyState == 4 || data.status != 0) {
+                if (typeof(data.nothing_to_do) != 'undefined' && data.nothing_to_do) {
+                    JScloseModalBox();
+                } else {
+                    ajaxError(data, alertMsg, consoleMsg);
+                }
             }
         },
         timeout: 0,

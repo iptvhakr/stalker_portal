@@ -234,7 +234,7 @@
         };
 
         var setModalMessage = function(mgs){
-            $('#modalbox .devoops-modal-inner span').text(msg);
+            $('#modalbox .devoops-modal-inner span').html(mgs);
         };
 
         function closeModalBox() {
@@ -478,6 +478,9 @@
             }
 
             cframe.style.display = 'none';
+            cframe.onload = iFrameOnLoad;
+            cframe.onerror = iFrameOnError;
+            cframe.onreadystatechange = iFrameOnReadyStateChange;
 
             document.body.appendChild(cframe);
 
@@ -492,6 +495,10 @@
             rcvNode.parentWindow.deliver = deliver;
 
             var cframe = rcvNode.createElement("<iframe name='" + fname + "' src='" + src + "'></iframe>");
+
+            cframe.onload = iFrameOnLoad;
+            cframe.onerror = iFrameOnError;
+            cframe.onreadystatechange = iFrameOnReadyStateChange;
 
             rcvNode.appendChild(cframe)
         }
@@ -510,6 +517,29 @@
                 window[callback](data);
             }
         }
+
+        var iFrameOnLoad = function() {
+            if (!this.executed) {
+                this.executed = true;
+                console.log(this.innerHTML);
+            }
+        };
+
+        var iFrameOnError = function() {
+            if (!this.executed) {
+                this.executed = true;
+                console.log(this.innerHTML);
+            }
+        };
+
+        var iFrameOnReadyStateChange = function(){
+            var self = this;
+            if (this.readyState == "complete" || this.readyState == "loaded") {
+                setTimeout(function() {
+                    self.onload()
+                }, 0);
+            }
+        };
 
     </script>
 
