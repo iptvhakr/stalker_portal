@@ -570,11 +570,15 @@ class SmartLauncherAppsManager
 
                 if (isset($dep_info['config']['apiVersion']) && array_search($dep_info['config']['apiVersion'], $sap_versions) !== false){
                     $version_expression = $dep_info['config']['apiVersion'];
-                    $range = new SemVerExpression($version_expression);
+                    $dep_range = new SemVerExpression($version_expression);
+                }else{
+                    $dep_range = $range;
                 }
 
+                $suitable_sap = null;
+
                 foreach ($sap_versions as $sap_version) {
-                    if ($range->satisfiedBy(new SemVer($sap_version))){
+                    if ($dep_range->satisfiedBy(new SemVer($sap_version))){
                         $suitable_sap = $sap_version;
                         break;
                     }
