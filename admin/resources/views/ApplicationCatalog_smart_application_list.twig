@@ -518,24 +518,6 @@
             }
         }
 
-        function checkIframeLoaded() {
-            iframe = document.getElementById('i_frame');
-
-            var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-
-            if (  iframeDoc.readyState  == 'complete' ) {
-
-                iframe.contentWindow.onload = function(){
-                    alert("I am loaded");
-                };
-
-                afterLoading();
-                return;
-            }
-
-            window.setTimeout('checkIframeLoaded();', 100);
-        }
-
         var iFrameOnLoad = function() {
             if (!this.executed) {
                 this.executed = true;

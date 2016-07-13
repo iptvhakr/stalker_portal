@@ -692,7 +692,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             } catch(\SmartLauncherAppsManagerConflictException $e){
                 $response['error'] = $this->setLocalization($e->getMessage());
                 foreach($e->getConflicts() as $row){
-                    $response['error'] .= "<br> $row[alias] $row[current_version]" . (!empty($row['target'])? " with $row[target]": '') . PHP_EOL;
+                    $response['error'] .= "<br>"  . (!empty($row['target'])? " $row[target] with ": '') . " $row[alias] $row[current_version]" . PHP_EOL;
                 }
                 $response['msg'] = $response['error'];
             } catch(\Exception $e){
@@ -978,7 +978,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             } catch (\SmartLauncherAppsManagerConflictException $e) {
                 $response['msg'] = $error = $e->getMessage();
                 foreach($e->getConflicts() as $row){
-                    $error .= "<br> $row[alias] $row[current_version]" . (!empty($row['target'])? " with $row[target]": '');
+                    $error .= "<br>" . (!empty($row['target'])? "$row[target] with ": '') . " $row[alias] $row[current_version]";
                 }
             }
         }
