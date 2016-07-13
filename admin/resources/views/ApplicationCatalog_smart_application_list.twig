@@ -382,11 +382,17 @@
             if (!item.current_version) {
                 item.current_version = "{{ 'Undefined'|trans }}"
             }
+
+            var disable_current_version = '';
+            if (!item.rerendered) {
+                disable_current_version = ' disabled="disabled" ';
+            }
+
             if (item.installed) {
-                item.current_version += ' ' + (item.available_version != item.current_version ? '&nbsp;&nbsp;&nbsp;<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-detail?id=' + id + '">{{ 'Update'|trans }}</a>' : '');
+                item.current_version += ' ' + (item.available_version != item.current_version ? '&nbsp;&nbsp;&nbsp;<a '+disable_current_version+' href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-detail?id=' + id + '">{{ 'Update'|trans }}</a>' : '');
                 item.status = item.status == 1 ? "{{ 'Active'|trans }}" : "{{ 'Disabled'|trans }}";
             } else {
-                item.current_version = ' ' + '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-detail?id=' + id + '">{{ 'Install'|trans }}</a>';
+                item.current_version = ' ' + '<a '+disable_current_version+' href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-detail?id=' + id + '">{{ 'Install'|trans }}</a>';
                 item.status = "{{ 'Not installed'|trans }}";
             }
 

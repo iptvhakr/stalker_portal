@@ -566,8 +566,19 @@ class SmartLauncherAppsManager
                 $sap_path = realpath(PROJECT_PATH.'/../deploy/src/sap/');
                 $sap_versions = array_diff(scandir($sap_path), array('.','..'));
 
+                $dep_info = $npm->info($package);
+
+                if (isset($dep_info['config']['apiVersion']) && array_search($dep_info['config']['apiVersion'], $sap_versions) !== false){
+                    $version_expression = $dep_info['config']['apiVersion'];
+                    $dep_range = new SemVerExpression($version_expression);
+                }else{
+                    $dep_range = $range;
+                }
+
+                $suitable_sap = null;
+
                 foreach ($sap_versions as $sap_version) {
-                    if ($range->satisfiedBy(new SemVer($sap_version))){
+                    if ($dep_range->satisfiedBy(new SemVer($sap_version))){
                         $suitable_sap = $sap_version;
                         break;
                     }
@@ -576,7 +587,8 @@ class SmartLauncherAppsManager
                 if (empty($suitable_sap)){
                     $conflicts[] = array(
                         'alias'           => $package,
-                        'current_version' => $version_expression
+                        'current_version' => $version_expression,
+                        'target'          => $app['url']
                     );
                 }
             }
@@ -588,7 +600,8 @@ class SmartLauncherAppsManager
             if (!$range->satisfiedBy(new SemVer($dep_app['current_version']))){
                 $conflicts[] = array(
                     'alias'           => $package,
-                    'current_version' => $dep_app['current_version']
+                    'current_version' => $dep_app['current_version'],
+                    'target'          => $app['url']
                 );
             }
         }

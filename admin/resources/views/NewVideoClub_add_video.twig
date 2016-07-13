@@ -396,6 +396,8 @@
     <script type="text/javascript" src="./plugins/scrollTo/jquery.scrollTo.min.js" defer=""></script>
     <script type="text/javascript">
 
+        var dataTableLang = {};
+
         var sendCounter = 0;
 
         var pendingList = [];
@@ -694,6 +696,11 @@
 
         function yelp() {
             $(document).ready(function () {
+
+                $.getJSON("{{ app.datatable_lang_file }}", function(data){
+                    dataTableLang = data;
+                });
+
                 // Add custom validation rule
                 var customRuleObj = {
                     name : 'compare_number',
@@ -1639,6 +1646,7 @@
                         }
                         var counter = !isNaN(i) ? (parseInt(i, 10) + 1) : 0;
                         $(target).children('a.collapse-link').find('[data-files-count]').text('{{ 'files'|trans }} ' + counter);
+                        $(target).find('.dataTables_processing:first-of-type').hide('');
                     }
 
                 }).dataTable({
@@ -1661,9 +1669,7 @@
                         }
                     },
                     "deferLoading": [{#{{ app.recordsFiltered }}, {{ app.totalRecords }}#}],
-                    "language": {
-                        "url": "{{ app.datatable_lang_file }}"
-                    },
+                    "language": dataTableLang,
                     {% if attribute(app, 'dropdownAttribute') is defined %}
                     {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
                     {% endif %}
@@ -1877,6 +1883,7 @@
             $("#modalbox div.devoops-modal-bottom").find('button').removeClass('disabled').prop('disabled', false).removeAttr('disabled');
             $("#media_info").removeClass('filled').find('button').addClass('disabled').prop('disabled', 'disabled');
             $("#media_info").children().not('button').remove();
+            checkProtocol();
         };
 
         var errAction = function(){

@@ -1817,7 +1817,7 @@ function common_xpcom(){
 
         set_epg : function(data){
             _debug('epg_loader.set_epg', data);
-            this.epg = data;
+            this.epg = data || [];
             _debug('typeof(this.epg)', typeof(this.epg));
         },
 
@@ -1838,11 +1838,11 @@ function common_xpcom(){
             var result = [];
 
             _debug('now', now);
-            _debug('this.epg[ch_id]', this.epg[ch_id]);
             _debug('typeof this.epg[ch_id]', typeof(this.epg[ch_id]));
 
             try{
                 if (typeof(this.epg[ch_id]) == 'object' && this.epg[ch_id].length > 0){
+                    _debug('this.epg[ch_id]', this.epg[ch_id]);
                     _debug('this.epg[ch_id].length: '+this.epg[ch_id].length);
                     for (var i=0; i < this.epg[ch_id].length; i++){
                         _debug('i', i);

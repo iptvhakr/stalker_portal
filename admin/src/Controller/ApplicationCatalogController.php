@@ -262,7 +262,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
 
         $base_obj = $this->db->getSmartApplicationList($query_param, FALSE, TRUE);
 
-        if ($get_conflicts) {
+        if ($get_conflicts || $installed !== NULL) {
             $response["recordsFiltered"] = 0;
             $apps_manager = new \SmartLauncherAppsManager();
 
