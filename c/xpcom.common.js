@@ -1817,7 +1817,7 @@ function common_xpcom(){
 
         set_epg : function(data){
             _debug('epg_loader.set_epg', data);
-            this.epg = data;
+            this.epg = data || [];
             _debug('typeof(this.epg)', typeof(this.epg));
         },
 
