@@ -1877,6 +1877,7 @@
             $("#modalbox div.devoops-modal-bottom").find('button').removeClass('disabled').prop('disabled', false).removeAttr('disabled');
             $("#media_info").removeClass('filled').find('button').addClass('disabled').prop('disabled', 'disabled');
             $("#media_info").children().not('button').remove();
+            checkProtocol();
         };
 
         var errAction = function(){
