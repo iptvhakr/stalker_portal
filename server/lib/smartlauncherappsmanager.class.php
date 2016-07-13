@@ -353,7 +353,7 @@ class SmartLauncherAppsManager
         }
 
         if ($version === null){
-            $version = $app['current_version'];
+            $version = '';
         }
 
         $path = realpath(PROJECT_PATH.'/../../'
@@ -367,8 +367,10 @@ class SmartLauncherAppsManager
             self::delTree($path);
         }
 
-        if ($version == $app['current_version']){
+        if ($version && $version == $app['current_version']){
             Mysql::getInstance()->update('launcher_apps', array('current_version' => ''), array('id' => $app_id));
+        }elseif (!$version){
+            Mysql::getInstance()->delete('launcher_apps', array('id' => $app_id));
         }
 
         return true;
