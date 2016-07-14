@@ -51,7 +51,7 @@
                     }
                 }
             }).dataTable({
-                "processing": true,
+                "processing": false,
                 "serverSide": false,
                 "ajax": {
                     /*"url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-list-json",*/
@@ -77,6 +77,9 @@
 
         function yelp() {
             $(document).ready(function () {
+
+                {{ main_macro.get_datepicker_js_script() }}
+
                 $(document).on('click', "a.main_ajax", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
