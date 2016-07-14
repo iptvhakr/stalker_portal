@@ -1,0 +1,194 @@
+{% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
+{% set title = ('Certificates'|trans ~ ': ' ~ 'List of certificates'|trans) | trans %}
+
+{% block content %}
+    <div id="iptv_list">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                {{ main_macro.get_filter('status', 'Status'|trans, 'id', 'title', app['allStatus'], 3) }}
+                {{ main_macro.get_filter('lic_count', 'License count'|trans, 'id', 'title', app['allLicCount'], 3) }}
+                {% if attribute(app, 'filters') is defined %}
+                    {{ main_macro.get_datepicker_double_input() }}
+                {% endif %}
+
+                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-reset-all" class="btn btn-success pull-right">{{ 'Request of the certificate'|trans }}</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="box">
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                    {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
+                {% endif %}
+                <div class="box-content">
+                    <div class="box-content no-padding">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12">
+                                <div class="dataTables_processing"></div>
+                                <table class="table  table-hover table-datatable" id="datatable-1">
+                                    {% if attribute(app, 'dropdownAttribute') is defined %}
+                                        {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                                    {% endif %}
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" defer="defer">
+
+        function TestTable1() {
+            $('#datatable-1').on('xhr.dt', function (e, settings, json) {
+                if (typeof (json.data) == 'object') {
+                    for (var i in json.data) {
+                        json.data[i] = rowDataPrepare(json.data[i]);
+                    }
+                }
+            }).dataTable({
+                "processing": true,
+                "serverSide": false,
+                "ajax": {
+                    /*"url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-list-json",*/
+                    /*"data": function (d) {
+                     }*/
+                },
+                "language": {
+                    "url": "{{ app.datatable_lang_file }}"
+                },
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
+                {% endif %}
+                "bFilter": true,
+                "bPaginate": true,
+                "bInfo": true,
+                "aoColumnDefs": [
+                    /*{className: "action-menu", "targets": [-1]},*/
+                    {"searchable": false/*, "targets": [0, 2, 3, 5, 7, -1]*/},
+                    {"sortable": false/*, "targets": [0, 5, 6, -1]*/}
+                ]
+            }).prev('.dataTables_processing').hide('');
+        }
+
+        function yelp() {
+            $(document).ready(function () {
+                $(document).on('click', "a.main_ajax", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var _this = this;
+                    $("#modalbox").data('complete', 0);
+                    var sendData = $(_this).data();
+                    if ($(_this).attr("disabled")) {
+                        JSErrorModalBox({msg: "{{ 'Action is not available'|trans }}"});
+                    } else {
+                        showModalBox();
+                        var timer = setInterval(function(){
+                            if ($("#reset_all_apps_button").length == 0 || !$("#reset_all_apps_button").is(":visible")) {
+                                clearInterval(timer);
+                                ajaxPostSend($(_this).attr('href'), sendData, false );
+                            }
+                        }, 10);
+                    }
+                    $(this).closest('div.open').removeClass('open');
+                    return false;
+                });
+
+                $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function (e) {
+                    if (e.currentTarget != e.target) {
+                        return;
+                    }
+                    e.stopPropagation();
+                    e.preventDefault();
+                    if ($("#modalbox").data('complete') && $("#modalbox").data('complete') == 1) {
+                        closeModalBox();
+                    } else {
+                        for (i = 0; i < 3; i++) {
+                            $('#modalbox > div').fadeTo('slow', 0.5).fadeTo('slow', 1.0);
+                        }
+                    }
+                    return false;
+                });
+
+                LoadDataTablesScripts(TestTable1);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", yelp, false);
+
+        function rowDataPrepare(item){
+            var id = item.id;
+            var icon = item.icon ? item.icon: "img/preloader.gif";
+            var backgroundColor = item.icon ? item.backgroundColor: "#FFFFFF";
+            var status = item.status;
+            var current_version = item.current_version;
+
+            item.icon = "<img src='" + icon + "' style='background-color: " + backgroundColor + "'>";
+            item.name = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-detail?id=' + id + '">' + item.name + '</a>';
+            if (!item.current_version) {
+                item.current_version = "{{ 'Undefined'|trans }}"
+            }
+
+            var disable_current_version = '';
+            if (!item.rerendered) {
+                disable_current_version = ' disabled="disabled" ';
+            }
+
+            if (item.installed) {
+                item.current_version += ' ' + (item.available_version != item.current_version ? '&nbsp;&nbsp;&nbsp;<a '+disable_current_version+' href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-detail?id=' + id + '">{{ 'Update'|trans }}</a>' : '');
+                item.status = item.status == 1 ? "{{ 'Active'|trans }}" : "{{ 'Disabled'|trans }}";
+            } else {
+                item.current_version = ' ' + '<a '+disable_current_version+' href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-detail?id=' + id + '">{{ 'Install'|trans }}</a>';
+                item.status = "{{ 'Not installed'|trans }}";
+            }
+
+            if (!item.available_version){
+                item.available_version = '...';
+            }
+
+            item.operations = "<div class='col-xs-3 col-sm-8'>\n\
+                                    <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                        <i class='pull-right fa fa-cog'></i>\n\
+                                    </a>\n\
+                                    <ul class='dropdown-menu pull-right'>\n\
+                                        <li>\n\
+                                            <a class='smart-application-toggle-state' " + (!item.installed ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-toggle-state' data-type='" + item.type + "' data-id='" + id + "' data-status='" + (status == '1' ? '0': '1') + "'>\n\
+                                                <span> " + (status != 1 ? "{{ 'Activate'|trans }}" : "{{ 'Deactivate'|trans }}") + " </span>\n\
+                                            </a>\n\
+                                        </li>\n\
+                                        <li>\n\
+                                            <a class='main_ajax' " + (status == 1 ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-delete' data-id='" + id + "'>\n\
+                                                <span> {{ 'Delete'|trans }} </span>\n\
+                                            </a>\n\
+                                        </li>\n\
+                                        <li>\n\
+                                            <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-list-json' data-id='" + id + "' data-alias='" + item.alias + "' data-version='"+ current_version +"'>\n\
+                                                <span> {{ 'Details'|trans }} </span>\n\
+                                            </a>\n\
+                                        </li>\n\
+                                    </ul>\n\
+                                </div>";
+            return item;
+        }
+
+        function closeModalBox() {
+            $("#modalbox").hide();
+            $('#modalbox').find('.modal-header-name span').removeClass('txt-danger').empty();
+            $('#modalbox').find('.devoops-modal-inner').empty();
+            $('#modalbox').find('.devoops-modal-bottom').empty();
+        }
+
+        function showModalBox() {
+            $('#modalbox').find('.modal-header-name span').removeClass('txt-danger').text('{{ 'Wait'|trans }}...');
+            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Request is being processed'|trans }}...</span>');
+            $('#modalbox').find('.devoops-modal-bottom').empty();
+            $("#modalbox").show();
+        }
+
+    </script>
+
+{% endblock %}
