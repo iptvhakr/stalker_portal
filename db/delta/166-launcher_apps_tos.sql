@@ -140,4 +140,7 @@ WHERE `alias` = 'launcher_apps';
 
 --//@UNDO
 
+DELETE FROM `apps_tos` WHERE `alias` = 'launcher_apps';
+ALTER TABLE `apps_tos` DROP COLUMN `alias`;
+
 --
