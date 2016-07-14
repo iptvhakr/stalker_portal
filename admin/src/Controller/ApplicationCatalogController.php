@@ -138,7 +138,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         $this->app['dropdownAttribute'] = $attribute;
 
         $this->app['app_info'] = $this->smart_application_version_list_json();
-        $this->app['breadcrumbs']->addItem($this->setLocalization('SmartLauncher applications'), 'application-catalog/smart-application-list');
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Applications of Stalker 5x'), 'application-catalog/smart-application-list');
         $this->app['breadcrumbs']->addItem(!empty($this->app['app_info']['info']['name']) ? $this->app['app_info']['info']['name'] : $this->setLocalization('Undefined'));
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));

@@ -1836,13 +1836,18 @@
 
         var setMediaInfo = function(data){
             cleanMediaInfo();
+            if (data.id && $('#file_id').length == 0) {
+                $("#video_id").before("<input type='hidden' class='own_fields form-control' name='id' id='file_id' value='' readonly='readonly'>");
+            }
             if($('#file_id').length && (!$('#file_id').val() || $('#file_id').val() == '0')) {
                 $('#file_id').val(data.id ? data.id: 0);
             }
             if (data.data) {
                 $("#media_info").addClass('filled').find('button').removeClass('disabled').prop('disabled', false).removeAttr('disabled');
                 var infoField = $($("#media_info_info").html()).prependTo("#media_info");
-                infoField.addClass('bg-default').addClass('txt-default').text("{{ 'Media info from source'|trans }}");
+                if (!data.error){
+                    infoField.addClass('bg-default').addClass('txt-default').text("{{ 'Media info from source'|trans }}");
+                }
                 if (data.data.datatable) {
                     $("#" + data.data.datatable).DataTable().ajax.reload();
                     delete data.data.datatable;
@@ -1867,7 +1872,7 @@
         };
 
         var setMediaInfoError = function(data) {
-            cleanMediaInfo();
+            setMediaInfo(data);
             $("#media_info").addClass('filled');
             var infoField = $($("#media_info_info").html()).prependTo("#media_info");
             infoField.addClass('bg-warning').addClass('txt-danger').text("{{ 'No media info'|trans }}");
