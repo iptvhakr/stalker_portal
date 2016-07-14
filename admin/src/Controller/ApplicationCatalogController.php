@@ -35,11 +35,12 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
 
-        $tos = $this->db->getTOS();
+        $tos = $this->db->getTOS(1);
         if (empty($tos)) {
             return $this->app['twig']->render('ApplicationCatalog_index.twig');
         } elseif (empty($tos[0]['accepted'])) {
             $this->app['tos'] = $tos[0];
+            $this->app['tos_id'] = 1;
             return $this->app['twig']->render('ApplicationCatalog_tos.twig');
         }
 
@@ -54,6 +55,15 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
 
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
+        }
+
+        $tos = $this->db->getTOS(2);
+        if (empty($tos)) {
+            return $this->app['twig']->render('ApplicationCatalog_index.twig');
+        } elseif (empty($tos[0]['accepted'])) {
+            $this->app['tos'] = $tos[0];
+            $this->app['tos_id'] = 2;
+            return $this->app['twig']->render('ApplicationCatalog_tos.twig');
         }
 
         $attribute = $this->getSmartApplicationListDropdownAttribute();
@@ -97,11 +107,17 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
 
-        if ($this->app['userlogin'] === 'admin' && !empty($this->postData['accepted'])){
-            $this->db->setAcceptedTOS();
+        if ($this->app['userlogin'] === 'admin' && !empty($this->postData['accepted']) && !empty($this->postData['tos_id'])){
+            $this->db->setAcceptedTOS((int)$this->postData['tos_id']);
         }
 
-        return $this->app->redirect($this->workURL . '/application-catalog');
+        if (!empty($this->postData['tos_id'])) {
+            $redirect_path = "/application-catalog" . (((int)$this->postData['tos_id']) == 2 ? '/smart-application-list': '/application-list');
+        } else {
+            $redirect_path = "/";
+        }
+
+        return $this->app->redirect($this->workURL . $redirect_path);
     }
 
     public function application_detail(){

@@ -8,12 +8,12 @@ class ApplicationCatalogModel extends \Model\BaseStalkerModel {
         parent::__construct();
     }
 
-    public function getTOS(){
-        return $this->mysqlInstance->from('apps_tos')->get()->all();
+    public function getTOS($id){
+        return $this->mysqlInstance->from('apps_tos')->where(array('id' => $id))->get()->all();
     }
 
-    public function setAcceptedTOS(){
-        return $this->mysqlInstance->update('apps_tos', array('accepted'=>1));
+    public function setAcceptedTOS($id){
+        return $this->mysqlInstance->update('apps_tos', array('accepted'=>1), array('id' => $id));
     }
 
     public function getApplication($where){
