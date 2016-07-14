@@ -287,21 +287,21 @@ class SmartLauncherAppsManager
         }
 
         $update_data = array('current_version' => $info['version']);
+        $update_data['type'] = isset($info['config']['type']) ? $info['config']['type'] : null;
 
         if (empty($app['alias'])) {
             $update_data['alias'] = $info['name'];
         }
 
         if (empty($app['name'])) {
-            $update_data['name'] = isset($info['config']['name']) ? $info['config']['name'] : $info['name'];
+            $update_data['name'] = $update_data['type'] == 'app' && isset($info['config']['name']) ? $info['config']['name'] : $info['name'];
         }
 
         if (empty($app['description'])) {
-            $update_data['description'] = isset($info['config']['description']) ? $info['config']['description'] : '';
+            $update_data['description'] = isset($info['config']['description']) ? $info['config']['description'] : (isset($info['description']) ? $info['description'] : '');
         }
 
         $update_data['author']    = isset($info['author']) ? $info['author'] : '';
-        $update_data['type']      = isset($info['config']['type']) ? $info['config']['type'] : null;
         $update_data['category']  = isset($info['config']['category']) ? $info['config']['category'] : null;
         $update_data['is_unique'] = isset($info['config']['unique']) && $info['config']['unique'] ? 1 : 0;
         $update_data['status'] = 1;
@@ -314,16 +314,20 @@ class SmartLauncherAppsManager
             $update_data['updated'] = 'NOW()';
         }
 
-        $localization = $this->getAppLocalization($app_id, $info['version']);
-
-        if (!empty($localization)){
-            $update_data['localization'] = json_encode($localization);
-        }
-
         Mysql::getInstance()->update('launcher_apps',
             $update_data,
             array('id' => $app_id)
         );
+
+        $localization = $this->getAppLocalization($app_id, $info['version']);
+
+        if (!empty($localization)){
+
+            Mysql::getInstance()->update('launcher_apps',
+                array('localization' => json_encode($localization)),
+                array('id' => $app_id)
+            );
+        }
 
         return $result;
     }
