@@ -926,11 +926,13 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
 
         $response['action'] = 'manageList';
 
-        if ($this->db->deleteSmartApplication($this->postData)) {
+        try{
+            $apps = new \SmartLauncherAppsManager();
+            $apps->deleteApp($this->postData['id']);
             $response['error'] = $error = '';
             $response['msg'] = $this->setLocalization('Application has been deleted');
-        } else {
-            $response['error'] = $error = $this->setLocalization('Failed to delete application.');
+        } catch (\SmartLauncherAppsManagerException $e) {
+            $response['error'] = $error = $this->setLocalization('Failed to delete application.') . $e->getMessage();
         }
 
         $response = $this->generateAjaxResponse($response);

@@ -113,6 +113,7 @@ foreach ($installed_apps as $app) {
         }
     }
 
+
     if ($app['config']){
 
         $app['config']['version'] = $app['current_version'];
@@ -124,6 +125,13 @@ foreach ($installed_apps as $app) {
             .'/'.$app['current_version'].'/app/';
 
         $app['config']['dependencies'] = $app_manager->getFullAppDependencies($app['id']);
+
+        if ($app['localization']){
+
+            $app['localization'] = json_decode($app['localization'], true);
+            $app['config']['name'] = isset($app['localization'][$language]['name']) ? $app['localization'][$language]['name'] : $app['config']['name'];
+            $app['config']['description'] = isset($app['localization'][$language]['description']) ? $app['localization'][$language]['description'] : $app['config']['description'];
+        }
 
         $user_apps[] = $app['config'];
     }
