@@ -292,49 +292,55 @@
     {% macro get_datepicker_js_script(notDateLimit) %}
         var datePickerOpt = {
         {% if not(notDateLimit is defined) %}
-        maxDate: 0,
+            maxDate: 0,
         {% endif %}
         {% if (attribute(app, 'minDatepickerDate') is defined) and not(notDateLimit is defined) %}
-        minDate: new Date({{ app['minDatepickerDate'] }} * 1000),
+            minDate: new Date({{ app['minDatepickerDate'] }} * 1000),
         {% endif %}
-        numberOfMonths: 1,
-        language: 'ru',
-        dateFormat: 'dd/mm/yy',
-        dayNamesMin: [
-        '{{ 'Sun'|trans }}',
-        '{{ 'Mon'|trans }}',
-        '{{ 'Tue'|trans }}',
-        '{{ 'Wed'|trans }}',
-        '{{ 'Thu'|trans }}',
-        '{{ 'Fri'|trans }}',
-        '{{ 'Sat'|trans }}'
-        ],
-        monthNames: [
-        '{{ 'January'|trans }}',
-        '{{ 'February'|trans }}',
-        '{{ 'March'|trans }}',
-        '{{ 'April'|trans }}',
-        '{{ 'May'|trans }}',
-        '{{ 'June'|trans }}',
-        '{{ 'July'|trans }}',
-        '{{ 'August'|trans }}',
-        '{{ 'September'|trans }}',
-        '{{ 'October'|trans }}',
-        '{{ 'November'|trans }}',
-        '{{ 'December'|trans }}'
-        ],
-        onClose: function(){}
+            numberOfMonths: 1,
+            language: 'ru',
+            dateFormat: 'dd/mm/yy',
+            dayNamesMin: [
+                '{{ 'Sun'|trans }}',
+                '{{ 'Mon'|trans }}',
+                '{{ 'Tue'|trans }}',
+                '{{ 'Wed'|trans }}',
+                '{{ 'Thu'|trans }}',
+                '{{ 'Fri'|trans }}',
+                '{{ 'Sat'|trans }}'
+            ],
+            monthNames: [
+                '{{ 'January'|trans }}',
+                '{{ 'February'|trans }}',
+                '{{ 'March'|trans }}',
+                '{{ 'April'|trans }}',
+                '{{ 'May'|trans }}',
+                '{{ 'June'|trans }}',
+                '{{ 'July'|trans }}',
+                '{{ 'August'|trans }}',
+                '{{ 'September'|trans }}',
+                '{{ 'October'|trans }}',
+                '{{ 'November'|trans }}',
+                '{{ 'December'|trans }}'
+            ],
+            onClose: function(){}
         };
         datePickerOpt.onClose = function (selectedDate) {
         $("#datepicker_to").datepicker("option", "minDate", selectedDate);
-        $('#datatable-1').DataTable().ajax.reload();
+            $('#datatable-1').DataTable().ajax.reload();
         };
+        if (typeof(datePickerOptAlt) != 'undefined') {
+             $.extend(datePickerOpt, datePickerOptAlt);
+        }
         $("#datepicker_from").datepicker(datePickerOpt);
 
         datePickerOpt.onClose = function (selectedDate) {
         $("#datepicker_from").datepicker("option", "maxDate", selectedDate);
-        $('#datatable-1').DataTable().ajax.reload();
+            $('#datatable-1').DataTable().ajax.reload();
         };
+        if (typeof(datePickerOptAlt) != 'undefined') {
+            $.extend(datePickerOpt, datePickerOptAlt);
+        }
         $("#datepicker_to").datepicker(datePickerOpt);
     {% endmacro %}
 
