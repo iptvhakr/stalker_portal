@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-07-14 18:31+0300\n"
-"PO-Revision-Date: 2016-07-14 18:32+0300\n"
+"POT-Creation-Date: 2016-07-15 10:50+0300\n"
+"PO-Revision-Date: 2016-07-15 10:50+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -1073,6 +1073,7 @@ msgid "Day"
 msgstr "Day"
 
 #: ../../../../admin/src/Controller/EventsController.php:74
+#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1230
 #: ../../../administrator/userlog.php:168
 #: ../../../administrator/all_userlog.php:163
 #: ../../../administrator/users.php:207 ../../../administrator/profile.php:212
@@ -1082,6 +1083,7 @@ msgid "January"
 msgstr "January"
 
 #: ../../../../admin/src/Controller/EventsController.php:75
+#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1234
 #: ../../../administrator/userlog.php:169
 #: ../../../administrator/all_userlog.php:164
 #: ../../../administrator/users.php:208 ../../../administrator/profile.php:213
@@ -1091,6 +1093,7 @@ msgid "February"
 msgstr "February"
 
 #: ../../../../admin/src/Controller/EventsController.php:76
+#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1238
 #: ../../../administrator/userlog.php:170
 #: ../../../administrator/all_userlog.php:165
 #: ../../../administrator/users.php:209 ../../../administrator/profile.php:214
@@ -1100,6 +1103,7 @@ msgid "March"
 msgstr "March"
 
 #: ../../../../admin/src/Controller/EventsController.php:77
+#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1242
 #: ../../../administrator/userlog.php:171
 #: ../../../administrator/all_userlog.php:166
 #: ../../../administrator/users.php:210 ../../../administrator/profile.php:215
@@ -1109,6 +1113,7 @@ msgid "April"
 msgstr "April"
 
 #: ../../../../admin/src/Controller/EventsController.php:78
+#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1246
 #: ../../../adm/js/js_translate.php:50 ../../../lib/gismeteo.class.php:34
 #: ../../../administrator/userlog.php:172
 #: ../../../administrator/all_userlog.php:167
@@ -1119,6 +1124,7 @@ msgid "May"
 msgstr "May"
 
 #: ../../../../admin/src/Controller/EventsController.php:79
+#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1250
 #: ../../../administrator/userlog.php:173
 #: ../../../administrator/all_userlog.php:168
 #: ../../../administrator/users.php:212 ../../../administrator/profile.php:217
@@ -1128,6 +1134,7 @@ msgid "June"
 msgstr "June"
 
 #: ../../../../admin/src/Controller/EventsController.php:80
+#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1254
 #: ../../../administrator/userlog.php:174
 #: ../../../administrator/all_userlog.php:169
 #: ../../../administrator/users.php:213 ../../../administrator/profile.php:218
@@ -1137,6 +1144,7 @@ msgid "July"
 msgstr "July"
 
 #: ../../../../admin/src/Controller/EventsController.php:81
+#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1258
 #: ../../../administrator/userlog.php:175
 #: ../../../administrator/all_userlog.php:170
 #: ../../../administrator/users.php:214 ../../../administrator/profile.php:219
@@ -1146,6 +1154,7 @@ msgid "August"
 msgstr "August"
 
 #: ../../../../admin/src/Controller/EventsController.php:82
+#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1262
 #: ../../../administrator/userlog.php:176
 #: ../../../administrator/all_userlog.php:171
 #: ../../../administrator/users.php:215 ../../../administrator/profile.php:220
@@ -1155,6 +1164,7 @@ msgid "September"
 msgstr "September"
 
 #: ../../../../admin/src/Controller/EventsController.php:83
+#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1266
 #: ../../../administrator/userlog.php:177
 #: ../../../administrator/all_userlog.php:172
 #: ../../../administrator/users.php:216 ../../../administrator/profile.php:221
@@ -1164,6 +1174,7 @@ msgid "October"
 msgstr "October"
 
 #: ../../../../admin/src/Controller/EventsController.php:84
+#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1270
 #: ../../../administrator/userlog.php:178
 #: ../../../administrator/all_userlog.php:173
 #: ../../../administrator/users.php:217 ../../../administrator/profile.php:222
@@ -1173,6 +1184,7 @@ msgid "November"
 msgstr "November"
 
 #: ../../../../admin/src/Controller/EventsController.php:85
+#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1274
 #: ../../../administrator/userlog.php:179
 #: ../../../administrator/all_userlog.php:174
 #: ../../../administrator/users.php:218 ../../../administrator/profile.php:223
@@ -1182,6 +1194,7 @@ msgid "December"
 msgstr "December"
 
 #: ../../../../admin/src/Controller/EventsController.php:89
+#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1204
 #: ../../../lib/epg.class.php:877 ../../../lib/gismeteo.class.php:32
 #: ../../../administrator/profile.php:202
 #: ../../../administrator/add_video.php:536
@@ -1189,6 +1202,7 @@ msgid "Mon"
 msgstr "Mon"
 
 #: ../../../../admin/src/Controller/EventsController.php:90
+#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1208
 #: ../../../lib/epg.class.php:877 ../../../lib/gismeteo.class.php:32
 #: ../../../administrator/profile.php:203
 #: ../../../administrator/add_video.php:537
@@ -1196,6 +1210,7 @@ msgid "Tue"
 msgstr "Tue"
 
 #: ../../../../admin/src/Controller/EventsController.php:91
+#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1212
 #: ../../../lib/epg.class.php:877 ../../../lib/gismeteo.class.php:32
 #: ../../../administrator/profile.php:204
 #: ../../../administrator/add_video.php:538
@@ -1203,6 +1218,7 @@ msgid "Wed"
 msgstr "Wed"
 
 #: ../../../../admin/src/Controller/EventsController.php:92
+#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1216
 #: ../../../lib/epg.class.php:877 ../../../lib/gismeteo.class.php:32
 #: ../../../administrator/profile.php:205
 #: ../../../administrator/add_video.php:539
@@ -1210,6 +1226,7 @@ msgid "Thu"
 msgstr "Thu"
 
 #: ../../../../admin/src/Controller/EventsController.php:93
+#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1220
 #: ../../../lib/epg.class.php:877 ../../../lib/gismeteo.class.php:32
 #: ../../../administrator/profile.php:206
 #: ../../../administrator/add_video.php:540
@@ -1217,6 +1234,7 @@ msgid "Fri"
 msgstr "Fri"
 
 #: ../../../../admin/src/Controller/EventsController.php:94
+#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1224
 #: ../../../lib/epg.class.php:877 ../../../lib/gismeteo.class.php:32
 #: ../../../administrator/profile.php:207
 #: ../../../administrator/add_video.php:541
@@ -1224,6 +1242,7 @@ msgid "Sat"
 msgstr "Sat"
 
 #: ../../../../admin/src/Controller/EventsController.php:95
+#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1200
 #: ../../../lib/epg.class.php:877 ../../../lib/gismeteo.class.php:32
 #: ../../../administrator/profile.php:201
 #: ../../../administrator/add_video.php:535
@@ -1231,7 +1250,7 @@ msgid "Sun"
 msgstr "Sun"
 
 #: ../../../../admin/src/Controller/EventsController.php:153
-#: ../../../../admin/json_menu/menu.json:209
+#: ../../../../admin/json_menu/menu.json:211
 msgid "Users events"
 msgstr "Users events"
 
@@ -1300,6 +1319,11 @@ msgstr "Do not yet running"
 #: ../../../../admin/src/Controller/EventsController.php:587
 #: ../../../../admin/src/Controller/VideoClubController.php:1895
 #: ../../../../admin/src/Controller/NewVideoClubController.php:2712
+#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:213
+#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:312
+#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:392
+#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:449
+#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:768
 #: ../../../lib/ajaxresponse.class.php:49
 #: ../../../administrator/subscribe.php:362
 #: ../../../administrator/subscribe.php:365
@@ -1310,6 +1334,7 @@ msgstr "All"
 
 #: ../../../../admin/src/Controller/EventsController.php:588
 #: ../../../../admin/src/Controller/AdminsController.php:869
+#: ../../../../admin/resources/cache/twig/d3/d3bede9dc1a6c5ad1d8af9026deaf0a34c83ea209e5813a51ecffd5d8a23cd11.php:654
 #: ../../../administrator/playlists.php:157
 #: ../../../administrator/events.php:428
 #: ../../../administrator/profile.php:494
@@ -1430,8 +1455,8 @@ msgstr "End"
 
 #: ../../../../admin/src/Controller/EventsController.php:876
 #: ../../../administrator/add_video.php:633
-#: ../../../../admin/json_menu/menu.json:48
-#: ../../../../admin/json_menu/menu.json:214
+#: ../../../../admin/json_menu/menu.json:49
+#: ../../../../admin/json_menu/menu.json:216
 msgid "Schedule"
 msgstr "Schedule"
 
@@ -1447,7 +1472,7 @@ msgstr "Last run"
 #: ../../../../admin/src/Controller/VideoClubController.php:134
 #: ../../../../admin/src/Controller/NewVideoClubController.php:110
 #: ../../../../admin/src/Controller/NewVideoClubController.php:184
-#: ../../../../admin/json_menu/menu.json:43
+#: ../../../../admin/json_menu/menu.json:44
 msgid "Movie list"
 msgstr "Movie list"
 
@@ -1466,7 +1491,7 @@ msgstr "Edit movie"
 #: ../../../../admin/src/Controller/NewVideoClubController.php:233
 #: ../../../../admin/src/Controller/NewVideoClubController.php:268
 #: ../../../administrator/add_video.php:633
-#: ../../../../admin/json_menu/menu.json:53
+#: ../../../../admin/json_menu/menu.json:54
 msgid "Advertising"
 msgstr "Advertising"
 
@@ -1484,7 +1509,7 @@ msgstr "Edit commercial"
 #: ../../../../admin/src/Controller/VideoClubController.php:277
 #: ../../../../admin/src/Controller/NewVideoClubController.php:299
 #: ../../../../admin/src/Controller/NewVideoClubController.php:327
-#: ../../../../admin/json_menu/menu.json:58
+#: ../../../../admin/json_menu/menu.json:59
 msgid "Moderators"
 msgstr "Moderators"
 
@@ -1748,7 +1773,7 @@ msgstr "Date"
 #: ../../../../admin/src/Controller/NewVideoClubController.php:3126
 #: ../../../../admin/src/Controller/KaraokeController.php:343
 #: ../../../administrator/tasks.php:61 ../../../administrator/tasks.php:67
-#: ../../../../admin/json_menu/menu.json:249
+#: ../../../../admin/json_menu/menu.json:251
 #: ../../../../admin/json_menu/top_menu.json:10
 msgid "Tasks"
 msgstr "Tasks"
@@ -1974,7 +1999,7 @@ msgid "Compatible"
 msgstr "Compatible"
 
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:137
-#: ../../../../admin/json_menu/menu.json:191
+#: ../../../../admin/json_menu/menu.json:193
 msgid "Stalker applications"
 msgstr "Stalker applications"
 
@@ -1984,7 +2009,7 @@ msgid "Undefined"
 msgstr "Undefined"
 
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:157
-#: ../../../../admin/json_menu/menu.json:196
+#: ../../../../admin/json_menu/menu.json:198
 msgid "Applications of Stalker 5x"
 msgstr "Applications of Stalker 5x"
 
@@ -2143,7 +2168,7 @@ msgstr "Automatic update"
 #: ../../../../admin/src/Controller/AudioClubController.php:78
 #: ../../../../admin/src/Controller/AudioClubController.php:115
 #: ../../../lib/audioclub.class.php:18 ../../../lang/stb.php:549
-#: ../../../../admin/json_menu/menu.json:86
+#: ../../../../admin/json_menu/menu.json:87
 msgid "Albums"
 msgstr "Albums"
 
@@ -2185,6 +2210,7 @@ msgstr "Country"
 #: ../../../../admin/src/Controller/AudioClubController.php:1265
 #: ../../../../admin/src/Controller/AudioClubController.php:1430
 #: ../../../../admin/src/Controller/NewVideoClubController.php:3273
+#: ../../../../admin/resources/cache/twig/c9/c9906c0cd89e3f7d94760200963acf6e3d729c3ba7b9c62f280e2f3ed683a756.php:197
 #: ../../../administrator/audio_album.php:431
 #: ../../../administrator/audio_track.php:249
 #: ../../../administrator/audio_track.php:327
@@ -2278,7 +2304,7 @@ msgstr "Movies"
 #: ../../../administrator/userlog.php:273
 #: ../../../administrator/stat_moderators.php:239
 #: ../../../administrator/users.php:169
-#: ../../../../admin/json_menu/menu.json:113
+#: ../../../../admin/json_menu/menu.json:114
 msgid "Karaoke"
 msgstr "Karaoke"
 
@@ -2322,12 +2348,12 @@ msgid "TV"
 msgstr "TV"
 
 #: ../../../../admin/src/Controller/StatisticsController.php:202
-#: ../../../../admin/json_menu/menu.json:278
+#: ../../../../admin/json_menu/menu.json:280
 msgid "Humor"
 msgstr "Humor"
 
 #: ../../../../admin/src/Controller/StatisticsController.php:280
-#: ../../../../admin/json_menu/menu.json:326
+#: ../../../../admin/json_menu/menu.json:328
 msgid "Complaints statistics"
 msgstr "Complaints statistics"
 
@@ -2545,7 +2571,7 @@ msgstr "List of tasks in the category"
 
 #: ../../../../admin/src/Controller/TasksController.php:188
 #: ../../../../admin/src/Controller/TasksController.php:259
-#: ../../../../admin/json_menu/menu.json:255
+#: ../../../../admin/json_menu/menu.json:257
 msgid "Tasks list"
 msgstr "Tasks list"
 
@@ -2623,6 +2649,7 @@ msgstr "Volume"
 #: ../../../../admin/src/Controller/AdminsController.php:59
 #: ../../../../admin/src/Controller/AdminsController.php:348
 #: ../../../../admin/src/Controller/AdminsController.php:571
+#: ../../../../admin/resources/cache/twig/d3/d3bede9dc1a6c5ad1d8af9026deaf0a34c83ea209e5813a51ecffd5d8a23cd11.php:179
 msgid "Empty"
 msgstr "Empty"
 
@@ -2641,7 +2668,7 @@ msgstr "STB statuses report"
 
 #: ../../../../admin/src/Controller/UsersController.php:316
 #: ../../../../admin/src/Controller/UsersController.php:391
-#: ../../../../admin/json_menu/menu.json:158
+#: ../../../../admin/json_menu/menu.json:159
 msgid "Users list"
 msgstr "Users list"
 
@@ -2654,7 +2681,7 @@ msgid "Edit user"
 msgstr "Edit user"
 
 #: ../../../../admin/src/Controller/UsersController.php:414
-#: ../../../../admin/json_menu/menu.json:168
+#: ../../../../admin/json_menu/menu.json:169
 msgid "User groups"
 msgstr "User groups"
 
@@ -2724,6 +2751,7 @@ msgid "IPTV channels"
 msgstr "IPTV channels"
 
 #: ../../../../admin/src/Controller/UsersController.php:2061
+#: ../../../../admin/json_menu/menu.json:37
 msgid "Video club"
 msgstr "Video club"
 
@@ -2780,6 +2808,8 @@ msgid "uid"
 msgstr "Uid"
 
 #: ../../../../admin/src/Controller/UsersController.php:2196
+#: ../../../../admin/resources/cache/twig/d8/d8c2e7b800ee770dbebff1271f394b12b1547f2500ccf7ffdc1bf6d7dfbfb519.php:150
+#: ../../../../admin/resources/cache/twig/d8/d8c2e7b800ee770dbebff1271f394b12b1547f2500ccf7ffdc1bf6d7dfbfb519.php:311
 msgid "Actions"
 msgstr "Actions"
 
@@ -2862,7 +2892,7 @@ msgstr "Optional"
 
 #: ../../../../admin/src/Controller/TariffsController.php:80
 #: ../../../../admin/src/Controller/TariffsController.php:130
-#: ../../../../admin/json_menu/menu.json:135
+#: ../../../../admin/json_menu/menu.json:136
 msgid "Service packages"
 msgstr "Service packages"
 
@@ -2876,7 +2906,7 @@ msgstr "Edit package"
 
 #: ../../../../admin/src/Controller/TariffsController.php:160
 #: ../../../../admin/src/Controller/TariffsController.php:206
-#: ../../../../admin/json_menu/menu.json:140
+#: ../../../../admin/json_menu/menu.json:141
 msgid "Tariff plans"
 msgstr "Tariff plans"
 
@@ -2929,7 +2959,7 @@ msgstr "Package"
 #: ../../../../admin/src/Controller/TariffsController.php:847
 #: ../../../tools/misctranslations.php:444 ../../../administrator/users.php:93
 #: ../../../administrator/users.php:99 ../../../administrator/index.php:159
-#: ../../../../admin/json_menu/menu.json:152
+#: ../../../../admin/json_menu/menu.json:153
 msgid "Users"
 msgstr "Users"
 
@@ -2959,11 +2989,13 @@ msgid "Initiator role"
 msgstr "Initiator role"
 
 #: ../../../../admin/src/Controller/AdminsController.php:106
-#: ../../../../admin/json_menu/menu.json:237
+#: ../../../../admin/resources/cache/twig/d3/d3bede9dc1a6c5ad1d8af9026deaf0a34c83ea209e5813a51ecffd5d8a23cd11.php:520
+#: ../../../../admin/json_menu/menu.json:239
 msgid "Groups"
 msgstr "Groups"
 
 #: ../../../../admin/src/Controller/AdminsController.php:107
+#: ../../../../admin/resources/cache/twig/d8/d8c2e7b800ee770dbebff1271f394b12b1547f2500ccf7ffdc1bf6d7dfbfb519.php:27
 msgid "permissions for group administrators "
 msgstr "permissions for group administrators "
 
@@ -3039,6 +3071,166 @@ msgstr "Users of reseller"
 #: ../../../../admin/src/Controller/AdminsController.php:937
 msgid "Maximum number of users"
 msgstr "Maximum number of users"
+
+#: ../../../../admin/resources/cache/twig/c9/c9906c0cd89e3f7d94760200963acf6e3d729c3ba7b9c62f280e2f3ed683a756.php:173
+msgid "Powered by"
+msgstr "Powered by"
+
+#: ../../../../admin/resources/cache/twig/c9/c9906c0cd89e3f7d94760200963acf6e3d729c3ba7b9c62f280e2f3ed683a756.php:177
+msgid "IPTV/OTT Set-Top Boxes"
+msgstr "IPTV/OTT Set-Top Boxes"
+
+#: ../../../../admin/resources/cache/twig/c9/c9906c0cd89e3f7d94760200963acf6e3d729c3ba7b9c62f280e2f3ed683a756.php:181
+msgid "Contact support"
+msgstr "Contact support"
+
+#: ../../../../admin/resources/cache/twig/c9/c9906c0cd89e3f7d94760200963acf6e3d729c3ba7b9c62f280e2f3ed683a756.php:186
+msgid "Documentation"
+msgstr "Documentation"
+
+#: ../../../../admin/resources/cache/twig/c9/c9906c0cd89e3f7d94760200963acf6e3d729c3ba7b9c62f280e2f3ed683a756.php:301
+msgid "Available new version"
+msgstr "Available new version"
+
+#: ../../../../admin/resources/cache/twig/c9/c9906c0cd89e3f7d94760200963acf6e3d729c3ba7b9c62f280e2f3ed683a756.php:326
+msgid "Technical questions form"
+msgstr "Technical questions form"
+
+#: ../../../../admin/resources/cache/twig/d8/d8c2e7b800ee770dbebff1271f394b12b1547f2500ccf7ffdc1bf6d7dfbfb519.php:27
+#: ../../../../admin/resources/cache/twig/d3/d3bede9dc1a6c5ad1d8af9026deaf0a34c83ea209e5813a51ecffd5d8a23cd11.php:27
+#: ../../../administrator/index.php:171
+#: ../../../administrator/administrators.php:100
+#: ../../../administrator/administrators.php:143
+#: ../../../../admin/json_menu/menu.json:228
+msgid "Administrators"
+msgstr "Administrators"
+
+#: ../../../../admin/resources/cache/twig/d8/d8c2e7b800ee770dbebff1271f394b12b1547f2500ccf7ffdc1bf6d7dfbfb519.php:88
+#: ../../../../admin/resources/cache/twig/d8/d8c2e7b800ee770dbebff1271f394b12b1547f2500ccf7ffdc1bf6d7dfbfb519.php:217
+msgid "Viewing"
+msgstr "Viewing"
+
+#: ../../../../admin/resources/cache/twig/d8/d8c2e7b800ee770dbebff1271f394b12b1547f2500ccf7ffdc1bf6d7dfbfb519.php:124
+#: ../../../../admin/resources/cache/twig/d8/d8c2e7b800ee770dbebff1271f394b12b1547f2500ccf7ffdc1bf6d7dfbfb519.php:272
+msgid "Editing"
+msgstr "Editing"
+
+#: ../../../../admin/resources/cache/twig/d8/d8c2e7b800ee770dbebff1271f394b12b1547f2500ccf7ffdc1bf6d7dfbfb519.php:366
+#: ../../../../admin/resources/cache/twig/d3/d3bede9dc1a6c5ad1d8af9026deaf0a34c83ea209e5813a51ecffd5d8a23cd11.php:137
+#: ../../../administrator/tariffs.php:94
+#: ../../../administrator/setting_common.php:198
+#: ../../../administrator/subscribe.php:377
+#: ../../../administrator/audio_album.php:604
+#: ../../../administrator/playlists.php:54
+#: ../../../administrator/testers.php:71
+#: ../../../administrator/audio_year.php:236
+#: ../../../administrator/other_city_info.php:244
+#: ../../../administrator/events.php:497
+#: ../../../administrator/audio_performer.php:236
+#: ../../../administrator/help_city_info.php:234
+#: ../../../administrator/city_info.php:248
+#: ../../../administrator/add_itv.php:1809
+#: ../../../administrator/audio_track.php:351
+#: ../../../administrator/anecdote.php:250
+#: ../../../administrator/playlist.php:69
+#: ../../../administrator/audio_language.php:236
+#: ../../../administrator/admin_groups.php:97
+#: ../../../administrator/audio_genre.php:236
+#: ../../../administrator/stream_zones.php:90
+#: ../../../administrator/stbgroups.php:55
+#: ../../../administrator/storages.php:110
+#: ../../../administrator/add_video.php:2140
+#: ../../../administrator/add_moderator_mac.php:271
+#: ../../../administrator/add_karaoke.php:843
+#: ../../../administrator/services_packages.php:125
+#: ../../../administrator/epg_setting.php:77
+#: ../../../administrator/administrators.php:92
+#: ../../../administrator/add_epg.php:412
+#: ../../../administrator/stream_servers.php:89
+#: ../../../administrator/stbgroup_members.php:63
+#: ../../../administrator/vclub_ad.php:236
+#: ../../../administrator/add_radio.php:279
+msgid "Save"
+msgstr "Save"
+
+#: ../../../../admin/resources/cache/twig/d8/d8c2e7b800ee770dbebff1271f394b12b1547f2500ccf7ffdc1bf6d7dfbfb519.php:374
+#: ../../../../admin/resources/cache/twig/d3/d3bede9dc1a6c5ad1d8af9026deaf0a34c83ea209e5813a51ecffd5d8a23cd11.php:141
+#: ../../../../admin/resources/cache/twig/d3/d3bede9dc1a6c5ad1d8af9026deaf0a34c83ea209e5813a51ecffd5d8a23cd11.php:703
+#: ../../../administrator/add_itv.php:1809
+#: ../../../administrator/add_video.php:585 ../../../lang/stb.php:263
+#: ../../../lang/stb.php:300
+msgid "Cancel"
+msgstr "Cancel"
+
+#: ../../../../admin/resources/cache/twig/d3/d3bede9dc1a6c5ad1d8af9026deaf0a34c83ea209e5813a51ecffd5d8a23cd11.php:27
+msgid "groups list"
+msgstr "groups list"
+
+#: ../../../../admin/resources/cache/twig/d3/d3bede9dc1a6c5ad1d8af9026deaf0a34c83ea209e5813a51ecffd5d8a23cd11.php:45
+#: ../../../../admin/resources/cache/twig/d3/d3bede9dc1a6c5ad1d8af9026deaf0a34c83ea209e5813a51ecffd5d8a23cd11.php:389
+msgid "Add group"
+msgstr "Add group"
+
+#: ../../../../admin/resources/cache/twig/d3/d3bede9dc1a6c5ad1d8af9026deaf0a34c83ea209e5813a51ecffd5d8a23cd11.php:117
+msgid "Group name"
+msgstr "Group name"
+
+#: ../../../../admin/resources/cache/twig/d3/d3bede9dc1a6c5ad1d8af9026deaf0a34c83ea209e5813a51ecffd5d8a23cd11.php:204
+msgid "Change reseller for current group of admin"
+msgstr "Change reseller for current group of admin"
+
+#: ../../../../admin/resources/cache/twig/d3/d3bede9dc1a6c5ad1d8af9026deaf0a34c83ea209e5813a51ecffd5d8a23cd11.php:229
+msgid "Move all admins to another group"
+msgstr "Move all admins to another group"
+
+#: ../../../../admin/resources/cache/twig/d3/d3bede9dc1a6c5ad1d8af9026deaf0a34c83ea209e5813a51ecffd5d8a23cd11.php:245
+msgid "Edit"
+msgstr "Edit"
+
+#: ../../../../admin/resources/cache/twig/d3/d3bede9dc1a6c5ad1d8af9026deaf0a34c83ea209e5813a51ecffd5d8a23cd11.php:258
+msgid "Permissions"
+msgstr "Permissions"
+
+#: ../../../../admin/resources/cache/twig/d3/d3bede9dc1a6c5ad1d8af9026deaf0a34c83ea209e5813a51ecffd5d8a23cd11.php:271
+msgid "Delete"
+msgstr "Delete"
+
+#: ../../../../admin/resources/cache/twig/d3/d3bede9dc1a6c5ad1d8af9026deaf0a34c83ea209e5813a51ecffd5d8a23cd11.php:426
+msgid "Some server error"
+msgstr "Some server error"
+
+#: ../../../../admin/resources/cache/twig/d3/d3bede9dc1a6c5ad1d8af9026deaf0a34c83ea209e5813a51ecffd5d8a23cd11.php:438
+msgid "Some network error or access denied"
+msgstr "Some network error or access denied"
+
+#: ../../../../admin/resources/cache/twig/d3/d3bede9dc1a6c5ad1d8af9026deaf0a34c83ea209e5813a51ecffd5d8a23cd11.php:470
+#: ../../../../admin/json_menu/menu.json:244
+msgid "Resellers"
+msgstr "Resellers"
+
+#: ../../../../admin/resources/cache/twig/d3/d3bede9dc1a6c5ad1d8af9026deaf0a34c83ea209e5813a51ecffd5d8a23cd11.php:550
+msgid "Edit group"
+msgstr "Edit group"
+
+#: ../../../../admin/resources/cache/twig/d3/d3bede9dc1a6c5ad1d8af9026deaf0a34c83ea209e5813a51ecffd5d8a23cd11.php:602
+msgid "Reseller name"
+msgstr "Reseller name"
+
+#: ../../../../admin/resources/cache/twig/d3/d3bede9dc1a6c5ad1d8af9026deaf0a34c83ea209e5813a51ecffd5d8a23cd11.php:699
+msgid "Move"
+msgstr "Move"
+
+#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:698
+msgid "Attributes"
+msgstr "Attributes"
+
+#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1126
+msgid "from"
+msgstr "from"
+
+#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1141
+msgid "to"
+msgstr "to"
 
 #: ../../../tools/misctranslations.php:9
 msgid "biography"
@@ -3954,7 +4146,7 @@ msgstr "Messages"
 #: ../../../tools/misctranslations.php:299
 #: ../../../tools/misctranslations.php:357
 #: ../../../administrator/index.php:496
-#: ../../../../admin/json_menu/menu.json:374
+#: ../../../../admin/json_menu/menu.json:376
 msgid "Settings"
 msgstr "Settings"
 
@@ -4191,7 +4383,7 @@ msgstr "Change the on/off state firmware update"
 
 #: ../../../tools/misctranslations.php:372
 #: ../../../administrator/index.php:451
-#: ../../../../admin/json_menu/menu.json:285
+#: ../../../../admin/json_menu/menu.json:287
 msgid "Statistics"
 msgstr "Statistics"
 
@@ -6606,7 +6798,7 @@ msgid "Radio-channel %s set to inactive because its URL are not available."
 msgstr "Radio-channel %s set to inactive because its URL are not available."
 
 #: ../../../lib/audioclub.class.php:22
-#: ../../../../admin/json_menu/menu.json:91
+#: ../../../../admin/json_menu/menu.json:92
 msgid "Artists"
 msgstr "Artists"
 
@@ -6619,14 +6811,14 @@ msgstr "Playlists"
 #: ../../../administrator/audio_album.php:396
 #: ../../../administrator/audio_album.php:514
 #: ../../../../admin/json_menu/menu.json:25
-#: ../../../../admin/json_menu/menu.json:73
-#: ../../../../admin/json_menu/menu.json:96
+#: ../../../../admin/json_menu/menu.json:74
+#: ../../../../admin/json_menu/menu.json:97
 msgid "Genres"
 msgstr "Genres"
 
 #: ../../../lib/audioclub.class.php:34
 #: ../../../administrator/audio_album.php:397
-#: ../../../../admin/json_menu/menu.json:106
+#: ../../../../admin/json_menu/menu.json:107
 msgid "Years"
 msgstr "Years"
 
@@ -6874,42 +7066,6 @@ msgstr "Views"
 msgid "Add"
 msgstr "Add"
 
-#: ../../../administrator/tariffs.php:94
-#: ../../../administrator/setting_common.php:198
-#: ../../../administrator/subscribe.php:377
-#: ../../../administrator/audio_album.php:604
-#: ../../../administrator/playlists.php:54
-#: ../../../administrator/testers.php:71
-#: ../../../administrator/audio_year.php:236
-#: ../../../administrator/other_city_info.php:244
-#: ../../../administrator/events.php:497
-#: ../../../administrator/audio_performer.php:236
-#: ../../../administrator/help_city_info.php:234
-#: ../../../administrator/city_info.php:248
-#: ../../../administrator/add_itv.php:1809
-#: ../../../administrator/audio_track.php:351
-#: ../../../administrator/anecdote.php:250
-#: ../../../administrator/playlist.php:69
-#: ../../../administrator/audio_language.php:236
-#: ../../../administrator/admin_groups.php:97
-#: ../../../administrator/audio_genre.php:236
-#: ../../../administrator/stream_zones.php:90
-#: ../../../administrator/stbgroups.php:55
-#: ../../../administrator/storages.php:110
-#: ../../../administrator/add_video.php:2140
-#: ../../../administrator/add_moderator_mac.php:271
-#: ../../../administrator/add_karaoke.php:843
-#: ../../../administrator/services_packages.php:125
-#: ../../../administrator/epg_setting.php:77
-#: ../../../administrator/administrators.php:92
-#: ../../../administrator/add_epg.php:412
-#: ../../../administrator/stream_servers.php:89
-#: ../../../administrator/stbgroup_members.php:63
-#: ../../../administrator/vclub_ad.php:236
-#: ../../../administrator/add_radio.php:279
-msgid "Save"
-msgstr "Save"
-
 #: ../../../administrator/tariffs.php:127
 #: ../../../administrator/tariffs.php:290
 msgid "TARIFF PLANS"
@@ -7024,7 +7180,7 @@ msgid "Audio"
 msgstr "Audio"
 
 #: ../../../administrator/userlog.php:300 ../../../administrator/users.php:171
-#: ../../../../admin/json_menu/menu.json:121
+#: ../../../../admin/json_menu/menu.json:122
 msgid "Radio"
 msgstr "Radio"
 
@@ -7230,7 +7386,7 @@ msgstr "Search by name"
 #: ../../../administrator/stat_moderators.php:61
 #: ../../../administrator/stat_moderators.php:67
 #: ../../../administrator/index.php:479
-#: ../../../../admin/json_menu/menu.json:311
+#: ../../../../admin/json_menu/menu.json:313
 msgid "Moderators statistics"
 msgstr "Moderators statistics"
 
@@ -7303,7 +7459,7 @@ msgstr "File with list is missing"
 
 #: ../../../administrator/events.php:251 ../../../administrator/events.php:257
 #: ../../../administrator/profile.php:354 ../../../administrator/index.php:165
-#: ../../../../admin/json_menu/menu.json:203
+#: ../../../../admin/json_menu/menu.json:205
 msgid "Events"
 msgstr "Events"
 
@@ -7634,19 +7790,13 @@ msgstr "EPG correction"
 msgid "Comments"
 msgstr "Comments"
 
-#: ../../../administrator/add_itv.php:1809
-#: ../../../administrator/add_video.php:585 ../../../lang/stb.php:263
-#: ../../../lang/stb.php:300
-msgid "Cancel"
-msgstr "Cancel"
-
 #: ../../../administrator/audio_track.php:139
 #: ../../../administrator/audio_track.php:210
 msgid "AUDIO TRACKS"
 msgstr "AUDIO TRACKS"
 
 #: ../../../administrator/audio_track.php:217
-#: ../../../../admin/json_menu/menu.json:101
+#: ../../../../admin/json_menu/menu.json:102
 msgid "Languages"
 msgstr "Languages"
 
@@ -7685,8 +7835,8 @@ msgid "All logs"
 msgstr "All logs"
 
 #: ../../../administrator/users.php:104
-#: ../../../../admin/json_menu/menu.json:178
-#: ../../../../admin/json_menu/menu.json:260
+#: ../../../../admin/json_menu/menu.json:179
+#: ../../../../admin/json_menu/menu.json:262
 msgid "Report"
 msgstr "Report"
 
@@ -7818,8 +7968,8 @@ msgstr "User profile"
 
 #: ../../../administrator/profile.php:354
 #: ../../../administrator/storages.php:225
-#: ../../../../admin/json_menu/menu.json:173
-#: ../../../../admin/json_menu/menu.json:349
+#: ../../../../admin/json_menu/menu.json:174
+#: ../../../../admin/json_menu/menu.json:351
 msgid "Logs"
 msgstr "Logs"
 
@@ -8453,13 +8603,6 @@ msgstr "Later"
 msgid "Sections"
 msgstr "Sections"
 
-#: ../../../administrator/index.php:171
-#: ../../../administrator/administrators.php:100
-#: ../../../administrator/administrators.php:143
-#: ../../../../admin/json_menu/menu.json:226
-msgid "Administrators"
-msgstr "Administrators"
-
 #: ../../../administrator/index.php:187
 msgid "TARIFFS"
 msgstr "TARIFFS"
@@ -8524,7 +8667,7 @@ msgid "Users statistics for TV"
 msgstr "Users statistics for TV"
 
 #: ../../../administrator/index.php:461
-#: ../../../../admin/json_menu/menu.json:296
+#: ../../../../admin/json_menu/menu.json:298
 msgid "TV statistics"
 msgstr "TV statistics"
 
@@ -8541,7 +8684,7 @@ msgid "Users statistics for Jokes"
 msgstr "Users statistics for Jokes"
 
 #: ../../../administrator/index.php:473
-#: ../../../../admin/json_menu/menu.json:306
+#: ../../../../admin/json_menu/menu.json:308
 msgid "TimeShift statistics"
 msgstr "TimeShift statistics"
 
@@ -10097,7 +10240,7 @@ msgid "You can configure DVB channels in the settings menu"
 msgstr "You can configure DVB channels in the settings menu"
 
 #: ../../../lang/stb.php:531
-#: ../../../../admin/json_menu/menu.json:185
+#: ../../../../admin/json_menu/menu.json:186
 msgid "Applications"
 msgstr "Applications"
 
@@ -10197,23 +10340,14 @@ msgstr "Add application by package name (Step 1)"
 msgid "Add application by package name (Step 2)"
 msgstr "Add application by package name (Step 2)"
 
-msgid "Add group"
-msgstr "Add group"
-
 msgid "Auto-update"
 msgstr "Auto-update"
 
 msgid "Available version"
 msgstr "Available version"
 
-msgid "Change reseller for current group of admin"
-msgstr "Change reseller for current group of admin"
-
 msgid "Deactivate"
 msgstr "Deactivate"
-
-msgid "Delete"
-msgstr "Delete"
 
 msgid "Dependencies"
 msgstr "Dependencies"
@@ -10230,15 +10364,6 @@ msgstr "Display frequency rate"
 msgid "Do you realy want reset all applications?"
 msgstr "Do you realy want reset all applications?"
 
-msgid "Edit"
-msgstr "Edit"
-
-msgid "Edit group"
-msgstr "Edit group"
-
-msgid "Editing"
-msgstr "Editing"
-
 msgid "Enter the package name"
 msgstr "Enter the package name"
 
@@ -10253,9 +10378,6 @@ msgstr "Forbidden for categories"
 
 msgid "Format: solution+URL. Example: ffmpeg http://example_of_link"
 msgstr "Format: solution+URL. Example: ffmpeg http://example_of_link"
-
-msgid "Group name"
-msgstr "Group name"
 
 msgid "Install"
 msgstr "Install"
@@ -10272,12 +10394,6 @@ msgstr ""
 
 msgid "More details"
 msgstr "More details"
-
-msgid "Move"
-msgstr "Move"
-
-msgid "Move all admins to another group"
-msgstr "Move all admins to another group"
 
 msgid "Necessary to see"
 msgstr "Necessary to see"
@@ -10318,18 +10434,8 @@ msgstr ""
 "Perhaps the application is not installed. Before activate this application "
 "is necessary to install any version of the application."
 
-msgid "Permissions"
-msgstr "Permissions"
-
 msgid "Profile"
 msgstr "Profile"
-
-msgid "Reseller name"
-msgstr "Reseller name"
-
-#: ../../../../admin/json_menu/menu.json:242
-msgid "Resellers"
-msgstr "Resellers"
 
 msgid "Reset all application"
 msgstr "Reset all application"
@@ -10337,13 +10443,7 @@ msgstr "Reset all application"
 msgid "Show categories that won't see the advertising"
 msgstr "Show categories that won't see the advertising"
 
-msgid "Some network error or access denied"
-msgstr "Some network error or access denied"
-
-msgid "Some server error"
-msgstr "Some server error"
-
-#: ../../../../admin/json_menu/menu.json:145
+#: ../../../../admin/json_menu/menu.json:146
 msgid "Subscribe log"
 msgstr "Subscribe log"
 
@@ -10384,9 +10484,6 @@ msgstr "Versions"
 msgid "Video out"
 msgstr "Video out"
 
-msgid "Viewing"
-msgstr "Viewing"
-
 msgid "Warning"
 msgstr "Warning"
 
@@ -10411,16 +10508,13 @@ msgstr "applications catalog"
 msgid "current version"
 msgstr "current version"
 
-msgid "groups list"
-msgstr "groups list"
-
 msgid "list of radio"
 msgstr "list of radio"
 
 msgid "Access denied for this page"
 msgstr "Access denied for this page"
 
-#: ../../../../admin/json_menu/menu.json:63
+#: ../../../../admin/json_menu/menu.json:64
 msgid "Activity log"
 msgstr "Activity log"
 
@@ -10568,7 +10662,7 @@ msgstr "Should be unique"
 msgid "Should be unique, can contain only numbers"
 msgstr "Should be unique, can contain only numbers"
 
-#: ../../../../admin/json_menu/menu.json:333
+#: ../../../../admin/json_menu/menu.json:335
 msgid "Storage"
 msgstr "Storage"
 
@@ -10897,7 +10991,7 @@ msgstr "Image"
 msgid "In text format"
 msgstr "In text format"
 
-#: ../../../../admin/json_menu/menu.json:321
+#: ../../../../admin/json_menu/menu.json:323
 msgid "Inactive subscribers"
 msgstr "Inactive subscribers"
 
@@ -11057,7 +11151,7 @@ msgstr "Sets the password restriction on the channel Default password 0000"
 msgid "Streaming links"
 msgstr "Streaming links"
 
-#: ../../../../admin/json_menu/menu.json:356
+#: ../../../../admin/json_menu/menu.json:358
 msgid "Streaming servers"
 msgstr "Streaming servers"
 
@@ -11082,7 +11176,7 @@ msgstr "TV archive address"
 msgid "TV archive length"
 msgstr "TV archive length"
 
-#: ../../../../admin/json_menu/menu.json:301
+#: ../../../../admin/json_menu/menu.json:303
 msgid "TV archive statistics"
 msgstr "TV archive statistics"
 
@@ -11246,7 +11340,7 @@ msgstr "Apply filter"
 msgid "Assignee"
 msgstr "Assignee"
 
-#: ../../../../admin/json_menu/menu.json:80
+#: ../../../../admin/json_menu/menu.json:81
 msgid "Audio club"
 msgstr "Audio club"
 
@@ -11481,9 +11575,6 @@ msgstr "countries"
 msgid "firmware update"
 msgstr "firmware update"
 
-msgid "from"
-msgstr "from"
-
 msgid "list of users"
 msgstr "list of users"
 
@@ -11501,9 +11592,6 @@ msgstr "servers list"
 
 msgid "tasks list in section"
 msgstr "tasks list in section"
-
-msgid "to"
-msgstr "to"
 
 msgid "year"
 msgstr "year"
@@ -11791,7 +11879,7 @@ msgstr "First, delete or modify all the albums of this genre"
 msgid "First, delete or modify all the tracks in this language"
 msgstr "First, delete or modify all the tracks in this language"
 
-#: ../../../../admin/json_menu/menu.json:267
+#: ../../../../admin/json_menu/menu.json:269
 msgid "Information portal"
 msgstr "Information portal"
 
@@ -11804,7 +11892,7 @@ msgstr "No available numbers of channels"
 msgid "Order of service in the directory. Must contain digits only"
 msgstr "Order of service in the directory. Must contain digits only"
 
-#: ../../../../admin/json_menu/menu.json:273
+#: ../../../../admin/json_menu/menu.json:275
 msgid "Phone book"
 msgstr "Phone book"
 
@@ -11823,7 +11911,7 @@ msgstr "Save channels"
 msgid "Show EPG"
 msgstr "Show EPG"
 
-#: ../../../../admin/json_menu/menu.json:316
+#: ../../../../admin/json_menu/menu.json:318
 msgid "Subscribers statistic"
 msgstr "Subscribers statistic"
 
@@ -11877,12 +11965,6 @@ msgstr " streaming area "
 msgid "Add EPG"
 msgstr "Add EPG"
 
-msgid "Available new version"
-msgstr "Available new version"
-
-msgid "Contact support"
-msgstr "Contact support"
-
 msgid "Date type"
 msgstr "Date type"
 
@@ -11894,9 +11976,6 @@ msgstr "Day of week"
 
 msgid "Default area"
 msgstr "Default area"
-
-msgid "Documentation"
-msgstr "Documentation"
 
 msgid "Edit EPG"
 msgstr "Edit EPG"
@@ -11921,9 +12000,6 @@ msgstr "Force update of EPG"
 
 msgid "Force update of EPG - complete EPG update for all channels"
 msgstr "Force update of EPG - complete EPG update for all channels"
-
-msgid "IPTV/OTT Set-Top Boxes"
-msgstr "IPTV/OTT Set-Top Boxes"
 
 msgid ""
 "If do not selected any of the days of the week the event will be run every "
@@ -11954,9 +12030,6 @@ msgstr "Max count of languages 5"
 msgid "Maximum number of files exceeded"
 msgstr "Maximum number of files exceeded"
 
-msgid "Powered by"
-msgstr "Powered by"
-
 msgid ""
 "Prefix is necessary to distinguish the EPG source in case, if the following "
 "XNLTV ID is stated in several sources"
@@ -11966,9 +12039,6 @@ msgstr ""
 
 msgid "Repeating interval"
 msgstr "Repeating interval"
-
-msgid "Technical questions form"
-msgstr "Technical questions form"
 
 msgid "The date of end event"
 msgstr "The date of end event"
@@ -12019,9 +12089,6 @@ msgstr "month"
 msgid "no conflicts"
 msgstr "no conflicts"
 
-msgid "Attributes"
-msgstr "Attributes"
-
 #: ../../../../admin/json_menu/menu.json:9
 msgid "Channels"
 msgstr "Channels"
@@ -12030,57 +12097,56 @@ msgstr "Channels"
 msgid "Import from m3u"
 msgstr "Import from m3u"
 
-#: ../../../../admin/json_menu/menu.json:37
-msgid "New Video club"
-msgstr "New Video club"
-
-#: ../../../../admin/json_menu/menu.json:68
+#: ../../../../admin/json_menu/menu.json:69
 msgid "Categories"
 msgstr "Categories"
 
-#: ../../../../admin/json_menu/menu.json:129
+#: ../../../../admin/json_menu/menu.json:130
 msgid "Tariffs"
 msgstr "Tariffs"
 
-#: ../../../../admin/json_menu/menu.json:163
+#: ../../../../admin/json_menu/menu.json:164
 msgid "Filters"
 msgstr "Filters"
 
-#: ../../../../admin/json_menu/menu.json:219
+#: ../../../../admin/json_menu/menu.json:221
 msgid "Templates of messages"
 msgstr "Templates of messages"
 
-#: ../../../../admin/json_menu/menu.json:232
+#: ../../../../admin/json_menu/menu.json:234
 msgid "Administrators list"
 msgstr "Administrators list"
 
-#: ../../../../admin/json_menu/menu.json:291
+#: ../../../../admin/json_menu/menu.json:293
 msgid "Movie statistics"
 msgstr "Movie statistics"
 
-#: ../../../../admin/json_menu/menu.json:339
+#: ../../../../admin/json_menu/menu.json:341
 msgid "Storage list"
 msgstr "Storage list"
 
-#: ../../../../admin/json_menu/menu.json:344
+#: ../../../../admin/json_menu/menu.json:346
 msgid "Video search"
 msgstr "Video search"
 
-#: ../../../../admin/json_menu/menu.json:362
+#: ../../../../admin/json_menu/menu.json:364
 msgid "Servers list"
 msgstr "Servers list"
 
-#: ../../../../admin/json_menu/menu.json:367
+#: ../../../../admin/json_menu/menu.json:369
 msgid "Streaming areas"
 msgstr "Streaming areas"
 
-#: ../../../../admin/json_menu/menu.json:380
+#: ../../../../admin/json_menu/menu.json:382
 msgid "Appearance"
 msgstr "Appearance"
 
-#: ../../../../admin/json_menu/menu.json:385
+#: ../../../../admin/json_menu/menu.json:387
 msgid "Firmware update"
 msgstr "Firmware update"
+
+#~ msgid "New Video club"
+#~ msgstr "New Video club"
 
 #~ msgid "SmartLauncher applications"
 #~ msgstr "SmartLauncher applications"
