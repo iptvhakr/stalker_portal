@@ -85,8 +85,19 @@ $themes = $app_manager->getInstalledApps('theme');
 
 if (!empty($themes)){
 
-    foreach ($themes as $theme){
-        $config['themes'][$theme['alias']] = '../../../'.$theme['alias'].'/'.$theme['current_version'].'/';
+    $theme_alias = str_replace('smart_launcher:', '', $user['theme']);
+
+    if ($user['theme'] != 'smart_launcher' && $theme_alias){
+        foreach ($themes as $theme){
+            if ($theme['alias'] == $theme_alias){
+                $config['themes'][$theme['alias']] = '../../../'.$theme['alias'].'/'.$theme['current_version'].'/';
+            }
+        }
+
+        if (empty($config['themes'])){
+            $theme = reset($themes);
+            $config['themes'][$theme['alias']] = '../../../'.$theme['alias'].'/'.$theme['current_version'].'/';
+        }
     }
 }
 

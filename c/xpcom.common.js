@@ -424,7 +424,7 @@ function common_xpcom(){
                     return self.disabled_modules.indexOf(module) == -1;
                 });
 
-                if (result.template == 'smart_launcher' && result['launcher_url']){
+                if (result.template && result.template.indexOf('smart_launcher') != -1 && result['launcher_url']){
 
                     if (single_module.length == 0) {
                         _debug('redirect to the new launcher');
@@ -1090,7 +1090,7 @@ function common_xpcom(){
         if (this.user['status'] == 2){
 
             // redirect to the new launcher without auth
-            if (this.user['template'] == 'smart_launcher' && single_module.length == 0){
+            if (this.user['template'] && this.user['template'].indexOf('smart_launcher') != -1 && single_module.length == 0){
                 _debug('redirect to the new launcher');
                 window.stop();
                 document.body.hide();
