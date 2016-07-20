@@ -47,13 +47,15 @@ $installed_apps_names = array_map(function($app){
 $user = Stb::getById((int) $_GET['uid']);
 
 // if user is off - return empty menu
-if (empty($user) || $user['status'] == 1){
+if (!empty($user) && $user['status'] == 1){
 
     echo json_encode($config);
     exit;
 }
 
-User::getInstance($user['id']);
+if (!empty($user)){
+    User::getInstance($user['id']);
+}
 
 $all_modules = array_merge(Config::get('all_modules'), $installed_apps_names);
 $disabled_modules = Stb::getDisabledModulesByUid((int) $_GET['uid']);
@@ -85,9 +87,11 @@ $themes = $app_manager->getInstalledApps('theme');
 
 if (!empty($themes)){
 
-    $theme_alias = str_replace('smart_launcher:', '', $user['theme']);
+    $user_theme = isset($user['theme']) ? $user['theme'] : '';
 
-    if ($user['theme'] != 'smart_launcher' && $theme_alias){
+    $theme_alias = str_replace('smart_launcher:', '', $user_theme);
+
+    if ($user_theme != 'smart_launcher' && $theme_alias){
         foreach ($themes as $theme){
             if ($theme['alias'] == $theme_alias){
                 $config['themes'][$theme['alias']] = '../../../'.$theme['alias'].'/'.$theme['current_version'].'/';
@@ -109,7 +113,7 @@ $installed_apps = array_merge($system_apps, $installed_apps);
 
 foreach ($installed_apps as $app) {
 
-    if (!in_array('launcher_'.$app['alias'], $available_modules) && $app['type'] == 'app'){
+    if ((!in_array('launcher_'.$app['alias'], $available_modules) || empty($user)) && $app['type'] == 'app'){
         continue;
     }
 
