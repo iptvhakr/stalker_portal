@@ -93,11 +93,11 @@ if (!empty($themes)){
                 $config['themes'][$theme['alias']] = '../../../'.$theme['alias'].'/'.$theme['current_version'].'/';
             }
         }
+    }
 
-        if (empty($config['themes'])){
-            $theme = reset($themes);
-            $config['themes'][$theme['alias']] = '../../../'.$theme['alias'].'/'.$theme['current_version'].'/';
-        }
+    if (empty($config['themes'])){
+        $theme = reset($themes);
+        $config['themes'][$theme['alias']] = '../../../'.$theme['alias'].'/'.$theme['current_version'].'/';
     }
 }
 
