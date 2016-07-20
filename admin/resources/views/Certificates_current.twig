@@ -7,12 +7,15 @@
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 {{ main_macro.get_filter('status', 'Status'|trans, 'id', 'title', app['allStatus'], 3, NULL, NULL, TRUE) }}
-                {{ main_macro.get_filter('lic_count', 'License count'|trans, 'id', 'title', app['allLicCount'], 3, NULL, NULL, TRUE) }}
+                {{ main_macro.get_filter('lic_count', 'License count'|trans, 'count', 'title', app['allLicCount'], 3, NULL, NULL, TRUE) }}
                 {% if attribute(app, 'filters') is defined %}
+                    <div class="filter no-padding" >
+                        <span class="txt-default" style="margin: 10px auto 0 !important; color: black !important; display: inline-block;">{{ 'Begin of certificate validity'|trans }}:</span>
+                    </div>
                     {{ main_macro.get_datepicker_double_input() }}
                 {% endif %}
 
-                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-reset-all" class="btn btn-success pull-right">{{ 'Request of the certificate'|trans }}</a>
+                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/certificate-request" class="btn btn-success pull-right">{{ 'Request of the certificate'|trans }}</a>
             </div>
         </div>
         <div class="row">
@@ -62,7 +65,7 @@
 
             $.fn.dataTable.ext.search.push(
                     function( settings, data, dataIndex ) {
-                        return checkLicCountFilter(data[1]) && checkCertBeginFilter(data[2]) && checkCertEndFilter(data[3]) && checkStatusFilter(data[4]);
+                        return checkLicCountFilter(data[1]) && checkCertBeginFilter(data[2]) && checkCertEndFilter(data[2]) && checkStatusFilter(data[4]);
                     }
             );
 
@@ -168,7 +171,7 @@
             item.cert_begin = dateSet.toLocaleFormat("%d.%m.%Y");
             dateSet.setTime(item.cert_end * 1000);
             item.cert_end = dateSet.toLocaleFormat("%d.%m.%Y");
-
+            item.id = "<a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/certificate-detail?id=" + item.id + "'>" + item.id + "</a>";
             return item;
         }
 
