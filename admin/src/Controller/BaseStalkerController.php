@@ -513,6 +513,11 @@ class BaseStalkerController {
         $param['admin_id'] = $this->admin->getId();
 
         $base_attribute = $this->db->getDropdownAttribute($param);
+        $attribute['all'] = array(
+            'name' => 'all',
+            'title' => $this->setLocalization('All'),
+            'checked' => (bool)array_sum($this->getFieldFromArray($attribute, 'checked'))
+        );
         if (empty($base_attribute)) {
             return $attribute;
         }
@@ -520,8 +525,9 @@ class BaseStalkerController {
         foreach ($dropdown_attributes as $key => $value) {
             reset($attribute);
             while (list($num, $row) = each($attribute)) {
-                if ($row['name'] == $key) {
+                if ($row['name'] == $key && $num != 'all' ) {
                     $attribute[$num]['checked'] = ($value == 'true');
+                    $attribute['all']['checked'] = $attribute['all']['checked'] && $attribute[$num]['checked'];
                     break;
                 }
             }
