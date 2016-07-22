@@ -801,11 +801,14 @@ class SmartLauncherAppsManager
             throw new SmartLauncherAppsManagerException('Unable to get launcher apps path');
         }
 
-        umask(0);
-        $mkdir = mkdir($apps_path.'/'.$package['name'], 0777);
+        if (!is_dir($apps_path.'/'.$package['name'])) {
 
-        if (!$mkdir){
-            throw new SmartLauncherAppsManagerException('Unable to create metapackage folder');
+            umask(0);
+            $mkdir = mkdir($apps_path.'/'.$package['name'], 0777);
+
+            if (!$mkdir) {
+                throw new SmartLauncherAppsManagerException('Unable to create metapackage folder');
+            }
         }
 
         $file_result = file_put_contents($apps_path.'/'.$package['name'].'/package.json', $json);
