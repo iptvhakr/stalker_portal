@@ -8,9 +8,18 @@ class SmartLauncherAppsManager
 {
     private $lang;
     private $callback;
+    private static $instance;
+
+    public static function getInstance($lang = null){
+        if (self::$instance !== null){
+            return self::$instance;
+        }
+        return new self($lang);
+    }
 
     public function __construct($lang = null){
         $this->lang = $lang ? $lang : 'en';
+        self::$instance = $this;
     }
 
     public function setNotificationCallback($callback){
@@ -739,6 +748,7 @@ class SmartLauncherAppsManager
             }
             $files = array_diff(scandir($apps_path), $ignore);
             foreach ($files as $file){
+                $this->sendToCallback("Removing package ".$file."...");
                 self::delTree($apps_path.'/'.$file);
             }
         }
