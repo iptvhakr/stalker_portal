@@ -48,7 +48,10 @@ if (isset($_GET['status']) && @$_GET['id']){
     Mysql::getInstance()
         ->use_caching(array('itv.id='.intval(@$_GET['id'])))
         ->update('itv',
-        array('status' => intval(@$_GET['status'])),
+        array(
+            'status' => intval(@$_GET['status']),
+            'modified' => 'NOW()',
+        ),
         array('id' => intval(@$_GET['id']))
     );
 
