@@ -34,7 +34,8 @@
         }
     },
     "2": {
-        "name": _("New Video club"),
+        "name": _("Video club"),
+        "new": true,
         "alias": "new-video-club",
         "icon": "fa fa-video-camera",
         "icon2": "pull-right fa fa-chevron-left",
@@ -183,6 +184,7 @@
     },
     "8": {
         "name": _("Applications"),
+        "new": true,
         "alias": "application-catalog",
         "icon": "fa fa-rocket",
         "icon2": "pull-right fa fa-chevron-left",

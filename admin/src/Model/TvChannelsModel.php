@@ -258,15 +258,15 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
     }
     
     public function changeChannelStatus($id, $status = 0) {
-        return $this->mysqlInstance->update('itv', array('status' => (empty($status) ? 0: 1)), array('id' => (int) $id))->total_rows();
+        return $this->mysqlInstance->update('itv', array('status' => (empty($status) ? 0: 1), 'modified' => 'NOW()'), array('id' => (int) $id))->total_rows();
     }
     
     public function updateChannelNum($row) {
-        return $this->mysqlInstance->update('itv', array('number' => $row['number']), array('id' => $row['id']))->total_rows();
+        return $this->mysqlInstance->update('itv', array('number' => $row['number'], 'modified' => 'NOW()'), array('id' => $row['id']))->total_rows();
     }
     
     public function updateChannelLockedStatus($row) {
-        return $this->mysqlInstance->update('itv', array('locked' => $row['locked']), array('id' => $row['id']))->total_rows();
+        return $this->mysqlInstance->update('itv', array('locked' => $row['locked'], 'modified' => 'NOW()'), array('id' => $row['id']))->total_rows();
     }
 
     public function getEPGForChannel($id, $time_from, $time_to){
