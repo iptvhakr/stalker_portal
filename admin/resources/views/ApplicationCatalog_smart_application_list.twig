@@ -209,7 +209,7 @@
                                 ajaxPostSend($(_this).attr('href'), sendData);
                             }else if ($("#reset_all_apps_btn").length == 0 || !$("#reset_all_apps_btn").is(":visible")) {
                                 clearInterval(timer);
-                                createIFrame('cometFrame', $(_this).attr('href'));
+                                createIFrame('cometFrame', $(_this).attr('href') + '?v=' + $.random(10000000));
                             }
                         }, 10);
                     }
@@ -465,7 +465,7 @@
 
         function setIframeSrc(iframeNode, src) {
             var doc = getIframeDocument(iframeNode);
-            doc.location.replace(src)
+            doc.location.replace(src);
         }
 
         function createIFrameNoIE(fname, src) {
