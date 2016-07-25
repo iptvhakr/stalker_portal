@@ -35,12 +35,12 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
 
-        $tos = $this->db->getTOS(1);
+        $tos = $this->db->getTOS('stalker_apps');
         if (empty($tos)) {
             return $this->app['twig']->render('ApplicationCatalog_index.twig');
         } elseif (empty($tos[0]['accepted'])) {
             $this->app['tos'] = $tos[0];
-            $this->app['tos_id'] = 1;
+            $this->app['tos_alias'] = 'stalker_apps';
             return $this->app['twig']->render('ApplicationCatalog_tos.twig');
         }
 
@@ -57,12 +57,12 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
 
-        $tos = $this->db->getTOS(2);
+        $tos = $this->db->getTOS('launcher_apps');
         if (empty($tos)) {
             return $this->app['twig']->render('ApplicationCatalog_index.twig');
         } elseif (empty($tos[0]['accepted'])) {
             $this->app['tos'] = $tos[0];
-            $this->app['tos_id'] = 2;
+            $this->app['tos_alias'] = 'launcher_apps';
             return $this->app['twig']->render('ApplicationCatalog_tos.twig');
         }
 
@@ -107,12 +107,12 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
 
-        if ($this->app['userlogin'] === 'admin' && !empty($this->postData['accepted']) && !empty($this->postData['tos_id'])){
-            $this->db->setAcceptedTOS((int)$this->postData['tos_id']);
+        if ($this->app['userlogin'] === 'admin' && !empty($this->postData['accepted']) && !empty($this->postData['tos_alias'])){
+            $this->db->setAcceptedTOS($this->postData['tos_alias']);
         }
 
-        if (!empty($this->postData['tos_id'])) {
-            $redirect_path = "/application-catalog" . (((int)$this->postData['tos_id']) == 2 ? '/smart-application-list': '/application-list');
+        if (!empty($this->postData['tos_alias'])) {
+            $redirect_path = "/application-catalog" . (($this->postData['tos_alias']) == 'launcher_apps' ? '/smart-application-list': '/application-list');
         } else {
             $redirect_path = "/";
         }
