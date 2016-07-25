@@ -12,7 +12,9 @@
                 {{ main_macro.get_filter('status', 'Status'|trans, 'id', 'title', app['allStatus'], 3) }}
                 {#{{ main_macro.get_filter('conflicts', 'Compatibility'|trans, 'id', 'title', app['allCompatibility'], 3) }}#}
 
-                <a id="add_apps" href="#" class="btn btn-success pull-right">{{ 'Add application by package name'|trans }}</a>
+                <a id="add_apps" href="#" class="btn btn-success pull-right">{{ 'Add applications'|trans }}</a>
+                <a id="upload_list" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-upload-list" class="btn btn-success pull-right">{{ 'Upload a list of installed'|trans }}</a>
+                <a id="download_list" href="#" class="btn btn-success pull-right">{{ 'Save the list of installed'|trans }}</a>
                 <a id="reset_all_apps" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-reset-all" data-info = '1' class="main_ajax btn btn-success pull-right">{{ 'Reset all application'|trans }}</a>
             </div>
         </div>
@@ -42,7 +44,11 @@
         </div>
     </div>
 
+    {% include "basic_templates/file-uploader-scripts.twig" %}
+
     <script type="text/javascript" defer="defer">
+
+        var fileUploaderList = [];
 
         function TestTable1() {
             $('#datatable-1').on('xhr.dt', function (e, settings, json) {
@@ -87,6 +93,13 @@
 
         function yelp() {
             $(document).ready(function () {
+
+                $.ajax({
+                    url: '{{app.request.baseUrl}}/plugins/jquery-file-download/jquery.fileDownload.js',
+                    dataType: 'script',
+                    cache: true
+                });
+
                 $(document).on('click', "a.main_ajax", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
@@ -174,7 +187,6 @@
                     return false;
                 });
 
-
                 $(document).on('click', 'a.smart-application-toggle-state', function(e){
                     e.stopPropagation();
                     e.preventDefault();
@@ -217,6 +229,79 @@
                     return false;
                 });
 
+                $(document).on('click', '#download_list', function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+
+                    $.fileDownload("{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-download-list", {
+                        dialogOptions:{
+                            modal: false
+                        },
+                        /*preparingMessageHtml: "{{ 'Wait. List of installed applications is generated'|trans }}.",
+                        failMessageHtml: "{{ 'Failed. Some server error'|trans }}.",*/
+                        prepareCallback: function(){
+                            JSshowModalBox('show');
+                        },
+                        successCallback: function (data) {
+                            JSSuccessModalBox();
+                            if (data.action && typeof(window[data.action]) == 'function') {
+                                window[data.action](data);
+                            }
+                        },
+                        failCallback: function(data, url) {
+                            JSErrorModalBox(data);
+                            if (data.action && typeof(window[data.action + 'Error']) == 'function') {
+                                window[data.action + 'Error'](data);
+                            }
+                        }
+                    });
+                    return false;
+                });
+
+                $(document).on('click', '#upload_list', function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $("#modalbox .devoops-modal-header span").text("{{ 'Uploading of list of installed applications'|trans }}");
+                    $("#modalbox .devoops-modal-inner").html($("#modal_fileupload").html());
+                    $("#modalbox .devoops-modal-inner").append("<div class='upload_processing'></div>");
+
+                    $("#modalbox .devoops-modal-bottom").html($("#modal_fileupload_buttons").html());
+                    loadFileUploadScripts(function(){});
+                    initFileUploader("{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-upload-list");
+                    $("#modalbox").data('complete', 1);
+                    $("#modalbox").show();
+                });
+
+                $("#modalbox").on('click', '#fileupload_button_send', function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    if (fileUploaderList && fileUploaderList.length) {
+                        $("#modalbox").data('complete', 0);
+                        $("#modalbox .upload_processing").show();
+                        fileUploaderList[0].submit();
+                        $("#modalbox button").attr('disabled', 'disabled').addClass('disabled');
+                    }
+                });
+
+                $("#modalbox").on('click', '#fileupload_button_reset', function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    if (fileUploaderList && fileUploaderList.length) {
+                        fileUploaderList.pop();
+                    }
+                    $("#fileupload").next('.fileupload-message').text('');
+                });
+
+                $("#modalbox").on('click', '#fileupload_button_cancel', function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $("#fileupload").fileupload('destroy');
+                    if (fileUploaderList && fileUploaderList.length) {
+                        fileUploaderList.pop();
+                    }
+                    JScloseModalBox();
+                });
+
                 LoadDataTablesScripts(TestTable1);
             });
         }
@@ -224,6 +309,7 @@
         document.addEventListener("DOMContentLoaded", yelp, false);
 
         var manageList = function (obj) {
+            $("#modalbox").data('complete', 1);
             if (!obj.error) {
                 JSSuccessModalBox(obj);
             } else {
@@ -541,6 +627,46 @@
             }
         };
 
+        function initFileUploader(url){
+            $('#fileupload').fileupload({
+                url: url,
+                type: 'POST',
+                autoUpload: false,
+                multipart: true,
+                acceptFileTypes: /(\.|\/)(json)$/i,
+                maxNumberOfFiles: 1
+            }).bind('fileuploaddone', function (e, data) {
+                $("#modalbox .upload_processing").hide();
+                $("#modalbox button").removeAttr('disabled').removeClass('disabled');
+                var response;
+                if (data && data.jqXHR && data.jqXHR.status && data.jqXHR.status == 200 && data.jqXHR.responseJSON) {
+                    response = data.jqXHR.responseJSON;
+                } else {
+                    JSErrorModalBox();
+                    return false;
+                }
+                if (response.success) {
+                    ajaxSuccess(response, false);
+                    fileUploaderList.pop();
+                    $(e.currentTarget).next('.fileupload-message').text('');
+                }
+                return false;
+            }).bind('fileuploadfail', function (e, data) {
+                $("#modalbox button").removeAttr('disabled').removeClass('disabled');
+                $("#modalbox .upload_processing").hide();
+                if (data && data.jqXHR && data.jqXHR.status && data.jqXHR.status == 200 && data.jqXHR.responseJSON) {
+                    JSErrorModalBox(JSON.parse(data.jqXHR.responseJSON));
+                } else {
+                    JSErrorModalBox();
+                }
+            }).bind('fileuploadadd', function (e, data) {
+                $("#modalbox button").removeAttr('disabled').removeClass('disabled');
+                $(e.currentTarget).next('.fileupload-message').text(data.files[0].name);
+                fileUploaderList.push(data);
+            });
+            return true;
+        }
+
     </script>
 
     <script type="text/template" id="modal_get_form_body">
@@ -691,6 +817,30 @@
         <div class="pull-right no-padding">
             <a id="reset_all_apps_btn" type="button" class="btn btn-danger pull-right" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-reset-all">{{ 'Reset'|trans }}</a>
             <button type="reset" id="reset_all_apps_button" class="btn btn-success pull-right">{{ 'Cancel'|trans }}</button>
+        </div>
+    </script>
+
+    <script type="text/template" id="modal_fileupload">
+        <div id="fileupload" class="pull-left">
+            <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+            <div class="fileupload-buttonbar">
+                <div class="fileupload-buttons">
+                    <!-- The fileinput-button span is used to style the file input field as button -->
+                    <span class="fileinput-button btn btn-success">
+                        <span>{{ 'Select file'|trans }}</span>
+                        <input type="file" name="files" style="opacity: 0;">
+                    </span>
+                </div>
+            </div>
+        </div>
+        <span class="col-md-6 fileupload-message"></span>
+    </script>
+
+    <script type="text/template" id="modal_fileupload_buttons">
+        <div class="pull-right no-padding">
+            <button id="fileupload_button_send" type="button" class="btn btn-danger pull-right">{{ 'Send'|trans }}</button>
+            <button id="fileupload_button_reset" type="reset" class="btn btn-success pull-right">{{ 'Clean'|trans }}</button>
+            <button id="fileupload_button_cancel" type="button" class="btn btn-success pull-right">{{ 'Cancel'|trans }}</button>
         </div>
     </script>
 {% endblock %}
