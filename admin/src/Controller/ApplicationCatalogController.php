@@ -1020,6 +1020,71 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         return new Response($response, (empty($error) ? 200 : 500));
     }
 
+    public function smart_application_download_list(){
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+        $response = array('action' => '');
+        $error = $this->setLocalization('Failed');
+
+        try{
+            $apps = new \SmartLauncherAppsManager();
+
+            header('Set-Cookie: fileDownload=true; path=/');
+            header('Cache-Control: max-age=60, must-revalidate');
+            header("Content-type: text/json");
+            header('Content-Disposition: attachment; filename="stalker-apps-snapshot-' . \DateTime::createFromFormat('U', time())->format('Y_m_d_H_i') . '.json"');
+
+            echo $apps->getSnapshot();
+            exit;
+        } catch (\SmartLauncherAppsManagerException $e) {
+            $response['msg'] = $error = $e->getMessage();
+        }
+
+        $response = $this->generateAjaxResponse($response);
+        $response = json_encode($response);
+        return new Response($response, (empty($error) ? 200 : 500));
+    }
+
+    public function smart_application_upload_list(){
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+        $response = array('action' => '');
+        $error = $this->setLocalization('Failed');
+
+        try{
+            $apps = new \SmartLauncherAppsManager();
+            $error = '';
+
+            $storage = new \Upload\Storage\FileSystem('/tmp', TRUE);
+            $file = new \Upload\File('files', $storage);
+            // Success!
+            $file->upload();
+
+            $json_str = file_get_contents($file->getPath() . '/' .$file->getNameWithExtension());
+            @unlink($file->getPath() . '/' .$file->getNameWithExtension());
+
+            ignore_user_abort(TRUE);
+            set_time_limit(0);
+            $apps->restoreFromSnapshot($json_str);
+
+            $response['msg'] = $this->setLocalization('Loaded');
+            $response = array('action' => 'manageList');
+        } catch (\SmartLauncherAppsManagerException $e) {
+            $error = $e->getMessage();
+        }  catch (\Exception $e) {
+            $data['msg'] = $error = $e->getMessage();
+            if (!empty($file)) {
+                $error .= ' ' . $file->getErrors();
+            }
+            $data['msg'] = $error;
+        }
+
+        $response = $this->generateAjaxResponse($response);
+        $response = json_encode($response);
+        return new Response($response, (empty($error) ? 200 : 500));
+    }
     //------------------------ service method ----------------------------------
 
     private function getApplicationListDropdownAttribute(){

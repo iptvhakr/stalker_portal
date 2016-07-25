@@ -1220,8 +1220,8 @@ function JScloseModalBox(){
     $("#modalbox").data('complete', 1);
 }
         
-function JSshowModalBox(){
-    notty('<span>' + words['Request_is_being_prossessed'] + '...</span>','notification');
+function JSshowModalBox(type){
+    notty('<span>' + words['Request_is_being_prossessed'] + '...</span>',type? type: 'notification');
 }
 
 function JSSuccessModalBox(data) {
