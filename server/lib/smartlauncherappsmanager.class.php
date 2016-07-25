@@ -748,6 +748,7 @@ class SmartLauncherAppsManager
             }
             $files = array_diff(scandir($apps_path), $ignore);
             foreach ($files as $file){
+                $this->sendToCallback("Removing package ".$file."...");
                 self::delTree($apps_path.'/'.$file);
             }
         }
