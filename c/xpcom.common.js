@@ -1634,6 +1634,8 @@ function common_xpcom(){
                     }
 
                 }
+
+                this.player.init_first_channel();
             },
 
             this
@@ -1656,6 +1658,8 @@ function common_xpcom(){
                 stb.loader.add_pos(this.load_step, 'fav_channels loaded');
 
                 this.player.fav_channels = result.data || [];
+
+                this.player.init_first_channel();
             },
 
             this
@@ -1677,6 +1681,8 @@ function common_xpcom(){
                 if (this.player.fav_channels_ids.length == 0){
                     this.user.fav_itv_on = 0;
                 }
+
+                this.player.init_first_channel();
             },
 
             this
