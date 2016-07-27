@@ -2569,12 +2569,12 @@ player.prototype.play_now = function(item){
         if (item.hasOwnProperty('streamer_id')){
             _log('play', {"streamer_id" : item.streamer_id, "link_id" : (item.link_id || 0), "ch_id" : item.id}, this.cur_media_item.id);
         }else{
-            _log('play', uri, this.cur_media_item.id);
+            _log('play', item);
         }
 
     }else{
         uri = item;
-        _log('play', uri, this.cur_media_item.id);
+        _log('play', uri);
     }
 
     this.start_time = Date.parse(new Date())/1000;

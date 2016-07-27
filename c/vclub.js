@@ -1189,7 +1189,7 @@
 
                                 stb.key_lock = true;
 
-                                stb.player.play_now(result[0].cmd);
+                                stb.player.play_now(result[0]);
                                 stb.player.ad_indication.show();
                                 return;
 
@@ -1202,7 +1202,7 @@
                                 });
                             }
 
-                            stb.player.play_now(result.cmd);
+                            stb.player.play_now(result);
                         }else{
                             //callback && callback(result.cmd);
                             self.add_download.call(self, self.data_items[self.cur_row], url);
