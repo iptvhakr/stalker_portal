@@ -293,10 +293,10 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
                         $row['available_version'] = $info['available_version'];
                         $row['conflicts'] = $row['available_version_conflicts'] = array();
                         if ($get_conflicts) {
-                            if (!empty($row['current_version'])) {
+                            if (!empty($row['current_version']) && !isset($param['curr_row'])) {
                                 $row['conflicts'] = $apps_manager->getConflicts($row['id'], $row['current_version']);
                             }
-                            if (!empty($row['available_version']) && (empty($row['current_version']) || $row['current_version'] != $row['available_version'])) {
+                            if (!empty($row['available_version']) && (empty($row['current_version']) || $row['current_version'] != $row['available_version']) && !isset($param['curr_row'])) {
                                 $row['available_version_conflicts'] = $apps_manager->getConflicts($row['id'], $row['available_version']);
                             }
                         }
