@@ -280,7 +280,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
 
         if ($get_conflicts || $installed !== NULL) {
             $response["recordsFiltered"] = 0;
-            $apps_manager = new \SmartLauncherAppsManager();
+            $apps_manager = new \SmartLauncherAppsManager($this->app['language']);
 
             while($row = $base_obj->next()) {
                     try {
@@ -532,8 +532,9 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         }
 
         try{
-            $apps_list = new \SmartLauncherAppsManager();
+            $apps_list = new \SmartLauncherAppsManager($this->app['language']);
             $app = $apps_list->getAppInfo($id);
+            $app['versions'] = $apps_list->getAppVersions($id);
             $app['conflicts'] = $apps_list->getConflicts($id, $version);
         } catch (\Exception $e){
             $response['error'] = $error = $this->setLocalization('Failed to get the list of versions of this applications') . '. ' . $e->getMessage();
@@ -689,7 +690,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             set_time_limit(0);
 
             try{
-                $apps = new \SmartLauncherAppsManager();
+                $apps = new \SmartLauncherAppsManager($this->app['language']);
                 if (empty($this->postData['version'])) {
                     $result = $apps->installApp($this->postData['id']);
                 } else {
@@ -776,7 +777,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             $app_db = $this->db->getSmartApplication(array('id' => $this->postData['id']));
 
             try{
-                $apps = new \SmartLauncherAppsManager();
+                $apps = new \SmartLauncherAppsManager($this->app['language']);
                 $apps->deleteApp($this->postData['id'], $this->postData['version']);
                 $response['error'] = $error = '';
 
@@ -874,7 +875,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         }
 
         try{
-            $apps_list = new \SmartLauncherAppsManager();
+            $apps_list = new \SmartLauncherAppsManager($this->app['language']);
             $conflicts = $apps_list->getConflicts($id, (!empty($postData['current_version']) ? $postData['current_version']: NULL));
             $response['conflicts'] = !empty($conflicts);
         } catch (\Exception $e){
@@ -943,7 +944,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         $response['action'] = 'manageList';
 
         try{
-            $apps = new \SmartLauncherAppsManager();
+            $apps = new \SmartLauncherAppsManager($this->app['language']);
             $apps->deleteApp($this->postData['id']);
             $response['error'] = $error = '';
             $response['msg'] = $this->setLocalization('Application has been deleted');
@@ -1003,7 +1004,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
                     echo $send_str;
                 }
                 ob_flush();
-                $apps = new \SmartLauncherAppsManager();
+                $apps = new \SmartLauncherAppsManager($this->app['language']);
                 $apps->setNotificationCallback(function($msg){
                     error_reporting(-1);
                     ini_set('display_errors','On');
@@ -1074,7 +1075,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         $error = $this->setLocalization('Failed');
 
         try{
-            $apps = new \SmartLauncherAppsManager();
+            $apps = new \SmartLauncherAppsManager($this->app['language']);
 
             header('Set-Cookie: fileDownload=true; path=/');
             header('Cache-Control: max-age=60, must-revalidate');
@@ -1100,7 +1101,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         $error = $this->setLocalization('Failed');
 
         try{
-            $apps = new \SmartLauncherAppsManager();
+            $apps = new \SmartLauncherAppsManager($this->app['language']);
             $error = '';
 
             $storage = new \Upload\Storage\FileSystem('/tmp', TRUE);
