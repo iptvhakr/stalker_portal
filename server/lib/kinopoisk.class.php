@@ -8,12 +8,12 @@ class Kinopoisk implements \Stalker\Lib\StbApi\vclubinfo
 
         $movie_info = array('kinopoisk_id' => $id);
 
-        $movie_url = 'http://www.kinopoisk.ru/film/'.$id.'/';
+        $movie_url = 'https://www.kinopoisk.ru/film/'.$id.'/';
 
         $movie_info['kinopoisk_url'] = $movie_url;
-        $movie_info['cover'] = 'http://st.kinopoisk.ru/images/film/'.$id.'.jpg';
+        $movie_info['cover'] = 'https://kinopoisk.ru/images/film/'.$id.'.jpg';
 
-        $cover_big_url = 'http://st.kinopoisk.ru/images/film_big/'.$id.'.jpg';
+        $cover_big_url = 'https://kinopoisk.ru/images/film_big/'.$id.'.jpg';
 
         $big_cover_headers = get_headers($cover_big_url, 1);
 
@@ -213,7 +213,7 @@ class Kinopoisk implements \Stalker\Lib\StbApi\vclubinfo
 
         $orig_name = urlencode($orig_name);
 
-        $search_url = 'http://www.kinopoisk.ru/index.php?level=7&from=forma&result=adv&m_act[from]=forma&m_act[what]=content&m_act[find]='.$orig_name.'&m_act[content_find]=film,serial&first=yes';
+        $search_url = 'https://www.kinopoisk.ru/index.php?level=7&from=forma&result=adv&m_act[from]=forma&m_act[what]=content&m_act[find]='.$orig_name.'&m_act[content_find]=film,serial&first=yes';
 
         $curl_options = array(
             CURLOPT_URL => $search_url,
@@ -289,7 +289,7 @@ class Kinopoisk implements \Stalker\Lib\StbApi\vclubinfo
             'kinopoisk_id' => $kinopoisk_id
         );
 
-        $xml_url = 'http://www.kinopoisk.ru/rating/'.$kinopoisk_id.'.xml';
+        $xml_url = 'https://www.kinopoisk.ru/rating/'.$kinopoisk_id.'.xml';
 
         $xml = @simplexml_load_file($xml_url);
 

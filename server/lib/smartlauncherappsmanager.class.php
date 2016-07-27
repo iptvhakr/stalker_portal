@@ -64,10 +64,144 @@ class SmartLauncherAppsManager
 
     /**
      * @param int $app_id
+     * @param bool $force_npm
      * @return mixed
      * @throws SmartLauncherAppsManagerException
      */
-    public function getAppInfo($app_id){
+    public function getAppInfo($app_id, $force_npm = false) {
+
+        $app = $original_app = Mysql::getInstance()->from('launcher_apps')->where(array('id' => $app_id))->get()->first();
+
+        if (empty($app)) {
+            throw new SmartLauncherAppsManagerException('App not found, id=' . $app_id);
+        }
+
+        if (empty($app['alias']) || $force_npm) {
+
+            $npm = Npm::getInstance();
+            $info = $npm->info($app['url']);
+
+            if (empty($info)) {
+                throw new SmartLauncherAppsManagerException('Unable to get info for ' . $app['url']);
+            }
+
+            $app['type'] = isset($info['config']['type']) ? $info['config']['type'] : null;
+            $app['alias'] = $info['name'];
+            $app['name'] = $app['type'] == 'app' && isset($info['config']['name']) ? $info['config']['name'] : $info['name'];
+            $app['description'] = isset($info['config']['description']) ? $info['config']['description'] : (isset($info['description']) ? $info['description'] : '');
+            $app['available_version'] = isset($info['version']) ? $info['version'] : '';
+            $app['author'] = isset($info['author']) ? $info['author'] : '';
+            $app['category'] = isset($info['config']['category']) ? $info['config']['category'] : null;
+            $app['is_unique'] = isset($info['config']['unique']) && $info['config']['unique'] ? 1 : 0;
+
+            $update_data = array();
+
+            if (!$original_app['alias'] && $app['alias']) {
+                $update_data['alias'] = $app['alias'];
+            }
+
+            if (!$original_app['name'] && $app['name']) {
+                $update_data['name'] = $app['name'];
+            }
+
+            if (!$original_app['description'] && $app['description']) {
+                $update_data['description'] = $app['description'];
+            }
+
+            if (!$original_app['author'] && $app['author'] || $original_app['author'] != $app['author']) {
+                $update_data['author'] = $app['author'];
+            }
+
+            $update_data['is_unique'] = $app['is_unique'];
+            $update_data['type'] = $app['type'];
+            $update_data['category'] = $app['category'];
+            $update_data['available_version'] = $app['available_version'];
+
+            if (!empty($update_data)) {
+                Mysql::getInstance()->update('launcher_apps', $update_data, array('id' => $app_id));
+            }
+
+        }else{
+            $app['is_unique'] = (int) $app['is_unique'];
+        }
+
+        unset($app['options']);
+
+        $app['icon'] = '';
+        $app['icon_big'] = '';
+        $app['backgroundColor'] = '';
+
+        if ($app['config']){
+            $app['config'] = json_decode($app['config'], true);
+        }
+
+        if ($app['current_version']){
+
+            $app_path = realpath(PROJECT_PATH.'/../../'
+                .Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/')
+                .($app['type'] == 'plugin' ? 'plugins/' : '')
+                .$app['url']
+                .'/'.$app['current_version']);
+
+            $app['installed'] = $app_path && is_dir($app_path);
+
+            if ($app['installed'] && isset($app['config']['icons']['paths']['720']) && isset($app['config']['icons']['states']['normal']) && !empty($_SERVER['HTTP_HOST'])){
+                $icon_path = realpath($app_path.'/app/'.$app['config']['icons']['paths']['720'].$app['config']['icons']['states']['normal']);
+                $app['icon'] = $icon_path && is_readable($icon_path) ?
+                        'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
+                        .'://'.$_SERVER['HTTP_HOST']
+                        .'/'.Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/')
+                        .$app['alias']
+                        .'/'.$app['current_version'].'/app/'
+                        .$app['config']['icons']['paths']['720'].$app['config']['icons']['states']['normal']
+                    : '';
+
+                $icon_big_path = realpath($app_path.'/app/'.$app['config']['icons']['paths']['1080'].$app['config']['icons']['states']['normal']);
+
+                $app['icon_big'] = $icon_big_path && is_readable($icon_big_path) ?
+                    'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
+                    .'://'.$_SERVER['HTTP_HOST']
+                    .'/'.Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/')
+                    .$app['alias']
+                    .'/'.$app['current_version'].'/app/'
+                    .$app['config']['icons']['paths']['1080'].$app['config']['icons']['states']['normal']
+                    : '';
+
+                if ($app['icon'] || $app['icon_big']){
+                    $app['backgroundColor'] = isset($app['config']['backgroundColor']) ? $app['config']['backgroundColor'] : '';
+                }
+            }
+        }else{
+            $app['installed'] = false;
+        }
+
+        if ($app['localization'] && ($localization = json_decode($app['localization'], true))){
+            if (!empty($localization[$this->lang]['name'])){
+                $app['name'] = $localization[$this->lang]['name'];
+            }
+
+            if (!empty($localization[$this->lang]['description'])){
+                $app['description'] = $localization[$this->lang]['description'];
+            }
+        }
+
+        return $app;
+    }
+
+    public function updateAllAppsInfo(){
+        $apps = Mysql::getInstance()->from('launcher_apps')->get()->all();
+
+        foreach ($apps as $app){
+            $this->getAppInfo($app['id'], true);
+        }
+    }
+
+    /**
+     * @param $app_id
+     * @return array
+     * @throws SmartLauncherAppsManagerException
+     */
+    public function getAppVersions($app_id){
 
         $app = $original_app = Mysql::getInstance()->from('launcher_apps')->where(array('id' => $app_id))->get()->first();
 
@@ -94,107 +228,16 @@ class SmartLauncherAppsManager
             $cache->set($app_id.'_launcher_app_info', $info, 0, rand(1000, 3600));
         }
 
-        $app['type']   = isset($info['config']['type']) ? $info['config']['type'] : null;
-        $app['alias'] = $info['name'];
-        $app['name']  = $app['type'] == 'app' && isset($info['config']['name']) ? $info['config']['name'] : $info['name'];
-        $app['description'] = isset($info['config']['description']) ? $info['config']['description'] : (isset($info['description']) ? $info['description'] : '');
-        $app['available_version'] = isset($info['version']) ? $info['version'] : '';
-        $app['author'] = isset($info['author']) ? $info['author'] : '';
-        $app['category'] = isset($info['config']['category']) ? $info['config']['category'] : null;
-        $app['is_unique'] = isset($info['config']['unique']) && $info['config']['unique'] ? 1 : 0;
+        $versions = array();
+
+        if (isset($info['versions']) && is_string($info['versions'])){
+            $info['versions'] = array($info['versions']);
+        }
 
         $option_values = json_decode($app['options'], true);
 
         if (empty($option_values)){
             $option_values = array();
-        }
-
-        $update_data = array();
-
-        if (!$original_app['alias'] && $app['alias']){
-            $update_data['alias'] = $app['alias'];
-        }
-
-        if (!$original_app['name'] && $app['name']){
-            $update_data['name'] = $app['name'];
-        }
-
-        if (!$original_app['description'] && $app['description']){
-            $update_data['description'] = $app['description'];
-        }
-
-        if (!$original_app['author'] && $app['author'] || $original_app['author'] != $app['author']){
-            $update_data['author'] = $app['author'];
-        }
-
-        $update_data['is_unique'] = $app['is_unique'];
-        $update_data['type'] = $app['type'];
-        $update_data['category'] = $app['category'];
-
-        if (!empty($update_data)){
-            Mysql::getInstance()->update('launcher_apps', $update_data, array('id' => $app_id));
-        }
-
-        unset($app['options']);
-
-        $app['icon'] = '';
-        $app['icon_big'] = '';
-        $app['backgroundColor'] = '';
-
-        if ($app['current_version']){
-
-            $app_path = realpath(PROJECT_PATH.'/../../'
-                .Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/')
-                .($app['type'] == 'plugin' ? 'plugins/' : '')
-                .$app['url']
-                .'/'.$app['current_version']);
-
-            $app['installed'] = $app_path && is_dir($app_path);
-
-            if ($app['installed'] && isset($info['config']['icons']['paths']['720']) && isset($info['config']['icons']['states']['normal'])){
-                $icon_path = realpath($app_path.'/app/'.$info['config']['icons']['paths']['720'].$info['config']['icons']['states']['normal']);
-                $app['icon'] = $icon_path && is_readable($icon_path) ?
-                        'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
-                        .'://'.$_SERVER['HTTP_HOST']
-                        .'/'.Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/')
-                        .$app['alias']
-                        .'/'.$app['current_version'].'/app/'
-                        .$info['config']['icons']['paths']['720'].$info['config']['icons']['states']['normal']
-                    : '';
-
-                $icon_big_path = realpath($app_path.'/app/'.$info['config']['icons']['paths']['1080'].$info['config']['icons']['states']['normal']);
-
-                $app['icon_big'] = $icon_big_path && is_readable($icon_big_path) ?
-                    'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
-                    .'://'.$_SERVER['HTTP_HOST']
-                    .'/'.Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/')
-                    .$app['alias']
-                    .'/'.$app['current_version'].'/app/'
-                    .$info['config']['icons']['paths']['1080'].$info['config']['icons']['states']['normal']
-                    : '';
-
-                if ($app['icon'] || $app['icon_big']){
-                    $app['backgroundColor'] = isset($info['config']['backgroundColor']) ? $info['config']['backgroundColor'] : '';
-                }
-            }
-        }else{
-            $app['installed'] = false;
-        }
-
-        if ($app['localization'] && ($localization = json_decode($app['localization'], true))){
-            if (!empty($localization[$this->lang]['name'])){
-                $app['name'] = $localization[$this->lang]['name'];
-            }
-
-            if (!empty($localization[$this->lang]['description'])){
-                $app['description'] = $localization[$this->lang]['description'];
-            }
-        }
-
-        $app['versions'] = array();
-
-        if (isset($info['versions']) && is_string($info['versions'])){
-            $info['versions'] = array($info['versions']);
         }
 
         if (isset($info['versions']) && is_array($info['versions'])){
@@ -249,11 +292,11 @@ class SmartLauncherAppsManager
 
                 $version['options'] = $option_list;
 
-                $app['versions'][] = $version;
+                $versions[] = $version;
             }
         }
 
-        return $app;
+        return $versions;
     }
 
     /**
@@ -463,7 +506,7 @@ class SmartLauncherAppsManager
         if ($autoinstall){
             $this->installApp($app_id, null, $skip_info_check);
         }else{
-            $this->getAppInfo($app_id);
+            $this->getAppInfo($app_id, true);
         }
 
         return $app_id;
