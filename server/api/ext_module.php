@@ -18,7 +18,7 @@ if (empty($app) || $app['status'] == 0){
 }
 
 $apps = new AppsManager();
-$app = $apps->getAppInfo($app['id']);
+$app = $apps->getAppInfoWoFetch($app['id']);
 
 if (!$app['installed']){
     exit;

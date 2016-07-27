@@ -67,6 +67,32 @@ class AppsManager
         return $apps;
     }
 
+    public function getAppInfoWoFetch($app_id){
+
+        $app = Mysql::getInstance()->from('apps')->where(array('id' => $app_id))->get()->first();
+
+        if (empty($app)){
+            return false;
+        }
+
+        if ($app['current_version']){
+            $app['installed'] = is_dir(realpath(PROJECT_PATH.'/../../'
+                .Config::getSafe('apps_path', 'stalker_apps/')
+                .$app['alias']
+                .'/'.$app['current_version']));
+        }else{
+            $app['installed'] = false;
+        }
+
+        $app['app_url'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
+            .'://'.$_SERVER['HTTP_HOST']
+            .'/'.Config::getSafe('apps_path', 'stalker_apps/')
+            .$app['alias']
+            .'/'.$app['current_version'];
+
+        return $app;
+    }
+
     public function getAppInfo($app_id){
 
         $app = $original_app = Mysql::getInstance()->from('apps')->where(array('id' => $app_id))->get()->first();

@@ -146,9 +146,7 @@ class Npm
                     self::delTree($full_path);
                 }
 
-
-                $app_manager = new SmartLauncherAppsManager();
-                $app_manager->addApplication($dir, true);
+                SmartLauncherAppsManager::getInstance()->addApplication($dir, true);
             }
         }
     }
