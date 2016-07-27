@@ -1083,6 +1083,15 @@ function common_xpcom(){
             }
         }
 
+        if (!this.ntp_server && this.user['stb_ntp_server']
+        || this.ntp_server && this.user['stb_ntp_server'] && this.ntp_server != this.user['stb_ntp_server'] && this.user['overwrite_stb_ntp_server']){
+            _debug('set ntpurl '+this.user['stb_ntp_server']);
+            stb.RDir('setenv ntpurl '+this.user['stb_ntp_server']);
+            _debug('reboot');
+            stb.ExecAction('reboot');
+            return;
+        }
+
         if (this.user['store_auth_data_on_stb']){
             this.save_access_token();
         }
@@ -1625,6 +1634,8 @@ function common_xpcom(){
                     }
 
                 }
+
+                this.player.init_first_channel();
             },
 
             this
@@ -1647,6 +1658,8 @@ function common_xpcom(){
                 stb.loader.add_pos(this.load_step, 'fav_channels loaded');
 
                 this.player.fav_channels = result.data || [];
+
+                this.player.init_first_channel();
             },
 
             this
@@ -1668,6 +1681,8 @@ function common_xpcom(){
                 if (this.player.fav_channels_ids.length == 0){
                     this.user.fav_itv_on = 0;
                 }
+
+                this.player.init_first_channel();
             },
 
             this
