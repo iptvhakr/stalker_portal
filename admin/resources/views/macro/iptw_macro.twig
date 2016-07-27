@@ -205,6 +205,9 @@
             </a>
             <ul class="dropdown-menu pull-right">
                 {% if with_all == 1 %}
+                    {% if attribute(dropdownAttribute, 'all') is defined %}
+                    {{ main_macro_inside.get_dropdown_attribute_item(dropdownAttribute['all'], set_id) }}
+                    {% else %}
                 <li>
                     <div class="checkbox">
                         <label>
@@ -213,10 +216,13 @@
                         </label>
                     </div>
                 </li>
+                    {% endif %}
                 <li class="divider"></li>
                 {% endif %}
-                {% for item in dropdownAttribute %}
+                {% for key, item in dropdownAttribute %}
+                    {% if 'all' != item.name %}
                 {{ main_macro_inside.get_dropdown_attribute_item(item, set_id) }}
+                    {% endif %}
                 {% endfor %}
             </ul>
         </div>
@@ -240,8 +246,10 @@
         <thead>
             <tr>
         {% autoescape false %}
-            {% for item in dropdownAttribute %}
+            {% for key, item in dropdownAttribute %}
+                {% if 'all' != item.name %}
                 <th data-filter="{{ item.name }}">{% if not(item.name == 'operations') %}{{ item.title }}{% endif %}</th>
+                {% endif %}
             {% endfor %}
         {% endautoescape %}
             </tr>
@@ -250,8 +258,10 @@
 
     {% macro get_datatable_column(dropdownAttribute) %}
         "columns": [
-        {% for item in app.dropdownAttribute %}
+        {% for key, item in app.dropdownAttribute %}
+            {% if 'all' != item.name %}
             {"data": "{{ item.name }}" {% if not(item.checked) %}, visible: false, className: 'none'{% endif %}}{% if not loop.last %},{% endif %}
+            {% endif %}
         {% endfor %}
         ],
     {% endmacro %}

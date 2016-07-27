@@ -35,12 +35,12 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
 
-        $tos = $this->db->getTOS(1);
+        $tos = $this->db->getTOS('stalker_apps');
         if (empty($tos)) {
             return $this->app['twig']->render('ApplicationCatalog_index.twig');
         } elseif (empty($tos[0]['accepted'])) {
             $this->app['tos'] = $tos[0];
-            $this->app['tos_id'] = 1;
+            $this->app['tos_alias'] = 'stalker_apps';
             return $this->app['twig']->render('ApplicationCatalog_tos.twig');
         }
 
@@ -57,12 +57,12 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
 
-        $tos = $this->db->getTOS(2);
+        $tos = $this->db->getTOS('launcher_apps');
         if (empty($tos)) {
             return $this->app['twig']->render('ApplicationCatalog_index.twig');
         } elseif (empty($tos[0]['accepted'])) {
             $this->app['tos'] = $tos[0];
-            $this->app['tos_id'] = 2;
+            $this->app['tos_alias'] = 'launcher_apps';
             return $this->app['twig']->render('ApplicationCatalog_tos.twig');
         }
 
@@ -107,12 +107,12 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
 
-        if ($this->app['userlogin'] === 'admin' && !empty($this->postData['accepted']) && !empty($this->postData['tos_id'])){
-            $this->db->setAcceptedTOS((int)$this->postData['tos_id']);
+        if ($this->app['userlogin'] === 'admin' && !empty($this->postData['accepted']) && !empty($this->postData['tos_alias'])){
+            $this->db->setAcceptedTOS($this->postData['tos_alias']);
         }
 
-        if (!empty($this->postData['tos_id'])) {
-            $redirect_path = "/application-catalog" . (((int)$this->postData['tos_id']) == 2 ? '/smart-application-list': '/application-list');
+        if (!empty($this->postData['tos_alias'])) {
+            $redirect_path = "/application-catalog" . (($this->postData['tos_alias']) == 'launcher_apps' ? '/smart-application-list': '/application-list');
         } else {
             $redirect_path = "/";
         }
@@ -980,16 +980,47 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
                 ini_set('zlib.output_compression', 'Off');
                 ini_set('implicit_flush', 'On');
                 ob_implicit_flush(true);
+                while(ob_get_level()){
+                    ob_end_clean();
+                }
                 ob_start();
                 header($_SERVER["SERVER_PROTOCOL"]." 200 Ok");
                 header('X-Accel-Buffering: no');
-                header('Content-Type: text/html');
+                header('Content-Type: text/html; charset=utf-8');
                 ob_flush();
-                echo '<html>
-                            <head>\n';
+                echo '<!DOCTYPE html>
+                            <head>
+                            ';
+
+                echo '</head>
+                            <body>
+                            ';
+                $sended = 0;
+                $send_str = '<br/>
+                ';
+                $send_str_len = mb_strlen($send_str);
+                while (($sended += $send_str_len) <= 1024) {
+                    echo $send_str;
+                }
                 ob_flush();
                 $apps = new \SmartLauncherAppsManager();
-                $apps->setNotificationCallback(array($this, 'msgEcho'));
+                $apps->setNotificationCallback(function($msg){
+                    error_reporting(-1);
+                    ini_set('display_errors','On');
+                    ini_set('output_buffering', 'Off');
+                    ini_set('output_handler', '');
+                    ini_set('implicit_flush', 'On');
+                    ob_implicit_flush(true);
+                    while(ob_get_level()){
+                        ob_end_clean();
+                    }
+                    ob_start();
+                    echo '<script type="text/javascript"> var x = ' . microtime(TRUE) . ';</script>
+                    ';
+                    echo '<script  type="text/javascript"> window.parent.deliver("setModalMessage","' . $msg . '"); </script>
+                    ';
+                    ob_flush();
+                });
                 if ($apps->resetApps()){
                     $error = '';
                 }
@@ -1003,15 +1034,30 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         $response = $this->generateAjaxResponse($response);
         $response = json_encode($response);
         if (empty($this->postData['info'])) {
-            if (empty($error)) {
-                echo "<script> parent.deliver('manageList',$response) </script>\n";
-            } else {
-                $this->msgEcho($error);
-                echo "<script> parent.deliver('manageListError',$response) </script>\n";
+            error_reporting(-1);
+            ini_set('display_errors','On');
+            ini_set('output_buffering', 'Off');
+            ini_set('output_handler', '');
+            ini_set('implicit_flush', 'On');
+            ob_implicit_flush(true);
+            while(ob_get_level()){
+                ob_end_clean();
             }
-            echo '</head>
-                <body>
-                </body>
+            ob_start();
+            echo '<script type="text/javascript"> var x = ' . microtime(TRUE) . ';</script>
+            ';
+            if (empty($error)) {
+                echo '<script type="text/javascript"> window.parent.deliver("setModalMessage","' . $this->setLocalization('Done') . '"); </script>
+                ';
+                echo '<script type="text/javascript"> window.parent.deliver("manageList", ' . $response . '); </script>
+                ';
+            } else {
+                echo '<script type="text/javascript"> window.parent.deliver("setModalMessage","' . $this->setLocalization('Error') . '! ' .  $error . '"); </script>
+                ';
+                echo '<script type="text/javascript"> window.parent.deliver("manageListError", ' . $response . '); </script>
+                ';
+            }
+            echo '</body>
             </html>';
             ob_end_flush();
             exit;
@@ -1219,7 +1265,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
     }
 
     public function msgEcho($msg){
-        echo "<script> parent.deliver('setModalMessage','$msg') </script>\n";
+        echo "<script> parent.deliver('setModalMessage','$msg') </script>";
         ob_flush();
     }
 }

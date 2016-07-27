@@ -564,11 +564,13 @@ $(document).ready(function () {
         var is_checked = !$(this).find("input[type='checkbox']").is(":checked");
         $(this).find("input[type='checkbox']").prop('checked', is_checked);
         var sendData = {};
+        sendData[$(this).find("input[type='checkbox']").val()] = is_checked;
         $("#attribute_set input[type='checkbox']:not(:first):not(:last)").each(function(index){
             $(this).prop('checked', is_checked);
-            $("#datatable-1").dataTable().fnSetColumnVis( index, is_checked );
+            $("#datatable-1").dataTable().fnSetColumnVis( index, is_checked, false );
             sendData[$(this).val()] = is_checked;
         });
+        $("#datatable-1").DataTable().draw();
         setDropdownAttribute(sendData);
         e.stopPropagation();
         return false;
@@ -576,7 +578,7 @@ $(document).ready(function () {
 
     $(document).on('change', "#attribute_set li:not(:first-child) input[type='checkbox']", function (e) {
         $("#attribute_set input[type='checkbox']").each(function(index){
-            $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
+            $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked'), false );
         });
         var allChbLen = $("#attribute_set li:not(:first-child) input[type='checkbox']").length;
         var chkChbLen = $("#attribute_set li:not(:first-child) input[type='checkbox']:checked").length;
@@ -585,6 +587,7 @@ $(document).ready(function () {
         $("#attribute_set input[type='checkbox']").each(function(){
             sendData[$(this).val()] = $(this).prop('checked');
         });
+        $("#datatable-1").DataTable().draw();
         setDropdownAttribute(sendData);
     });
     
