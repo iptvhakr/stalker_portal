@@ -3,6 +3,7 @@
       "vendor-dir": "../admin/vendor"
     },
     "require": {
+        "doctrine/cache": "<=1.5.4",
         "silex/silex": "~1.2",
         "symfony/browser-kit": "~2.3",
         "symfony/console": "~2.3",

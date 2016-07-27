@@ -276,6 +276,7 @@
         <chmod file="${project_path}/../${launcher_apps_path}" mode="0777" />
 
         <exec command="php ${project_path}/deploy/composer/composer.phar self-update" level="info" outputProperty="install.error.msg" returnProperty="install.error.code"/>
+        <exec command="rm -f ${project_path}/deploy/composer.lock" level="info"/>
         <exec command="php ${project_path}/deploy/composer/composer.phar install" level="info" outputProperty="install.error.msg" returnProperty="install.error.code"/>
 
         <if>
