@@ -521,6 +521,24 @@ class SmartLauncherAppsManager
         }
     }
 
+    public function updateApps(){
+
+        $system_apps = $this->getSystemApps();
+        $apps = $this->getInstalledApps('app');
+        $themes = $this->getInstalledApps('theme');
+
+        $installed_apps = array_merge($system_apps, $themes, $apps);
+
+        $need_to_update = array_values(array_filter($installed_apps, function($app){
+            return $app['current_version'] != $app['available_version'];
+        }));
+
+        foreach ($need_to_update as $app){
+            $this->sendToCallback("Updating package ".$app['alias']."...");
+            $this->updateApp($app['id']);
+        }
+    }
+
     public function getFullAppDependencies($app_id){
 
         $app = Mysql::getInstance()->from('launcher_apps')->where(array('id' => $app_id))->get()->first();
