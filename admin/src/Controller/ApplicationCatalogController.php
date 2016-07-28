@@ -971,39 +971,8 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             $error = '';
         } else {
             try{
-                ignore_user_abort(TRUE);
-                set_time_limit(0);
                 $response = array('action' => '');
-                error_reporting(-1);
-                ini_set('display_errors','On');
-                ini_set('output_buffering', 'Off');
-                ini_set('output_handler', '');
-                ini_set('zlib.output_compression', 'Off');
-                ini_set('implicit_flush', 'On');
-                ob_implicit_flush(true);
-                while(ob_get_level()){
-                    ob_end_clean();
-                }
-                ob_start();
-                header($_SERVER["SERVER_PROTOCOL"]." 200 Ok");
-                header('X-Accel-Buffering: no');
-                header('Content-Type: text/html; charset=utf-8');
-                ob_flush();
-                echo '<!DOCTYPE html>
-                            <head>
-                            ';
-
-                echo '</head>
-                            <body>
-                            ';
-                $sended = 0;
-                $send_str = '<br/>
-                ';
-                $send_str_len = mb_strlen($send_str);
-                while (($sended += $send_str_len) <= 1024) {
-                    echo $send_str;
-                }
-                ob_flush();
+                $this->beginNotifications();
                 $apps = new \SmartLauncherAppsManager($this->app['language']);
                 $apps->setNotificationCallback(function($msg){
                     error_reporting(-1);
@@ -1035,32 +1004,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         $response = $this->generateAjaxResponse($response);
         $response = json_encode($response);
         if (empty($this->postData['info'])) {
-            error_reporting(-1);
-            ini_set('display_errors','On');
-            ini_set('output_buffering', 'Off');
-            ini_set('output_handler', '');
-            ini_set('implicit_flush', 'On');
-            ob_implicit_flush(true);
-            while(ob_get_level()){
-                ob_end_clean();
-            }
-            ob_start();
-            echo '<script type="text/javascript"> var x = ' . microtime(TRUE) . ';</script>
-            ';
-            if (empty($error)) {
-                echo '<script type="text/javascript"> window.parent.deliver("setModalMessage","' . $this->setLocalization('Done') . '"); </script>
-                ';
-                echo '<script type="text/javascript"> window.parent.deliver("manageList", ' . $response . '); </script>
-                ';
-            } else {
-                echo '<script type="text/javascript"> window.parent.deliver("setModalMessage","' . $this->setLocalization('Error') . '! ' .  $error . '"); </script>
-                ';
-                echo '<script type="text/javascript"> window.parent.deliver("manageListError", ' . $response . '); </script>
-                ';
-            }
-            echo '</body>
-            </html>';
-            ob_end_flush();
+            $this->endNotification($response, $error, "setModalMessage", "manageList");
             exit;
         }
 
@@ -1132,6 +1076,56 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         $response = json_encode($response);
         return new Response($response, (empty($error) ? 200 : 500));
     }
+
+    public function smart_application_update(){
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+        $response = array('action' => 'manageList');
+        $error = $this->setLocalization('Failed');
+
+        try{
+            $data['msg'] = $this->setLocalization('Updated');
+
+            $response = array('action' => '');
+            $this->beginNotifications();
+            $apps = new \SmartLauncherAppsManager($this->app['language']);
+            $apps->setNotificationCallback(function($msg){
+                error_reporting(-1);
+                ini_set('display_errors','On');
+                ini_set('output_buffering', 'Off');
+                ini_set('output_handler', '');
+                ini_set('implicit_flush', 'On');
+                ob_implicit_flush(true);
+                while(ob_get_level()){
+                    ob_end_clean();
+                }
+                ob_start();
+                echo '<script type="text/javascript"> var x = ' . microtime(TRUE) . ';</script>
+                    ';
+                echo '<script  type="text/javascript"> window.parent.deliver("setModalMessage","' . $msg . '"); </script>
+                    ';
+                ob_flush();
+            });
+            $param = array();
+            $func = 'updateApps';
+            if (!empty($this->postData['id']) && is_numeric($this->postData['id'])) {
+                $func = 'updateApp';
+                $param[] = $this->postData['id'];
+            }
+            $error = call_user_func_array(array($apps, $func), $param);
+
+            $this->endNotification($response, $error, "setModalMessage", "manageList");
+            exit;
+        } catch (\SmartLauncherAppsManagerException $e) {
+            $error = $e->getMessage();
+        }
+
+        $response = $this->generateAjaxResponse($response);
+        $response = json_encode($response);
+        return new Response($response, (empty($error) ? 200 : 500));
+    }
+
     //------------------------ service method ----------------------------------
 
     private function getApplicationListDropdownAttribute(){
@@ -1265,8 +1259,66 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         }
     }
 
-    public function msgEcho($msg){
-        echo "<script> parent.deliver('setModalMessage','$msg') </script>";
+    private function beginNotifications(){
+        ignore_user_abort(TRUE);
+        set_time_limit(0);
+
+        error_reporting(-1);
+        ini_set('display_errors','On');
+        ini_set('output_buffering', 'Off');
+        ini_set('output_handler', '');
+        ini_set('zlib.output_compression', 'Off');
+        ini_set('implicit_flush', 'On');
+        ob_implicit_flush(true);
+        while(ob_get_level()){
+            ob_end_clean();
+        }
+        ob_start();
+        header($_SERVER["SERVER_PROTOCOL"]." 200 Ok");
+        header('X-Accel-Buffering: no');
+        header('Content-Type: text/html; charset=utf-8');
+        ob_flush();
+        echo '<!DOCTYPE html>
+                            <head></head>
+                            <body>
+                            ';
+        $sended = 0;
+        $send_str = '<br/>
+                ';
+        $send_str_len = mb_strlen($send_str);
+        while (($sended += $send_str_len) <= 1024) {
+            echo $send_str;
+        }
         ob_flush();
     }
+
+    private function endNotification($response, $error, $msg_func, $act_func){
+        error_reporting(-1);
+        ini_set('display_errors','On');
+        ini_set('output_buffering', 'Off');
+        ini_set('output_handler', '');
+        ini_set('implicit_flush', 'On');
+        ob_implicit_flush(true);
+        while(ob_get_level()){
+            ob_end_clean();
+        }
+        ob_start();
+        echo '<script type="text/javascript"> var x = ' . microtime(TRUE) . ';</script>
+            ';
+        if (empty($error)) {
+            echo '<script type="text/javascript"> window.parent.deliver("'. $msg_func .'","' . $this->setLocalization('Done') . '"); </script>
+                ';
+            echo '<script type="text/javascript"> window.parent.deliver("'. $act_func .'", ' . $response . '); </script>
+                ';
+        } else {
+            echo '<script type="text/javascript"> window.parent.deliver("'. $msg_func .'","' . $this->setLocalization('Error') . '! ' .  $error . '"); </script>
+                ';
+            echo '<script type="text/javascript"> window.parent.deliver("'. $act_func .'Error", ' . $response . '); </script>
+                ';
+        }
+        echo '</body>
+            </html>';
+        ob_end_flush();
+    }
+
 }
