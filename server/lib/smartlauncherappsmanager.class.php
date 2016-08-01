@@ -535,7 +535,11 @@ class SmartLauncherAppsManager
 
         foreach ($need_to_update as $app){
             $this->sendToCallback("Updating package ".$app['alias']."...");
-            $this->updateApp($app['id']);
+            try{
+                $this->updateApp($app['id']);
+            } catch (SmartLauncherAppsManagerException $e){
+                $this->sendToCallback("Error: " . $e->getMessage());
+            }
         }
     }
 

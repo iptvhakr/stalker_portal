@@ -16,7 +16,7 @@
                 <a id="upload_list" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-upload-list" class="btn btn-success pull-right">{{ 'Upload a list of installed'|trans }}</a>
                 <a id="download_list" href="#" class="btn btn-success pull-right">{{ 'Save the list of installed'|trans }}</a>
                 <a id="reset_all_apps" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-reset-all" data-info = '1' class="main_ajax btn btn-success pull-right">{{ 'Reset all application'|trans }}</a>
-                <a id="update_all_apps" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-update" data-id="all" class="main_ajax btn btn-success pull-right">{{ 'Update all application'|trans }}</a>
+                <a id="update_all_apps" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-update" data-info = '1' data-id="all" class="main_ajax btn btn-success pull-right">{{ 'Update all application'|trans }}</a>
                 <a id="check_update_apps" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-check-update" class="main_ajax btn btn-success pull-right">{{ 'Check updates for applications'|trans }}</a>
             </div>
         </div>
@@ -51,6 +51,7 @@
     <script type="text/javascript" defer="defer">
 
         var fileUploaderList = [];
+        var messageStack = [], messageTimer;
 
         function TestTable1() {
             $('#datatable-1').on('xhr.dt', function (e, settings, json) {
@@ -321,8 +322,17 @@
             cleanIframe();
         };
 
-        var setModalMessage = function(mgs){
-            $('#modalbox .devoops-modal-inner span').html(mgs);
+        var setModalMessage = function(msg){
+            messageStack.push(msg);
+            if (typeof (messageTimer) == 'undefined') {
+                messageTimer = setInterval(function(){
+                    if (messageStack.length == 0) {
+                        clearInterval(messageTimer);
+                    } else {
+                        $('#modalbox .devoops-modal-inner span').html(messageStack.shift());
+                    }
+                }, 1000);
+            }
         };
 
         function closeModalBox() {
@@ -532,6 +542,15 @@
                 var infoBlock = $("<span class='col-md-12 txt-default'>{{ 'The next apps has been installed manually and will be removed.'|trans }}</span>").prependTo('#modalbox .devoops-modal-inner div');
                 for (var i in data.data) {
                     var infoBlock = $("<span class='col-md-12 txt-danger'>"+ data.data[i]['alias'] + " {{ 'current version'|trans }} " + data.data[i]['current_version'] +"</span>").insertAfter(infoBlock);
+                }
+            }
+
+            if (data.url_id && $("#" + data.url_id).length != 0) {
+                $("#reset_all_apps_btn").prop('href', $("#" + data.url_id).prop('href'));
+                for(var key in $("#" + data.url_id).data()){
+                    if (key != 'info') {
+                        $("#reset_all_apps_btn").data(key, $("#" + data.url_id).data(key));
+                    }
                 }
             }
 
