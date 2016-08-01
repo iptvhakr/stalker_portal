@@ -1085,10 +1085,19 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         $response = array('action' => 'manageList');
         $error = $this->setLocalization('Failed');
 
+        $id = !empty($this->postData['id']) && is_numeric($this->postData['id']) ? $this->postData['id'] : (!empty($this->data['id']) && is_numeric($this->data['id']) ? $this->data['id']: FALSE);
+
         if (!empty($this->postData['info'])) {
             $response['action'] = 'resetAllWarning';
-            $response['url_id'] = 'update_all_apps';
-            $response['data'] = $this->db->getSmartApplication(array('manual_install' => 1));
+            if ($id !== FALSE) {
+                $response['url_id'] =  'update_app_' . $id;
+                $response['modal_message'] = $this->setLocalization('Do you really want update this application?');
+            } else {
+                $response['url_id'] =  'update_all_apps';
+                $response['modal_message'] = $this->setLocalization('Do you really want update all application?');
+            }
+
+            $response['button_message'] = $this->setLocalization('Update');
             $error = '';
         } else {
             try {
@@ -1116,11 +1125,13 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
                 });
                 $param = array();
                 $func = 'updateApps';
-                if (!empty($this->postData['id']) && is_numeric($this->postData['id'])) {
+
+                if ($id !== FALSE) {
                     $func = 'updateApp';
-                    $param[] = $this->postData['id'];
+                    $param[] = $id;
                 }
-                $error = call_user_func_array(array($apps, $func), $param);
+                $error = '';
+                call_user_func_array(array($apps, $func), $param);
 
             } catch (\SmartLauncherAppsManagerException $e) {
                 $error = $e->getMessage();

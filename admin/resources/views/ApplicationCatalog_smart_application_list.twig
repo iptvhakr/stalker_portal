@@ -97,6 +97,15 @@
         function yelp() {
             $(document).ready(function () {
 
+                messageTimer =  setInterval(function(){
+                    if (messageStack.length != 0) {
+                        var row = messageStack.shift();
+                        if (typeof (window[row.action]) == 'function') {
+                            window[row.action](row.data);
+                        }
+                    }
+                }, 500);
+
                 $.ajax({
                     url: '{{app.request.baseUrl}}/plugins/jquery-file-download/jquery.fileDownload.js',
                     dataType: 'script',
@@ -224,7 +233,7 @@
                                 ajaxPostSend($(_this).attr('href'), sendData);
                             }else if ($("#reset_all_apps_btn").length == 0 || !$("#reset_all_apps_btn").is(":visible")) {
                                 clearInterval(timer);
-                                createIFrame('cometFrame', $(_this).attr('href') + '?v=' + $.random(10000000));
+                                createIFrame('cometFrame', $(_this).attr('href') + '?v=' + $.random(10000000) + "&" + $.param(sendData));
                             }
                         }, 10);
                     }
@@ -323,16 +332,7 @@
         };
 
         var setModalMessage = function(msg){
-            messageStack.push(msg);
-            if (typeof (messageTimer) == 'undefined') {
-                messageTimer = setInterval(function(){
-                    if (messageStack.length == 0) {
-                        clearInterval(messageTimer);
-                    } else {
-                        $('#modalbox .devoops-modal-inner span').html(messageStack.shift());
-                    }
-                }, 1000);
-            }
+            $('#modalbox .devoops-modal-inner span').html(msg);
         };
 
         function closeModalBox() {
@@ -486,17 +486,18 @@
                 disable_current_version = ' disabled="disabled" ';
             }
 
+            if (!item.available_version){
+                item.available_version = '...';
+            }
+
             if (item.installed) {
-                item.current_version += ' ' + (item.available_version != item.current_version ? '&nbsp;&nbsp;&nbsp;<a '+disable_current_version+' href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-detail?id=' + id + '">{{ 'Update'|trans }}</a>' : '');
+                item.current_version += ' ' + (item.available_version != '...' && item.available_version != current_version ? '&nbsp;&nbsp;&nbsp;<a '+disable_current_version+' href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-detail?id=' + id + '">{{ 'Update'|trans }}</a>' : '');
                 item.status = item.status == 1 ? "{{ 'Active'|trans }}" : "{{ 'Disabled'|trans }}";
             } else {
                 item.current_version = ' ' + '<a '+disable_current_version+' href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-detail?id=' + id + '">{{ 'Install'|trans }}</a>';
                 item.status = "{{ 'Not installed'|trans }}";
             }
 
-            if (!item.available_version){
-                item.available_version = '...';
-            }
 
             item.operations = "<div class='col-xs-3 col-sm-8'>\n\
                                     <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
@@ -511,6 +512,11 @@
                                         <li>\n\
                                             <a class='main_ajax' " + (status == 1 ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-delete' data-id='" + id + "'>\n\
                                                 <span> {{ 'Delete'|trans }} </span>\n\
+                                            </a>\n\
+                                        </li>\n\
+                                        <li>\n\
+                                            <a class='main_ajax' id='update_app_"+ id +"' " + (item.installed && item.available_version != '...' && item.available_version != current_version ? '' : 'disabled="disabled"') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-update'  data-info = '1' data-id='" + id + "'>\n\
+                                                <span> {{ 'Update'|trans }} </span>\n\
                                             </a>\n\
                                         </li>\n\
                                         <li>\n\
@@ -552,6 +558,14 @@
                         $("#reset_all_apps_btn").data(key, $("#" + data.url_id).data(key));
                     }
                 }
+            }
+
+            if (data.modal_message){
+                $("#modalbox .devoops-modal-inner span:first").text(data.modal_message);
+            }
+
+            if (data.button_message){
+                $("#reset_all_apps_btn").text(data.button_message);
             }
 
             $('#modalbox').show();
@@ -620,9 +634,7 @@
         }
 
         function deliver(callback, data) {
-            if (typeof (window[callback]) == 'function') {
-                window[callback](data);
-            }
+            messageStack.push({action: callback, data: data});
         }
 
         var iFrameOnLoad = function() {
@@ -830,7 +842,7 @@
 
     <script type="text/template" id="modal_reset_all_body">
         <div class="col-md-12">
-            <span class="col-md-12 txt-default">{{ 'Do you realy want reset all applications?'|trans }}</span>
+            <span class="col-md-12 txt-default">{{ 'Do you really want reset all applications?'|trans }}</span>
         </div>
     </script>
 
