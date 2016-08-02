@@ -580,6 +580,8 @@ _('Application for SmartLauncher. Uninstalling all old applications and installa
 _('Application for SmartLauncher. Editing the options of application');
 _('Application for SmartLauncher. Saving list of installed applications into the file');
 _('Application for SmartLauncher. Restoring installed applications from list of saved in file');
+_('Application for SmartLauncher. Updating applications');
+_('Application for SmartLauncher. Checking for updates for applications');
 
 _('once');
 _('every');

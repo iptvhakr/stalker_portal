@@ -317,6 +317,14 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             $response["recordsFiltered"] = $this->db->getTotalRowsSmartApplicationList($query_param['where'], $query_param['like']);
             $response["data"] = $base_obj->all();
         }
+
+        if (!empty($response["data"])) {
+            $response["data"] = array_map(function($row){
+                $row['RowOrder'] = "dTRow_" . $row['id'];
+                return $row;
+            }, $response["data"]);
+        }
+
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
 
         $error = "";
@@ -1087,6 +1095,14 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
 
         $id = !empty($this->postData['id']) && is_numeric($this->postData['id']) ? $this->postData['id'] : (!empty($this->data['id']) && is_numeric($this->data['id']) ? $this->data['id']: FALSE);
 
+        if ($id !== FALSE){
+            $response['id'] = $id;
+        }
+
+        $curr_row = !empty($this->postData['curr_row']) ? $this->postData['curr_row'] : (!empty($this->data['curr_row']) ? $this->data['curr_row']: FALSE);
+        if ($curr_row !== FALSE){
+            $response['curr_row'] = strpos($curr_row, '#') === FALSE ? "#".$curr_row: $curr_row ;
+        }
         if (!empty($this->postData['info'])) {
             $response['action'] = 'resetAllWarning';
             if ($id !== FALSE) {
@@ -1103,7 +1119,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             try {
                 $data['msg'] = $this->setLocalization('Updated');
 
-                $response = array('action' => '');
+                $response['action'] = '';
                 $this->beginNotifications();
                 $apps = new \SmartLauncherAppsManager($this->app['language']);
                 $apps->setNotificationCallback(function($msg){
@@ -1146,6 +1162,88 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         }
 
         return new Response($response, (empty($error) ? 200 : 500));
+    }
+
+    public function smart_application_check_update(){
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $response = array('action' => 'manageList');
+        $error = $this->setLocalization('Failed');
+
+        $id = !empty($this->postData['id']) && is_numeric($this->postData['id']) ? $this->postData['id'] : (!empty($this->data['id']) && is_numeric($this->data['id']) ? $this->data['id']: FALSE);
+
+        if ($id !== FALSE){
+            $response['id'] = $id;
+        }
+
+        $curr_row = !empty($this->postData['curr_row']) ? $this->postData['curr_row'] : (!empty($this->data['curr_row']) ? $this->data['curr_row']: FALSE);
+        if ($curr_row !== FALSE){
+            $response['curr_row'] = strpos($curr_row, '#') === FALSE ? "#".$curr_row: $curr_row ;
+        }
+        if (!empty($this->postData['info'])) {
+            $response['action'] = 'resetAllWarning';
+            if ($id !== FALSE) {
+                $response['url_id'] =  'check_update_app_' . $id;
+                $response['modal_message'] = $this->setLocalization('Do you really want checking update for this application?');
+            } else {
+                $response['url_id'] =  'check_update_apps';
+                $response['modal_message'] = $this->setLocalization('Do you really want checking updates for all application?');
+            }
+
+            $response['button_message'] = $this->setLocalization('Check');
+            $error = '';
+        } else {
+            try {
+                $data['msg'] = $this->setLocalization('Checked');
+
+                $response['action'] = '';
+                $this->beginNotifications();
+                $apps = new \SmartLauncherAppsManager($this->app['language']);
+                $apps->setNotificationCallback(function($msg){
+                    error_reporting(-1);
+                    ini_set('display_errors','On');
+                    ini_set('output_buffering', 'Off');
+                    ini_set('output_handler', '');
+                    ini_set('implicit_flush', 'On');
+                    ob_implicit_flush(true);
+                    while(ob_get_level()){
+                        ob_end_clean();
+                    }
+                    ob_start();
+                    echo '<script type="text/javascript"> var x = ' . microtime(TRUE) . ';</script>
+                        ';
+                    echo '<script  type="text/javascript"> window.parent.deliver("setModalMessage","' . $msg . '"); </script>
+                        ';
+                    ob_flush();
+                });
+                $param = array();
+                $func = 'updateAllAppsInfo';
+
+                if ($id !== FALSE) {
+                    $func = 'getAppInfo';
+                    $param[] = $id;
+                    $param[] = TRUE;
+
+                }
+                $error = '';
+                call_user_func_array(array($apps, $func), $param);
+
+            } catch (\SmartLauncherAppsManagerException $e) {
+                $error = $e->getMessage();
+            }
+        }
+
+        $response = $this->generateAjaxResponse($response);
+        $response = json_encode($response);
+        if (empty($this->postData['info'])) {
+            $this->endNotification($response, $error, "setModalMessage", "manageList");
+            exit;
+        }
+
+        return new Response($response, (empty($error) ? 200 : 500));
+
     }
 
     //------------------------ service method ----------------------------------

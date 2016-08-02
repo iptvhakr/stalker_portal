@@ -17,7 +17,7 @@
                 <a id="download_list" href="#" class="btn btn-success pull-right">{{ 'Save the list of installed'|trans }}</a>
                 <a id="reset_all_apps" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-reset-all" data-info = '1' class="main_ajax btn btn-success pull-right">{{ 'Reset all application'|trans }}</a>
                 <a id="update_all_apps" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-update" data-info = '1' data-id="all" class="main_ajax btn btn-success pull-right">{{ 'Update all application'|trans }}</a>
-                <a id="check_update_apps" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-check-update" class="main_ajax btn btn-success pull-right">{{ 'Check updates for applications'|trans }}</a>
+                <a id="check_update_apps" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-check-update" data-info = '1' data-id="all" class="main_ajax btn btn-success pull-right">{{ 'Check updates for applications'|trans }}</a>
             </div>
         </div>
         <div class="row">
@@ -83,6 +83,9 @@
                     {"searchable": false, "targets": [0, 2, 3, 5, 7, -1]},
                     {"sortable": false, "targets": [0, 5, 6, -1]}
                 ],
+                "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+                    nRow.setAttribute('id', aData.RowOrder);  //Initialize row id for every row
+                },
                 "createdRow": function ( row, data, index ) {
                     if (!data.rerendered) {
                         var _this = this;
@@ -118,6 +121,9 @@
                     var _this = this;
                     $("#modalbox").data('complete', 0);
                     var sendData = $(_this).data();
+                    if ($(_this).closest('tr[id^="dTRow_"]').length != 0) {
+                        sendData['curr_row'] = $(_this).closest('tr[id^="dTRow_"]').attr('id');
+                    }
                     if ($(_this).attr("disabled")) {
                         JSErrorModalBox({msg: "{{ 'Action is not available'|trans }}"});
                     } else {
@@ -327,7 +333,11 @@
             } else {
                 JSErrorModalBox(obj);
             }
-            $('#datatable-1').DataTable().ajax.reload();
+            if (obj.id && obj.curr_row) {
+                ajaxPostSend($('#datatable-1').DataTable().ajax.url(), {id: obj.id, curr_row: obj.curr_row}, false, false, true);
+            } else {
+                $('#datatable-1').DataTable().ajax.reload();
+            }
             cleanIframe();
         };
 
@@ -515,6 +525,11 @@
                                             </a>\n\
                                         </li>\n\
                                         <li>\n\
+                                            <a class='main_ajax' id='check_update_app_"+ id +"' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-check-update' data-info = '1' data-id='" + id + "'>\n\
+                                                <span> {{ 'Checking updates'|trans }} </span>\n\
+                                            </a>\n\
+                                        </li>\n\
+                                        <li>\n\
                                             <a class='main_ajax' id='update_app_"+ id +"' " + (item.installed && item.available_version != '...' && item.available_version != current_version ? '' : 'disabled="disabled"') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-update'  data-info = '1' data-id='" + id + "'>\n\
                                                 <span> {{ 'Update'|trans }} </span>\n\
                                             </a>\n\
@@ -558,6 +573,10 @@
                         $("#reset_all_apps_btn").data(key, $("#" + data.url_id).data(key));
                     }
                 }
+            }
+
+            if (data.curr_row){
+                $("#reset_all_apps_btn").data('curr_row', data.curr_row);
             }
 
             if (data.modal_message){

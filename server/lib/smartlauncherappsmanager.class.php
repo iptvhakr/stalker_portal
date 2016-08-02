@@ -78,6 +78,8 @@ class SmartLauncherAppsManager
 
         if (empty($app['alias']) || $force_npm) {
 
+            $this->sendToCallback('Getting info for '. $app['url']);
+
             $npm = Npm::getInstance();
             $info = $npm->info($app['url']);
 
@@ -192,7 +194,11 @@ class SmartLauncherAppsManager
         $apps = Mysql::getInstance()->from('launcher_apps')->get()->all();
 
         foreach ($apps as $app){
-            $this->getAppInfo($app['id'], true);
+            try {
+                $this->getAppInfo($app['id'], true);
+            } catch (\SmartLauncherAppsManagerException $e) {
+                $this->sendToCallback('Error: ' . $e->getMessage());
+            }
         }
     }
 
