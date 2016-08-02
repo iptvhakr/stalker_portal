@@ -1238,7 +1238,7 @@
 
                 $("#add_channel .form-group").each(function(i){
                     var errorDiv = $(this).find('.bg-danger, .form-error');
-                    if (errorDiv.length && errorDiv.is(":visible") && $.trim(errorDiv.text()) != '') {
+                    if (errorDiv.length && !errorDiv.is(":visible") && $.trim(errorDiv.text()) != '') {
                         $(this).closest('div.box').find('a.collapse-link').trigger('click');
                     }
                 });
