@@ -178,7 +178,7 @@ class Karaoke extends AjaxResponse implements \Stalker\Lib\StbApi\Karaoke
             ->select('karaoke.*, karaoke_genre.title as genre')
             ->from('karaoke')
             ->join('karaoke_genre', 'karaoke.genre_id', 'karaoke_genre.id', 'LEFT')
-            ->where(array('status' => 1));
+            ->where(array('status' => 1, 'accessed' => 1));
     }
 }
 
