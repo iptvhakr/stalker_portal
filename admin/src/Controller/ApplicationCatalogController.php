@@ -317,6 +317,14 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             $response["recordsFiltered"] = $this->db->getTotalRowsSmartApplicationList($query_param['where'], $query_param['like']);
             $response["data"] = $base_obj->all();
         }
+
+        if (!empty($response["data"])) {
+            $response["data"] = array_map(function($row){
+                $row['RowOrder'] = "dTRow_" . $row['id'];
+                return $row;
+            }, $response["data"]);
+        }
+
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
 
         $error = "";
@@ -971,39 +979,8 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             $error = '';
         } else {
             try{
-                ignore_user_abort(TRUE);
-                set_time_limit(0);
                 $response = array('action' => '');
-                error_reporting(-1);
-                ini_set('display_errors','On');
-                ini_set('output_buffering', 'Off');
-                ini_set('output_handler', '');
-                ini_set('zlib.output_compression', 'Off');
-                ini_set('implicit_flush', 'On');
-                ob_implicit_flush(true);
-                while(ob_get_level()){
-                    ob_end_clean();
-                }
-                ob_start();
-                header($_SERVER["SERVER_PROTOCOL"]." 200 Ok");
-                header('X-Accel-Buffering: no');
-                header('Content-Type: text/html; charset=utf-8');
-                ob_flush();
-                echo '<!DOCTYPE html>
-                            <head>
-                            ';
-
-                echo '</head>
-                            <body>
-                            ';
-                $sended = 0;
-                $send_str = '<br/>
-                ';
-                $send_str_len = mb_strlen($send_str);
-                while (($sended += $send_str_len) <= 1024) {
-                    echo $send_str;
-                }
-                ob_flush();
+                $this->beginNotifications();
                 $apps = new \SmartLauncherAppsManager($this->app['language']);
                 $apps->setNotificationCallback(function($msg){
                     error_reporting(-1);
@@ -1035,32 +1012,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         $response = $this->generateAjaxResponse($response);
         $response = json_encode($response);
         if (empty($this->postData['info'])) {
-            error_reporting(-1);
-            ini_set('display_errors','On');
-            ini_set('output_buffering', 'Off');
-            ini_set('output_handler', '');
-            ini_set('implicit_flush', 'On');
-            ob_implicit_flush(true);
-            while(ob_get_level()){
-                ob_end_clean();
-            }
-            ob_start();
-            echo '<script type="text/javascript"> var x = ' . microtime(TRUE) . ';</script>
-            ';
-            if (empty($error)) {
-                echo '<script type="text/javascript"> window.parent.deliver("setModalMessage","' . $this->setLocalization('Done') . '"); </script>
-                ';
-                echo '<script type="text/javascript"> window.parent.deliver("manageList", ' . $response . '); </script>
-                ';
-            } else {
-                echo '<script type="text/javascript"> window.parent.deliver("setModalMessage","' . $this->setLocalization('Error') . '! ' .  $error . '"); </script>
-                ';
-                echo '<script type="text/javascript"> window.parent.deliver("manageListError", ' . $response . '); </script>
-                ';
-            }
-            echo '</body>
-            </html>';
-            ob_end_flush();
+            $this->endNotification($response, $error, "setModalMessage", "manageList");
             exit;
         }
 
@@ -1132,6 +1084,168 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         $response = json_encode($response);
         return new Response($response, (empty($error) ? 200 : 500));
     }
+
+    public function smart_application_update(){
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $response = array('action' => 'manageList');
+        $error = $this->setLocalization('Failed');
+
+        $id = !empty($this->postData['id']) && is_numeric($this->postData['id']) ? $this->postData['id'] : (!empty($this->data['id']) && is_numeric($this->data['id']) ? $this->data['id']: FALSE);
+
+        if ($id !== FALSE){
+            $response['id'] = $id;
+        }
+
+        $curr_row = !empty($this->postData['curr_row']) ? $this->postData['curr_row'] : (!empty($this->data['curr_row']) ? $this->data['curr_row']: FALSE);
+        if ($curr_row !== FALSE){
+            $response['curr_row'] = strpos($curr_row, '#') === FALSE ? "#".$curr_row: $curr_row ;
+        }
+        if (!empty($this->postData['info'])) {
+            $response['action'] = 'resetAllWarning';
+            if ($id !== FALSE) {
+                $response['url_id'] =  'update_app_' . $id;
+                $response['modal_message'] = $this->setLocalization('Do you really want update this application?');
+            } else {
+                $response['url_id'] =  'update_all_apps';
+                $response['modal_message'] = $this->setLocalization('Do you really want update all application?');
+            }
+
+            $response['button_message'] = $this->setLocalization('Update');
+            $error = '';
+        } else {
+            try {
+                $data['msg'] = $this->setLocalization('Updated');
+
+                $response['action'] = '';
+                $this->beginNotifications();
+                $apps = new \SmartLauncherAppsManager($this->app['language']);
+                $apps->setNotificationCallback(function($msg){
+                    error_reporting(-1);
+                    ini_set('display_errors','On');
+                    ini_set('output_buffering', 'Off');
+                    ini_set('output_handler', '');
+                    ini_set('implicit_flush', 'On');
+                    ob_implicit_flush(true);
+                    while(ob_get_level()){
+                        ob_end_clean();
+                    }
+                    ob_start();
+                    echo '<script type="text/javascript"> var x = ' . microtime(TRUE) . ';</script>
+                        ';
+                    echo '<script  type="text/javascript"> window.parent.deliver("setModalMessage","' . $msg . '"); </script>
+                        ';
+                    ob_flush();
+                });
+                $param = array();
+                $func = 'updateApps';
+
+                if ($id !== FALSE) {
+                    $func = 'updateApp';
+                    $param[] = $id;
+                }
+                $error = '';
+                call_user_func_array(array($apps, $func), $param);
+
+            } catch (\SmartLauncherAppsManagerException $e) {
+                $error = $e->getMessage();
+            }
+        }
+
+        $response = $this->generateAjaxResponse($response);
+        $response = json_encode($response);
+        if (empty($this->postData['info'])) {
+            $this->endNotification($response, $error, "setModalMessage", "manageList");
+            exit;
+        }
+
+        return new Response($response, (empty($error) ? 200 : 500));
+    }
+
+    public function smart_application_check_update(){
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $response = array('action' => 'manageList');
+        $error = $this->setLocalization('Failed');
+
+        $id = !empty($this->postData['id']) && is_numeric($this->postData['id']) ? $this->postData['id'] : (!empty($this->data['id']) && is_numeric($this->data['id']) ? $this->data['id']: FALSE);
+
+        if ($id !== FALSE){
+            $response['id'] = $id;
+        }
+
+        $curr_row = !empty($this->postData['curr_row']) ? $this->postData['curr_row'] : (!empty($this->data['curr_row']) ? $this->data['curr_row']: FALSE);
+        if ($curr_row !== FALSE){
+            $response['curr_row'] = strpos($curr_row, '#') === FALSE ? "#".$curr_row: $curr_row ;
+        }
+        if (!empty($this->postData['info'])) {
+            $response['action'] = 'resetAllWarning';
+            if ($id !== FALSE) {
+                $response['url_id'] =  'check_update_app_' . $id;
+                $response['modal_message'] = $this->setLocalization('Do you really want checking update for this application?');
+            } else {
+                $response['url_id'] =  'check_update_apps';
+                $response['modal_message'] = $this->setLocalization('Do you really want checking updates for all application?');
+            }
+
+            $response['button_message'] = $this->setLocalization('Check');
+            $error = '';
+        } else {
+            try {
+                $data['msg'] = $this->setLocalization('Checked');
+
+                $response['action'] = '';
+                $this->beginNotifications();
+                $apps = new \SmartLauncherAppsManager($this->app['language']);
+                $apps->setNotificationCallback(function($msg){
+                    error_reporting(-1);
+                    ini_set('display_errors','On');
+                    ini_set('output_buffering', 'Off');
+                    ini_set('output_handler', '');
+                    ini_set('implicit_flush', 'On');
+                    ob_implicit_flush(true);
+                    while(ob_get_level()){
+                        ob_end_clean();
+                    }
+                    ob_start();
+                    echo '<script type="text/javascript"> var x = ' . microtime(TRUE) . ';</script>
+                        ';
+                    echo '<script  type="text/javascript"> window.parent.deliver("setModalMessage","' . $msg . '"); </script>
+                        ';
+                    ob_flush();
+                });
+                $param = array();
+                $func = 'updateAllAppsInfo';
+
+                if ($id !== FALSE) {
+                    $func = 'getAppInfo';
+                    $param[] = $id;
+                    $param[] = TRUE;
+
+                }
+                $error = '';
+                call_user_func_array(array($apps, $func), $param);
+
+            } catch (\SmartLauncherAppsManagerException $e) {
+                $error = $e->getMessage();
+            }
+        }
+
+        $response = $this->generateAjaxResponse($response);
+        $response = json_encode($response);
+        if (empty($this->postData['info'])) {
+            $this->endNotification($response, $error, "setModalMessage", "manageList");
+            exit;
+        }
+
+        return new Response($response, (empty($error) ? 200 : 500));
+
+    }
+
     //------------------------ service method ----------------------------------
 
     private function getApplicationListDropdownAttribute(){
@@ -1265,8 +1379,66 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         }
     }
 
-    public function msgEcho($msg){
-        echo "<script> parent.deliver('setModalMessage','$msg') </script>";
+    private function beginNotifications(){
+        ignore_user_abort(TRUE);
+        set_time_limit(0);
+
+        error_reporting(-1);
+        ini_set('display_errors','On');
+        ini_set('output_buffering', 'Off');
+        ini_set('output_handler', '');
+        ini_set('zlib.output_compression', 'Off');
+        ini_set('implicit_flush', 'On');
+        ob_implicit_flush(true);
+        while(ob_get_level()){
+            ob_end_clean();
+        }
+        ob_start();
+        header($_SERVER["SERVER_PROTOCOL"]." 200 Ok");
+        header('X-Accel-Buffering: no');
+        header('Content-Type: text/html; charset=utf-8');
+        ob_flush();
+        echo '<!DOCTYPE html>
+                            <head></head>
+                            <body>
+                            ';
+        $sended = 0;
+        $send_str = '<br/>
+                ';
+        $send_str_len = mb_strlen($send_str);
+        while (($sended += $send_str_len) <= 1024) {
+            echo $send_str;
+        }
         ob_flush();
     }
+
+    private function endNotification($response, $error, $msg_func, $act_func){
+        error_reporting(-1);
+        ini_set('display_errors','On');
+        ini_set('output_buffering', 'Off');
+        ini_set('output_handler', '');
+        ini_set('implicit_flush', 'On');
+        ob_implicit_flush(true);
+        while(ob_get_level()){
+            ob_end_clean();
+        }
+        ob_start();
+        echo '<script type="text/javascript"> var x = ' . microtime(TRUE) . ';</script>
+            ';
+        if (empty($error)) {
+            echo '<script type="text/javascript"> window.parent.deliver("'. $msg_func .'","' . $this->setLocalization('Done') . '"); </script>
+                ';
+            echo '<script type="text/javascript"> window.parent.deliver("'. $act_func .'", ' . $response . '); </script>
+                ';
+        } else {
+            echo '<script type="text/javascript"> window.parent.deliver("'. $msg_func .'","' . $this->setLocalization('Error') . '! ' .  $error . '"); </script>
+                ';
+            echo '<script type="text/javascript"> window.parent.deliver("'. $act_func .'Error", ' . $response . '); </script>
+                ';
+        }
+        echo '</body>
+            </html>';
+        ob_end_flush();
+    }
+
 }

@@ -16,6 +16,8 @@
                 <a id="upload_list" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-upload-list" class="btn btn-success pull-right">{{ 'Upload a list of installed'|trans }}</a>
                 <a id="download_list" href="#" class="btn btn-success pull-right">{{ 'Save the list of installed'|trans }}</a>
                 <a id="reset_all_apps" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-reset-all" data-info = '1' class="main_ajax btn btn-success pull-right">{{ 'Reset all application'|trans }}</a>
+                <a id="update_all_apps" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-update" data-info = '1' data-id="all" class="main_ajax btn btn-success pull-right">{{ 'Update all application'|trans }}</a>
+                <a id="check_update_apps" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-check-update" data-info = '1' data-id="all" class="main_ajax btn btn-success pull-right">{{ 'Check updates for applications'|trans }}</a>
             </div>
         </div>
         <div class="row">
@@ -49,6 +51,7 @@
     <script type="text/javascript" defer="defer">
 
         var fileUploaderList = [];
+        var messageStack = [], messageTimer;
 
         function TestTable1() {
             $('#datatable-1').on('xhr.dt', function (e, settings, json) {
@@ -80,6 +83,9 @@
                     {"searchable": false, "targets": [0, 2, 3, 5, 7, -1]},
                     {"sortable": false, "targets": [0, 5, 6, -1]}
                 ],
+                "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+                    nRow.setAttribute('id', aData.RowOrder);  //Initialize row id for every row
+                },
                 "createdRow": function ( row, data, index ) {
                     if (!data.rerendered) {
                         var _this = this;
@@ -94,6 +100,15 @@
         function yelp() {
             $(document).ready(function () {
 
+                messageTimer =  setInterval(function(){
+                    if (messageStack.length != 0) {
+                        var row = messageStack.shift();
+                        if (typeof (window[row.action]) == 'function') {
+                            window[row.action](row.data);
+                        }
+                    }
+                }, 500);
+
                 $.ajax({
                     url: '{{app.request.baseUrl}}/plugins/jquery-file-download/jquery.fileDownload.js',
                     dataType: 'script',
@@ -106,6 +121,9 @@
                     var _this = this;
                     $("#modalbox").data('complete', 0);
                     var sendData = $(_this).data();
+                    if ($(_this).closest('tr[id^="dTRow_"]').length != 0) {
+                        sendData['curr_row'] = $(_this).closest('tr[id^="dTRow_"]').attr('id');
+                    }
                     if ($(_this).attr("disabled")) {
                         JSErrorModalBox({msg: "{{ 'Action is not available'|trans }}"});
                     } else {
@@ -221,7 +239,7 @@
                                 ajaxPostSend($(_this).attr('href'), sendData);
                             }else if ($("#reset_all_apps_btn").length == 0 || !$("#reset_all_apps_btn").is(":visible")) {
                                 clearInterval(timer);
-                                createIFrame('cometFrame', $(_this).attr('href') + '?v=' + $.random(10000000));
+                                createIFrame('cometFrame', $(_this).attr('href') + '?v=' + $.random(10000000) + "&" + $.param(sendData));
                             }
                         }, 10);
                     }
@@ -315,12 +333,16 @@
             } else {
                 JSErrorModalBox(obj);
             }
-            $('#datatable-1').DataTable().ajax.reload();
+            if (obj.id && obj.curr_row) {
+                ajaxPostSend($('#datatable-1').DataTable().ajax.url(), {id: obj.id, curr_row: obj.curr_row}, false, false, true);
+            } else {
+                $('#datatable-1').DataTable().ajax.reload();
+            }
             cleanIframe();
         };
 
-        var setModalMessage = function(mgs){
-            $('#modalbox .devoops-modal-inner span').html(mgs);
+        var setModalMessage = function(msg){
+            $('#modalbox .devoops-modal-inner span').html(msg);
         };
 
         function closeModalBox() {
@@ -474,17 +496,18 @@
                 disable_current_version = ' disabled="disabled" ';
             }
 
+            if (!item.available_version){
+                item.available_version = '...';
+            }
+
             if (item.installed) {
-                item.current_version += ' ' + (item.available_version != item.current_version ? '&nbsp;&nbsp;&nbsp;<a '+disable_current_version+' href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-detail?id=' + id + '">{{ 'Update'|trans }}</a>' : '');
+                item.current_version += ' ' + (item.available_version != '...' && item.available_version != current_version ? '&nbsp;&nbsp;&nbsp;<a '+disable_current_version+' href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-detail?id=' + id + '">{{ 'Update'|trans }}</a>' : '');
                 item.status = item.status == 1 ? "{{ 'Active'|trans }}" : "{{ 'Disabled'|trans }}";
             } else {
                 item.current_version = ' ' + '<a '+disable_current_version+' href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-detail?id=' + id + '">{{ 'Install'|trans }}</a>';
                 item.status = "{{ 'Not installed'|trans }}";
             }
 
-            if (!item.available_version){
-                item.available_version = '...';
-            }
 
             item.operations = "<div class='col-xs-3 col-sm-8'>\n\
                                     <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
@@ -499,6 +522,16 @@
                                         <li>\n\
                                             <a class='main_ajax' " + (status == 1 ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-delete' data-id='" + id + "'>\n\
                                                 <span> {{ 'Delete'|trans }} </span>\n\
+                                            </a>\n\
+                                        </li>\n\
+                                        <li>\n\
+                                            <a class='main_ajax' id='check_update_app_"+ id +"' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-check-update' data-info = '1' data-id='" + id + "'>\n\
+                                                <span> {{ 'Checking updates'|trans }} </span>\n\
+                                            </a>\n\
+                                        </li>\n\
+                                        <li>\n\
+                                            <a class='main_ajax' id='update_app_"+ id +"' " + (item.installed && item.available_version != '...' && item.available_version != current_version ? '' : 'disabled="disabled"') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-update'  data-info = '1' data-id='" + id + "'>\n\
+                                                <span> {{ 'Update'|trans }} </span>\n\
                                             </a>\n\
                                         </li>\n\
                                         <li>\n\
@@ -531,6 +564,27 @@
                 for (var i in data.data) {
                     var infoBlock = $("<span class='col-md-12 txt-danger'>"+ data.data[i]['alias'] + " {{ 'current version'|trans }} " + data.data[i]['current_version'] +"</span>").insertAfter(infoBlock);
                 }
+            }
+
+            if (data.url_id && $("#" + data.url_id).length != 0) {
+                $("#reset_all_apps_btn").prop('href', $("#" + data.url_id).prop('href'));
+                for(var key in $("#" + data.url_id).data()){
+                    if (key != 'info') {
+                        $("#reset_all_apps_btn").data(key, $("#" + data.url_id).data(key));
+                    }
+                }
+            }
+
+            if (data.curr_row){
+                $("#reset_all_apps_btn").data('curr_row', data.curr_row);
+            }
+
+            if (data.modal_message){
+                $("#modalbox .devoops-modal-inner span:first").text(data.modal_message);
+            }
+
+            if (data.button_message){
+                $("#reset_all_apps_btn").text(data.button_message);
             }
 
             $('#modalbox').show();
@@ -599,9 +653,7 @@
         }
 
         function deliver(callback, data) {
-            if (typeof (window[callback]) == 'function') {
-                window[callback](data);
-            }
+            messageStack.push({action: callback, data: data});
         }
 
         var iFrameOnLoad = function() {
@@ -809,7 +861,7 @@
 
     <script type="text/template" id="modal_reset_all_body">
         <div class="col-md-12">
-            <span class="col-md-12 txt-default">{{ 'Do you realy want reset all applications?'|trans }}</span>
+            <span class="col-md-12 txt-default">{{ 'Do you really want reset all applications?'|trans }}</span>
         </div>
     </script>
 
