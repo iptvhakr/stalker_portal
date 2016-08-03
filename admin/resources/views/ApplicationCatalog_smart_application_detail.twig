@@ -159,7 +159,7 @@
                         } else {
                             json.data[i].operations +=      "\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' " + (is_conflicts && (status != '1' || !current) ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-toggle-state' data-id='" + id + "' " + ( current ? " data-status='" + (status == '1' ? '0': '1') + "'" : " data-current_version='" + item.version + "' data-status='1'") + ">\n\
+                                                                <a id='toggle_link_"+ id +"' class='main_ajax' " + (is_conflicts && (status != '1' || !current) ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-toggle-state' data-id='" + id + "' " + ( current ? " data-status='" + (status == '1' ? '0': '1') + "'" : " data-current_version='" + item.version + "' data-status='1'") + ">\n\
                                                                     <span> " + (status != '1' || !current ? "{{ 'Activate'|trans }}" : "{{ 'Deactivate'|trans }}") + " </span>\n\
                                                                 </a>\n\
                                                             </li>";
@@ -203,7 +203,20 @@
 
         function yelp() {
             $(document).ready(function () {
-
+                {% if attribute(app, 'app_info') is defined and not(app.app_info.info.type == 'app')%}
+                $("#iptv_list").on('click', '#app_status, a.main_ajax[href$="smart-application-toggle-state"]', function(e){
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+                    if ($(this).get(0).tagName.toLocaleLowerCase() == 'input'){
+                        if ($(this).prop('disabled') || $(this).prop('readonly')) {
+                            JSErrorModalBox({msg: "{{ 'Perhaps the application is not installed. Before activate this application is necessary to install any version of the application.'|trans}}"});
+                        }
+                    } else {
+                        e.preventDefault();
+                    }
+                    confirmHandler(this, 1);
+                });
+                {% endif %}
                 $(document).on('click', "a.main_ajax", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
@@ -248,15 +261,6 @@
                     e.preventDefault();
                     JScloseModalBox();
                     return false;
-                });
-
-                $(document).on('click', '#app_status', function(){
-                    if ($(this).prop('disabled') || $(this).prop('readonly')) {
-                        JSErrorModalBox({msg: "{{ 'Perhaps the application is not installed. Before activate this application is necessary to install any version of the application.'|trans}}"});
-                    }
-                    {% if attribute(app, 'app_info') is defined and app.app_info.info|length > 0 %}
-                    ajaxPostSend('{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-toggle-state', {status: $(this).is(':checked'), id: {{ app.app_info.info.id }} });
-                    {% endif %}
                 });
 
                 $(document).on('click', '#app_autoupdate', function(){
@@ -389,6 +393,42 @@
             $('#modalbox').find('.devoops-modal-bottom').empty();
         }
 
+        function customConfirm(obj){
+            $("#modalbox .modal-header-name").html("{{ 'Warning'|trans }}");
+            $("#modalbox .devoops-modal-inner").html("\n\
+            <div class='col-md-12'>\n\
+                <span class='col-md-12 txt-default'>\n\
+                    {{ 'This is system apps. Disabling this application can lead to failures in other applications. Do really want deactivate this application?'|trans }}\n\
+                </span>\n\
+            </div>");
+            if ($("#modalbox .devoops-modal-bottom button").length == 0) {
+                $("#modalbox .devoops-modal-bottom").append($("#modal_form_buttons").html());
+            }
+            $("#modalbox .devoops-modal-bottom button[type='reset']").text("{{ 'Cancel'|trans }}");
+            $("#modalbox .devoops-modal-bottom button[type='submit']").attr('type', 'button').text("{{ 'Deactivate'|trans }}");
+
+            $("#modalbox .devoops-modal-bottom").on('click', "button[type='button']", function(e){
+                confirmHandler(obj);
+            });
+
+            $("#modalbox").show();
+        }
+
+        function confirmHandler(obj, getInfo){
+            var sendData = $(obj).data();
+            if ($(obj).get(0).tagName.toLocaleLowerCase() == 'input') {
+                sendData['status'] = $(obj).is(':checked');
+                sendData['id'] = {{ app.app_info.info.id }};
+            }
+
+            if (sendData['status'] || !getInfo) {
+                ajaxPostSend('{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-toggle-state', sendData);
+            } else {
+                customConfirm(obj);
+            }
+
+        }
+
         document.addEventListener("DOMContentLoaded", yelp, false);
     </script>
 
@@ -412,7 +452,6 @@
                         </span>
                     </div>
                 </div>
-
             </form>
         </div>
     </script>
