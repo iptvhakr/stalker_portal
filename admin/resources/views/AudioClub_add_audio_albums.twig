@@ -265,7 +265,7 @@
 
     <script type="text/javascript" defer="defer">
 
-        var select2Opt = {minimumResultsForSearch: -1, dropdownAutoWidth: false, width: '100%'};
+        var select2Opt = {/*minimumResultsForSearch: -1, minimumInputLength: 0,*/ dropdownAutoWidth: false, width: '100%'};
 
         var conf = {
             lang : '{{ app.language }}',
@@ -478,7 +478,7 @@
                     $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Add track'|trans }}');
                     $("#modalbox_ad input").prop("disabled", false).removeAttr('disabled').val('');
                     $("#modalbox_ad select").prop("disabled", false).removeAttr('disabled').find('option').removeAttr('selected');
-                    $('#s2_track_lang').select2({minimumResultsForSearch: -1});
+                    $('#s2_track_lang').select2(select2Opt);
                     conf.form = '#track_form';
                     $("#track_form").validate();
                     $("#track_form").find('input, select').each(function(){
@@ -563,7 +563,7 @@
                 })
             }
             $("#modalbox_ad input").removeAttr('disabled');
-            $('#s2_track_lang').select2({minimumResultsForSearch: -1});
+            $('#s2_track_lang').select2(select2Opt);
             conf.form = '#track_form';
             $("#track_form").validate();
             $("#track_form").find('input, select').each(function(){
