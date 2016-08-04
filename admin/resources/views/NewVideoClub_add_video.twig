@@ -542,6 +542,15 @@
                 }
             });
 
+            $("#file_languages, #fileLangCloneList").on('select2:closing', function(e){
+                conf.form = '#' + $("#modalbox form").attr('id');
+                if ($(conf.form).isValid({}, conf, true)) {
+                    getMediaInfo();
+                } else {
+                    conf.onError();
+                }
+            });
+
             $("#fileLangCloneList ul").on('mouseup mousedown select2:selecting select2:opening keyup keydown input query', 'li, li *', function(e){
                 e.stopPropagation();
                 e.preventDefault();
@@ -1265,10 +1274,18 @@
                     $(this).selectRange(0);
                 });
 
+
+
                 $("#modalbox").on('blur keypress', '#video_url', function(e){
                     if (e && e.type && (e.type == "blur" || e.type == 'focusout' || (e.type == "keypress" && e.keyCode && e.keyCode == 13))) {
-                        if ($(this).val()) {
+
+                        conf.form = '#' + $("#modalbox form").attr('id');
+
+                        if ($(conf.form).isValid({}, conf, true)) {
                             getMediaInfo();
+                        } else {
+                            conf.onError();
+                            return false;
                         }
                     }
                 });
