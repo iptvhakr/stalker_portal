@@ -1664,7 +1664,7 @@ class UsersController extends \Controller\BaseStalkerController {
 
         $error = $this->setLocalization('Error');
         $subscribed_tv_ids = unserialize(base64_decode($this->db->getSubChannelsDB((int) $this->postData['user_id'])));
-        if (is_array($subscribed_tv_ids)) {
+        if (is_array($subscribed_tv_ids) && !empty($subscribed_tv_ids)) {
             $subscribed_tv_ids = implode(", ", $subscribed_tv_ids);
             $data['subscribed_tv'] = array_map(function($row){
                 return array('id' => $row['id'], 'name' => $row['name'], 'cost' => $row['cost']);
@@ -1702,19 +1702,19 @@ class UsersController extends \Controller\BaseStalkerController {
 
         $error = $this->setLocalization('Error');
 
-        if (!empty($this->postData['sub_ch']) && is_array($this->postData['sub_ch'])) {
-            $params = array(
-                'sub_ch'   => base64_encode(serialize($this->postData['sub_ch'])),
-                'bonus_ch' => '',
-                'addtime'  => 'NOW()'
-            );
-            if ($this->db->getSubChannelsDB((int) $this->postData['user_id']) && $this->db->updateSubChannelsDB($params, $this->postData['user_id'])) {
-                $error = '';
-            } elseif (($params['uid'] = $this->postData['user_id']) && $this->db->insertSubChannelsDB($params)) {
-                $error = '';
-            } else {
-                $error = $this->setLocalization('Write database error');
-            }
+        $sub_ch = !empty($this->postData['sub_ch']) && is_array($this->postData['sub_ch']) ? $this->postData['sub_ch'] : array();
+
+        $params = array(
+            'sub_ch'   => base64_encode(serialize($sub_ch)),
+            'bonus_ch' => '',
+            'addtime'  => 'NOW()'
+        );
+        if ($this->db->getSubChannelsDB((int) $this->postData['user_id']) && $this->db->updateSubChannelsDB($params, $this->postData['user_id'])) {
+            $error = '';
+        } elseif (($params['uid'] = $this->postData['user_id']) && $this->db->insertSubChannelsDB($params)) {
+            $error = '';
+        } else {
+            $error = $this->setLocalization('Write database error');
         }
 
         $response = $this->generateAjaxResponse($data, $error);

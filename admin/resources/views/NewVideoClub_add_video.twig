@@ -980,12 +980,6 @@
                     ajaxPostSend($(this).attr('href'), $(this).data(), false);
                 });
 
-                $("#files_container").on('click', 'a[disabled]', function (e) {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    JSErrorModalBox({msg: "{{ 'Action is disabled'|trans }}"});
-                });
-
                 $("table[id*='filedata']").on("click", "a[href*='remove-video']", function (e) {
                     e.stopPropagation();
                     e.preventDefault();

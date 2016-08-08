@@ -124,17 +124,15 @@
                     if ($(_this).closest('tr[id^="dTRow_"]').length != 0) {
                         sendData['curr_row'] = $(_this).closest('tr[id^="dTRow_"]').attr('id');
                     }
-                    if ($(_this).attr("disabled")) {
-                        JSErrorModalBox({msg: "{{ 'Action is not available'|trans }}"});
-                    } else {
-                        showModalBox();
-                        var timer = setInterval(function(){
-                            if ($("#reset_all_apps_button").length == 0 || !$("#reset_all_apps_button").is(":visible")) {
-                                clearInterval(timer);
-                                ajaxPostSend($(_this).attr('href'), sendData, false );
-                            }
-                        }, 10);
-                    }
+
+                    showModalBox();
+                    var timer = setInterval(function(){
+                        if ($("#reset_all_apps_button").length == 0 || !$("#reset_all_apps_button").is(":visible")) {
+                            clearInterval(timer);
+                            ajaxPostSend($(_this).attr('href'), sendData, false );
+                        }
+                    }, 10);
+
                     $(this).closest('div.open').removeClass('open');
                     return false;
                 });

@@ -197,6 +197,14 @@ $.extend( $.fn.dataTableExt.oPagination, {
 	}
 } );
 
+$.fn.dataTableExt.oApi.fnRemoveCurrentRow = function ( oSettings, row ){
+
+    var rowTO = $(oSettings.nTable).DataTable().row( row );
+
+    if (rowTO) {
+        rowTO.remove();
+    }
+};
 
 /*
  * TableTools Bootstrap compatibility
