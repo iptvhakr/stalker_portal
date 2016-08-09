@@ -929,3 +929,17 @@ function setActiveFilter(obj){
     $(obj).closest('ul').find("a").removeClass('active');
     $(obj).addClass('active');
 }
+
+function deleteTableRow(obj){
+    var dTRow;
+    if (obj) {
+        dTRow = (obj.RowOrder ? obj.RowOrder : (obj.id ? 'dTRow_' + obj.id : false));
+        dTRow = $("#" + dTRow.replace('#', ''));
+    }
+    if (dTRow) {
+        var oTable = dTRow.closest('table').dataTable();
+        oTable.fnRemoveCurrentRow(dTRow);
+    }
+
+    JScloseModalBox();
+}

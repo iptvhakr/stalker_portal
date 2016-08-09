@@ -69,6 +69,11 @@ $.extend(true, $.fn.dataTable.defaults, {
             }
         });
     },
+    "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+        if (aData && aData.RowOrder) {
+            nRow.setAttribute('id', aData.RowOrder);  //Initialize row id for every row
+        }
+    },
     "ajax" : {
         data: function(data) {
             data = dataTableDataPrepare(data);
@@ -203,7 +208,17 @@ $.fn.dataTableExt.oApi.fnRemoveCurrentRow = function ( oSettings, row ){
 
     if (rowTO) {
         rowTO.remove();
+        $(oSettings.nTable).dataTable().reDrawNoAjax();
+
     }
+};
+
+$.fn.dataTableExt.oApi.reDrawNoAjax = function(oSettings) {
+    var ajax_data_get = this.dataTable.settings[0]['bAjaxDataGet'];
+    this.dataTable.settings[0]['bAjaxDataGet'] = false;
+    this.DataTable().draw();
+    this.dataTable()._fnUpdateInfo(oSettings);
+    this.dataTable.settings[0]['bAjaxDataGet'] = ajax_data_get;
 };
 
 /*
