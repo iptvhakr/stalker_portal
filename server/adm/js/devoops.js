@@ -931,14 +931,18 @@ function setActiveFilter(obj){
 }
 
 function deleteTableRow(obj){
-    var dTRow;
-    if (obj) {
-        dTRow = (obj.RowOrder ? obj.RowOrder : (obj.id ? 'dTRow_' + obj.id : false));
-        dTRow = $("#" + dTRow.replace('#', ''));
-    }
-    if (dTRow) {
-        var oTable = dTRow.closest('table').dataTable();
-        oTable.fnRemoveCurrentRow(dTRow);
+    try{
+        var dTRow;
+        if (obj) {
+            dTRow = (obj.RowOrder ? obj.RowOrder : (obj.id ? 'dTRow_' + obj.id : false));
+            dTRow = $("#" + dTRow.replace('#', ''));
+        }
+        if (dTRow) {
+            var oTable = dTRow.closest('table').dataTable();
+            oTable.fnRemoveCurrentRow(dTRow);
+        }
+    } catch (e){
+        console.log(e);
     }
 
     JScloseModalBox();

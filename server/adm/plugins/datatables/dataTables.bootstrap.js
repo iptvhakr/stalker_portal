@@ -204,20 +204,16 @@ $.extend( $.fn.dataTableExt.oPagination, {
 
 $.fn.dataTableExt.oApi.fnRemoveCurrentRow = function ( oSettings, row ){
 
-    var rowTO = $(oSettings.nTable).DataTable().row( row );
-
-    if (rowTO) {
-        rowTO.remove();
-        $(oSettings.nTable).dataTable().reDrawNoAjax();
-
+    if ($(oSettings.nTable).DataTable().row( row )) {
+        $(oSettings.nTable).DataTable().row( row ).remove();
+        oSettings.oInstance.reDrawNoAjax();
     }
 };
 
 $.fn.dataTableExt.oApi.reDrawNoAjax = function(oSettings) {
     var ajax_data_get = this.dataTable.settings[0]['bAjaxDataGet'];
     this.dataTable.settings[0]['bAjaxDataGet'] = false;
-    this.DataTable().draw();
-    this.dataTable()._fnUpdateInfo(oSettings);
+    this.DataTable().rows().invalidate('data').draw();
     this.dataTable.settings[0]['bAjaxDataGet'] = ajax_data_get;
 };
 
