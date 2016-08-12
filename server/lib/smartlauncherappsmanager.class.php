@@ -551,7 +551,7 @@ class SmartLauncherAppsManager
             .Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/')
             .($app['type'] == 'plugin' ? 'plugins/' : '')
             .$app['alias']
-            .'/'.$app['current_version'].'/package.json'));
+            .'/'.$app['current_version'].'/packag e.json'));
 
         if (!$info){
             return false;
