@@ -1020,7 +1020,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         $data['action'] = 'getImage';
         $error = $this->setLocalization('No data');
 
-        if (strpos($this->data['url'], 'http://') === 0 && (strpos($this->data['url'], 'kinopoisk.ru/') || strpos($this->data['url'], 'image.tmdb.org/'))){
+        if ((strpos($this->data['url'], 'http://') === 0 || strpos($this->data['url'], 'https://') === 0) && (strpos($this->data['url'], 'kinopoisk.ru/') || strpos($this->data['url'], 'image.tmdb.org/'))){
             $img = file_get_contents($this->data['url']);
             if (!empty($img)) {
                 echo $img;

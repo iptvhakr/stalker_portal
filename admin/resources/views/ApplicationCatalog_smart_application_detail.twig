@@ -216,7 +216,29 @@
                     }
                     confirmHandler(this, 1);
                 });
+                {% else %}
+                $(document).on('click', '#app_status', function(){
+                    if ($(this).prop('disabled') || $(this).prop('readonly')) {
+                        JSErrorModalBox({msg: "{{ 'Perhaps the application is not installed. Before activate this application is necessary to install any version of the application.'|trans}}"});
+                    }
+                    {% if attribute(app, 'app_info') is defined and app.app_info.info|length > 0 %}
+                    ajaxPostSend('{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-toggle-state', {status: $(this).is(':checked'), id: {{ app.app_info.info.id }} });
+                    {% endif %}
+                });
                 {% endif %}
+                $("#ajax-content input[type='checkbox']").each(function(){
+                    $(this).attr('oldval', $(this).is(":checked"));
+                    this.reset = function(){
+                        var oldval = $(this).attr('oldval').toString();
+                        while(oldval && oldval != $(this).prop('checked').toString()) {
+                            $(this).prop('checked', !$(this).prop('checked')).trigger('change');
+                        }
+                    };
+                });
+                $("#ajax-content").on('change', "input[type='checkbox']", function(e){
+                    $(this).attr('oldval', !$(this).is(":checked"));
+                });
+
                 $(document).on('click', "a.main_ajax", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
@@ -258,6 +280,9 @@
                     e.stopPropagation();
                     e.preventDefault();
                     JScloseModalBox();
+                    $("#ajax-content input[type='checkbox']").each(function(){
+                        this.reset();
+                    });
                     return false;
                 });
 

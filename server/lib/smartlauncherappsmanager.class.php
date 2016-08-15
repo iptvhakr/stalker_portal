@@ -251,8 +251,14 @@ class SmartLauncherAppsManager
             $npm = Npm::getInstance();
             $cache = Cache::getInstance();
 
-            unset($info['time']['modified']);
-            unset($info['time']['created']);
+            //@todo --------- a temporary patch for missing field "time" ---------
+            if (array_key_exists('time', $info)) {
+                unset($info['time']['modified']);
+                unset($info['time']['created']);
+            } else {
+                $info['time'] = array_combine($info['versions'], array_pad(array(), count($info['versions']), 0));
+            }
+            //@todo -----------------------------------------------------------------
 
             foreach ($info['time'] as $ver => $time){
 
@@ -561,7 +567,7 @@ class SmartLauncherAppsManager
             .Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/')
             .($app['type'] == 'plugin' ? 'plugins/' : '')
             .$app['alias']
-            .'/'.$app['current_version'].'/package.json'));
+            .'/'.$app['current_version'].'/packag e.json'));
 
         if (!$info){
             return false;
