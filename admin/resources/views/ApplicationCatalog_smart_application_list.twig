@@ -12,8 +12,12 @@
                 {{ main_macro.get_filter('status', 'Status'|trans, 'id', 'title', app['allStatus'], 3) }}
                 {#{{ main_macro.get_filter('conflicts', 'Compatibility'|trans, 'id', 'title', app['allCompatibility'], 3) }}#}
 
-                <a id="add_apps" href="#" class="btn btn-success pull-right">{{ 'Add application by package name'|trans }}</a>
+                <a id="add_apps" href="#" class="btn btn-success pull-right">{{ 'Add applications'|trans }}</a>
+                <a id="upload_list" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-upload-list" class="btn btn-success pull-right">{{ 'Upload a list of installed'|trans }}</a>
+                <a id="download_list" href="#" class="btn btn-success pull-right">{{ 'Save the list of installed'|trans }}</a>
                 <a id="reset_all_apps" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-reset-all" data-info = '1' class="main_ajax btn btn-success pull-right">{{ 'Reset all application'|trans }}</a>
+                <a id="update_all_apps" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-update" data-info = '1' data-id="all" class="main_ajax btn btn-success pull-right">{{ 'Update all application'|trans }}</a>
+                <a id="check_update_apps" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-check-update" data-info = '1' data-id="all" class="main_ajax btn btn-success pull-right">{{ 'Check updates for applications'|trans }}</a>
             </div>
         </div>
         <div class="row">
@@ -42,7 +46,12 @@
         </div>
     </div>
 
+    {% include "basic_templates/file-uploader-scripts.twig" %}
+
     <script type="text/javascript" defer="defer">
+
+        var fileUploaderList = [];
+        var messageStack = [], messageTimer;
 
         function TestTable1() {
             $('#datatable-1').on('xhr.dt', function (e, settings, json) {
@@ -74,6 +83,9 @@
                     {"searchable": false, "targets": [0, 2, 3, 5, 7, -1]},
                     {"sortable": false, "targets": [0, 5, 6, -1]}
                 ],
+                "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+                    nRow.setAttribute('id', aData.RowOrder);  //Initialize row id for every row
+                },
                 "createdRow": function ( row, data, index ) {
                     if (!data.rerendered) {
                         var _this = this;
@@ -87,12 +99,31 @@
 
         function yelp() {
             $(document).ready(function () {
+
+                messageTimer =  setInterval(function(){
+                    if (messageStack.length != 0) {
+                        var row = messageStack.shift();
+                        if (typeof (window[row.action]) == 'function') {
+                            window[row.action](row.data);
+                        }
+                    }
+                }, 500);
+
+                $.ajax({
+                    url: '{{app.request.baseUrl}}/plugins/jquery-file-download/jquery.fileDownload.js',
+                    dataType: 'script',
+                    cache: true
+                });
+
                 $(document).on('click', "a.main_ajax", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
                     var _this = this;
                     $("#modalbox").data('complete', 0);
                     var sendData = $(_this).data();
+                    if ($(_this).closest('tr[id^="dTRow_"]').length != 0) {
+                        sendData['curr_row'] = $(_this).closest('tr[id^="dTRow_"]').attr('id');
+                    }
                     if ($(_this).attr("disabled")) {
                         JSErrorModalBox({msg: "{{ 'Action is not available'|trans }}"});
                     } else {
@@ -174,7 +205,6 @@
                     return false;
                 });
 
-
                 $(document).on('click', 'a.smart-application-toggle-state', function(e){
                     e.stopPropagation();
                     e.preventDefault();
@@ -209,12 +239,85 @@
                                 ajaxPostSend($(_this).attr('href'), sendData);
                             }else if ($("#reset_all_apps_btn").length == 0 || !$("#reset_all_apps_btn").is(":visible")) {
                                 clearInterval(timer);
-                                createIFrame('cometFrame', $(_this).attr('href'));
+                                createIFrame('cometFrame', $(_this).attr('href') + '?v=' + $.random(10000000) + "&" + $.param(sendData));
                             }
                         }, 10);
                     }
                     $(this).closest('div.open').removeClass('open');
                     return false;
+                });
+
+                $(document).on('click', '#download_list', function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+
+                    $.fileDownload("{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-download-list", {
+                        dialogOptions:{
+                            modal: false
+                        },
+                        /*preparingMessageHtml: "{{ 'Wait. List of installed applications is generated'|trans }}.",
+                        failMessageHtml: "{{ 'Failed. Some server error'|trans }}.",*/
+                        prepareCallback: function(){
+                            JSshowModalBox('show');
+                        },
+                        successCallback: function (data) {
+                            JSSuccessModalBox();
+                            if (data.action && typeof(window[data.action]) == 'function') {
+                                window[data.action](data);
+                            }
+                        },
+                        failCallback: function(data, url) {
+                            JSErrorModalBox(data);
+                            if (data.action && typeof(window[data.action + 'Error']) == 'function') {
+                                window[data.action + 'Error'](data);
+                            }
+                        }
+                    });
+                    return false;
+                });
+
+                $(document).on('click', '#upload_list', function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $("#modalbox .devoops-modal-header span").text("{{ 'Uploading of list of installed applications'|trans }}");
+                    $("#modalbox .devoops-modal-inner").html($("#modal_fileupload").html());
+                    $("#modalbox .devoops-modal-inner").append("<div class='upload_processing'></div>");
+
+                    $("#modalbox .devoops-modal-bottom").html($("#modal_fileupload_buttons").html());
+                    loadFileUploadScripts(function(){});
+                    initFileUploader("{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-upload-list");
+                    $("#modalbox").data('complete', 1);
+                    $("#modalbox").show();
+                });
+
+                $("#modalbox").on('click', '#fileupload_button_send', function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    if (fileUploaderList && fileUploaderList.length) {
+                        $("#modalbox").data('complete', 0);
+                        $("#modalbox .upload_processing").show();
+                        fileUploaderList[0].submit();
+                        $("#modalbox button").attr('disabled', 'disabled').addClass('disabled');
+                    }
+                });
+
+                $("#modalbox").on('click', '#fileupload_button_reset', function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    if (fileUploaderList && fileUploaderList.length) {
+                        fileUploaderList.pop();
+                    }
+                    $("#fileupload").next('.fileupload-message').text('');
+                });
+
+                $("#modalbox").on('click', '#fileupload_button_cancel', function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $("#fileupload").fileupload('destroy');
+                    if (fileUploaderList && fileUploaderList.length) {
+                        fileUploaderList.pop();
+                    }
+                    JScloseModalBox();
                 });
 
                 LoadDataTablesScripts(TestTable1);
@@ -224,17 +327,22 @@
         document.addEventListener("DOMContentLoaded", yelp, false);
 
         var manageList = function (obj) {
+            $("#modalbox").data('complete', 1);
             if (!obj.error) {
                 JSSuccessModalBox(obj);
             } else {
                 JSErrorModalBox(obj);
             }
-            $('#datatable-1').DataTable().ajax.reload();
+            if (obj.id && obj.curr_row) {
+                ajaxPostSend($('#datatable-1').DataTable().ajax.url(), {id: obj.id, curr_row: obj.curr_row}, false, false, true);
+            } else {
+                $('#datatable-1').DataTable().ajax.reload();
+            }
             cleanIframe();
         };
 
-        var setModalMessage = function(mgs){
-            $('#modalbox .devoops-modal-inner span').html(mgs);
+        var setModalMessage = function(msg){
+            $('#modalbox .devoops-modal-inner span').html(msg);
         };
 
         function closeModalBox() {
@@ -388,17 +496,18 @@
                 disable_current_version = ' disabled="disabled" ';
             }
 
+            if (!item.available_version){
+                item.available_version = '...';
+            }
+
             if (item.installed) {
-                item.current_version += ' ' + (item.available_version != item.current_version ? '&nbsp;&nbsp;&nbsp;<a '+disable_current_version+' href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-detail?id=' + id + '">{{ 'Update'|trans }}</a>' : '');
+                item.current_version += ' ' + (item.available_version != '...' && item.available_version != current_version ? '&nbsp;&nbsp;&nbsp;<a '+disable_current_version+' href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-detail?id=' + id + '">{{ 'Update'|trans }}</a>' : '');
                 item.status = item.status == 1 ? "{{ 'Active'|trans }}" : "{{ 'Disabled'|trans }}";
             } else {
                 item.current_version = ' ' + '<a '+disable_current_version+' href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-detail?id=' + id + '">{{ 'Install'|trans }}</a>';
                 item.status = "{{ 'Not installed'|trans }}";
             }
 
-            if (!item.available_version){
-                item.available_version = '...';
-            }
 
             item.operations = "<div class='col-xs-3 col-sm-8'>\n\
                                     <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
@@ -413,6 +522,16 @@
                                         <li>\n\
                                             <a class='main_ajax' " + (status == 1 ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-delete' data-id='" + id + "'>\n\
                                                 <span> {{ 'Delete'|trans }} </span>\n\
+                                            </a>\n\
+                                        </li>\n\
+                                        <li>\n\
+                                            <a class='main_ajax' id='check_update_app_"+ id +"' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-check-update' data-info = '1' data-id='" + id + "'>\n\
+                                                <span> {{ 'Checking updates'|trans }} </span>\n\
+                                            </a>\n\
+                                        </li>\n\
+                                        <li>\n\
+                                            <a class='main_ajax' id='update_app_"+ id +"' " + (item.installed && item.available_version != '...' && item.available_version != current_version ? '' : 'disabled="disabled"') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-update'  data-info = '1' data-id='" + id + "'>\n\
+                                                <span> {{ 'Update'|trans }} </span>\n\
                                             </a>\n\
                                         </li>\n\
                                         <li>\n\
@@ -447,6 +566,27 @@
                 }
             }
 
+            if (data.url_id && $("#" + data.url_id).length != 0) {
+                $("#reset_all_apps_btn").prop('href', $("#" + data.url_id).prop('href'));
+                for(var key in $("#" + data.url_id).data()){
+                    if (key != 'info') {
+                        $("#reset_all_apps_btn").data(key, $("#" + data.url_id).data(key));
+                    }
+                }
+            }
+
+            if (data.curr_row){
+                $("#reset_all_apps_btn").data('curr_row', data.curr_row);
+            }
+
+            if (data.modal_message){
+                $("#modalbox .devoops-modal-inner span:first").text(data.modal_message);
+            }
+
+            if (data.button_message){
+                $("#reset_all_apps_btn").text(data.button_message);
+            }
+
             $('#modalbox').show();
             return false;
         };
@@ -465,7 +605,7 @@
 
         function setIframeSrc(iframeNode, src) {
             var doc = getIframeDocument(iframeNode);
-            doc.location.replace(src)
+            doc.location.replace(src);
         }
 
         function createIFrameNoIE(fname, src) {
@@ -513,9 +653,7 @@
         }
 
         function deliver(callback, data) {
-            if (typeof (window[callback]) == 'function') {
-                window[callback](data);
-            }
+            messageStack.push({action: callback, data: data});
         }
 
         var iFrameOnLoad = function() {
@@ -540,6 +678,46 @@
                 }, 0);
             }
         };
+
+        function initFileUploader(url){
+            $('#fileupload').fileupload({
+                url: url,
+                type: 'POST',
+                autoUpload: false,
+                multipart: true,
+                acceptFileTypes: /(\.|\/)(json)$/i,
+                maxNumberOfFiles: 1
+            }).bind('fileuploaddone', function (e, data) {
+                $("#modalbox .upload_processing").hide();
+                $("#modalbox button").removeAttr('disabled').removeClass('disabled');
+                var response;
+                if (data && data.jqXHR && data.jqXHR.status && data.jqXHR.status == 200 && data.jqXHR.responseJSON) {
+                    response = data.jqXHR.responseJSON;
+                } else {
+                    JSErrorModalBox();
+                    return false;
+                }
+                if (response.success) {
+                    ajaxSuccess(response, false);
+                    fileUploaderList.pop();
+                    $(e.currentTarget).next('.fileupload-message').text('');
+                }
+                return false;
+            }).bind('fileuploadfail', function (e, data) {
+                $("#modalbox button").removeAttr('disabled').removeClass('disabled');
+                $("#modalbox .upload_processing").hide();
+                if (data && data.jqXHR && data.jqXHR.status && data.jqXHR.status == 200 && data.jqXHR.responseJSON) {
+                    JSErrorModalBox(JSON.parse(data.jqXHR.responseJSON));
+                } else {
+                    JSErrorModalBox();
+                }
+            }).bind('fileuploadadd', function (e, data) {
+                $("#modalbox button").removeAttr('disabled').removeClass('disabled');
+                $(e.currentTarget).next('.fileupload-message').text(data.files[0].name);
+                fileUploaderList.push(data);
+            });
+            return true;
+        }
 
     </script>
 
@@ -683,7 +861,7 @@
 
     <script type="text/template" id="modal_reset_all_body">
         <div class="col-md-12">
-            <span class="col-md-12 txt-default">{{ 'Do you realy want reset all applications?'|trans }}</span>
+            <span class="col-md-12 txt-default">{{ 'Do you really want reset all applications?'|trans }}</span>
         </div>
     </script>
 
@@ -691,6 +869,30 @@
         <div class="pull-right no-padding">
             <a id="reset_all_apps_btn" type="button" class="btn btn-danger pull-right" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-reset-all">{{ 'Reset'|trans }}</a>
             <button type="reset" id="reset_all_apps_button" class="btn btn-success pull-right">{{ 'Cancel'|trans }}</button>
+        </div>
+    </script>
+
+    <script type="text/template" id="modal_fileupload">
+        <div id="fileupload" class="pull-left">
+            <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+            <div class="fileupload-buttonbar">
+                <div class="fileupload-buttons">
+                    <!-- The fileinput-button span is used to style the file input field as button -->
+                    <span class="fileinput-button btn btn-success">
+                        <span>{{ 'Select file'|trans }}</span>
+                        <input type="file" name="files" style="opacity: 0;">
+                    </span>
+                </div>
+            </div>
+        </div>
+        <span class="col-md-6 fileupload-message"></span>
+    </script>
+
+    <script type="text/template" id="modal_fileupload_buttons">
+        <div class="pull-right no-padding">
+            <button id="fileupload_button_send" type="button" class="btn btn-danger pull-right">{{ 'Send'|trans }}</button>
+            <button id="fileupload_button_reset" type="reset" class="btn btn-success pull-right">{{ 'Clean'|trans }}</button>
+            <button id="fileupload_button_cancel" type="button" class="btn btn-success pull-right">{{ 'Cancel'|trans }}</button>
         </div>
     </script>
 {% endblock %}

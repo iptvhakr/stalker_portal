@@ -62,7 +62,7 @@
 
                         json.data[i].censored = censored ? "{{ 'Yes'|trans }}": "{{ 'No'|trans }}";
 
-                        json.data[i].title = "<a  href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-tv-genres' data-genresid='" + id + "' id='edit_tv_genres_" + id + "' >" + title + "</a>";
+                        json.data[i].title = "<a  href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-tv-genres' data-genre-censored='" + censored + "' data-genresid='" + id + "' id='edit_tv_genres_" + id + "' >" + title + "</a>";
                     }
                 }
             }).dataTable({

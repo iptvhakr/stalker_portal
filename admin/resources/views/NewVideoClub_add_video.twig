@@ -542,6 +542,15 @@
                 }
             });
 
+            $("#file_languages, #fileLangCloneList").on('select2:closing', function(e){
+                conf.form = '#' + $("#modalbox form").attr('id');
+                if ($(conf.form).isValid({}, conf, true)) {
+                    getMediaInfo();
+                } else {
+                    conf.onError();
+                }
+            });
+
             $("#fileLangCloneList ul").on('mouseup mousedown select2:selecting select2:opening keyup keydown input query', 'li, li *', function(e){
                 e.stopPropagation();
                 e.preventDefault();
@@ -690,6 +699,17 @@
                     $('#' + progress_id).closest('div.qq-progress-bar-container-selector').prev('span').html(name + ' ' + "{{ 'saving'|trans }}");
                     $('#' + progress_id + " > div").css("width", "100%");
                 }
+            }).bind('fileuploaddone', function (e, data) {
+                var result = data._response.result || false;
+
+                if (result && result.success && result.upload_id) {
+                    if (result.file_num == 0) {
+                        $("#form_cover_id").val(result.upload_id);
+                    }
+                } else {
+                    return false;
+                }
+                return true;
             });
             return true;
         }
@@ -1254,10 +1274,18 @@
                     $(this).selectRange(0);
                 });
 
+
+
                 $("#modalbox").on('blur keypress', '#video_url', function(e){
                     if (e && e.type && (e.type == "blur" || e.type == 'focusout' || (e.type == "keypress" && e.keyCode && e.keyCode == 13))) {
-                        if ($(this).val()) {
+
+                        conf.form = '#' + $("#modalbox form").attr('id');
+
+                        if ($(conf.form).isValid({}, conf, true)) {
                             getMediaInfo();
+                        } else {
+                            conf.onError();
+                            return false;
                         }
                     }
                 });
@@ -1371,15 +1399,9 @@
 
         function fillFormData(data){
             if (data.result.hasOwnProperty('cover_big')) {
-                /*var image = "data:image/jpeg;base64,";
-                $.ajaxSetup({async: false});
-                $.get("{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-image", { url : data.result['cover_big']}, function(data){
-                    image += data;
-                    console.log(data);
-                });*/
-                $('#cover_container').next('img').attr('src', "{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-image?url=" + data.result['cover_big']);
+                $('#cover_container').next('img').prop('src', "{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-image?url=" + data.result['cover_big'] + '&v='+ $.random(1000000));
             } else {
-                $('#cover_container').next('img').attr('src', '');
+                $('#cover_container').next('img').prop('src', '');
             }
             $.each([
                 'kinopoisk_url',

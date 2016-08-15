@@ -625,20 +625,7 @@
         </div>
     </div>
     <div style="display: none;">
-        {{ form_row(app['form'].cmd) }}
-        {{ form_row(app['form'].user_agent_filter) }}
-        {{ form_row(app['form'].priority) }}
-        {{ form_row(app['form'].use_http_tmp_link) }}
-        {{ form_row(app['form'].wowza_tmp_link) }}
-        {{ form_row(app['form'].nginx_secure_link) }}
-        {{ form_row(app['form'].flussonic_tmp_link) }}
-        {{ form_row(app['form'].xtream_codes_support) }}
-        {{ form_row(app['form'].enable_monitoring) }}
-        {{ form_row(app['form'].enable_balancer_monitoring) }}
-        {{ form_row(app['form'].monitoring_url) }}
-        {{ form_row(app['form'].use_load_balancing) }}
-        {{ form_row(app['form'].stream_server) }}
-        {{ form_row(app['form'].monitoring_status) }}
+        {{ form_rest(app['form']) }}
     </div>
         {{ form_end(app['form']) }}
     <div id="modalbox_ad">
@@ -1251,7 +1238,7 @@
 
                 $("#add_channel .form-group").each(function(i){
                     var errorDiv = $(this).find('.bg-danger, .form-error');
-                    if (errorDiv.length && errorDiv.is(":visible") && $.trim(errorDiv.text()) != '') {
+                    if (errorDiv.length && !errorDiv.is(":visible") && $.trim(errorDiv.text()) != '') {
                         $(this).closest('div.box').find('a.collapse-link').trigger('click');
                     }
                 });
