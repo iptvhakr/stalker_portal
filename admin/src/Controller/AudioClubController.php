@@ -273,9 +273,9 @@ class AudioClubController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'deleteTableRow';
         $data['id'] = $this->postData['albumsid'];
-/*        $data['album'] = $this->db->deleteAudioAlbum(array('id' => $this->postData['albumsid']));
+        $data['album'] = $this->db->deleteAudioAlbum(array('id' => $this->postData['albumsid']));
         $data['genre'] = $this->db->deleteAudioGenre(array('album_id' => $this->postData['albumsid']));
-        $data['compositions'] = $this->db->deleteAudioCompositions(array('album_id' => $this->postData['albumsid']));*/
+        $data['compositions'] = $this->db->deleteAudioCompositions(array('album_id' => $this->postData['albumsid']));
         
         $response = $this->generateAjaxResponse($data, '');
 

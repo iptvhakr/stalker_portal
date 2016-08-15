@@ -309,6 +309,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                 settype($allChannels[$num]['video_counter'], 'int');
                 settype($allChannels[$num]['no_epg'], 'int');
                 settype($allChannels[$num]['wrong_epg'], 'int');
+                $allChannels[$num]['RowOrder'] = "dTRow_" . $row['id'];
                 if (($monitoring_status = $this->getMonitoringStatus($row)) !== FALSE) {
                     $allChannels[$num]['monitoring_status'] = $monitoring_status;
                     $response["data"][] = $allChannels[$num];
@@ -341,11 +342,11 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
-        if (empty($this->data['id']) || (!is_numeric($this->data['id']))) {
+        if (empty($this->postData['id']) || (!is_numeric($this->postData['id']))) {
             $this->app->abort(404, $this->setLocalization('Cannot find channel'));
         }
 
-        $channel = $this->db->getChannelById($this->data['id']);
+        /*$channel = $this->db->getChannelById($this->postData['id']);
 
         if (!empty($channel)) {
 
@@ -353,16 +354,17 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             $response = $this->delete_logo(TRUE);
 
             $tv_archive = new \TvArchive();
-            $tv_archive->deleteTasks(intval($this->data['id']));
+            $tv_archive->deleteTasks(intval($this->postData['id']));
 
-            $ch_links = $this->db->getChannelLinksById($this->data['id']);
+            $ch_links = $this->db->getChannelLinksById($this->postData['id']);
             if (is_array($ch_links)) {
                 $this->db->deleteCHLink($this->getFieldFromArray($ch_links, 'id'));
             }
 
-            $response['rows'] = $this->db->removeChannel($this->data['id']);
-        }
-        $response['action'] = 'remove';
+            $response['rows'] = $this->db->removeChannel($this->postData['id']);
+        }*/
+        $response['action'] = 'deleteTableRow';
+        $response['id'] = $this->postData['id'];
 
         $response = $this->generateAjaxResponse($response, $response['error']);
 

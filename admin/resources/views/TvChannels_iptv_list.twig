@@ -148,12 +148,12 @@
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-channel?id=' + json.data[i].id  + '">\n\
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-channel" data-id="' + json.data[i].id  + '">\n\
                                                                     <span>{{ 'Delete'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/' + (status ? 'disable' : 'enable') + '-channel?id=' + json.data[i].id  + '">\n\
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/' + (status ? 'disable' : 'enable') + '-channel" data-id="' + json.data[i].id  + '">\n\
                                                                     <span>' + (status ? "{{ 'Unpublish'|trans }}" : "{{ 'Publish'|trans }}") + '</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
@@ -163,7 +163,7 @@
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-channel-epg-item?id=' + json.data[i].id  + '">\n\
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-channel-epg-item" data-id="' + json.data[i].id  + '">\n\
                                                                     <span>{{ 'Manage EPG'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
@@ -234,8 +234,9 @@
                 $(document).on('click', "a.main_ajax", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
-                    var _this = $(this);
-                    $.ajax({
+                    /*var _this = $(this);*/
+                    ajaxPostSend($(this).attr('href'), $(this).data());
+                    /*$.ajax({
                         url: $(this).attr('href'),
                         type: 'GET',
                         success: function (data) {
@@ -250,8 +251,8 @@
                         },
                         dataType: "json",
                         async: false
-                    });
-                    _this.closest('div.open').removeClass('open');
+                    });*/
+                    $(this).closest('div.open').removeClass('open');
                     return false;
                 });
 
