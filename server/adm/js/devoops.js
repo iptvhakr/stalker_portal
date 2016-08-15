@@ -564,11 +564,13 @@ $(document).ready(function () {
         var is_checked = !$(this).find("input[type='checkbox']").is(":checked");
         $(this).find("input[type='checkbox']").prop('checked', is_checked);
         var sendData = {};
+        sendData[$(this).find("input[type='checkbox']").val()] = is_checked;
         $("#attribute_set input[type='checkbox']:not(:first):not(:last)").each(function(index){
             $(this).prop('checked', is_checked);
-            $("#datatable-1").dataTable().fnSetColumnVis( index, is_checked );
+            $("#datatable-1").dataTable().fnSetColumnVis( index, is_checked, false );
             sendData[$(this).val()] = is_checked;
         });
+        $("#datatable-1").DataTable().draw();
         setDropdownAttribute(sendData);
         e.stopPropagation();
         return false;
@@ -576,7 +578,7 @@ $(document).ready(function () {
 
     $(document).on('change', "#attribute_set li:not(:first-child) input[type='checkbox']", function (e) {
         $("#attribute_set input[type='checkbox']").each(function(index){
-            $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
+            $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked'), false );
         });
         var allChbLen = $("#attribute_set li:not(:first-child) input[type='checkbox']").length;
         var chkChbLen = $("#attribute_set li:not(:first-child) input[type='checkbox']:checked").length;
@@ -585,6 +587,7 @@ $(document).ready(function () {
         $("#attribute_set input[type='checkbox']").each(function(){
             sendData[$(this).val()] = $(this).prop('checked');
         });
+        $("#datatable-1").DataTable().draw();
         setDropdownAttribute(sendData);
     });
     
@@ -1217,8 +1220,8 @@ function JScloseModalBox(){
     $("#modalbox").data('complete', 1);
 }
         
-function JSshowModalBox(){
-    notty('<span>' + words['Request_is_being_prossessed'] + '...</span>','notification');
+function JSshowModalBox(type){
+    notty('<span>' + words['Request_is_being_prossessed'] + '...</span>',type? type: 'notification');
 }
 
 function JSSuccessModalBox(data) {
@@ -1237,13 +1240,13 @@ function JSSuccessModalBox(data) {
 }
 
 function JSErrorModalBox(data){
-        var msg = '';
-        if (typeof(data) != 'undefined') {
-            msg = ( typeof(data.msg) != 'undefined' ? data.msg : '');
-            msg = ( msg.length == 0 && typeof(data.error) != 'undefined' ? data.error : msg);
-        } else {
-            data = {};
-        }
+    var msg = '';
+    if (typeof(data) != 'undefined') {
+        msg = ( typeof(data.msg) != 'undefined' ? data.msg : '');
+        msg = ( msg.length == 0 && typeof(data.error) != 'undefined' ? data.error : msg);
+    } else {
+        data = {};
+    }
     if (typeof(data.nothing_to_do) == 'undefined' || !data.nothing_to_do) {
         notty('<span>' + words['Failed'] + '! ' + msg + '!</span>', 'error');
     }

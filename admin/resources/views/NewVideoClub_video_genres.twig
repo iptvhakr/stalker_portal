@@ -13,23 +13,23 @@
         </div>
 
         <div class="row">
-                <div class="box">
-					{% if attribute(app, 'dropdownAttribute') is defined %}
+            <div class="box">
+                {% if attribute(app, 'dropdownAttribute') is defined %}
                     {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
-                    {% endif %}
-                    <div class="box-content">
-                        <div class="box-content no-padding">
-                                <div class="dataTables_processing"></div>
-                                <table class="table  table-hover table-datatable" id="datatable-1">
-                                    {% if attribute(app, 'dropdownAttribute') is defined %}
-                                        {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
-                                    {% endif %}
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                        </div>
+                {% endif %}
+                <div class="box-content">
+                    <div class="box-content no-padding">
+                        <div class="dataTables_processing"></div>
+                        <table class="table  table-hover table-datatable" id="datatable-1">
+                            {% if attribute(app, 'dropdownAttribute') is defined %}
+                                {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                            {% endif %}
+                            <tbody>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+            </div>
         </div>
     </div>
 
@@ -66,7 +66,7 @@
                                                     </div>";
                         var title = json.data[i].title;
 
-                        json.data[i].title = '<a href="#" >' + title + '</a>';
+                        json.data[i].title = "<a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/video-genres-list-json' class='main_ajax' data-id='" + id + "' id='edit_video_genres_" + id + "'>" + title + "</a>";
                     }
                 }
             }).dataTable({

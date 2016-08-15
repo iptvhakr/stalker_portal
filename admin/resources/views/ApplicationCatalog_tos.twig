@@ -14,7 +14,7 @@
             </div>
             <div class="col-xs-12 col-sm-12">
                 <form class="form-horizontal" role="form" method="POST" action="{{app.workHost}}server/adm/{{app.controller_alias}}/accept-tos">
-                    <input type="hidden" name="tos_id" value="{% if attribute(app, 'tos_id') is defined %}{{ app.tos_id }}{% endif %}">
+                    <input type="hidden" name="tos_alias" value="{% if attribute(app, 'tos_alias') is defined %}{{ app.tos_alias }}{% endif %}">
                     <div class="box">
                         <div class="box-content">
                             <div class="form-group">
