@@ -266,6 +266,7 @@
                 $(document).on('change', "#s2_channel", function(e){
                     ajaxPostSend("{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-channel-epg-item?id=" + $(this).val(), {});
                 });
+
                 $(document).on('click', "#get_epg_button", function(e){
                     e.stopPropagation();
                     e.preventDefault();
@@ -283,15 +284,6 @@
                     sendData.epg_body = $("#epg_body").val();
                     JSshowModalBox();
                     ajaxPostSend($('#epg_form').attr('action'), sendData);
-                });
-                $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
-                    if (e.currentTarget != e.target) {
-                        return;
-                    }
-                    e.stopPropagation();
-                    e.preventDefault();
-                    JScloseModalBox();
-                    return false;
                 });
 
                 $(document).on('click', '#restart_archives_button', function(e){

@@ -109,8 +109,9 @@ $.extend( $.fn.dataTableExt.oStdClasses, {
 
 
 /* API method to get paging information */
-$.fn.dataTableExt.oApi.fnPagingInfo = function ( oSettings )
+$.fn.dataTableExt.oApi.fnPagingInfo = function ( oSettings)
 {
+    var page = oSettings.pageNoAjax && !(oSettings.pageNoAjax instanceof Object)? oSettings.pageNoAjax: Math.ceil( oSettings._iDisplayStart / oSettings._iDisplayLength );
 	return {
 		"iStart":         oSettings._iDisplayStart,
 		"iEnd":           oSettings.fnDisplayEnd(),
@@ -118,7 +119,7 @@ $.fn.dataTableExt.oApi.fnPagingInfo = function ( oSettings )
 		"iTotal":         oSettings.b_server_side ? oSettings._iRecordsTotal * 1 : oSettings.aiDisplayMaster.length, // oSettings.fnRecordsTotal(),
 		"iFilteredTotal": oSettings.fnRecordsDisplay(),
 		"iPage":          oSettings._iDisplayLength === -1 ?
-			0 : Math.ceil( oSettings._iDisplayStart / oSettings._iDisplayLength ),
+			0 : page , //Math.ceil( oSettings._iDisplayStart / oSettings._iDisplayLength ),
 		"iTotalPages":    oSettings._iDisplayLength === -1 ?
 			0 : Math.ceil( oSettings.fnRecordsDisplay() / oSettings._iDisplayLength )
 	};
@@ -205,24 +206,29 @@ $.extend( $.fn.dataTableExt.oPagination, {
 $.fn.dataTableExt.oApi.fnRemoveCurrentRow = function ( oSettings, row ){
 
     if (oSettings.oInstance.DataTable().row( row )) {
-        oSettings.oInstance.DataTable().rows( row ).remove().invalidate('data');
+        oSettings.oInstance.DataTable().rows( row ).remove(); // .invalidate('data')
         oSettings._iRecordsDisplay--;
         oSettings._iRecordsTotal--;
-        oSettings.oInstance.reDrawNoAjax();
+        if (oSettings.aoData.length ) {
+            oSettings.oInstance.reDrawNoAjax();
+        } else if (oSettings._iRecordsTotal) {
+            oSettings.pageNoAjax--;
+            oSettings.oInstance.DataTable().page(oSettings._iDisplayStart >= oSettings._iDisplayLength ? 'previous': 'next').draw(false);
+        }
     }
 };
 
 $.fn.dataTableExt.oApi.reDrawNoAjax = function(oSettings) {
-    var page = oSettings.oInstance.DataTable().page();
+    oSettings.pageNoAjax = oSettings.oInstance.DataTable().page();
     oSettings.ajax_data_get = oSettings.oInstance.dataTable.settings[0]['bAjaxDataGet'];
     oSettings.b_server_side = oSettings.oInstance.dataTable.settings[0]['oFeatures'];
     oSettings.oInstance.dataTable.settings[0]['bAjaxDataGet'] = false;
     /*oSettings._iRecordsDisplay = oSettings.oInstance.DataTable().data().length;*/
-    oSettings.oInstance.DataTable().page(page).draw('full-hold');
+    oSettings.oInstance.DataTable().page(oSettings.pageNoAjax).draw(false);
     /*oSettings.oInstance.dataTable.settings[0]['oFeatures'] = false; // oSettings.oInstance._fnUpdateInfo();*/
     oSettings.oInstance.dataTable.settings[0]['bAjaxDataGet'] = oSettings.ajax_data_get;
     oSettings.oInstance.dataTable.settings[0]['oFeatures'] = oSettings.b_server_side;
-    oSettings.oInstance._fnCustomUpdateInfo(page);
+    oSettings.oInstance._fnCustomUpdateInfo(oSettings.pageNoAjax);
 };
 
 $.fn.dataTableExt.oApi._fnCustomUpdateInfo = function( settings , page) {
@@ -240,16 +246,14 @@ $.fn.dataTableExt.oApi._fnCustomUpdateInfo = function( settings , page) {
     }
     var oFeatures = settings.oInstance.dataTable.settings[0]['oFeatures'],
         lang  = settings.oLanguage,
-        start = (settings._iDisplayStart+ 1) + (page * settings._iDisplayLength) ,
+        start = (settings._iDisplayStart+ 1), // + (page * settings._iDisplayLength) ,
         max   = settings.fnRecordsTotal(),
         total = settings.fnRecordsDisplay();
-    settings.oInstance.dataTable.settings[0]['oFeatures'] = false;
+        settings.oInstance.dataTable.settings[0]['oFeatures'] = false;
 
     var
         end   = settings.fnDisplayEnd() + (page * settings._iDisplayLength),
-        out   = total ?
-            lang.sInfo :
-            lang.sInfoEmpty;
+        out   = total ? lang.sInfo : lang.sInfoEmpty;
 
     if ( total !== max ) {
         /* Record set after filtering */

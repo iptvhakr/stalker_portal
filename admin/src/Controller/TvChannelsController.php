@@ -346,7 +346,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             $this->app->abort(404, $this->setLocalization('Cannot find channel'));
         }
 
-        /*$channel = $this->db->getChannelById($this->postData['id']);
+        $channel = $this->db->getChannelById($this->postData['id']);
 
         if (!empty($channel)) {
 
@@ -362,7 +362,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             }
 
             $response['rows'] = $this->db->removeChannel($this->postData['id']);
-        }*/
+        }
         $response['action'] = 'deleteTableRow';
         $response['id'] = $this->postData['id'];
 
@@ -375,11 +375,11 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
-        if (empty($this->data['id']) || (!is_numeric($this->data['id']))) {
+        if (empty($this->postData['id']) || (!is_numeric($this->postData['id']))) {
             $this->app->abort(404, $this->setLocalization('Cannot find channel'));
         }
 
-        $rows = $this->db->changeChannelStatus($this->data['id'], 0);
+        $rows = $this->db->changeChannelStatus($this->postData['id'], 0);
 
         $data = array(
             'rows' => $rows,

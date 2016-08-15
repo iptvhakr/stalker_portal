@@ -47,7 +47,7 @@ $("#modalbox, #modalbox_clone, #modalbox_ad").on("show", function () {
 $('#modalbox_ad').appendTo("#wrapper");
 $('#modalbox').appendTo("#wrapper");
 
-$("#ui-datepicker-div").css("z-index:5050;")
+$("#ui-datepicker-div").css("z-index:5050;");
 
 $('#attribute_set').removeClass('dropup');
 $('#status').removeClass('dropup');
@@ -582,6 +582,7 @@ $(document).ready(function () {
     });
 
     $('[id*="datepicker"]').attr('readonly', 'readonly');
+
     $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
         if (e.currentTarget != e.target) {
             return;
@@ -627,7 +628,6 @@ function getURLFilterString(obj, href){
         return filterRegExp.test(hrefM) ? hrefM.replace(filterRegExp, filter_str) : hrefM + '&' + filter_str;
     }
 }
-
 
 function heightCalculate(){
     var height =$("#content").height;
