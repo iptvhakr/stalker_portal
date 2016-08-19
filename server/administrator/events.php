@@ -87,6 +87,10 @@ if (!empty($_POST['user_list_type']) && !empty($_POST['event'])){
             $user_list = Middleware::getUidsByPattern(array('stb_type' => 'MAG270'));
         }else if (@$_POST['pattern'] == 'mag275'){
             $user_list = Middleware::getUidsByPattern(array('stb_type' => 'MAG275'));
+        }else if (@$_POST['pattern'] == 'mag351'){
+            $user_list = Middleware::getUidsByPattern(array('stb_type' => 'MAG351'));
+        }else if (@$_POST['pattern'] == 'mag352'){
+            $user_list = Middleware::getUidsByPattern(array('stb_type' => 'MAG352'));
         }else if (@$_POST['pattern'] == 'wr320'){
             $user_list = Middleware::getUidsByPattern(array('stb_type' => 'WR320'));
         }else if (@$_POST['pattern'] == 'ip_stb_hd'){
@@ -415,6 +419,8 @@ function fill_msg(){
             <option value="mag260">MAG260</option>
             <option value="mag270">MAG270</option>
             <option value="mag275">MAG275</option>
+            <option value="mag351">MAG351</option>
+            <option value="mag352">MAG352</option>
             <option value="wr320">WR320</option>
             <option value="ip_stb_hd">IP_STB_HD</option>
             <option value="aurahd0">AuraHD0</option>
