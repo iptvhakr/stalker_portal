@@ -234,33 +234,9 @@
                 $(document).on('click', "a.main_ajax", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
-                    /*var _this = $(this);*/
                     ajaxPostSend($(this).attr('href'), $(this).data());
-                    /*$.ajax({
-                        url: $(this).attr('href'),
-                        type: 'GET',
-                        success: function (data) {
-                            if (data.success) {
-                                manageChannelTable(data);
-                            } else {
-                                JSErrorModalBox(data);
-                            }
-                        },
-                        error: function (data) {
-                            JSErrorModalBox((data.responseJSON ? data.responseJSON: {msg : "{{ 'Some network error or access denied'|trans }}"}));
-                        },
-                        dataType: "json",
-                        async: false
-                    });*/
                     $(this).closest('div.open').removeClass('open');
                     return false;
-                });
-
-                $("#datatable-1").on('click', "a[href*='get-channel-epg-item']", function(e){
-                    e.stopPropagation();
-                    e.preventDefault();
-                    ajaxPostSend(this.href, {});
-                    $(this).closest('div.open').removeClass('open');
                 });
 
                 $(document).on('change', "#s2_channel", function(e){

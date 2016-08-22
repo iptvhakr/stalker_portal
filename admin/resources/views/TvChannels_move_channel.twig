@@ -40,6 +40,45 @@
         function yelp() {
             $(document).ready(function () {
 
+                //
+                // Swap 2 elements on page. Used by WinMove function
+                //
+                jQuery.fn.swap = function (b, parentArray) {
+                    b = jQuery(b)[0];
+                    var a = this[0];
+                    var a_num = $(a).find('span.curr_num').data('number');
+                    var b_num = $(b).find('span.curr_num').data('number');
+                    var remove = $(b).children('div').hasClass('empty');
+
+                    b.parentNode.insertBefore(a, b);
+
+                    if (typeof(parentArray) == 'object' && parentArray.length !=0) {
+                        a_num = parseInt(a_num, 10) - 1;
+                        b_num = parseInt(b_num, 10) - 1;
+
+                        var direction = a_num < b_num ? 1: -1;
+                        var next_num = a_num + direction;
+
+                        while( Math.abs(b_num - next_num + direction) > 0) {
+                            if ( typeof(parentArray[next_num]) != 'undefined' && typeof(parentArray[next_num].locked) != 'undefined' &&  !parentArray[next_num].locked) {
+                                var temp_a_number = parentArray[a_num].number;
+                                var temp_next_number = parentArray[next_num].number;
+
+                                var temp_a = parentArray[a_num];
+                                parentArray[a_num] = parentArray[next_num];
+                                parentArray[next_num] = temp_a;
+
+                                parentArray[a_num].number = temp_a_number;
+                                parentArray[next_num].number = temp_next_number;
+
+                                a_num = next_num;
+                            }
+                            next_num += direction;
+                        }
+                    }
+                    return this;
+                };
+
                 channelListRender('#channelListContainer');
 
                 $(document).on('click', '#iptv_list_move_send', function(e){
@@ -115,23 +154,7 @@
                         return false;
                     });
                 }
-                
-                $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
-                    if (e.currentTarget != e.target) {
-                        return;
-                    }
-                    e.stopPropagation();
-                    e.preventDefault();
-                    if ($("#modalbox").data('complete') && $("#modalbox").data('complete') == 1) {
-                        closeModalBox();
-                    } else {
-                        for(i=0;i<3;i++) {
-                            $('#modalbox > div').fadeTo('slow', 0.5).fadeTo('slow', 1.0);
-                        }
-                    }
-                    return false;
-                });
-                
+
                 $('#channelListContainer').on('click', '.box-icons a', function (e) {
                     e.preventDefault();
                     e.stopPropagation();

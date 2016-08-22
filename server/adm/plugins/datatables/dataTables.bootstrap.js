@@ -203,6 +203,17 @@ $.extend( $.fn.dataTableExt.oPagination, {
 	}
 } );
 
+$.fn.dataTableExt.oApi.fnUpdateCurrentRow = function ( oSettings, row, data ){
+
+    if (oSettings.oInstance.DataTable().row( row ) && data && data.data && data.data.length == 1) {
+        $(oSettings.oInstance).trigger('xhr.dt', [oSettings, data]);
+        var newData = data.data[0]; //rowDataPrepare(
+        newData.rerendered = true;
+        oSettings.oInstance.dataTable().fnUpdate(newData, row, null, false, false);
+    }
+
+};
+
 $.fn.dataTableExt.oApi.fnRemoveCurrentRow = function ( oSettings, row ){
 
     if (oSettings.oInstance.DataTable().row( row )) {

@@ -126,58 +126,6 @@ function LoadFancyboxScript(callback) {
  Main scripts used by theme
  ---------------------------------------------*/
 //
-//  Function maked all .box selector is draggable, to disable for concrete element add class .no-drop
-//
-
-//
-// Swap 2 elements on page. Used by WinMove function
-//
-jQuery.fn.swap = function (b, parentArray) {
-    b = jQuery(b)[0];
-    var a = this[0];
-    var a_num = $(a).find('span.curr_num').data('number');
-    var b_num = $(b).find('span.curr_num').data('number');
-    var remove = $(b).children('div').hasClass('empty');
-//    var t = a.parentNode.insertBefore(document.createTextNode(''), a);
-    b.parentNode.insertBefore(a, b);
-//    t.parentNode.insertBefore(b, t);
-//    t.parentNode.removeChild(t);
-//    if (remove) {
-//        setTimeout(function () {
-//            $(b).remove();
-//        }, 300);
-//    }
-    if (typeof(parentArray) == 'object' && parentArray.length !=0) {
-        a_num = parseInt(a_num, 10) - 1;
-        b_num = parseInt(b_num, 10) - 1;
-        
-        var direction = a_num < b_num ? 1: -1;
-        var next_num = a_num + direction;
-        
-//        if (remove) {
-//            parentArray.splice(b_num, 1);
-//            b_num += direction;
-//        }
-        while( Math.abs(b_num - next_num + direction) > 0) {
-            if ( typeof(parentArray[next_num]) != 'undefined' && typeof(parentArray[next_num].locked) != 'undefined' &&  !parentArray[next_num].locked) {
-                var temp_a_number = parentArray[a_num].number;
-                var temp_next_number = parentArray[next_num].number;
-                
-                var temp_a = parentArray[a_num];
-                parentArray[a_num] = parentArray[next_num];
-                parentArray[next_num] = temp_a;
-                
-                parentArray[a_num].number = temp_a_number;
-                parentArray[next_num].number = temp_next_number;
-                
-                a_num = next_num;
-            }
-            next_num += direction;
-        }
-    }
-    return this;
-};
-//
 //  Function set min-height of window (required for this theme)
 //
 function SetMinBlockHeight(elem) {
@@ -583,7 +531,7 @@ $(document).ready(function () {
 
     $('[id*="datepicker"]').attr('readonly', 'readonly');
 
-    $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
+    $(document).on('click', "#modalbox button[type='reset'], #modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
         if (e.currentTarget != e.target) {
             return;
         }
@@ -945,5 +893,70 @@ function deleteTableRow(obj){
         console.log(e);
     }
 
-    JScloseModalBox();
+    JSSuccessModalBox();
+}
+
+function deleteTableRowError(obj){
+    JSErrorModalBox(obj);
+}
+
+function updateTableRow(obj){
+    try{
+        var dTRow;
+        if (obj) {
+            dTRow = (obj.RowOrder ? obj.RowOrder : (obj.id ? 'dTRow_' + obj.id : false));
+            dTRow = $("#" + dTRow.replace('#', ''));
+        }
+        if (dTRow) {
+            var oTable = dTRow.closest('table').dataTable();
+            oTable.fnUpdateCurrentRow(dTRow, obj);
+        }
+    } catch (e){
+        console.log(e);
+    }
+
+    JSSuccessModalBox();
+}
+
+function updateTableRowError(obj){
+    JSErrorModalBox(obj);
+}
+
+function updateTableData(obj){
+    try{
+        var dTRow;
+        if (obj) {
+            dTRow = (obj.RowOrder ? obj.RowOrder : (obj.id ? 'dTRow_' + obj.id : false));
+            dTRow = $("#" + dTRow.replace('#', ''));
+        }
+        if (dTRow) {
+            var oTable = dTRow.closest('table').DataTable().ajax.reload();
+        }
+    } catch (e){
+        console.log(e);
+    }
+
+    JSSuccessModalBox(obj);
+}
+
+function updateTableDataError(obj){
+    JSErrorModalBox(obj);
+}
+
+function checkData(obj){
+    if (typeof(obj.input_id) != 'undefined') {
+        $("#" + obj.input_id).next('div').append('<i class="txt-success fa fa-check"></i> ' + obj.chk_rezult).css('visibility', 'visible').show();
+        $('#modalbox [type="submit"]').prop('disabled', false);
+    } else {
+        JSSuccessModalBox({msg: obj.chk_rezult});
+    }
+}
+
+function checkDataError(obj){
+    if (typeof(obj.input_id) != 'undefined') {
+        $("#" + obj.input_id).next('div').append('<i class="txt-danger fa fa-ban"></i> ' + obj.chk_rezult).css('visibility', 'visible').show();
+        $('#modalbox [type="submit"]').prop('disabled', true);
+    } else {
+        JSErrorModalBox({msg: obj.chk_rezult});
+    }
 }
