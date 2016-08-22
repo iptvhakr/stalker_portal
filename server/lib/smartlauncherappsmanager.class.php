@@ -78,6 +78,8 @@ class SmartLauncherAppsManager
 
         if (empty($app['alias']) || $force_npm) {
 
+            $this->sendToCallback('Getting info for '. $app['url']);
+
             $npm = Npm::getInstance();
             $info = $npm->info($app['url']);
 
@@ -192,7 +194,11 @@ class SmartLauncherAppsManager
         $apps = Mysql::getInstance()->from('launcher_apps')->get()->all();
 
         foreach ($apps as $app){
-            $this->getAppInfo($app['id'], true);
+            try {
+                $this->getAppInfo($app['id'], true);
+            } catch (\SmartLauncherAppsManagerException $e) {
+                $this->sendToCallback('Error: ' . $e->getMessage());
+            }
         }
     }
 
@@ -245,8 +251,14 @@ class SmartLauncherAppsManager
             $npm = Npm::getInstance();
             $cache = Cache::getInstance();
 
-            unset($info['time']['modified']);
-            unset($info['time']['created']);
+            //@todo --------- a temporary patch for missing field "time" ---------
+            if (array_key_exists('time', $info)) {
+                unset($info['time']['modified']);
+                unset($info['time']['created']);
+            } else {
+                $info['time'] = array_combine($info['versions'], array_pad(array(), count($info['versions']), 0));
+            }
+            //@todo -----------------------------------------------------------------
 
             foreach ($info['time'] as $ver => $time){
 
@@ -518,6 +530,28 @@ class SmartLauncherAppsManager
 
         foreach ($need_to_update as $app){
             $this->updateApp($app['id']);
+        }
+    }
+
+    public function updateApps(){
+
+        $system_apps = $this->getSystemApps();
+        $apps = $this->getInstalledApps('app');
+        $themes = $this->getInstalledApps('theme');
+
+        $installed_apps = array_merge($system_apps, $themes, $apps);
+
+        $need_to_update = array_values(array_filter($installed_apps, function($app){
+            return $app['current_version'] != $app['available_version'];
+        }));
+
+        foreach ($need_to_update as $app){
+            $this->sendToCallback("Updating package ".$app['alias']."...");
+            try{
+                $this->updateApp($app['id']);
+            } catch (SmartLauncherAppsManagerException $e){
+                $this->sendToCallback("Error: " . $e->getMessage());
+            }
         }
     }
 

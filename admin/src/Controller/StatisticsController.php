@@ -1350,6 +1350,7 @@ class StatisticsController extends \Controller\BaseStalkerController {
     private function getTvDropdownAttribute() {
         return array(
             array('name' => 'itv_id',   'title' => $this->setLocalization('ID'),            'checked' => TRUE),
+            array('name' => 'number',   'title' => $this->setLocalization('Number'),        'checked' => TRUE),
             array('name' => 'name',     'title' => $this->setLocalization('Title'),         'checked' => TRUE),
             array('name' => 'counter',  'title' => $this->setLocalization('Views quantity'),'checked' => TRUE)
         );

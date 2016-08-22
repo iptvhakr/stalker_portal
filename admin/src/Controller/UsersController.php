@@ -1674,6 +1674,12 @@ class UsersController extends \Controller\BaseStalkerController {
                 return array('id' => $row['id'], 'name' => $row['name'], 'cost' => $row['cost']);
             }, $this->db->getITV(array('base_ch' => 0, 'id NOT IN('. $subscribed_tv_ids .') AND 1=' => 1), 'ALL'));
             $error = '';
+        } else {
+            $data['subscribed_tv'] = array();
+            $data['not_subscribed_tv'] = array_map(function($row){
+                return array('id' => $row['id'], 'name' => $row['name'], 'cost' => $row['cost']);
+            }, $this->db->getITV(array('base_ch' => 0), 'ALL'));
+            $error = '';
         }
 
         $response = $this->generateAjaxResponse($data, $error);

@@ -830,7 +830,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
                         $file_info = pathinfo($screenshot[0]['name']);
                         $this->db->removeScreenshotData($this->postData['id']);
                         $img_path = $this->getCoverFolder($this->postData['id']);
-                        $img_path = str_replace(str_replace('/admin', '', $this->baseDir), "", $img_path);
+                        $img_path = trim(str_replace(str_replace('/admin', '', $this->baseDir), "", $img_path), '/');
                         @unlink($this->baseDir . rtrim(Config::getSafe('portal_url', '/stalker_portal/'), "/") . $img_path . '/' . $this->postData['id'] . (!empty($this->postData['file_num']) ? '_' . $this->postData['file_num'] : '') . '.'.$file_info['extension']);
                     }
                 }
@@ -865,14 +865,18 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
                 }
             }
         }
-        $img_path = str_replace(str_replace('/admin', '', $this->baseDir), "", $img_path);
-        $response = $this->generateAjaxResponse(array('pic' => $this->baseHost . rtrim(Config::getSafe('portal_url', '/stalker_portal/')) . $img_path.'/'.$upload_id . (!empty($this->postData['file_num']) ? '_' . $this->postData['file_num'] : '')), $error);
+        $img_path = trim(str_replace(str_replace('/admin', '', $this->baseDir), "", $img_path), '/');
+        $response = $this->generateAjaxResponse(array(
+            'pic' => $this->baseHost . rtrim(Config::getSafe('portal_url', '/stalker_portal/')) . $img_path.'/'.$upload_id . (!empty($this->postData['file_num']) ? '_' . $this->postData['file_num'] : '').".$ext",
+            'upload_id' => !empty($upload_id) ? $upload_id : 0,
+            'file_num' => !empty($this->postData['file_num']) ? $this->postData['file_num']: 0
+        ), $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
 
-    public function delete_cover() {
-        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['id'])) {
+    public function delete_cover($local_id = FALSE) {
+        if ((!$this->isAjax || $this->method != 'POST' || empty($this->postData['id'])) && $local_id === FALSE) {
             $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
@@ -880,10 +884,12 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
 
+        $cover_id = ($local_id !== FALSE) ? $local_id : $this->postData['id'];
+
         $data = array();
         $data['action'] = 'deleteCover';
         $error = $this->setLocalization('Failed');
-        if (($screenshot = $this->db->getScreenshotData(array('id' => $this->postData['id']), 'ALL')) && !empty($screenshot)) {
+        if (($screenshot = $this->db->getScreenshotData(array('id' => $cover_id), 'ALL')) && !empty($screenshot)) {
             $screenshot = $screenshot[0];
             $img_path = $this->getCoverFolder($screenshot['id']);
             $ext = !empty($screenshot['name']) ? end(explode('.', $screenshot['name'])): '';
@@ -902,13 +908,17 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
                     $data['msg'] = $error;
                 }
             } else {
-                $data['msg'] = $error = $this->setLocalization("No information about") . ' - "' . $this->postData['id'] . (!empty($screenshot['video_episodes']) ? '_' . $screenshot['video_episodes'] : '') . ".$ext \"" . $this->setLocalization('or file is not exists');
+                $data['msg'] = $error = $this->setLocalization("No information about") . ' - "' . $cover_id . (!empty($screenshot['video_episodes']) ? '_' . $screenshot['video_episodes'] : '') . ".$ext \"" . $this->setLocalization('or file is not exists');
             }
         }
 
-        $response = $this->generateAjaxResponse($data, $error);
+        if ($local_id === FALSE) {
+            $response = $this->generateAjaxResponse($data, $error);
 
-        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+            return new Response(json_encode($response), (empty($error) ? 200 : 500));
+        } else {
+            return $error;
+        }
     }
     
     public function update_rating_kinopoisk() {
@@ -1010,7 +1020,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         $data['action'] = 'getImage';
         $error = $this->setLocalization('No data');
 
-        if (strpos($this->data['url'], 'http://') === 0 && (strpos($this->data['url'], 'kinopoisk.ru/') || strpos($this->data['url'], 'image.tmdb.org/'))){
+        if ((strpos($this->data['url'], 'http://') === 0 || strpos($this->data['url'], 'https://') === 0) && (strpos($this->data['url'], 'kinopoisk.ru/') || strpos($this->data['url'], 'image.tmdb.org/'))){
             $img = file_get_contents($this->data['url']);
             if (!empty($img)) {
                 echo $img;
@@ -2986,11 +2996,6 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
             }
 
             $cover_filename = substr($url, strrpos($url, '/') + 1);
-            $s_data = array();
-            $s_data['name'] = $cover_filename;
-            $s_data['size'] = $cover->getimagesize();
-            $s_data['type'] = $cover->getformat();
-
             $s_data = array(
                 'name' => $cover_filename,
                 'size' => $cover->getimagesize(),
@@ -2998,7 +3003,14 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
                 'media_id' => $video_id,
                 'video_episodes' => $file_num
             );
+            $ext = end(explode('.', $s_data['name']));
 
+            $screenshot = $this->db->getScreenshotData(array('media_id' => $video_id, 'video_episodes' => $file_num), 'ALL');
+            
+            foreach ($screenshot as $row) {
+                $this->delete_cover($row['id']);
+            }
+            
             $cover_id = $this->db->saveScreenshotData($s_data);
 
             $img_path = $this->getCoverFolder($cover_id);
@@ -3008,7 +3020,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
                 $error = $this->setLocalization('Error: could not save cover image');
             } else {
                 try{
-                    $cover->writeImage($img_path . '/' . $cover_id . '.jpg');
+                    $cover->writeImage($img_path . '/' . $cover_id . ".$ext");
                 } catch (\ImagickException $e) {
                     $error = $this->setLocalization('Error') . ': ' . $e->getMessage();
                 }
