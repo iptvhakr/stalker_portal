@@ -42,6 +42,8 @@ function common_xpcom(){
 
     this.hdmi_on = true;
 
+    this.ntp_wait_time = 0;
+
     // iso639
     this.lang_map = {
         "aa" : "aar", //Afar
@@ -1313,7 +1315,23 @@ function common_xpcom(){
                 _debug(e);
             }
         }else if(this.user['status'] == 1){
+
+            if (this.ntp_server && this.user.hasOwnProperty('ntp_wait_timeout') && this.ntp_wait_time <= this.user['ntp_wait_timeout']){
+
+                _debug('wait for ntp');
+                _debug('this.ntp_wait_time', this.ntp_wait_time);
+
+                window.setTimeout(function(){
+                    stb.get_user_profile();
+                }, 10*1000);
+
+                this.ntp_wait_time += 10;
+
+                return;
+            }
+
             stb.loader.stop();
+
             this.cut_off(this.user.hasOwnProperty('block_msg') ? this.user['block_msg'] : '');
             loader.append('alert');
 
