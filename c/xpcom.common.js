@@ -2062,6 +2062,22 @@ function common_xpcom(){
         return cur_place_num;
     };
 
+    this.get_ad = function () {
+        _debug('stb.get_ad');
+
+        this.load(
+            {
+                "type"   : "stb",
+                "action" : "get_modules"
+            },
+            function (result) {
+                _debug('on get_ad', result);
+
+                //todo:
+            }
+        )
+    };
+
     this.clock = {
 
         start : function(){
