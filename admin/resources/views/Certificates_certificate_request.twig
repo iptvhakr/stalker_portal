@@ -58,7 +58,7 @@
                             <label class="col-sm-2 control-label ">{{ 'Contact info'|trans }}<span class="icon-required">*</span></label>
                             <div class="col-xs-10 col-sm-8">
                                 <div class=" col-xs-10 col-sm-6">
-                                    {{ form_widget(app['form'].contact_address, {'attr': {'class': 'form-control', 'placeholder': 'mail@example.com', 'data-validation': 'custom', 'data-validation-regexp': '^[а-яА-ЯёЁa-zA-Z0-9 ]{3,25}$'}}) }}
+                                    {{ form_widget(app['form'].contact_address, {'attr': {'class': 'form-control', 'placeholder': 'mail@example.com'}}) }} {#, 'data-validation': 'custom', 'data-validation-regexp': '^[а-яА-ЯёЁa-zA-Z0-9@ ]{3,25}$'#}
                                     <div></div>
                                 </div>
                                 <div>
@@ -103,6 +103,20 @@
                                 <div>
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].date_begin) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'Server host'|trans }}<span class="icon-required">*</span></label>
+                            <div class="col-xs-10 col-sm-8">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].server_host , {'attr': {'class': 'form-control' }}) }} {#, 'data-validation': 'custom', 'data-validation-regexp': '^[а-яА-ЯёЁa-zA-Z ]{3,25}$'#}
+                                    <div></div>
+                                </div>
+                                <div>
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].server_host ) }}
                                     </div>
                                 </div>
                             </div>

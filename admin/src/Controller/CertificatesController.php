@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\Response as Response;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
 use Symfony\Component\Form\FormError;
+use Stalker\Lib\Core\LicenseManager;
+use Stalker\Lib\Core\LicenseManagerException;
 
 class CertificatesController extends \Controller\BaseStalkerController {
 
@@ -18,11 +20,14 @@ class CertificatesController extends \Controller\BaseStalkerController {
         $this->app['allLicCount'] = $this->getLicenseCountAndCost();
 
         $this->app['allStatus'] = array(
-            array('id' => 1, 'title' => $this->setLocalization('Valid')),
-            array('id' => 2, 'title' => $this->setLocalization('Not valid')),
-            array('id' => 3, 'title' => $this->setLocalization('Requested')),
-            array('id' => 4, 'title' => $this->setLocalization('Awaiting'))
+            array('id' => 1, 'title' => $this->setLocalization('Valid'),            'label' => 'ok'),
+            array('id' => 2, 'title' => $this->setLocalization('Requested'),        'label' => 'not_valid'),
+            array('id' => 3, 'title' => $this->setLocalization('Disabled'),         'label' => 'disabled'),
+            array('id' => 4, 'title' => $this->setLocalization('Expired'),          'label' => 'expired'),
+            array('id' => 5, 'title' => $this->setLocalization('Wrong signature'),  'label' => 'wrong_signature'),
+            array('id' => 6, 'title' => $this->setLocalization('Undefined'),        'label' => 'undefined'),
         );
+
     }
 
     // ------------------- action method ---------------------------------------
@@ -62,29 +67,30 @@ class CertificatesController extends \Controller\BaseStalkerController {
             'cert_begin' => 0,
             'cert_end' => 0,
             'status' => 0);
-        $status_ids = $this->getFieldFromArray($this->app['allStatus'], 'id');
-        $status_ids = array_combine(array_values($status_ids), array_values($status_ids));
+        $status_label = array_combine($this->getFieldFromArray($this->app['allStatus'], 'label'), $this->getFieldFromArray($this->app['allStatus'], 'id'));
         $lic_count_ids = $this->getFieldFromArray($this->app['allLicCount'], 'count');
         $lic_count_ids = array_combine(array_values($lic_count_ids), array_values($lic_count_ids));
 
-        $sert = new \LicenseManager();
+        $sert = new LicenseManager();
         $lics_arr = $sert->getLicenses();
+
 
         while(list($num, $lics) = each($lics_arr)){
             $error = $lics->getError();
             if (empty($error)) {
-                $data_set_row['id'] = $num; //@todo get real id
+                $data_set_row['id'] = $lics->getId();
                 $data_set_row['lic_count'] = $lics->getQuantity();
                 $data_set_row['cert_begin'] = $lics->getDateFrom();
                 $data_set_row['cert_end'] = $lics->getDateTo();
-                $data_set_row['status'] = array_rand($status_ids); //@todo get real status
+                $data_set_row['status'] = $status_label[$lics->getStatusStr()];
+                $data_set_row['status_bool'] = $lics->getStatus();
                 $data_set[] = $data_set_row;
             }
         }
 
         $this->app['data_set'] = $data_set;
         $this->app['lic_count_set'] = array_combine($lic_count_ids, $this->getFieldFromArray($this->app['allLicCount'], 'title'));
-        $this->app['status_set'] = array_combine($status_ids, $this->getFieldFromArray($this->app['allStatus'], 'title'));
+        $this->app['status_set'] = array_combine($this->getFieldFromArray($this->app['allStatus'], 'id'), $this->getFieldFromArray($this->app['allStatus'], 'title'));
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -140,7 +146,7 @@ class CertificatesController extends \Controller\BaseStalkerController {
         }
 
         try{
-            $sert = new \LicenseManager();
+            $sert = new LicenseManager();
             $lics = $sert->getLicenses(); //@todo get real license $sert->getLicense($id);
             $data = array(
                 'contact_name' => $lics[0]->getContactName(),
@@ -235,6 +241,13 @@ class CertificatesController extends \Controller\BaseStalkerController {
                     'required' => TRUE
                 )
             )
+            ->add('server_host', 'text', array(
+                    'constraints' => array(
+                        new Assert\NotBlank()
+                    ),
+                    'attr' => array('readonly' => $show, 'disabled' => $show),
+                    'required' => TRUE)
+            )
             ->add('save', 'submit');
         if ($show) {
             $status_ids = $this->getFieldFromArray($this->app['allStatus'], 'id');
@@ -267,17 +280,23 @@ class CertificatesController extends \Controller\BaseStalkerController {
             if ($form->isValid()) {
                 $data['date_from'] = \DateTime::createFromFormat('d.m.Y', $data['form']['date_begin'])->getTimestamp();
                 $data['date_to'] = \DateTime::createFromFormat('d.m.Y', $data['form']['date_begin'])->add(new \DateInterval("P{$data['period']}Y"))->getTimestamp();
-                $sert = new \LicenseManager();
+                $sert = new LicenseManager();
+
+                /*var_dump($data);exit;*/
+
                 try{
-                    $result = call_user_func(array($sert, 'requestLicense'), array(
+                    $result = $sert->requestLicense(
                         (string) 	$data['contact_name'],
                         (string) 	$data['contact_address'],
-                        (int) 	$data['quantity'],
-                        (int) 	$data['date_from'],
-                        (int) 	$data['date_to']
-                    ));
+                        (int) 	    $data['quantity'],
+                        (int) 	    $data['date_from'],
+                        (int) 	    $data['date_to'],
+                        (string)    $data['server_host']
+                    );
+
+                    /*$result = \Stalker\Lib\Core\LicenseManager::requestLicense((string) $data['contact_name'], (string) $data['contact_address'], (int) $data['quantity'], (int) $data['date_from'], (int) $data['date_to'], (string) $data['server_host']);*/
                     return $result;
-                } catch(\LicenseManagerException $e) {
+                } catch(LicenseManagerException $e) {
                     $form->addError(new FormError($e->getMessage()));
                     return FALSE;
                 }

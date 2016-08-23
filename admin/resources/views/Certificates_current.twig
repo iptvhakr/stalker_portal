@@ -165,7 +165,7 @@
 
         function rowDataPrepare(item){
             item.lic_count = lic_count_set[item.lic_count];
-            item.status = status_set[item.status];
+            item.status = status_set[item.status_id];
             var dateSet = new Date();
             dateSet.setTime(item.cert_begin * 1000);
             item.cert_begin = dateSet.toLocaleFormat("%d.%m.%Y");
