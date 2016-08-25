@@ -2073,7 +2073,7 @@ function common_xpcom(){
             function (result) {
                 _debug('on get_ad', result);
 
-                //todo:
+                //todo: request advert
             }
         )
     };
