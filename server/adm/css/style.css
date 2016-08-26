@@ -3623,7 +3623,8 @@ z-index:10;
     padding-top: 20px;
 }
 
-#add_channel *, #modalbox_ad *{
+/*#add_channel *, #modalbox_ad *{*/
+#add_channel *:not(dt):not(dl):not(dd), #modalbox_ad *:not(dt):not(dl):not(dd){
     font-weight: normal;
 }
 

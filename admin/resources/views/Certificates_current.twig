@@ -98,9 +98,7 @@
                     { "type": 'formatted-num', targets: [1] },
                     { "type": 'de_date', targets: [2, 3] }
                 ]
-            }).prev('.dataTables_processing').hide(50, function(){
-                $(".dataTables_filter, .dataTables_ajax_update_button").hide(50);
-            });
+            }).prev('.dataTables_processing').hide(50);
         }
 
         function yelp() {
@@ -122,13 +120,7 @@
                     if ($(_this).attr("disabled")) {
                         JSErrorModalBox({msg: "{{ 'Action is not available'|trans }}"});
                     } else {
-                        showModalBox();
-                        var timer = setInterval(function(){
-                            if ($("#reset_all_apps_button").length == 0 || !$("#reset_all_apps_button").is(":visible")) {
-                                clearInterval(timer);
-                                ajaxPostSend($(_this).attr('href'), sendData, false );
-                            }
-                        }, 10);
+                        ajaxPostSend($(_this).attr('href'), sendData, false );
                     }
                     $(this).closest('div.open').removeClass('open');
                     return false;
@@ -165,12 +157,23 @@
 
         function rowDataPrepare(item){
             item.lic_count = lic_count_set[item.lic_count];
-            item.status = status_set[item.status_id];
+            var status = item.status;
+            item.status = status_set[item.status];
+            if (item.awaiting) {
+                item.status += "<br><a class='main_ajax txt-success' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/certificate-install' data-id='" + item.id + "'>{{ 'Install'|trans }}</a>";
+            } else if ( status == 5 ) {
+                item.status += "<br><a class='txt-danger' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/certificate-detail?id=" + item.id + "'>{{ 'Request a new certificate'|trans }}</a>";
+            }
             var dateSet = new Date();
             dateSet.setTime(item.cert_begin * 1000);
             item.cert_begin = dateSet.toLocaleFormat("%d.%m.%Y");
             dateSet.setTime(item.cert_end * 1000);
             item.cert_end = dateSet.toLocaleFormat("%d.%m.%Y");
+
+            if (item.expires_30_days) {
+                item.cert_end += "<br><a class='txt-danger' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/certificate-detail?id=" + item.id + "'>{{ 'Request a new certificate'|trans }}</a>";
+            }
+
             item.id = "<a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/certificate-detail?id=" + item.id + "'>" + item.id + "</a>";
             return item;
         }
@@ -221,6 +224,22 @@
 
         function checkStatusFilter(val){
             return (val == status_set[$('[data-tvfilter="status"]').data('filterval')]) || ($('[data-tvfilter="status"]').data('filterval') == '0');
+        }
+
+        function updateTableData(){
+            ajaxPostSend('{{ app.request.baseUrl }}/{{ app.controller_alias }}/current-list-json', {}, false, false, false);
+        }
+
+        function reDrawDataTable(data){
+            if (data.data) {
+                var newData = [];
+                $('#datatable-1').dataTable().fnClearTable();
+                for (var i in data.data) {
+                    newData.push(rowDataPrepare(data.data[i]));
+                }
+                $('#datatable-1').dataTable().fnAddData(newData);
+                $('#datatable-1').DataTable().rows().invalidate(newData).draw();
+            }
         }
 
     </script>
