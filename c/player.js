@@ -1013,6 +1013,12 @@ player.prototype.event_callback = function(event, params){
         {
             try{
 
+                if (this.cur_media_item.hasOwnProperty('ad_tracking')){
+                    if (this.cur_media_item.ad_tracking.hasOwnProperty('complete')){
+                        stb.advert.track(this.cur_media_item.ad_tracking['complete'])
+                    }
+                }
+
                 if (this.cur_media_item.stop_callback){
                     this.cur_media_item.stop_callback();
                     return;
@@ -1310,6 +1316,20 @@ player.prototype.event_callback = function(event, params){
             this.triggerCustomEventListener('event_4', this.cur_media_item);
             if (stb.user['enable_buffering_indication'] && this.cur_media_item.cmd.indexOf('rtp ') != 0){
                 this.progress_bar.stop();
+            }
+
+            if (this.cur_media_item.hasOwnProperty('ad_tracking')){
+                if (this.cur_media_item.ad_tracking.hasOwnProperty('impression')){
+                    stb.advert.track(this.cur_media_item.ad_tracking['impression'])
+                }
+
+                if (this.cur_media_item.ad_tracking.hasOwnProperty('creativeView')){
+                    stb.advert.track(this.cur_media_item.ad_tracking['creativeView'])
+                }
+
+                if (this.cur_media_item.ad_tracking.hasOwnProperty('start')){
+                    stb.advert.track(this.cur_media_item.ad_tracking['start'])
+                }
             }
 
             if (this.cur_media_item.hasOwnProperty('volume_correction')){

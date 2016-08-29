@@ -2062,20 +2062,76 @@ function common_xpcom(){
         return cur_place_num;
     };
 
-    this.get_ad = function () {
-        _debug('stb.get_ad');
+    this.advert = {
 
-        this.load(
-            {
-                "type"   : "stb",
-                "action" : "get_modules"
-            },
-            function (result) {
-                _debug('on get_ad', result);
+        current : {},
 
-                //todo: request advert
+        start : function (callback) {
+            _debug('stb.advert.get_ad');
+
+            stb.load(
+                {
+                    "type"   : "stb",
+                    "action" : "get_ad"
+                },
+                function (result) {
+                    _debug('on get_ad', result);
+
+                    this.current = result;
+
+                    if (result && result.ad) {
+
+                        main_menu.hide();
+
+                        stb.player.prev_layer = main_menu;
+
+                        stb.player.play({
+                            'id': 0,
+                            'cmd': result.ad,
+                            'type': 'ad',
+                            'ad_tracking': result.tracking,
+                            'stop_callback': callback
+
+                        });
+
+                        stb.player.ad_indication.show();
+
+                    }else{
+                        callback();
+                    }
+                }
+            )
+        },
+
+        track : function (urls) {
+            _debug('stb.advert.track', urls);
+
+            if (!Array.isArray(urls)){
+                return false;
             }
-        )
+
+            urls.forEach(function (url) {
+
+                _debug('tracking call', event, url);
+
+                var req = new XMLHttpRequest();
+
+                req.open("GET", url);
+
+                req.onreadystatechange = function(){
+                    if (req.readyState == 4) {
+                        if (req.status == 200) {
+                            _debug('on track ok', event);
+                        }else{
+                            _debug('on track error', event, req.status);
+                        }
+                        req = null;
+                    }
+                };
+
+                req.send(null);
+            });
+        }
     };
 
     this.clock = {
