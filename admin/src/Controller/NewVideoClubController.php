@@ -649,9 +649,9 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         
         $media_id = intval($this->postData['videoid']);
         $date_on = date("Y-m-d", strtotime($this->postData['video_on_date']));
+        $files = $this->db->getSeriesFiles(array('V_S_F.video_id' => $media_id, 'V_S_F.accessed' => 1, 'V_S_F.status' => 1));
 
         if ($date_on == date("Y-m-d")) {
-            $files = $this->db->getSeriesFiles(array('V_S_F.video_id' => $media_id, 'V_S_F.accessed' => 1, 'V_S_F.status' => 1));
             if (!empty($files)) {
                 $error = !((bool) $this->db->deleteVideoTask(array("video_id" => $media_id)));
                 $video = $this->db->getVideoById($media_id);
@@ -671,23 +671,30 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
                 $data['msg'] = $this->setLocalization('You can not publish this entry. There are no available video file for this entry.');
             }
         } else {
-            $data_in = array(
-                'video_id' => $media_id,
-                'date_on' => $date_on
-            );
+            if (!empty($files) || !empty($this->postData['empty_confirm'])) {
+                $data_in = array(
+                    'video_id' => $media_id,
+                    'date_on' => $date_on
+                );
 
-            $video_id = $this->db->getVideoTaskByVideoId($media_id);
+                $video_id = $this->db->getVideoTaskByVideoId($media_id);
 
-            if (empty($video_id)) {
-                $error = !((bool) $this->db->addVideoTask($data_in));
+                if (empty($video_id)) {
+                    $error = !((bool) $this->db->addVideoTask($data_in));
+                } else {
+                    $this->db->updateVideoTask($data_in, array("video_id"=>$media_id));
+                    $error = '';
+                }
+                $data_in['date_on'] = strftime("%e-%m-%Y", strtotime($data_in['date_on']));
+                $data['status'] = "<span class='txt-info'>" . $this->setLocalization('Scheduled') . ' ' . $this->setLocalization('on') . ' ' . "$data_in[date_on]</span>";
+                //            $data['video_on_date'] = $date_on;
+                $data = array_merge($data_in, $data);
             } else {
-                $this->db->updateVideoTask($data_in, array("video_id"=>$media_id));
+                $data['action'] = 'publishWarning';
+                $data['nothing_to_do'] = 1;
                 $error = '';
+                $data['msg'] = $this->setLocalization('There are no available video file for this entry. Do you really wont schedule publishing this record on {date}?', '', $date_on, array('{date}' => $date_on));
             }
-            $data_in['date_on'] = strftime("%e-%m-%Y", strtotime($data_in['date_on']));
-            $data['status'] = "<span class='txt-info'>" . $this->setLocalization('Scheduled') . ' ' . $this->setLocalization('on') . ' ' . "$data_in[date_on]</span>";
-            //            $data['video_on_date'] = $date_on;
-            $data = array_merge($data_in, $data);
         }
 
         $response = $this->generateAjaxResponse($data, $error);
