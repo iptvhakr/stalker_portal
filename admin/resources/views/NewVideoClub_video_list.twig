@@ -233,7 +233,7 @@
         $(document).ready(function () {
             LoadDataTablesScripts(TestTable1);
             LoadSelect2Script(DemoSelect2);
-           $(document).on('click', "a.main_ajax", function (e) {
+            $(document).on('click', "a.main_ajax", function (e) {
                 e.stopPropagation();
                 e.preventDefault();
                 var _this = $(this);
@@ -247,7 +247,7 @@
                     showTaskForm(_this);
                     return false;
                 }
-               ajaxPostSend($(this).attr('href'), $(this).data(), false, false);
+                ajaxPostSend($(this).attr('href'), $(this).data(), false, false);
                 return false;
             });
 

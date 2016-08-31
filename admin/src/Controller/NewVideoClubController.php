@@ -1108,6 +1108,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
                     $allTasks[$num]['task_added'] = 0;
                 }
                 $allTasks[$num]['tasks'] = "<span data-task-state=1>$scheduled_on " . strftime('%d-%m-%Y', $allTasks[$num]['date_on']) . "</span>";
+                $allTasks[$num]['RowOrder'] = "dTRow_" . $row['id'];
             }
             $response["data"] = $allTasks;
         }
@@ -1194,6 +1195,10 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         }
         $data = array();
         $data['action'] = 'removeTasks';
+        /*
+        $data['action'] = 'deleteTableRow';
+        $data['id'] = $this->postData['taskid'];
+        */
         $error = $this->setLocalization('Failed');
 
         $result = $this->db->deleteVideoTask(array('id'=>$this->postData['taskid']));
