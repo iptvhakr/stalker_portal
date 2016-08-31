@@ -44,14 +44,17 @@ do
 
     if [ $type == "flussonic_health" ] ; then
         result=$(curl --globoff -Is ${url} | head -n1 | grep 200 | wc -l)
-
-        if [ $result == "1" ] ; then
-            echo "send OK"
-            set_ok $link_id
-        else
-            echo "send FAIL"
-            set_fail $link_id
-        fi
+    else
+        result=$(./check_channel.sh $url $link_id)
     fi
 
+    #echo $result
+
+    if [ $result == "1" ] ; then
+        echo "send OK"
+        set_ok $link_id
+    else
+        echo "send FAIL"
+        set_fail $link_id
+    fi
 done
