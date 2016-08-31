@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-26 18:02+0300\n"
-"PO-Revision-Date: 2016-08-26 18:03+0300\n"
+"POT-Creation-Date: 2016-08-31 12:13+0300\n"
+"PO-Revision-Date: 2016-08-31 12:13+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -480,7 +480,6 @@ msgstr "Page not found"
 #: ../../../../admin/src/Controller/UsersController.php:1567
 #: ../../../../admin/src/Controller/UsersController.php:1593
 #: ../../../../admin/src/Controller/AdminsController.php:470
-#: ../../../../admin/resources/cache/twig/35/3548e51744a6a78dcb2b8ab751e50419505bbd9ea8e514146175d19829fa51cf.php:214
 #: ../../../adm/js/js_translate.php:43
 msgid "Failed"
 msgstr "Failed"
@@ -626,7 +625,6 @@ msgstr "This number is already in use"
 #: ../../../../admin/src/Controller/AdminsController.php:867
 #: ../../../../admin/src/Controller/AdminsController.php:880
 #: ../../../../admin/src/Controller/AdminsController.php:931
-#: ../../../../admin/resources/cache/twig/5c/5cc75c133f918d8645affac1596213a7549e940c6d8681254a0688d5918f5c34.php:83
 msgid "ID"
 msgstr "ID"
 
@@ -636,7 +634,6 @@ msgstr "ID"
 #: ../../../../admin/src/Controller/StatisticsController.php:1353
 #: ../../../../admin/src/Controller/TasksController.php:552
 #: ../../../../admin/src/Controller/TasksController.php:565
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:72
 #: ../../../administrator/other_city_info.php:153
 #: ../../../administrator/other_city_info.php:216
 #: ../../../administrator/help_city_info.php:143
@@ -790,8 +787,6 @@ msgstr "Monitoring status"
 #: ../../../../admin/src/Controller/RadioController.php:393
 #: ../../../../admin/src/Controller/UsersController.php:2127
 #: ../../../../admin/src/Controller/UsersController.php:2214
-#: ../../../../admin/resources/cache/twig/45/451e444c7ea85f8729c7e6db5b986ea5f55b31832389ba97328ac6a7da6f1484.php:41
-#: ../../../../admin/resources/cache/twig/5c/5cc75c133f918d8645affac1596213a7549e940c6d8681254a0688d5918f5c34.php:343
 #: ../../../administrator/events.php:516 ../../../administrator/tasks.php:134
 #: ../../../administrator/add_video.php:841
 msgid "Status"
@@ -919,7 +914,6 @@ msgid "{{minute}} minutes ago"
 msgstr "{{minute}} minutes ago"
 
 #: ../../../../admin/src/Controller/IndexController.php:34
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:25
 msgid "Dashboard"
 msgstr "Dashboard"
 
@@ -1090,9 +1084,6 @@ msgid "Day"
 msgstr "Day"
 
 #: ../../../../admin/src/Controller/EventsController.php:74
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:617
-#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1260
-#: ../../../../admin/resources/cache/twig/5c/5cc75c133f918d8645affac1596213a7549e940c6d8681254a0688d5918f5c34.php:639
 #: ../../../administrator/userlog.php:168
 #: ../../../administrator/all_userlog.php:163
 #: ../../../administrator/users.php:207 ../../../administrator/profile.php:212
@@ -1102,9 +1093,6 @@ msgid "January"
 msgstr "January"
 
 #: ../../../../admin/src/Controller/EventsController.php:75
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:621
-#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1264
-#: ../../../../admin/resources/cache/twig/5c/5cc75c133f918d8645affac1596213a7549e940c6d8681254a0688d5918f5c34.php:643
 #: ../../../administrator/userlog.php:169
 #: ../../../administrator/all_userlog.php:164
 #: ../../../administrator/users.php:208 ../../../administrator/profile.php:213
@@ -1114,9 +1102,6 @@ msgid "February"
 msgstr "February"
 
 #: ../../../../admin/src/Controller/EventsController.php:76
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:625
-#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1268
-#: ../../../../admin/resources/cache/twig/5c/5cc75c133f918d8645affac1596213a7549e940c6d8681254a0688d5918f5c34.php:647
 #: ../../../administrator/userlog.php:170
 #: ../../../administrator/all_userlog.php:165
 #: ../../../administrator/users.php:209 ../../../administrator/profile.php:214
@@ -1126,9 +1111,6 @@ msgid "March"
 msgstr "March"
 
 #: ../../../../admin/src/Controller/EventsController.php:77
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:629
-#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1272
-#: ../../../../admin/resources/cache/twig/5c/5cc75c133f918d8645affac1596213a7549e940c6d8681254a0688d5918f5c34.php:651
 #: ../../../administrator/userlog.php:171
 #: ../../../administrator/all_userlog.php:166
 #: ../../../administrator/users.php:210 ../../../administrator/profile.php:215
@@ -1138,9 +1120,6 @@ msgid "April"
 msgstr "April"
 
 #: ../../../../admin/src/Controller/EventsController.php:78
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:633
-#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1276
-#: ../../../../admin/resources/cache/twig/5c/5cc75c133f918d8645affac1596213a7549e940c6d8681254a0688d5918f5c34.php:655
 #: ../../../adm/js/js_translate.php:50 ../../../lib/gismeteo.class.php:34
 #: ../../../administrator/userlog.php:172
 #: ../../../administrator/all_userlog.php:167
@@ -1151,9 +1130,6 @@ msgid "May"
 msgstr "May"
 
 #: ../../../../admin/src/Controller/EventsController.php:79
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:637
-#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1280
-#: ../../../../admin/resources/cache/twig/5c/5cc75c133f918d8645affac1596213a7549e940c6d8681254a0688d5918f5c34.php:659
 #: ../../../administrator/userlog.php:173
 #: ../../../administrator/all_userlog.php:168
 #: ../../../administrator/users.php:212 ../../../administrator/profile.php:217
@@ -1163,9 +1139,6 @@ msgid "June"
 msgstr "June"
 
 #: ../../../../admin/src/Controller/EventsController.php:80
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:641
-#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1284
-#: ../../../../admin/resources/cache/twig/5c/5cc75c133f918d8645affac1596213a7549e940c6d8681254a0688d5918f5c34.php:663
 #: ../../../administrator/userlog.php:174
 #: ../../../administrator/all_userlog.php:169
 #: ../../../administrator/users.php:213 ../../../administrator/profile.php:218
@@ -1175,9 +1148,6 @@ msgid "July"
 msgstr "July"
 
 #: ../../../../admin/src/Controller/EventsController.php:81
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:645
-#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1288
-#: ../../../../admin/resources/cache/twig/5c/5cc75c133f918d8645affac1596213a7549e940c6d8681254a0688d5918f5c34.php:667
 #: ../../../administrator/userlog.php:175
 #: ../../../administrator/all_userlog.php:170
 #: ../../../administrator/users.php:214 ../../../administrator/profile.php:219
@@ -1187,9 +1157,6 @@ msgid "August"
 msgstr "August"
 
 #: ../../../../admin/src/Controller/EventsController.php:82
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:649
-#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1292
-#: ../../../../admin/resources/cache/twig/5c/5cc75c133f918d8645affac1596213a7549e940c6d8681254a0688d5918f5c34.php:671
 #: ../../../administrator/userlog.php:176
 #: ../../../administrator/all_userlog.php:171
 #: ../../../administrator/users.php:215 ../../../administrator/profile.php:220
@@ -1199,9 +1166,6 @@ msgid "September"
 msgstr "September"
 
 #: ../../../../admin/src/Controller/EventsController.php:83
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:653
-#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1296
-#: ../../../../admin/resources/cache/twig/5c/5cc75c133f918d8645affac1596213a7549e940c6d8681254a0688d5918f5c34.php:675
 #: ../../../administrator/userlog.php:177
 #: ../../../administrator/all_userlog.php:172
 #: ../../../administrator/users.php:216 ../../../administrator/profile.php:221
@@ -1211,9 +1175,6 @@ msgid "October"
 msgstr "October"
 
 #: ../../../../admin/src/Controller/EventsController.php:84
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:657
-#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1300
-#: ../../../../admin/resources/cache/twig/5c/5cc75c133f918d8645affac1596213a7549e940c6d8681254a0688d5918f5c34.php:679
 #: ../../../administrator/userlog.php:178
 #: ../../../administrator/all_userlog.php:173
 #: ../../../administrator/users.php:217 ../../../administrator/profile.php:222
@@ -1223,9 +1184,6 @@ msgid "November"
 msgstr "November"
 
 #: ../../../../admin/src/Controller/EventsController.php:85
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:661
-#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1304
-#: ../../../../admin/resources/cache/twig/5c/5cc75c133f918d8645affac1596213a7549e940c6d8681254a0688d5918f5c34.php:683
 #: ../../../administrator/userlog.php:179
 #: ../../../administrator/all_userlog.php:174
 #: ../../../administrator/users.php:218 ../../../administrator/profile.php:223
@@ -1235,9 +1193,6 @@ msgid "December"
 msgstr "December"
 
 #: ../../../../admin/src/Controller/EventsController.php:89
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:591
-#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1234
-#: ../../../../admin/resources/cache/twig/5c/5cc75c133f918d8645affac1596213a7549e940c6d8681254a0688d5918f5c34.php:613
 #: ../../../lib/epg.class.php:877 ../../../lib/gismeteo.class.php:32
 #: ../../../administrator/profile.php:202
 #: ../../../administrator/add_video.php:536
@@ -1245,9 +1200,6 @@ msgid "Mon"
 msgstr "Mon"
 
 #: ../../../../admin/src/Controller/EventsController.php:90
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:595
-#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1238
-#: ../../../../admin/resources/cache/twig/5c/5cc75c133f918d8645affac1596213a7549e940c6d8681254a0688d5918f5c34.php:617
 #: ../../../lib/epg.class.php:877 ../../../lib/gismeteo.class.php:32
 #: ../../../administrator/profile.php:203
 #: ../../../administrator/add_video.php:537
@@ -1255,9 +1207,6 @@ msgid "Tue"
 msgstr "Tue"
 
 #: ../../../../admin/src/Controller/EventsController.php:91
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:599
-#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1242
-#: ../../../../admin/resources/cache/twig/5c/5cc75c133f918d8645affac1596213a7549e940c6d8681254a0688d5918f5c34.php:621
 #: ../../../lib/epg.class.php:877 ../../../lib/gismeteo.class.php:32
 #: ../../../administrator/profile.php:204
 #: ../../../administrator/add_video.php:538
@@ -1265,9 +1214,6 @@ msgid "Wed"
 msgstr "Wed"
 
 #: ../../../../admin/src/Controller/EventsController.php:92
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:603
-#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1246
-#: ../../../../admin/resources/cache/twig/5c/5cc75c133f918d8645affac1596213a7549e940c6d8681254a0688d5918f5c34.php:625
 #: ../../../lib/epg.class.php:877 ../../../lib/gismeteo.class.php:32
 #: ../../../administrator/profile.php:205
 #: ../../../administrator/add_video.php:539
@@ -1275,9 +1221,6 @@ msgid "Thu"
 msgstr "Thu"
 
 #: ../../../../admin/src/Controller/EventsController.php:93
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:607
-#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1250
-#: ../../../../admin/resources/cache/twig/5c/5cc75c133f918d8645affac1596213a7549e940c6d8681254a0688d5918f5c34.php:629
 #: ../../../lib/epg.class.php:877 ../../../lib/gismeteo.class.php:32
 #: ../../../administrator/profile.php:206
 #: ../../../administrator/add_video.php:540
@@ -1285,9 +1228,6 @@ msgid "Fri"
 msgstr "Fri"
 
 #: ../../../../admin/src/Controller/EventsController.php:94
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:611
-#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1254
-#: ../../../../admin/resources/cache/twig/5c/5cc75c133f918d8645affac1596213a7549e940c6d8681254a0688d5918f5c34.php:633
 #: ../../../lib/epg.class.php:877 ../../../lib/gismeteo.class.php:32
 #: ../../../administrator/profile.php:207
 #: ../../../administrator/add_video.php:541
@@ -1295,9 +1235,6 @@ msgid "Sat"
 msgstr "Sat"
 
 #: ../../../../admin/src/Controller/EventsController.php:95
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:587
-#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1230
-#: ../../../../admin/resources/cache/twig/5c/5cc75c133f918d8645affac1596213a7549e940c6d8681254a0688d5918f5c34.php:609
 #: ../../../lib/epg.class.php:877 ../../../lib/gismeteo.class.php:32
 #: ../../../administrator/profile.php:201
 #: ../../../administrator/add_video.php:535
@@ -1375,11 +1312,6 @@ msgstr "Do not yet running"
 #: ../../../../admin/src/Controller/VideoClubController.php:1895
 #: ../../../../admin/src/Controller/NewVideoClubController.php:2722
 #: ../../../../admin/src/Controller/BaseStalkerController.php:518
-#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:213
-#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:312
-#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:392
-#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:449
-#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:777
 #: ../../../lib/ajaxresponse.class.php:49
 #: ../../../administrator/subscribe.php:362
 #: ../../../administrator/subscribe.php:365
@@ -1390,8 +1322,6 @@ msgstr "All"
 
 #: ../../../../admin/src/Controller/EventsController.php:588
 #: ../../../../admin/src/Controller/AdminsController.php:869
-#: ../../../../admin/resources/cache/twig/f1/f1b9c76b792c88e4dfcbcaa084165e50b8815cd88e97ba08bb0fe052682b5449.php:139
-#: ../../../../admin/resources/cache/twig/f1/f1b9c76b792c88e4dfcbcaa084165e50b8815cd88e97ba08bb0fe052682b5449.php:827
 #: ../../../administrator/playlists.php:157
 #: ../../../administrator/events.php:434
 #: ../../../administrator/profile.php:494
@@ -1902,7 +1832,6 @@ msgstr "Movies in category"
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:1279
 #: ../../../../admin/src/Controller/NewVideoClubController.php:3217
 #: ../../../../admin/src/Controller/StatisticsController.php:1274
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:68
 #: ../../../administrator/add_video.php:2013 ../../../lang/stb.php:240
 msgid "Category"
 msgstr "Category"
@@ -2000,12 +1929,10 @@ msgstr "device"
 
 #: ../../../../admin/src/Controller/CertificatesController.php:93
 #: ../../../../admin/src/Controller/CertificatesController.php:146
-#: ../../../../admin/resources/cache/twig/45/451e444c7ea85f8729c7e6db5b986ea5f55b31832389ba97328ac6a7da6f1484.php:27
 msgid "List of certificates"
 msgstr "List of certificates"
 
 #: ../../../../admin/src/Controller/CertificatesController.php:94
-#: ../../../../admin/resources/cache/twig/5c/5cc75c133f918d8645affac1596213a7549e940c6d8681254a0688d5918f5c34.php:49
 msgid "Certificate request"
 msgstr "Certificate request"
 
@@ -2018,18 +1945,14 @@ msgid "Certificate detail"
 msgstr "Certificate detail"
 
 #: ../../../../admin/src/Controller/CertificatesController.php:375
-#: ../../../../admin/resources/cache/twig/45/451e444c7ea85f8729c7e6db5b986ea5f55b31832389ba97328ac6a7da6f1484.php:45
 msgid "License count"
 msgstr "License count"
 
 #: ../../../../admin/src/Controller/CertificatesController.php:376
-#: ../../../../admin/resources/cache/twig/45/451e444c7ea85f8729c7e6db5b986ea5f55b31832389ba97328ac6a7da6f1484.php:54
-#: ../../../../admin/resources/cache/twig/5c/5cc75c133f918d8645affac1596213a7549e940c6d8681254a0688d5918f5c34.php:265
 msgid "Begin of certificate validity"
 msgstr "Begin of certificate validity"
 
 #: ../../../../admin/src/Controller/CertificatesController.php:377
-#: ../../../../admin/resources/cache/twig/5c/5cc75c133f918d8645affac1596213a7549e940c6d8681254a0688d5918f5c34.php:291
 msgid "End of certificate validity"
 msgstr "End of certificate validity"
 
@@ -2373,7 +2296,6 @@ msgid "Tracks"
 msgstr "Tracks"
 
 #: ../../../../admin/src/Controller/AudioClubController.php:1264
-#: ../../../../admin/resources/cache/twig/5c/5cc75c133f918d8645affac1596213a7549e940c6d8681254a0688d5918f5c34.php:199
 #: ../../../administrator/audio_album.php:430
 #: ../../../administrator/audio_album.php:566
 #: ../../../administrator/add_video.php:2067 ../../../lang/stb.php:98
@@ -2384,7 +2306,6 @@ msgstr "Country"
 #: ../../../../admin/src/Controller/AudioClubController.php:1265
 #: ../../../../admin/src/Controller/AudioClubController.php:1430
 #: ../../../../admin/src/Controller/NewVideoClubController.php:3285
-#: ../../../../admin/resources/cache/twig/c9/c9906c0cd89e3f7d94760200963acf6e3d729c3ba7b9c62f280e2f3ed683a756.php:207
 #: ../../../administrator/audio_album.php:431
 #: ../../../administrator/audio_track.php:249
 #: ../../../administrator/audio_track.php:327
@@ -2475,7 +2396,6 @@ msgstr "Movies"
 
 #: ../../../../admin/src/Controller/StatisticsController.php:20
 #: ../../../../admin/src/Controller/TasksController.php:25
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:368
 #: ../../../administrator/userlog.php:273
 #: ../../../administrator/stat_moderators.php:239
 #: ../../../administrator/users.php:169
@@ -2914,14 +2834,12 @@ msgid "IPTV channels"
 msgstr "IPTV channels"
 
 #: ../../../../admin/src/Controller/UsersController.php:2067
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:145
 #: ../../../../admin/json_menu/menu.json:37
 msgid "Video club"
 msgstr "Video club"
 
 #: ../../../../admin/src/Controller/UsersController.php:2119
 #: ../../../../admin/src/Controller/AdminsController.php:868
-#: ../../../../admin/resources/cache/twig/f1/f1b9c76b792c88e4dfcbcaa084165e50b8815cd88e97ba08bb0fe052682b5449.php:117
 #: ../../../administrator/profile.php:438 ../../../administrator/user.php:141
 #: ../../../administrator/administrators.php:166
 #: ../../../administrator/administrators.php:193
@@ -2973,8 +2891,6 @@ msgid "uid"
 msgstr "Uid"
 
 #: ../../../../admin/src/Controller/UsersController.php:2202
-#: ../../../../admin/resources/cache/twig/d8/d8c2e7b800ee770dbebff1271f394b12b1547f2500ccf7ffdc1bf6d7dfbfb519.php:150
-#: ../../../../admin/resources/cache/twig/d8/d8c2e7b800ee770dbebff1271f394b12b1547f2500ccf7ffdc1bf6d7dfbfb519.php:311
 msgid "Actions"
 msgstr "Actions"
 
@@ -3154,13 +3070,11 @@ msgid "Initiator role"
 msgstr "Initiator role"
 
 #: ../../../../admin/src/Controller/AdminsController.php:106
-#: ../../../../admin/resources/cache/twig/f1/f1b9c76b792c88e4dfcbcaa084165e50b8815cd88e97ba08bb0fe052682b5449.php:572
 #: ../../../../admin/json_menu/menu.json:239
 msgid "Groups"
 msgstr "Groups"
 
 #: ../../../../admin/src/Controller/AdminsController.php:107
-#: ../../../../admin/resources/cache/twig/d8/d8c2e7b800ee770dbebff1271f394b12b1547f2500ccf7ffdc1bf6d7dfbfb519.php:27
 msgid "permissions for group administrators "
 msgstr "permissions for group administrators "
 
@@ -3236,399 +3150,6 @@ msgstr "Users of reseller"
 #: ../../../../admin/src/Controller/AdminsController.php:937
 msgid "Maximum number of users"
 msgstr "Maximum number of users"
-
-#: ../../../../admin/resources/cache/twig/c9/c9906c0cd89e3f7d94760200963acf6e3d729c3ba7b9c62f280e2f3ed683a756.php:183
-msgid "Powered by"
-msgstr "Powered by"
-
-#: ../../../../admin/resources/cache/twig/c9/c9906c0cd89e3f7d94760200963acf6e3d729c3ba7b9c62f280e2f3ed683a756.php:187
-msgid "IPTV/OTT Set-Top Boxes"
-msgstr "IPTV/OTT Set-Top Boxes"
-
-#: ../../../../admin/resources/cache/twig/c9/c9906c0cd89e3f7d94760200963acf6e3d729c3ba7b9c62f280e2f3ed683a756.php:191
-msgid "Contact support"
-msgstr "Contact support"
-
-#: ../../../../admin/resources/cache/twig/c9/c9906c0cd89e3f7d94760200963acf6e3d729c3ba7b9c62f280e2f3ed683a756.php:196
-msgid "Documentation"
-msgstr "Documentation"
-
-#: ../../../../admin/resources/cache/twig/c9/c9906c0cd89e3f7d94760200963acf6e3d729c3ba7b9c62f280e2f3ed683a756.php:311
-msgid "Available new version"
-msgstr "Available new version"
-
-#: ../../../../admin/resources/cache/twig/c9/c9906c0cd89e3f7d94760200963acf6e3d729c3ba7b9c62f280e2f3ed683a756.php:336
-msgid "Technical questions form"
-msgstr "Technical questions form"
-
-#: ../../../../admin/resources/cache/twig/f1/f1b9c76b792c88e4dfcbcaa084165e50b8815cd88e97ba08bb0fe052682b5449.php:27
-#: ../../../../admin/resources/cache/twig/d8/d8c2e7b800ee770dbebff1271f394b12b1547f2500ccf7ffdc1bf6d7dfbfb519.php:27
-#: ../../../administrator/index.php:171
-#: ../../../administrator/administrators.php:100
-#: ../../../administrator/administrators.php:143
-#: ../../../../admin/json_menu/menu.json:228
-msgid "Administrators"
-msgstr "Administrators"
-
-#: ../../../../admin/resources/cache/twig/f1/f1b9c76b792c88e4dfcbcaa084165e50b8815cd88e97ba08bb0fe052682b5449.php:27
-msgid "administrators list"
-msgstr "administrators list"
-
-#: ../../../../admin/resources/cache/twig/f1/f1b9c76b792c88e4dfcbcaa084165e50b8815cd88e97ba08bb0fe052682b5449.php:45
-msgid "Add administrator"
-msgstr "Add administrator"
-
-#: ../../../../admin/resources/cache/twig/f1/f1b9c76b792c88e4dfcbcaa084165e50b8815cd88e97ba08bb0fe052682b5449.php:128
-msgid "Should be unique"
-msgstr "Should be unique"
-
-#: ../../../../admin/resources/cache/twig/f1/f1b9c76b792c88e4dfcbcaa084165e50b8815cd88e97ba08bb0fe052682b5449.php:130
-msgid "You can use letters, digits and _ "
-msgstr "You can use letters, digits and _ "
-
-#: ../../../../admin/resources/cache/twig/f1/f1b9c76b792c88e4dfcbcaa084165e50b8815cd88e97ba08bb0fe052682b5449.php:175
-#: ../../../../admin/resources/cache/twig/3a/3a0c6e17e6b85f2f16e2ed239542bdc209103e76c4b215daad139b3877394218.php:54
-#: ../../../administrator/user.php:145
-#: ../../../administrator/administrators.php:197
-#: ../../../administrator/login.php:59 ../../../lang/stb.php:362
-#: ../../../lang/stb.php:375 ../../../lang/stb.php:419
-#: ../../../lang/stb.php:494 ../../../lang/stb.php:504
-msgid "Password"
-msgstr "Password"
-
-#: ../../../../admin/resources/cache/twig/f1/f1b9c76b792c88e4dfcbcaa084165e50b8815cd88e97ba08bb0fe052682b5449.php:186
-msgid "Repeat the password"
-msgstr "Repeat the password"
-
-#: ../../../../admin/resources/cache/twig/f1/f1b9c76b792c88e4dfcbcaa084165e50b8815cd88e97ba08bb0fe052682b5449.php:204
-#: ../../../../admin/resources/cache/twig/d8/d8c2e7b800ee770dbebff1271f394b12b1547f2500ccf7ffdc1bf6d7dfbfb519.php:366
-#: ../../../administrator/tariffs.php:94
-#: ../../../administrator/setting_common.php:200
-#: ../../../administrator/subscribe.php:377
-#: ../../../administrator/audio_album.php:604
-#: ../../../administrator/playlists.php:54
-#: ../../../administrator/testers.php:71
-#: ../../../administrator/audio_year.php:236
-#: ../../../administrator/other_city_info.php:244
-#: ../../../administrator/events.php:503
-#: ../../../administrator/audio_performer.php:236
-#: ../../../administrator/help_city_info.php:234
-#: ../../../administrator/city_info.php:248
-#: ../../../administrator/add_itv.php:1812
-#: ../../../administrator/audio_track.php:351
-#: ../../../administrator/anecdote.php:250
-#: ../../../administrator/playlist.php:69
-#: ../../../administrator/audio_language.php:236
-#: ../../../administrator/admin_groups.php:97
-#: ../../../administrator/audio_genre.php:236
-#: ../../../administrator/stream_zones.php:90
-#: ../../../administrator/stbgroups.php:55
-#: ../../../administrator/storages.php:110
-#: ../../../administrator/add_video.php:2140
-#: ../../../administrator/add_moderator_mac.php:271
-#: ../../../administrator/add_karaoke.php:843
-#: ../../../administrator/services_packages.php:125
-#: ../../../administrator/epg_setting.php:77
-#: ../../../administrator/administrators.php:92
-#: ../../../administrator/add_epg.php:412
-#: ../../../administrator/stream_servers.php:89
-#: ../../../administrator/stbgroup_members.php:63
-#: ../../../administrator/vclub_ad.php:236
-#: ../../../administrator/add_radio.php:279
-msgid "Save"
-msgstr "Save"
-
-#: ../../../../admin/resources/cache/twig/f1/f1b9c76b792c88e4dfcbcaa084165e50b8815cd88e97ba08bb0fe052682b5449.php:208
-#: ../../../../admin/resources/cache/twig/f1/f1b9c76b792c88e4dfcbcaa084165e50b8815cd88e97ba08bb0fe052682b5449.php:877
-#: ../../../../admin/resources/cache/twig/d8/d8c2e7b800ee770dbebff1271f394b12b1547f2500ccf7ffdc1bf6d7dfbfb519.php:374
-#: ../../../../admin/resources/cache/twig/5c/5cc75c133f918d8645affac1596213a7549e940c6d8681254a0688d5918f5c34.php:412
-#: ../../../administrator/add_itv.php:1812
-#: ../../../administrator/add_video.php:585 ../../../lang/stb.php:263
-#: ../../../lang/stb.php:300
-msgid "Cancel"
-msgstr "Cancel"
-
-#: ../../../../admin/resources/cache/twig/f1/f1b9c76b792c88e4dfcbcaa084165e50b8815cd88e97ba08bb0fe052682b5449.php:343
-msgid "Edit"
-msgstr "Edit"
-
-#: ../../../../admin/resources/cache/twig/f1/f1b9c76b792c88e4dfcbcaa084165e50b8815cd88e97ba08bb0fe052682b5449.php:361
-msgid "Change reseller for current admin"
-msgstr "Change reseller for current admin"
-
-#: ../../../../admin/resources/cache/twig/f1/f1b9c76b792c88e4dfcbcaa084165e50b8815cd88e97ba08bb0fe052682b5449.php:386
-msgid "Change group for current admin"
-msgstr "Change group for current admin"
-
-#: ../../../../admin/resources/cache/twig/f1/f1b9c76b792c88e4dfcbcaa084165e50b8815cd88e97ba08bb0fe052682b5449.php:402
-msgid "Delete"
-msgstr "Delete"
-
-#: ../../../../admin/resources/cache/twig/f1/f1b9c76b792c88e4dfcbcaa084165e50b8815cd88e97ba08bb0fe052682b5449.php:542
-#: ../../../../admin/json_menu/menu.json:244
-msgid "Resellers"
-msgstr "Resellers"
-
-#: ../../../../admin/resources/cache/twig/f1/f1b9c76b792c88e4dfcbcaa084165e50b8815cd88e97ba08bb0fe052682b5449.php:598
-msgid "Adding administrator"
-msgstr "Adding administrator"
-
-#: ../../../../admin/resources/cache/twig/f1/f1b9c76b792c88e4dfcbcaa084165e50b8815cd88e97ba08bb0fe052682b5449.php:642
-msgid "Some server error"
-msgstr "Some server error"
-
-#: ../../../../admin/resources/cache/twig/f1/f1b9c76b792c88e4dfcbcaa084165e50b8815cd88e97ba08bb0fe052682b5449.php:654
-msgid "Some network error or access denied"
-msgstr "Some network error or access denied"
-
-#: ../../../../admin/resources/cache/twig/f1/f1b9c76b792c88e4dfcbcaa084165e50b8815cd88e97ba08bb0fe052682b5449.php:675
-msgid "Editing administrator"
-msgstr "Editing administrator"
-
-#: ../../../../admin/resources/cache/twig/f1/f1b9c76b792c88e4dfcbcaa084165e50b8815cd88e97ba08bb0fe052682b5449.php:713
-msgid "You don't have permission for edit this record"
-msgstr "You don't have permission for edit this record"
-
-#: ../../../../admin/resources/cache/twig/f1/f1b9c76b792c88e4dfcbcaa084165e50b8815cd88e97ba08bb0fe052682b5449.php:775
-msgid "Reseller name"
-msgstr "Reseller name"
-
-#: ../../../../admin/resources/cache/twig/f1/f1b9c76b792c88e4dfcbcaa084165e50b8815cd88e97ba08bb0fe052682b5449.php:873
-msgid "Move"
-msgstr "Move"
-
-#: ../../../../admin/resources/cache/twig/45/451e444c7ea85f8729c7e6db5b986ea5f55b31832389ba97328ac6a7da6f1484.php:27
-#: ../../../tools/misctranslations.php:713
-#: ../../../../admin/json_menu/menu.json:394
-msgid "Certificates"
-msgstr "Certificates"
-
-#: ../../../../admin/resources/cache/twig/45/451e444c7ea85f8729c7e6db5b986ea5f55b31832389ba97328ac6a7da6f1484.php:71
-msgid "Request of the certificate"
-msgstr "Request of the certificate"
-
-#: ../../../../admin/resources/cache/twig/45/451e444c7ea85f8729c7e6db5b986ea5f55b31832389ba97328ac6a7da6f1484.php:219
-msgid "Action is not available"
-msgstr "Action is not available"
-
-#: ../../../../admin/resources/cache/twig/45/451e444c7ea85f8729c7e6db5b986ea5f55b31832389ba97328ac6a7da6f1484.php:268
-msgid "Install"
-msgstr "Install"
-
-#: ../../../../admin/resources/cache/twig/45/451e444c7ea85f8729c7e6db5b986ea5f55b31832389ba97328ac6a7da6f1484.php:277
-#: ../../../../admin/resources/cache/twig/45/451e444c7ea85f8729c7e6db5b986ea5f55b31832389ba97328ac6a7da6f1484.php:293
-#: ../../../../admin/resources/cache/twig/5c/5cc75c133f918d8645affac1596213a7549e940c6d8681254a0688d5918f5c34.php:324
-msgid "Request a new certificate"
-msgstr "Request a new certificate"
-
-#: ../../../../admin/resources/cache/twig/45/451e444c7ea85f8729c7e6db5b986ea5f55b31832389ba97328ac6a7da6f1484.php:316
-#: ../../../adm/js/js_translate.php:40
-msgid "Wait"
-msgstr "Wait"
-
-#: ../../../../admin/resources/cache/twig/45/451e444c7ea85f8729c7e6db5b986ea5f55b31832389ba97328ac6a7da6f1484.php:320
-#: ../../../../admin/resources/cache/twig/35/3548e51744a6a78dcb2b8ab751e50419505bbd9ea8e514146175d19829fa51cf.php:228
-#: ../../../adm/js/js_translate.php:41
-msgid "Request is being processed"
-msgstr "Request is being processed"
-
-#: ../../../../admin/resources/cache/twig/d8/d8c2e7b800ee770dbebff1271f394b12b1547f2500ccf7ffdc1bf6d7dfbfb519.php:88
-#: ../../../../admin/resources/cache/twig/d8/d8c2e7b800ee770dbebff1271f394b12b1547f2500ccf7ffdc1bf6d7dfbfb519.php:217
-msgid "Viewing"
-msgstr "Viewing"
-
-#: ../../../../admin/resources/cache/twig/d8/d8c2e7b800ee770dbebff1271f394b12b1547f2500ccf7ffdc1bf6d7dfbfb519.php:124
-#: ../../../../admin/resources/cache/twig/d8/d8c2e7b800ee770dbebff1271f394b12b1547f2500ccf7ffdc1bf6d7dfbfb519.php:272
-msgid "Editing"
-msgstr "Editing"
-
-#: ../../../../admin/resources/cache/twig/3a/3a0c6e17e6b85f2f16e2ed239542bdc209103e76c4b215daad139b3877394218.php:50
-msgid "Username"
-msgstr "Username"
-
-#: ../../../../admin/resources/cache/twig/3a/3a0c6e17e6b85f2f16e2ed239542bdc209103e76c4b215daad139b3877394218.php:58
-#: ../../../administrator/login.php:52 ../../../administrator/login.php:64
-msgid "Sign in"
-msgstr "Sign in"
-
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:25
-msgid "Mainpage"
-msgstr "Mainpage"
-
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:39
-msgid "Auto-update within 59 seconds"
-msgstr "Auto-update within 59 seconds"
-
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:52
-msgid "Statistisc"
-msgstr "Statistisc"
-
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:125
-msgid "Storages (measured in the number of the current session)"
-msgstr "Storages (measured in the number of the current session)"
-
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:141
-msgid "Storage name"
-msgstr "Storage name"
-
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:149
-#: ../../../administrator/users.php:176
-msgid "Tv archive"
-msgstr "TV archive"
-
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:153
-msgid "Timeshift"
-msgstr "Timeshift"
-
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:157
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:239
-#: ../../../administrator/unique_video.php:501
-#: ../../../administrator/add_video.php:931
-#: ../../../administrator/add_karaoke.php:534
-#: ../../../administrator/video_search.php:556
-msgid "Loading"
-msgstr "Loading"
-
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:216
-#: ../../../../admin/json_menu/menu.json:358
-msgid "Streaming servers"
-msgstr "Streaming servers"
-
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:231
-msgid "Server name"
-msgstr "Server name"
-
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:235
-msgid "Number of sessions"
-msgstr "Number of sessions"
-
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:289
-msgid "Users activity"
-msgstr "Users activity"
-
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:308
-msgid "Popularity of services"
-msgstr "Popularity of services"
-
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:336
-msgid "Tv"
-msgstr "Tv"
-
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:338
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:346
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:354
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:362
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:370
-msgid "Total sessions"
-msgstr "Total sessions"
-
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:340
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:348
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:356
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:364
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:372
-msgid "Popularity"
-msgstr "Popularity"
-
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:344
-#: ../../../administrator/userlog.php:300 ../../../administrator/users.php:171
-#: ../../../../admin/json_menu/menu.json:122
-msgid "Radio"
-msgstr "Radio"
-
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:352
-#: ../../../administrator/userlog.php:242
-#: ../../../administrator/userlog.php:256
-#: ../../../administrator/all_userlog.php:233
-#: ../../../administrator/users.php:168 ../../../administrator/users.php:320
-msgid "Video"
-msgstr "Video"
-
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:360
-#: ../../../administrator/userlog.php:288 ../../../administrator/users.php:170
-#: ../../../lang/stb.php:59
-msgid "Audio"
-msgstr "Audio"
-
-#: ../../../../admin/resources/cache/twig/35/356c4f4f41d49308a7802bd3a812ebffdd18bcc6f8ee0134728d88c30d337cab.php:722
-msgid "Processing"
-msgstr "Processing"
-
-#: ../../../../admin/resources/cache/twig/35/3548e51744a6a78dcb2b8ab751e50419505bbd9ea8e514146175d19829fa51cf.php:29
-#: ../../../tools/misctranslations.php:299
-#: ../../../tools/misctranslations.php:357
-#: ../../../administrator/index.php:496
-#: ../../../../admin/json_menu/menu.json:376
-msgid "Settings"
-msgstr "Settings"
-
-#: ../../../../admin/resources/cache/twig/35/3548e51744a6a78dcb2b8ab751e50419505bbd9ea8e514146175d19829fa51cf.php:29
-msgid "appearance"
-msgstr "appearance"
-
-#: ../../../../admin/resources/cache/twig/35/3548e51744a6a78dcb2b8ab751e50419505bbd9ea8e514146175d19829fa51cf.php:101
-#: ../../../../admin/resources/cache/twig/35/3548e51744a6a78dcb2b8ab751e50419505bbd9ea8e514146175d19829fa51cf.php:196
-msgid "Current"
-msgstr "Current"
-
-#: ../../../../admin/resources/cache/twig/35/3548e51744a6a78dcb2b8ab751e50419505bbd9ea8e514146175d19829fa51cf.php:104
-#: ../../../../admin/resources/cache/twig/35/3548e51744a6a78dcb2b8ab751e50419505bbd9ea8e514146175d19829fa51cf.php:205
-#: ../../../administrator/themes.php:181
-msgid "Apply"
-msgstr "Apply"
-
-#: ../../../../admin/resources/cache/twig/35/3548e51744a6a78dcb2b8ab751e50419505bbd9ea8e514146175d19829fa51cf.php:172
-msgid "Finish"
-msgstr "Finish"
-
-#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:698
-msgid "Attributes"
-msgstr "Attributes"
-
-#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1156
-msgid "from"
-msgstr "from"
-
-#: ../../../../admin/resources/cache/twig/18/180128f65184a57115771b72ac41c08ce28b9cbe15037043133a8e71a58a3767.php:1171
-msgid "to"
-msgstr "to"
-
-#: ../../../../admin/resources/cache/twig/5c/5cc75c133f918d8645affac1596213a7549e940c6d8681254a0688d5918f5c34.php:106
-msgid "Company"
-msgstr "Company"
-
-#: ../../../../admin/resources/cache/twig/5c/5cc75c133f918d8645affac1596213a7549e940c6d8681254a0688d5918f5c34.php:129
-msgid "Contact person"
-msgstr "Contact person"
-
-#: ../../../../admin/resources/cache/twig/5c/5cc75c133f918d8645affac1596213a7549e940c6d8681254a0688d5918f5c34.php:152
-#: ../../../lang/stb.php:390
-msgid "Phone"
-msgstr "Phone"
-
-#: ../../../../admin/resources/cache/twig/5c/5cc75c133f918d8645affac1596213a7549e940c6d8681254a0688d5918f5c34.php:175
-msgid "Email"
-msgstr "Email"
-
-#: ../../../../admin/resources/cache/twig/5c/5cc75c133f918d8645affac1596213a7549e940c6d8681254a0688d5918f5c34.php:221
-msgid "Number of licenses"
-msgstr "Number of licenses"
-
-#: ../../../../admin/resources/cache/twig/5c/5cc75c133f918d8645affac1596213a7549e940c6d8681254a0688d5918f5c34.php:243
-msgid "Period of validity"
-msgstr "Period of validity"
-
-#: ../../../../admin/resources/cache/twig/5c/5cc75c133f918d8645affac1596213a7549e940c6d8681254a0688d5918f5c34.php:368
-msgid "Server host"
-msgstr "Server host"
-
-#: ../../../../admin/resources/cache/twig/5c/5cc75c133f918d8645affac1596213a7549e940c6d8681254a0688d5918f5c34.php:404
-msgid "Request"
-msgstr "Request"
-
-#: ../../../../admin/resources/cache/twig/5c/5cc75c133f918d8645affac1596213a7549e940c6d8681254a0688d5918f5c34.php:447
-msgid "Frequently asked Questions"
-msgstr "Frequently asked Questions"
 
 #: ../../../tools/misctranslations.php:9
 msgid "biography"
@@ -4540,6 +4061,13 @@ msgstr "Block the authorized user of the system"
 #: ../../../administrator/tasks.php:135
 msgid "Messages"
 msgstr "Messages"
+
+#: ../../../tools/misctranslations.php:299
+#: ../../../tools/misctranslations.php:357
+#: ../../../administrator/index.php:496
+#: ../../../../admin/json_menu/menu.json:376
+msgid "Settings"
+msgstr "Settings"
 
 #: ../../../tools/misctranslations.php:300
 #: ../../../tools/misctranslations.php:344
@@ -6140,6 +5668,11 @@ msgstr "Excellent quality"
 msgid "Ultra high quality"
 msgstr "Ultra high quality"
 
+#: ../../../tools/misctranslations.php:713
+#: ../../../../admin/json_menu/menu.json:394
+msgid "Certificates"
+msgstr "Certificates"
+
 #: ../../../tools/misctranslations.php:714
 msgid "List of current certificates"
 msgstr "List of current certificates"
@@ -6671,6 +6204,14 @@ msgstr "Chinese"
 #: ../../../tools/misctranslations.php:854
 msgid "Zulu"
 msgstr "Zulu"
+
+#: ../../../adm/js/js_translate.php:40
+msgid "Wait"
+msgstr "Wait"
+
+#: ../../../adm/js/js_translate.php:41
+msgid "Request is being processed"
+msgstr "Request is being processed"
 
 #: ../../../adm/js/js_translate.php:44
 msgid "Clean"
@@ -7493,6 +7034,42 @@ msgstr "Views"
 msgid "Add"
 msgstr "Add"
 
+#: ../../../administrator/tariffs.php:94
+#: ../../../administrator/setting_common.php:200
+#: ../../../administrator/subscribe.php:377
+#: ../../../administrator/audio_album.php:604
+#: ../../../administrator/playlists.php:54
+#: ../../../administrator/testers.php:71
+#: ../../../administrator/audio_year.php:236
+#: ../../../administrator/other_city_info.php:244
+#: ../../../administrator/events.php:503
+#: ../../../administrator/audio_performer.php:236
+#: ../../../administrator/help_city_info.php:234
+#: ../../../administrator/city_info.php:248
+#: ../../../administrator/add_itv.php:1812
+#: ../../../administrator/audio_track.php:351
+#: ../../../administrator/anecdote.php:250
+#: ../../../administrator/playlist.php:69
+#: ../../../administrator/audio_language.php:236
+#: ../../../administrator/admin_groups.php:97
+#: ../../../administrator/audio_genre.php:236
+#: ../../../administrator/stream_zones.php:90
+#: ../../../administrator/stbgroups.php:55
+#: ../../../administrator/storages.php:110
+#: ../../../administrator/add_video.php:2140
+#: ../../../administrator/add_moderator_mac.php:271
+#: ../../../administrator/add_karaoke.php:843
+#: ../../../administrator/services_packages.php:125
+#: ../../../administrator/epg_setting.php:77
+#: ../../../administrator/administrators.php:92
+#: ../../../administrator/add_epg.php:412
+#: ../../../administrator/stream_servers.php:89
+#: ../../../administrator/stbgroup_members.php:63
+#: ../../../administrator/vclub_ad.php:236
+#: ../../../administrator/add_radio.php:279
+msgid "Save"
+msgstr "Save"
+
 #: ../../../administrator/tariffs.php:127
 #: ../../../administrator/tariffs.php:290
 msgid "TARIFF PLANS"
@@ -7593,6 +7170,23 @@ msgstr "User logs"
 #: ../../../administrator/users.php:312 ../../../administrator/add_epg.php:369
 msgid "Channel"
 msgstr "Channel"
+
+#: ../../../administrator/userlog.php:242
+#: ../../../administrator/userlog.php:256
+#: ../../../administrator/all_userlog.php:233
+#: ../../../administrator/users.php:168 ../../../administrator/users.php:320
+msgid "Video"
+msgstr "Video"
+
+#: ../../../administrator/userlog.php:288 ../../../administrator/users.php:170
+#: ../../../lang/stb.php:59
+msgid "Audio"
+msgstr "Audio"
+
+#: ../../../administrator/userlog.php:300 ../../../administrator/users.php:171
+#: ../../../../admin/json_menu/menu.json:122
+msgid "Radio"
+msgstr "Radio"
 
 #: ../../../administrator/userlog.php:323 ../../../administrator/users.php:172
 msgid "My records"
@@ -7965,6 +7559,10 @@ msgstr "Current theme"
 msgid "preview not available"
 msgstr "Preview not available"
 
+#: ../../../administrator/themes.php:181
+msgid "Apply"
+msgstr "Apply"
+
 #: ../../../administrator/cache_refresh.php:37
 #, php-format
 msgid "Updated %s videos and %s karaokes"
@@ -8196,6 +7794,12 @@ msgstr "EPG correction"
 msgid "Comments"
 msgstr "Comments"
 
+#: ../../../administrator/add_itv.php:1812
+#: ../../../administrator/add_video.php:585 ../../../lang/stb.php:263
+#: ../../../lang/stb.php:300
+msgid "Cancel"
+msgstr "Cancel"
+
 #: ../../../administrator/audio_track.php:139
 #: ../../../administrator/audio_track.php:210
 msgid "AUDIO TRACKS"
@@ -8255,6 +7859,10 @@ msgstr "Subscription import"
 #: ../../../administrator/users.php:175
 msgid "Media browser"
 msgstr "Media browser"
+
+#: ../../../administrator/users.php:176
+msgid "Tv archive"
+msgstr "TV archive"
 
 #: ../../../administrator/users.php:178
 msgid "TimeShift"
@@ -8781,6 +8389,13 @@ msgstr "Folder"
 msgid "Total views per month"
 msgstr "Total views per month"
 
+#: ../../../administrator/unique_video.php:501
+#: ../../../administrator/add_video.php:931
+#: ../../../administrator/add_karaoke.php:534
+#: ../../../administrator/video_search.php:556
+msgid "Loading"
+msgstr "Loading"
+
 #: ../../../administrator/unique_video.php:504
 #: ../../../administrator/add_video.php:934
 #: ../../../administrator/add_karaoke.php:537
@@ -8993,6 +8608,13 @@ msgstr "Later"
 #: ../../../administrator/index.php:153
 msgid "Sections"
 msgstr "Sections"
+
+#: ../../../administrator/index.php:171
+#: ../../../administrator/administrators.php:100
+#: ../../../administrator/administrators.php:143
+#: ../../../../admin/json_menu/menu.json:228
+msgid "Administrators"
+msgstr "Administrators"
 
 #: ../../../administrator/index.php:187
 msgid "TARIFFS"
@@ -9209,6 +8831,14 @@ msgstr "Error: Not all required fields are filled"
 msgid "User account"
 msgstr "User account"
 
+#: ../../../administrator/user.php:145
+#: ../../../administrator/administrators.php:197
+#: ../../../administrator/login.php:59 ../../../lang/stb.php:362
+#: ../../../lang/stb.php:375 ../../../lang/stb.php:419
+#: ../../../lang/stb.php:494 ../../../lang/stb.php:504
+msgid "Password"
+msgstr "Password"
+
 #: ../../../administrator/user.php:161
 msgid "Account disabled"
 msgstr "Account disabled"
@@ -9375,6 +9005,10 @@ msgstr "Counting if the movie playback is more than 70% of the total duration"
 #: ../../../administrator/login.php:43
 msgid "LOGIN"
 msgstr "LOGIN"
+
+#: ../../../administrator/login.php:52 ../../../administrator/login.php:64
+msgid "Sign in"
+msgstr "Sign in"
 
 #: ../../../administrator/add_radio.php:134
 #: ../../../administrator/add_radio.php:141
@@ -10279,6 +9913,10 @@ msgstr "Select"
 msgid "Your STB is not supported"
 msgstr "Your STB is not supported"
 
+#: ../../../lang/stb.php:390
+msgid "Phone"
+msgstr "Phone"
+
 #: ../../../lang/stb.php:393
 msgid "SERVICES MANAGEMENT"
 msgstr "SERVICES MANAGEMENT"
@@ -10697,6 +10335,9 @@ msgstr "About"
 msgid "About app"
 msgstr "About app"
 
+msgid "Action is not available"
+msgstr "Action is not available"
+
 msgid "Activate"
 msgstr "Activate"
 
@@ -10733,6 +10374,9 @@ msgstr "Checking updates"
 msgid "Deactivate"
 msgstr "Deactivate"
 
+msgid "Delete"
+msgstr "Delete"
+
 msgid "Dependencies"
 msgstr "Dependencies"
 
@@ -10748,8 +10392,14 @@ msgstr "Display frequency rate"
 msgid "Do you really want reset all applications?"
 msgstr "Do you really want reset all applications?"
 
+msgid "Edit"
+msgstr "Edit"
+
 msgid "Edit group"
 msgstr "Edit group"
+
+msgid "Editing"
+msgstr "Editing"
 
 msgid "Enter the package name"
 msgstr "Enter the package name"
@@ -10772,6 +10422,9 @@ msgstr "Format: solution+URL. Example: ffmpeg http://example_of_link"
 msgid "Group name"
 msgstr "Group name"
 
+msgid "Install"
+msgstr "Install"
+
 msgid "Limit of number of the users has been reached"
 msgstr "Limit of number of the users has been reached"
 
@@ -10784,6 +10437,9 @@ msgstr ""
 
 msgid "More details"
 msgstr "More details"
+
+msgid "Move"
+msgstr "Move"
 
 msgid "Move all admins to another group"
 msgstr "Move all admins to another group"
@@ -10833,6 +10489,13 @@ msgstr "Permissions"
 msgid "Profile"
 msgstr "Profile"
 
+msgid "Reseller name"
+msgstr "Reseller name"
+
+#: ../../../../admin/json_menu/menu.json:244
+msgid "Resellers"
+msgstr "Resellers"
+
 msgid "Reset all application"
 msgstr "Reset all application"
 
@@ -10844,6 +10507,12 @@ msgstr "Select file"
 
 msgid "Show categories that won't see the advertising"
 msgstr "Show categories that won't see the advertising"
+
+msgid "Some network error or access denied"
+msgstr "Some network error or access denied"
+
+msgid "Some server error"
+msgstr "Some server error"
 
 #: ../../../../admin/json_menu/menu.json:146
 msgid "Subscribe log"
@@ -10891,6 +10560,9 @@ msgstr "Versions"
 
 msgid "Video out"
 msgstr "Video out"
+
+msgid "Viewing"
+msgstr "Viewing"
 
 msgid "Wait. List of installed applications is generated"
 msgstr "Wait. List of installed applications is generated"
@@ -10989,6 +10661,9 @@ msgstr "Do not completed"
 msgid "Enter URL to the application repository"
 msgstr "Enter URL to the application repository"
 
+msgid "Finish"
+msgstr "Finish"
+
 msgid "For all"
 msgstr "For all"
 
@@ -11066,6 +10741,9 @@ msgstr "Schedule of publishing"
 
 msgid "Schedule switch on"
 msgstr "Schedule switch on"
+
+msgid "Should be unique"
+msgstr "Should be unique"
 
 msgid "Should be unique, can contain only numbers"
 msgstr "Should be unique, can contain only numbers"
@@ -11171,6 +10849,9 @@ msgstr "Add a channel"
 msgid "Add a picture"
 msgstr "Add a picture"
 
+msgid "Add administrator"
+msgstr "Add administrator"
+
 msgid "Add episodes"
 msgstr "Add episodes"
 
@@ -11200,6 +10881,9 @@ msgstr "Add seasons and episodes"
 
 msgid "Add streaming link"
 msgstr "Add streaming link"
+
+msgid "Adding administrator"
+msgstr "Adding administrator"
 
 msgid "Adding reseller"
 msgstr "Adding reseller"
@@ -11262,6 +10946,12 @@ msgstr ""
 msgid "Cannot load File Upload plugin"
 msgstr "Cannot load File Upload plugin"
 
+msgid "Change group for current admin"
+msgstr "Change group for current admin"
+
+msgid "Change reseller for current admin"
+msgstr "Change reseller for current admin"
+
 msgid "Channel URL"
 msgstr "Channel URL"
 
@@ -11303,6 +10993,9 @@ msgstr "Edit file"
 
 msgid "Edit streaming link"
 msgstr "Edit streaming link"
+
+msgid "Editing administrator"
+msgstr "Editing administrator"
 
 msgid "Editing reseller"
 msgstr "Editing reseller"
@@ -11493,6 +11186,9 @@ msgstr ""
 msgid "Recommended viewer age"
 msgstr "Recommended viewer age"
 
+msgid "Repeat the password"
+msgstr "Repeat the password"
+
 msgid "Requested channel not found"
 msgstr "Requested channel not found"
 
@@ -11540,6 +11236,10 @@ msgstr "Sets the password restriction on the channel Default password 0000"
 
 msgid "Streaming links"
 msgstr "Streaming links"
+
+#: ../../../../admin/json_menu/menu.json:358
+msgid "Streaming servers"
+msgstr "Streaming servers"
 
 msgid "Subs"
 msgstr "Subs"
@@ -11657,6 +11357,15 @@ msgstr ""
 "You can use Latin letters, digits and symbols from the list ! @ # $ % ^ & * "
 "( ) _ - + : ; , ."
 
+msgid "You can use letters, digits and _ "
+msgstr "You can use letters, digits and _ "
+
+msgid "You don't have permission for edit this record"
+msgstr "You don't have permission for edit this record"
+
+msgid "administrators list"
+msgstr "administrators list"
+
 msgid "edit channel \""
 msgstr "edit channel \""
 
@@ -11721,6 +11430,12 @@ msgstr "Assignee"
 msgid "Audio club"
 msgstr "Audio club"
 
+msgid "Can I use multiple certificates simultaneously?"
+msgstr "Can I use multiple certificates simultaneously?"
+
+msgid "Can my certificate be blocked?"
+msgstr "Can my certificate be blocked?"
+
 msgid "Change reseller for current user"
 msgstr "Change reseller for current user"
 
@@ -11734,6 +11449,15 @@ msgstr ""
 msgid "Clean claims"
 msgstr "Clean claims"
 
+msgid "Company"
+msgstr "Company"
+
+msgid "Contact person"
+msgstr "Contact person"
+
+msgid "Devices working with the following apps:"
+msgstr "Devices working with the following apps:"
+
 msgid "Do Not Agree"
 msgstr "Do Not Agree"
 
@@ -11743,11 +11467,27 @@ msgstr "Do you really want delete this year?"
 msgid "Edit update"
 msgstr "Edit update"
 
+msgid "Email"
+msgstr "Email"
+
 msgid "Enter MAC-address according to the format"
 msgstr "Enter MAC-address according to the format"
 
 msgid "Enter the MAC-address of the user"
 msgstr "Enter the MAC-address of the user"
+
+msgid ""
+"Every certificate includes a certain number of licenses which is the number "
+"of devices which can be connected to Stalker Middleware. To establish a "
+"successful connection, set-top box should be integrated with Stalker "
+"Middleware. Infomir’s MAG set-top boxes and original StalkerTV (Android, "
+"iOS) apps don’t require a certificate."
+msgstr ""
+"Every certificate includes a certain number of licenses which is the number "
+"of devices which can be connected to Stalker Middleware. To establish a "
+"successful connection, set-top box should be integrated with Stalker "
+"Middleware. Infomir’s MAG set-top boxes and original StalkerTV (Android, "
+"iOS) apps don’t require a certificate."
 
 msgid "Example: server.example:8080"
 msgstr "Example: server.example:8080"
@@ -11776,11 +11516,31 @@ msgstr ""
 msgid "First, delete or modify all the albums of this year"
 msgstr "First, delete or modify all the albums of this year"
 
+msgid "Frequently asked Questions"
+msgstr "Frequently asked Questions"
+
 msgid "General information"
 msgstr "General information"
 
+msgid "How is license usage determined?"
+msgstr "How is license usage determined?"
+
+msgid "How much will it cost to integrate my devices with Stalker Middleware?"
+msgstr "How much will it cost to integrate my devices with Stalker Middleware?"
+
 msgid "I AGREE I have read and agree to all of terms and conditions above"
 msgstr "I AGREE I have read and agree to all of terms and conditions above"
+
+msgid ""
+"If you change your server configurations your certificate may become "
+"invalid. So all devices connected to your server will be access denied. If "
+"you are planning configuration changes you need to inform us in advance and "
+"to request for a renewed certificate."
+msgstr ""
+"If you change your server configurations your certificate may become "
+"invalid. So all devices connected to your server will be access denied. If "
+"you are planning configuration changes you need to inform us in advance and "
+"to request for a renewed certificate."
 
 msgid ""
 "If you have several firmware files in one catalogue, please specify the file "
@@ -11793,6 +11553,17 @@ msgstr ""
 
 msgid "Image version"
 msgstr "Image version"
+
+msgid ""
+"Integration of one firmware version of one device costs $3,000. And $1,500 "
+"if you need to integrate an additional firmware version markedly different "
+"from the integrated one. If your device has already been integrated with "
+"Stalker Middleware, payment is not needed."
+msgstr ""
+"Integration of one firmware version of one device costs $3,000. And $1,500 "
+"if you need to integrate an additional firmware version markedly different "
+"from the integrated one. If your device has already been integrated with "
+"Stalker Middleware, payment is not needed."
 
 msgid "Last activity"
 msgstr "Last activity"
@@ -11827,8 +11598,20 @@ msgstr ""
 "automatic search of firmware it is enough to fill in version or date of "
 "image (one of fields).Number must be numeric."
 
+msgid "Number of licenses"
+msgstr "Number of licenses"
+
+msgid "Period of validity"
+msgstr "Period of validity"
+
 msgid "Report is formed due to done and rejected tasks"
 msgstr "Report is formed due to done and rejected tasks"
+
+msgid "Request"
+msgstr "Request"
+
+msgid "Request a new certificate"
+msgstr "Request a new certificate"
 
 msgid "Required image version"
 msgstr "Required image version"
@@ -11861,6 +11644,9 @@ msgstr ""
 msgid "Send message whith video"
 msgstr "Send message whith video"
 
+msgid "Server host"
+msgstr "Server host"
+
 msgid "Set date"
 msgstr "Set date"
 
@@ -11880,14 +11666,49 @@ msgid "Term relevance of action, is measured in seconds"
 msgstr "Term relevance of action, is measured in seconds"
 
 msgid ""
+"The certificates allow operators to connect set-top boxes and applications "
+"to Stalker Middleware. These are the files generated for a certain server at "
+"an administrative control panel request."
+msgstr ""
+"The certificates allow operators to connect set-top boxes and applications "
+"to Stalker Middleware. These are the files generated for a certain server at "
+"an administrative control panel request."
+
+msgid ""
 "The file must contain pre-compiled list of MAC-addresses in the txt "
 "extension or another text format"
 msgstr ""
 "The file must contain pre-compiled list of MAC-addresses in the txt "
 "extension or another text format"
 
+msgid "The following set-top boxes:"
+msgstr "The following set-top boxes:"
+
 msgid "The function to be executed when pressing the \"OK\" button"
 msgstr "The function to be executed when pressing the \"OK\" button"
+
+msgid ""
+"The license is not attached to a certain device. The rated number of "
+"licenses is the number of unique devices which have been using your services "
+"within 24 hours. "
+msgstr ""
+"The license is not attached to a certain device. The rated number of "
+"licenses is the number of unique devices which have been using your services "
+"within 24 hours. "
+
+msgid ""
+"These requests are important for license use calculation. So if no request "
+"is received by our server within 30 days, your certificate will be banned "
+"automatically. It can also be banned in case of fraud or late payment for "
+"licenses usage."
+msgstr ""
+"These requests are important for license use calculation. So if no request "
+"is received by our server within 30 days, your certificate will be banned "
+"automatically. It can also be banned in case of fraud or late payment for "
+"licenses usage."
+
+msgid "To what consequences may lead my server configurations change?"
+msgstr "To what consequences may lead my server configurations change?"
 
 msgid "Unset expires billing date"
 msgstr "Unset expires billing date"
@@ -11899,11 +11720,61 @@ msgstr ""
 "Update type: http update (load the image from HTTP) or reboot DHCP (reboot "
 "the STB to the DHCP boot mode)"
 
+#, php-format
+msgid ""
+"Users can connect to Stalker middleware even if the number of active devices "
+"exceeds the amount of available licenses. According to active devices "
+"statistics, in the end of every quarter you will get a supplementary invoice "
+"equal to 25%% of annual value of additional licenses. You can also request "
+"for another certificate with needed amount of licenses and use it with the "
+"one you already own."
+msgstr ""
+"Users can connect to Stalker middleware even if the number of active devices "
+"exceeds the amount of available licenses. According to active devices "
+"statistics, in the end of every quarter you will get a supplementary invoice "
+"equal to 25%% of annual value of additional licenses. You can also request "
+"for another certificate with needed amount of licenses and use it with the "
+"one you already own."
+
 msgid "Using default zone"
 msgstr "Using default zone"
 
 msgid "VIDEO URL"
 msgstr "VIDEO URL"
+
+msgid "What are the certificates?"
+msgstr "What are the certificates?"
+
+msgid ""
+"What should I do if I need to connect more devices than I have licenses?"
+msgstr ""
+"What should I do if I need to connect more devices than I have licenses?"
+
+msgid "Which devices are already integrated with Stalker Middleware?"
+msgstr "Which devices are already integrated with Stalker Middleware?"
+
+msgid "Write us on"
+msgstr "Write us on"
+
+msgid ""
+"Yes, you can. If your certificates are valid within a certain time, their "
+"licenses summarize. If validity interval of any certificate is over, it’s "
+"licenses are subtracted from a total number."
+msgstr ""
+"Yes, you can. If your certificates are valid within a certain time, their "
+"licenses summarize. If validity interval of any certificate is over, it’s "
+"licenses are subtracted from a total number."
+
+msgid ""
+"Yes. Our server gets requests any time you try to authorize a set-top box.  "
+"If your certificate is valid it will be authorized even if the request "
+"failed to reach our server. That guarantees high-availability of connected "
+"devices."
+msgstr ""
+"Yes. Our server gets requests any time you try to authorize a set-top box.  "
+"If your certificate is valid it will be authorized even if the request "
+"failed to reach our server. That guarantees high-availability of connected "
+"devices."
 
 msgid ""
 "You can use letters, digits and symbols from the list: ! @ # $ % ^ & * ( ) _ "
@@ -11911,6 +11782,9 @@ msgid ""
 msgstr ""
 "You can use letters, digits and symbols from the list: ! @ # $ % ^ & * ( ) _ "
 "- + : ; , . It will be shown in the load balancer."
+
+msgid "You have any additional questions?"
+msgstr "You have any additional questions?"
 
 msgid "areas list"
 msgstr "areas list"
@@ -11920,6 +11794,9 @@ msgstr "countries"
 
 msgid "firmware update"
 msgstr "firmware update"
+
+msgid "from"
+msgstr "from"
 
 msgid "list of users"
 msgstr "list of users"
@@ -11932,6 +11809,9 @@ msgstr "servers"
 
 msgid "servers list"
 msgstr "servers list"
+
+msgid "to"
+msgstr "to"
 
 msgid "years list"
 msgstr "years list"
@@ -11969,6 +11849,9 @@ msgstr "Allow content storage"
 msgid "Apache port"
 msgstr "Apache port"
 
+msgid "Auto-update within 59 seconds"
+msgstr "Auto-update within 59 seconds"
+
 msgid "Category of content to which this package is belongs"
 msgstr "Category of content to which this package is belongs"
 
@@ -11987,6 +11870,9 @@ msgstr "Clean the cache – remove all content from cache"
 
 msgid "Content storage"
 msgstr "Content storage"
+
+msgid "Current"
+msgstr "Current"
 
 msgid "Do you really want delete this performer?"
 msgstr "Do you really want delete this performer?"
@@ -12025,6 +11911,9 @@ msgstr "IP-address of the storage. Example : http://127.0.0.1"
 msgid "Input user MAC-address"
 msgstr "Input user MAC-address"
 
+msgid "Mainpage"
+msgstr "Mainpage"
+
 msgid "Maximum of the users"
 msgstr "Maximum of the users"
 
@@ -12038,6 +11927,9 @@ msgstr ""
 msgid "Not available for the MAG100"
 msgstr "Not available for the MAG100"
 
+msgid "Number of sessions"
+msgstr "Number of sessions"
+
 msgid "Number of the port, accessing to the Apache server"
 msgstr "Number of the port, accessing to the Apache server"
 
@@ -12047,11 +11939,20 @@ msgstr "On the preset"
 msgid "Only moderators can watch the content from the storage"
 msgstr "Only moderators can watch the content from the storage"
 
+msgid "Popularity"
+msgstr "Popularity"
+
+msgid "Popularity of services"
+msgstr "Popularity of services"
+
 msgid "Preset"
 msgstr "Preset"
 
 msgid "Price for rent services"
 msgstr "Price for rent services"
+
+msgid "Processing"
+msgstr "Processing"
 
 msgid "Reboot the STB after OK button is pressed"
 msgstr "Reboot the STB after OK button is pressed"
@@ -12062,8 +11963,20 @@ msgstr "Select a group of users that will be delivered message"
 msgid "Select preset for STB type"
 msgstr "Select preset for STB type"
 
+msgid "Server name"
+msgstr "Server name"
+
+msgid "Statistisc"
+msgstr "Statistisc"
+
 msgid "Storage is not available on the MAG100"
 msgstr "Storage is not available on the MAG100"
+
+msgid "Storage name"
+msgstr "Storage name"
+
+msgid "Storages (measured in the number of the current session)"
+msgstr "Storages (measured in the number of the current session)"
 
 msgid "TV recording"
 msgstr "TV recording"
@@ -12090,6 +12003,15 @@ msgstr ""
 msgid "Time to live, measured in seconds"
 msgstr "Time to live, measured in seconds"
 
+msgid "Timeshift"
+msgstr "Timeshift"
+
+msgid "Total sessions"
+msgstr "Total sessions"
+
+msgid "Tv"
+msgstr "Tv"
+
 msgid ""
 "Type of access to the service: regular or one-off - with the terms and the "
 "price of rent"
@@ -12108,6 +12030,12 @@ msgstr ""
 msgid "User's language"
 msgstr "User's language"
 
+msgid "Username"
+msgstr "Username"
+
+msgid "Users activity"
+msgstr "Users activity"
+
 msgid ""
 "You can filter the STBs according to their connection type (Wi-Fi, Ethernet) "
 "and to the models (250,275…). Field is case sensitive"
@@ -12120,6 +12048,9 @@ msgstr "You can use symbols from the list: ! @ # $ % ^ & * ( ) _ - + : ; , ."
 
 msgid "You can't delete category with movies or genres"
 msgstr "You can't delete category with movies or genres"
+
+msgid "appearance"
+msgstr "appearance"
 
 msgid "artist"
 msgstr "artist"
@@ -12194,6 +12125,9 @@ msgstr "Order of service in the directory. Must contain digits only"
 #: ../../../../admin/json_menu/menu.json:275
 msgid "Phone book"
 msgstr "Phone book"
+
+msgid "Request of the certificate"
+msgstr "Request of the certificate"
 
 msgid "Reset claims counter?"
 msgstr "Reset claims counter?"
@@ -12350,6 +12284,15 @@ msgstr "logs"
 msgid "no conflicts"
 msgstr "no conflicts"
 
+msgid "Attributes"
+msgstr "Attributes"
+
+msgid "Available new version"
+msgstr "Available new version"
+
+msgid "Contact support"
+msgstr "Contact support"
+
 msgid "Date type"
 msgstr "Date type"
 
@@ -12358,6 +12301,9 @@ msgstr "Day number"
 
 msgid "Day of week"
 msgstr "Day of week"
+
+msgid "Documentation"
+msgstr "Documentation"
 
 msgid "Every"
 msgstr "Every"
@@ -12373,6 +12319,9 @@ msgstr "File type not allowed"
 
 msgid "Filter description"
 msgstr "Filter description"
+
+msgid "IPTV/OTT Set-Top Boxes"
+msgstr "IPTV/OTT Set-Top Boxes"
 
 msgid ""
 "If do not selected any of the days of the week the event will be run every "
@@ -12391,8 +12340,14 @@ msgstr ""
 msgid "Maximum number of files exceeded"
 msgstr "Maximum number of files exceeded"
 
+msgid "Powered by"
+msgstr "Powered by"
+
 msgid "Repeating interval"
 msgstr "Repeating interval"
+
+msgid "Technical questions form"
+msgstr "Technical questions form"
 
 msgid "The date of end event"
 msgstr "The date of end event"
@@ -12402,6 +12357,9 @@ msgstr "The date of run event"
 
 msgid "The date of start event"
 msgstr "The date of start event"
+
+msgid "The validity of one or more certificates of access is ending"
+msgstr "The validity of one or more certificates of access is ending"
 
 msgid "Unknown error"
 msgstr "Unknown error"

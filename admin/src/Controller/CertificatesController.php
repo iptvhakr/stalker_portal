@@ -182,7 +182,7 @@ class CertificatesController extends \Controller\BaseStalkerController {
                         'status'            => $status_label[$lics->getStatusStr()],
                         'status_bool'       => $lics->getStatus(),
                         'awaiting'          => $lics->getStatus() && ($lics->getHash() !== $lics->getServerHash()),
-                        'expires_30_days'   => TRUE//($lics->getDateTo() - $lics->getDateFrom()) <= $expires_30_days
+                        'expires_30_days'   => ($lics->getDateTo() - $lics->getDateFrom()) <= $expires_30_days
                     );
                 }
             }

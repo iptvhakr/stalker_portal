@@ -258,8 +258,27 @@
                             <div class="box">
                                 <div class="box-content">
                                     <dl>
-                                        <dt>Linux</dt>
-                                        <dd>Linux is a Unix-like and POSIX-compliant computer operating system assembled under the model of free and open source software development and distribution.</dd>
+                                        <dt>{{ 'What are the certificates?'|trans }}</dt>
+                                        <dd>
+                                            {{ 'The certificates allow operators to connect set-top boxes and applications to Stalker Middleware. These are the files generated for a certain server at an administrative control panel request.'|trans }}<br/>
+                                            {{ 'Every certificate includes a certain number of licenses which is the number of devices which can be connected to Stalker Middleware. To establish a successful connection, set-top box should be integrated with Stalker Middleware. Infomir’s MAG set-top boxes and original StalkerTV (Android, iOS) apps don’t require a certificate.'|trans }}
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                            <div class="box">
+                                <div class="box-content">
+                                    <dl>
+                                        <dt>{{ 'How is license usage determined?'|trans }}</dt>
+                                        <dd>{{ 'The license is not attached to a certain device. The rated number of licenses is the number of unique devices which have been using your services within 24 hours. '|trans }}</dd>
+                                    </dl>
+                                </div>
+                            </div>
+                            <div class="box">
+                                <div class="box-content">
+                                    <dl>
+                                        <dt>{{ 'What should I do if I need to connect more devices than I have licenses?'|trans }}</dt>
+                                        <dd>{{ 'Users can connect to Stalker middleware even if the number of active devices exceeds the amount of available licenses. According to active devices statistics, in the end of every quarter you will get a supplementary invoice equal to 25%% of annual value of additional licenses. You can also request for another certificate with needed amount of licenses and use it with the one you already own.'|trans }}</dd>
                                     </dl>
                                 </div>
                             </div>
@@ -268,8 +287,36 @@
                             <div class="box">
                                 <div class="box-content">
                                     <dl>
-                                        <dt>Linux</dt>
-                                        <dd>Linux is a Unix-like and POSIX-compliant computer operating system assembled under the model of free and open source software development and distribution.</dd>
+                                        <dt>{{ 'How much will it cost to integrate my devices with Stalker Middleware?'|trans }}</dt>
+                                        <dd>{{ 'Integration of one firmware version of one device costs $3,000. And $1,500 if you need to integrate an additional firmware version markedly different from the integrated one. If your device has already been integrated with Stalker Middleware, payment is not needed.'|trans }}</dd>
+                                    </dl>
+                                </div>
+                            </div>
+                            <div class="box">
+                                <div class="box-content">
+                                    <dl>
+                                        <dt>{{ 'Which devices are already integrated with Stalker Middleware?'|trans }}</dt>
+                                        <dd>
+                                            {{ 'The following set-top boxes:'|trans }}<br/>
+                                            MAG245/250<br/>
+                                            MAG254/255<br/>
+                                            MAG256/257<br/>
+                                            MAG270/275<br/>
+                                            MAG350/351<br/>
+                                            MAG352<br/>
+                                            {{ 'Devices working with the following apps:'|trans }}<br/>
+                                            STALKERTV for SAMSUNG SMART TV<br/>
+                                            STALKERTV for Android<br/>
+                                            STALKERTV for iOS<br/>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                            <div class="box">
+                                <div class="box-content">
+                                    <dl>
+                                        <dt>{{ 'To what consequences may lead my server configurations change?'|trans }}</dt>
+                                        <dd>{{ 'If you change your server configurations your certificate may become invalid. So all devices connected to your server will be access denied. If you are planning configuration changes you need to inform us in advance and to request for a renewed certificate.'|trans }}</dd>
                                     </dl>
                                 </div>
                             </div>
@@ -278,38 +325,27 @@
                             <div class="box">
                                 <div class="box-content">
                                     <dl>
-                                        <dt>Linux</dt>
-                                        <dd>Linux is a Unix-like and POSIX-compliant computer operating system assembled under the model of free and open source software development and distribution.</dd>
+                                        <dt>{{ 'Can I use multiple certificates simultaneously?'|trans }}</dt>
+                                        <dd>{{ 'Yes, you can. If your certificates are valid within a certain time, their licenses summarize. If validity interval of any certificate is over, it’s licenses are subtracted from a total number.'|trans }}</dd>
                                     </dl>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-4 col-sm-6 col-xs-12">
                             <div class="box">
                                 <div class="box-content">
                                     <dl>
-                                        <dt>Linux</dt>
-                                        <dd>Linux is a Unix-like and POSIX-compliant computer operating system assembled under the model of free and open source software development and distribution.</dd>
+                                        <dt>{{ 'Can my certificate be blocked?'|trans }}</dt>
+                                        <dd>
+                                            {{ 'Yes. Our server gets requests any time you try to authorize a set-top box.  If your certificate is valid it will be authorized even if the request failed to reach our server. That guarantees high-availability of connected devices.'|trans }}<br/>
+                                            {{ 'These requests are important for license use calculation. So if no request is received by our server within 30 days, your certificate will be banned automatically. It can also be banned in case of fraud or late payment for licenses usage.'|trans }}
+                                        </dd>
                                     </dl>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-4 col-sm-6 col-xs-12">
                             <div class="box">
                                 <div class="box-content">
                                     <dl>
-                                        <dt>Linux</dt>
-                                        <dd>Linux is a Unix-like and POSIX-compliant computer operating system assembled under the model of free and open source software development and distribution.</dd>
-                                    </dl>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-6 col-xs-12">
-                            <div class="box">
-                                <div class="box-content">
-                                    <dl>
-                                        <dt>Linux</dt>
-                                        <dd>Linux is a Unix-like and POSIX-compliant computer operating system assembled under the model of free and open source software development and distribution.</dd>
+                                        <dt>{{ 'You have any additional questions?'|trans }}</dt>
+                                        <dd>{{ 'Write us on'|trans }}: <a href="mailto:stalker@infomir.com">stalker@infomir.com</a> </dd>
                                     </dl>
                                 </div>
                             </div>
