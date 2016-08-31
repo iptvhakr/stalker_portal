@@ -42,6 +42,8 @@ function common_xpcom(){
 
     this.hdmi_on = true;
 
+    this.ntp_wait_time = 0;
+
     // iso639
     this.lang_map = {
         "aa" : "aar", //Afar
@@ -1001,7 +1003,7 @@ function common_xpcom(){
 
             _debug('checking conditions 2');
 
-            if (this.num_banks == 2 && params.update_type == 'http_update'){
+            if ((this.num_banks == 2 || ['MAG256', 'MAG257', 'MAG351', 'MAG352'].indexOf(this.type) >= 0) && params.update_type == 'http_update'){
                 try{
                     _debug('this.user[update_url]', this.user['update_url']);
 
@@ -1075,7 +1077,7 @@ function common_xpcom(){
                 stb.loader.stop();
                 this.cut_off(get_word('outdated_firmware'));
 
-                if (['MAG200', 'MAG245','MAG245D', 'MAG250', 'MAG254', 'MAG255', 'MAG270', 'MAG275', 'WR320', 'IP_STB_HD'].indexOf(this.type) >= 0 || this.type.indexOf('AuraHD') != -1){
+                if (['MAG200', 'MAG245','MAG245D', 'MAG250', 'MAG254', 'MAG255', 'MAG256', 'MAG257', 'MAG270', 'MAG275', 'MAG351', 'MAG352', 'WR320', 'IP_STB_HD'].indexOf(this.type) >= 0 || this.type.indexOf('AuraHD') != -1){
                     this.check_image_version();
                 }
 
@@ -1174,7 +1176,7 @@ function common_xpcom(){
 
                 _debug('this.user[update_url]', this.user['update_url']);
 
-                if (['MAG200', 'MAG245','MAG245D', 'MAG250', 'MAG254', 'MAG255', 'MAG270', 'MAG275', 'WR320', 'IP_STB_HD'].indexOf(this.type) >= 0 || this.type.indexOf('AuraHD') != -1){
+                if (['MAG200', 'MAG245','MAG245D', 'MAG250', 'MAG254', 'MAG255', 'MAG256', 'MAG257', 'MAG270', 'MAG275', 'MAG351', 'MAG352', 'WR320', 'IP_STB_HD'].indexOf(this.type) >= 0 || this.type.indexOf('AuraHD') != -1){
                     this.check_image_version();
                 }
 
@@ -1313,7 +1315,23 @@ function common_xpcom(){
                 _debug(e);
             }
         }else if(this.user['status'] == 1){
+
+            if (this.ntp_server && this.user.hasOwnProperty('ntp_wait_timeout') && this.ntp_wait_time <= this.user['ntp_wait_timeout']){
+
+                _debug('wait for ntp');
+                _debug('this.ntp_wait_time', this.ntp_wait_time);
+
+                window.setTimeout(function(){
+                    stb.get_user_profile();
+                }, 10*1000);
+
+                this.ntp_wait_time += 10;
+
+                return;
+            }
+
             stb.loader.stop();
+
             this.cut_off(this.user.hasOwnProperty('block_msg') ? this.user['block_msg'] : '');
             loader.append('alert');
 
