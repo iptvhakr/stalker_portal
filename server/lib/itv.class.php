@@ -1951,7 +1951,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
                 $cmd['url'] = $match[1];
             }
 
-            if ($cmd['flussonic_tmp_link']){
+            if ($cmd['flussonic_tmp_link'] && strpos($cmd['url'], 'http') === 0){
                 $cmd['type'] = 'flussonic_health';
             }elseif($cmd['nginx_secure_link']){
                 try{
