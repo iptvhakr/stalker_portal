@@ -1,0 +1,247 @@
+{% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
+{% set title = ('Certificates'|trans ~ ': ' ~ 'List of certificates'|trans) | trans %}
+
+{% block content %}
+    <div id="iptv_list">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                {{ main_macro.get_filter('status', 'Status'|trans, 'id', 'title', app['allStatus'], 3, NULL, NULL, TRUE) }}
+                {{ main_macro.get_filter('lic_count', 'License count'|trans, 'count', 'title', app['allLicCount'], 3, NULL, NULL, TRUE) }}
+                {% if attribute(app, 'filters') is defined %}
+                    <div class="filter no-padding" >
+                        <span class="txt-default" style="margin: 10px auto 0 !important; color: black !important; display: inline-block;">{{ 'Begin of certificate validity'|trans }}:</span>
+                    </div>
+                    {{ main_macro.get_datepicker_double_input() }}
+                {% endif %}
+
+                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/certificate-request" class="btn btn-success pull-right">{{ 'Request of the certificate'|trans }}</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="box">
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                    {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
+                {% endif %}
+                <div class="box-content">
+                    <div class="box-content no-padding">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12">
+                                <div class="dataTables_processing"></div>
+                                <table class="table  table-hover table-datatable" id="datatable-1">
+                                    {% if attribute(app, 'dropdownAttribute') is defined %}
+                                        {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                                    {% endif %}
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" defer="defer">
+
+
+        var dataSet = JSON.parse('{% autoescape false %}{{ app.data_set|json_encode() }}{% endautoescape %}');
+        var lic_count_set = JSON.parse('{% autoescape false %}{{ app.lic_count_set|json_encode() }}{% endautoescape %}');
+        var status_set = JSON.parse('{% autoescape false %}{{ app.status_set|json_encode() }}{% endautoescape %}');
+
+        function TestTable1() {
+            $.ajax({
+                url: "{{app.request.baseUrl}}/plugins/datatables/dataTables.sortingDateDE.js",
+                dataType: "script",
+                cache: true
+            });
+            $.ajax({
+                url: "{{app.request.baseUrl}}/plugins/datatables/dataTables.sortingFormattedNumbers.js",
+                dataType: "script",
+                cache: true
+            });
+
+            $.fn.dataTable.ext.search.push(
+                    function( settings, data, dataIndex ) {
+                        return checkLicCountFilter(data[1]) && checkCertBeginFilter(data[2]) && checkCertEndFilter(data[2]) && checkStatusFilter(data[4]);
+                    }
+            );
+
+            $('#datatable-1').on('xhr.dt', function (e, settings, json) {
+                if (typeof (json.data) == 'object') {
+                    for (var i in json.data) {
+                        json.data[i] = rowDataPrepare(json.data[i]);
+                    }
+                }
+            }).dataTable({
+                "processing": false,
+                "serverSide": false,
+                data: dataSet.map(function(item){
+                    return rowDataPrepare(item);
+                }),
+                "ajax": null,
+                "language": {
+                    "url": "{{ app.datatable_lang_file }}"
+                },
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
+                {% endif %}
+                "bFilter": true,
+                "bPaginate": true,
+                "bInfo": true,
+                "aoColumnDefs": [
+                    /*{className: "action-menu", "targets": [-1]},*/
+                    {"searchable": false/*, "targets": [0, 2, 3, 5, 7, -1]*/},
+                    {"sortable": false/*, "targets": [0, 5, 6, -1]*/},
+                    { "type": 'formatted-num', targets: [1] },
+                    { "type": 'de_date', targets: [2, 3] }
+                ]
+            }).prev('.dataTables_processing').hide(50);
+        }
+
+        function yelp() {
+            $(document).ready(function () {
+                var datePickerOptAlt = {
+                    dateFormat: 'dd.mm.yy',
+                    onClose: function(){
+                        $("#datatable-1").DataTable().draw();
+                    }
+                };
+                {{ main_macro.get_datepicker_js_script() }}
+
+                $(document).on('click', "a.main_ajax", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var _this = this;
+                    $("#modalbox").data('complete', 0);
+                    var sendData = $(_this).data();
+                    if ($(_this).attr("disabled")) {
+                        JSErrorModalBox({msg: "{{ 'Action is not available'|trans }}"});
+                    } else {
+                        ajaxPostSend($(_this).attr('href'), sendData, false );
+                    }
+                    $(this).closest('div.open').removeClass('open');
+                    return false;
+                });
+
+                $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function (e) {
+                    if (e.currentTarget != e.target) {
+                        return;
+                    }
+                    e.stopPropagation();
+                    e.preventDefault();
+                    if ($("#modalbox").data('complete') && $("#modalbox").data('complete') == 1) {
+                        closeModalBox();
+                    } else {
+                        for (i = 0; i < 3; i++) {
+                            $('#modalbox > div').fadeTo('slow', 0.5).fadeTo('slow', 1.0);
+                        }
+                    }
+                    return false;
+                });
+                $("#iptv_list").on('click', 'div[data-tvfilter] ul a', function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $(this).closest('.open').removeClass('open');
+                    $(this).closest('[data-tvfilter]').data('filterval', $(this).data('filter')).find("span:nth-of-type(2)").text($(this).text());
+                    $("#datatable-1").DataTable().draw();
+                });
+
+                LoadDataTablesScripts(TestTable1);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", yelp, false);
+
+        function rowDataPrepare(item){
+            item.lic_count = lic_count_set[item.lic_count];
+            var status = item.status;
+            item.status = status_set[item.status];
+            if (item.awaiting) {
+                item.status += "<br><a class='main_ajax txt-success' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/certificate-install' data-id='" + item.id + "'>{{ 'Install'|trans }}</a>";
+            } else if ( status == 5 ) {
+                item.status += "<br><a class='txt-danger' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/certificate-detail?id=" + item.id + "'>{{ 'Request a new certificate'|trans }}</a>";
+            }
+            var dateSet = new Date();
+            dateSet.setTime(item.cert_begin * 1000);
+            item.cert_begin = dateSet.toLocaleFormat("%d.%m.%Y");
+            dateSet.setTime(item.cert_end * 1000);
+            item.cert_end = dateSet.toLocaleFormat("%d.%m.%Y");
+
+            if (item.expires_30_days) {
+                item.cert_end += "<br><a class='txt-danger' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/certificate-detail?id=" + item.id + "'>{{ 'Request a new certificate'|trans }}</a>";
+            }
+
+            item.id = "<a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/certificate-detail?id=" + item.id + "'>" + item.id + "</a>";
+            return item;
+        }
+
+        function closeModalBox() {
+            $("#modalbox").hide();
+            $('#modalbox').find('.modal-header-name span').removeClass('txt-danger').empty();
+            $('#modalbox').find('.devoops-modal-inner').empty();
+            $('#modalbox').find('.devoops-modal-bottom').empty();
+        }
+
+        function showModalBox() {
+            $('#modalbox').find('.modal-header-name span').removeClass('txt-danger').text('{{ 'Wait'|trans }}...');
+            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Request is being processed'|trans }}...</span>');
+            $('#modalbox').find('.devoops-modal-bottom').empty();
+            $("#modalbox").show();
+        }
+
+        function checkLicCountFilter(val){
+            return (val == lic_count_set[$('[data-tvfilter="lic_count"]').data('filterval')]) || ($('[data-tvfilter="lic_count"]').data('filterval') == '0');
+        }
+
+        function checkCertBeginFilter(val){
+            var filter_val = $("#datepicker_from").val();
+            if (!filter_val) {
+                return true;
+            } else {
+                val = val.split('.');
+                val = new Date(val[2], val[1], val[0]);
+                filter_val = filter_val.split('.');
+                filter_val = new Date(filter_val[2], filter_val[1], filter_val[0]);
+                return filter_val.getTime() <= val.getTime();
+            }
+        }
+
+        function checkCertEndFilter(val){
+            var filter_val = $("#datepicker_to").val();
+            if (!filter_val) {
+                return true;
+            } else {
+                val = val.split('.');
+                val = new Date(val[2], val[1], val[0]);
+                filter_val = filter_val.split('.');
+                filter_val = new Date(filter_val[2], filter_val[1], filter_val[0]);
+                return val.getTime() <= filter_val.getTime();
+            }
+        }
+
+        function checkStatusFilter(val){
+            return (val == status_set[$('[data-tvfilter="status"]').data('filterval')]) || ($('[data-tvfilter="status"]').data('filterval') == '0');
+        }
+
+        function updateTableData(){
+            ajaxPostSend('{{ app.request.baseUrl }}/{{ app.controller_alias }}/current-list-json', {}, false, false, false);
+        }
+
+        function reDrawDataTable(data){
+            if (data.data) {
+                var newData = [];
+                $('#datatable-1').dataTable().fnClearTable();
+                for (var i in data.data) {
+                    newData.push(rowDataPrepare(data.data[i]));
+                }
+                $('#datatable-1').dataTable().fnAddData(newData);
+                $('#datatable-1').DataTable().rows().invalidate(newData).draw();
+            }
+        }
+
+    </script>
+
+{% endblock %}
