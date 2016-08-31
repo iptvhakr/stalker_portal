@@ -2451,7 +2451,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         $video_id = intval($this->postData['video_id']);
         if (!empty($this->postData['id'])) {
             $id = intval($this->postData['id']);
-        } else {
+        } elseif (empty($this->postData['url'])) {
             $tmp = $this->save_video_files(TRUE);
             $data['data']['datatable'] = !empty($tmp['datatable']) ? $tmp['datatable']: '';
             $id = !empty($tmp['id']) ? $tmp['id'] : $id;
