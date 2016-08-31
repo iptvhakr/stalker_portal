@@ -12,8 +12,6 @@
                 {{ main_macro.get_filter('status', 'Status'|trans, 'id', 'title', app['allStatus'], 3) }}
                 {#{{ main_macro.get_filter('conflicts', 'Compatibility'|trans, 'id', 'title', app['allCompatibility'], 3) }}#}
 
-
-
                 <div class="dropdown filter black pull-right">
                     <a data-toggle="dropdown" class="dropdown-toggle btn-success" href="#">
                         <span>{{ 'List of installed'|trans }}</span>
@@ -43,9 +41,8 @@
                     </ul>
                 </div>
 
-                <a id="add_apps" href="#" class="btn btn-success pull-right">{{ 'Add new'|trans }}</a>
                 <a id="reset_all_apps" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-reset-all" data-info = '1' class="main_ajax btn btn-success pull-right">{{ 'Reset all'|trans }}</a>
-
+                <a id="add_apps" href="#" class="btn btn-success pull-right">{{ 'Add new'|trans }}</a>
 
             </div>
         </div>
