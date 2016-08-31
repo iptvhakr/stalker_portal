@@ -447,7 +447,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         }
 
         if (!empty($param['id']) || !empty($param['videoid'])) {
-            $query_param['where']['video.id'] = $param['id'] ? $param['id']:$param['videoid'];
+            $query_param['where']['video.id'] = !empty($param['id']) ? $param['id']:$param['videoid'];
         }
 
         $response['recordsTotal'] = $this->db->getTotalRowsVideoList();
@@ -694,6 +694,13 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
                 $error = '';
             }
             $data = array_merge_recursive($data, $this->video_list_json(TRUE));
+        }
+
+        if (!empty($this->postData['rowid'])) {
+            $data['RowOrder'] = $this->postData['rowid'];
+            if (!empty($this->postData['waiting']) && is_numeric($this->postData['waiting'])) {
+                $data['action'] = 'deleteTableRow';
+            }
         }
 
         $response = $this->generateAjaxResponse($data, $error);

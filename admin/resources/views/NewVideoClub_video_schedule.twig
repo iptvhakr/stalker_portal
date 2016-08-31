@@ -62,17 +62,17 @@
                                                         </a>\n\
                                                         <ul class="dropdown-menu pull-right">\n\
                                                             <li>\n\
-                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/enable-video" data-videoid="'+videoid+'" data-taskid="'+taskid+'" data-video_on_date="'+video_on_date+'" data-curr_on_date="'+curr_on_date+'">\n\
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/enable-video" data-videoid="'+videoid+'" data-taskid="'+taskid+'" data-video_on_date="'+video_on_date+'" data-curr_on_date="'+curr_on_date+'" data-rowid = "' + json.data[i].RowOrder +'">\n\
                                                                     <span>{{ 'Edit'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/enable-video" data-videoid="'+videoid+'" data-video_on_date="'+video_on_date+'" data-waiting="1">\n\
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/enable-video" data-videoid="'+videoid+'" data-video_on_date="'+video_on_date+'" data-waiting="1"  data-rowid = "' + json.data[i].RowOrder +'">\n\
                                                                     <span>{{ 'Publish now'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-tasks" data-taskid="'+taskid+'">\n\
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-tasks" data-taskid="'+taskid+'"  data-rowid = "' + json.data[i].RowOrder +'">\n\
                                                                     <span>{{ 'Remove schedule'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
