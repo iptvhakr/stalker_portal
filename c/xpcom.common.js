@@ -2065,6 +2065,7 @@ function common_xpcom(){
     this.advert = {
 
         current : {},
+        ticking_timeout : 0,
 
         start : function (callback) {
             _debug('stb.advert.get_ad');
@@ -2089,6 +2090,7 @@ function common_xpcom(){
                             'id': 0,
                             'cmd': result.ad,
                             'type': 'ad',
+                            'is_advert': true,
                             'ad_tracking': result.tracking,
                             'stop_callback': callback
 
@@ -2105,6 +2107,7 @@ function common_xpcom(){
 
         track : function (urls) {
             _debug('stb.advert.track', urls);
+_debug('------------------------------------------');
 
             if (!Array.isArray(urls)){
                 return false;
@@ -2112,7 +2115,7 @@ function common_xpcom(){
 
             urls.forEach(function (url) {
 
-                _debug('tracking call', event, url);
+                _debug('tracking call', url);
 
                 var req = new XMLHttpRequest();
 
@@ -2121,9 +2124,9 @@ function common_xpcom(){
                 req.onreadystatechange = function(){
                     if (req.readyState == 4) {
                         if (req.status == 200) {
-                            _debug('on track ok', event);
+                            _debug('on track ok');
                         }else{
-                            _debug('on track error', event, req.status);
+                            _debug('on track error', req.status);
                         }
                         req = null;
                     }
@@ -2131,6 +2134,31 @@ function common_xpcom(){
 
                 req.send(null);
             });
+        },
+
+        start_ticking : function(media_len){
+            _debug('stb.advert.start_ticking', media_len);
+            window.clearInterval(this.ticking_timeout);
+            this.ticking_timeout = window.setInterval(function () {
+
+                var pos_time = stb.GetPosTime();
+
+                var quartile = media_len/4;
+
+                if (Math.abs(quartile - pos_time) <= 1 && stb.player.cur_media_item.ad_tracking.hasOwnProperty('firstQuartile')){
+                    stb.advert.track(stb.player.cur_media_item.ad_tracking['firstQuartile'])
+                }else if(Math.abs(2*quartile - pos_time) <= 1 && stb.player.cur_media_item.ad_tracking.hasOwnProperty('midpoint')){
+                    stb.advert.track(stb.player.cur_media_item.ad_tracking['midpoint'])
+                }else if(Math.abs(3*quartile - pos_time) <= 1 && stb.player.cur_media_item.ad_tracking.hasOwnProperty('thirdQuartile')){
+                    stb.advert.track(stb.player.cur_media_item.ad_tracking['thirdQuartile'])
+                }
+
+            }, 1000);
+        },
+
+        stop_ticking : function () {
+            _debug('stb.advert.stop_ticking');
+            window.clearInterval(this.ticking_timeout);
         }
     };
 
