@@ -389,5 +389,14 @@
                 "icon": ""
             }
         }
+    },
+    "17": {
+        "name": _("Certificates"),
+        "alias": "certificates",
+        "icon": "fa fa-file",
+        "icon2": "",
+        "action": {
+
+        }
     }
 }

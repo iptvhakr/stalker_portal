@@ -710,6 +710,12 @@ _('Good quality');
 _('Excellent quality');
 _('Ultra high quality');
 
+_('Certificates');
+_('List of current certificates');
+_('Request of new certificate');
+_('Details of the certificate');
+_('Getting list of current certificates');
+_('Installation of confirmed certificate');
 
 _('English');
 _('Afar');
