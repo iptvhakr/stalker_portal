@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-08-31 12:12+0300\n"
-"PO-Revision-Date: 2016-08-31 12:12+0300\n"
+"PO-Revision-Date: 2016-09-01 12:39+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -10264,8 +10264,7 @@ msgstr "ТВ каналы отсутствуют"
 msgid "You can configure DVB channels in the settings menu"
 msgstr "Вы можете настроить DVB каналы в меню настроек"
 
-#: ../../../lang/stb.php:531
-#: ../../../../admin/json_menu/menu.json:186
+#: ../../../lang/stb.php:531 ../../../../admin/json_menu/menu.json:186
 msgid "Applications"
 msgstr "Приложения"
 
@@ -11472,7 +11471,7 @@ msgid "Clean claims"
 msgstr "Очистить жалобы"
 
 msgid "Company"
-msgstr "Сомпания"
+msgstr "Компания"
 
 msgid "Contact person"
 msgstr "Контактное лицо"
@@ -11490,7 +11489,7 @@ msgid "Edit update"
 msgstr "Редактировать"
 
 msgid "Email"
-msgstr "Емайл"
+msgstr "E-mail"
 
 msgid "Enter MAC-address according to the format"
 msgstr "Введите MAC-адрес в соответствии с форматом"
@@ -11624,7 +11623,7 @@ msgstr ""
 "версию или дату образа (одно из полей). Номер образа должен быть числом."
 
 msgid "Number of licenses"
-msgstr "Количество лцензий"
+msgstr "Количество лицензий"
 
 msgid "Period of validity"
 msgstr "Срок действия"
