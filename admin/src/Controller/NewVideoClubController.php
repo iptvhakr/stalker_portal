@@ -435,6 +435,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         $query_param['select'][]= "media_claims.video_counter as `video_counter`";
         $query_param['select'][]= "`video_on_tasks`.`id` as `task_id`";
         $query_param['select'][]= "UNIX_TIMESTAMP(`video_on_tasks`.`date_on`) as `task_date_on`";
+        $query_param['select'][]= 'UNIX_TIMESTAMP(`video_on_tasks`.`added`) as `task_added`';
         $query_param['select'][]= "cat_genre_id_1";
         $query_param['select'][]= "cat_genre_id_2";
         $query_param['select'][]= "cat_genre_id_3";
@@ -690,7 +691,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
             if (empty($video_id)) {
                 $error = !((bool) $this->db->addVideoTask($data_in));
             } else {
-                $this->db->updateVideoTask($data_in, array("video_id"=>$media_id));
+                $this->db->updateVideoTask($data_in, array("video_id"=>$video_id));
                 $error = '';
             }
             $data = array_merge_recursive($data, $this->video_list_json(TRUE));
