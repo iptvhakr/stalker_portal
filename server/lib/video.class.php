@@ -146,7 +146,16 @@ class Video
 
     public function getRawAll(){
 
-        return Mysql::getInstance()->from('video')->where(array('status' => 1, 'accessed' => 1));
+        $user = User::getInstance();
+        $all_users_video_ids = $user->getServicesByType('video');
+
+        $result = Mysql::getInstance()->from('video')->where(array('status' => 1, 'accessed' => 1));
+
+        if (Config::get('enable_tariff_plans') && $all_users_video_ids != 'all'){
+            $result->in('video.id', $all_users_video_ids);
+        }
+
+        return $result;
     }
 
     public function filterList($list){
