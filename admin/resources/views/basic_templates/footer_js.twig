@@ -139,7 +139,7 @@
             }
             showed = certificateCheck.showed;
             for (var i in obj.data) {
-                if (obj.data[i].expires_30_days && !showed[obj.data[i].id]) {
+                if (obj.data[i].expires_30_days && !showed[obj.data[i].id] && (obj.data[i].cert_end * 1000) >= cTime.getTime() ) {
                     showed[obj.data[i].id] = false;
                     certificateCheck.closed = false;
                 }
