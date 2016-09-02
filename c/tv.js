@@ -212,6 +212,21 @@
             
             this.short_epg_loader.stop();
 
+            _debug('module.epg', typeof(module.epg));
+
+            if (module.epg){
+                if (stb.player.pvr_target_select && stb.player.pvr_target_select.on){
+                    stb.player.pvr_target_select.hide();
+                }
+                if (stb.player.remote_pvr_confirm && stb.player.remote_pvr_confirm.on){
+                    stb.player.remote_pvr_confirm.hide();
+                }
+                if (stb.player.local_pvr_confirm && stb.player.local_pvr_confirm.on){
+                    stb.player.local_pvr_confirm.hide();
+                }
+                module.epg.hide();
+            }
+
             try{
                 
                 if (this.fav_manage_mode){
