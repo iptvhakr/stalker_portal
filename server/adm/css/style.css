@@ -1902,6 +1902,25 @@ border: 1px solid #F3E3AA;
  
 }
 
+#certificate_warn{
+    border-bottom: 2px solid #F17611;
+}
+
+#certificate_warn h4{
+    display: inline-block;
+    width: 100%;
+}
+
+#certificate_warn h4 *{
+    vertical-align: bottom;
+}
+
+#certificate_warn i{
+    font-size: 2.2em;
+    cursor: pointer;
+    margin: 5px;
+}
+
 .filter_s.open > .dropdown-menu ul {
     border-radius: 0 !important;
     border-color: transparent !important;

@@ -155,17 +155,24 @@
 
         function createCertModal(){
             $('body').prepend("\n\
-                <div id='certificate_warn' class='box-content ' style='z-index: 999999; position: fixed; top: 0; left: 0; width: 100%;'>\n\
-                    <div class='row'>\n\
-                        <div class='col-xs-6 col-xs-offset-3'>\n\
-                            <h4 class='col-xs-8'>{{ 'The validity of one or more certificates of access is ending'|trans }}</h4>\n\
-                                <a href='{{app.request.baseUrl}}/certificates/current' class='col-xs-2 btn btn-danger'>{{ 'Details'|trans }}</a>\n\
-                                <button class='col-xs-2 btn btn-default'>{{ 'Close'|trans }}</button>\n\
+                    <div id='certificate_warn' class='box-content ' style='z-index: 999999; position: fixed; top: 0; left: 0; width: 100%;'>\n\
+                        <div class='row'>\n\
+                            <div class='col-xs-6 col-xs-offset-3'>\n\
+                                <h4 class='text-center'>\n\
+                                    <img src='{{app.request.baseUrl}}/img/warning-icon.png'/>\n\
+                                    &nbsp;&nbsp;\n\
+                                    <strong>{{ 'The validity of one or more certificates of access is ending'|trans }}</strong>\n\
+                                    &nbsp;&nbsp;\n\
+                                    <small><a href='{{app.request.baseUrl}}/certificates/current' class='txt-primary'>{{ 'Details'|trans }}</a></small>\n\
+                                </h4>\n\
+                            </div>\n\
+                            <div id='warn_close' class='col-xs-1 txt-center pull-right'>\n\
+                                <i class='fa fa-times'></i>\n\
                             </div>\n\
                         </div>\n\
                     </div>");
 
-            $("#certificate_warn").on("click", "button", function(){
+            $("#certificate_warn").on("click", "#warn_close i", function(){
                 var certificateCheck = localStorage.getItem('certificateCheck'), cTime = new Date();
                 if (!certificateCheck) {
                     certificateCheck = {
@@ -188,7 +195,7 @@
         }
 
         $(document).ready(function(){
-            var certificateCheck = localStorage.getItem('certificateCheck');
+            var certificateCheck;// = localStorage.getItem('certificateCheck');
             if (!certificateCheck) {
                 certificateCheck = {
                     showed: {},
