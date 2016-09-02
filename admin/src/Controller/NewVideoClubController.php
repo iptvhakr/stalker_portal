@@ -685,13 +685,12 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
                 'video_id' => $media_id,
                 'date_on' => $date_on
             );
+            $task = $this->db->getVideoTaskByVideoId($media_id);
 
-            $video_id = $this->db->getVideoTaskByVideoId($media_id);
-
-            if (empty($video_id)) {
-                $error = !((bool) $this->db->addVideoTask($data_in));
+            if (empty($task)) {
+                $error = !((bool) $this->db->addVideoTask($date_on));
             } else {
-                $this->db->updateVideoTask($data_in, array("video_id"=>$video_id));
+                $this->db->updateVideoTask($data_in, array("video_id"=>$media_id));
                 $error = '';
             }
             $data = array_merge_recursive($data, $this->video_list_json(TRUE));
@@ -802,7 +801,8 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
         $data = array();
-        $data['action'] = 'checkModMac';
+        $data['action'] = 'checkData';
+        $data['input_id'] = 'form_mac';
         $error = $this->setLocalization("Address is busy");
         if (preg_match('/([0-9a-fA-F]{2}([:]|$)){6}$/', trim($this->postData['mac']))) {
             $params = array('mac' => trim($this->postData['mac']));
@@ -1049,7 +1049,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
 
-    public function video_schedule_list_json(){
+    public function video_schedule_list_json($local_uses = FALSE) {
         if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
                 return $no_auth;
@@ -1102,20 +1102,14 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
 
         $allTasks = $this->db->getAllVideoTasks($query_param);
 
-        $scheduled_on = $this->setLocalization('scheduled') . ' ' .$this->setLocalization('on');
-
         if (is_array($allTasks)) {
             reset($allTasks);
             while (list($num, $row) = each($allTasks)) {
-                $allTasks[$num]['date_on'] = strtotime($row['date_on']);
-                if ($allTasks[$num]['date_on'] < 0) {
-                    $allTasks[$num]['date_on'] = 0;
-                }
+                $allTasks[$num]['task_date_on'] = ((int)$allTasks[$num]['task_date_on']) * ($this->isAjax? 1000 : 1);
                 $allTasks[$num]['task_added'] = strtotime($row['task_added']);
                 if ($allTasks[$num]['task_added'] < 0) {
                     $allTasks[$num]['task_added'] = 0;
                 }
-                $allTasks[$num]['tasks'] = "<span data-task-state=1>$scheduled_on " . strftime('%d-%m-%Y', $allTasks[$num]['date_on']) . "</span>";
                 $allTasks[$num]['RowOrder'] = "dTRow_" . $row['id'];
             }
             $response["data"] = $allTasks;
@@ -1123,7 +1117,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         $error = "";
 
-        if ($this->isAjax) {
+        if ($this->isAjax && !$local_uses) {
             $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
         } else {
@@ -1131,7 +1125,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         }
     }
 
-    public function video_advertise_list_json() {
+    public function video_advertise_list_json($local_uses = FALSE) {
 
         if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
@@ -1146,6 +1140,10 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
 
         if (!isset($query_param['where'])) {
             $query_param['where'] = array();
+        }
+
+        if (!empty($param['id'])) {
+            $query_param['where']['id'] = $param['id'];
         }
 
         $filds_for_select = $this->getVideoAdvertiseFields();
@@ -1179,13 +1177,14 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
                 $row['must_watch'] = $must_watch;
             }
             settype($row['status'], 'int');
+            $row['RowOrder'] = "dTRow_" . $row['id'];
             return $row;
         }, $this->db->getAdsList($query_param));
 
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         $error = "";
 
-        if ($this->isAjax) {
+        if ($this->isAjax && !$local_uses) {
             $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
         } else {
@@ -1202,11 +1201,9 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
         $data = array();
-        $data['action'] = 'removeTasks';
-        /*
         $data['action'] = 'deleteTableRow';
         $data['id'] = $this->postData['taskid'];
-        */
+
         $error = $this->setLocalization('Failed');
 
         $result = $this->db->deleteVideoTask(array('id'=>$this->postData['taskid']));
@@ -1231,12 +1228,13 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'removeAds';
+        $data['action'] = 'deleteTableRow';
         $error = $this->setLocalization('Failed');
         $ad = new \VclubAdvertising();
 
         $result = $ad->delById($this->postData['adsid'])->total_rows();
         if (is_numeric($result)) {
+            $data['id'] = $this->postData['adsid'];
             $error = '';
             if ($result === 0) {
                 $data['nothing_to_do'] = TRUE;
@@ -1257,22 +1255,22 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         }
         
         $data = array();
-        $data['action'] = 'toggleVideoAdsStatus';
+        $data['action'] = 'updateTableRow';
+        $data['id'] =$this->postData['adsid'];
         $error = $this->setLocalization('Failed');
         $ad = new \VclubAdvertising();
         
         if ($ad->updateById((int) $this->postData['adsid'], array('status' => (int) $this->postData['adsstatus'], 'denied_categories' => $ad->getDeniedVclubCategoriesForAd((int) $this->postData['adsid'])))) {
+            $this->postData['id'] = $this->postData['adsid'];
+            $data = array_merge_recursive($data, $this->video_advertise_list_json(TRUE));
             $error = '';
-            $data['title'] = ($this->postData['adsstatus'] ? $this->setLocalization('Unpublish'): $this->setLocalization('Publish'));
-            $data['status'] = '<span data-filter="status" >' .($this->postData['adsstatus'] ?  $this->setLocalization('Published') : $this->setLocalization('Not published')) . '</span>';
-            $data['adsstatus'] = (int)!$this->postData['adsstatus'];
-        } 
+        }
         $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
 
-    public function video_moderators_addresses_list_json() {
+    public function video_moderators_addresses_list_json($local_uses = FALSE) {
         if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
                 return $no_auth;
@@ -1292,6 +1290,9 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
 
         if (!isset($query_param['where'])) {
             $query_param['where'] = array();
+        }
+        if (!empty($param['id'])) {
+            $query_param['where']['id'] = $param['id'];
         }
 
         $filds_for_select = $this->getVideoModeratorsAddressesFields();
@@ -1326,6 +1327,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
             $response["data"] = array_map(function ($row) {
                 settype($row['status'], 'int');
                 settype($row['disable_vclub_ad'], 'int');
+                $row['RowOrder'] = "dTRow_" . $row['id'];
                 return $row;
             }, $allModerators);
         }
@@ -1334,7 +1336,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
 
         $error = "";
 
-        if ($this->isAjax) {
+        if ($this->isAjax && !$local_uses) {
             $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
         } else {
@@ -1352,7 +1354,8 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         }
         
         $data = array();
-        $data['action'] = 'manageList';
+        $data['action'] = 'deleteTableRow';
+        $data['id'] = $this->postData['modid'];
         $error = '';
         $this->db->deleteModeratorsById($this->postData['modid']);
         
@@ -1371,10 +1374,13 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         }
         
         $data = array();
-        $data['action'] = 'manageList';
+        $data['action'] = 'updateTableRow';
+        $data['id'] = $this->postData['modid'];
+        $this->postData['id'] = $this->postData['modid'];
         $error = $this->setLocalization('Failed');
         
         if ($this->db->updateModeratorsById((int) $this->postData['modid'], array('status' => (int) $this->postData['modstatus']))) {
+            $data = array_merge_recursive($data, $this->video_moderators_addresses_list_json(TRUE));
             $error = '';
         }
         $response = $this->generateAjaxResponse($data, $error);
@@ -3181,7 +3187,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
             array('name' => 'name',         'title' => $this->setLocalization('Title'),         'checked' => TRUE),
             array('name' => 'o_name',       'title' => $this->setLocalization('Original title'),'checked' => TRUE),
             array('name' => 'time',         'title' => $this->setLocalization('Length, min'),   'checked' => TRUE),
-            array('name' => 'tasks',        'title' => $this->setLocalization('Date of publication'),'checked' => TRUE),
+            array('name' => 'task_date_on', 'title' => $this->setLocalization('Date of publication'),'checked' => TRUE),
             array('name' => 'year',         'title' => $this->setLocalization('Year'),          'checked' => TRUE),
             array('name' => 'operations',   'title' => $this->setLocalization('Operations'),    'checked' => TRUE)
         );
@@ -3271,7 +3277,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
             'year' => 'video.year as `year`',
             'task_id' => 'video_on_tasks.id as `task_id`',
             'video_id' => 'video_on_tasks.video_id as `video_id`',
-            'date_on' => 'DATE_FORMAT(video_on_tasks.date_on, "%Y-%m-%d %H:%i:%s") as `date_on`',
+            'task_date_on' => "UNIX_TIMESTAMP(`video_on_tasks`.`date_on`) as `task_date_on`",
             'id' => 'video_on_tasks.id as `id`'
         );
     }

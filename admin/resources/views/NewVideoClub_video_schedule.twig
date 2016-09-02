@@ -47,14 +47,14 @@
                             json.data[i]['task_added'] = date.toLocaleFormat("%b %d, %Y %H:%M");
                         }
 
-                        date = json.data[i]['date_on'];
+                        date = json.data[i]['task_date_on'];
                         if (date > 0) {
-                            date = new Date(date * 1000);
-                            json.data[i]['date_on'] = date.toLocaleFormat("%b %d, %Y %H:%M");
+                            date = new Date(date);
+                            json.data[i]['task_date_on'] = "{{ 'scheduled'|trans }} " + "{{ 'on'|trans }} " + date.toLocaleFormat("%d-%m-%Y");
                             curr_on_date = date.toLocaleFormat("%d-%m-%Y");
                         }
 
-                        json.data[i]['name'] = '<a href="{{ app.controller_alias }}/edit-video?id='+id+'" data-fieldname="name">'+name+'</a>';
+                        json.data[i]['name'] = '<a href="{{ app.controller_alias }}/edit-video?id='+videoid+'" data-fieldname="name">'+name+'</a>';
 
                         json.data[i].operations = '<div class="col-xs-3 col-sm-8 ddd">\n\
                                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">\n\
@@ -123,6 +123,7 @@
                     }
 
                     ajaxPostSend($(this).attr('href'), $(this).data(), false, false);
+                    _this.closest('div.open').removeClass('open');
                     return false;
                 });
                 
@@ -138,33 +139,12 @@
                     return false;
                 });
 
-                $(document).on('click', "#reset_enable_date, #modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
-                    if (e.currentTarget != e.target) {
-                        return;
-                    }
-                    e.stopPropagation();
-                    e.preventDefault();
-                    $("div[id*='datepicker']").hide().remove();
-                    closeModalBox();
-                    return false;
-                });
             });
         }
         document.addEventListener("DOMContentLoaded", yelp, false);
 
         var removeTasks = function (obj) {
             $('#datatable-1').DataTable().row( $(obj).closest('tr') ).remove().draw();
-        };
-
-        var videoenable = function (obj) {
-            if ($(obj).data('waiting')) {
-                $(obj).closest('tr').find('span[data-task-state]').html($(obj).data('status'));
-                $(obj).removeData('waiting');
-                $(obj).data('curr_on_date', $(obj).data('date_on'));
-            } else {
-                removeTasks(obj);
-            }
-            JSSuccessModalBox();
         };
 
         function setEnableDatePicker(obj) {
