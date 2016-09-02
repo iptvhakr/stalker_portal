@@ -291,19 +291,23 @@
                     window[$(this).data('action')]($(this));
                 }
                 _this.closest('div.open').removeClass('open');
-               $('#datatable-1').DataTable().ajax.reload();
+               if (!_this.data('nothing_to_do')) {
+                    $('#datatable-1').DataTable().ajax.reload();
+               } else {
+                   _this.removeData('nothing_to_do');
+               }
                 return false;
             });
 
             $(document).on('click', "#apply_enable_date", function(e){
                 e.stopPropagation();
                 e.preventDefault();
-                $("a[data-videoid='" + $("#modalbox input[type='hidden']").val() + "'][href*='enable']")
-                        .data('video_on_date', $("#modalbox input[type='text']").val())
-                        .click();
-                $("div[id*='datepicker']").hide().remove();
-                closeModalBox();
-                $("div[id*='datepicker']").remove();
+                var link = $("a[data-videoid='" + $("#modalbox input[name='link_id']").val() + "'][href*='enable']");
+                link.data('video_on_date', $("#modalbox input[name='video_on_date']").val());
+                if ($("#modalbox input[name='empty_confirm']").length !=0) {
+                    link.data('empty_confirm', 1);
+                }
+                link.trigger('click');
                 return false;
             });
             $(document).on('click', "#reset_enable_date, #modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
@@ -369,21 +373,24 @@
         }
     };
 
+    function closeModalBox(){
+        $("#modalbox").hide();
+        $('#modalbox').find('.modal-header-name span').empty();
+        $('#modalbox').find('.devoops-modal-inner').empty();
+        $('#modalbox').find('.devoops-modal-bottom').empty();
+    }
+
+    function videoenableError(obj){
+        JSErrorModalBox($(obj).data());
+        closeModalBox();
+    }
+
 /*    var videoremove = function (obj){
         JSSuccessModalBox($(obj).data());
         $('#datatable-1').DataTable().ajax.reload();
     };
 
     var videoremoveError = function (obj){
-        JSErrorModalBox($(obj).data());
-    };
-
-    var videoenable = function (obj){
-        JSSuccessModalBox($(obj).data());
-        $('#datatable-1').DataTable().ajax.reload();
-    };
-
-    var videoenableError = function (obj){
         JSErrorModalBox($(obj).data());
     };
 
@@ -404,12 +411,6 @@
     var createtasksError = function (obj){
         JSErrorModalBox($(obj).data());
     };*/
-    function closeModalBox(){
-        $("#modalbox").hide();
-        $('#modalbox').find('.modal-header-name span').empty();
-        $('#modalbox').find('.devoops-modal-inner').empty();
-        $('#modalbox').find('.devoops-modal-bottom').empty();
-    }
 
     function setEnableDatePicker(obj){
         $('#modalbox').find('.modal-header-name span').text('{{ 'Schedule of publishing'|trans }}');
@@ -486,6 +487,29 @@
         $('#modalbox_ad').find('textarea').val('');
         $('#modalbox_ad').hide();
         $(obj).closest('div.open').removeClass('open');
+    }
+
+    function publishWarning(obj){
+        var sendData = {
+            empty_confirm: 1
+        };
+        $("#modalbox form input").each(function(){
+            sendData[$(this).attr('name')] = $(this).val();
+        });
+
+        $("#modalbox form").empty();
+        var field;
+        for (var name in sendData) {
+            field = $('<input/>').appendTo("#modalbox form");
+            field.prop({type: 'hidden', name: name, value: sendData[name]});
+        }
+        var data = $(obj).data();
+        if (data && data.msg) {
+            field = $('<span/>').appendTo("#modalbox form");
+            field.addClass('col-sm-11').text(data.msg);
+        }
+
+        $(obj).removeData('video_on_date').removeData('empty_confirm');
     }
 
 </script>
