@@ -2073,7 +2073,8 @@ function common_xpcom(){
             stb.load(
                 {
                     "type"   : "stb",
-                    "action" : "get_ad"
+                    "action" : "get_ad",
+                    "video_mode" : stb.video_mode
                 },
                 function (result) {
                     _debug('on get_ad', result);
