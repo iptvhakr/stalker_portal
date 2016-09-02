@@ -12,12 +12,38 @@
                 {{ main_macro.get_filter('status', 'Status'|trans, 'id', 'title', app['allStatus'], 3) }}
                 {#{{ main_macro.get_filter('conflicts', 'Compatibility'|trans, 'id', 'title', app['allCompatibility'], 3) }}#}
 
-                <a id="add_apps" href="#" class="btn btn-success pull-right">{{ 'Add applications'|trans }}</a>
-                <a id="upload_list" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-upload-list" class="btn btn-success pull-right">{{ 'Upload a list of installed'|trans }}</a>
-                <a id="download_list" href="#" class="btn btn-success pull-right">{{ 'Save the list of installed'|trans }}</a>
-                <a id="reset_all_apps" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-reset-all" data-info = '1' class="main_ajax btn btn-success pull-right">{{ 'Reset all application'|trans }}</a>
-                <a id="update_all_apps" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-update" data-info = '1' data-id="all" class="main_ajax btn btn-success pull-right">{{ 'Update all application'|trans }}</a>
-                <a id="check_update_apps" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-check-update" data-info = '1' data-id="all" class="main_ajax btn btn-success pull-right">{{ 'Check updates for applications'|trans }}</a>
+                <div class="dropdown filter black pull-right">
+                    <a data-toggle="dropdown" class="dropdown-toggle btn-success" href="#">
+                        <span>{{ 'List of installed'|trans }}</span>
+                        <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu" style="">
+                        <li>
+                            <a id="upload_list" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-upload-list" class="btn btn-success ">{{ 'Upload the list'|trans }}</a>
+                        </li>
+                        <li>
+                             <a id="download_list" href="#" class="btn btn-success">{{ 'Save the list'|trans }}</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="dropdown filter black pull-right">
+                    <a data-toggle="dropdown" class="dropdown-toggle btn-success" href="#">
+                        <span>{{ 'Updates'|trans }}</span>
+                        <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu" style="">
+                        <li>
+                            <a id="check_update_apps" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-check-update" data-info = '1' data-id="all" class="main_ajax btn btn-success">{{ 'Check updates'|trans }}</a>
+                        </li>
+                        <li>
+                            <a id="update_all_apps" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-update" data-info = '1' data-id="all" class="main_ajax btn btn-success ">{{ 'Update all'|trans }}</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <a id="reset_all_apps" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-reset-all" data-info = '1' class="main_ajax btn btn-success pull-right">{{ 'Reset all'|trans }}</a>
+                <a id="add_apps" href="#" class="btn btn-success pull-right">{{ 'Add new'|trans }}</a>
+
             </div>
         </div>
         <div class="row">
@@ -504,7 +530,7 @@
                 item.current_version += ' ' + (item.available_version != '...' && item.available_version != current_version ? '&nbsp;&nbsp;&nbsp;<a '+disable_current_version+' href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-detail?id=' + id + '">{{ 'Update'|trans }}</a>' : '');
                 item.status = item.status == 1 ? "{{ 'Active'|trans }}" : "{{ 'Disabled'|trans }}";
             } else {
-                item.current_version = ' ' + '<a '+disable_current_version+' href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-detail?id=' + id + '">{{ 'Install'|trans }}</a>';
+                item.current_version = '...';//' ' + '<a '+disable_current_version+' href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-detail?id=' + id + '">{{ 'Install'|trans }}</a>';
                 item.status = "{{ 'Not installed'|trans }}";
             }
 
@@ -515,12 +541,17 @@
                                     </a>\n\
                                     <ul class='dropdown-menu pull-right'>\n\
                                         <li>\n\
+                                            <a class='main_ajax' id='install_app_"+ id +"' " + (item.installed ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-version-install' data-id='" + id + "' data-info='1'>\n\
+                                                <span> {{ 'Install'|trans }} </span>\n\
+                                            </a>\n\
+                                        </li>\n\
+                                        <li>\n\
                                             <a class='smart-application-toggle-state' " + (!item.installed ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-toggle-state' data-type='" + item.type + "' data-id='" + id + "' data-status='" + (status == '1' ? '0': '1') + "'>\n\
                                                 <span> " + (status != 1 ? "{{ 'Activate'|trans }}" : "{{ 'Deactivate'|trans }}") + " </span>\n\
                                             </a>\n\
                                         </li>\n\
                                         <li>\n\
-                                            <a class='main_ajax' " + (status == 1 ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-delete' data-id='" + id + "'>\n\
+                                            <a class='main_ajax' " + (!item.installed ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-delete' data-id='" + id + "'>\n\
                                                 <span> {{ 'Delete'|trans }} </span>\n\
                                             </a>\n\
                                         </li>\n\

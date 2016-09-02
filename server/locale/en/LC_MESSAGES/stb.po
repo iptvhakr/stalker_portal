@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-31 12:13+0300\n"
-"PO-Revision-Date: 2016-08-31 12:13+0300\n"
+"POT-Creation-Date: 2016-09-02 12:18+0300\n"
+"PO-Revision-Date: 2016-09-02 12:33+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -37,7 +37,7 @@ msgstr "No"
 #: ../../../../admin/src/Controller/AudioClubController.php:46
 #: ../../../../admin/src/Controller/NewVideoClubController.php:60
 #: ../../../../admin/src/Controller/NewVideoClubController.php:669
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1246
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1253
 #: ../../../../admin/src/Controller/StoragesController.php:20
 #: ../../../../admin/src/Controller/KaraokeController.php:28
 #: ../../../../admin/src/Controller/RadioController.php:39
@@ -98,7 +98,7 @@ msgstr "Cannot find channel"
 #: ../../../../admin/src/Controller/VideoClubController.php:551
 #: ../../../../admin/src/Controller/VideoClubController.php:1154
 #: ../../../../admin/src/Controller/NewVideoClubController.php:614
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1245
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1252
 #: ../../../../admin/src/Controller/RadioController.php:189
 msgid "Publish"
 msgstr "Publish"
@@ -123,7 +123,7 @@ msgstr "Nothing to do"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:410
 #: ../../../../admin/src/Controller/VideoClubController.php:1154
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1245
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1252
 #: ../../../../admin/src/Controller/RadioController.php:189
 msgid "Unpublish"
 msgstr "Unpublish"
@@ -143,7 +143,7 @@ msgstr "Unpublish"
 #: ../../../../admin/src/Controller/VideoClubController.php:1567
 #: ../../../../admin/src/Controller/BroadcastServersController.php:150
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:220
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1434
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1484
 #: ../../../../admin/src/Controller/SettingsController.php:117
 #: ../../../../admin/src/Controller/AudioClubController.php:206
 #: ../../../../admin/src/Controller/AudioClubController.php:294
@@ -152,13 +152,13 @@ msgstr "Unpublish"
 #: ../../../../admin/src/Controller/AudioClubController.php:762
 #: ../../../../admin/src/Controller/AudioClubController.php:1025
 #: ../../../../admin/src/Controller/NewVideoClubController.php:415
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1049
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1125
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1267
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1448
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1658
-#: ../../../../admin/src/Controller/NewVideoClubController.php:2995
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3025
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1056
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1132
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1274
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1455
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1665
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3002
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3032
 #: ../../../../admin/src/Controller/StatisticsController.php:451
 #: ../../../../admin/src/Controller/StatisticsController.php:517
 #: ../../../../admin/src/Controller/StatisticsController.php:840
@@ -284,13 +284,12 @@ msgstr "TV Archive has been restarted."
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:580
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:613
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:647
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:688
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:736
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:773
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:811
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:786
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:823
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:861
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:923
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:945
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:911
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:973
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:995
 #: ../../../../admin/src/Controller/AudioClubController.php:264
 #: ../../../../admin/src/Controller/AudioClubController.php:349
 #: ../../../../admin/src/Controller/AudioClubController.php:373
@@ -319,37 +318,37 @@ msgstr "TV Archive has been restarted."
 #: ../../../../admin/src/Controller/NewVideoClubController.php:574
 #: ../../../../admin/src/Controller/NewVideoClubController.php:604
 #: ../../../../admin/src/Controller/NewVideoClubController.php:639
-#: ../../../../admin/src/Controller/NewVideoClubController.php:700
-#: ../../../../admin/src/Controller/NewVideoClubController.php:729
-#: ../../../../admin/src/Controller/NewVideoClubController.php:760
-#: ../../../../admin/src/Controller/NewVideoClubController.php:782
-#: ../../../../admin/src/Controller/NewVideoClubController.php:816
-#: ../../../../admin/src/Controller/NewVideoClubController.php:880
-#: ../../../../admin/src/Controller/NewVideoClubController.php:926
-#: ../../../../admin/src/Controller/NewVideoClubController.php:983
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1013
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1181
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1205
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1231
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1326
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1345
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1499
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1522
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1560
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1599
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1619
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1733
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1777
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1799
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1921
-#: ../../../../admin/src/Controller/NewVideoClubController.php:2021
-#: ../../../../admin/src/Controller/NewVideoClubController.php:2075
-#: ../../../../admin/src/Controller/NewVideoClubController.php:2154
-#: ../../../../admin/src/Controller/NewVideoClubController.php:2186
-#: ../../../../admin/src/Controller/NewVideoClubController.php:2208
-#: ../../../../admin/src/Controller/NewVideoClubController.php:2240
-#: ../../../../admin/src/Controller/NewVideoClubController.php:2312
-#: ../../../../admin/src/Controller/NewVideoClubController.php:2428
+#: ../../../../admin/src/Controller/NewVideoClubController.php:707
+#: ../../../../admin/src/Controller/NewVideoClubController.php:736
+#: ../../../../admin/src/Controller/NewVideoClubController.php:767
+#: ../../../../admin/src/Controller/NewVideoClubController.php:789
+#: ../../../../admin/src/Controller/NewVideoClubController.php:823
+#: ../../../../admin/src/Controller/NewVideoClubController.php:887
+#: ../../../../admin/src/Controller/NewVideoClubController.php:933
+#: ../../../../admin/src/Controller/NewVideoClubController.php:990
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1020
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1188
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1212
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1238
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1333
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1352
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1506
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1529
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1567
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1606
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1626
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1740
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1784
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1806
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1928
+#: ../../../../admin/src/Controller/NewVideoClubController.php:2028
+#: ../../../../admin/src/Controller/NewVideoClubController.php:2082
+#: ../../../../admin/src/Controller/NewVideoClubController.php:2161
+#: ../../../../admin/src/Controller/NewVideoClubController.php:2193
+#: ../../../../admin/src/Controller/NewVideoClubController.php:2215
+#: ../../../../admin/src/Controller/NewVideoClubController.php:2247
+#: ../../../../admin/src/Controller/NewVideoClubController.php:2319
+#: ../../../../admin/src/Controller/NewVideoClubController.php:2435
 #: ../../../../admin/src/Controller/StatisticsController.php:994
 #: ../../../../admin/src/Controller/StoragesController.php:148
 #: ../../../../admin/src/Controller/StoragesController.php:180
@@ -440,11 +439,11 @@ msgstr "Page not found"
 #: ../../../../admin/src/Controller/VideoClubController.php:1478
 #: ../../../../admin/src/Controller/VideoClubController.php:1651
 #: ../../../../admin/src/Controller/VideoClubController.php:1695
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:974
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1027
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1053
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1094
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1173
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1024
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1077
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1103
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1144
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1223
 #: ../../../../admin/src/Controller/SettingsController.php:189
 #: ../../../../admin/src/Controller/AudioClubController.php:358
 #: ../../../../admin/src/Controller/AudioClubController.php:382
@@ -455,22 +454,22 @@ msgstr "Page not found"
 #: ../../../../admin/src/Controller/AudioClubController.php:826
 #: ../../../../admin/src/Controller/AudioClubController.php:850
 #: ../../../../admin/src/Controller/AudioClubController.php:962
-#: ../../../../admin/src/Controller/NewVideoClubController.php:891
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1189
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1214
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1240
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1354
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1531
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1569
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1742
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1786
-#: ../../../../admin/src/Controller/NewVideoClubController.php:2057
-#: ../../../../admin/src/Controller/NewVideoClubController.php:2096
-#: ../../../../admin/src/Controller/NewVideoClubController.php:2250
-#: ../../../../admin/src/Controller/NewVideoClubController.php:2322
-#: ../../../../admin/src/Controller/NewVideoClubController.php:2463
-#: ../../../../admin/src/Controller/NewVideoClubController.php:2497
-#: ../../../../admin/src/Controller/NewVideoClubController.php:2499
+#: ../../../../admin/src/Controller/NewVideoClubController.php:898
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1196
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1221
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1247
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1361
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1538
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1576
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1749
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1793
+#: ../../../../admin/src/Controller/NewVideoClubController.php:2064
+#: ../../../../admin/src/Controller/NewVideoClubController.php:2103
+#: ../../../../admin/src/Controller/NewVideoClubController.php:2257
+#: ../../../../admin/src/Controller/NewVideoClubController.php:2329
+#: ../../../../admin/src/Controller/NewVideoClubController.php:2470
+#: ../../../../admin/src/Controller/NewVideoClubController.php:2504
+#: ../../../../admin/src/Controller/NewVideoClubController.php:2506
 #: ../../../../admin/src/Controller/KaraokeController.php:241
 #: ../../../../admin/src/Controller/RadioController.php:185
 #: ../../../../admin/src/Controller/UsersController.php:680
@@ -498,8 +497,8 @@ msgstr "Failed"
 #: ../../../../admin/src/Controller/AudioClubController.php:741
 #: ../../../../admin/src/Controller/AudioClubController.php:895
 #: ../../../../admin/src/Controller/AudioClubController.php:897
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1627
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1633
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1634
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1640
 #: ../../../../admin/src/Controller/RadioController.php:228
 #: ../../../../admin/src/Controller/RadioController.php:231
 #: ../../../../admin/src/Controller/UsersController.php:922
@@ -517,8 +516,8 @@ msgstr "Name already used"
 #: ../../../../admin/src/Controller/AudioClubController.php:431
 #: ../../../../admin/src/Controller/AudioClubController.php:587
 #: ../../../../admin/src/Controller/AudioClubController.php:743
-#: ../../../../admin/src/Controller/NewVideoClubController.php:772
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1635
+#: ../../../../admin/src/Controller/NewVideoClubController.php:779
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1642
 #: ../../../../admin/src/Controller/RadioController.php:233
 #: ../../../../admin/src/Controller/UsersController.php:968
 #: ../../../../admin/src/Controller/UsersController.php:990
@@ -526,7 +525,7 @@ msgid "Name is available"
 msgstr "Name is available"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1092
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1429
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1479
 #: ../../../../admin/src/Controller/StatisticsController.php:130
 #: ../../../../admin/src/Controller/TasksController.php:33
 #: ../../../../admin/src/Controller/TasksController.php:568
@@ -583,7 +582,7 @@ msgstr "For enabling Xtream-Codes Support you need enable mcrypt php-extension"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1548
 #: ../../../../admin/src/Controller/VideoClubController.php:2086
-#: ../../../../admin/src/Controller/NewVideoClubController.php:2912
+#: ../../../../admin/src/Controller/NewVideoClubController.php:2919
 msgid "This name already exists"
 msgstr "This name already exists"
 
@@ -602,10 +601,10 @@ msgstr "This number is already in use"
 #: ../../../../admin/src/Controller/CertificatesController.php:374
 #: ../../../../admin/src/Controller/BroadcastServersController.php:373
 #: ../../../../admin/src/Controller/BroadcastServersController.php:392
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1253
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1303
 #: ../../../../admin/src/Controller/SettingsController.php:246
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3129
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3271
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3136
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3278
 #: ../../../../admin/src/Controller/StatisticsController.php:1172
 #: ../../../../admin/src/Controller/StatisticsController.php:1183
 #: ../../../../admin/src/Controller/StatisticsController.php:1228
@@ -630,7 +629,7 @@ msgstr "ID"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1759
 #: ../../../../admin/src/Controller/VideoClubController.php:2358
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3203
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3210
 #: ../../../../admin/src/Controller/StatisticsController.php:1353
 #: ../../../../admin/src/Controller/TasksController.php:552
 #: ../../../../admin/src/Controller/TasksController.php:565
@@ -650,7 +649,7 @@ msgid "Number"
 msgstr "Number"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1760
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1276
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1326
 #: ../../../administrator/add_itv.php:1802
 msgid "Logo"
 msgstr "Logo"
@@ -669,12 +668,12 @@ msgstr "Logo"
 #: ../../../../admin/src/Controller/AudioClubController.php:1260
 #: ../../../../admin/src/Controller/AudioClubController.php:1428
 #: ../../../../admin/src/Controller/AudioClubController.php:1438
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3131
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3151
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3162
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3204
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3215
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3273
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3138
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3158
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3169
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3211
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3222
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3280
 #: ../../../../admin/src/Controller/StatisticsController.php:1173
 #: ../../../../admin/src/Controller/StatisticsController.php:1285
 #: ../../../../admin/src/Controller/StatisticsController.php:1294
@@ -717,7 +716,7 @@ msgstr "Title"
 #: ../../../../admin/src/Controller/TvChannelsController.php:1762
 #: ../../../../admin/src/Controller/VideoClubController.php:2290
 #: ../../../../admin/src/Controller/AudioClubController.php:1262
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3135
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3142
 #: ../../../../admin/src/Controller/StatisticsController.php:1191
 #: ../../../administrator/audio_album.php:428
 #: ../../../administrator/add_itv.php:1102
@@ -743,7 +742,7 @@ msgstr "Archive"
 #: ../../../../admin/src/Controller/TvChannelsController.php:1764
 #: ../../../../admin/src/Controller/TvChannelsController.php:1814
 #: ../../../../admin/src/Controller/BroadcastServersController.php:394
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1256
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1306
 #: ../../../../admin/src/Controller/AudioClubController.php:1429
 #: ../../../../admin/src/Controller/KaraokeController.php:341
 #: ../../../../admin/src/Controller/RadioController.php:391
@@ -777,11 +776,11 @@ msgstr "Monitoring status"
 #: ../../../../admin/src/Controller/BroadcastServersController.php:397
 #: ../../../../admin/src/Controller/AudioClubController.php:1266
 #: ../../../../admin/src/Controller/AudioClubController.php:1431
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3142
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3168
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3254
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3275
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3288
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3149
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3175
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3261
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3282
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3295
 #: ../../../../admin/src/Controller/StoragesController.php:550
 #: ../../../../admin/src/Controller/StoragesController.php:576
 #: ../../../../admin/src/Controller/RadioController.php:393
@@ -800,14 +799,14 @@ msgstr "Status"
 #: ../../../../admin/src/Controller/VideoClubController.php:2311
 #: ../../../../admin/src/Controller/VideoClubController.php:2324
 #: ../../../../admin/src/Controller/BroadcastServersController.php:398
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1259
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1269
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1286
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1297
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1309
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1319
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1336
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1347
 #: ../../../../admin/src/Controller/SettingsController.php:256
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3143
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3156
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3169
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3150
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3163
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3176
 #: ../../../../admin/src/Controller/KaraokeController.php:345
 #: ../../../../admin/src/Controller/RadioController.php:395
 #: ../../../../admin/src/Controller/UsersController.php:2135
@@ -840,10 +839,10 @@ msgstr "Update date"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1817
 #: ../../../../admin/src/Controller/EventsController.php:879
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1258
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1268
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1284
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1296
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1308
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1318
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1334
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1346
 #: ../../../../admin/src/Controller/StatisticsController.php:1369
 #: ../../../../admin/src/Controller/TasksController.php:558
 #: ../../../../admin/src/Controller/TasksController.php:573
@@ -866,14 +865,14 @@ msgstr "Order"
 #: ../../../../admin/src/Controller/TvChannelsController.php:1855
 #: ../../../../admin/src/Controller/VideoClubController.php:2360
 #: ../../../../admin/src/Controller/VideoClubController.php:2371
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3205
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3216
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3212
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3223
 msgid "Localized title"
 msgstr "Localized title"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1856
 #: ../../../../admin/src/Controller/VideoClubController.php:2363
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3208
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3215
 #: ../../../administrator/add_itv.php:1546
 #: ../../../administrator/add_video.php:1926
 msgid "Age restriction"
@@ -887,10 +886,10 @@ msgstr "Age restriction"
 #: ../../../../admin/src/Controller/AudioClubController.php:1267
 #: ../../../../admin/src/Controller/AudioClubController.php:1432
 #: ../../../../admin/src/Controller/AudioClubController.php:1443
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3209
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3219
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3255
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3289
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3216
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3226
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3262
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3296
 #: ../../../../admin/src/Controller/StoragesController.php:551
 #: ../../../../admin/src/Controller/TasksController.php:559
 msgid "Operation"
@@ -1046,7 +1045,7 @@ msgstr "For a period"
 #: ../../../../admin/src/Controller/VideoClubController.php:56
 #: ../../../../admin/src/Controller/VideoClubController.php:620
 #: ../../../../admin/src/Controller/NewVideoClubController.php:61
-#: ../../../../admin/src/Controller/NewVideoClubController.php:688
+#: ../../../../admin/src/Controller/NewVideoClubController.php:689
 msgid "Scheduled"
 msgstr "Scheduled"
 
@@ -1058,8 +1057,8 @@ msgstr "Stopped"
 #: ../../../../admin/src/Controller/VideoClubController.php:2291
 #: ../../../../admin/src/Controller/VideoClubController.php:2310
 #: ../../../../admin/src/Controller/AudioClubController.php:1263
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3136
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3155
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3143
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3162
 #: ../../../administrator/audio_album.php:429
 #: ../../../administrator/audio_album.php:544
 #: ../../../administrator/audio_year.php:224
@@ -1278,8 +1277,8 @@ msgstr "addresses"
 #: ../../../../admin/src/Controller/VideoClubController.php:817
 #: ../../../../admin/src/Controller/VideoClubController.php:1698
 #: ../../../../admin/src/Controller/AudioClubController.php:986
-#: ../../../../admin/src/Controller/NewVideoClubController.php:902
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1789
+#: ../../../../admin/src/Controller/NewVideoClubController.php:909
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1796
 #: ../../../../admin/src/Controller/StoragesController.php:333
 #: ../../../../admin/src/Controller/AdminsController.php:663
 msgid "Deleted"
@@ -1310,7 +1309,7 @@ msgstr "Do not yet running"
 
 #: ../../../../admin/src/Controller/EventsController.php:587
 #: ../../../../admin/src/Controller/VideoClubController.php:1895
-#: ../../../../admin/src/Controller/NewVideoClubController.php:2722
+#: ../../../../admin/src/Controller/NewVideoClubController.php:2729
 #: ../../../../admin/src/Controller/BaseStalkerController.php:518
 #: ../../../lib/ajaxresponse.class.php:49
 #: ../../../administrator/subscribe.php:362
@@ -1339,7 +1338,7 @@ msgid "Filter"
 msgstr "Filter"
 
 #: ../../../../admin/src/Controller/EventsController.php:827
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1283
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1333
 #: ../../../../admin/src/Controller/StatisticsController.php:1277
 #: ../../../../admin/src/Controller/UsersController.php:2155
 #: ../../../administrator/add_karaoke.php:815
@@ -1415,8 +1414,8 @@ msgid "Recipient"
 msgstr "Recipient"
 
 #: ../../../../admin/src/Controller/EventsController.php:873
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1278
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3281
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1328
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3288
 #: ../../../../admin/src/Controller/StatisticsController.php:1276
 #: ../../../../admin/src/Controller/StatisticsController.php:1362
 #: ../../../../admin/src/Controller/TasksController.php:553
@@ -1529,10 +1528,10 @@ msgstr "Information not available"
 #: ../../../../admin/src/Controller/NewVideoClubController.php:585
 #: ../../../../admin/src/Controller/NewVideoClubController.php:616
 #: ../../../../admin/src/Controller/NewVideoClubController.php:648
-#: ../../../../admin/src/Controller/NewVideoClubController.php:707
-#: ../../../../admin/src/Controller/NewVideoClubController.php:737
-#: ../../../../admin/src/Controller/NewVideoClubController.php:821
-#: ../../../../admin/src/Controller/NewVideoClubController.php:2227
+#: ../../../../admin/src/Controller/NewVideoClubController.php:714
+#: ../../../../admin/src/Controller/NewVideoClubController.php:744
+#: ../../../../admin/src/Controller/NewVideoClubController.php:828
+#: ../../../../admin/src/Controller/NewVideoClubController.php:2234
 #: ../../../../admin/src/Controller/KaraokeController.php:297
 msgid "Information not available"
 msgstr "Information not available"
@@ -1540,8 +1539,8 @@ msgstr "Information not available"
 #: ../../../../admin/src/Controller/VideoClubController.php:620
 #: ../../../../admin/src/Controller/VideoClubController.php:998
 #: ../../../../admin/src/Controller/BroadcastServersController.php:43
-#: ../../../../admin/src/Controller/NewVideoClubController.php:688
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1089
+#: ../../../../admin/src/Controller/NewVideoClubController.php:689
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1096
 #: ../../../../admin/src/Controller/UsersController.php:159
 #: ../../../../admin/src/Controller/UsersController.php:691
 #: ../../../../admin/src/Controller/UsersController.php:692
@@ -1552,37 +1551,37 @@ msgid "on"
 msgstr "On"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:672
-#: ../../../../admin/src/Controller/NewVideoClubController.php:740
+#: ../../../../admin/src/Controller/NewVideoClubController.php:747
 msgid "Not all fields are filled"
 msgstr "Not all fields are filled"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:700
 #: ../../../../admin/src/Controller/VideoClubController.php:702
-#: ../../../../admin/src/Controller/NewVideoClubController.php:768
-#: ../../../../admin/src/Controller/NewVideoClubController.php:770
+#: ../../../../admin/src/Controller/NewVideoClubController.php:775
+#: ../../../../admin/src/Controller/NewVideoClubController.php:777
 msgid "Name is busy"
 msgstr "Name is busy"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:722
 #: ../../../../admin/src/Controller/VideoClubController.php:729
-#: ../../../../admin/src/Controller/NewVideoClubController.php:790
 #: ../../../../admin/src/Controller/NewVideoClubController.php:797
+#: ../../../../admin/src/Controller/NewVideoClubController.php:804
 msgid "Address is busy"
 msgstr "Address is busy"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:731
-#: ../../../../admin/src/Controller/NewVideoClubController.php:799
+#: ../../../../admin/src/Controller/NewVideoClubController.php:806
 msgid "Address is available"
 msgstr "Address is available"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:735
-#: ../../../../admin/src/Controller/NewVideoClubController.php:803
+#: ../../../../admin/src/Controller/NewVideoClubController.php:810
 #: ../../../administrator/user.php:34
 msgid "Error: Not valid mac address"
 msgstr "Error: Not valid mac address"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:786
-#: ../../../../admin/src/Controller/NewVideoClubController.php:864
+#: ../../../../admin/src/Controller/NewVideoClubController.php:871
 #: ../../../administrator/add_video.php:142
 #, php-format
 msgid "Error during file moving from %s to %s"
@@ -1590,29 +1589,29 @@ msgstr "Error during file moving from %s to %s"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:819
 #: ../../../../admin/src/Controller/AudioClubController.php:989
-#: ../../../../admin/src/Controller/NewVideoClubController.php:905
+#: ../../../../admin/src/Controller/NewVideoClubController.php:912
 msgid "image file has not been deleted"
 msgstr "Image file has not been deleted"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:820
 #: ../../../../admin/src/Controller/AudioClubController.php:990
-#: ../../../../admin/src/Controller/NewVideoClubController.php:906
+#: ../../../../admin/src/Controller/NewVideoClubController.php:913
 msgid "image name"
 msgstr "Image name"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:821
 #: ../../../../admin/src/Controller/AudioClubController.php:991
-#: ../../../../admin/src/Controller/NewVideoClubController.php:907
+#: ../../../../admin/src/Controller/NewVideoClubController.php:914
 msgid "file can be deleted manually from screenshot directory"
 msgstr "File can be deleted manually from screenshot directory"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:825
-#: ../../../../admin/src/Controller/NewVideoClubController.php:911
+#: ../../../../admin/src/Controller/NewVideoClubController.php:918
 msgid "No information about"
 msgstr "No information about"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:825
-#: ../../../../admin/src/Controller/NewVideoClubController.php:911
+#: ../../../../admin/src/Controller/NewVideoClubController.php:918
 msgid "or file is not exists"
 msgstr "or file is not exists"
 
@@ -1621,33 +1620,33 @@ msgstr "or file is not exists"
 #: ../../../../admin/src/Controller/VideoClubController.php:900
 #: ../../../../admin/src/Controller/VideoClubController.php:930
 #: ../../../../admin/src/Controller/AudioClubController.php:916
-#: ../../../../admin/src/Controller/NewVideoClubController.php:934
-#: ../../../../admin/src/Controller/NewVideoClubController.php:961
-#: ../../../../admin/src/Controller/NewVideoClubController.php:991
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1021
+#: ../../../../admin/src/Controller/NewVideoClubController.php:941
+#: ../../../../admin/src/Controller/NewVideoClubController.php:968
+#: ../../../../admin/src/Controller/NewVideoClubController.php:998
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1028
 msgid "No data"
 msgstr "No data"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:998
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1089
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1096
 #: ../../../lib/remotepvr.class.php:157
 msgid "scheduled"
 msgstr "scheduled"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:1068
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1159
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1166
 msgid "all"
 msgstr "all"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:1155
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1246
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1253
 msgid "Not published"
 msgstr "Not published"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:1417
 #: ../../../../admin/src/Controller/BroadcastServersController.php:327
 #: ../../../../admin/src/Controller/AudioClubController.php:1137
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1508
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1515
 #: ../../../../admin/src/Controller/KaraokeController.php:156
 #: ../../../../admin/src/Controller/InfoportalController.php:238
 #: ../../../../admin/src/Controller/AdminsController.php:228
@@ -1661,22 +1660,22 @@ msgid "error"
 msgstr "Error"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:1674
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1765
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1772
 msgid "Inserted"
 msgstr "Inserted"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:1676
-#: ../../../../admin/src/Controller/NewVideoClubController.php:1767
+#: ../../../../admin/src/Controller/NewVideoClubController.php:1774
 msgid "In this category already exists such a genre"
 msgstr "In this category already exists such a genre"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:2009
-#: ../../../../admin/src/Controller/NewVideoClubController.php:2836
+#: ../../../../admin/src/Controller/NewVideoClubController.php:2843
 msgid "If the protocol"
 msgstr "If the protocol"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:2009
-#: ../../../../admin/src/Controller/NewVideoClubController.php:2836
+#: ../../../../admin/src/Controller/NewVideoClubController.php:2843
 msgid "then this field must be filled"
 msgstr "then this field must be filled"
 
@@ -1688,36 +1687,36 @@ msgstr "Invalid format links"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:2181
 #: ../../../../admin/src/Controller/VideoClubController.php:2183
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3020
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3027
 #: ../../../administrator/add_video.php:188
 msgid "Error: could not save cover image"
 msgstr "Error: could not save cover image"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:2194
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3039
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3046
 #: ../../../administrator/add_video.php:273
 msgid "Error: The folder with that name already exists"
 msgstr "Error: The folder with that name already exists"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:2204
-#: ../../../../admin/src/Controller/NewVideoClubController.php:2300
-#: ../../../../admin/src/Controller/NewVideoClubController.php:2395
-#: ../../../../admin/src/Controller/NewVideoClubController.php:2410
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3049
+#: ../../../../admin/src/Controller/NewVideoClubController.php:2307
+#: ../../../../admin/src/Controller/NewVideoClubController.php:2402
+#: ../../../../admin/src/Controller/NewVideoClubController.php:2417
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3056
 #: ../../../administrator/add_video.php:284
 msgid "Error creating the folder on moderator storage"
 msgstr "Error creating the folder on moderator storage"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:2285
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3130
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3137
 #: ../../../../admin/src/Controller/StoragesController.php:569
 msgid "Catalogue"
 msgstr "Catalogue"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:2287
 #: ../../../../admin/src/Controller/VideoClubController.php:2307
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3132
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3152
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3139
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3159
 #: ../../../administrator/add_video.php:867
 #: ../../../administrator/add_video.php:1837
 msgid "Original title"
@@ -1725,8 +1724,8 @@ msgstr "Original title"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:2288
 #: ../../../../admin/src/Controller/VideoClubController.php:2308
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3133
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3153
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3140
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3160
 #: ../../../../admin/src/Controller/StatisticsController.php:1367
 msgid "Length, min"
 msgstr "Length, min"
@@ -1738,10 +1737,10 @@ msgstr "Episodes"
 #: ../../../../admin/src/Controller/VideoClubController.php:2292
 #: ../../../../admin/src/Controller/VideoClubController.php:2305
 #: ../../../../admin/src/Controller/VideoClubController.php:2427
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1294
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3137
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3150
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3272
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1344
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3144
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3157
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3279
 #: ../../../../admin/src/Controller/StatisticsController.php:1260
 #: ../../../../admin/src/Controller/StatisticsController.php:1278
 #: ../../../../admin/src/Controller/InfoportalController.php:380
@@ -1757,7 +1756,7 @@ msgid "Date"
 msgstr "Date"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:2293
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3138
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3145
 #: ../../../../admin/src/Controller/KaraokeController.php:343
 #: ../../../administrator/tasks.php:61 ../../../administrator/tasks.php:67
 #: ../../../../admin/json_menu/menu.json:251
@@ -1766,83 +1765,83 @@ msgid "Tasks"
 msgstr "Tasks"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:2294
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3139
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3146
 #: ../../../../admin/src/Controller/StatisticsController.php:1174
 msgid "Views lifetime"
 msgstr "Views lifetime"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:2295
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3140
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3147
 #: ../../../../admin/src/Controller/StatisticsController.php:1175
 msgid "Views last month"
 msgstr "Views last month"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:2296
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3141
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3148
 #: ../../../../admin/src/Controller/KaraokeController.php:342
 msgid "Complaints"
 msgstr "Complaints"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:2309
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3154
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3161
 msgid "Date of publication"
 msgstr "Date of publication"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:2318
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3163
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3283
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3170
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3290
 #: ../../../administrator/stream_servers.php:171
 #: ../../../administrator/stream_servers.php:215
 msgid "Address"
 msgstr "Address"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:2319
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3164
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3171
 #: ../../../administrator/vclub_ad.php:153
 #: ../../../administrator/vclub_ad.php:195
 msgid "Weight"
 msgstr "Weight"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:2320
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3165
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3172
 msgid "Views started"
 msgstr "Views started"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:2321
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3166
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3173
 msgid "Views counted"
 msgstr "Views counted"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:2322
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3167
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3174
 msgid "Necessary to view"
 msgstr "Necessary to view"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:2361
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3206
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3213
 msgid "Genres in category"
 msgstr "Genres in category"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:2362
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3207
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3214
 msgid "Movies in category"
 msgstr "Movies in category"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:2372
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1279
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3217
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1329
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3224
 #: ../../../../admin/src/Controller/StatisticsController.php:1274
 #: ../../../administrator/add_video.php:2013 ../../../lang/stb.php:240
 msgid "Category"
 msgstr "Category"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:2373
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3218
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3225
 msgid "Movies in genre"
 msgstr "Movies in genre"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:2406
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3251
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3258
 #: ../../../../admin/src/Controller/UsersController.php:2121
 #: ../../../../admin/src/Controller/UsersController.php:2142
 #: ../../../../admin/src/Controller/AdminsController.php:932
@@ -1874,17 +1873,17 @@ msgid "Name"
 msgstr "Name"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:2407
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3252
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3259
 msgid "MAC address"
 msgstr "MAC address"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:2408
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3253
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3260
 msgid "Advertising is disabled"
 msgstr "Advertising is disabled"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:2429
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3274
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3281
 #: ../../../../admin/src/Controller/StatisticsController.php:1368
 #: ../../../administrator/videolog.php:131
 #: ../../../administrator/myvideolog.php:150
@@ -2010,8 +2009,8 @@ msgstr "Maximum users"
 
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:74
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:80
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1254
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1277
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1304
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1327
 msgid "Application"
 msgstr "Application"
 
@@ -2040,6 +2039,7 @@ msgid "Not installed"
 msgstr "Not installed"
 
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:87
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:719
 msgid "Installed"
 msgstr "Installed"
 
@@ -2113,114 +2113,122 @@ msgstr "Failed to update the parameters of application launch"
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:604
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:637
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:678
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:727
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:764
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:801
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:772
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:814
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:851
 msgid "Application is undefined"
 msgstr "Application is undefined"
 
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:670
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:711
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:756
 msgid "Error of installing the application"
 msgstr "Error of installing the application"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:760
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:797
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:706
+msgid "Do you really want install this application?"
+msgstr "Do you really want install this application?"
+
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:709
+msgid "Install"
+msgstr "Install"
+
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:810
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:847
 msgid "Error of uninstalling the application."
 msgstr "Error of uninstalling the application."
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:840
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:900
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:890
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:950
 msgid "Activated. Current version"
 msgstr "Activated. Current version"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:847
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:907
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:897
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:957
 msgid "Failed to activated of application."
 msgstr "Failed to activated of application."
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:849
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:909
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:899
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:959
 msgid "Version"
 msgstr "Version"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:914
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:964
 msgid "This application version has conflicts"
 msgstr "This application version has conflicts"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:934
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:958
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:984
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1008
 msgid "Application has been deleted"
 msgstr "Application has been deleted"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:936
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:960
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:986
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1010
 msgid "Failed to delete application."
 msgstr "Failed to delete application."
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1071
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1121
 msgid "Loaded"
 msgstr "Loaded"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1110
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1160
 msgid "Do you really want update this application?"
 msgstr "Do you really want update this application?"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1113
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1163
 msgid "Do you really want update all application?"
 msgstr "Do you really want update all application?"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1116
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1166
 msgid "Update"
 msgstr "Update"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1120
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1170
 #: ../../../../admin/src/Controller/StoragesController.php:199
 #: ../../../administrator/epg_setting.php:173
 msgid "Updated"
 msgstr "Updated"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1189
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1239
 msgid "Do you really want checking update for this application?"
 msgstr "Do you really want checking update for this application?"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1192
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1242
 msgid "Do you really want checking updates for all application?"
 msgstr "Do you really want checking updates for all application?"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1195
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1245
 msgid "Check"
 msgstr "Check"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1199
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1249
 msgid "Checked"
 msgstr "Checked"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1257
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1280
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1293
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1307
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1330
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1343
 msgid "Current version"
 msgstr "Current version"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1266
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1316
 msgid "Application version"
 msgstr "Application version"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1267
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1317
 msgid "Release date"
 msgstr "Release date"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1281
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1331
 msgid "Actual version"
 msgstr "Actual version"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1285
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1335
 #: ../../../administrator/add_video.php:2099 ../../../lang/stb.php:243
 #: ../../../lang/stb.php:399
 msgid "Description"
 msgstr "Description"
 
-#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1295
+#: ../../../../admin/src/Controller/ApplicationCatalogController.php:1345
 msgid "Compatibility"
 msgstr "Compatibility"
 
@@ -2305,7 +2313,7 @@ msgstr "Country"
 
 #: ../../../../admin/src/Controller/AudioClubController.php:1265
 #: ../../../../admin/src/Controller/AudioClubController.php:1430
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3285
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3292
 #: ../../../administrator/audio_album.php:431
 #: ../../../administrator/audio_track.php:249
 #: ../../../administrator/audio_track.php:327
@@ -2319,7 +2327,7 @@ msgid "Uniserial"
 msgstr "Uniserial"
 
 #: ../../../../admin/src/Controller/NewVideoClubController.php:24
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3134
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3141
 #: ../../../tools/misctranslations.php:96
 msgid "Serial"
 msgstr "Series"
@@ -2332,19 +2340,27 @@ msgstr ""
 "You can not publish this entry. There are no available video file for this "
 "entry."
 
-#: ../../../../admin/src/Controller/NewVideoClubController.php:2140
+#: ../../../../admin/src/Controller/NewVideoClubController.php:696
+msgid ""
+"There are no available video file for this entry. Do you really wont "
+"schedule publishing this record on {date}?"
+msgstr ""
+"There are no available video file for this entry. Do you really wont "
+"schedule publishing this record on {date}?"
+
+#: ../../../../admin/src/Controller/NewVideoClubController.php:2147
 msgid "Not enough data for searching series file"
 msgstr "Not enough data for searching series file"
 
-#: ../../../../admin/src/Controller/NewVideoClubController.php:2163
+#: ../../../../admin/src/Controller/NewVideoClubController.php:2170
 msgid "Something wrong"
 msgstr "Something wrong"
 
-#: ../../../../admin/src/Controller/NewVideoClubController.php:2230
+#: ../../../../admin/src/Controller/NewVideoClubController.php:2237
 msgid "Data deleted"
 msgstr "Data deleted"
 
-#: ../../../../admin/src/Controller/NewVideoClubController.php:2499
+#: ../../../../admin/src/Controller/NewVideoClubController.php:2506
 msgid ""
 "Unable to load FFProbe library. Please install \"ffmpeg\" or other package "
 "with this library(eg \"libav-tools\")"
@@ -2352,29 +2368,29 @@ msgstr ""
 "Unable to load FFProbe library. Please install \"ffmpeg\" or other package "
 "with this library(eg \"libav-tools\")"
 
-#: ../../../../admin/src/Controller/NewVideoClubController.php:2985
+#: ../../../../admin/src/Controller/NewVideoClubController.php:2992
 #: ../../../administrator/add_video.php:160
 msgid "Error: "
 msgstr "Error: "
 
-#: ../../../../admin/src/Controller/NewVideoClubController.php:2992
+#: ../../../../admin/src/Controller/NewVideoClubController.php:2999
 #: ../../../administrator/add_video.php:166
 msgid "Error: could not resize cover"
 msgstr "Error: could not resize cover"
 
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3282
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3289
 #: ../../../../admin/src/Controller/KaraokeController.php:340
 #: ../../../administrator/add_video.php:1904
 #: ../../../administrator/add_karaoke.php:787
 msgid "Protocol"
 msgstr "Protocol"
 
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3284
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3291
 #: ../../../administrator/add_karaoke.php:482 ../../../lang/stb.php:298
 msgid "File name"
 msgstr "File name"
 
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3286
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3293
 #: ../../../../admin/src/Controller/StatisticsController.php:1366
 #: ../../../../admin/src/Controller/TasksController.php:570
 #: ../../../../admin/src/Controller/TasksController.php:766
@@ -2382,7 +2398,7 @@ msgstr "File name"
 msgid "Quality"
 msgstr "Quality"
 
-#: ../../../../admin/src/Controller/NewVideoClubController.php:3287
+#: ../../../../admin/src/Controller/NewVideoClubController.php:3294
 msgid "Volume level"
 msgstr "Volume level"
 
@@ -10350,11 +10366,11 @@ msgstr "Add application by package name (Step 1)"
 msgid "Add application by package name (Step 2)"
 msgstr "Add application by package name (Step 2)"
 
-msgid "Add applications"
-msgstr "Add applications"
-
 msgid "Add group"
 msgstr "Add group"
+
+msgid "Add new"
+msgstr "Add new"
 
 msgid "Auto-update"
 msgstr "Auto-update"
@@ -10365,8 +10381,8 @@ msgstr "Available version"
 msgid "Change reseller for current group of admin"
 msgstr "Change reseller for current group of admin"
 
-msgid "Check updates for applications"
-msgstr "Check updates for applications"
+msgid "Check updates"
+msgstr "Check updates"
 
 msgid "Checking updates"
 msgstr "Checking updates"
@@ -10422,11 +10438,11 @@ msgstr "Format: solution+URL. Example: ffmpeg http://example_of_link"
 msgid "Group name"
 msgstr "Group name"
 
-msgid "Install"
-msgstr "Install"
-
 msgid "Limit of number of the users has been reached"
 msgstr "Limit of number of the users has been reached"
+
+msgid "List of installed"
+msgstr "List of installed"
 
 msgid ""
 "More detailed information about the connected packs will be available in the "
@@ -10496,11 +10512,11 @@ msgstr "Reseller name"
 msgid "Resellers"
 msgstr "Resellers"
 
-msgid "Reset all application"
-msgstr "Reset all application"
+msgid "Reset all"
+msgstr "Reset all"
 
-msgid "Save the list of installed"
-msgstr "Save the list of installed"
+msgid "Save the list"
+msgstr "Save the list"
 
 msgid "Select file"
 msgstr "Select file"
@@ -10537,11 +10553,14 @@ msgstr ""
 msgid "Unlimited"
 msgstr "Unlimited"
 
-msgid "Update all application"
-msgstr "Update all application"
+msgid "Update all"
+msgstr "Update all"
 
-msgid "Upload a list of installed"
-msgstr "Upload a list of installed"
+msgid "Updates"
+msgstr "Updates"
+
+msgid "Upload the list"
+msgstr "Upload the list"
 
 msgid "Uploading of list of installed applications"
 msgstr "Uploading of list of installed applications"
@@ -12425,6 +12444,21 @@ msgstr "Appearance"
 #: ../../../../admin/json_menu/menu.json:387
 msgid "Firmware update"
 msgstr "Firmware update"
+
+#~ msgid "Add applications"
+#~ msgstr "Add applications"
+
+#~ msgid "Check updates for applications"
+#~ msgstr "Check updates for applications"
+
+#~ msgid "Reset all application"
+#~ msgstr "Reset all application"
+
+#~ msgid "Update all application"
+#~ msgstr "Update all application"
+
+#~ msgid "Upload a list of installed"
+#~ msgstr "Upload a list of installed"
 
 #~ msgid "Do you realy want reset all applications?"
 #~ msgstr "Do you realy want reset all applications?"
