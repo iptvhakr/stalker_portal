@@ -359,6 +359,9 @@ if ( $.fn.DataTable.TableTools ) {
 }
 
 function dataTableDataPrepare(data) {
+    if (!data || !data.columns) {
+        return data;
+    }
     var visibleFields = {};
     var dataFields = data.columns.map(function(el){ return el.data;});
     $("table.dataTable").each(function(){

@@ -15,6 +15,7 @@ require_once PROJECT_PATH . '/../server/lib/core/middleware.class.php';
 require_once PROJECT_PATH . '/../server/lib/core/stb.class.php';
 require_once PROJECT_PATH . '/../server/lib/core/cacheresult.class.php';
 require_once PROJECT_PATH . '/../server/lib/core/cache.class.php';
+require_once PROJECT_PATH . '/../server/lib/core/licensemanager.class.php';
 require_once PROJECT_PATH . '/../server/lib/oauth/authaccesshandler.class.php';
 
 use Stalker\Lib\Core\Config;
@@ -99,6 +100,7 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 $app->register(new ImagineServiceProvider());
 
 $app["language"] = $language;
+$app["js_validator_language"] = in_array($language, array('pt', 'ro', 'dk', 'no', 'nl', 'cz', 'ca', 'ru', 'it', 'fr', 'de', 'se', 'en', 'pt')) ? $language: 'en';
 $app['lang']=$lang=array($language);
 $app["locale"] = $locale;
 $app['translator'] = $app->share($app->extend('translator', function($translator, $app){

@@ -6,7 +6,7 @@ abstract class AccessHandler
 {
     public function checkUserAuth($username, $password, $mac = null, $serial_number = null, OAuthRequest $request){}
 
-    public function generateUniqueToken(\User $user, $for_apiv3){}
+    public function generateUniqueToken(\User $user, $for_apiv3, $cert_server_ok = true){}
 
     public function isValidClient($client_id, $client_secret){}
 

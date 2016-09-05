@@ -78,7 +78,11 @@ function LoadDataTablesScripts(callback) {
                 var newTableId = "dataTables_ajax_update_button_" + $.random(1000000);
                 filterContainer.after('<button id="'+newTableId+'" class="btn dataTables_ajax_update_button" type="button"><i class="fa fa-refresh"></i></button>');
                 $(document).on("click", "#" + newTableId, function(){
-                    $("#" + oDTSettings.sTableId).DataTable().ajax.reload();
+                    if (oDTSettings.aoServerParams.length) {
+                        $("#" + oDTSettings.sTableId).DataTable().ajax.reload();
+                    } else if (typeof (updateTableData) == 'function') {
+                        updateTableData();
+                    }
                 });
             }
         },

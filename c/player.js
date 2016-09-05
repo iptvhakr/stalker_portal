@@ -1418,7 +1418,7 @@ player.prototype.event_callback = function(event, params){
                 
                 this.send_played_video_timer = window.setTimeout(
                     function(){
-                        self.send_played_video(self.cur_media_item.id);
+                        self.send_played_video(self.cur_media_item.video_id || self.cur_media_item.id);
                     },
                     
                     time_send_played
@@ -3565,14 +3565,14 @@ player.prototype.update_played_tv_archive_end_time = function(id){
     );
 };
 
-player.prototype.send_played_video = function(id){
-    _debug('player.send_played_video', id);
+player.prototype.send_played_video = function(video_id){
+    _debug('player.send_played_video', video_id);
     
     stb.load(
         {
             "type"       : "vod",
             "action"     : "set_played",
-            "video_id"   : id,
+            "video_id"   : video_id,
             "storage_id" : this.last_storage_id
         },
         

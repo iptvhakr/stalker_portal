@@ -123,5 +123,95 @@
             obj.closest('div.open').removeClass('open');
         }
 
+        function topModalMsg(obj){
+            if (!obj || !obj.data) {
+                obj['data'] = [];
+            }
+            var certificateCheck = localStorage.getItem('certificateCheck'), showed, cTime = new Date();
+            if (!certificateCheck) {
+                certificateCheck = {
+                    showed: {},
+                    closed: true,
+                    timestamp: 0
+                };
+            } else {
+                certificateCheck = $.parseJSON(certificateCheck);
+            }
+            showed = certificateCheck.showed;
+            for (var i in obj.data) {
+                if (obj.data[i].expires_30_days && !showed[obj.data[i].id] && (obj.data[i].cert_end * 1000) >= cTime.getTime() ) {
+                    showed[obj.data[i].id] = false;
+                    certificateCheck.closed = false;
+                }
+            }
+
+            certificateCheck.showed = showed;
+            certificateCheck.timestamp = cTime.getTime();
+            localStorage.setItem('certificateCheck', JSON.stringify(certificateCheck));
+            if (!certificateCheck.closed) {
+                createCertModal();
+            }
+        }
+
+        function createCertModal(){
+            $('body').prepend("\n\
+                    <div id='certificate_warn' class='box-content ' style='z-index: 999999; position: fixed; top: 0; left: 0; width: 100%;'>\n\
+                        <div class='row'>\n\
+                            <div class='col-xs-6 col-xs-offset-3'>\n\
+                                <h4 class='text-center'>\n\
+                                    <img src='{{app.request.baseUrl}}/img/warning-icon.png'/>\n\
+                                    &nbsp;&nbsp;\n\
+                                    <strong>{{ 'The validity of one or more certificates of access is ending'|trans }}</strong>\n\
+                                    &nbsp;&nbsp;\n\
+                                    <small><a href='{{app.request.baseUrl}}/certificates/current' class='txt-primary'>{{ 'Details'|trans }}</a></small>\n\
+                                </h4>\n\
+                            </div>\n\
+                            <div id='warn_close' class='col-xs-1 txt-center pull-right'>\n\
+                                <i class='fa fa-times'></i>\n\
+                            </div>\n\
+                        </div>\n\
+                    </div>");
+
+            $("#certificate_warn").on("click", "#warn_close i", function(){
+                var certificateCheck = localStorage.getItem('certificateCheck'), cTime = new Date();
+                if (!certificateCheck) {
+                    certificateCheck = {
+                        showed: {},
+                        closed: false,
+                        timestamp: 0
+                    };
+                } else {
+                    certificateCheck = $.parseJSON(certificateCheck);
+                }
+
+                for (var i in certificateCheck.showed) {
+                    certificateCheck.showed[i] = true;
+                }
+                certificateCheck.closed = true;
+                certificateCheck.timestamp = cTime.getTime();
+                localStorage.setItem('certificateCheck', JSON.stringify(certificateCheck));
+                $("#certificate_warn").remove();
+            });
+        }
+
+        $(document).ready(function(){
+            var certificateCheck;// = localStorage.getItem('certificateCheck');
+            if (!certificateCheck) {
+                certificateCheck = {
+                    showed: {},
+                    closed: false,
+                    timestamp: 0
+                };
+            } else {
+                certificateCheck = $.parseJSON(certificateCheck);
+            }
+            var cTime = new Date();
+            if ((cTime.getTime() - certificateCheck.timestamp) > 86400000 ) {
+                ajaxPostSend('{{app.request.baseUrl}}/certificates/current-list-json', {notty_check: 1});
+            } else if (!certificateCheck.closed){
+                createCertModal();
+            }
+        });
+
     </script>
 </footer>
