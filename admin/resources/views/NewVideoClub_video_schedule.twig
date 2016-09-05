@@ -126,16 +126,16 @@
                     _this.closest('div.open').removeClass('open');
                     return false;
                 });
-                
+
                 $(document).on('click', "#apply_enable_date", function(e){
                     e.stopPropagation();
                     e.preventDefault();
-                    $("a[data-videoid='" + $("#modalbox input[type='hidden']").val() + "'][data-curr_on_date]")
-                            .data('video_on_date', $("#modalbox input[type='text']").val()).data('waiting', true)
-                            .removeData('action').trigger('click');
-                    $("div[id*='datepicker']").hide().remove();
-                    closeModalBox();
-                    $("div[id*='datepicker']").remove();
+                    var link = $("a[data-videoid='" + $("#modalbox input[name='link_id']").val() + "'][href*='enable']");
+                    link.data('video_on_date', $("#modalbox input[name='video_on_date']").val());
+                    if ($("#modalbox input[name='empty_confirm']").length !=0) {
+                        link.data('empty_confirm', 1);
+                    }
+                    link.trigger('click');
                     return false;
                 });
 
@@ -210,6 +210,28 @@
             $('#modalbox').find('.modal-header-name span').empty();
             $('#modalbox').find('.devoops-modal-inner').empty();
             $('#modalbox').find('.devoops-modal-bottom').empty();
+        }
+
+        function publishWarning(obj){
+            var sendData = {
+                empty_confirm: 1
+            };
+            $("#modalbox form input").each(function(){
+                sendData[$(this).attr('name')] = $(this).val();
+            });
+
+            $("#modalbox form").empty();
+            var field;
+            for (var name in sendData) {
+                field = $('<input/>').appendTo("#modalbox form");
+                field.prop({type: 'hidden', name: name, value: sendData[name]});
+            }
+            if (obj && obj.msg) {
+                field = $('<span/>').appendTo("#modalbox form");
+                field.addClass('col-sm-11').text(obj.msg);
+            }
+
+            $(obj).removeData('video_on_date').removeData('empty_confirm');
         }
     </script>
 

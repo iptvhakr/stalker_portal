@@ -428,10 +428,9 @@
             field = $('<input/>').appendTo("#modalbox form");
             field.prop({type: 'hidden', name: name, value: sendData[name]});
         }
-        var data = $(obj).data();
-        if (data && data.msg) {
+        if (obj && obj.msg) {
             field = $('<span/>').appendTo("#modalbox form");
-            field.addClass('col-sm-11').text(data.msg);
+            field.addClass('col-sm-11').text(obj.msg);
         }
 
         $(obj).removeData('video_on_date').removeData('empty_confirm');

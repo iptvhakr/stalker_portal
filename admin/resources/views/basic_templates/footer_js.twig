@@ -195,7 +195,7 @@
         }
 
         $(document).ready(function(){
-            var certificateCheck;// = localStorage.getItem('certificateCheck');
+            var certificateCheck = localStorage.getItem('certificateCheck');
             if (!certificateCheck) {
                 certificateCheck = {
                     showed: {},

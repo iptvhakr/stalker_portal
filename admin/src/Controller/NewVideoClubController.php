@@ -696,8 +696,6 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
                     $error = '';
                 }
                 $data_in['date_on'] = strftime("%e-%m-%Y", strtotime($data_in['date_on']));
-                $data['status'] = "<span class='txt-info'>" . $this->setLocalization('Scheduled') . ' ' . $this->setLocalization('on') . ' ' . "$data_in[date_on]</span>";
-                //            $data['video_on_date'] = $date_on;
                 $data = array_merge($data_in, $data);
             } else {
                 $data['action'] = 'publishWarning';
