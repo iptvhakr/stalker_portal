@@ -170,6 +170,7 @@ class CertificatesController extends \Controller\BaseStalkerController {
             $lics_arr = $sert->getLicenses();
 
             $expires_30_days = 60*60*24*30;
+            $now = time();
 
             while(list($num, $lics) = each($lics_arr)){
                 $error = $lics->getError();
@@ -182,7 +183,7 @@ class CertificatesController extends \Controller\BaseStalkerController {
                         'status'            => $status_label[$lics->getStatusStr()],
                         'status_bool'       => $lics->getStatus(),
                         'awaiting'          => $lics->getStatus() && ($lics->getHash() !== $lics->getServerHash()),
-                        'expires_30_days'   => ($lics->getDateTo() - $lics->getDateFrom()) <= $expires_30_days
+                        'expires_30_days'   => ($lics->getDateTo() - $now) <= $expires_30_days
                     );
                 }
             }
