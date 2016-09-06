@@ -1088,10 +1088,14 @@ function common_xpcom(){
         if (!this.ntp_server && this.user['stb_ntp_server']
         || this.ntp_server && this.user['stb_ntp_server'] && this.ntp_server != this.user['stb_ntp_server'] && this.user['overwrite_stb_ntp_server']){
             _debug('set ntpurl '+this.user['stb_ntp_server']);
-            stb.RDir('setenv ntpurl '+this.user['stb_ntp_server']);
-            _debug('reboot');
-            stb.ExecAction('reboot');
-            return;
+            try{
+                stb.RDir('setenv ntpurl '+this.user['stb_ntp_server']);
+                _debug('reboot');
+                stb.ExecAction('reboot');
+                return;
+            }catch(e){
+                _debug(e);
+            }
         }
 
         if (this.user['store_auth_data_on_stb']){
