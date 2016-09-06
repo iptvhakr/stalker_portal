@@ -88,7 +88,7 @@ class CertificatesController extends \Controller\BaseStalkerController {
             $allLicenseCountAndCost[$id]['title'] .= ' ' . $this->setLocalization($id == 1 ? 'device': 'devices');
         }
         $this->app['allLicenseCountAndCost'] = $allLicenseCountAndCost;
-        $this->app['allLicensePeriodAndDiscount'] = array_combine($this->getFieldFromArray($this->getLicensePeriodAndDiscount(), 'count'), array_values($this->getLicensePeriodAndDiscount()));
+        /*$this->app['allLicensePeriodAndDiscount'] = array_combine($this->getFieldFromArray($this->getLicensePeriodAndDiscount(), 'count'), array_values($this->getLicensePeriodAndDiscount()));*/
 
         $this->app['breadcrumbs']->addItem($this->setLocalization('List of certificates'), $this->app['controller_alias'] . '/current');
         $this->app['breadcrumbs']->addItem($this->setLocalization('Certificate request'));
@@ -141,7 +141,7 @@ class CertificatesController extends \Controller\BaseStalkerController {
             $allLicenseCountAndCost[$id]['title'] .= ' ' . $this->setLocalization($id == 1 ? 'device': 'devices');
         }
         $this->app['allLicenseCountAndCost'] = $allLicenseCountAndCost;
-        $this->app['allLicensePeriodAndDiscount'] = array_combine($this->getFieldFromArray($this->getLicensePeriodAndDiscount(), 'count'), array_values($this->getLicensePeriodAndDiscount()));
+        /*$this->app['allLicensePeriodAndDiscount'] = array_combine($this->getFieldFromArray($this->getLicensePeriodAndDiscount(), 'count'), array_values($this->getLicensePeriodAndDiscount()));*/
 
         $this->app['breadcrumbs']->addItem($this->setLocalization('List of certificates'), $this->app['controller_alias'] . '/current');
         $this->app['breadcrumbs']->addItem($this->setLocalization('Certificate detail'));
@@ -291,25 +291,13 @@ class CertificatesController extends \Controller\BaseStalkerController {
                     'data' => (empty($data['quantity']) ? 0: $data['quantity']),
                 )
             )
-            ->add('period', 'choice', array(
+            /*->add('period', 'choice', array(
                     'choices' => array(''=>'') + array_combine($this->getFieldFromArray($period, 'count'), $this->getFieldFromArray($period, 'title')),
                     'attr' => array('readonly' => $show, 'disabled' => $show),
                     'required' => TRUE,
                     'data' => (empty($data['period']) ? 0: $data['period']),
                 )
-            )
-            ->add('date_begin', 'date', array(
-                    'constraints' => array(
-                        new Assert\NotBlank()
-                    ),
-                    'attr' => array('readonly' => $show, 'disabled' => $show),
-                    'input'  => 'timestamp',
-                    'widget' => 'single_text',
-                    'format' => 'dd.MM.yyyy',
-                    'empty_value' => time(),
-                    'required' => TRUE
-                )
-            )
+            )*/
             ->add('server_host', 'text', array(
                     'constraints' => array(
                         new Assert\NotBlank()
@@ -325,6 +313,15 @@ class CertificatesController extends \Controller\BaseStalkerController {
                     'widget' => 'single_text',
                     'format' => 'dd.MM.yyyy',
                     'empty_value' => time()
+                ) : array()
+            )
+            ->add('date_begin', $show ? 'date': 'hidden', $show ? array(
+                    'attr' => array('readonly' => $show, 'disabled' => $show),
+                    'input'  => 'timestamp',
+                    'widget' => 'single_text',
+                    'format' => 'dd.MM.yyyy',
+                    'empty_value' => time(),
+                    'required' => FALSE
                 ) : array()
             )
             ->add('status', $show? 'choice' : 'hidden', $show ? array(
@@ -343,8 +340,10 @@ class CertificatesController extends \Controller\BaseStalkerController {
             $data = $form->getData();
 
             if ($form->isValid()) {
-                $data['date_from'] = \DateTime::createFromFormat('d.m.Y', $data['form']['date_begin'])->getTimestamp();
-                $data['date_to'] = \DateTime::createFromFormat('d.m.Y', $data['form']['date_begin'])->add(new \DateInterval("P{$data['period']}Y"))->getTimestamp();
+                $date = new \DateTime('now');
+                $data['date_from'] = $date->getTimestamp();
+                $date->modify('+1 year');
+                $data['date_to'] = $date->getTimestamp();
                 $sert = new LicenseManager();
 
                 try{

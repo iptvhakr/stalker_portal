@@ -128,7 +128,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    {#<div class="form-group">
                                         <label class="col-sm-2 control-label ">{{ 'Period of validity'|trans }}<span class="icon-required">*</span></label>
                                         <div class="col-xs-10 col-sm-8">
                                             <div class=" col-xs-10 col-sm-6">
@@ -140,21 +140,21 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label ">{{ 'Begin of certificate validity'|trans }}<span class="icon-required">*</span></label>
-                                        <div class="col-xs-10 col-sm-8">
-                                            <div class=" col-xs-10 col-sm-6">
-                                                {{ form_widget(app['form'].date_begin, {'attr': {'class': 'populate placeholder col-md-12', 'data-validation': 'date', 'data-validation-format': 'dd.mm.yyyy'} }) }}
-                                            </div>
-                                            <div>
-                                                <div class="bg-danger">
-                                                    {{ form_errors(app['form'].date_begin) }}
+                                    </div>#}
+                                    {% if app.is_show %}
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label ">{{ 'Begin of certificate validity'|trans }}<span class="icon-required">*</span></label>
+                                            <div class="col-xs-10 col-sm-8">
+                                                <div class=" col-xs-10 col-sm-6">
+                                                    {{ form_widget(app['form'].date_begin, {'attr': {'class': 'populate placeholder col-md-12'} }) }}
+                                                </div>
+                                                <div>
+                                                    <div class="bg-danger">
+                                                        {{ form_errors(app['form'].date_begin) }}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    {% if app.is_show %}
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label ">{{ 'End of certificate validity'|trans }}</label>
                                             <div class="col-xs-10 col-sm-8">
@@ -358,7 +358,6 @@
     <script type="text/javascript" defer>
 
         var allLicenseCountAndCost = JSON.parse('{% autoescape false %}{{ app.allLicenseCountAndCost|json_encode() }}{% endautoescape %}');
-        var allLicensePeriodAndDiscount = JSON.parse('{% autoescape false %}{{ app.allLicensePeriodAndDiscount|json_encode() }}{% endautoescape %}');
 
         var select2Opt = {minimumResultsForSearch: -1, dropdownAutoWidth: false, width: '100%'};
 
@@ -413,7 +412,7 @@
                 });
 
                 LoadSelect2Script(DemoSelect2);
-                $("#form_date_begin").datepicker({
+/*                $("#form_date_begin").datepicker({
                     numberOfMonths: 1,
                     language: '{% if attribute(app, 'language') is defined %}{{ app.language }}{% else %}en{% endif %}',
                     dateFormat: 'dd.mm.yy',
@@ -442,7 +441,7 @@
                         '{{ 'December'|trans }}'
                     ],
                     onClose: function(){}
-                }).attr('readonly', 'readonly');
+                }).attr('readonly', 'readonly');*/
             });
         }
         document.addEventListener("DOMContentLoaded", yelp, false);
