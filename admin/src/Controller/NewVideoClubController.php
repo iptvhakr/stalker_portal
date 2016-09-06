@@ -671,7 +671,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
                 $data['msg'] = $this->setLocalization('You can not publish this entry. There are no available video file for this entry.');
             }
         } else {
-            if (!empty($files) || !empty($this->postData['empty_confirm'])) {
+            if (!empty($files)) { // || !empty($this->postData['empty_confirm'])
                 $data_in = array(
                     'video_id' => $media_id,
                     'date_on' => $date_on
@@ -690,10 +690,11 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
                 //            $data['video_on_date'] = $date_on;
                 $data = array_merge($data_in, $data);
             } else {
-                $data['action'] = 'publishWarning';
+                $data['msg'] = $this->setLocalization('You can not publish this entry. There are no available video file for this entry.');
+                /*$data['action'] = 'publishWarning';
                 $data['nothing_to_do'] = 1;
                 $error = '';
-                $data['msg'] = $this->setLocalization('There are no available video file for this entry. Do you really wont schedule publishing this record on {date}?', '', $date_on, array('{date}' => $date_on));
+                $data['msg'] = $this->setLocalization('There are no available video file for this entry. Do you really wont schedule publishing this record on {date}?', '', $date_on, array('{date}' => $date_on));*/
             }
         }
 
