@@ -838,7 +838,7 @@ class SmartLauncherAppsManager
 
         $this->syncApps();
 
-        return boolval($result);
+        return (bool) $result;
     }
 
     /**
