@@ -247,5 +247,9 @@ var lang = {
     "Enable remote control:": "Разрешить удаленное управление",
     "Device name:": "Имя устройства",
     "Password (only digits):": "Пароль (только цифры)",
-    "Password must contain only digits": "Пароль должен содержать только цифры"
+    "Password must contain only digits": "Пароль должен содержать только цифры",
+
+    "Units:" : "Единицы измерения: ",
+    "Metric" : "Мертические",
+    "Imperial" : "Имперские"
 };

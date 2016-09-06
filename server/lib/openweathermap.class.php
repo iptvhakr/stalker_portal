@@ -132,7 +132,7 @@ class Openweathermap extends WeatherProvider
 
     private function updateCurrentById($id){
 
-        $url = 'http://api.openweathermap.org/data/2.5/weather?id='.$id.'&units=metric';
+        $url = 'http://api.openweathermap.org/data/2.5/weather?id='.$id;
 
         $content = file_get_contents(
             $url,
@@ -169,7 +169,7 @@ class Openweathermap extends WeatherProvider
             }
         }
 
-        $url = 'http://api.openweathermap.org/data/2.5/group?id='.implode(',', $ids).'&units=metric';
+        $url = 'http://api.openweathermap.org/data/2.5/group?id='.implode(',', $ids);
 
         $content = file_get_contents(
             $url,
@@ -215,11 +215,11 @@ class Openweathermap extends WeatherProvider
 
         if (!isset($content['coord']) && isset($content['main']['temp_min']) && isset($content['main']['temp_max'])){
             $weather['t'] = array(
-                'min' => round($content['main']['temp_min']),
-                'max' => round($content['main']['temp_max'])
+                'min' => $content['main']['temp_min'],
+                'max' => $content['main']['temp_max']
             );
         }elseif (isset($content['main']['temp'])){
-            $weather['t'] = round($content['main']['temp']);
+            $weather['t'] = $content['main']['temp'];
         }
 
         if (isset($content['main']['pressure'])){
@@ -353,7 +353,7 @@ class Openweathermap extends WeatherProvider
 
     private function updateForecastById($id){
 
-        $url = 'http://api.openweathermap.org/data/2.5/forecast?id='.$id.'&units=metric';
+        $url = 'http://api.openweathermap.org/data/2.5/forecast?id='.$id;
 
         $content = file_get_contents(
             $url,
@@ -423,6 +423,34 @@ class Openweathermap extends WeatherProvider
             $weather['hour'] = $date->format('G');
 
             $weather['pict'] = $this->getPicture($weather);
+        }
+
+        if (!empty($weather['t'])){
+
+            $weather['t_units'] = Stb::getInstance()->getParam('units') == 'imperial' ? 'F' : 'C';
+
+            if (!is_array($weather['t'])){
+
+                if (Stb::getInstance()->getParam('units') == 'imperial'){
+                    $weather['t'] = round($weather['t']*9/5 - 459.67);
+                }else{
+                    $weather['t'] = round($weather['t'] - 273.15);
+                }
+
+            }else{
+
+                if (Stb::getInstance()->getParam('units') == 'imperial'){
+                    $weather['t']['min'] = round($weather['t']['min']*9/5 - 459.67);
+                    $weather['t']['max'] = round($weather['t']['max']*9/5 - 459.67);
+                }else{
+                    $weather['t']['min'] = round($weather['t']['min'] - 273.15);
+                    $weather['t']['max'] = round($weather['t']['max'] - 273.15);
+                }
+
+                $weather['t_units'] = Stb::getInstance()->getParam('units') == 'imperial' ? 'F' : 'C';
+
+                $weather['temperature'] = (($weather['t']['max']) > 0 ? '+' : '').$weather['t']['max'].'&deg; '.$weather['t_units'];
+            }
         }
 
         return $weather;
