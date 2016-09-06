@@ -8,12 +8,6 @@
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 {{ main_macro.get_filter('status', 'Status'|trans, 'id', 'title', app['allStatus'], 3, NULL, NULL, TRUE) }}
                 {{ main_macro.get_filter('lic_count', 'License count'|trans, 'count', 'title', app['allLicCount'], 3, NULL, NULL, TRUE) }}
-                {% if attribute(app, 'filters') is defined %}
-                    <div class="filter no-padding" >
-                        <span class="txt-default" style="margin: 10px auto 0 !important; color: black !important; display: inline-block;">{{ 'Begin of certificate validity'|trans }}:</span>
-                    </div>
-                    {{ main_macro.get_datepicker_double_input() }}
-                {% endif %}
 
                 <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/certificate-request" class="btn btn-success pull-right">{{ 'Request of the certificate'|trans }}</a>
             </div>
@@ -65,7 +59,7 @@
 
             $.fn.dataTable.ext.search.push(
                     function( settings, data, dataIndex ) {
-                        return checkLicCountFilter(data[1]) && checkCertBeginFilter(data[2]) && checkCertEndFilter(data[2]) && checkStatusFilter(data[4]);
+                        return checkLicCountFilter(data[1]) && checkStatusFilter(data[4]);
                     }
             );
 
@@ -109,7 +103,6 @@
                         $("#datatable-1").DataTable().draw();
                     }
                 };
-                {{ main_macro.get_datepicker_js_script() }}
 
                 $(document).on('click', "a.main_ajax", function (e) {
                     e.stopPropagation();
@@ -196,34 +189,8 @@
             return (val == lic_count_set[$('[data-tvfilter="lic_count"]').data('filterval')]) || ($('[data-tvfilter="lic_count"]').data('filterval') == '0');
         }
 
-        function checkCertBeginFilter(val){
-            var filter_val = $("#datepicker_from").val();
-            if (!filter_val) {
-                return true;
-            } else {
-                val = val.split('.');
-                val = new Date(val[2], val[1], val[0]);
-                filter_val = filter_val.split('.');
-                filter_val = new Date(filter_val[2], filter_val[1], filter_val[0]);
-                return filter_val.getTime() <= val.getTime();
-            }
-        }
-
-        function checkCertEndFilter(val){
-            var filter_val = $("#datepicker_to").val();
-            if (!filter_val) {
-                return true;
-            } else {
-                val = val.split('.');
-                val = new Date(val[2], val[1], val[0]);
-                filter_val = filter_val.split('.');
-                filter_val = new Date(filter_val[2], filter_val[1], filter_val[0]);
-                return val.getTime() <= filter_val.getTime();
-            }
-        }
-
         function checkStatusFilter(val){
-            return (val == status_set[$('[data-tvfilter="status"]').data('filterval')]) || ($('[data-tvfilter="status"]').data('filterval') == '0');
+            return (val.search(status_set[$('[data-tvfilter="status"]').data('filterval')]) != -1) || ($('[data-tvfilter="status"]').data('filterval') == 0);
         }
 
         function updateTableData(){
