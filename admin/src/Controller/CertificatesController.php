@@ -173,20 +173,13 @@ class CertificatesController extends \Controller\BaseStalkerController {
             $now = time();
 
             while(list($num, $lics) = each($lics_arr)){
-                if ($num == 1) {
-                    $tmp = new \DateTime();
-                    $tmp->modify('tomorrow');
-                    $cert_end = $tmp->getTimestamp();
-                } else {
-                    $cert_end = $lics->getDateTo();
-                }
                 $error = $lics->getError();
                 if (empty($error)) {
                     $data['data'][] = array(
                         'id'                => $lics->getId(),
                         'lic_count'         => $lics->getQuantity(),
                         'cert_begin'        => $lics->getDateFrom(),
-                        'cert_end'          => $cert_end, //$lics->getDateTo(),
+                        'cert_end'          => $lics->getDateTo(),
                         'status'            => $status_label[$lics->getStatusStr()],
                         'status_bool'       => $lics->getStatus(),
                         'awaiting'          => $lics->getStatus() && ($lics->getHash() !== $lics->getServerHash()),
