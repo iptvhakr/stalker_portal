@@ -118,7 +118,7 @@ class CertificatesController extends \Controller\BaseStalkerController {
             $lics = $sert->getLicense($id);
 
             $now = time();
-            $expires = ($lics->getDateTo() - $now) - 60*60*24*30;
+            $expires = floor(($lics->getDateTo() - $now)/(60*60*24));
 
             $data = array(
                 'id' => $lics->getId(),
@@ -131,14 +131,16 @@ class CertificatesController extends \Controller\BaseStalkerController {
                 'date_begin' => $lics->getDateFrom(),
                 'date_to' => $lics->getDateTo(),
                 'period' => (int)date('Y', $lics->getDateTo()) - (int)date('Y', $lics->getDateFrom()),
-                'expire' => $expires > 0 ? (int)date('Y', $expires) : 0,
+                'expire' => $expires,
                 'status' => $lics->getStatusStr(),
                 'is_show' => TRUE
             );
 
             $form = $this->buildCertificateRequestForm($data, TRUE);
-            if ((int)$data['expire'] <= 30){
-                $form->get('date_to')->addError(new FormError($this->setLocalization('Validity of the certificate expires after {expire} days', '', $data['expire'], array('{expire}' => $data['expire']))));
+            if ($expires >= 0 && $expires <= 30){
+                $form->get('date_to')->addError(new FormError($this->setLocalization('Validity of the certificate expires after {expire} days', '', $expires, array('{expire}' => $expires))));
+            } elseif ($expires < 0 ){
+                $form->get('date_to')->addError(new FormError($this->setLocalization('Validity of the certificate has expired {expire} days ago', '', abs($expires), array('{expire}' => abs($expires)))));
             }
 
             if ($data['status'] == 'wrong_signature'){
