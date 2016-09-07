@@ -109,6 +109,10 @@ class CertificatesController extends \Controller\BaseStalkerController {
         try{
             $sert = new LicenseManager();
             $lics = $sert->getLicense($id);
+
+            $now = time();
+            $expires = ($lics->getDateTo() - $now) - 60*60*24*30;
+
             $data = array(
                 'id' => $lics->getId(),
                 'company' => $lics->getCompany(),
@@ -120,7 +124,7 @@ class CertificatesController extends \Controller\BaseStalkerController {
                 'date_begin' => $lics->getDateFrom(),
                 'date_to' => $lics->getDateTo(),
                 'period' => (int)date('Y', $lics->getDateTo()) - (int)date('Y', $lics->getDateFrom()),
-                'expire' => \DateTime::createFromFormat('U', $lics->getDateTo())->diff(\DateTime::createFromFormat('U', $lics->getDateFrom()))->format('%a'),
+                'expire' => $expires > 0 ? (int)date('Y', $expires) : 0,
                 'status' => $lics->getStatusStr(),
                 'is_show' => TRUE
             );
@@ -128,6 +132,10 @@ class CertificatesController extends \Controller\BaseStalkerController {
             $form = $this->buildCertificateRequestForm($data, TRUE);
             if ((int)$data['expire'] <= 30){
                 $form->get('date_to')->addError(new FormError($this->setLocalization('Validity of the certificate expires after {expire} days', '', $data['expire'], array('{expire}' => $data['expire']))));
+            }
+
+            if ($data['status'] == 'wrong_signature'){
+                $form->get('status')->addError(new FormError($this->setLocalization('The certificate does not match the server configuration')));
             }
         } catch (\Exception $e){
             $data = array();
