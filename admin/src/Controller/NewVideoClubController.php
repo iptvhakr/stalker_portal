@@ -267,7 +267,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         $this->app['adsTitle'] = $this->ad['title'];
         $this->app['breadcrumbs']->addItem($this->setLocalization('Advertising'), $this->app['controller_alias'] . '/video-advertise');
         $this->app['breadcrumbs']->addItem($this->setLocalization('Edit commercial'));
-        return $this->app['twig']->render('VideoClub_add_video_ads.twig');
+        return $this->app['twig']->render('NewVideoClub_add_video_ads.twig');
     }
     
     public function video_moderators_addresses() {
@@ -326,7 +326,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         $this->app['modName'] = $this->mod['name'];
         $this->app['breadcrumbs']->addItem($this->setLocalization('Moderators'), $this->app['controller_alias'] . '/video-moderators-addresses');
         $this->app['breadcrumbs']->addItem($this->setLocalization('Edit moderator'));
-        return $this->app['twig']->render('VideoClub_add_video_moderators.twig');
+        return $this->app['twig']->render('NewVideoClub_add_video_moderators.twig');
     }
 
     public function video_logs() {
@@ -1470,7 +1470,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         }
     }
 
-    public function video_categories_list_json(){
+    public function video_categories_list_json($internal_use = FALSE){
 
         if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
@@ -1484,7 +1484,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         );
 
         $error = $this->setLocalization('Error');
-        $param = (!empty($this->data) ? $this->data : array());
+        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', '_', 'localized_title', 'RowOrder'));
 
@@ -1497,6 +1497,10 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         $query_param['select'] = array_values($filds_for_select);
 
         $this->cleanQueryParams($query_param, array_keys($filds_for_select), $filds_for_select);
+
+        if (!(empty($param['id']))) {
+            $query_param['where']['id'] = $param['id'];
+        }
 
         $response['recordsTotal'] = $this->db->getTotalRowsCategoriesGenresList();
         $response["recordsFiltered"] = $this->db->getTotalRowsCategoriesGenresList($query_param['where'], $query_param['like']);
@@ -1524,7 +1528,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
 
         $error = "";
-        if ($this->isAjax) {
+        if ($this->isAjax && !$internal_use) {
             $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
         } else {
@@ -1542,7 +1546,8 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         }
         $matches = array();
         $data = array();
-        $data['action'] = 'reorder';
+        $data['action'] = 'updateTableData';
+        $data['id'] = $this->postData['id'];
         $data['msg'] = $error = $this->setLocalization('error');
         if (preg_match("/(\d+)/i", $this->postData['id'], $matches) && preg_match("/(\d+)/i", $this->postData['target_id'], $matches_1)){
             if ($this->db->mowingCategoriesRows($matches[1], $this->postData['fromPosition'], $this->postData['toPosition'], $this->postData['direction'])){
@@ -1603,7 +1608,9 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'editVideoCategory';
+        $data['action'] = 'updateTableRow';
+        $data['id'] = $this->postData['id'];
+        $data['data'] = array();
         $error = $this->setLocalization('Failed');
 
         $check = $this->db->getCategoriesGenres(array(
@@ -1623,8 +1630,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
                 'censored' => !empty($this->postData['censored'])
             ), array('id' => $this->postData['id']));
             $error = '';
-            $data['id'] = $this->postData['id'];
-            $data['category_name'] = $this->postData['category_name'];
+            $data = array_merge_recursive($data, $this->video_list_json(TRUE));
         }
 
         $response = $this->generateAjaxResponse($data, $error);
@@ -1642,7 +1648,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'removeVideoCategory';
+        $data['action'] = 'deleteTableRow';
         $data['id'] = $this->postData['categoriesid'];
         $this->db->mowingCategoriesRows($this->postData['categoriesid'], $this->postData['curr_pos'], 1000000, 'forward');
         $this->db->deleteCategoriesGenres(array('id' => $this->postData['categoriesid']));
@@ -1662,6 +1668,8 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         }
         $data = array();
         $data['action'] = 'checkVideoCategory';
+        $data['action'] = 'checkData';
+        $data['input_id'] = 'video_category_name';
         $error = $this->setLocalization('Name already used');
 
         $add = (array_key_exists('edit', $this->postData) && (strtolower((string)$this->postData['edit']) == 'false' || $this->postData['edit'] === FALSE));
