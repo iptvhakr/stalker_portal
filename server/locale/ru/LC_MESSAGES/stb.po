@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-07 17:48+0300\n"
-"PO-Revision-Date: 2016-09-07 17:50+0300\n"
+"POT-Creation-Date: 2016-09-07 18:16+0300\n"
+"PO-Revision-Date: 2016-09-07 18:16+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -1904,16 +1904,12 @@ msgid "Requested"
 msgstr "Запрошен"
 
 #: ../../../../admin/src/Controller/CertificatesController.php:27
-#: ../../../administrator/profile.php:299 ../../../lang/stb.php:316
-msgid "Disabled"
-msgstr "Отключено"
+msgid "Blocked"
+msgstr "Заблокирован"
 
 #: ../../../../admin/src/Controller/CertificatesController.php:28
-#: ../../../../admin/src/Controller/StatisticsController.php:132
-#: ../../../../admin/src/Controller/TasksController.php:29
-#: ../../../../admin/src/Controller/TasksController.php:35
-msgid "Expired"
-msgstr "Истекло"
+msgid "expired"
+msgstr "Просрочен"
 
 #: ../../../../admin/src/Controller/CertificatesController.php:29
 msgid "Wrong signature"
@@ -2442,6 +2438,12 @@ msgstr "Открыто"
 #: ../../../administrator/stat_moderators.php:229
 msgid "Rejected"
 msgstr "Отклонено"
+
+#: ../../../../admin/src/Controller/StatisticsController.php:132
+#: ../../../../admin/src/Controller/TasksController.php:29
+#: ../../../../admin/src/Controller/TasksController.php:35
+msgid "Expired"
+msgstr "Истекло"
 
 #: ../../../../admin/src/Controller/StatisticsController.php:200
 #: ../../../../admin/src/Controller/StatisticsController.php:237
@@ -7980,6 +7982,10 @@ msgstr "Отклонить"
 msgid "Administrators groups"
 msgstr "Группы администраторов"
 
+#: ../../../administrator/profile.php:299 ../../../lang/stb.php:316
+msgid "Disabled"
+msgstr "Отключено"
+
 #: ../../../administrator/profile.php:303
 msgid "Enabled"
 msgstr "Включено"
@@ -11644,9 +11650,6 @@ msgstr "Отчет формируется по закрытым и отклон�
 msgid "Request"
 msgstr "Запрос"
 
-msgid "Request a new certificate"
-msgstr "Запрос нового сертификата"
-
 msgid "Required image version"
 msgstr "Требуемая версия образа"
 
@@ -11859,6 +11862,9 @@ msgstr "Список годов"
 
 msgid "zone for"
 msgstr "Зон для"
+
+msgid "Сertificate request"
+msgstr "Запрос сертификата"
 
 msgid "Access restriction"
 msgstr "Ограничение доступа"
@@ -12389,6 +12395,9 @@ msgstr "Максимальное количество файлов превыс�
 msgid "Powered by"
 msgstr "Создано"
 
+msgid "Reminder: One of your certificates is expiring"
+msgstr "Истекает срок действия сертификата"
+
 msgid "Repeating interval"
 msgstr "Интервал повторения"
 
@@ -12403,9 +12412,6 @@ msgstr "Дата запуска события"
 
 msgid "The date of start event"
 msgstr "Дата начала события"
-
-msgid "The validity of one or more certificates of access is ending"
-msgstr "Срок действия одного или более сертификатов истекает"
 
 msgid "Unknown error"
 msgstr "Неизвестная ошибка"
@@ -12471,6 +12477,9 @@ msgstr "Внешний вид"
 #: ../../../../admin/json_menu/menu.json:386
 msgid "Firmware update"
 msgstr "Обновление прошивки"
+
+#~ msgid "Request a new certificate"
+#~ msgstr "Запрос нового сертификата"
 
 #~ msgid "years"
 #~ msgstr "лет"
