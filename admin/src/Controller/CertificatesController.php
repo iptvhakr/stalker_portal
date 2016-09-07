@@ -24,8 +24,8 @@ class CertificatesController extends \Controller\BaseStalkerController {
         $this->app['allStatus'] = array(
             array('id' => 1, 'title' => $this->setLocalization('Valid'),            'label' => 'ok'),
             array('id' => 2, 'title' => $this->setLocalization('Requested'),        'label' => 'not_valid'),
-            array('id' => 3, 'title' => $this->setLocalization('Disabled'),         'label' => 'disabled'),
-            array('id' => 4, 'title' => $this->setLocalization('Expired'),          'label' => 'expired'),
+            array('id' => 3, 'title' => $this->setLocalization('Blocked'),         'label' => 'disabled'),
+            array('id' => 4, 'title' => $this->setLocalization('expired'),          'label' => 'expired'),
             array('id' => 5, 'title' => $this->setLocalization('Wrong signature'),  'label' => 'wrong_signature'),
             array('id' => 6, 'title' => $this->setLocalization('Undefined'),        'label' => 'undefined'),
         );

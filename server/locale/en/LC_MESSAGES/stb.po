@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-07 17:50+0300\n"
-"PO-Revision-Date: 2016-09-07 17:50+0300\n"
+"POT-Creation-Date: 2016-09-07 18:14+0300\n"
+"PO-Revision-Date: 2016-09-07 18:15+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -1899,15 +1899,11 @@ msgid "Requested"
 msgstr "Requested"
 
 #: ../../../../admin/src/Controller/CertificatesController.php:27
-#: ../../../administrator/profile.php:299 ../../../lang/stb.php:316
-msgid "Disabled"
-msgstr "Disabled"
+msgid "Blocked"
+msgstr "Blocked"
 
 #: ../../../../admin/src/Controller/CertificatesController.php:28
-#: ../../../../admin/src/Controller/StatisticsController.php:132
-#: ../../../../admin/src/Controller/TasksController.php:29
-#: ../../../../admin/src/Controller/TasksController.php:35
-msgid "Expired"
+msgid "expired"
 msgstr "Expired"
 
 #: ../../../../admin/src/Controller/CertificatesController.php:29
@@ -2437,6 +2433,12 @@ msgstr "Open"
 #: ../../../administrator/stat_moderators.php:229
 msgid "Rejected"
 msgstr "Rejected"
+
+#: ../../../../admin/src/Controller/StatisticsController.php:132
+#: ../../../../admin/src/Controller/TasksController.php:29
+#: ../../../../admin/src/Controller/TasksController.php:35
+msgid "Expired"
+msgstr "Expired"
 
 #: ../../../../admin/src/Controller/StatisticsController.php:200
 #: ../../../../admin/src/Controller/StatisticsController.php:237
@@ -7972,6 +7974,10 @@ msgstr "Reject"
 msgid "Administrators groups"
 msgstr "Administrators groups"
 
+#: ../../../administrator/profile.php:299 ../../../lang/stb.php:316
+msgid "Disabled"
+msgstr "Disabled"
+
 #: ../../../administrator/profile.php:303
 msgid "Enabled"
 msgstr "Enabled"
@@ -11619,9 +11625,6 @@ msgstr "Report is formed due to done and rejected tasks"
 msgid "Request"
 msgstr "Request"
 
-msgid "Request a new certificate"
-msgstr "Request a new certificate"
-
 msgid "Required image version"
 msgstr "Required image version"
 
@@ -11830,6 +11833,9 @@ msgstr "years list"
 
 msgid "zone for"
 msgstr "zone for"
+
+msgid "Сertificate request"
+msgstr "Сertificate request"
 
 msgid "Access restriction"
 msgstr "Access restriction"
@@ -12355,6 +12361,9 @@ msgstr "Maximum number of files exceeded"
 msgid "Powered by"
 msgstr "Powered by"
 
+msgid "Reminder: One of your certificates is expiring"
+msgstr "Reminder: One of your certificates is expiring"
+
 msgid "Repeating interval"
 msgstr "Repeating interval"
 
@@ -12369,9 +12378,6 @@ msgstr "The date of run event"
 
 msgid "The date of start event"
 msgstr "The date of start event"
-
-msgid "The validity of one or more certificates of access is ending"
-msgstr "The validity of one or more certificates of access is ending"
 
 msgid "Unknown error"
 msgstr "Unknown error"
@@ -12437,6 +12443,9 @@ msgstr "Appearance"
 #: ../../../../admin/json_menu/menu.json:386
 msgid "Firmware update"
 msgstr "Firmware update"
+
+#~ msgid "Request a new certificate"
+#~ msgstr "Request a new certificate"
 
 #~ msgid "years"
 #~ msgstr "years"
