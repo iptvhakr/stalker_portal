@@ -1630,7 +1630,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
                 'censored' => !empty($this->postData['censored'])
             ), array('id' => $this->postData['id']));
             $error = '';
-            $data = array_merge_recursive($data, $this->video_list_json(TRUE));
+            $data = array_merge_recursive($data, $this->video_categories_list_json(TRUE));
         }
 
         $response = $this->generateAjaxResponse($data, $error);
@@ -1667,18 +1667,45 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
         $data = array();
-        $data['action'] = 'checkVideoCategory';
         $data['action'] = 'checkData';
         $data['input_id'] = 'video_category_name';
         $error = $this->setLocalization('Name already used');
 
-        $add = (array_key_exists('edit', $this->postData) && (strtolower((string)$this->postData['edit']) == 'false' || $this->postData['edit'] === FALSE));
+        $id = array_key_exists('id', $this->postData) ? $this->postData['id']: '';
 
-        if ($this->db->getCategoriesGenres(array('where' => array(' BINARY category_name' => $this->postData['category_name']))) ||
-            ($add ? $this->db->getCategoriesGenres(array('where' => array(' BINARY category_alias' => $this->transliterate($this->postData['category_name'])))): 0)) {
+        if ($this->db->getCategoriesGenres(array('where' => array(' BINARY category_name' => $this->postData['category_name'], 'id<>' => $id))) ||
+            (empty($id) ? $this->db->getCategoriesGenres(array('where' => array(' BINARY category_alias' => $this->transliterate($this->postData['category_name'])))): 0)) {
             $data['chk_rezult'] = $this->setLocalization('Name already used');
         } else {
             $data['chk_rezult'] = $this->setLocalization('Name is available');
+            $error = '';
+        }
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+
+    }
+
+    public function check_video_categories_number(){
+
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['category_num'])) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+        $data = array();
+        $data['action'] = 'checkData';
+        $data['input_id'] = 'video_num';
+        $error = $this->setLocalization('Number already used');
+
+        $id = array_key_exists('id', $this->postData) ? $this->postData['id']: '';
+
+        if ($this->db->getCategoriesGenres(array('where' => array(' num ' => $this->postData['category_num'], 'id<>' => $id)))) {
+            $data['chk_rezult'] = $this->setLocalization('Number already used');
+        } else {
+            $data['chk_rezult'] = $this->setLocalization('Number is available');
             $error = '';
         }
         $response = $this->generateAjaxResponse($data, $error);

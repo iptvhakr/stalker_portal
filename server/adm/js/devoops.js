@@ -946,7 +946,9 @@ function updateTableDataError(obj){
 function checkData(obj){
     if (typeof(obj.input_id) != 'undefined') {
         $("#" + obj.input_id).next('div').empty().append('<i class="txt-success fa fa-check"></i> ' + obj.chk_rezult).css('visibility', 'visible').show();
-        $('#modalbox [type="submit"]').prop('disabled', false);
+        if (!$('#modalbox [type="submit"]').prop('disabled')){
+            $('#modalbox [type="submit"]').prop('disabled', false);
+        }
     } else {
         JSSuccessModalBox({msg: obj.chk_rezult});
     }
@@ -955,6 +957,10 @@ function checkData(obj){
 function checkDataError(obj){
     if (typeof(obj.input_id) != 'undefined') {
         $("#" + obj.input_id).next('div').empty().append('<i class="txt-danger fa fa-ban"></i> ' + obj.chk_rezult).css('visibility', 'visible').show();
+
+        var errFields = $('#modalbox [type="submit"]').data('err-fields');
+
+
         $('#modalbox [type="submit"]').prop('disabled', true);
     } else {
         JSErrorModalBox({msg: obj.chk_rezult});
