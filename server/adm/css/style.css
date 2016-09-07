@@ -1902,20 +1902,20 @@ border: 1px solid #F3E3AA;
  
 }
 
-#certificate_warn{
+#certificate_warn, div[id^='server_error_warn_']{
     border-bottom: 2px solid #F17611;
 }
 
-#certificate_warn h4{
+#certificate_warn h4, div[id^='server_error_warn_'] h4{
     display: inline-block;
     width: 100%;
 }
 
-#certificate_warn h4 *{
+#certificate_warn h4 *, div[id^='server_error_warn_'] h4 *{
     vertical-align: bottom;
 }
 
-#certificate_warn i{
+#certificate_warn i, div[id^='server_error_warn_'] i{
     font-size: 2.2em;
     cursor: pointer;
     margin: 5px;
