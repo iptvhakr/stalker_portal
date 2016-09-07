@@ -355,6 +355,7 @@
     <script type="text/javascript" defer>
 
         var allLicenseCountAndCost = JSON.parse('{% autoescape false %}{{ app.allLicenseCountAndCost|json_encode() }}{% endautoescape %}');
+        var licsServerErrors = JSON.parse('{% autoescape false %}{{ app.licsServerErrors|json_encode() }}{% endautoescape %}');
 
         var select2Opt = {minimumResultsForSearch: -1, dropdownAutoWidth: false, width: '100%'};
 
@@ -380,6 +381,12 @@
 
         function yelp() {
             $(document).ready(function () {
+
+                if (licsServerErrors instanceof Array) {
+                    $.each(licsServerErrors, function(){
+                        licsServerErrorsModal(this);
+                    });
+                }
 
                 $.validate(conf);
 
@@ -407,5 +414,35 @@
         }
         document.addEventListener("DOMContentLoaded", yelp, false);
 
+        function licsServerErrorsModal(error){
+            var zIndex = 200000;
+
+            $("div[id^='server_error_warn_']").each(function(){
+                var cZIndex = $(this).css('zIndex');
+                if (zIndex < cZIndex) {
+                    zIndex = cZIndex + 1;
+                }
+            });
+
+            $('body').prepend("\n\
+                    <div id='server_error_warn_"+ zIndex +"' class='box-content ' style='z-index: "+ zIndex +"; position: fixed; top: 0; left: 0; width: 100%;'>\n\
+                        <div class='row'>\n\
+                            <div class='col-xs-6 col-xs-offset-3'>\n\
+                                <h4 class='text-center'>\n\
+                                    <img src='{{app.request.baseUrl}}/img/warning-icon.png'/>\n\
+                                    &nbsp;&nbsp;\n\
+                                    <strong>" + error + "</strong>\n\
+                                </h4>\n\
+                            </div>\n\
+                            <div id='warn_close_"+zIndex+"' class='col-xs-1 txt-center pull-right'>\n\
+                                <i class='fa fa-times'></i>\n\
+                            </div>\n\
+                        </div>\n\
+                    </div>");
+
+            $("div[id^='server_error_warn_']").on("click", "div[id^='warn_close_'] i", function(){
+                $(this).closest("div[id^='server_error_warn_']").remove();
+            });
+        }
     </script>
 {% endblock %}
