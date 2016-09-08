@@ -315,6 +315,10 @@ player.prototype.init = function(){
                 stbWindowMgr.windowShow(windowId);
             }else if (msg == 'exit'){
                 stbWebWindow.close();
+            }else if (msg == 'AutoUpdateWindow:opened'){
+                loader.pause();
+            }else if (msg == 'AutoUpdateWindow:closed'){
+                loader.resume();
             }
         };
 
