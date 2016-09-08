@@ -8,10 +8,8 @@
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     {{ main_macro.get_filter('status_id',  'Status'|trans, 'id', 'title', app['allStatus'], 2) }}
-                    {#{{ main_macro.get_filter('ganre_name', 'Genre'|trans, 'name', 'name', app['allAudioGenres'], 2) }}#}
                     {{ main_macro.get_filter('year', 'Year'|trans, 'name', 'name', app['allAudioYears'], 2) }}
                     {{ main_macro.get_filter('country', 'Country'|trans, 'name', 'name', app['allCountries'], 3) }}
-                    {#{{ main_macro.get_filter('language', 'Язык', 'name', 'name', app['allLanguages'], 3) }}#}
                 <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-audio-albums" class="btn btn-success pull-right">{{ 'Add album'|trans }}</a>
             </div>
         </div>
