@@ -17,13 +17,15 @@ class CertificatesController extends \Controller\BaseStalkerController {
 
         parent::__construct($app, __CLASS__);
 
+        $this->licsServerErrors = array();
+
         $this->app['allLicCount'] = $this->getLicenseCountAndCost();
 
         $this->app['allStatus'] = array(
             array('id' => 1, 'title' => $this->setLocalization('Valid'),            'label' => 'ok'),
             array('id' => 2, 'title' => $this->setLocalization('Requested'),        'label' => 'not_valid'),
-            array('id' => 3, 'title' => $this->setLocalization('Disabled'),         'label' => 'disabled'),
-            array('id' => 4, 'title' => $this->setLocalization('Expired'),          'label' => 'expired'),
+            array('id' => 3, 'title' => $this->setLocalization('Blocked'),         'label' => 'disabled'),
+            array('id' => 4, 'title' => $this->setLocalization('expired'),          'label' => 'expired'),
             array('id' => 5, 'title' => $this->setLocalization('Wrong signature'),  'label' => 'wrong_signature'),
             array('id' => 6, 'title' => $this->setLocalization('Undefined'),        'label' => 'undefined'),
         );
@@ -41,6 +43,9 @@ class CertificatesController extends \Controller\BaseStalkerController {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
+
+        $this->app['licsServerErrors'] = $this->licsServerErrors;
+
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
@@ -65,6 +70,7 @@ class CertificatesController extends \Controller\BaseStalkerController {
         $this->app['data_set'] = $data_set['data'];
         $this->app['lic_count_set'] = array_combine($this->getFieldFromArray($this->app['allLicCount'], 'count'), $this->getFieldFromArray($this->app['allLicCount'], 'title'));
         $this->app['status_set'] = array_combine($this->getFieldFromArray($this->app['allStatus'], 'id'), $this->getFieldFromArray($this->app['allStatus'], 'title'));
+        $this->app['licsServerErrors'] = $this->licsServerErrors;
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -74,7 +80,43 @@ class CertificatesController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
 
-        $data = !empty($this->postData) ? $this->postData: array();
+        $data = array();
+        if (!empty($this->data['id'])) {
+            try{
+                $sert = new LicenseManager();
+                $lics = $sert->getLicense($this->data['id']);
+
+                $now = time();
+                $expires = floor(($lics->getDateTo() - $now)/(60*60*24));
+
+                $data = array(
+                    'id' => $lics->getId(),
+                    'company' => $lics->getCompany(),
+                    'contact_name' => $lics->getContactName(),
+                    'phone' => $lics->getPhone(),
+                    'contact_address' => $lics->getContactAddress(),
+                    'country' => $lics->getCountry(),
+                    'quantity' => $lics->getQuantity(),
+                    'date_begin' => $lics->getDateFrom(),
+                    'date_to' => $lics->getDateTo(),
+                    'period' => (int)date('Y', $lics->getDateTo()) - (int)date('Y', $lics->getDateFrom()),
+                    'expire' => $expires,
+                    'status' => $lics->getStatusStr(),
+                    'is_show' => FALSE
+                );
+
+            } catch (\LicenseManagerException $e){
+                $date = new \DateTime();
+                error_log($date->format('Y-m-d H:i:s') . ' - LicenseManager error ' . $e->getMessage() . ' on ' . __FILE__ . ' line ' . __LINE__ . PHP_EOL);
+                array_push($this->licsServerErrors, $this->setLocalization("No connection to the server"));
+            } catch (\Exception $e){
+                $date = new \DateTime();
+                error_log($date->format('Y-m-d H:i:s') . ' - LicenseManager error ' . $e->getMessage() . ' on ' . __FILE__ . ' line ' . __LINE__ . PHP_EOL);
+                array_push($this->licsServerErrors, $this->setLocalization("No connection to the server"));
+            }
+        } elseif (!empty($this->postData)) {
+            $data = $this->postData;
+        }
 
         $form = $this->buildCertificateRequestForm($data, !empty($data['form']['is_show']) );
 
@@ -88,10 +130,11 @@ class CertificatesController extends \Controller\BaseStalkerController {
             $allLicenseCountAndCost[$id]['title'] .= ' ' . $this->setLocalization($id == 1 ? 'device': 'devices');
         }
         $this->app['allLicenseCountAndCost'] = $allLicenseCountAndCost;
-        /*$this->app['allLicensePeriodAndDiscount'] = array_combine($this->getFieldFromArray($this->getLicensePeriodAndDiscount(), 'count'), array_values($this->getLicensePeriodAndDiscount()));*/
 
         $this->app['breadcrumbs']->addItem($this->setLocalization('List of certificates'), $this->app['controller_alias'] . '/current');
         $this->app['breadcrumbs']->addItem($this->setLocalization('Certificate request'));
+
+        $this->app['licsServerErrors'] = $this->licsServerErrors;
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -111,7 +154,7 @@ class CertificatesController extends \Controller\BaseStalkerController {
             $lics = $sert->getLicense($id);
 
             $now = time();
-            $expires = ($lics->getDateTo() - $now) - 60*60*24*30;
+            $expires = floor(($lics->getDateTo() - $now)/(60*60*24));
 
             $data = array(
                 'id' => $lics->getId(),
@@ -124,23 +167,35 @@ class CertificatesController extends \Controller\BaseStalkerController {
                 'date_begin' => $lics->getDateFrom(),
                 'date_to' => $lics->getDateTo(),
                 'period' => (int)date('Y', $lics->getDateTo()) - (int)date('Y', $lics->getDateFrom()),
-                'expire' => $expires > 0 ? (int)date('Y', $expires) : 0,
+                'expire' => $expires,
                 'status' => $lics->getStatusStr(),
                 'is_show' => TRUE
             );
 
             $form = $this->buildCertificateRequestForm($data, TRUE);
-            if ((int)$data['expire'] <= 30){
-                $form->get('date_to')->addError(new FormError($this->setLocalization('Validity of the certificate expires after {expire} days', '', $data['expire'], array('{expire}' => $data['expire']))));
+            if ($expires >= 0 && $expires <= 30){
+                $form->get('date_to')->addError(new FormError($this->setLocalization('Validity of the certificate expires after {expire} days', '', $expires, array('{expire}' => $expires))));
+            } elseif ($expires < 0 ){
+                $form->get('date_to')->addError(new FormError($this->setLocalization('Validity of the certificate has expired {expire} days ago', '', abs($expires), array('{expire}' => abs($expires)))));
             }
 
             if ($data['status'] == 'wrong_signature'){
                 $form->get('status')->addError(new FormError($this->setLocalization('The certificate does not match the server configuration')));
             }
+        } catch (\LicenseManagerException $e){
+            $data = array();
+            $form = $this->buildCertificateRequestForm($data, TRUE);
+            /*$form->addError(new FormError($e->getMessage()));*/
+            $date = new \DateTime();
+            error_log($date->format('Y-m-d H:i:s') . ' - LicenseManager error ' . $e->getMessage() . ' on ' . __FILE__ . ' line ' . __LINE__ . PHP_EOL);
+            array_push($this->licsServerErrors, $this->setLocalization("No connection to the server"));
         } catch (\Exception $e){
             $data = array();
             $form = $this->buildCertificateRequestForm($data, TRUE);
-            $form->addError(new FormError($e->getMessage()));
+            /*$form->addError(new FormError($e->getMessage()));*/
+            $date = new \DateTime();
+            error_log($date->format('Y-m-d H:i:s') . ' - LicenseManager error ' . $e->getMessage() . ' on ' . __FILE__ . ' line ' . __LINE__ . PHP_EOL);
+            array_push($this->licsServerErrors, $this->setLocalization("No connection to the server"));
         }
         $this->app['form'] = $form->createView();
 
@@ -149,10 +204,11 @@ class CertificatesController extends \Controller\BaseStalkerController {
             $allLicenseCountAndCost[$id]['title'] .= ' ' . $this->setLocalization($id == 1 ? 'device': 'devices');
         }
         $this->app['allLicenseCountAndCost'] = $allLicenseCountAndCost;
-        /*$this->app['allLicensePeriodAndDiscount'] = array_combine($this->getFieldFromArray($this->getLicensePeriodAndDiscount(), 'count'), array_values($this->getLicensePeriodAndDiscount()));*/
 
         $this->app['breadcrumbs']->addItem($this->setLocalization('List of certificates'), $this->app['controller_alias'] . '/current');
         $this->app['breadcrumbs']->addItem($this->setLocalization('Certificate detail'));
+
+        $this->app['licsServerErrors'] = $this->licsServerErrors;
 
         return $this->app['twig']->render('Certificates_certificate_request.twig');
     }
@@ -181,19 +237,17 @@ class CertificatesController extends \Controller\BaseStalkerController {
             $now = time();
 
             while(list($num, $lics) = each($lics_arr)){
-                $error = $lics->getError();
-                if (empty($error)) {
-                    $data['data'][] = array(
-                        'id'                => $lics->getId(),
-                        'lic_count'         => $lics->getQuantity(),
-                        'cert_begin'        => $lics->getDateFrom(),
-                        'cert_end'          => $lics->getDateTo(),
-                        'status'            => $status_label[$lics->getStatusStr()],
-                        'status_bool'       => $lics->getStatus(),
-                        'awaiting'          => $lics->getStatus() && ($lics->getHash() !== $lics->getServerHash()),
-                        'expires_30_days'   => ($lics->getDateTo() - $now) <= $expires_30_days
-                    );
-                }
+                $error .= $lics->getError();
+                $data['data'][] = array(
+                    'id'                => $lics->getId(),
+                    'lic_count'         => $lics->getQuantity(),
+                    'cert_begin'        => $lics->getDateFrom(),
+                    'cert_end'          => $lics->getDateTo(),
+                    'status'            => $status_label[$lics->getStatusStr()],
+                    'status_bool'       => $lics->getStatus(),
+                    'awaiting'          => $lics->getStatus() && ($lics->getHash() !== $lics->getServerHash()),
+                    'expires_30_days'   => ($lics->getDateTo() - $now) <= $expires_30_days
+                );
             }
 
         } catch (\Exception $e) {
@@ -241,8 +295,6 @@ class CertificatesController extends \Controller\BaseStalkerController {
         while(list($id, $row) = each($quantity)) {
             $quantity[$id]['title'] .= ' ' . $this->setLocalization($id == 1 ? 'device': 'devices');
         }
-
-        $period = $this->getLicensePeriodAndDiscount();
 
         $countries_name = $this->app['language'] == 'ru' ? 'name' : 'name_en';
 
@@ -299,13 +351,6 @@ class CertificatesController extends \Controller\BaseStalkerController {
                     'data' => (empty($data['quantity']) ? 0: $data['quantity']),
                 )
             )
-            /*->add('period', 'choice', array(
-                    'choices' => array(''=>'') + array_combine($this->getFieldFromArray($period, 'count'), $this->getFieldFromArray($period, 'title')),
-                    'attr' => array('readonly' => $show, 'disabled' => $show),
-                    'required' => TRUE,
-                    'data' => (empty($data['period']) ? 0: $data['period']),
-                )
-            )*/
             ->add('server_host', 'text', array(
                     'constraints' => array(
                         new Assert\NotBlank()
@@ -368,7 +413,7 @@ class CertificatesController extends \Controller\BaseStalkerController {
                         (string) 	$data['phone']
                     );
 
-                } catch(LicenseManagerException $e) {
+                } catch(\LicenseManagerException $e) {
                     $form->addError(new FormError($e->getMessage()));
                     return FALSE;
                 }
@@ -383,39 +428,29 @@ class CertificatesController extends \Controller\BaseStalkerController {
             array('name' => 'lic_count',    'title' => $this->setLocalization('License count'),                 'checked' => TRUE),
             array('name' => 'cert_begin',   'title' => $this->setLocalization('Begin of certificate validity'), 'checked' => TRUE),
             array('name' => 'cert_end',     'title' => $this->setLocalization('End of certificate validity'),   'checked' => TRUE),
-            array('name' => 'status',       'title' => $this->setLocalization('Status'),                        'checked' => TRUE)/*,
-            array('name' => 'operations',   'title' => $this->setLocalization('Operations'),        'checked' => TRUE)*/
+            array('name' => 'status',       'title' => $this->setLocalization('Status'),                        'checked' => TRUE)
         );
         return $attribute;
     }
 
     private function getLicenseCountAndCost(){
-        $sert = new LicenseManager();
-        $lics = $sert->getPrices();
         $return = array();
-        while(list($count, $cost) = each($lics)){
-            $return[$count] = array('id' => $count, 'title' => number_format($count, 0, '.', ' '), 'count' => $count, 'cost' => $cost);
+        try{
+            $sert = new LicenseManager();
+            $lics = $sert->getPrices();
+            while(list($count, $cost) = each($lics)){
+                $return[$count] = array('id' => $count, 'title' => number_format($count, 0, '.', ' '), 'count' => $count, 'cost' => $cost);
+            }
+        } catch (\LicenseManagerException $e){
+            $date = new \DateTime();
+            error_log($date->format('Y-m-d H:i:s') . ' - LicenseManager error ' . $e->getMessage() . ' on ' . __FILE__ . ' line ' . __LINE__ . PHP_EOL);
+            array_push($this->licsServerErrors, $this->setLocalization("No connection to the server"));
+        } catch (\Exception $e){
+            $date = new \DateTime();
+            error_log($date->format('Y-m-d H:i:s') . ' - LicenseManager error ' . $e->getMessage() . ' on ' . __FILE__ . ' line ' . __LINE__ . PHP_EOL);
+            array_push($this->licsServerErrors, $this->setLocalization("No connection to the server"));
         }
         return $return;
-        /*return array(
-            array('id' => 1, 'title' => '1', 'count' => 1, 'cost' => 0),
-            array('id' => 2, 'title' => '50', 'count' => 50, 'cost' => 100),
-            array('id' => 3, 'title' => '100', 'count' => 100, 'cost' => 200),
-            array('id' => 4, 'title' => '500', 'count' => 500, 'cost' => 1000),
-            array('id' => 5, 'title' => '1 000', 'count' => 1000, 'cost' => 2000),
-            array('id' => 6, 'title' => '2 000', 'count' => 2000, 'cost' => 4000),
-            array('id' => 7, 'title' => '5 000', 'count' => 5000, 'cost' => 10000),
-            array('id' => 8, 'title' => '10 000', 'count' => 10000, 'cost' => 20000)
-        );*/
     }
 
-    private function getLicensePeriodAndDiscount(){
-        return array(
-            array('id' => 1, 'title' => '1 ' . $this->setLocalization('year'), 'count' => 1, 'discount' => 0),
-            array('id' => 2, 'title' => '2 ' . $this->setLocalization('years'), 'count' => 2, 'discount' => 1),
-            array('id' => 3, 'title' => '3 ' . $this->setLocalization('years'), 'count' => 3, 'discount' => 2),
-            array('id' => 4, 'title' => '4 ' . $this->setLocalization('years'), 'count' => 4, 'discount' => 3),
-            array('id' => 5, 'title' => '5 ' . $this->setLocalization('years'), 'count' => 5, 'discount' => 4)
-        );
-    }
 }
