@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-07 18:39+0300\n"
-"PO-Revision-Date: 2016-09-08 11:05+0300\n"
+"POT-Creation-Date: 2016-09-08 11:34+0300\n"
+"PO-Revision-Date: 2016-09-08 11:34+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -272,8 +272,8 @@ msgstr "ТВ архив был успешно перезапущен."
 #: ../../../../admin/src/Controller/VideoClubController.php:1528
 #: ../../../../admin/src/Controller/VideoClubController.php:1642
 #: ../../../../admin/src/Controller/VideoClubController.php:1686
-#: ../../../../admin/src/Controller/CertificatesController.php:183
-#: ../../../../admin/src/Controller/CertificatesController.php:228
+#: ../../../../admin/src/Controller/CertificatesController.php:219
+#: ../../../../admin/src/Controller/CertificatesController.php:264
 #: ../../../../admin/src/Controller/BroadcastServersController.php:256
 #: ../../../../admin/src/Controller/BroadcastServersController.php:276
 #: ../../../../admin/src/Controller/BroadcastServersController.php:297
@@ -603,7 +603,7 @@ msgstr "Такой номер уже используется"
 #: ../../../../admin/src/Controller/EventsController.php:869
 #: ../../../../admin/src/Controller/VideoClubController.php:2284
 #: ../../../../admin/src/Controller/VideoClubController.php:2426
-#: ../../../../admin/src/Controller/CertificatesController.php:391
+#: ../../../../admin/src/Controller/CertificatesController.php:427
 #: ../../../../admin/src/Controller/BroadcastServersController.php:373
 #: ../../../../admin/src/Controller/BroadcastServersController.php:392
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:1303
@@ -777,7 +777,7 @@ msgstr "Статус мониторинга"
 #: ../../../../admin/src/Controller/VideoClubController.php:2323
 #: ../../../../admin/src/Controller/VideoClubController.php:2409
 #: ../../../../admin/src/Controller/VideoClubController.php:2430
-#: ../../../../admin/src/Controller/CertificatesController.php:395
+#: ../../../../admin/src/Controller/CertificatesController.php:431
 #: ../../../../admin/src/Controller/BroadcastServersController.php:397
 #: ../../../../admin/src/Controller/AudioClubController.php:1266
 #: ../../../../admin/src/Controller/AudioClubController.php:1431
@@ -1921,53 +1921,55 @@ msgstr "Неправильная подпись"
 msgid "Undefined"
 msgstr "Не определен"
 
-#: ../../../../admin/src/Controller/CertificatesController.php:94
-#: ../../../../admin/src/Controller/CertificatesController.php:168
-#: ../../../../admin/src/Controller/CertificatesController.php:260
-msgid "device"
-msgstr "устройство"
-
-#: ../../../../admin/src/Controller/CertificatesController.php:98
-#: ../../../../admin/src/Controller/CertificatesController.php:172
-msgid "List of certificates"
-msgstr "Список сертификатов"
-
-#: ../../../../admin/src/Controller/CertificatesController.php:99
-msgid "Certificate request"
-msgstr "Запрос сертификата"
-
-#: ../../../../admin/src/Controller/CertificatesController.php:141
-msgid "Validity of the certificate expires after {expire} days"
-msgstr "Срок действия сертификата истекает через {expire} дней"
-
-#: ../../../../admin/src/Controller/CertificatesController.php:143
-msgid "Validity of the certificate has expired {expire} days ago"
-msgstr "Срок действия сертификата истек {expire} дней назад"
-
-#: ../../../../admin/src/Controller/CertificatesController.php:147
-msgid "The certificate does not match the server configuration"
-msgstr "Сертификат не соответствует конфигурации сервера"
-
-#: ../../../../admin/src/Controller/CertificatesController.php:155
-#: ../../../../admin/src/Controller/CertificatesController.php:162
-#: ../../../../admin/src/Controller/CertificatesController.php:411
-#: ../../../../admin/src/Controller/CertificatesController.php:415
+#: ../../../../admin/src/Controller/CertificatesController.php:111
+#: ../../../../admin/src/Controller/CertificatesController.php:115
+#: ../../../../admin/src/Controller/CertificatesController.php:191
+#: ../../../../admin/src/Controller/CertificatesController.php:198
+#: ../../../../admin/src/Controller/CertificatesController.php:447
+#: ../../../../admin/src/Controller/CertificatesController.php:451
 msgid "No connection to the server"
 msgstr "Нет подключения к серверу"
 
-#: ../../../../admin/src/Controller/CertificatesController.php:173
+#: ../../../../admin/src/Controller/CertificatesController.php:130
+#: ../../../../admin/src/Controller/CertificatesController.php:204
+#: ../../../../admin/src/Controller/CertificatesController.php:296
+msgid "device"
+msgstr "устройство"
+
+#: ../../../../admin/src/Controller/CertificatesController.php:134
+#: ../../../../admin/src/Controller/CertificatesController.php:208
+msgid "List of certificates"
+msgstr "Список сертификатов"
+
+#: ../../../../admin/src/Controller/CertificatesController.php:135
+msgid "Certificate request"
+msgstr "Запрос сертификата"
+
+#: ../../../../admin/src/Controller/CertificatesController.php:177
+msgid "Validity of the certificate expires after {expire} days"
+msgstr "Срок действия сертификата истекает через {expire} дней"
+
+#: ../../../../admin/src/Controller/CertificatesController.php:179
+msgid "Validity of the certificate has expired {expire} days ago"
+msgstr "Срок действия сертификата истек {expire} дней назад"
+
+#: ../../../../admin/src/Controller/CertificatesController.php:183
+msgid "The certificate does not match the server configuration"
+msgstr "Сертификат не соответствует конфигурации сервера"
+
+#: ../../../../admin/src/Controller/CertificatesController.php:209
 msgid "Certificate detail"
 msgstr "Информация о сертификате"
 
-#: ../../../../admin/src/Controller/CertificatesController.php:392
+#: ../../../../admin/src/Controller/CertificatesController.php:428
 msgid "License count"
 msgstr "Количество лицензий"
 
-#: ../../../../admin/src/Controller/CertificatesController.php:393
+#: ../../../../admin/src/Controller/CertificatesController.php:429
 msgid "Begin of certificate validity"
 msgstr "Начало действия сертификата"
 
-#: ../../../../admin/src/Controller/CertificatesController.php:394
+#: ../../../../admin/src/Controller/CertificatesController.php:430
 msgid "End of certificate validity"
 msgstr "Конец действия сертификата"
 
@@ -10283,7 +10285,8 @@ msgstr "ТВ каналы отсутствуют"
 msgid "You can configure DVB channels in the settings menu"
 msgstr "Вы можете настроить DVB каналы в меню настроек"
 
-#: ../../../lang/stb.php:531 ../../../../admin/json_menu/menu.json:185
+#: ../../../lang/stb.php:531
+#: ../../../../admin/json_menu/menu.json:185
 msgid "Applications"
 msgstr "Приложения"
 
@@ -12178,9 +12181,6 @@ msgstr "Номер службы в справочнике. Должны соде
 msgid "Phone book"
 msgstr "Телефонный справочник"
 
-msgid "Request of the certificate"
-msgstr "Запрос сертификата"
-
 msgid "Reset claims counter?"
 msgstr "Вы действительно хотите сбросить счетчик жалоб?"
 
@@ -12480,6 +12480,9 @@ msgstr "Внешний вид"
 #: ../../../../admin/json_menu/menu.json:386
 msgid "Firmware update"
 msgstr "Обновление прошивки"
+
+#~ msgid "Request of the certificate"
+#~ msgstr "Запрос сертификата"
 
 #~ msgid "Request a new certificate"
 #~ msgstr "Запрос нового сертификата"

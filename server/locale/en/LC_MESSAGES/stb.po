@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-07 18:40+0300\n"
-"PO-Revision-Date: 2016-09-07 18:40+0300\n"
+"POT-Creation-Date: 2016-09-08 11:34+0300\n"
+"PO-Revision-Date: 2016-09-08 11:34+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -271,8 +271,8 @@ msgstr "TV Archive has been restarted."
 #: ../../../../admin/src/Controller/VideoClubController.php:1528
 #: ../../../../admin/src/Controller/VideoClubController.php:1642
 #: ../../../../admin/src/Controller/VideoClubController.php:1686
-#: ../../../../admin/src/Controller/CertificatesController.php:183
-#: ../../../../admin/src/Controller/CertificatesController.php:228
+#: ../../../../admin/src/Controller/CertificatesController.php:219
+#: ../../../../admin/src/Controller/CertificatesController.php:264
 #: ../../../../admin/src/Controller/BroadcastServersController.php:256
 #: ../../../../admin/src/Controller/BroadcastServersController.php:276
 #: ../../../../admin/src/Controller/BroadcastServersController.php:297
@@ -598,7 +598,7 @@ msgstr "This number is already in use"
 #: ../../../../admin/src/Controller/EventsController.php:869
 #: ../../../../admin/src/Controller/VideoClubController.php:2284
 #: ../../../../admin/src/Controller/VideoClubController.php:2426
-#: ../../../../admin/src/Controller/CertificatesController.php:391
+#: ../../../../admin/src/Controller/CertificatesController.php:427
 #: ../../../../admin/src/Controller/BroadcastServersController.php:373
 #: ../../../../admin/src/Controller/BroadcastServersController.php:392
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:1303
@@ -772,7 +772,7 @@ msgstr "Monitoring status"
 #: ../../../../admin/src/Controller/VideoClubController.php:2323
 #: ../../../../admin/src/Controller/VideoClubController.php:2409
 #: ../../../../admin/src/Controller/VideoClubController.php:2430
-#: ../../../../admin/src/Controller/CertificatesController.php:395
+#: ../../../../admin/src/Controller/CertificatesController.php:431
 #: ../../../../admin/src/Controller/BroadcastServersController.php:397
 #: ../../../../admin/src/Controller/AudioClubController.php:1266
 #: ../../../../admin/src/Controller/AudioClubController.php:1431
@@ -1916,53 +1916,55 @@ msgstr "Wrong signature"
 msgid "Undefined"
 msgstr "Undefined"
 
-#: ../../../../admin/src/Controller/CertificatesController.php:94
-#: ../../../../admin/src/Controller/CertificatesController.php:168
-#: ../../../../admin/src/Controller/CertificatesController.php:260
-msgid "device"
-msgstr "device"
-
-#: ../../../../admin/src/Controller/CertificatesController.php:98
-#: ../../../../admin/src/Controller/CertificatesController.php:172
-msgid "List of certificates"
-msgstr "List of certificates"
-
-#: ../../../../admin/src/Controller/CertificatesController.php:99
-msgid "Certificate request"
-msgstr "Certificate request"
-
-#: ../../../../admin/src/Controller/CertificatesController.php:141
-msgid "Validity of the certificate expires after {expire} days"
-msgstr "Validity of the certificate expires after {expire} days"
-
-#: ../../../../admin/src/Controller/CertificatesController.php:143
-msgid "Validity of the certificate has expired {expire} days ago"
-msgstr "Validity of the certificate has expired {expire} days ago"
-
-#: ../../../../admin/src/Controller/CertificatesController.php:147
-msgid "The certificate does not match the server configuration"
-msgstr "The certificate does not match the server configuration"
-
-#: ../../../../admin/src/Controller/CertificatesController.php:155
-#: ../../../../admin/src/Controller/CertificatesController.php:162
-#: ../../../../admin/src/Controller/CertificatesController.php:411
-#: ../../../../admin/src/Controller/CertificatesController.php:415
+#: ../../../../admin/src/Controller/CertificatesController.php:111
+#: ../../../../admin/src/Controller/CertificatesController.php:115
+#: ../../../../admin/src/Controller/CertificatesController.php:191
+#: ../../../../admin/src/Controller/CertificatesController.php:198
+#: ../../../../admin/src/Controller/CertificatesController.php:447
+#: ../../../../admin/src/Controller/CertificatesController.php:451
 msgid "No connection to the server"
 msgstr "No connection to the server"
 
-#: ../../../../admin/src/Controller/CertificatesController.php:173
+#: ../../../../admin/src/Controller/CertificatesController.php:130
+#: ../../../../admin/src/Controller/CertificatesController.php:204
+#: ../../../../admin/src/Controller/CertificatesController.php:296
+msgid "device"
+msgstr "device"
+
+#: ../../../../admin/src/Controller/CertificatesController.php:134
+#: ../../../../admin/src/Controller/CertificatesController.php:208
+msgid "List of certificates"
+msgstr "List of certificates"
+
+#: ../../../../admin/src/Controller/CertificatesController.php:135
+msgid "Certificate request"
+msgstr "Certificate request"
+
+#: ../../../../admin/src/Controller/CertificatesController.php:177
+msgid "Validity of the certificate expires after {expire} days"
+msgstr "Validity of the certificate expires after {expire} days"
+
+#: ../../../../admin/src/Controller/CertificatesController.php:179
+msgid "Validity of the certificate has expired {expire} days ago"
+msgstr "Validity of the certificate has expired {expire} days ago"
+
+#: ../../../../admin/src/Controller/CertificatesController.php:183
+msgid "The certificate does not match the server configuration"
+msgstr "The certificate does not match the server configuration"
+
+#: ../../../../admin/src/Controller/CertificatesController.php:209
 msgid "Certificate detail"
 msgstr "Certificate detail"
 
-#: ../../../../admin/src/Controller/CertificatesController.php:392
+#: ../../../../admin/src/Controller/CertificatesController.php:428
 msgid "License count"
 msgstr "License count"
 
-#: ../../../../admin/src/Controller/CertificatesController.php:393
+#: ../../../../admin/src/Controller/CertificatesController.php:429
 msgid "Begin of certificate validity"
 msgstr "Begin of certificate validity"
 
-#: ../../../../admin/src/Controller/CertificatesController.php:394
+#: ../../../../admin/src/Controller/CertificatesController.php:430
 msgid "End of certificate validity"
 msgstr "End of certificate validity"
 
@@ -12148,9 +12150,6 @@ msgstr "Order of service in the directory. Must contain digits only"
 msgid "Phone book"
 msgstr "Phone book"
 
-msgid "Request of the certificate"
-msgstr "Request of the certificate"
-
 msgid "Reset claims counter?"
 msgstr "Reset claims counter?"
 
@@ -12447,6 +12446,9 @@ msgstr "Appearance"
 #: ../../../../admin/json_menu/menu.json:386
 msgid "Firmware update"
 msgstr "Firmware update"
+
+#~ msgid "Request of the certificate"
+#~ msgstr "Request of the certificate"
 
 #~ msgid "Request a new certificate"
 #~ msgstr "Request a new certificate"
