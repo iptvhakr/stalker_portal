@@ -187,7 +187,7 @@
             if (item.awaiting) {
                 item.status += "<br><a class='main_ajax txt-success' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/certificate-install' data-id='" + item.id + "'>{{ 'Install'|trans }}</a>";
             } else if ( status == 5 ) {
-                item.status += "<br><a class='txt-danger' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/certificate-detail?id=" + item.id + "'>{{ 'Сertificate request'|trans }}</a>";
+                item.status += "<br><a class='txt-danger' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/certificate-request?id=" + item.id + "'>{{ 'Сertificate request'|trans }}</a>";
             }
             var dateSet = new Date();
             dateSet.setTime(item.cert_begin * 1000);
@@ -196,7 +196,7 @@
             item.cert_end = dateSet.toLocaleFormat("%d.%m.%Y");
 
             if (item.expires_30_days) {
-                item.cert_end += "<br><a class='txt-danger' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/certificate-detail?id=" + item.id + "'>{{ 'Сertificate request'|trans }}</a>";
+                item.cert_end += "<br><a class='txt-danger' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/certificate-request?id=" + item.id + "'>{{ 'Сertificate request'|trans }}</a>";
             }
 
             item.id = "<a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/certificate-detail?id=" + item.id + "'>" + item.id + "</a>";

@@ -80,7 +80,43 @@ class CertificatesController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
 
-        $data = !empty($this->postData) ? $this->postData: array();
+        $data = array();
+        if (!empty($this->data['id'])) {
+            try{
+                $sert = new LicenseManager();
+                $lics = $sert->getLicense($this->data['id']);
+
+                $now = time();
+                $expires = floor(($lics->getDateTo() - $now)/(60*60*24));
+
+                $data = array(
+                    'id' => $lics->getId(),
+                    'company' => $lics->getCompany(),
+                    'contact_name' => $lics->getContactName(),
+                    'phone' => $lics->getPhone(),
+                    'contact_address' => $lics->getContactAddress(),
+                    'country' => $lics->getCountry(),
+                    'quantity' => $lics->getQuantity(),
+                    'date_begin' => $lics->getDateFrom(),
+                    'date_to' => $lics->getDateTo(),
+                    'period' => (int)date('Y', $lics->getDateTo()) - (int)date('Y', $lics->getDateFrom()),
+                    'expire' => $expires,
+                    'status' => $lics->getStatusStr(),
+                    'is_show' => FALSE
+                );
+
+            } catch (\LicenseManagerException $e){
+                $date = new \DateTime();
+                error_log($date->format('Y-m-d H:i:s') . ' - LicenseManager error ' . $e->getMessage() . ' on ' . __FILE__ . ' line ' . __LINE__ . PHP_EOL);
+                array_push($this->licsServerErrors, $this->setLocalization("No connection to the server"));
+            } catch (\Exception $e){
+                $date = new \DateTime();
+                error_log($date->format('Y-m-d H:i:s') . ' - LicenseManager error ' . $e->getMessage() . ' on ' . __FILE__ . ' line ' . __LINE__ . PHP_EOL);
+                array_push($this->licsServerErrors, $this->setLocalization("No connection to the server"));
+            }
+        } elseif (!empty($this->postData)) {
+            $data = $this->postData;
+        }
 
         $form = $this->buildCertificateRequestForm($data, !empty($data['form']['is_show']) );
 
