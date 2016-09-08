@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-09-07 18:39+0300\n"
-"PO-Revision-Date: 2016-09-07 18:40+0300\n"
+"PO-Revision-Date: 2016-09-08 11:05+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -1919,7 +1919,7 @@ msgstr "Неправильная подпись"
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:138
 #: ../../../../admin/src/Controller/ApplicationCatalogController.php:158
 msgid "Undefined"
-msgstr "Не определено"
+msgstr "Не определен"
 
 #: ../../../../admin/src/Controller/CertificatesController.php:94
 #: ../../../../admin/src/Controller/CertificatesController.php:168
@@ -10283,8 +10283,7 @@ msgstr "ТВ каналы отсутствуют"
 msgid "You can configure DVB channels in the settings menu"
 msgstr "Вы можете настроить DVB каналы в меню настроек"
 
-#: ../../../lang/stb.php:531
-#: ../../../../admin/json_menu/menu.json:185
+#: ../../../lang/stb.php:531 ../../../../admin/json_menu/menu.json:185
 msgid "Applications"
 msgstr "Приложения"
 
