@@ -187,16 +187,7 @@
             JSErrorModalBox(data);
         };
 
-        var removeVideoCategory = function (data) {
-            $("#modalbox").data('complete', 1);
-            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Done'|trans }}! ' + (data.msg ? data.msg : '') +  '</span>');
-            $('#datatable-1').DataTable().ajax.reload();
-        };
-        var removeVideoCategoryError = function(data){
-            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Error'|trans }}! ' + (data.error? data.error: '') +  '</span>');
-            $("#modalbox").data('complete', 1);
-        };
-        
+
     function closeModalBox(){
         $("#modalbox").hide();
         $('#modalbox').find('.modal-header-name span').empty();

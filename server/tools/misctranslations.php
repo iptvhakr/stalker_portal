@@ -508,6 +508,7 @@ _('List of video categories by page + filters');
 _('Change the order of categories');
 _('List of video genres');
 _('List of video genres by page + filters');
+_('Validation of number of the video-category');
 
 _('admin');
 _('List of tv genres');

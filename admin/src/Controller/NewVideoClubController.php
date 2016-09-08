@@ -1714,7 +1714,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
 
     }
 
-    public function video_genres_list_json(){
+    public function video_genres_list_json($local_uses = FALSE){
 
         if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
@@ -1724,9 +1724,12 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         $response = array(
             'data' => array(),
             'recordsTotal' => 0,
-            'recordsFiltered' => 0,
-            'action' => 'openModalBox'
+            'recordsFiltered' => 0
         );
+
+        if (!$local_uses) {
+            $response['action'] = 'openModalBox';
+        }
 
         $error = $this->setLocalization('Error');
         $param = (!empty($this->data) ? $this->data : array());
@@ -1793,7 +1796,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
 
         $error = "";
-        if ($this->isAjax) {
+        if ($this->isAjax && !$local_uses) {
             $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
         } else {
@@ -1812,6 +1815,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'manageGenre';
+        $data['data'] = array();
         $error = $this->setLocalization('Failed');
 
         $where = array(
@@ -1827,6 +1831,8 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
             $where['cat_genre.id<>'] = $this->postData['id'];
             $operation_params['where'] = array('cat_genre.id' => $operation_params['data']['id']);
             unset($operation_params['data']['id']);
+            $data['action'] = 'updateTableRow';
+            $data['id'] = $this->postData['id'];
         } else {
             $operation = 'insert';
         }
@@ -1834,8 +1840,17 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         $check = $this->db->getVideoCatGenres(array('where' => $where));
 
         if (empty($check)) {
-            $error = '';
-            $data['msg'] = $this->setLocalization(($operation == 'insert') ? 'Inserted' : 'Updated') . ' ' . call_user_func(array($this->db, $operation."VideoCatGenres"), $operation_params);
+            $data['msg'] = $this->setLocalization(($operation == 'insert') ? 'Inserted' : 'Updated');
+            $result = call_user_func(array($this->db, $operation."VideoCatGenres"), $operation_params);
+            if (is_numeric($result)) {
+                $error = '';
+                if ($result === 0) {
+                    $data['nothing_to_do'] = TRUE;
+                }
+            }
+            if (!empty($this->postData['id'])) {
+                $data = array_merge_recursive($data, $this->video_genres_list_json(TRUE));
+            }
         } else {
             $error = $this->setLocalization('In this category already exists such a genre');
         }
@@ -1855,10 +1870,16 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'deleteGenre';
+        $data['action'] = 'deleteTableRow';
+        $data['id'] = $this->postData['genresid'];
         $error = $this->setLocalization('Failed');
         if ($result = $this->db->deleteVideoCatGenres(array('id' => $this->postData['genresid']))) {
-            $error = '';
+            if (is_numeric($result)) {
+                $error = '';
+                if ($result === 0) {
+                    $data['nothing_to_do'] = TRUE;
+                }
+            }
             $data['msg'] = $this->setLocalization('Deleted') . ' ' . $result;
         }
 

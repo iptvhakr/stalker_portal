@@ -946,9 +946,15 @@ function updateTableDataError(obj){
 function checkData(obj){
     if (typeof(obj.input_id) != 'undefined') {
         $("#" + obj.input_id).next('div').empty().append('<i class="txt-success fa fa-check"></i> ' + obj.chk_rezult).css('visibility', 'visible').show();
-        if (!$('#modalbox [type="submit"]').prop('disabled')){
+
+        var errFields = $('#modalbox [type="submit"]').data('err-fields') || '';
+
+        errFields = errFields.replace(obj.input_id + '|', '');
+
+        if (errFields.length == 0){
             $('#modalbox [type="submit"]').prop('disabled', false);
         }
+        $('#modalbox [type="submit"]').data('err-fields', errFields);
     } else {
         JSSuccessModalBox({msg: obj.chk_rezult});
     }
@@ -958,9 +964,11 @@ function checkDataError(obj){
     if (typeof(obj.input_id) != 'undefined') {
         $("#" + obj.input_id).next('div').empty().append('<i class="txt-danger fa fa-ban"></i> ' + obj.chk_rezult).css('visibility', 'visible').show();
 
-        var errFields = $('#modalbox [type="submit"]').data('err-fields');
+        var errFields = $('#modalbox [type="submit"]').data('err-fields') || '';
 
-
+        if (errFields.length == 0 || errFields.split('|').indexOf(obj.input_id) == -1) {
+            $('#modalbox [type="submit"]').data('err-fields', errFields + obj.input_id + '|');
+        }
         $('#modalbox [type="submit"]').prop('disabled', true);
     } else {
         JSErrorModalBox({msg: obj.chk_rezult});
