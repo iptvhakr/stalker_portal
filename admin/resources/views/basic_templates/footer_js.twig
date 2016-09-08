@@ -207,7 +207,7 @@
             }
             var cTime = new Date();
             if ((cTime.getTime() - certificateCheck.timestamp) > 86400000 ) {
-                ajaxPostSend('{{app.request.baseUrl}}/certificates/current-list-json', {notty_check: 1});
+                ajaxPostSend('{{app.request.baseUrl}}/certificates/current-list-json', {notty_check: 1}, false, false, true);
             } else if (!certificateCheck.closed){
                 createCertModal();
             }

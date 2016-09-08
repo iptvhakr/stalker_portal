@@ -1040,9 +1040,9 @@ function ajaxError(data, alertMsg, consoleMsg){
             window['errAction']();
         } else {
             var msg = '';
-            if (typeof (data.responseJSON.msg) != 'undefined') {
+            if (data && data.responseJSON && data.responseJSON.msg) {
                 msg = data.responseJSON.msg;
-            } else if (typeof (data.responseJSON.error) != 'undefined') {
+            } else if (data && data.responseJSON && data.responseJSON.error) {
                 msg = data.responseJSON.error;
             }
             JSErrorModalBox({msg: msg});
