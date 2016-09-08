@@ -7,8 +7,14 @@ var iid=1;
 var icF=false;
 var model=parent.stb.RDir("Model");
 var read=JSON.parse(parent.stb.GetEnv('{"varList":["timezone_conf"]}'));
-var menuT=new Array();
-menuT=[['select',parent.t('Language:')],['select',parent.t('Country:')],['select',parent.t('City:')],['select',parent.t('Time zone:')]];
+var pread = ["language", "country", "city", "timezone", "units"];
+var menuT=[
+    ['select',parent.t('Language:')],
+    ['select',parent.t('Country:')],
+    ['select',parent.t('City:')],
+    ['select',parent.t('Time zone:')],
+    ['select',parent.t('Units:'), 'metric', parent.t('Metric'), 'imperial', parent.t('Imperial')]
+];
 var  mid=menuT.length+2;
 var City=new Object();
 var index=0;var maxIn=0;
@@ -100,9 +106,16 @@ function onLoad()
             init();
             parent.cont.focus();
             document.getElementById("i1").focus();
-            document.getElementById("i5").value=parent.t('OK');
-            document.getElementById("i6").value=parent.t('Cancel');
-            menuT[2][0]='ic';},100);
+            document.getElementById("i6").value=parent.t('OK');
+            document.getElementById("i7").value=parent.t('Cancel');
+            menuT[2][0]='ic';
+
+            for (var i=0; i<document.getElementById("i5").options.length; i++){
+                if (parent.prof.units == document.getElementById("i5").options[i].value){
+                    document.getElementById("i5").selectedIndex = i;
+                }
+            }
+        },100);
 }
 
 function pressKeyH(e)
@@ -204,6 +217,7 @@ function submit()
     var pr=false;
     var la=document.getElementById('i1').value;
     var tm=document.getElementById('i4').value;
+    var units=document.getElementById('i5').value;
     var conf=JSON.parse(parent.stb.GetEnv('{"varList":["language","timezone_conf_int"]}'));
     if(conf.result.language != la.substr(0, 2)){
         wr += '"language":"'+la.substr(0, 2)+'"';
@@ -217,7 +231,7 @@ function submit()
         wr+='}';
         parent.stb.SetEnv(wr);
     }    
-    parent.load({"type":"stb","action":"set_locale","locale":la,"city":numberC},function(result){if(!result)parent.erMes(parent.t('Saving error'),"i"+iid);else parent.rebut=true;back();parent.stb.SendEventToPortal(JSON.stringify({"type":"settings","refresh_weather":true}));});
+    parent.load({"type":"stb","action":"set_locale","locale":la,"city":numberC,"units":units},function(result){if(!result)parent.erMes(parent.t('Saving error'),"i"+iid);else parent.rebut=true;back();parent.stb.SendEventToPortal(JSON.stringify({"type":"settings","refresh_weather":true}));});
 }
 
 function change(a){if(iid>mid-2){if(iid+a<=mid&&iid+a>=mid-1){iid+=a;document.getElementById('i'+iid).focus();}}
@@ -251,13 +265,18 @@ else {var d=document.getElementById('i'+iid);
             <td align="right"><span id="t4"></span>
             <td><div class="sub_select"><select id="i4"></select></div>
             </td>
-          </tr>   
+          </tr>
+          <tr>
+            <td align="right"><span id="t5"></span>
+            <td><div class="sub_select"><select id="i5"></select></div>
+            </td>
+          </tr>
         </table>
 
         </div>
     <div id="footer">
-        <input id="i6" type="button"  value="" onClick="back();"/>
-        <input id="i5" type="button" value="" onClick="submit();"/>
+        <input id="i7" type="button"  value="" onClick="back();"/>
+        <input id="i6" type="button" value="" onClick="submit();"/>
     </div>
 </body>
 </html>
