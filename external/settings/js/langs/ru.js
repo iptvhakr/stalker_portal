@@ -250,6 +250,6 @@ var lang = {
     "Password must contain only digits": "Пароль должен содержать только цифры",
 
     "Units:" : "Единицы измерения: ",
-    "Metric" : "Мертические",
+    "Metric" : "Метрические",
     "Imperial" : "Имперские"
 };
