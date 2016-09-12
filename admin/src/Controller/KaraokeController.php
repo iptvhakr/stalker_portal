@@ -40,7 +40,7 @@ class KaraokeController extends \Controller\BaseStalkerController {
        
     //----------------------- ajax method --------------------------------------
 
-    public function karaoke_list_json($param = array()) {
+    public function karaoke_list_json($local_uses = FALSE){
         
         if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
@@ -51,9 +51,12 @@ class KaraokeController extends \Controller\BaseStalkerController {
         $response = array(
             'data' => array(),
             'recordsTotal' => 0,
-            'recordsFiltered' => 0,
-            'action' => 'setKaraokeModal'
+            'recordsFiltered' => 0
         );
+
+        if (!$local_uses) {
+            $response['action'] = 'setKaraokeModal';
+        }
         
         $filds_for_select = array(
             "id" => "`karaoke`.`id` as `id`",
@@ -112,7 +115,6 @@ class KaraokeController extends \Controller\BaseStalkerController {
             $query_param['order']['added'] = 'DESC';
         }
         
-        
         $response['recordsTotal'] = $this->db->getTotalRowsKaraokeList();
         $response["recordsFiltered"] = $this->db->getTotalRowsKaraokeList($query_param['where'], $query_param['like']);
 
@@ -126,13 +128,14 @@ class KaraokeController extends \Controller\BaseStalkerController {
         
         $response['data'] = array_map(function($row){
             $row['added'] = (int) strtotime($row['added']);
+            $row['RowOrder'] = "dTRow_" . $row['id'];
             return $row;
         }, $response['data']);
         
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         
         $error = "";
-        if ($this->isAjax) {
+        if ($this->isAjax && !$local_uses) {
             $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
         } else {
@@ -165,7 +168,8 @@ class KaraokeController extends \Controller\BaseStalkerController {
 
         } else {
             $operation = 'updateKaraoke';
-            $karaoke['id'] = $this->postData['id'];
+            $data['id'] = $this->postData['karaokeid'] = $karaoke['id'] = $this->postData['id'];
+            $data['action'] = 'updateTableRow';
         }
         unset($karaoke[0]['id']);
 
@@ -175,6 +179,8 @@ class KaraokeController extends \Controller\BaseStalkerController {
                 $error = '';
                 if ($result === 0) {
                     $data['nothing_to_do'] = TRUE;
+                } elseif ($operation != 'insertKaraoke') {
+                    $data = array_merge_recursive($data, $this->karaoke_list_json(TRUE));
                 }
             }
         } else {
@@ -196,7 +202,7 @@ class KaraokeController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'manageKaraoke';
+        $data['action'] = 'deleteTableRow';
         $data['id'] = $this->postData['karaokeid'];
         $error = '';    
         $this->db->deleteKaraoke(array('id' => $this->postData['karaokeid']));
@@ -216,9 +222,10 @@ class KaraokeController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'manageKaraoke';
+        $data['action'] = 'updateTableRow';
         $data['id'] = $this->postData['karaokeid'];
         $this->db->updateKaraoke(array('done' => (int)(!((bool) $this->postData['done'])), 'done_time' => 'NOW()'), $this->postData['karaokeid']);
+        $data = array_merge_recursive($data, $this->karaoke_list_json(TRUE));
         $error = '';    
         $response = $this->generateAjaxResponse($data, $error);
 
@@ -236,7 +243,7 @@ class KaraokeController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'manageKaraoke';
+        $data['action'] = 'updateTableRow';
         $data['id'] = $this->postData['karaokeid'];
         $error = $this->setLocalization('Failed');
 
@@ -256,7 +263,7 @@ class KaraokeController extends \Controller\BaseStalkerController {
         }
         ob_end_clean();
 
-        if (!empty($good_storages) || $item[0]['protocol'] == 'custom') {
+        if (!empty($good_storages) || $item[0]['protocol'] == 'custom' || ((bool) $this->postData['accessed'])) {
 
             if ($item[0]['protocol'] == 'custom' && empty($item[0]['rtsp_url'])){
                 $error = $this->setLocalization('You can not publishing record with protocol - "custom", and with empty field - URL');
@@ -270,7 +277,7 @@ class KaraokeController extends \Controller\BaseStalkerController {
                         @chmod(KARAOKE_STORAGE_DIR . '/' . $this->postData['karaokeid'] . '.mpg', 0666);
                     }
                 }
-
+                $data = array_merge_recursive($data, $this->karaoke_list_json(TRUE));
                 $error = '';
             }
         } else {
