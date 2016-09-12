@@ -1232,11 +1232,46 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
     public function getCategories()
     {
 
+        if (!Config::getSafe('show_empty_vclub_category', true)) {
+
+            $user = User::getInstance($this->stb->id);
+            $all_users_video_ids = $user->getServicesByType('video');
+
+            $user_categories = Mysql::getInstance()->from('video')->select('category_id')->groupby('category_id');
+
+            if (!$this->stb->isModerator()) {
+                $user_categories->where(array(
+                    'accessed' => 1,
+                    'status'   => 1,
+                ));
+
+                if ($this->stb->hd) {
+                    $user_categories->where(array(
+                        'disable_for_hd_devices' => 0,
+                    ));
+                }
+            } else {
+                $user_categories->where(array(
+                    'status>=' => 1,
+                ));
+            }
+
+            if (Config::get('enable_tariff_plans') && $all_users_video_ids != 'all') {
+                $user_categories->in('video.id', $all_users_video_ids);
+            }
+
+            $user_categories = $user_categories->get()->all('category_id');
+        }
+
         $categories = $this->db
             ->select('id, category_name as title, category_alias as alias, censored')
-            ->from("media_category")
-            ->get()
-            ->all();
+            ->from("media_category");
+
+        if (!Config::getSafe('show_empty_vclub_category', true) && isset($user_categories)){
+            $categories->in('id', $user_categories);
+        }
+
+        $categories = $categories->get()->all();
 
         array_unshift($categories, array('id' => '*', 'title' => $this->all_title, 'alias' => '*'));
 
