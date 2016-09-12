@@ -103,18 +103,11 @@
                     e.stopPropagation();
                     e.preventDefault();
                     var _this = this;
-                    $("#modalbox").data('complete', 0);
                     var sendData = $(_this).data();
                     if ($(_this).attr("disabled")) {
                         JSErrorModalBox({msg: "{{ 'Action is not available'|trans }}! " + ($(_this).attr('warning_msg') ? $(_this).attr('warning_msg') : '')});
                     } else {
-                        showModalBox();
-                        var timer = setInterval(function(){
-                            if ($("#modalbox").is(":visible")) {
-                                ajaxPostSend($(_this).attr('href'), sendData, false );
-                                clearInterval(timer);
-                            }
-                        }, 10);
+                        ajaxPostSend($(_this).attr('href'), sendData, false );
                     }
                     $(this).closest('div.open').removeClass('open');
                     return false;
@@ -145,11 +138,6 @@
 
         document.addEventListener("DOMContentLoaded", yelp, false);
 
-        var manageAudioAlbum = function (obj) {
-            closeModalBox();
-            $('#datatable-1').DataTable().ajax.reload();
-        };
-
         function closeModalBox() {
             $("#modalbox").hide();
             $('#modalbox').find('.modal-header-name span').removeClass('txt-danger').empty();
@@ -157,12 +145,6 @@
             $('#modalbox').find('.devoops-modal-bottom').empty();
         }
 
-        function showModalBox() {
-            $('#modalbox').find('.modal-header-name span').removeClass('txt-danger').text('{{ 'Wait'|trans }}...');
-            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Request is being processed'|trans }}...</span>');
-            $('#modalbox').find('.devoops-modal-bottom').empty();
-            $("#modalbox").show();
-        }
 
     </script>
 

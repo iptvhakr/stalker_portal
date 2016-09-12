@@ -893,7 +893,7 @@ function deleteTableRow(obj){
         console.log(e);
     }
 
-    JSSuccessModalBox();
+    JSSuccessModalBox(obj);
 }
 
 function deleteTableRowError(obj){
@@ -915,7 +915,7 @@ function updateTableRow(obj){
         console.log(e);
     }
 
-    JSSuccessModalBox();
+    JSSuccessModalBox(obj);
 }
 
 function updateTableRowError(obj){

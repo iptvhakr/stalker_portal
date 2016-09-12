@@ -3116,7 +3116,7 @@ border-bottom:1px solid #E3E3E3;padding-left:6px !important; padding-right:5px;}
     border-top-right-radius: 0;
 }
 
-#iptv_list .dropdown-menu a, #iptv_list_move .dropdown-menu a { margin:0;padding:5px 10px 5px 10px; }
+#iptv_list .dropdown-menu a, #iptv_list_move .dropdown-menu a { margin:0;padding:5px 10px 5px 10px; cursor: pointer !important;}
 #iptv_list  .dropdown-menu > li > a:hover{background-color:#FFF5D2 !important}
 #iptv_list .black .dropdown-menu > li > a:hover {
     background-color: #000 !important;
