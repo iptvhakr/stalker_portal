@@ -110,7 +110,7 @@ class TariffsModel extends \Model\BaseStalkerModel {
     }
     
     public function deletePlanById($id) {
-        return $this->mysqlInstance->delete('package_in_plan', array('id' => $id))->total_rows();
+        return $this->mysqlInstance->delete('package_in_plan', array('plan_id' => $id))->total_rows();
     }
     
     public function deleteTariffById($id) {

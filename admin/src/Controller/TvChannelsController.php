@@ -248,7 +248,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         );
 
         $error = "Error";
-        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
+        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : array());
 
         $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_', 'claims'));
 
