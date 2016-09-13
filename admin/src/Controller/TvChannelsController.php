@@ -777,8 +777,10 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'deleteTableRow';
         $data['id'] = $this->postData['id'];
-        $error = '';
-        $this->db->deleteEPG(array('id' => $this->postData['id']));
+        $error = $this->setLocalization('Failed');
+        if ($this->db->deleteEPG(array('id' => $this->postData['id']))){
+            $error = '';
+        }
 
         $response = $this->generateAjaxResponse($data);
         return new Response(json_encode($response), (empty($error) ? 200 : 500));

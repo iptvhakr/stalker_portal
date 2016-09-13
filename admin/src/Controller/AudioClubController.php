@@ -448,8 +448,11 @@ class AudioClubController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'deleteTableRow';
         $data['id'] = $this->postData['genresid'];
-        $this->db->deleteAudioGenres(array('id' => $this->postData['genresid']));
-        $response = $this->generateAjaxResponse($data, '');
+        $error = $this->setLocalization('Failed');
+        if ($this->db->deleteAudioGenres(array('id' => $this->postData['genresid']))){
+            $error = '';
+        }
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -629,8 +632,11 @@ class AudioClubController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'deleteTableRow';
         $data['id'] = $this->postData['artistsid'];
-        $this->db->deleteAudioArtist(array('id' => $this->postData['artistsid']));
-        $response = $this->generateAjaxResponse($data, '');
+        $error = $this->setLocalization('Failed');
+        if ( $this->db->deleteAudioArtist(array('id' => $this->postData['artistsid']))){
+            $error = '';
+        }
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -811,8 +817,11 @@ class AudioClubController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'deleteTableRow';
         $data['id'] = $this->postData['languagesid'];
-        $this->db->deleteAudioLanguage(array('id' => $this->postData['languagesid']));
-        $response = $this->generateAjaxResponse($data, '');
+        $error = $this->setLocalization('Failed');
+        if ($this->db->deleteAudioLanguage(array('id' => $this->postData['languagesid']))){
+            $error = '';
+        }
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -992,8 +1001,11 @@ class AudioClubController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'deleteTableRow';
         $data['id'] = $this->postData['yearsid'];
-        $this->db->deleteAudioYear(array('id' => $this->postData['yearsid']));
-        $response = $this->generateAjaxResponse($data, '');
+        $error = $this->setLocalization('Failed');
+        if ($this->db->deleteAudioYear(array('id' => $this->postData['yearsid']))){
+            $error = '';
+        }
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -1316,8 +1328,11 @@ class AudioClubController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'deleteTableRow';
         $data['id'] = $this->postData['trackid'];
-        $this->db->deleteAudioCompositions(array('id' => $this->postData['trackid']));
-        $response = $this->generateAjaxResponse($data, '');
+        $error = $this->setLocalization('Failed');
+        if ($this->db->deleteAudioCompositions(array('id' => $this->postData['trackid']))){
+            $error = '';
+        }
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }

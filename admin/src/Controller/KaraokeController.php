@@ -72,7 +72,7 @@ class KaraokeController extends \Controller\BaseStalkerController {
         );
                 
         $error = $this->setLocalization("Error");
-        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
+        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : array());
 
         $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
 
@@ -179,7 +179,8 @@ class KaraokeController extends \Controller\BaseStalkerController {
                 $error = '';
                 if ($result === 0) {
                     $data['nothing_to_do'] = TRUE;
-                } elseif ($operation != 'insertKaraoke') {
+                }
+                if ($operation != 'insertKaraoke') {
                     $data = array_merge_recursive($data, $this->karaoke_list_json(TRUE));
                 }
             }
@@ -204,8 +205,10 @@ class KaraokeController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'deleteTableRow';
         $data['id'] = $this->postData['karaokeid'];
-        $error = '';    
-        $this->db->deleteKaraoke(array('id' => $this->postData['karaokeid']));
+        $error = $this->setLocalization('Failed');
+        if ($this->db->deleteKaraoke(array('id' => $this->postData['karaokeid']))){
+            $error = '';
+        }
         
         $response = $this->generateAjaxResponse($data);
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
