@@ -239,6 +239,10 @@ player.prototype.init = function(){
                     stb.user.play_in_preview_only_by_ok = stb.profile.play_in_preview_only_by_ok = params.play_in_preview_by_ok;
                 }
 
+                if (params.hasOwnProperty("show_after_loading")){
+                    stb.user.display_menu_after_loading = stb.profile.display_menu_after_loading = params.show_after_loading == 'main_menu';
+                }
+
                 if (params.hasOwnProperty("dvb_type") && module.dvb){
                     module.dvb.set_scan_type(params.dvb_type);
                 }
@@ -1703,7 +1707,7 @@ player.prototype.event_callback = function(event, params){
             _debug('stb.hdmi_on', stb.hdmi_on);
             _debug('stb.profile[standby_on_hdmi_off]', stb.profile['standby_on_hdmi_off']);
 
-            if (stb.profile['hdmi_event_reaction'] == 1 && !module.blocking.on){
+            if (stb.profile['hdmi_event_reaction'] >= 1 && !module.blocking.on){
 
                 var hdmi_reaction_timeout = (stb.profile['hdmi_event_reaction'] == 1 || !stb.hdmi_on ? 5 : stb.profile['hdmi_event_reaction']) * 1000;
 
@@ -1723,7 +1727,7 @@ player.prototype.event_callback = function(event, params){
                             if (stb.cur_place == 'tv' && self.is_tv) {
                                 stb.player.stop();
                             } else if (!self.pause.on) {
-                                keydown_observer.emulate_key(key.PAUSE);
+                                keydown_observer.emulate_key(key.EXIT);
                             }
                         }
 
