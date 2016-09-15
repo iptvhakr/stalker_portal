@@ -1392,7 +1392,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
         }
 
 
-        $response = $this->generateAjaxResponse($data, '');
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }

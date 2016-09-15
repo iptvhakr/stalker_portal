@@ -472,7 +472,7 @@ class UsersController extends \Controller\BaseStalkerController {
 
     //----------------------- ajax method --------------------------------------
 
-    public function users_list_json($param = array()) {
+    public function users_list_json($local_uses = FALSE){
         $response = array();
         if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
@@ -480,7 +480,7 @@ class UsersController extends \Controller\BaseStalkerController {
             }
         }
 
-        $param = (!empty($this->data) ? $this->data : array());
+        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : array());
 
         $query_param = $this->prepareDataTableParams($param, array('operations', '_', 'reseller_name'));
         if (($search = array_search('state', $query_param['select'])) != FALSE) {
@@ -598,6 +598,12 @@ class UsersController extends \Controller\BaseStalkerController {
         $query_param['where'] = array_merge($query_param['where'], $filter);
 
         $query_param['select'] = array_merge($query_param['select'], array_diff($this->userFields, $query_param['select']));
+
+
+        if (!empty($param['id'])) {
+            $query_param['where']['users.id'] = $param['id'];
+        }
+
         $response['recordsTotal'] = $this->db->getTotalRowsUresList();
         $response["recordsFiltered"] = $this->db->getTotalRowsUresList($query_param['where'], $query_param['like'], $query_param['in']);
 
@@ -654,11 +660,12 @@ class UsersController extends \Controller\BaseStalkerController {
             } else {
                 $val['country_name'] = $val['country'] = '';
             }
+            $val['RowOrder'] = "dTRow_" . $val['id'];
             return $val;
         }, $this->db->getUsersList($query_param));
 
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
-        if ($this->isAjax) {
+        if ($this->isAjax && !$local_uses) {
             $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
         } else {
@@ -676,21 +683,26 @@ class UsersController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'toggleUserStatus';
+        $data['action'] = 'updateTableRow';
+        $data['id'] = $this->postData['userid'];
+        $data['data'] = array();
         $error = $this->setLocalization('Failed');
 
-        $event = new \SysEvent();
-        $event->setUserListById($this->postData['userid']);
-        if ($this->db->toggleUserStatus($this->postData['userid'], (int) (!$this->postData['userstatus']))) {
+        $result = $this->db->toggleUserStatus($this->postData['userid'], (int) (!$this->postData['userstatus']));
+        if (is_numeric($result)) {
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
             $error = '';
+            $event = new \SysEvent();
+            $event->setUserListById($this->postData['userid']);
             if ($this->postData['userstatus'] == 1) {
                 $event->sendCutOn();
             } else {
                 $event->sendCutOff();
             }
-            $data['title'] = ($this->postData['userstatus'] ? $this->setLocalization("on") : $this->setLocalization("off"));
-            $data['status'] = ($this->postData['userstatus'] ? '<span class="">' . $this->setLocalization("on") . '</span>' : '<span class="">' . $this->setLocalization("off") . '</span>');
-            $data['userstatus'] = (int) !$this->postData['userstatus'];
+            $this->postData['id'] = $this->postData['userid'];
+            $data = array_merge_recursive($data, $this->users_list_json(TRUE));
         }
 
         $response = $this->generateAjaxResponse($data, $error);
@@ -708,22 +720,33 @@ class UsersController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'removeUser';
-        $this->db->deleteUserById($this->postData['userid']);
-        $this->db->deleteUserFavItv($this->postData['userid']);
-        $this->db->deleteUserFavVclub($this->postData['userid']);
-        $this->db->deleteUserFavMedia($this->postData['userid']);
-        $this->db->deleteUserTokens($this->postData['userid']);
+        $data['action'] = 'deleteTableRow';
+        $data['id'] = $this->postData['userid'];
+        $error = $this->setLocalization('Failed');
 
-        $error = '';
+        $result = $this->db->deleteUserById($this->postData['userid']);
+        if (is_numeric($result)) {
 
-        $reseller_info = $this->db->getReseller(array('where'=>array('id' => $this->app['reseller'])));
-        $users_total = $this->db->getTotalRowsUresList();
+            $error = '';
+            $this->db->deleteUserFavItv($this->postData['userid']);
+            $this->db->deleteUserFavVclub($this->postData['userid']);
+            $this->db->deleteUserFavMedia($this->postData['userid']);
+            $this->db->deleteUserTokens($this->postData['userid']);
 
-        if (!empty($reseller_info[0]['max_users'])) {
-            $data['add_button'] = ((int)$reseller_info[0]['max_users'] - (int)$users_total) > 0;
-        } else {
-            $data['add_button'] = TRUE;
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            } else {
+                $data['action'] = 'removeUser';
+
+                $reseller_info = $this->db->getReseller(array('where'=>array('id' => $this->app['reseller'])));
+                $users_total = $this->db->getTotalRowsUresList();
+
+                if (!empty($reseller_info[0]['max_users'])) {
+                    $data['add_button'] = ((int)$reseller_info[0]['max_users'] - (int)$users_total) > 0;
+                } else {
+                    $data['add_button'] = TRUE;
+                }
+            }
         }
 
         $response = $this->generateAjaxResponse($data, $error);
@@ -1272,8 +1295,11 @@ class UsersController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'setExpireBillingDate';
-        $error = 'Error';
+        $data['action'] = 'updateTableRow';
+        $data['id'] = $this->postData['userid'];
+        $data['data'] = array();
+        $error = $this->setLocalization('Failed');
+
         if ($this->postData['setaction'] == 'set' && !empty($this->postData['expire_date'])){
             $date = $this->postData['expire_date'];
         } elseif ($this->postData['setaction'] == 'unset') {
@@ -1283,8 +1309,15 @@ class UsersController extends \Controller\BaseStalkerController {
             if (!empty($date) && preg_match("/(0[1-9]|[12][0-9]|3[01])([- \/\.])(0[1-9]|1[012])[- \/\.](19|20)\d\d/im", $date, $match)) {
                 $date = implode('-', array_reverse(explode($match[2], $date)));
             }
-            $this->db->updateUserById(array('expire_billing_date' => $date), $this->postData['userid']);
-            $error = '';
+            $result = $this->db->updateUserById(array('expire_billing_date' => $date), $this->postData['userid']);
+            if (is_numeric($result)) {
+                $error = '';
+                if ($result === 0) {
+                    $data['nothing_to_do'] = TRUE;
+                }
+                $this->postData['id'] = $this->postData['userid'];
+                $data = array_merge_recursive($data, $this->users_list_json(TRUE));
+            }
         }
 
         $response = $this->generateAjaxResponse($data, $error);
@@ -1302,11 +1335,12 @@ class UsersController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'manageUserReseller';
-        $user_id = $this->postData['id'];
-        $source_id = $this->postData['source_id'] !== '-' ? $this->postData['source_id']: NULL;
+        $data['action'] = 'updateTableRow';
+        $data['data'] = array();
+        $error = $this->setLocalization('Failed');
+
+        $data['id'] = $user_id = $this->postData['id'];
         $target_id = $this->postData['target_id'] !== '-' ? $this->postData['target_id']: NULL;
-        $error = '';
 
         if (!empty($target_id)) {
             $count_reseller = $this->db->getReseller(array('select'=>array('*'), 'where'=>array('id' => $target_id)), TRUE);
@@ -1314,14 +1348,21 @@ class UsersController extends \Controller\BaseStalkerController {
             $count_reseller = 1;
         }
 
-        if (!empty($count_reseller) && $source_id !== $target_id) {
-            $this->db->updateResellerMemberByID('users', $user_id, $target_id);
-            $data['msg'] = $this->setLocalization('Moved');
+        if (!empty($count_reseller)) {
+            $result = $this->db->updateResellerMemberByID('users', $user_id, $target_id);
+            if (is_numeric($result)) {
+                if ($result === 0) {
+                    $data['nothing_to_do'] = TRUE;
+                }
+                $error = '';
+                $data = array_merge_recursive($data, $this->users_list_json(TRUE));
+                $data['msg'] = $this->setLocalization('Moved');
+            }
         } else {
-            $error = $data['msg'] = empty($count_reseller) ? $this->setLocalization('Not found reseller for moving') : $this->setLocalization('Nothing to do');
+            $error = $data['msg'] = $this->setLocalization('Not found reseller for moving');
         }
 
-        $response = $this->generateAjaxResponse($data);
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
