@@ -924,14 +924,18 @@ function updateTableRowError(obj){
 
 function updateTableData(obj){
     try{
-        var dTRow;
-        if (obj) {
+        var dTRow, oTables = new Array();
+        if (obj && (obj.RowOrder || obj.id)) {
             dTRow = (obj.RowOrder ? obj.RowOrder : (obj.id ? 'dTRow_' + obj.id : false));
-            dTRow = $("#" + dTRow.replace('#', ''));
+            oTables.push($("#" + dTRow.replace('#', '')).closest('table'));
+        } else {
+            oTables = $("table.dataTable");
         }
-        if (dTRow) {
-            var oTable = dTRow.closest('table').DataTable().ajax.reload();
-        }
+        $.each(oTables, function(){
+            if (typeof($(this).DataTable) == 'function') {
+                $(this).DataTable().ajax.reload();
+            }
+        });
     } catch (e){
         console.log(e);
     }

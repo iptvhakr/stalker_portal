@@ -1520,7 +1520,7 @@ class UsersController extends \Controller\BaseStalkerController {
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
 
-    public function users_filter_list_json(){
+    public function users_filter_list_json($local_uses = FALSE){
         if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
                 return $no_auth;
@@ -1532,7 +1532,7 @@ class UsersController extends \Controller\BaseStalkerController {
             'recordsFiltered' => 0
         );
         $error = $this->setLocalization("Error");
-        $param = (!empty($this->data) ? $this->data : array());
+        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : array());
 
         $query_param = $this->prepareDataTableParams($param, array('operations', '_'));
 
@@ -1545,6 +1545,14 @@ class UsersController extends \Controller\BaseStalkerController {
 
         if (!empty($this->data['filters']['admin_id'])) {
             $query_param['where'] = array('A.id'=>$this->data['filters']['admin_id']);
+        }
+
+        if (empty($query_param['select'])) {
+            $query_param['select'] = array_values($filds_for_select);
+        }
+
+        if (!empty($param['id'])) {
+            $query_param['where']['F_S.id'] = $param['id'];
         }
 
         $response['recordsTotal'] = $this->db->getTotalRowsUsersFilters();
@@ -1580,13 +1588,14 @@ class UsersController extends \Controller\BaseStalkerController {
             }
             settype($row['favorites'], 'int');
             settype($row['for_all'], 'int');
+            $row['RowOrder'] = "dTRow_" . $row['id'];
             return $row;
         }, $this->db->getUsersFiltersList($query_param));
 
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         $error = '';
 
-        if ($this->isAjax) {
+        if ($this->isAjax && !$local_uses) {
             $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
         } else {
@@ -1604,7 +1613,8 @@ class UsersController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'manageList';
+        $data['action'] = 'deleteTableRow';
+        $data['id'] = $this->postData['id'];
         $error = $this->setLocalization('Failed');
 
         $result = $this->db->deleteFilter($this->postData['id']);
@@ -1630,7 +1640,9 @@ class UsersController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'manageList';
+        $data['action'] = 'updateTableRow';
+        $data['id'] = $this->postData['id'];
+        $data['data'] = array();
         $error = $this->setLocalization('Failed');
 
         $result = $this->db->toggleFilterFavorite($this->postData['id'], (int) $this->postData['favorite'] == 1 ? 0: 1);
@@ -1639,6 +1651,8 @@ class UsersController extends \Controller\BaseStalkerController {
             if ($result === 0) {
                 $data['nothing_to_do'] = TRUE;
             }
+
+            $data = array_merge_recursive($data, $this->users_filter_list_json(TRUE));
         }
 
         $response = $this->generateAjaxResponse($data, $error);

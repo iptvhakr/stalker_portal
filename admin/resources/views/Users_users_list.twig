@@ -782,6 +782,10 @@
                     return false;
                 });
 
+                $(document).on('click', "span.select2-selection__choice__remove", function(e){
+                    e.stopPropagation();
+                });
+
                 $('input.autocomplete').each(function(){
                     $(this).autocomplete(autoCompleteInit($(this)));
                 });
