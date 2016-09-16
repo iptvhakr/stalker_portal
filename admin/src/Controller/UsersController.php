@@ -1184,6 +1184,11 @@ class UsersController extends \Controller\BaseStalkerController {
     }
 
     public function users_consoles_logs_json() {
+        if ($this->isAjax) {
+            if ($no_auth = $this->checkAuth()) {
+                return $no_auth;
+            }
+        }
         $response = array(
             'data' => array(),
             'recordsTotal' => 0,
@@ -1198,11 +1203,6 @@ class UsersController extends \Controller\BaseStalkerController {
         );
 
         $error = $this->setLocalization("Error");
-        if ($this->isAjax) {
-            if ($no_auth = $this->checkAuth()) {
-                return $no_auth;
-            }
-        }
 
         $param = (!empty($this->data) ? $this->data : array());
 
@@ -1212,7 +1212,6 @@ class UsersController extends \Controller\BaseStalkerController {
             $query_param['where'] = array();
         }
         
-
         $deleted_params = $this->checkDisallowFields($query_param, array('object', 'type'));
 
         if (empty($query_param['select'])) {
@@ -1245,7 +1244,8 @@ class UsersController extends \Controller\BaseStalkerController {
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         
         $response['data'] = array_map(function($row){
-            $row['time'] = (int) strtotime($row['time']); 
+            $row['time'] = (int) strtotime($row['time']);
+            $row['RowOrder'] = "dTRow_" . $row['id'];
             return $row;
         }, $response['data']);
 
@@ -1298,13 +1298,12 @@ class UsersController extends \Controller\BaseStalkerController {
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }
-        $response['data'] = $this->db->getUsersList($query_param, TRUE);
-        
         $response['data'] = array_map(function($row){
-            $row['last_change_status'] = (int) strtotime($row['last_change_status']); 
+            $row['last_change_status'] = (int) strtotime($row['last_change_status']);
+            $row['RowOrder'] = "dTRow_" . $row['id'];
             return $row;
-        }, $response['data']);
-        
+        }, $this->db->getUsersList($query_param, TRUE));
+
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         if ($this->isAjax) {
             $response = $this->generateAjaxResponse($response);
