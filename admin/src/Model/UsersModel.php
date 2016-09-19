@@ -276,7 +276,14 @@ class UsersModel extends \Model\BaseStalkerModel {
         if (!empty($this->reseller_id)) {
             $param['where']['reseller_id'] = $this->reseller_id;
             $this->mysqlInstance->join('users', 'user_log.mac', 'users.mac', 'LEFT');
+        }else{
+            $this->mysqlInstance->join('users', 'user_log.uid', 'users.id', 'LEFT');
         }
+
+        $this->mysqlInstance->select(array('users.mac as user_mac'));
+
+        $this->mysqlInstance->select(array('user_log.type as type'));
+
         if (array_key_exists('where', $param)) {
             $this->mysqlInstance->where($param['where']);
         }
