@@ -625,6 +625,7 @@ class EventsController extends \Controller\BaseStalkerController {
             if (!empty($recipient) && is_array($recipient)) {
                 $row = array_merge($row, (array)$recipient);
             }
+            settype($row['reboot_after_ok'], 'int');
             return $row;
         }, $this->db->getScheduleEvents($query_param));
 
@@ -669,7 +670,7 @@ class EventsController extends \Controller\BaseStalkerController {
         $form_post['recipient'] = $this->$recipient_func($form_post);
         $form_post['periodic'] = (int)str_replace('schedule_type_', '', $form_post['type']) - 1;
         $form_post['state'] = 1;
-        $form_post['reboot_after_ok'] = (int)(!empty($form_post['need_reboot']) && (string)$form_post['need_reboot'] != 'false' && (string)$form_post['need_reboot'] != 'off' && (string)$form_post['need_reboot'] != 'false' && (string)$form_post['need_reboot'] != '0');
+        $form_post['reboot_after_ok'] = (int)(!empty($form_post['reboot_after_ok']) && (string)$form_post['reboot_after_ok'] != 'false' && (string)$form_post['reboot_after_ok'] != 'off' && (string)$form_post['reboot_after_ok'] != '0');
 
         if (array_key_exists('month', $form_post)) {
             $form_post['month'] = (int)$form_post['month'];
