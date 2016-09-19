@@ -46,7 +46,7 @@ class SmartLauncherAppsManager
         }
 
         $url = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
-        .'://'.$_SERVER['HTTP_HOST']
+        .'://'.(strpos($_SERVER['HTTP_HOST'], ':') > 0 ? $_SERVER['HTTP_HOST'] : $_SERVER['HTTP_HOST'].':'.$_SERVER['SERVER_PORT'])
         .'/'.Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/')
         .$core['alias']
         .'/'.$core['current_version'].'/app/';
@@ -57,7 +57,7 @@ class SmartLauncherAppsManager
     public static function getLauncherProfileUrl(){
 
         return 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
-            .'://'.$_SERVER['HTTP_HOST']
+            .'://'.(strpos($_SERVER['HTTP_HOST'], ':') > 0 ? $_SERVER['HTTP_HOST'] : $_SERVER['HTTP_HOST'].':'.$_SERVER['SERVER_PORT'])
             .'/'.Config::getSafe('portal_url', '/stalker_portal/')
             .'/server/api/launcher_profile.php';
     }
@@ -151,7 +151,7 @@ class SmartLauncherAppsManager
                 $icon_path = realpath($app_path.'/app/'.$app['config']['icons']['paths']['720'].$app['config']['icons']['states']['normal']);
                 $app['icon'] = $icon_path && is_readable($icon_path) ?
                         'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
-                        .'://'.$_SERVER['HTTP_HOST']
+                        .'://'.(strpos($_SERVER['HTTP_HOST'], ':') > 0 ? $_SERVER['HTTP_HOST'] : $_SERVER['HTTP_HOST'].':'.$_SERVER['SERVER_PORT'])
                         .'/'.Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/')
                         .$app['alias']
                         .'/'.$app['current_version'].'/app/'
@@ -162,7 +162,7 @@ class SmartLauncherAppsManager
 
                 $app['icon_big'] = $icon_big_path && is_readable($icon_big_path) ?
                     'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
-                    .'://'.$_SERVER['HTTP_HOST']
+                    .'://'.(strpos($_SERVER['HTTP_HOST'], ':') > 0 ? $_SERVER['HTTP_HOST'] : $_SERVER['HTTP_HOST'].':'.$_SERVER['SERVER_PORT'])
                     .'/'.Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/')
                     .$app['alias']
                     .'/'.$app['current_version'].'/app/'
@@ -374,6 +374,13 @@ class SmartLauncherAppsManager
         $update_data['category']  = isset($info['config']['category']) ? $info['config']['category'] : null;
         $update_data['is_unique'] = isset($info['config']['unique']) && $info['config']['unique'] ? 1 : 0;
         $update_data['status'] = 1;
+
+        if (isset($info['main'])){
+            if (empty($info['config'])){
+                $info['config'] = array();
+            }
+            $info['config']['main'] = $info['main'];
+        }
 
         if (!empty($info['config'])){
             $update_data['config'] = json_encode($info['config']);
@@ -838,7 +845,7 @@ class SmartLauncherAppsManager
 
         $this->syncApps();
 
-        return boolval($result);
+        return (bool) $result;
     }
 
     /**

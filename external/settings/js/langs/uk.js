@@ -229,5 +229,9 @@ var lang = {
     "Signal type:" : "Тип сигналу:",
     "Antenna power supply:" : "Включити живлення антени:",
     "Manual scan" : "Ручне сканування",
-    "List is cleared" : "Список очищений"
+    "List is cleared" : "Список очищений",
+
+    "Units:" : "Одиниці виміру: ",
+    "Metric" : "Метричні",
+    "Imperial" : "Імперські"
 };

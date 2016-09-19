@@ -30,6 +30,11 @@ class Course implements \Stalker\Lib\StbApi\Course
         $content = file_get_contents($this->content_url);
         if ($content){
             preg_match("/([\d]{2}\.[\d]{2}\.[\d]{4})<\/b>/",$content,$arr);
+
+            if (empty($arr)){
+                return false;
+            }
+
             $result['title'] = _('Exchange rate on').' '.$arr[1];
             $result['on_date'] = $arr[1];
             $result['data'] = array();

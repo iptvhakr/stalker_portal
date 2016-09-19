@@ -63,20 +63,20 @@ $disabled_modules = Stb::getDisabledModulesByUid((int) $_GET['uid']);
 $config['options']['pluginsPath'] = '../../../plugins/';
 
 $config['options']['stalkerHost'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
-    .'://'.$_SERVER['HTTP_HOST'];
+    .'://'.(strpos($_SERVER['HTTP_HOST'], ':') > 0 ? $_SERVER['HTTP_HOST'] : $_SERVER['HTTP_HOST'].':'.$_SERVER['SERVER_PORT']);
 
 $config['options']['stalkerApiHost'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
-    .'://'.$_SERVER['HTTP_HOST']
+    .'://'.(strpos($_SERVER['HTTP_HOST'], ':') > 0 ? $_SERVER['HTTP_HOST'] : $_SERVER['HTTP_HOST'].':'.$_SERVER['SERVER_PORT'])
     .Config::getSafe('portal_url', '/stalker_portal/')
     .'api/v3/';
 
 $config['options']['stalkerAuthHost'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
-    .'://'.$_SERVER['HTTP_HOST']
+    .'://'.(strpos($_SERVER['HTTP_HOST'], ':') > 0 ? $_SERVER['HTTP_HOST'] : $_SERVER['HTTP_HOST'].':'.$_SERVER['SERVER_PORT'])
     .Config::getSafe('portal_url', '/stalker_portal/')
     .'auth/token.php';
 
 $config['options']['sap'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
-    .'://'.$_SERVER['HTTP_HOST']
+    .'://'.(strpos($_SERVER['HTTP_HOST'], ':') > 0 ? $_SERVER['HTTP_HOST'] : $_SERVER['HTTP_HOST'].':'.$_SERVER['SERVER_PORT'])
     .Config::getSafe('portal_url', '/stalker_portal/')
     .'server/api/sap.php';
 
@@ -134,10 +134,10 @@ foreach ($installed_apps as $app) {
         $app['config']['version'] = $app['current_version'];
 
         $app['config']['url'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
-            .'://'.$_SERVER['HTTP_HOST']
+            .'://'.(strpos($_SERVER['HTTP_HOST'], ':') > 0 ? $_SERVER['HTTP_HOST'] : $_SERVER['HTTP_HOST'].':'.$_SERVER['SERVER_PORT'])
             .'/'.Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/')
             .$app['alias']
-            .'/'.$app['current_version'].'/app/';
+            .'/'.$app['current_version'].(isset($app['config']['main']) ? '/'.$app['config']['main'] : '/app/');
 
         $app['config']['dependencies'] = $app_manager->getFullAppDependencies($app['id']);
 
