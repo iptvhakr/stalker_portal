@@ -378,9 +378,6 @@ class UsersController extends \Controller\BaseStalkerController {
 
         $this->app['state'] = (int) $this->user['state'];
 
-/*        if ($this->app['tariffPlanSubscriptionFlag']) {
-            $this->app['channelsCost'] = $this->getCostSubChannels($this->user['id']);
-        }*/
         if (Config::getSafe('enable_internal_billing', 'false')) {
             $this->app['enableBilling'] = TRUE;
         }
@@ -765,9 +762,16 @@ class UsersController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'resetUsersParentPassword';
-        $error = '';
+        $error = $this->setLocalization('Failed');
         $data['newpass'] = '0000';
-        $this->db->updateUserById(array('parent_password' => '0000'), $this->postData['userid']);
+        $result = $this->db->updateUserById(array('parent_password' => '0000'), $this->postData['userid']);
+        if (is_numeric($result)) {
+            $error = '';
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+                $data['msg'] = $this->setLocalization('Already reset');
+            }
+        }
 
         $response = $this->generateAjaxResponse($data, $error);
 
@@ -785,9 +789,16 @@ class UsersController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'resetUsersParentPassword';
-        $error = '';
+        $error = $this->setLocalization('Failed');
         $data['newpass'] = '0000';
-        $this->db->updateUserById(array('settings_password' => '0000'), $this->postData['userid']);
+        $result = $this->db->updateUserById(array('settings_password' => '0000'), $this->postData['userid']);
+        if (is_numeric($result)) {
+            $error = '';
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+                $data['msg'] = $this->setLocalization('Already reset');
+            }
+        }
 
         $response = $this->generateAjaxResponse($data, $error);
 
@@ -805,8 +816,16 @@ class UsersController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'resetUserFavTv';
-        $this->db->updateUserFavItv(array('fav_ch' => ''), $id = $this->postData['userid']);
-        $response = $this->generateAjaxResponse($data, '');
+        $error = $this->setLocalization('Failed');
+        $result = $this->db->updateUserFavItv(array('fav_ch' => ''), $id = $this->postData['userid']);
+        if (is_numeric($result)) {
+            $error = '';
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+                $data['msg'] = $this->setLocalization('Already reset');
+            }
+        }
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -993,8 +1012,9 @@ class UsersController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
         $data = array();
-        $data['action'] = 'checkLogin';
-        $error = $this->setLocalization('Name already used');
+        $data['action'] = 'checkData';
+        $data['input_id'] = 'form_login';
+        $error = $this->setLocalization('Login already used');
         $params = array(
             'login' => trim($this->postData['name'])
         );
@@ -1002,9 +1022,9 @@ class UsersController extends \Controller\BaseStalkerController {
             $params['id<>'] = $this->postData['id'];
         }
         if ($this->db->checkLogin($params)) {
-            $data['chk_rezult'] = $this->setLocalization('Name already used');
+            $data['chk_rezult'] = $this->setLocalization('Login already used');
         } else {
-            $data['chk_rezult'] = $this->setLocalization('Name is available');
+            $data['chk_rezult'] = $this->setLocalization('Login is available');
             $error = '';
         }
         $response = $this->generateAjaxResponse($data, $error);
@@ -1103,10 +1123,18 @@ class UsersController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'removeConsoleItem';
-        $data['stb_in_group_id'] = $this->postData['consoleid'];
-        $this->db->deleteConsoleItem(array('id' => $this->postData['consoleid']));
-        $response = $this->generateAjaxResponse($data, '');
+        $data['action'] = 'deleteTableRow';
+        $data['id'] = $this->postData['consoleid'];
+        $error = $this->setLocalization('Failed');
+
+        $result = $this->db->deleteConsoleItem(array('id' => $this->postData['consoleid']));
+        if (is_numeric($result)) {
+            $error = '';
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
+        }
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -1162,10 +1190,11 @@ class UsersController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
         $data = array();
-        $data['action'] = 'checkConsoleItem';
-        $error = $this->setLocalization('Name already used');
+        $data['action'] = 'checkData';
+        $data['input_id'] ='item_mac';
+        $error = $this->setLocalization('Failed');
         $mac = Middleware::normalizeMac($this->postData['mac']);
-        $data['jjj'] = $check_in_group = $this->db->getConsoleGroupList(array('where' => array('mac' => $mac), 'order' => 'mac', 'limit' => array('limit' => 1)));
+        $check_in_group = $this->db->getConsoleGroupList(array('where' => array('mac' => $mac), 'order' => 'mac', 'limit' => array('limit' => 1)));
         $check_in_users = $this->db->getUsersList(array('select' => array("*", "users.id as uid"), 'where' => array('mac' => $mac), 'order' => 'mac'));
 
         if (count($check_in_group) != 0 && (int)$check_in_group[0]['stb_group_id'] != 0) {

@@ -559,83 +559,17 @@
                     var _this = $(this);
                     _this.next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
 
-                    $.ajax({
-                        url: 'users/check-login',
-                        type: 'POST',
-                        data: {name: _this.val(), id: $("#form_id").val()},
-                        success: function (data) {
-                            if (data.success) {
-                                _this.next('div').append('<i class="txt-success fa fa-check"></i> ' + data.chk_rezult).css('visibility', 'visible');
-                            } else if (data.error) {
-                                console.log(data.error);
-                            } else {
-                                console.log("{{ 'Some server error'|trans }}");
-                            }
-                        },
-                        error: function (data) {
-                            if (typeof (data.responseJSON) != 'undefined' && typeof (data.responseJSON.error) != 'undefined') {
-                                _this.next('div').append('<i class="txt-danger fa fa-ban"></i> ' + data.responseJSON.error).css('visibility', 'visible');
-                            } else {
-                                console.log("{{ 'Some network error or access denied'|trans }}");
-                            }
-                        },
-                        dataType: "json",
-                        async: false
-                    });
+                    var sendData = {name: _this.val(), id: $("#form_id").val()};
+
+                    ajaxPostSend('{{app.request.baseUrl}}/{{app.controller_alias}}/check-login', sendData);
                 });
 
                 $(document).on('click', "a.main_ajax", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
-                    var _this = $(this);
 
-                    if (_this.attr('href').search("enable") != -1 && !_this.data('video_on_date')) {
-                        setEnableDatePicker(_this);
-                        return false;
-                    }
+                    ajaxPostSend($(this).attr('href'), $(this).data(), false, false);
 
-                    if (_this.attr('href').search("create-tasks") != -1 && !_this.data('sendData')) {
-                        showTaskForm(_this);
-                        return false;
-                    }
-
-                    if (!_this.data('atcion')) {
-                        $.ajax({
-                            url: $(this).attr('href'),
-                            type: 'POST',
-                            data: $(this).data(),
-                            success: function (data) {
-                                if (data.success) {
-                                    for (var key in data) {
-                                        _this.data(key, data[key]);
-                                    }
-                                } else {
-                                    alert("{{ 'Some server error'|trans }}");
-                                }
-                            },
-                            error: function (data) {
-                                var errAction = '';
-                                if (typeof (data.responseJSON) == 'object') {
-                                    errAction += data.responseJSON.action + 'Error';
-                                    for (var key in data.responseJSON) {
-                                        _this.data(key, data.responseJSON[key]);
-                                    }
-                                }
-                                if ($.isFunction(window[errAction])) {
-                                    window[errAction]($(_this));
-                                } else {
-                                    alert("{{ 'Some network error or access denied'|trans }}");
-                                }
-                            },
-                            dataType: "json",
-                            async: false
-                        });
-                    }
-
-                    if ($.isFunction(window[$(this).data('action')]) && !$(this).data('error')) {
-                        window[$(this).data('action')]($(this));
-                    }
-                    _this.closest('div.open').removeClass('open');
                     return false;
                 });
 
@@ -691,16 +625,15 @@
 
         var resetUsersParentPassword = function (obj) {
             $(obj).closest('.form-group').find('input').val($(obj).data('newpass'));
+            JSSuccessModalBox(obj);
         };
 
         var resetUserFavTv = function (obj) {
             $(obj).closest('.form-group').find('input').val(0);
+            JSSuccessModalBox(obj);
         };
         {% if app.userEdit and (not app['tariffPlanFlag'] or app['tariffPlanSubscriptionFlag']) %}
         var setSubscribedTVModal = function(data){
-/*            var tv_subs_link = $("#tv_subscription");
-            tv_subs_link.text(tv_subs_link.text().replace(/\([^\)]*//*ig, data.subscribe_tv_cost ? '(' + data.subscribe_tv_cost : '(0.00'));*/
-
             if (data.not_subscribed_tv) {
                 $("#not_subscribed_tv").empty();
                 $.each(data.not_subscribed_tv, function(){
