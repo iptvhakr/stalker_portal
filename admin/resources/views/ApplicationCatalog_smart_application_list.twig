@@ -90,7 +90,7 @@
                 "processing": true,
                 "serverSide": true,
                 "ajax": {
-                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-list-json",
+                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-list-json"
                     /*"data": function (d) {
                     }*/
                 },
@@ -150,17 +150,20 @@
                     if ($(_this).closest('tr[id^="dTRow_"]').length != 0) {
                         sendData['curr_row'] = $(_this).closest('tr[id^="dTRow_"]').attr('id');
                     }
-                    if ($(_this).attr("disabled")) {
-                        JSErrorModalBox({msg: "{{ 'Action is not available'|trans }}"});
-                    } else {
-                        showModalBox();
-                        var timer = setInterval(function(){
-                            if ($("#reset_all_apps_button").length == 0 || !$("#reset_all_apps_button").is(":visible")) {
-                                clearInterval(timer);
-                                ajaxPostSend($(_this).attr('href'), sendData, false );
-                            }
-                        }, 10);
-                    }
+
+                    showModalBox();
+                    var timer = setInterval(function(){
+                        if (($(_this).attr('href').search('smart-application-version-install') != -1 ||
+                                $(_this).attr('href').search('smart-application-update') != -1 ||
+                                $(_this).attr('href').search('smart-application-check-update') != -1) && (!sendData.id || sendData.id != 'all')){
+                            clearInterval(timer);
+                            createIFrame('cometFrame', $(_this).attr('href') + '?v=' + $.random(10000000) + "&" + $.param(sendData));
+                        } else {
+                            clearInterval(timer);
+                            ajaxPostSend($(_this).attr('href'), sendData, false, false);
+                        }
+                    }, 10);
+
                     $(this).closest('div.open').removeClass('open');
                     return false;
                 });
@@ -235,16 +238,20 @@
                     e.stopPropagation();
                     e.preventDefault();
                     JScloseModalBox();
+                    var sendData = $(this).data();
+                    if (!sendData['curr_row'] && $(this).closest('tr[id^="dTRow_"]').length != 0) {
+                        sendData['curr_row'] = "#"+$(this).closest('tr[id^="dTRow_"]').attr('id');
+                    }
                     $(this).closest('.open').removeClass('open');
                     if ($(this).data('type') != 'app' && $(this).data('status') != '1') {
                         $('#modalbox').find('.modal-header-name span').addClass('txt-danger').text('{{ 'Warning'|trans }}' + '!');
                         $('#modalbox').find('.devoops-modal-inner').html($("#modal_reset_all_body").text());
                         $('#modalbox .devoops-modal-inner span').text("{{ 'This is system apps. Disabling this application can lead to failures in other applications. Do really want deactivate this application?'|trans }}")
                         $('#modalbox').find('.devoops-modal-bottom').html($("#modal_reset_all_buttons").text());
-                        $("#reset_all_apps_btn").text("{{ 'Deactivate'|trans }}").addClass('main_ajax').attr("href", $(this).attr('href')).data($(this).data());
+                        $("#reset_all_apps_btn").text("{{ 'Deactivate'|trans }}").addClass('main_ajax').attr("href", $(this).attr('href')).data(sendData);
                         $('#modalbox').show();
                     } else {
-                        ajaxPostSend($(this).attr('href'), $(this).data());
+                        ajaxPostSend($(this).attr('href'), sendData, false, false);
                     }
                     return false;
                 });
@@ -501,7 +508,6 @@
 
         var changeStatusError = function(obj){
             JSErrorModalBox(obj);
-            $('#app_status').prop('checked', !$('#app_status').is(':checked'));
         };
 
         function rowDataPrepare(item){
@@ -517,55 +523,56 @@
                 item.current_version = "{{ 'Undefined'|trans }}"
             }
 
-            var disable_current_version = '';
-            if (!item.rerendered) {
-                disable_current_version = ' disabled="disabled" ';
-            }
-
             if (!item.available_version){
                 item.available_version = '...';
             }
 
-            if (item.installed) {
-                item.current_version += ' ' + (item.available_version != '...' && item.available_version != current_version ? '&nbsp;&nbsp;&nbsp;<a '+disable_current_version+' href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-detail?id=' + id + '">{{ 'Update'|trans }}</a>' : '');
+            if (item.installed) { /* data-info = "1" */
+                item.current_version += ' ' + (item.available_version != '...' && item.available_version != current_version ? '&nbsp;&nbsp;&nbsp;<a class="main_ajax" id="update_app_'+ id + '" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-update"  data-id="' + id + '"><span> {{ 'Update'|trans }} </span></a>' : '');
                 item.status = item.status == 1 ? "{{ 'Active'|trans }}" : "{{ 'Disabled'|trans }}";
-            } else {
-                item.current_version = '...';//' ' + '<a '+disable_current_version+' href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-detail?id=' + id + '">{{ 'Install'|trans }}</a>';
+            } else { /*data-info='1'*/
+                item.current_version = "<a class='main_ajax' id='install_app_"+ id +"' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-version-install' data-id='" + id + "' >\n\
+                                           <span> {{ 'Install'|trans }} </span>\n\
+                                        </a>";
                 item.status = "{{ 'Not installed'|trans }}";
             }
-
 
             item.operations = "<div class='col-xs-3 col-sm-8'>\n\
                                     <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
                                         <i class='pull-right fa fa-cog'></i>\n\
                                     </a>\n\
-                                    <ul class='dropdown-menu pull-right'>\n\
-                                        <li>\n\
-                                            <a class='main_ajax' id='install_app_"+ id +"' " + (item.installed ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-version-install' data-id='" + id + "' data-info='1'>\n\
+                                    <ul class='dropdown-menu pull-right'>\n";
+                    if (!item.installed) { /* data-info='1'*/
+            item.operations += "        <li>\n\
+                                            <a class='main_ajax' id='install_app_"+ id +"' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-version-install' data-id='" + id + "'>\n\
                                                 <span> {{ 'Install'|trans }} </span>\n\
                                             </a>\n\
-                                        </li>\n\
-                                        <li>\n\
-                                            <a class='smart-application-toggle-state' " + (!item.installed ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-toggle-state' data-type='" + item.type + "' data-id='" + id + "' data-status='" + (status == '1' ? '0': '1') + "'>\n\
+                                        </li>\n";
+                    } else {
+            item.operations += "        <li>\n\
+                                            <a class='smart-application-toggle-state' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-toggle-state' data-type='" + item.type + "' data-id='" + id + "' data-status='" + (status == '1' ? '0': '1') + "'>\n\
                                                 <span> " + (status != 1 ? "{{ 'Activate'|trans }}" : "{{ 'Deactivate'|trans }}") + " </span>\n\
                                             </a>\n\
                                         </li>\n\
                                         <li>\n\
-                                            <a class='main_ajax' " + (!item.installed ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-delete' data-id='" + id + "'>\n\
+                                            <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-delete' data-id='" + id + "'>\n\
                                                 <span> {{ 'Delete'|trans }} </span>\n\
                                             </a>\n\
-                                        </li>\n\
-                                        <li>\n\
+                                        </li>\n";
+                    }
+            item.operations += "        <li>\n\
                                             <a class='main_ajax' id='check_update_app_"+ id +"' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-check-update' data-info = '1' data-id='" + id + "'>\n\
                                                 <span> {{ 'Checking updates'|trans }} </span>\n\
                                             </a>\n\
-                                        </li>\n\
-                                        <li>\n\
-                                            <a class='main_ajax' id='update_app_"+ id +"' " + (item.installed && item.available_version != '...' && item.available_version != current_version ? '' : 'disabled="disabled"') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-update'  data-info = '1' data-id='" + id + "'>\n\
+                                        </li>\n";
+                    if (item.installed && item.available_version != '...' && item.available_version != current_version) { /* data-info = '1'*/
+            item.operations += "        <li>\n\
+                                            <a class='main_ajax' id='update_app_"+ id +"' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-update'  data-id='" + id + "'>\n\
                                                 <span> {{ 'Update'|trans }} </span>\n\
                                             </a>\n\
-                                        </li>\n\
-                                        <li>\n\
+                                        </li>\n";
+                    }
+        item.operations += "        <li>\n\
                                             <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-list-json' data-id='" + id + "' data-alias='" + item.alias + "' data-version='"+ current_version +"'>\n\
                                                 <span> {{ 'Details'|trans }} </span>\n\
                                             </a>\n\

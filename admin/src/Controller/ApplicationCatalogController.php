@@ -196,11 +196,6 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
-        $response = array(
-            'data' => array(),
-            'recordsTotal' => 0,
-            'recordsFiltered' => 0
-        );
 
         if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
@@ -246,7 +241,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             $query_param['where'] = array('L_A.`id`' => $param['id']);
             $response['action'] = 'buildModalByAlias';
             $get_conflicts = TRUE;
-            if (array_key_exists('curr_row', $param)) {
+            if (array_key_exists('curr_row', $param) && !array_key_exists('alias', $param)) {
                 $response['curr_row'] = $param['curr_row'];
                 $response['action'] = 'oneRowRender';
             }
@@ -919,8 +914,14 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         $response['field'] = 'app_status';
         $response['conflicts'] = FALSE;
         $postData = $this->postData;
-        $id = $postData['id'];
+        $response['id'] = $id = $postData['id'];
         $key = '';
+
+        if (array_key_exists('curr_row', $postData)) {
+            $response['curr_row'] = $postData['curr_row'];
+            unset($postData['curr_row']);
+        }
+
         if (array_key_exists('status', $postData)) {
             $postData['status'] = !empty($postData['status']) && $postData['status'] != 'false' && $postData['status'] !== FALSE ? 1: 0;
             $key = 'status';
