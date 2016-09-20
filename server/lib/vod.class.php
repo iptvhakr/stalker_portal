@@ -72,12 +72,44 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
             }
         }
 
+        if ($file){
+            $subtitles = Mysql::getInstance()
+                ->from('video_series_files')
+                ->where(array('video_id' => $file['video_id'], 'series_id' => $file['series_id'], 'file_type' => 'sub'))
+                ->get()
+                ->all();
+
+            $subtitles = array_map(function ($subtitle){
+
+                $languages = unserialize($subtitle['languages']);
+
+                if ($languages && is_array($languages) && count($languages) > 0){
+                    $lang = $languages[0];
+                }else{
+                    $lang = '';
+                }
+
+                return array(
+                    'file' => $subtitle['url'],
+                    'lang' => $lang
+                );
+            }, $subtitles);
+        }else{
+            $subtitles = array();
+        }
+
         $params = $tmp_arr[2];
 
         $forced_storage = $_REQUEST['forced_storage'];
         $disable_ad     = $_REQUEST['disable_ad'];
 
         $link = $this->getLinkByVideoId($media_id, intval($_REQUEST['series']), $forced_storage, $file_id);
+
+        if (!empty($link['subtitles'])){
+            $subtitles = array_merge($subtitles, $link['subtitles']);
+        }
+
+        $link['subtitles'] = $subtitles;
 
         if ($_REQUEST['download']){
 
@@ -130,7 +162,8 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
                         'ad_id' => $picked_ad['id'],
                         'ad_must_watch' => $picked_ad['must_watch'],
                         'type'  => 'ad',
-                        'cmd'   => $picked_ad['url']
+                        'cmd'   => $picked_ad['url'],
+                        'subtitles' => $subtitles
                     ),
                     $link
                 );
