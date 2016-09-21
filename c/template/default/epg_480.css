@@ -191,6 +191,10 @@
     padding: 0 5px;
 }
 
+#epg[overlay_mode="1"] .program_info{
+    text-shadow: #000 1px 1px 2px;
+}
+
 #epg .program_info .time{
     color: #cfeafe;
     font-weight: bold;
@@ -206,11 +210,19 @@
     font-size: 14px;
 }
 
+#epg[overlay_mode="1"] .on_date{
+    text-shadow: #000 1px 1px 2px;
+}
+
 #epg .time_mark{
     position: absolute;
     top: 76px;
     color: #fff;
     font-size: 14px;
+}
+
+#epg[overlay_mode="1"] .time_mark{
+    text-shadow: #000 1px 1px 2px;
 }
 
 #epg .mark-1{
