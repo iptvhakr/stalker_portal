@@ -830,6 +830,11 @@
                     $('#file_protocol').select2(select2Opt);
                     $('#file_accessed').select2(select2Opt);
 
+                    if ($(this).data('old-url')) {
+                        $("#video_url").val($(this).data('old-url')).after('<input type="hidden" class="own_fields" name="clean_old_url" value="1">');
+                        getMediaInfo();
+                    }
+
                     $('#modalbox').show();
                     if (!$(this).closest('a.collapse-link').next('.box-content').is(':visible')) {
                         $(this).closest('a.collapse-link').trigger('click');
@@ -1686,6 +1691,12 @@
                         $(target).find('.dataTables_processing:first-of-type').hide('');
                     }
 
+                    if (json.old_url) {
+                        addOldURLNote(target, json.old_url);
+                    } else if ($(target).find('.box-header button.btn-old-url').length == 0) {
+                        $(target).find('.box-header button.btn-old-url').remove();
+                    }
+
                 }).dataTable({
                     "processing": false,
                     "serverSide": false,
@@ -1724,6 +1735,15 @@
             });
         }
 
+        function addOldURLNote(target, old_url){
+            if ($(target).find('.box-header button.btn-old-url').length == 0) {
+                var button = $(target).find('.box-header button');
+                var newButton = button.clone(true);
+                newButton.text("{{ 'Old data'|trans }}").data('old-url', old_url).addClass('btn-old-url');
+                button.before(newButton);
+            }
+        }
+
         var deleteCover = function (data) {
             if (typeof (data.id)) {
                 $("#" + data.id).data('id', 'new');
@@ -1753,6 +1773,9 @@
                 JSSuccessModalBox(data);
             } else {
                 JScloseModalBox();
+            }
+            if (data.btn_old_url_remove) {
+                $("#" + data.datatable).closest('.box-content').parent('div').find('.box-header button.btn-old-url').remove();
             }
             $("#" + data.datatable).DataTable().ajax.reload();
         };
