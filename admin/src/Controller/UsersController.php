@@ -1193,7 +1193,16 @@ class UsersController extends \Controller\BaseStalkerController {
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         
         $response['data'] = array_map(function($row){
-            $row['time'] = (int) strtotime($row['time']); 
+            $row['time'] = (int) strtotime($row['time']);
+
+            if (!$row['mac'] && $row['user_mac']){
+                $row['mac'] = $row['user_mac'];
+            }elseif (!$row['mac'] && !$row['user_mac'] && $row['uid']){
+                $row['mac'] = $row['uid'];
+            }else{
+                $row['mac'] = (string) $row['mac'];
+            }
+
             return $row;
         }, $response['data']);
 
@@ -2065,29 +2074,70 @@ class UsersController extends \Controller\BaseStalkerController {
         $logObjectsTypes = array(
             'itv' => $this->setLocalization('IPTV channels'),
             'video' => $this->setLocalization('Video club'),
+            'karaoke' => $this->setLocalization('Karaoke'),
+            'audio' => $this->setLocalization('Audio'),
+            'radio' => $this->setLocalization('Radio'),
             'unknown' => '',
         );
         while (list($key, $row) = each($data)) {
             if ($row['action'] == 'play') {
-                $sub_param = substr($row['param'], 0, 3);
-                if ($sub_param == 'rtp') {
+                if ($row['type'] == 1){
                     $data[$key]['type'] = $logObjectsTypes['itv'];
                     $chanel = $this->db->getITV(array('cmd' => $row['param']));
-                    $data[$key]['object'] = $chanel['name'];
-                } elseif ($sub_param == 'aut') {
+
+                    if ($chanel['name']){
+                        $data[$key]['object'] = $chanel['name'];
+                    } else {
+
+                        if (strpos($row['param'], '://')){
+                            $data[$key]['object'] = '';
+                        }else{
+                            $data[$key]['object'] = $row['param'];
+                            $data[$key]['param']  = '';
+                        }
+
+                    }
+                }elseif ($row['type'] == 2){
                     $data[$key]['type'] = $logObjectsTypes['video'];
                     preg_match("/auto \/media\/(\d+)\.[a-z]*$/", $row['param'], $tmp_arr);
                     if (!empty($tmp_arr[1])) {
                         $media = $this->db->getVideo(array('id' => $tmp_arr[1]));
-                        $data[$key]['object'] = $media['name'];
+
+                        if ($media['name']){
+                            $data[$key]['object'] = $media['name'];
+                        } else {
+
+                            if (strpos($row['param'], '://')){
+                                $data[$key]['object'] = '';
+                            }else{
+                                $data[$key]['object'] = $row['param'];
+                                $data[$key]['param']  = '';
+                            }
+
+                        }
+
                     } else {
-                        $data[$key]['type'] = $logObjectsTypes['unknown'];
-                        $data[$key]['object'] = '';
+                        if (strpos($row['param'], '://')){
+                            $data[$key]['object'] = '';
+                        }else{
+                            $data[$key]['object'] = $row['param'];
+                            $data[$key]['param']  = '';
+                        }
                     }
+                }elseif ($row['type'] == 3){
+                    $data[$key]['type'] = $logObjectsTypes['karaoke'];
+                    $data[$key]['object'] = '';
+                }elseif ($row['type'] == 4){
+                    $data[$key]['type'] = $logObjectsTypes['audio'];
+                    $data[$key]['object'] = '';
+                }elseif ($row['type'] == 5){
+                    $data[$key]['type'] = $logObjectsTypes['radio'];
+                    $data[$key]['object'] = '';
                 } else {
                     $data[$key]['type'] = $logObjectsTypes['unknown'];
                     $data[$key]['object'] = '';
                 }
+
             } else {
                 $data[$key]['type'] = $logObjectsTypes['unknown'];
                 $data[$key]['object'] = (!empty($row['param']) ? $row['param'] : "");
@@ -2198,7 +2248,7 @@ class UsersController extends \Controller\BaseStalkerController {
     private function getUsersConsolesLogsDropdownAttribute() {
         $attribute = array(
             array('name' => 'time',     'title' => $this->setLocalization('Time'),      'checked' => TRUE),
-            array('name' => 'mac',      'title' => $this->setLocalization('MAC'),       'checked' => TRUE),
+            array('name' => 'mac',      'title' => $this->setLocalization('User'),      'checked' => TRUE),
             array('name' => 'action',   'title' => $this->setLocalization('Actions'),   'checked' => TRUE),
             array('name' => 'object',   'title' => $this->setLocalization('Object'),    'checked' => TRUE),
             array('name' => 'type',     'title' => $this->setLocalization('Type'),      'checked' => TRUE),

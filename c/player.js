@@ -3223,7 +3223,7 @@ player.prototype.show_info = function(item, direct_call){
             self.info.dom_obj.hide();
             self.info.on = false;
         },
-        this.info.hide_timer);
+        this.info.hide_timer * (this.info.epg.getAttribute("descr") == "1" ? 4 : 1));
     }catch(e){
         _debug(e);
     }
