@@ -35,7 +35,7 @@
                     for (var i in json.data) {
                         var uid = json.data[i].uid;
                         var mac = json.data[i].mac;
-                        json.data[i].mac = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-users?mac='+mac+'" >'+mac+'</a>';
+                        json.data[i].mac = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-users?'+(mac.indexOf(':') > 0 ? 'mac' : 'id')+'='+mac+'" >'+mac+'</a>';
                         date = json.data[i]['time'];
                         if (date > 0) {
                             date = new Date(date * 1000);
