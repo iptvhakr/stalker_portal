@@ -542,43 +542,45 @@
                                         <i class='pull-right fa fa-cog'></i>\n\
                                     </a>\n\
                                     <ul class='dropdown-menu pull-right'>\n";
-                    if (!item.installed) { /* data-info='1'*/
-            item.operations += "        <li>\n\
-                                            <a class='main_ajax' id='install_app_"+ id +"' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-version-install' data-id='" + id + "'>\n\
-                                                <span> {{ 'Install'|trans }} </span>\n\
-                                            </a>\n\
-                                        </li>\n";
-                    } else {
-            item.operations += "        <li>\n\
-                                            <a class='smart-application-toggle-state' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-toggle-state' data-type='" + item.type + "' data-id='" + id + "' data-status='" + (status == '1' ? '0': '1') + "'>\n\
-                                                <span> " + (status != 1 ? "{{ 'Activate'|trans }}" : "{{ 'Deactivate'|trans }}") + " </span>\n\
-                                            </a>\n\
-                                        </li>\n\
-                                        <li>\n\
+            if (!item.installed) { /* data-info='1'*/
+                item.operations += "<li>\n\
+                                        <a class='main_ajax' id='install_app_"+ id +"' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-version-install' data-id='" + id + "'>\n\
+                                            <span> {{ 'Install'|trans }} </span>\n\
+                                        </a>\n\
+                                    </li>\n";
+            } else {
+                item.operations += "<li>\n\
+                                        <a class='smart-application-toggle-state' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-toggle-state' data-type='" + item.type + "' data-id='" + id + "' data-status='" + (status == '1' ? '0': '1') + "'>\n\
+                                            <span> " + (status != 1 ? "{{ 'Activate'|trans }}" : "{{ 'Deactivate'|trans }}") + " </span>\n\
+                                        </a>\n\
+                                    </li>\n";
+                if (status != 1) {
+                    item.operations += "<li>\n\
                                             <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-delete' data-id='" + id + "'>\n\
                                                 <span> {{ 'Delete'|trans }} </span>\n\
                                             </a>\n\
                                         </li>\n";
-                    }
-            item.operations += "        <li>\n\
-                                            <a class='main_ajax' id='check_update_app_"+ id +"' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-check-update' data-info = '1' data-id='" + id + "'>\n\
-                                                <span> {{ 'Checking updates'|trans }} </span>\n\
-                                            </a>\n\
-                                        </li>\n";
-                    if (item.installed && item.available_version != '...' && item.available_version != current_version) { /* data-info = '1'*/
-            item.operations += "        <li>\n\
-                                            <a class='main_ajax' id='update_app_"+ id +"' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-update'  data-id='" + id + "'>\n\
-                                                <span> {{ 'Update'|trans }} </span>\n\
-                                            </a>\n\
-                                        </li>\n";
-                    }
-        item.operations += "        <li>\n\
-                                            <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-list-json' data-id='" + id + "' data-alias='" + item.alias + "' data-version='"+ current_version +"'>\n\
-                                                <span> {{ 'Details'|trans }} </span>\n\
-                                            </a>\n\
-                                        </li>\n\
-                                    </ul>\n\
-                                </div>";
+                }
+            }
+            item.operations += "<li>\n\
+                                    <a class='main_ajax' id='check_update_app_"+ id +"' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-check-update' data-info = '1' data-id='" + id + "'>\n\
+                                        <span> {{ 'Checking updates'|trans }} </span>\n\
+                                    </a>\n\
+                                </li>\n";
+            if (item.installed && item.available_version != '...' && item.available_version != current_version) { /* data-info = '1'*/
+                item.operations += "<li>\n\
+                                        <a class='main_ajax' id='update_app_"+ id +"' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-update'  data-id='" + id + "'>\n\
+                                            <span> {{ 'Update'|trans }} </span>\n\
+                                        </a>\n\
+                                    </li>\n";
+            }
+            item.operations += "<li>\n\
+                                    <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-list-json' data-id='" + id + "' data-alias='" + item.alias + "' data-version='"+ current_version +"'>\n\
+                                        <span> {{ 'Details'|trans }} </span>\n\
+                                    </a>\n\
+                                </li>\n\
+                            </ul>\n\
+                        </div>";
             return item;
         }
 
