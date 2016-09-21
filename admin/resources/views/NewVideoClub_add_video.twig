@@ -817,10 +817,6 @@
                         $("#series_id").remove();
                     }
 
-                    $("#file_type").prop({
-                        'readonly': 'readonly',
-                        'disabled': 'disabled'
-                    }).find('option[value="video"]').prop({'selected': 'selected'});
                     $("#file_protocol").prop({
                         'readonly': 'readonly',
                         'disabled': 'disabled'
@@ -941,6 +937,9 @@
 
                     conf.form = '#' + $("#modalbox form").attr('id');
 
+                    checkProtocol();
+                    checkFileType();
+
                     if ($(conf.form).isValid({}, conf, true)) {
                         conf.onSuccess();
                     } else {
@@ -949,7 +948,7 @@
                     }
 
                     var sendData = {};
-                    $("#modalbox form").find("input.own_fields, select.own_fields").filter('[id!="file_languages"]').each(function () {
+                    $("#modalbox form").find("input.own_fields, select.own_fields").filter(':not(:disabled)[id!="file_languages"]').each(function () {
                         var _this = $(this);
                         sendData[_this.attr('name')] = _this.val();
                     });
@@ -1089,6 +1088,10 @@
                     checkProtocol();
                 });
 
+                $("#modalbox").on('change', '#file_type', function (e) {
+                    checkFileType();
+                });
+
                 $(document).on('change keyup', '#form_name, #form_year', function (e) {
                     var _this = $('#form_name');
                     _this.next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
@@ -1141,6 +1144,8 @@
                 });
 
                 checkProtocol();
+
+                checkFileType();
 
                 $(document).on('click', '#update_rating_kinopoisk', function () {
                     $.ajax({
@@ -1274,8 +1279,6 @@
                     $(this).selectRange(0);
                 });
 
-
-
                 $("#modalbox").on('blur keypress', '#video_url', function(e){
                     if (e && e.type && (e.type == "blur" || e.type == 'focusout' || (e.type == "keypress" && e.keyCode && e.keyCode == 13))) {
 
@@ -1361,6 +1364,18 @@
             } else {
                 protocol.closest('.form-group').next('div.form-group').show();
                 $('#video_url').removeAttr('disabled');
+            }
+        }
+
+        function checkFileType() {
+            var fileType = $("#file_type");
+            if (fileType.val() == 'sub') {
+                $("#file_quality, #file_volume_level").prop('disabled', 'disabled').closest('.form-group').hide();
+                $("#media_info").remove();
+                $("#file_form_input_container").addClass('col-sm-offset-2').find('input,select').removeAttr('readonly').removeAttr('disabled');
+                $("#modalbox div.devoops-modal-bottom").find('button').removeClass('disabled').removeAttr('disabled');
+            } else {
+                $("#file_quality, #file_volume_level").removeAttr('disabled').closest('.form-group').show();
             }
         }
 
@@ -1826,6 +1841,7 @@
                 $("#video_url").val(data.data.url);
             }
             checkProtocol();
+            checkFileType();
             if (!localFilling) {
                 getMediaInfo();
             }
@@ -1837,23 +1853,28 @@
 
         var getMediaInfo = function() {
             var sendData = {};
-            $("#file_form_input_container").find("input,select").each(function(i){ //.not(":disabled")
-                var val = this.tagName.toUpperCase() == 'INPUT' ? $(this).val(): $(this).find('option:selected').val();
-                if (val) {
-                    sendData[$(this).attr('name')] = val;
-                }
-            });
-            $("#file_form_input_container").find('input,select').prop('readonly', 'readonly').prop('disabled', 'disabled');
-            $("#modalbox div.devoops-modal-bottom").find('button').addClass('disabled').prop('disabled', 'disabled');
-            if (!$("#media_info").length) {
-                $("#file_form_input_container").removeClass('col-sm-offset-2').after($("#media_info_body").html()).delay(1000).promise().done(function(){
-                    $("#media_info").css({opacity: 1, width: '29%'});
+            if ($("#file_type").val() != 'sub') {
+                $("#file_form_input_container").find("input,select").each(function(i){ //.not(":disabled")
+                    var val = this.tagName.toUpperCase() == 'INPUT' ? $(this).val(): $(this).find('option:selected').val();
+                    if (val) {
+                        sendData[$(this).attr('name')] = val;
+                    }
                 });
-            } else {
-                cleanMediaInfo();
-            }
+                $("#file_form_input_container").find('input,select').prop('readonly', 'readonly').prop('disabled', 'disabled');
+                $("#modalbox div.devoops-modal-bottom").find('button').addClass('disabled').prop('disabled', 'disabled');
+                if (!$("#media_info").length) {
+                    $("#file_form_input_container").removeClass('col-sm-offset-2').after($("#media_info_body").html()).delay(1000).promise().done(function(){
+                        $("#media_info").css({opacity: 1, width: '29%'});
+                    });
+                } else {
+                    cleanMediaInfo();
+                }
 
-            ajaxPostSend("{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-media-info-json", sendData, false, false, true);
+                ajaxPostSend("{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-media-info-json", sendData, false, false, true);
+            } else {
+                checkProtocol();
+                checkFileType();
+            }
         };
 
         var setMediaInfo = function(data){
@@ -1911,6 +1932,7 @@
             $("#media_info").removeClass('filled').find('button').addClass('disabled').prop('disabled', 'disabled');
             $("#media_info").children().not('button').remove();
             checkProtocol();
+            checkFileType();
         };
 
         var errAction = function(){
