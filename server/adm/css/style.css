@@ -3259,6 +3259,12 @@ color:#000; background-color:#FFF; border:1px solid #000; margin-top:5px !import
     outline: none;
 }
 
+.btn.btn-old-url{
+    background-color: #D15E5E !important;
+    color: #f8f8f8 !important;
+    margin-right: 5px;
+}
+
 .box-header-btn{
     position: absolute;
     right: 50px;

@@ -1983,6 +1983,11 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         }
 
         $series_files =$this->db->getSeriesFiles($params);
+        $video_rec = $this->db->getVideoById($video_id);
+        if(!empty($video_rec) && $video_rec['protocol'] == 'custom' && !empty($video_rec['rtsp_url'])){
+            $data['old_url'] = $video_rec['rtsp_url'];
+            unset($video_rec);
+        }
         $data['data'] = array();
 
         $quality = $this->db->getAllFromTable('quality', 'height');
@@ -2048,6 +2053,10 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         $this->postData['languages'] = (!empty($this->postData['languages']) && is_array($this->postData['languages'])) ? serialize($this->postData['languages']): serialize(array());
 
         $this->postData['status'] = 1;
+        if (!empty($this->postData['clean_old_url'])){
+            $clean_old_url = TRUE;
+            unset($this->postData['clean_old_url']);
+        }
         /*unset($this->postData['status']);*/
 
         if (!array_key_exists('id', $this->postData)){
@@ -2067,6 +2076,10 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         if (($result = call_user_func_array(array($this->db, $operation), $params))) {
             if ($internal_use) {
                 $data['id'] = isset($id) ? $id : $result;
+            }
+            if ($clean_old_url){
+                $this->db->updateVideo(array('rtsp_url' => ''), $this->postData['video_id']);
+                $data['btn_old_url_remove'] = 1;
             }
             $error = '';
         } else {
