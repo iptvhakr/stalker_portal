@@ -19,7 +19,12 @@ class Npm
     public function __construct() {
         $this->app_path = PROJECT_PATH.'/../../'.Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/');
 
-        system('npm set registry '.escapeshellarg(Config::getSafe('npm_registry', 'http://registry.npmjs.org/')).' 2>/dev/null');
+        $registry = exec('npm get registry');
+
+        if ($registry != Config::getSafe('npm_registry', 'http://registry.npmjs.org/')){
+            system('npm cache clean 2>/dev/null');
+            system('npm set registry '.escapeshellarg(Config::getSafe('npm_registry', 'http://registry.npmjs.org/')).' 2>/dev/null');
+        }
     }
 
     public function install($package, $version = null){

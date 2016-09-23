@@ -743,7 +743,7 @@ function common_xpcom(){
                             req = null;
                         }catch(er){
                             _debug('req.responseText', req.responseText);
-                            if (req.responseText == 'Authorization failed.'){
+                            if (req.responseText == 'Authorization failed.' || req.responseText == 'Access denied.'){
                                 if (stb.auth_access){
                                     keydown_observer.emulate_key(key.MENU);
                                     main_menu.hide();
@@ -753,6 +753,8 @@ function common_xpcom(){
                                         stb.init_auth_dialog();
                                     }
                                     stb.auth_dialog.show();
+                                }else if (req.responseText == 'Access denied.'){
+                                    stb.cut_off();
                                 }else if (!stb.auth_dialog || !stb.auth_dialog.on){
                                     authentication_problem.show();
                                 }
@@ -1088,10 +1090,14 @@ function common_xpcom(){
         if (!this.ntp_server && this.user['stb_ntp_server']
         || this.ntp_server && this.user['stb_ntp_server'] && this.ntp_server != this.user['stb_ntp_server'] && this.user['overwrite_stb_ntp_server']){
             _debug('set ntpurl '+this.user['stb_ntp_server']);
-            stb.RDir('setenv ntpurl '+this.user['stb_ntp_server']);
-            _debug('reboot');
-            stb.ExecAction('reboot');
-            return;
+            try{
+                stb.RDir('setenv ntpurl '+this.user['stb_ntp_server']);
+                _debug('reboot');
+                stb.ExecAction('reboot');
+                return;
+            }catch(e){
+                _debug(e);
+            }
         }
 
         if (this.user['store_auth_data_on_stb']){

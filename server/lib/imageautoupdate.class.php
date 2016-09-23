@@ -62,14 +62,31 @@ class ImageAutoUpdate
 
     /**
      * @param string $stb_type
+     * @param int $user_id
      * @return array|null
      */
-    public static function getSettingByStbType($stb_type){
-        return Mysql::getInstance()
+    public static function getSettingByStbType($stb_type, $user_id = 0){
+
+        $user_groups = Mysql::getInstance()
+            ->from('stb_in_group')
+            ->where(array('uid' => $user_id, 'stb_group_id!=' => 0))
+            ->get()
+            ->all('stb_group_id');
+
+        $not_in_groups = Mysql::getInstance()
             ->from('image_update_settings')
-            ->where(array('stb_type' => $stb_type, 'enable' => 1))
+            ->where(array('stb_type' => $stb_type, 'enable' => 1, 'stb_group_id' => 0))
             ->get()
             ->all();
+
+        $in_groups = Mysql::getInstance()
+            ->from('image_update_settings')
+            ->where(array('stb_type' => $stb_type, 'enable' => 1))
+            ->in('stb_group_id', $user_groups)
+            ->get()
+            ->all();
+
+        return array_merge($not_in_groups, $in_groups);
     }
 
     public static function create($settings){

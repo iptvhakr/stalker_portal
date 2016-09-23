@@ -86,57 +86,42 @@ a.show-sidebar:hover {
 }
 #sidebar-left {
     z-index: 11;
-   position: fixed;
-
-
-   height:auto;
+    position: fixed;
+    height:auto;
     bottom:0;
     top:0;
-  
     right:0;
     margin-top:52px;
- 
-
-   margin-bottom:30px;
-
- overflow: auto;
- border-right: 1px solid #DDDDDD;
-  background: #F2F2F2 /*url(../img/devoops_pattern_b10.png)*/ 0 0 repeat;
-  -webkit-transition: 0.2s;
-  -moz-transition: 0.2s;
-  -o-transition: 0.2s;
-  transition: 0.2s;
-  
-
+    margin-bottom:30px;
+    overflow: auto;
+    border-right: 1px solid #DDDDDD;
+    background: #F2F2F2 /*url(../img/devoops_pattern_b10.png)*/ 0 0 repeat;
+    -webkit-transition: 0.2s;
+    -moz-transition: 0.2s;
+    -o-transition: 0.2s;
+    transition: 0.2s;
     position: fixed;
     left: 250px;
-  
-  
     margin-left: -250px;
     overflow-y: auto;
- 
-  
 }
 #content {
-margin-left:320px;
-padding-left:15px;
-padding-right:15px;
+    margin-left:320px;
+    padding-left:15px;
+    padding-right:15px;
 
-min-width:800px;
-  position: relative;
-  z-index: 40;
-  background: #fff;
-  min-height:500px;
-  padding-bottom: 2000px !important;
-  margin-bottom: -1990px !important;
-  overflow: auto;
-  -webkit-transition: 0.2s;
-  -moz-transition: 0.2s;
-  -o-transition: 0.2s;
-  transition: 0.2s;
-  
-  
- 
+    min-width:800px;
+    position: relative;
+    z-index: 40;
+    background: #fff;
+    min-height:500px;
+    padding-bottom: 2000px !important;
+    margin-bottom: -1990px !important;
+    overflow: auto;
+    -webkit-transition: 0.2s;
+    -moz-transition: 0.2s;
+    -o-transition: 0.2s;
+    transition: 0.2s;
 }
 .full-content {
   overflow: hidden;
@@ -187,13 +172,13 @@ background:#FFCD1C !important;
 
 
 .nav.main-menu .dropdown-menu a.active-parent, .nav.msg-menu .dropdown-menu a.active-parent {
-  color:#000 !important;
-background: #FFCD1C !important;
-margin-top:5px;
-margin-bottom:5px;
-border-radius:5px !important;
-padding-left:20px;
- font-weight: 600 !important;
+    color:#000 !important;
+    background: #FFCD1C !important;
+    margin-top:5px;
+    margin-bottom:5px;
+    border-radius:5px !important;
+    padding-left:20px;
+    font-weight: 600 !important;
 }
 
 
@@ -441,13 +426,12 @@ z-index:20;
   padding:15px;
 }
 .box {
-  display: block;
- 
-  position: relative;
-  background: transparent;
-  margin-bottom: 20px;
-  margin-left:10px;
-  margin-right:10px;
+    display: block;
+    position: relative;
+    background: transparent;
+    margin-bottom: 20px;
+    margin-left:10px;
+    margin-right:10px;
 }
 .full-content .box {
   border: 0;
@@ -1918,6 +1902,25 @@ border: 1px solid #F3E3AA;
  
 }
 
+#certificate_warn, div[id^='server_error_warn_']{
+    border-bottom: 2px solid #F17611;
+}
+
+#certificate_warn h4, div[id^='server_error_warn_'] h4{
+    display: inline-block;
+    width: 100%;
+}
+
+#certificate_warn h4 *, div[id^='server_error_warn_'] h4 *{
+    vertical-align: bottom;
+}
+
+#certificate_warn i, div[id^='server_error_warn_'] i{
+    font-size: 2.2em;
+    cursor: pointer;
+    margin: 5px;
+}
+
 .filter_s.open > .dropdown-menu ul {
     border-radius: 0 !important;
     border-color: transparent !important;
@@ -3119,6 +3122,12 @@ border-bottom:1px solid #E3E3E3;padding-left:6px !important; padding-right:5px;}
     min-height: 42px;
 }
 
+#iptv_list .filter.black {
+    margin-right: 0;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
 #iptv_list .filter a, #iptv_list .filter_s a.dropdown-toggle  {
     border-radius: 5px;
     margin-right: 0px;
@@ -3135,8 +3144,18 @@ border-bottom:1px solid #E3E3E3;padding-left:6px !important; padding-right:5px;}
     float: left;
     display: block;
     width: 100%;
-
 }
+
+#iptv_list .filter.black > a:first-of-type{
+    margin-bottom: 0;
+}
+
+#iptv_list .dropdown.filter.black.open > a:first-of-type{
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    height: 36px;
+}
+
 
 #iptv_list .filter a.dropdown-toggle span:nth-of-type(2), #iptv_list .filter_s a.dropdown-toggle  span:nth-of-type(2){
     display: inline-block;
@@ -3160,23 +3179,45 @@ border-bottom:1px solid #E3E3E3;padding-left:6px !important; padding-right:5px;}
 
  #iptv_list .dropdown-menu {background-color:#fff;}
 
- #iptv_list .dropdown-menu a, #iptv_list_move .dropdown-menu a { margin:0;padding:5px 10px 5px 10px; }
-  #iptv_list  .dropdown-menu > li > a:hover{background-color:#FFF5D2 !important} 
+#iptv_list .black .dropdown-menu {
+    background-color:#000;
+    padding-bottom: 0;
+    padding-top: 0;
+    border-top-right-radius: 0;
+}
+
+#iptv_list .dropdown-menu a, #iptv_list_move .dropdown-menu a { margin:0;padding:5px 10px 5px 10px; }
+#iptv_list  .dropdown-menu > li > a:hover{background-color:#FFF5D2 !important}
+#iptv_list .black .dropdown-menu > li > a:hover {
+    background-color: #000 !important;
+    color: #ffffff !important;
+    border-radius: 0  !important;
+    border-left-color: transparent  !important;
+    border-right-color: transparent  !important;
+}
 #iptv_list .fa-cog {float:right !important;}
 #iptv_list .filter a:hover,#iptv_list .filter_s a:hover   { text-decoration:none; border: 1px solid #E3E3E3 !important;}
 #iptv_list .filter a:focus,#iptv_list .filter_s a:focus  { text-decoration:none; border: 1px solid #E3E3E3 !important; }
 #iptv_list .filter.open a { text-decoration:none; border: 1px solid #E3E3E3 !important; }
 #iptv_list .filter_s.open a { text-decoration:none; border: 1px solid #E3E3E3 !important; }
+
+#iptv_list .black .dropdown-menu a{
+    margin: 0 !important;
+    border: 1px solid transparent !important;
+    border-radius: 0;
+    color: #FFCD1C !important;
+}
+
 #iptv_list .btn-success, #iptv_list .btn-danger { margin-left:5px;
-margin-top:5px !important; height:31px; padding-bottom:15px !important;}
+    margin-top:5px !important; height:31px; padding-bottom:15px !important;}
 #iptv_list .btn-success {
-color:#FFCD1C; background-color:#000 !important;}
+    color:#FFCD1C; background-color:#000 !important;}
 #iptv_list .btn-default{
     background-color: #FFFFFF;
     color: #000;
-	border:1px solid #000;
+    border:1px solid #000;
     font-weight: normal;
-   margin-top:5px !important; height:31px; padding-bottom:15px !important;
+    margin-top:5px !important; height:31px; padding-bottom:15px !important;
 }
 
 .filter_s .select2-choices a{
@@ -3639,7 +3680,8 @@ z-index:10;
     padding-top: 20px;
 }
 
-#add_channel *, #modalbox_ad *{
+/*#add_channel *, #modalbox_ad *{*/
+#add_channel *:not(dt):not(dl):not(dd), #modalbox_ad *:not(dt):not(dl):not(dd){
     font-weight: normal;
 }
 

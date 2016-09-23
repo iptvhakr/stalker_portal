@@ -265,10 +265,17 @@
         <exec command="mkdir -p --mode=0777 ${project_path}/misc/logos" level="info"/>
         <exec command="mkdir -p --mode=0777 ${project_path}/misc/audio_covers" level="info"/>
 
+        <chmod file="${project_path}/cert" mode="0777" />
+
         <exec command="mkdir ${project_path}/admin" level="info"/>
         <exec command="mkdir ${project_path}/admin/logs" level="info"/>
+
         <exec command="mkdir -p --mode=0777 ${project_path}/admin/resources/cache/twig" level="info"/>
+        <exec command="find ${project_path}/admin/resources/cache/twig/ -type f -name '*.php' -delete" level="info"/>
+
         <exec command="mkdir -p --mode=0777 ${project_path}/admin/resources/cache/sidebar" level="info"/>
+        <exec command="find ${project_path}/admin/resources/cache/sidebar/ -type f -name '*_bar' -delete" level="info"/>
+
         <exec command="mkdir ${project_path}/deploy/composer" level="info"/>
         <exec command="mkdir ${project_path}/../${apps_path}" level="info"/>
         <chmod file="${project_path}/../${apps_path}" mode="0777" />

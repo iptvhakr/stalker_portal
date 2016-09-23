@@ -684,51 +684,101 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
 
     public function smart_application_version_install(){
 
-        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData)) {
-            $this->app->abort(404, $this->setLocalization('Page not found'));
-        }
-
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
 
-        $response['action'] = 'manageList';
-        if (!empty($this->postData['id'])) {
-            ignore_user_abort(true);
-            set_time_limit(0);
 
-            try{
-                $apps = new \SmartLauncherAppsManager($this->app['language']);
-                if (empty($this->postData['version'])) {
-                    $result = $apps->installApp($this->postData['id']);
-                } else {
-                    $result = $apps->updateApp($this->postData['id'], $this->postData['version']);
-                }
-                if ($result !==FALSE ) {
-                    $response['error'] = $error = '';
-                    $response['installed'] = 1;
-                } else {
-                    $response['error'] = $error = $this->setLocalization('Error of installing the application');
-                }
-            } catch(\PharException $e){
-                $response['error'] = $this->setLocalization($e->getMessage());
-            } catch(\SmartLauncherAppsManagerException $e){
-                $response['error'] = $this->setLocalization($e->getMessage());
-            } catch(\SmartLauncherAppsManagerConflictException $e){
-                $response['error'] = $this->setLocalization($e->getMessage());
-                foreach($e->getConflicts() as $row){
-                    $response['error'] .= "<br>"  . (!empty($row['target'])? " $row[target] with ": '') . " $row[alias] $row[current_version]" . PHP_EOL;
-                }
-                $response['msg'] = $response['error'];
-            } catch(\Exception $e){
-                $response['error'] = $this->setLocalization($e->getMessage());
-            }
-        } else {
-            $response['error'] = $error = $this->setLocalization('Application is undefined');
+        $id = !empty($this->postData['id']) && is_numeric($this->postData['id']) ? $this->postData['id'] : (!empty($this->data['id']) && is_numeric($this->data['id']) ? $this->data['id']: FALSE);
+
+        if ($id !== FALSE){
+            $response['id'] = $id;
         }
 
+        $curr_row = !empty($this->postData['curr_row']) ? $this->postData['curr_row'] : (!empty($this->data['curr_row']) ? $this->data['curr_row']: FALSE);
+        if ($curr_row !== FALSE){
+            $response['curr_row'] = strpos($curr_row, '#') === FALSE ? "#".$curr_row: $curr_row ;
+        }
+        if (!empty($this->postData['info'])) {
+            $response['action'] = 'resetAllWarning';
+            if ($id !== FALSE) {
+                $response['url_id'] =  'install_app_' . $id;
+                $response['modal_message'] = $this->setLocalization('Do you really want install this application?');
+            }
+
+            $response['button_message'] = $this->setLocalization('Install');
+            $error = '';
+        } else {
+
+            $response['action'] = 'manageList';
+            if ($id !== FALSE) {
+                ignore_user_abort(true);
+                set_time_limit(0);
+
+                try {
+                    $data['msg'] = $this->setLocalization('Installed');
+
+
+                    $apps = new \SmartLauncherAppsManager($this->app['language']);
+
+                    if (empty($this->postData['version'])) {
+
+                        $response['action'] = '';
+                        $this->beginNotifications();
+                        $apps->setNotificationCallback(function($msg){
+                            error_reporting(-1);
+                            ini_set('display_errors','On');
+                            ini_set('output_buffering', 'Off');
+                            ini_set('output_handler', '');
+                            ini_set('implicit_flush', 'On');
+                            ob_implicit_flush(true);
+                            while(ob_get_level()){
+                                ob_end_clean();
+                            }
+                            ob_start();
+                            echo '<script type="text/javascript"> var x = ' . microtime(TRUE) . ';</script>
+                            ';
+                            echo '<script  type="text/javascript"> window.parent.deliver("setModalMessage","' . $msg . '"); </script>
+                            ';
+                            ob_flush();
+                        });
+                    }
+
+                    if (empty($this->postData['version'])) {
+                        $result = $apps->installApp($id);
+                    } else {
+                        $result = $apps->updateApp($id, $this->postData['version']);
+                    }
+                    if ($result !== FALSE) {
+                        $response['error'] = $error = '';
+                        $response['installed'] = 1;
+                    } else {
+                        $response['error'] = $error = $this->setLocalization('Error of installing the application');
+                    }
+                } catch (\PharException $e) {
+                    $response['error'] = $this->setLocalization($e->getMessage());
+                } catch (\SmartLauncherAppsManagerException $e) {
+                    $response['error'] = $this->setLocalization($e->getMessage());
+                } catch (\SmartLauncherAppsManagerConflictException $e) {
+                    $response['error'] = $this->setLocalization($e->getMessage());
+                    foreach ($e->getConflicts() as $row) {
+                        $response['error'] .= "<br>" . (!empty($row['target']) ? " $row[target] with " : '') . " $row[alias] $row[current_version]" . PHP_EOL;
+                    }
+                    $response['msg'] = $response['error'];
+                } catch (\Exception $e) {
+                    $response['error'] = $this->setLocalization($e->getMessage());
+                }
+            } else {
+                $response['error'] = $error = $this->setLocalization('Application is undefined');
+            }
+        }
         $response = $this->generateAjaxResponse($response);
-        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+        $response = json_encode($response);
+        if (empty($this->postData['info']) && empty($this->postData['version'])) {
+            $this->endNotification($response, $error, "setModalMessage", "manageList");
+            exit;
+        }
+        return new Response($response, (empty($error) ? 200 : 500));
     }
 
     public function application_version_delete(){

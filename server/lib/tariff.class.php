@@ -111,15 +111,15 @@ class Tariff
 
         if ($package['type'] == 'tv'){
 
-            $services = $services->select('id, name')->from('itv')->orderby('name')->get()->all();
+            $services = $services->select('id, name')->from('itv')->in('id', $service_ids)->orderby('name')->get()->all();
 
         }elseif($package['type'] == 'radio'){
 
-            $services = $services->select('id, name')->from('radio')->orderby('name')->get()->all();
+            $services = $services->select('id, name')->from('radio')->in('id', $service_ids)->orderby('name')->get()->all();
 
         }elseif($package['type'] == 'video'){
 
-            $services = $services->select('id, name')->from('video')->orderby('name')
+            $services = $services->select('id, name')->from('video')->in('id', $service_ids)->orderby('name')
                 ->get()->all();
 
         }else{

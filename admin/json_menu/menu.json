@@ -35,7 +35,6 @@
     },
     "2": {
         "name": _("Video club"),
-        "new": true,
         "alias": "new-video-club",
         "icon": "fa fa-video-camera",
         "icon2": "pull-right fa fa-chevron-left",
@@ -388,6 +387,16 @@
                 "alias": "common",
                 "icon": ""
             }
+        }
+    },
+    "17": {
+        "name": _("Certificates"),
+        "new": true,
+        "alias": "certificates",
+        "icon": "fa fa-file",
+        "icon2": "",
+        "action": {
+
         }
     }
 }

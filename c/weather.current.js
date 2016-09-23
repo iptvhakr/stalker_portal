@@ -62,13 +62,13 @@
             
             var cur = '<div class="curweather_img"><img src="template/' + loader.template + '/i' + resolution_prefix + '/' + this.current.pict + '"/></div>';
             cur += '<div class="city">' + this.current.city + '</div>';
-            cur += '<div class="curweather_descr">' + this.current.t +'&deg; C<br>';
+            cur += '<div class="curweather_descr">' + this.current.t +'&deg; ' + (this.current.t_units ? this.current.t_units : 'C')+'<br>';
             cur += this.current.cloud_str + '<br>';
             if (this.current.t_flik){
-                cur += '<span class="curweather_title">' + word['weather_comfort'] + ':</span> ' + this.current.t_flik +'&deg; C<br>';
+                cur += '<span class="curweather_title">' + word['weather_comfort'] + ':</span> ' + this.current.t_flik +'&deg; ' + (this.current.t_units ? this.current.t_units : 'C')+'<br>';
             }
             cur += '<span class="curweather_title">' + word['weather_pressure'] + ':</span> ' + this.current.p + ' ' + word['weather_mmhg'] +'<br>';
-            cur += '<div class="curweather_wind"><div class="curweather_title" style="float: left">' + word['weather_wind'] + ':</div><div class="wind_direction_'+this.current.w_rumb_str+'">&uarr;</div> <div style="float: left;"> ' + this.current.w + ' ' + word['weather_speed'] + '</div></div><br>';
+            cur += '<div class="curweather_wind"><div class="curweather_title" style="float: left">' + word['weather_wind'] + ':</div>'+(this.current.w_rumb_str ? '<div class="wind_direction_'+this.current.w_rumb_str+'">&uarr;</div>' : '') + '<div style="float: left;"> ' + this.current.w + ' ' + word['weather_speed'] + '</div></div><br>';
             cur += '<span class="curweather_title">' + word['weather_humidity'] + ':</span> '+ this.current.h + '%<br>';
             cur += '</div>';
             
