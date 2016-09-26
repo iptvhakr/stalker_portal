@@ -1220,38 +1220,8 @@
                         searchBy = ($('#form_kinopoisk_id').val() ? 'id' : 'name');
                     }
 
-                    $.ajax({
-                        url: '{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-kinopoisk-info-by-' + searchBy,
-                        type: 'POST',
-                        data: sendData,
-                        success: function (data) {
-                            $("#modalbox").hide();
-                            $("body").removeClass("modal-open");
-                            if (data.success) {
-                                JSSuccessModalBox(data);
-                                /*if (data.result.hasOwnProperty('cover_big')) {
-                                    $('#cover_container').next('img').attr('src', "{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-image?url=" + data.result['cover_big']);
-                                }*/
+                    ajaxPostSend('{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-kinopoisk-info-by-' + searchBy, sendData, false, false);
 
-                                fillFormData(data);
-
-                            } else if (data.error) {
-                                JSErrorModalBox(data);
-                            } else {
-                                JSErrorModalBox({'msg': "{{ 'Some server error'|trans }}"});
-                            }
-                        },
-                        error: function (data) {
-                            $("#modalbox").hide();
-                            if (typeof(data.responseJSON) != 'undefined' && typeof(data.responseJSON.error) != 'undefined') {
-                                JSErrorModalBox(data.responseJSON);
-                            } else {
-                                JSErrorModalBox({'msg': "{{ 'Some network error or access denied'|trans }}"});
-                            }
-                        },
-                        dataType: "json",
-                        async: false
-                    });
                 });
 
                 checkVideoType();
@@ -1614,6 +1584,7 @@
 
                         seriesBox.data({'self-id': '#' + seriesBox.attr('id'), 'table-id': 'f_season_' + data.data[i].season_id + '_series_' + series_id + '_filedata'})
                         seriesBox.append($("#files_box_content").html());
+                        seriesBox.find('.box-content').hide();
                         //fillFilesData('#' + seriesBox.attr('id'), 'f_season_' + data.data[i].season_id + '_series_' + data.data[i].season_series[j].series_id + '_filedata');
                     } else {
                         seriesBox.find("span[data-series-number]").data("series-number", (typeof(data.data[i].season_series[j].series_number) != 'undefined' ? data.data[i].season_series[j].series_number : 1))
@@ -1623,7 +1594,9 @@
 
                         seriesBox.find("input[name='series_name']").val((typeof(data.data[i].season_series[j].series_name) != 'undefined' ? data.data[i].season_series[j].series_name : ''));
                         seriesBox.find("input[name='series_original_name']").val((typeof(data.data[i].season_series[j].series_original_name) != 'undefined' ? data.data[i].season_series[j].series_original_name : ''));
-                        $("#" + seriesBox.find('table').attr('id')).DataTable().ajax.reload();
+                        if ($("#" + seriesBox.find('table').attr('id')).is(":visible")) {
+                            $("#" + seriesBox.find('table').attr('id')).DataTable().ajax.reload();
+                        }
                     }
                 }
                 $.each(existsSeasonSeriesBoxIDs, function(i, val){

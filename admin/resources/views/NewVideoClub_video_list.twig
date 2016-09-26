@@ -303,6 +303,7 @@
     };
 
     var videoinfo = function (obj){
+        closeModalBox();
         $('#modalbox').show();
         $('#modalbox').find('.modal-header-name span').text(obj.title);
         var baseInfo = obj.base_info;

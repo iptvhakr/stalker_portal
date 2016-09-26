@@ -984,7 +984,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
         $data = array();
-        $data['action'] = 'getKinopoiskInfoByName';
+        $data['action'] = 'fillFormData';
         $error = $this->setLocalization('No data');
         
         try {
@@ -1014,7 +1014,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
         $data = array();
-        $data['action'] = 'getKinopoiskInfoById';
+        $data['action'] = 'fillFormData';
         $error = $this->setLocalization('No data');
         
         try {
