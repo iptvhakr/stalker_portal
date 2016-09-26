@@ -265,6 +265,8 @@
         <exec command="mkdir -p --mode=0777 ${project_path}/misc/logos" level="info"/>
         <exec command="mkdir -p --mode=0777 ${project_path}/misc/audio_covers" level="info"/>
 
+        <chmod file="${project_path}/cert" mode="0777" />
+
         <exec command="mkdir ${project_path}/admin" level="info"/>
         <exec command="mkdir ${project_path}/admin/logs" level="info"/>
 

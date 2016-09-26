@@ -32,6 +32,10 @@
     padding-right: 2px;
 }
 
+#epg[overlay_mode="1"] .name_block{
+    text-shadow: #000 1px 1px 2px;
+}
+
 #epg .active_name_block, #epg .blue_row_bg[active="active"] .name_block{
     padding-left: 3px;
 }
@@ -39,6 +43,7 @@
 #epg .blue_row_bg[active="active"] .name_block{
     font-size: 19px;
     color: #202020;
+    text-shadow: none;
 }
 
 #epg .epg_container_block{
@@ -117,8 +122,13 @@
     color: #fff;
 }
 
+#epg[overlay_mode="1"] .blue_row_bg .program{
+    text-shadow: #000 1px 1px 2px;
+}
+
 #epg .active_row_bg .program, #epg .blue_row_bg[active="active"] .program{
     color: #000;
+    text-shadow: none;
 }
 
 #epg .program_txt{
@@ -198,6 +208,11 @@
     padding: 0 5px;
 }
 
+#epg[overlay_mode="1"] .program_info{
+    background-image: url("i/25alfa_20.png");
+    text-shadow: #000 1px 1px 2px;
+}
+
 #epg .program_info .time{
     color: #ffc528;
     font-weight: bold;
@@ -219,6 +234,11 @@
     color: #fff;
     font-size: 14px;
 }
+
+#epg[overlay_mode="1"] .time_mark{
+    text-shadow: #000 1px 1px 2px;
+}
+
 
 #epg .mark-1{
     left: 230px;
