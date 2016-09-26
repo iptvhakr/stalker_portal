@@ -852,6 +852,27 @@
                     }
                 });
 
+                $("#files_container").on('click', 'button[data-delete-season]', function (e) {
+                    var container = $(this).closest('div[id^="season_"]');
+                    if (container.length) {
+                        var sendData = {
+                            season_id: container.data('seasonid')
+                        };
+                        ajaxPostSend("{{ app.request.baseUrl }}/{{ app.controller_alias }}/delete-video-season", sendData, false, false);
+                    }
+                });
+
+                $("#files_container").on('click', 'button[data-delete-episode]', function (e) {
+                    var sendData = {};
+                    var container = $(this).closest('div[id^="s_season_"]');
+                    if (container.length) {
+                        var sendData = {
+                            series_id: container.data('seriesid')
+                        };
+                        ajaxPostSend("{{ app.request.baseUrl }}/{{ app.controller_alias }}/delete-video-season-series", sendData, false, false);
+                    }
+                });
+
                 $("#files_container").on('click', "a.collapse-link", function(e){
                     if ($(this).parent('div[id^="s_season_"]').length == 0 && $(this).next('div.box-content').is(':visible')) {
                         $(this).next('div').find('.box-content:visible').prev('a.collapse-link').trigger('click');
@@ -990,13 +1011,12 @@
                     e.stopPropagation();
                     e.preventDefault();
                     $(this).closest("div.open").removeClass('open');
-                    ajaxPostSend($(this).attr('href'), $(this).data(), false);
-                });
 
-                $("#files_container").on('click', 'a[disabled]', function (e) {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    JSErrorModalBox({msg: "{{ 'Action is disabled'|trans }}"});
+                    var sendData = $(this).data();
+                    if ($(this).closest('tr').length && $(this).closest('tr').attr('id')) {
+                        sendData['RowOrder'] = $(this).closest('tr').attr('id');
+                    }
+                    ajaxPostSend($(this).attr('href'), sendData, false, false);
                 });
 
                 $("table[id*='filedata']").on("click", "a[href*='remove-video']", function (e) {
@@ -1110,29 +1130,8 @@
                         return;
                     }
 
-                    $.ajax({
-                        url: '{{ app.request.baseUrl }}/{{ app.controller_alias }}/check-name',
-                        type: 'POST',
-                        data: {name: _this.val(), year: $.trim($('#form_year').val()), 'id<>': $("#form_id").val()},
-                        success: function (data) {
-                            if (data.success) {
-                                _this.next('div').append('<i class="txt-success fa fa-check"></i> ' + data.chk_rezult).css('visibility', 'visible');
-                            } else if (data.error) {
-                                alert(data.error);
-                            } else {
-                                alert("{{ 'Some server error'|trans }}");
-                            }
-                        },
-                        error: function (data) {
-                            if (typeof(data.responseJSON) != 'undefined' && typeof(data.responseJSON.error) != 'undefined') {
-                                _this.next('div').append('<i class="txt-danger fa fa-ban"></i> ' + data.responseJSON.error).css('visibility', 'visible');
-                            } else {
-                                alert("{{ 'Some network error or access denied'|trans }}");
-                            }
-                        },
-                        dataType: "json",
-                        async: false
-                    });
+                    ajaxPostSend('{{ app.request.baseUrl }}/{{ app.controller_alias }}/check-name', {name: _this.val(), year: $.trim($('#form_year').val()), 'id<>': $("#form_id").val()}, false, false);
+
                 });
 
                 $(document).on('change keyup', '#form_o_name', function (e) {
@@ -1221,38 +1220,8 @@
                         searchBy = ($('#form_kinopoisk_id').val() ? 'id' : 'name');
                     }
 
-                    $.ajax({
-                        url: '{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-kinopoisk-info-by-' + searchBy,
-                        type: 'POST',
-                        data: sendData,
-                        success: function (data) {
-                            $("#modalbox").hide();
-                            $("body").removeClass("modal-open");
-                            if (data.success) {
-                                JSSuccessModalBox(data);
-                                /*if (data.result.hasOwnProperty('cover_big')) {
-                                    $('#cover_container').next('img').attr('src', "{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-image?url=" + data.result['cover_big']);
-                                }*/
+                    ajaxPostSend('{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-kinopoisk-info-by-' + searchBy, sendData, false, false);
 
-                                fillFormData(data);
-
-                            } else if (data.error) {
-                                JSErrorModalBox(data);
-                            } else {
-                                JSErrorModalBox({'msg': "{{ 'Some server error'|trans }}"});
-                            }
-                        },
-                        error: function (data) {
-                            $("#modalbox").hide();
-                            if (typeof(data.responseJSON) != 'undefined' && typeof(data.responseJSON.error) != 'undefined') {
-                                JSErrorModalBox(data.responseJSON);
-                            } else {
-                                JSErrorModalBox({'msg': "{{ 'Some network error or access denied'|trans }}"});
-                            }
-                        },
-                        dataType: "json",
-                        async: false
-                    });
                 });
 
                 checkVideoType();
@@ -1270,9 +1239,14 @@
                     /*var boxContent = $(this).closest('.box').children('.box-content');*/
                     if (e && e.type && e.type == "show") {
                         $.queue(this, "fx", function() {
-                            $(this).find('table').DataTable().draw();
+                            var dataId = $(this).closest('.box').data();
+                            if (!$("#" + dataId['table-id']).children('tbody').children('tr').length) {
+                                fillFilesData(dataId['self-id'], dataId['table-id']);
+                            }
+                            /*$(this).find('table').DataTable().draw();*/
                             $.dequeue( this );
                         });
+                        /*$(this).find('table').DataTable().ajax.reload();*/
                     }
                 });
 
@@ -1329,6 +1303,8 @@
 
                     fillModalBoxFilesData({data: fieldData}, true);
                 });
+
+                $('i[data-toggle="tooltip"]').tooltip();
 
             });
         }
@@ -1413,6 +1389,7 @@
             $("#season_button_container").hide();
             if (typeof (data.data) == 'object') {
                 $("#files_container").append($("#files_box_header").html());
+                $("#files_container").append($("#files_box_content").html());
                 fillFilesData('#files_container', 'filedata');
             }
         }
@@ -1483,9 +1460,17 @@
                 $("#add_season").show();
             }
             var targetNeighbor = {};
-            var existsSeasonBoxCount = $("div[id^='season_']").length;
+            var existsSeasonBoxCount = $("div[id^='season_']").filter(":not(div[id='season_button_container'])").length;
+            var existsSeasonBoxIDs = [];
+            $("div[id^='season_']").filter(":not(div[id='season_button_container'])").each(function(){
+                existsSeasonBoxIDs.push("#" + $(this).attr('id'));
+            });
+
             var gettingSeasonBoxCount = Object.keys ? Object.keys(data.data).length: -1;
             for (var i in data.data) {
+                if (existsSeasonBoxIDs.indexOf("#season_" + data.data[i].season_id) != -1) {
+                    existsSeasonBoxIDs.splice(existsSeasonBoxIDs.indexOf("#season_" + data.data[i].season_id), 1);
+                }
                 var seasonBox = $("#season_" + data.data[i].season_id);
                 if (seasonBox.length == 0) {
                     targetNeighbor.action = 'undefined';
@@ -1545,8 +1530,17 @@
                         .html("{{ 'episodes'|trans }} " + (typeof(data.data[i].series_count) != 'undefined' ? data.data[i].series_count : 0));
 
                 targetNeighbor = {action : 'undefined', key: 0};
+                var existsSeasonSeriesBoxIDs = [];
+                $('div[id^="s_season_' + data.data[i].season_id + '_series_"]').each(function(){
+                    existsSeasonSeriesBoxIDs.push("#" + $(this).attr('id'));
+                });
                 for (var j in data.data[i].season_series) {
-                    var seriesBox = $('#s_season_' + data.data[i].season_id + '_series_' + data.data[i].season_series[j].series_id);
+                    var series_id = typeof(data.data[i].season_series[j].series_id) != 'undefined' ? data.data[i].season_series[j].series_id : '';
+                    if (existsSeasonSeriesBoxIDs.indexOf('#s_season_' + data.data[i].season_id + '_series_' + series_id) != -1) {
+                        existsSeasonSeriesBoxIDs.splice(existsSeasonSeriesBoxIDs.indexOf('#s_season_' + data.data[i].season_id + '_series_' + series_id), 1);
+                    }
+
+                    var seriesBox = $('#s_season_' + data.data[i].season_id + '_series_' + series_id);
 
                     if (seriesBox.length == 0) {
                         targetNeighbor.action = 'undefined';
@@ -1573,12 +1567,12 @@
                         });
 
                         if ( typeof (neighborsS[targetNeighbor.key]) != 'undefined' && targetNeighbor.action != 'undefined') {
-                            seriesBox = $('<div class="box" id="s_season_' + data.data[i].season_id + '_series_' + data.data[i].season_series[j].series_id + '"></div>')[targetNeighbor.action](neighborsS[targetNeighbor.key]);
+                            seriesBox = $('<div class="box" id="s_season_' + data.data[i].season_id + '_series_' + series_id + '"></div>')[targetNeighbor.action](neighborsS[targetNeighbor.key]);
                         } else {
-                            seriesBox = $('<div class="box" id="s_season_' + data.data[i].season_id + '_series_' + data.data[i].season_series[j].series_id + '"></div>').appendTo(seasonBox.children(".box-content").children(".row").children(".col-sm-11"));
+                            seriesBox = $('<div class="box" id="s_season_' + data.data[i].season_id + '_series_' + series_id + '"></div>').appendTo(seasonBox.children(".box-content").children(".row").children(".col-sm-11"));
                         }
 
-                        seriesBox.data('seriesid', (typeof(data.data[i].season_series[j].series_id) != 'undefined' ? data.data[i].season_series[j].series_id : ''));
+                        seriesBox.data('seriesid', series_id);
                         seriesBox.append($('#series_box_header').html());
                         seriesBox.find("span[data-series-number]").data("series-number", (typeof(data.data[i].season_series[j].series_number) != 'undefined' ? data.data[i].season_series[j].series_number : 1))
                                 .html((typeof(data.data[i].season_series[j].series_number) != 'undefined' ? data.data[i].season_series[j].series_number : 1) + " {{ 'episode'|trans }}");
@@ -1588,7 +1582,10 @@
                         seriesBox.find("input[name='series_name']").val((typeof(data.data[i].season_series[j].series_name) != 'undefined' ? data.data[i].season_series[j].series_name : ''));
                         seriesBox.find("input[name='series_original_name']").val((typeof(data.data[i].season_series[j].series_original_name) != 'undefined' ? data.data[i].season_series[j].series_original_name : ''));
 
-                        fillFilesData(seriesBox, 'f_season_' + data.data[i].season_id + '_series_' + data.data[i].season_series[j].series_id + '_filedata');
+                        seriesBox.data({'self-id': '#' + seriesBox.attr('id'), 'table-id': 'f_season_' + data.data[i].season_id + '_series_' + series_id + '_filedata'})
+                        seriesBox.append($("#files_box_content").html());
+                        seriesBox.find('.box-content').hide();
+                        //fillFilesData('#' + seriesBox.attr('id'), 'f_season_' + data.data[i].season_id + '_series_' + data.data[i].season_series[j].series_id + '_filedata');
                     } else {
                         seriesBox.find("span[data-series-number]").data("series-number", (typeof(data.data[i].season_series[j].series_number) != 'undefined' ? data.data[i].season_series[j].series_number : 1))
                                 .html((typeof(data.data[i].season_series[j].series_number) != 'undefined' ? data.data[i].season_series[j].series_number : 1) + " {{ 'episode'|trans }}");
@@ -1597,10 +1594,19 @@
 
                         seriesBox.find("input[name='series_name']").val((typeof(data.data[i].season_series[j].series_name) != 'undefined' ? data.data[i].season_series[j].series_name : ''));
                         seriesBox.find("input[name='series_original_name']").val((typeof(data.data[i].season_series[j].series_original_name) != 'undefined' ? data.data[i].season_series[j].series_original_name : ''));
-                        $("#" + seriesBox.find('table').attr('id')).DataTable().ajax.reload();
+                        if ($("#" + seriesBox.find('table').attr('id')).is(":visible")) {
+                            $("#" + seriesBox.find('table').attr('id')).DataTable().ajax.reload();
+                        }
                     }
                 }
+                $.each(existsSeasonSeriesBoxIDs, function(i, val){
+                    $(val).remove();
+                });
             }
+
+            $.each(existsSeasonBoxIDs, function(i, val){
+                $(val).remove();
+            });
 
             if (typeof (data.other_files) != 'undefined' && data.other_files != 0 && $("#other_files").length == 0) {
                 $('<div class="box" id="other_files"></div>').appendTo("#files_container");
@@ -1618,6 +1624,7 @@
                 });
 
                 $("#other_files").append($("#files_box_header").html());
+                $("#other_files").append($("#files_box_content").html());
                 fillFilesData('#other_files', 'other_filedata');
                 $('#other_files').children('a.collapse-link').find('[data-files-title]').text("{{ 'Other files'|trans }}");
             }
@@ -1629,7 +1636,7 @@
 
         function fillFilesData(target, id) {
             LoadDataTablesScripts(function () {
-                $(target).append($("#files_box_content").html());
+                /*$(target).append($("#files_box_content").html());*/
                 $(target).find('table').attr('id', id);
                 $("#" + id).on('xhr.dt', function (e, settings, json) {
                     if (typeof (json.data) == 'object') {
@@ -1725,11 +1732,7 @@
                     "bPaginate": true,
                     "bInfo": true,
                     "aoColumnDefs": [
-                        {className: "action-menu", "targets": [-1]}/*,
-                         {"searchable": false, "targets": [-1, -2, -3]},
-                         {"sortable": false, "targets": [-1]},
-                         {className: "data-filter-status", "targets": [-3]},
-                         { "width": "16px", "targets": [ -1 ] }*/
+                        {className: "action-menu", "targets": [-1]}
                     ]
                 }).prev('.dataTables_processing').hide('');
             });
@@ -1737,7 +1740,7 @@
 
         function addOldURLNote(target, old_url){
             if ($(target).find('.box-header button.btn-old-url').length == 0) {
-                var button = $(target).find('.box-header button');
+                var button = $(target).find('.box-header button:first');
                 var newButton = button.clone(true);
                 newButton.text("{{ 'Old data'|trans }}").data('old-url', old_url).addClass('btn-old-url');
                 button.before(newButton);
@@ -1777,7 +1780,11 @@
             if (data.btn_old_url_remove) {
                 $("#" + data.datatable).closest('.box-content').parent('div').find('.box-header button.btn-old-url').remove();
             }
-            $("#" + data.datatable).DataTable().ajax.reload();
+            if ($("#" + data.datatable).length != 0) {
+                $("#" + data.datatable).DataTable().ajax.reload();
+            } else {
+                JSErrorModalBox({msg: "{{ 'Something wrong. Please reload page.'|trans }}"});
+            }
         };
 
         var dataTableUpdateError = function (data) {
@@ -2032,7 +2039,8 @@
                     </div>
                 </div>
                 <div class="box-header-btn">
-                    <button class="btn btn-default btn-add-video-rating" data-add-files="1">{{ 'Add file'|trans }}</button>
+                    <button class="btn btn-default btn-add-video-rating" data-add-files="1"><i class="fa fa-plus-square-o"  data-original-title="{{ 'Add file'|trans }}" data-toggle="tooltip" data-placement="left"></i></button>
+                    <button class="btn btn-default btn-add-video-rating" data-delete-episode="1" ><i class="fa fa-trash-o" data-original-title="{{ 'Delete episode'|trans }}" data-toggle="tooltip" data-placement="left"></i></button>
                 </div>
                 <div class="box-icons">
                     <i class="fa fa-chevron-down"></i>
@@ -2070,7 +2078,8 @@
                     </div>
                 </div>
                 <div class="box-header-btn">
-                    <button class="btn btn-default btn-add-video-rating" data-add-series="1">{{ 'Add episodes'|trans }}</button>
+                    <button class="btn btn-default btn-add-video-rating" data-add-series="1" ><i class="fa fa-plus-square-o" data-original-title="{{ 'Add episodes'|trans }}" data-toggle="tooltip" data-placement="left"></i></button>
+                    <button class="btn btn-default btn-add-video-rating" data-delete-season="1" ><i class="fa fa-trash-o" data-original-title="{{ 'Delete season'|trans }}" data-toggle="tooltip" data-placement="left"></i></button>
                 </div>
                 <div class="box-icons">
                     <i class="fa fa-chevron-down"></i>

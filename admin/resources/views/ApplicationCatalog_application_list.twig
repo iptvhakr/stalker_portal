@@ -111,12 +111,8 @@
                     e.stopPropagation();
                     e.preventDefault();
                     $("#modalbox").data('complete', 0);
-                    if ($(this).attr("disabled")) {
-                        JSErrorModalBox({msg: "{{ 'Action is not available'|trans }}"});
-                    } else {
-                        showModalBox();
-                        ajaxPostSend($(this).attr('href'), $(this).data(), false );
-                    }
+                    showModalBox();
+                    ajaxPostSend($(this).attr('href'), $(this).data(), false );
                     $(this).closest('div.open').removeClass('open');
                     return false;
                 });

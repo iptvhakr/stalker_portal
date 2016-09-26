@@ -47,14 +47,14 @@
                             json.data[i]['task_added'] = date.toLocaleFormat("%b %d, %Y %H:%M");
                         }
 
-                        date = json.data[i]['date_on'];
+                        date = json.data[i]['task_date_on'];
                         if (date > 0) {
-                            date = new Date(date * 1000);
-                            json.data[i]['date_on'] = date.toLocaleFormat("%b %d, %Y %H:%M");
+                            date = new Date(date);
+                            json.data[i]['task_date_on'] = "{{ 'scheduled'|trans }} " + "{{ 'on'|trans }} " + date.toLocaleFormat("%d-%m-%Y");
                             curr_on_date = date.toLocaleFormat("%d-%m-%Y");
                         }
 
-                        json.data[i]['name'] = '<a href="{{ app.controller_alias }}/edit-video?id='+id+'" data-fieldname="name">'+name+'</a>';
+                        json.data[i]['name'] = '<a href="{{ app.controller_alias }}/edit-video?id='+videoid+'" data-fieldname="name">'+name+'</a>';
 
                         json.data[i].operations = '<div class="col-xs-3 col-sm-8 ddd">\n\
                                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">\n\
@@ -62,17 +62,17 @@
                                                         </a>\n\
                                                         <ul class="dropdown-menu pull-right">\n\
                                                             <li>\n\
-                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/enable-video" data-videoid="'+videoid+'" data-taskid="'+taskid+'" data-video_on_date="'+video_on_date+'" data-curr_on_date="'+curr_on_date+'">\n\
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/enable-video" data-videoid="'+videoid+'" data-taskid="'+taskid+'" data-video_on_date="'+video_on_date+'" data-curr_on_date="'+curr_on_date+'" data-rowid = "' + json.data[i].RowOrder +'">\n\
                                                                     <span>{{ 'Edit'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/enable-video" data-videoid="'+videoid+'" data-video_on_date="'+video_on_date+'" data-waiting="1">\n\
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/enable-video" data-videoid="'+videoid+'" data-video_on_date="'+video_on_date+'" data-waiting="1"  data-rowid = "' + json.data[i].RowOrder +'">\n\
                                                                     <span>{{ 'Publish now'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-tasks" data-taskid="'+taskid+'">\n\
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-tasks" data-taskid="'+taskid+'"  data-rowid = "' + json.data[i].RowOrder +'">\n\
                                                                     <span>{{ 'Remove schedule'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
@@ -122,85 +122,29 @@
                         return false;
                     }
 
-                    if (!_this.data('action')) {
-                        $.ajax({
-                            url: $(this).attr('href'),
-                            type: 'POST',
-                            data: $(this).data(),
-                            success: function (data) {
-                                if (data.success) {
-                                    for (var key in data) {
-                                        _this.data(key, data[key]);
-                                    }
-                                } else {
-                                    JSErrorModalBox({msg: "{{ 'Some server error'|trans }}"});
-                                }
-                            },
-                            error: function (data) {
-                                var errAction = '';
-                                if (typeof (data.responseJSON) == 'object') {
-                                    errAction += data.responseJSON.action + 'Error';
-                                    for (var key in data.responseJSON) {
-                                        _this.data(key, data.responseJSON[key]);
-                                    }
-                                }
-                                if ($.isFunction(window[errAction])) {
-                                    window[errAction]($(_this));
-                                } else {
-                                    JSErrorModalBox({msg: "{{ 'Some network error or access denied'|trans }}"});
-                                }
-                            },
-                            dataType: "json",
-                            async: false
-                        });
-                    }
-
-                    if ($.isFunction(window[$(this).data('action')]) && !$(this).data('error')) {
-                        window[$(this).data('action')]($(this));
-                    }
+                    ajaxPostSend($(this).attr('href'), $(this).data(), false, false);
                     _this.closest('div.open').removeClass('open');
                     return false;
                 });
-                
+
                 $(document).on('click', "#apply_enable_date", function(e){
                     e.stopPropagation();
                     e.preventDefault();
-                    $("a[data-videoid='" + $("#modalbox input[type='hidden']").val() + "'][data-curr_on_date]")
-                            .data('video_on_date', $("#modalbox input[type='text']").val()).data('waiting', true)
-                            .removeData('action').trigger('click');
-                    $("div[id*='datepicker']").hide().remove();
-                    closeModalBox();
-                    $("div[id*='datepicker']").remove();
+                    var link = $("a[data-videoid='" + $("#modalbox input[name='link_id']").val() + "'][href*='enable']");
+                    link.data('video_on_date', $("#modalbox input[name='video_on_date']").val());
+                    if ($("#modalbox input[name='empty_confirm']").length !=0) {
+                        link.data('empty_confirm', 1);
+                    }
+                    link.trigger('click');
                     return false;
                 });
 
-                $(document).on('click', "#reset_enable_date, #modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
-                    if (e.currentTarget != e.target) {
-                        return;
-                    }
-                    e.stopPropagation();
-                    e.preventDefault();
-                    $("div[id*='datepicker']").hide().remove();
-                    closeModalBox();
-                    return false;
-                });
             });
         }
         document.addEventListener("DOMContentLoaded", yelp, false);
 
         var removeTasks = function (obj) {
             $('#datatable-1').DataTable().row( $(obj).closest('tr') ).remove().draw();
-        };
-
-        var videoenable = function (obj) {
-            if ($(obj).data('waiting')) {
-                $(obj).closest('tr').find('span[data-task-state]').html($(obj).data('status'));
-                $(obj).removeData('waiting');
-                $(obj).data('curr_on_date', $(obj).data('date_on'));
-            } else {
-                removeTasks(obj);
-            }
-            JSSuccessModalBox();
         };
 
         function setEnableDatePicker(obj) {
@@ -266,6 +210,28 @@
             $('#modalbox').find('.modal-header-name span').empty();
             $('#modalbox').find('.devoops-modal-inner').empty();
             $('#modalbox').find('.devoops-modal-bottom').empty();
+        }
+
+        function publishWarning(obj){
+            var sendData = {
+                empty_confirm: 1
+            };
+            $("#modalbox form input").each(function(){
+                sendData[$(this).attr('name')] = $(this).val();
+            });
+
+            $("#modalbox form").empty();
+            var field;
+            for (var name in sendData) {
+                field = $('<input/>').appendTo("#modalbox form");
+                field.prop({type: 'hidden', name: name, value: sendData[name]});
+            }
+            if (obj && obj.msg) {
+                field = $('<span/>').appendTo("#modalbox form");
+                field.addClass('col-sm-11').text(obj.msg);
+            }
+
+            $(obj).removeData('video_on_date').removeData('empty_confirm');
         }
     </script>
 

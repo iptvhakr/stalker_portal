@@ -290,7 +290,8 @@
 
 <script type="text/javascript" defer>
 
-    var select2Opt = {minimumResultsForSearch: -1, dropdownAutoWidth: false, width: '100%'};
+    var select2Opt = {minimumResultsForSearch: -1, dropdownAutoWidth: false, width: '100%'}
+    var no_table_operations = true;
 
     var conf = {
         form: '#form_',
@@ -301,6 +302,7 @@
         modules: 'jsconf, date',
         onSuccess: function () {
             var formData = $("#modalbox_ad form").serialize();
+            formData['no_table_operations'] = no_table_operations;
             ajaxPostSend("{{app.request.baseUrl}}/events/add-event", formData);
             $("#modalbox_ad form").get(0).reset();
             return false;
@@ -343,8 +345,11 @@
         return true;
     }
 
-    function eventsMenuHandlers() {
+    function eventsMenuHandlers(events_page) {
 
+        if (typeof (events_page) !== 'undefind' && events_page) {
+            no_table_operations = false;
+        }
         $.validate(conf);
 
         LoadSelect2Script(DemoSelect2);

@@ -483,7 +483,8 @@ class NewVideoClubModel extends \Model\BaseStalkerModel {
                 'V_S_S.series_name',
                 'V_S_S.series_original_name',
                 'V_S_S.series_files',
-                'V_S_F.file_name'
+                'V_S_F.file_name',
+                'V_S_F.id as series_files_id'
             ))
             ->from('video_season as V_S')
             ->join('video_season_series as V_S_S', 'V_S.id', 'V_S_S.season_id', 'LEFT')
@@ -540,6 +541,20 @@ class NewVideoClubModel extends \Model\BaseStalkerModel {
             $param = array('id' => $param);
         }
         return $this->mysqlInstance->delete('video_series_files', $param)->total_rows();
+    }
+
+    public function deleteSeason($param) {
+        if (is_numeric($param)) {
+            $param = array('id' => $param);
+        }
+        return $this->mysqlInstance->delete('video_season', $param)->total_rows();
+    }
+
+    public function deleteSeries($param) {
+        if (is_numeric($param)) {
+            $param = array('id' => $param);
+        }
+        return $this->mysqlInstance->delete('video_season_series', $param)->total_rows();
     }
 
     public function getAdsTotalRows($where = array(), $like = array()) {

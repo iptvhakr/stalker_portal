@@ -97,7 +97,7 @@
 
                 $(document).on('change', '#form_mac', function (e) {
                     var _this = $(this);
-                    _this.next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
+                    _this.next('div').empty();
 
                     if ($.trim(_this.val()) == '') {
                         return;
@@ -110,27 +110,8 @@
                         }
                     }
 
-                    $.ajax({
-                        url: 'video-club/check-moderator-mac',
-                        type: 'POST',
-                        data: {mac: _this.val(), id: $("#form_id").val()},
-                        success: function (data) {
-                            if (data.success) {
-                                _this.next('div').append('<i class="txt-success fa fa-check"></i> ' + data.chk_rezult).css('visibility', 'visible');
-                            } else {
-                                JSErrorModalBox(data);
-                            }
-                        },
-                        error: function (data) {
-                            if (typeof (data.responseJSON) != 'undefined' && typeof (data.responseJSON.error) != 'undefined') {
-                                _this.next('div').append('<i class="txt-danger fa fa-ban"></i> ' + data.responseJSON.error).css('visibility', 'visible');
-                            } else {
-                                JSErrorModalBox(data.responseJSON);
-                            }
-                        },
-                        dataType: "json",
-                        async: false
-                    });
+                    ajaxPostSend('{{ app.request.baseUrl }}/{{ app.controller_alias }}/check-moderator-mac', {mac: _this.val(), id: $("#form_id").val()}, false, false);
+
                 });
 
                 $(document).on("click", "#form_save", function (e) {

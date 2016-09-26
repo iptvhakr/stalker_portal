@@ -157,17 +157,6 @@
             JSErrorModalBox(data);
         };
 
-        var deleteGenre = function(data){
-            JSshowModalBox();
-            JSSuccessModalBox(data);
-            $('#datatable-1').DataTable().ajax.reload();
-        };
-
-        var deleteGenreError = function(data){
-            JSshowModalBox();
-            JSErrorModalBox(data);
-        };
-
         function closeModalBox(){
             $("#modalbox").hide();
             $('#modalbox').find('.modal-header-name span').empty();

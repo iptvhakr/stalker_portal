@@ -47,7 +47,7 @@ $("#modalbox, #modalbox_clone, #modalbox_ad").on("show", function () {
 $('#modalbox_ad').appendTo("#wrapper");
 $('#modalbox').appendTo("#wrapper");
 
-$("#ui-datepicker-div").css("z-index:5050;")
+$("#ui-datepicker-div").css("z-index:5050;");
 
 $('#attribute_set').removeClass('dropup');
 $('#status').removeClass('dropup');
@@ -129,129 +129,6 @@ function LoadFancyboxScript(callback) {
 /*-------------------------------------------
  Main scripts used by theme
  ---------------------------------------------*/
-//
-//  Function for load content from url and put in $('.ajax-content') block
-//
-function LoadAjaxContent(url) {
-    if (url.length == 0) {
-        return false;
-    }
-    $('.preloader').show();
-    window.location = url;
-    return;
-    $.ajax({
-        url: url,
-        mimeType: 'text/html; charset=utf-8', // ! Need set mimeType only when run from local file
-        type: 'GET',
-        success: function (data) {
-            $('#ajax-content').html(data);
-            $('.preloader').hide();
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            alert(errorThrown);
-        },
-        dataType: "html",
-        async: false
-    });
-}
-//
-//  Function maked all .box selector is draggable, to disable for concrete element add class .no-drop
-//
-function WinMove() {
-    var parentArray = (typeof(channelList) != 'undefined') ? channelList : {};
-    $("div.box").draggable({
-                revert: true,
-                zIndex: 2000,
-                cursor: "crosshair",
-                handle: '.box-name',
-				class: 'highlight',
-                opacity: 0.8
-            })
-            .droppable({
-                tolerance: 'pointer',
-//                activeClass: "ui-state-hover",
-                hoverClass: "highlight",//"ui-state-active",
-                drop: function (event, ui) {
-                    var draggable = ui.draggable;
-                    var droppable = $(this);
-                    var dragPos = draggable.position();
-                    var dropPos = droppable.position();
-                    draggable.swap(droppable, parentArray);
-                    setTimeout(function () {
-                        var dropmap = droppable.find('[id^=map-]');
-                        var dragmap = draggable.find('[id^=map-]');
-                        if (dragmap.length > 0 || dropmap.length > 0) {
-                            dragmap.resize();
-                            dropmap.resize();
-                        }
-                        else {
-                            draggable.resize();
-                            droppable.resize();
-                        }
-						
-                    }, 50);
-                    setTimeout(function () {
-					
-                        draggable.find('[id^=map-]').resize();
-                        droppable.find('[id^=map-]').resize();
-                    }, 250);
-                    if ($("#channelListContainer").length > 0) {
-                        setTimeout(function () {
-                            channelListRender('#channelListContainer');
-                        }, 300);
-                    }
-                }
-            });
-    $('div.box.no-drop').draggable( "disable" ).droppable( "disable" );
-}
-//
-// Swap 2 elements on page. Used by WinMove function
-//
-jQuery.fn.swap = function (b, parentArray) {
-    b = jQuery(b)[0];
-    var a = this[0];
-    var a_num = $(a).find('span.curr_num').data('number');
-    var b_num = $(b).find('span.curr_num').data('number');
-    var remove = $(b).children('div').hasClass('empty');
-//    var t = a.parentNode.insertBefore(document.createTextNode(''), a);
-    b.parentNode.insertBefore(a, b);
-//    t.parentNode.insertBefore(b, t);
-//    t.parentNode.removeChild(t);
-//    if (remove) {
-//        setTimeout(function () {
-//            $(b).remove();
-//        }, 300);
-//    }
-    if (typeof(parentArray) == 'object' && parentArray.length !=0) {
-        a_num = parseInt(a_num, 10) - 1;
-        b_num = parseInt(b_num, 10) - 1;
-        
-        var direction = a_num < b_num ? 1: -1;
-        var next_num = a_num + direction;
-        
-//        if (remove) {
-//            parentArray.splice(b_num, 1);
-//            b_num += direction;
-//        }
-        while( Math.abs(b_num - next_num + direction) > 0) {
-            if ( typeof(parentArray[next_num]) != 'undefined' && typeof(parentArray[next_num].locked) != 'undefined' &&  !parentArray[next_num].locked) {
-                var temp_a_number = parentArray[a_num].number;
-                var temp_next_number = parentArray[next_num].number;
-                
-                var temp_a = parentArray[a_num];
-                parentArray[a_num] = parentArray[next_num];
-                parentArray[next_num] = temp_a;
-                
-                parentArray[a_num].number = temp_a_number;
-                parentArray[next_num].number = temp_next_number;
-                
-                a_num = next_num;
-            }
-            next_num += direction;
-        }
-    }
-    return this;
-};
 //
 //  Function set min-height of window (required for this theme)
 //
@@ -418,20 +295,9 @@ $(document).ready(function () {
         $('div#main').toggleClass('sidebar-show');
         setTimeout(MessagesMenuWidth, 250);
     });
-//    var ajax_url = 'http://test1.localhost/stalker_portal/server/administrator/';
-    var ajax_url = '';
-    var ajax_hash = location.hash.replace(/^#/, '');
-    if (ajax_hash.search('ajax') == -1) {
-//        ajax_url += ajax_hash.length < 1 ? 'ajax/login.html' : ajax_hash;
-        ajax_url += ajax_hash.length < 1 ? '' : ajax_hash;
-    } else {
-        ajax_url = ajax_hash;
-    }
-    if (ajax_url.length != 0) {
-        LoadAjaxContent(ajax_url);
-    } else {
-        $('.preloader').hide();
-    }
+
+    $('.preloader').hide();
+
     $('.main-menu').on('click', 'a', function (e) {
         if ($(this).next().length == 0) {
             return true;
@@ -463,18 +329,6 @@ $(document).ready(function () {
         if ($(this).hasClass('active') == false) {
             $(this).parents("ul.dropdown-menu").find('a').removeClass('active');
             $(this).addClass('active')
-        }
-        if ($(this).hasClass('ajax-link')) {
-            e.preventDefault();
-            if ($(this).hasClass('add-full')) {
-                $('#content').addClass('full-content');
-            }
-            else {
-                $('#content').removeClass('full-content');
-            }
-            var url = $(this).attr('href');
-            window.location.hash = url;
-            LoadAjaxContent(url);
         }
         if ($(this).attr('href') == '#') {
             e.preventDefault();
@@ -519,47 +373,12 @@ $(document).ready(function () {
                 var content = $(this).closest('div.box');
                 content.remove();
             });
-    $('#locked-screen').on('click', function (e) {
-        e.preventDefault();
-        $('body').addClass('body-screensaver');
-        $('#screensaver').addClass("show");
-        ScreenSaver();
-    });
+
     $('body').on('click', 'a.close-link', function (e) {
         e.preventDefault();
 //        CloseModalBox();
     });
-    $(document).on('click', 'a', function (e) {
-        if ($(this).hasClass('ajax-link')) {
-            e.preventDefault();
-            if ($(this).hasClass('add-full')) {
-                $('#content').addClass('full-content');
-            }
-            else {
-                $('#content').removeClass('full-content');
-            }
-            var url = $(this).attr('href');
-            window.location.hash = url;
-            LoadAjaxContent(url);
-        }
-    });
-    $('#search').on('keydown', function (e) {
-        if (e.keyCode == 13) {
-            e.preventDefault();
-            $('#content').removeClass('full-content');
-            ajax_url = 'ajax/page_search.html';
-            window.location.hash = ajax_url;
-            LoadAjaxContent(ajax_url);
-        }
-    });
-    $('#screen_unlock').on('mouseover', function () {
-        var header = 'Enter current username and password';
-        var form = $('<div class="form-group"><label class="control-label">Username</label><input type="text" class="form-control" name="username" /></div>' +
-                '<div class="form-group"><label class="control-label">Password</label><input type="password" class="form-control" name="password" /></div>');
-        var button = $('<div class="text-center"><a href="index.html" class="btn btn-primary">Unlock</a></div>');
-        OpenModalBox(header, form, button);
-    });
-    
+
     $(document).on("click mousedown mouseup", "#attribute_set .checkbox", function (e) {
         e.stopPropagation();
     });
@@ -571,10 +390,10 @@ $(document).ready(function () {
         sendData[$(this).find("input[type='checkbox']").val()] = is_checked;
         $("#attribute_set input[type='checkbox']:not(:first):not(:last)").each(function(index){
             $(this).prop('checked', is_checked);
-            $("#datatable-1").dataTable().fnSetColumnVis( index, is_checked, false );
+            $("table[id^='datatable']").dataTable().fnSetColumnVis( index, is_checked, false );
             sendData[$(this).val()] = is_checked;
         });
-        $("#datatable-1").DataTable().draw();
+        $("table[id^='datatable']").DataTable().draw();
         setDropdownAttribute(sendData);
         e.stopPropagation();
         return false;
@@ -582,7 +401,7 @@ $(document).ready(function () {
 
     $(document).on('change', "#attribute_set li:not(:first-child) input[type='checkbox']", function (e) {
         $("#attribute_set input[type='checkbox']").each(function(index){
-            $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked'), false );
+            $("table[id^='datatable']").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked'), false );
         });
         var allChbLen = $("#attribute_set li:not(:first-child) input[type='checkbox']").length;
         var chkChbLen = $("#attribute_set li:not(:first-child) input[type='checkbox']:checked").length;
@@ -591,7 +410,7 @@ $(document).ready(function () {
         $("#attribute_set input[type='checkbox']").each(function(){
             sendData[$(this).val()] = $(this).prop('checked');
         });
-        $("#datatable-1").DataTable().draw();
+        $("table[id^='datatable']").DataTable().draw();
         setDropdownAttribute(sendData);
     });
     
@@ -633,28 +452,10 @@ $(document).ready(function () {
         }
     });
 
-    $(document).on("click", '#datatable-1 a', function (e) {
-        if ($(this).hasClass('ajax-link')) {
-            e.preventDefault();
-            if ($(this).hasClass('add-full')) {
-                $('#content').addClass('full-content');
-            }
-            else {
-                $('#content').removeClass('full-content');
-            }
-            var url = $(this).attr('href');
-            window.location.hash = url;
-            LoadAjaxContent(url);
-        }
+    $(document).on("click", 'table[id^="datatable"] a', function (e) {
         if ($(this).attr('href') == '#') {
             e.preventDefault();
         }
-    });
-
-    $(document).on('click', "#add_channel .box-name .toggle-switch", function (e) {
-        e.stopPropagation();
-        e.preventDefault();
-        return false;
     });
 
     $(document).on('click', "#modalbox_ad a.close-link, #modalbox_ad a.close-link .fa-times, #modalbox_ad, #modalbox_ad button[type='reset']", function (e) {
@@ -672,81 +473,6 @@ $(document).ready(function () {
         return false;
     });
 
-    $(document).on('click submit', "#modalbox_ad .channel-form button[type='submit']", function (e) {
-        e.stopPropagation();
-        e.preventDefault();
-
-        if (typeof(conf) == 'object' && typeof(conf.form) != 'undefined') {
-            conf.form = '#add_channel_link_form';
-            conf.formContainer = '#modalbox_ad';
-            $(conf.form).prop('novalidate', 0).removeAttr('novalidate');
-            if ($(conf.form).isValid({}, conf, true)) {
-                conf.onSuccess();
-                $(conf.form).prop('novalidate', 1);
-            } else {
-                conf.onError();
-                return false;
-            }
-        }
-
-        var tmp_id = $("#modalbox_ad").data('tr_id');
-        var dataObj = {};
-
-        var currentCMD = $("#modalbox_ad #add_channel_url_base input[name*='cmd']");
-        var currentCMDVal = $(currentCMD).val();
-        currentCMDVal = currentCMDVal.replace(/\s/ig, '');
-        var duplicate = false;
-
-        $('#cmd_data tr:visible td:first-of-type input[name*="cmd"]').each(function(){
-            var existsCMDVal = $(this).val();
-            existsCMDVal = existsCMDVal.replace(/\s/ig, '');
-            var currID = $(this).closest('tr').attr('id') || false;
-            if (existsCMDVal == currentCMDVal &&  currID != tmp_id) {
-                duplicate = true;
-                return false;
-            }
-        });
-
-        if (duplicate) {
-            currentCMD.closest('div').after('<span class="help-inline col-xs-12 col-sm-12 duplicate"><span class="txt-danger">' + words['CMD_Exists'] + "</span></span>");
-            $("#modalbox_ad").scrollTo(0);
-            currentCMD.focus();
-            return false;
-        } else {
-            currentCMD.closest('div').next('span.duplicate').remove();
-        }
-
-        $('#modalbox_ad').find('input, select').each(function () {
-            var name = (typeof ($(this).attr('name')) != 'undefined') ? $(this).attr('name').replace(/\[\d*?\]/ig, '') : false;
-            if (!name) {
-                return true;
-            }
-            var type = typeof ($(this).attr('type')) != 'undefined' ? $(this).attr('type') : $(this).get(0).tagName.toLowerCase();
-            var value = $(this).val() || '';
-            if (value instanceof Array) {
-                value = value.join(';');
-            }
-            if (type == 'checkbox') {
-                dataObj[name] = {'value': ($(this).prop('checked') ? 'on' : 'off'), 'type': type};
-            } else if (type == 'radio') {
-                if ($(this).prop('checked')) {
-                    dataObj[name] = {'value': $(this).val(), 'type': type};
-                }
-            } else if (type == 'select' && $(this).attr('multiple')) {
-                dataObj[name] = {'value': value, 'type': type};
-            } else {
-                dataObj[name] = {'value': value, 'type': type};
-            }
-        });
-        channelUrlDataUpdate("#" + tmp_id, dataObj);
-        $("#modalbox_ad").find("input, select").prop("disabled", "disabled");
-        $("#modalbox_ad").find("form").each(function () {
-            this.reset();
-        });
-        $("#modalbox_ad").hide();
-        return false;
-    });
-
     $(document).on('click', 'div[data-tvfilter] ul a, div[data-tvfilter] .dropdown-menu button', function (e) {
         e.stopPropagation();
         e.preventDefault();
@@ -760,8 +486,11 @@ $(document).ready(function () {
     $(document).on('click', "a[disabled], a.disabled", function(e){
         e.stopPropagation();
         e.preventDefault();
+        e.stopImmediatePropagation();
         $(this).clearQueue();
         $(this).stop();
+        JSErrorModalBox({msg: words ? words['action_is_not_available'] : 'disabled'});
+        $(this).closest('.open').removeClass('open');
         return false;
     });
     
@@ -805,7 +534,8 @@ $(document).ready(function () {
     });
 
     $('[id*="datepicker"]').attr('readonly', 'readonly');
-    $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
+
+    $(document).on('click', "#modalbox button[type='reset'], #modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
         if (e.currentTarget != e.target) {
             return;
         }
@@ -851,7 +581,6 @@ function getURLFilterString(obj, href){
     }
 }
 
-
 function heightCalculate(){
     var height =$("#content").height;
     var tableHeight = $("#datatable-1").length ? ($('#datatable-1 tr').length > 50 ? 50 : $('#datatable-1 tr').length) * 50 + $('#datatable-1').position().top + 200: 0;
@@ -866,118 +595,6 @@ function heightCalculate(){
         $('#main-wrapper').css({minHeight: height});
     });
     return height;
-}
-
-function channelUrlDataGet(container){
-    var dataObj = {};
-    $(container).find('input').each(function(){
-        var name = $(this).attr('name').replace(/\[\d*?\]/ig, '');
-        var value = $(this).val();
-        var type = $(this).attr('type');
-        if (type != 'checkbox') {
-            dataObj[name] = {'value': value, 'type': type};
-        } else {
-            dataObj[name] = {'value': ($(this).prop('checked') ? 'on': 'off'), 'type': type};
-        }
-    });
-    return dataObj;
-}
-
-function channelUrlDataUpdate(container, data){
-    if ($(container).css('display') == 'none'){
-        var clonContainer = $(container).clone(true, true);
-        clonContainer.removeAttr('id');
-        $(clonContainer).insertAfter(container);
-        $(container).css("display", "table-row");
-        var countRow = $(container).parent().find($(container).get(0).tagName+":visible").length;
-        $(container).find('input').each(function(){
-            $(this).attr('name', $(this).attr('name').replace(/\d+?/ig, countRow));
-            $(this).attr('id', $(this).attr('id').replace(/\d+?/ig, countRow));
-        });
-    }
-    $(container).find('input').each(function(){
-        $(this).prop("disabled", false).removeAttr("disabled");
-        var name = $(this).attr('name').replace(/\[\d*?\]/ig, '');
-        if (typeof (data[name]) == 'undefined') {
-            return true;
-        }
-        var type = $(this).attr('type');
-        if (type == 'checkbox') {
-            if ($(this).attr('name').search('enable_monitoring') != -1) {
-                var targetLabel = $(this).closest('td').next('td').find('label');
-                if (targetLabel.text() != '-' && $(this).prop('checked') != (data[name].value == 'on')) {
-                    targetLabel.text('-');
-                    targetLabel.removeClass();
-                }
-            }
-            $(this).prop('checked', (data[name].value == 'on'));
-        } else {
-            $(this).val(data[name].value);
-        }
-        var label = $(this).prev("label[data-field='"+name+"']");
-        if (label) {
-            label.text(data[name].value);
-        }
-    });
-}
-
-function channelListRender(container){
-
-    var _container = $(container);
-    _container.empty();
-    var maxBlockHeight = $(window).height()- _container.offset().top - 50;
-    _container.height(maxBlockHeight);
-    maxBlockHeight -= $(document).height() - $(window).height();
-    _container.height(maxBlockHeight +10);
-    var maxBlockWidth = $(window).width()- _container.offset().left - 50;
-    _container.width(maxBlockWidth+10);
-    var maxItemOnBlock = Math.floor(maxBlockHeight/50);
-    var currentCount = 0;
-    for (var i= 0; i< channelList.length; ) {
-        var currentBlock = $("<div/>", {'class': 'no-padding'}).appendTo(_container);
-        var currentItemsBlock = $("<div/>", {'class': 'no-padding'}).appendTo(currentBlock)
-        for ( var j = currentCount; j < (currentCount + maxItemOnBlock) && j < channelList.length; j++) {
-            if (typeof(channelList[j]) == 'undefined') {
-                continue;
-            }
-            currentItemsBlock.append(getChannelListItem(j+1, channelList[j]));
-            i++;
-        }
-        currentBlock.prepend('<div class=" counter"><span>' + (currentCount + 1) + '-'+ (j) + '</span></div>');
-        currentCount = j;
-        currentBlock.css('top', 0);
-        currentBlock.css('left', (Math.ceil(currentCount/maxItemOnBlock) - 1)*250);
-        if (j >= channelList.length) {
-            break;
-        }
-    }
-
-     WinMove();
-}
-
-function getChannelListItem(num, item){
-    var return_val = '<div class="box '+(item.locked? 'no-drop': '')+'"  style="position:relative; z-index:30;">\n\
-                <div class="box-header '+ (item.empty == '1'? 'empty': '') + '"  style="position:relative; z-index:30;">\n\
-                    <div class="box-name col-sm-11"  style="position:relative; z-index:30;">\n\
-                        <span class="curr_num col-xs-1 col-sm-1 no-padding" data-number="'+num+'">'+item.number+'</span>\n\
-                        <div class="channel col-xs-10 col-sm-10 no-padding">\n\
-                            <span class="no-padding">\n\
-                              <!----  <img class="img-rounded" src="'+item.logo+'" alt="">--->\n\
-                            </span>\n\
-                            <a style="position:relative; z-index:300;" href="'+item.link+'" class="no-padding">'+item.name+'</a>';
-	    if (item.empty != '1') {
-        return_val +='<div class="box-icons col-sm-1 no-padding"><a style="position:relative; z-index:300;" class="lock-link">\n\
-                        <i data-id="' + item.id + '" class="fa fa-'+(!item.locked? 'un': '')+'lock"></i>\n\
-                        </a></div>';
-	}						
-                 return_val +='    </div>\n\
-                    </div>';
-
-    
-    return_val +='  <div class="no-move"></div>\n\
-                </div>\n\
-            </div>';
-    return return_val;
 }
 
 function ajaxSuccess(data, alertMsg, consoleMsg){
@@ -1038,7 +655,7 @@ function ajaxError(data, alertMsg, consoleMsg){
         }
         if ($.isFunction(window['errAction'])) {
             window['errAction']();
-        } else {
+        } else if (data.responseJSON){
             var msg = '';
             if (data && data.responseJSON && data.responseJSON.msg) {
                 msg = data.responseJSON.msg;
@@ -1263,4 +880,105 @@ function setActiveFilter(obj){
     parent.children('a').children("span:last-of-type").text($(obj).find('span').text());
     $(obj).closest('ul').find("a").removeClass('active');
     $(obj).addClass('active');
+}
+
+function deleteTableRow(obj){
+    try{
+        var dTRow;
+        if (obj) {
+            dTRow = (obj.RowOrder ? obj.RowOrder : (obj.id ? 'dTRow_' + obj.id : false));
+            dTRow = $("#" + dTRow.replace('#', ''));
+        }
+        if (dTRow) {
+            var oTable = dTRow.closest('table').dataTable();
+            oTable.fnRemoveCurrentRow(dTRow);
+        }
+    } catch (e){
+        console.log(e);
+    }
+
+    JSSuccessModalBox(obj);
+}
+
+function deleteTableRowError(obj){
+    JSErrorModalBox(obj);
+}
+
+function updateTableRow(obj){
+    try{
+        var dTRow;
+        if (obj) {
+            dTRow = (obj.RowOrder ? obj.RowOrder : (obj.id ? 'dTRow_' + obj.id : false));
+            dTRow = $("#" + dTRow.replace('#', ''));
+        }
+        if (dTRow) {
+            var oTable = dTRow.closest('table').dataTable();
+            oTable.fnUpdateCurrentRow(dTRow, obj);
+        }
+    } catch (e){
+        console.log(e);
+    }
+
+    JSSuccessModalBox(obj);
+}
+
+function updateTableRowError(obj){
+    JSErrorModalBox(obj);
+}
+
+function updateTableData(obj){
+    try{
+        var dTRow, oTables = new Array();
+        if (obj && (obj.RowOrder || obj.id)) {
+            dTRow = (obj.RowOrder ? obj.RowOrder : (obj.id ? 'dTRow_' + obj.id : false));
+            oTables.push($("#" + dTRow.replace('#', '')).closest('table'));
+        } else {
+            oTables = $("table.dataTable:visible");
+        }
+        $.each(oTables, function(){
+            if (typeof($(this).DataTable) == 'function') {
+                $(this).DataTable().ajax.reload();
+            }
+        });
+    } catch (e){
+        console.log(e);
+    }
+
+    JSSuccessModalBox(obj);
+}
+
+function updateTableDataError(obj){
+    JSErrorModalBox(obj);
+}
+
+function checkData(obj){
+    if (typeof(obj.input_id) != 'undefined') {
+        $("#" + obj.input_id).next('div').empty().append('<i class="txt-success fa fa-check"></i> ' + obj.chk_rezult).css('visibility', 'visible').show();
+
+        var errFields = $('#modalbox [type="submit"]').data('err-fields') || '';
+
+        errFields = errFields.replace(obj.input_id + '|', '');
+
+        if (errFields.length == 0){
+            $('#modalbox [type="submit"]').prop('disabled', false);
+        }
+        $('#modalbox [type="submit"]').data('err-fields', errFields);
+    } else {
+        JSSuccessModalBox({msg: obj.chk_rezult});
+    }
+}
+
+function checkDataError(obj){
+    if (typeof(obj.input_id) != 'undefined') {
+        $("#" + obj.input_id).next('div').empty().append('<i class="txt-danger fa fa-ban"></i> ' + obj.chk_rezult).css('visibility', 'visible').show();
+
+        var errFields = $('#modalbox [type="submit"]').data('err-fields') || '';
+
+        if (errFields.length == 0 || errFields.split('|').indexOf(obj.input_id) == -1) {
+            $('#modalbox [type="submit"]').data('err-fields', errFields + obj.input_id + '|');
+        }
+        $('#modalbox [type="submit"]').prop('disabled', true);
+    } else {
+        JSErrorModalBox({msg: obj.chk_rezult});
+    }
 }

@@ -508,6 +508,7 @@ _('List of video categories by page + filters');
 _('Change the order of categories');
 _('List of video genres');
 _('List of video genres by page + filters');
+_('Validation of number of the video-category');
 
 _('admin');
 _('List of tv genres');
@@ -704,6 +705,8 @@ _('Deleting info about one video file from database');
 _('Adding episodes into season');
 _('Adding seasons into video');
 _('Getting media-info from source');
+_('Deleting season of video serial with series and files');
+_('Deleting series of video serial with files');
 
 _('Regular quality');
 _('Good quality');

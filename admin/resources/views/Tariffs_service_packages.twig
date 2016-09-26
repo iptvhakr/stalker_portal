@@ -111,9 +111,5 @@
 
         document.addEventListener("DOMContentLoaded", yelp, false);
 
-        var removePackage = function (obj) {
-            var cRow = $(obj).closest('tr');
-            $('#datatable-1').DataTable().row(cRow).remove().draw(false);
-        }
     </script>
 {% endblock %}

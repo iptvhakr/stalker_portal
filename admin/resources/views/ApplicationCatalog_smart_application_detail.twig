@@ -245,17 +245,15 @@
                     var _this = this;
                     $("#modalbox").data('complete', 0);
                     var sendData = $(_this).data();
-                    if ($(_this).attr("disabled")) {
-                        JSErrorModalBox({msg: "{{ 'Action is not available'|trans }}"});
-                    } else {
-                        showModalBox();
-                        var timer = setInterval(function(){
-                            if ($("#modalbox").is(":visible")) {
-                                ajaxPostSend($(_this).attr('href'), sendData, false );
-                                clearInterval(timer);
-                            }
-                        }, 10);
-                    }
+
+                    showModalBox();
+                    var timer = setInterval(function(){
+                        if ($("#modalbox").is(":visible")) {
+                            ajaxPostSend($(_this).attr('href'), sendData, false );
+                            clearInterval(timer);
+                        }
+                    }, 10);
+
                     $(this).closest('div.open').removeClass('open');
                     return false;
                 });
