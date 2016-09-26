@@ -1971,8 +1971,11 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
                 'V_S.season_number' => $this->data['seasonnumber'],
                 'V_S_S.series_number' => $this->data['seriesnumber']
             ));
+
             if (count($db_season_data) > 0){
                 $params['V_S_F.series_id'] = $db_season_data[0]['series_id'];
+            } else {
+                $params['V_S_F.series_id'] = NULL;
             }
             if (isset($tv_series['seasons'][$this->data['seasonnumber']]['episodes'][$this->data['seriesnumber']][0]['name'])) {
                 $path = substr($tv_series['seasons'][$this->data['seasonnumber']]['episodes'][$this->data['seriesnumber']][0]['name'], 0, strripos($tv_series['seasons'][$this->data['seasonnumber']]['episodes'][$this->data['seriesnumber']][0]['name'], '/') + 1);
@@ -2043,8 +2046,13 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'dataTableUpdate';
-        if ( array_key_exists('season_id', $this->postData) && array_key_exists('series_id', $this->postData)) {
+        if ( array_key_exists('season_id', $this->postData) && !empty($this->postData['series_id'])) {
             $data['datatable'] = 'f_season_' . $this->postData['season_id'] . '_series_' . $this->postData['series_id'] . '_filedata';
+            unset($this->postData['season_id']);
+        } elseif (empty($this->postData['series_id'])){
+            $tmp = $this->add_video_season_series(TRUE);
+            $this->postData['series_id'] = $tmp['series_id'];
+            $data['action'] = 'checkVideoType';
             unset($this->postData['season_id']);
         } else {
             $data['datatable'] = 'filedata';
@@ -2225,8 +2233,8 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
 
-    public function remove_video_data(){
-        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['id']) || (!is_numeric($this->postData['id']))) {
+    public function remove_video_data($local_use = FALSE){
+        if ((!$this->isAjax || $this->method != 'POST' || empty($this->postData['id'])) && !$local_use ) {
             $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
@@ -2235,11 +2243,20 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         }
         $data = array();
         $data['action'] = 'dataTableUpdate';
-        if ( !empty($this->postData['season_id']) && !empty($this->postData['series_id'])) {
-            $data['datatable'] = 'f_season_' . $this->postData['season_id'] . '_series_' . $this->postData['series_id'] . '_filedata';
-            unset($this->postData['season_id']);
+        if ( !$local_use ){
+            if ( !empty($this->postData['season_id']) && !empty($this->postData['series_id'])) {
+                $data['datatable'] = 'f_season_' . $this->postData['season_id'] . '_series_' . $this->postData['series_id'] . '_filedata';
+                unset($this->postData['season_id']);
+            } else {
+                $data['datatable'] = 'filedata';
+            }
+            $params = array('id' => $this->postData['id']);
         } else {
-            $data['datatable'] = 'filedata';
+            if (is_array($this->postData['series_files_id'])) {
+                $params = array('id IN ("' . implode('", "', $this->postData['series_files_id']) . '") and 1' => 1);
+            } else {
+                $params = array();
+            }
         }
 
         /*
@@ -2247,17 +2264,37 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
          * $this->db->videoLogWrite($video, 'video deleted')
          */
         $error = $this->setLocalization('Information not available');
-        if ($this->db->deleteSeriesFiles($this->postData['id'])){
-            $error='';
-            $data['msg'] = $this->setLocalization('Data deleted');
+
+        if (empty($this->postData['series_id'])) {
+            $this->postData['series_id'] = $this->db->getSeasonData($params);
+        }
+
+        $result = $this->db->deleteSeriesFiles($params);
+        if (is_numeric($result)) {
+            $error = '';
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            } else {
+                if (!empty($this->postData['series_id'])) {
+                    if (is_array($this->postData['series_id'])) {
+                        $params = array('id IN ("' . implode('", "', $this->postData['series_id']) . '") and 1' => 1);
+                    } else {
+                        $params = array('id' => $this->postData['series_id']);
+                    }
+                    $this->db->updateSeries(array('series_files' => 'IF(series_files > 0, series_files - 1, series_files)'), $params);
+                }
+            }
+            if ( !$local_use ) {
+                $data['msg'] = $this->setLocalization('Data deleted');
+            }
         }
 
         $response = $this->generateAjaxResponse($data, $error);
 
-        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+        return !$local_use ? new Response(json_encode($response), (empty($error) ? 200 : 500)): $response;
     }
 
-    public function add_video_season_series(){
+    public function add_video_season_series($local_use = FALSE){
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['season_id'])) {
             $this->app->abort(404, $this->setLocalization('Page not found'));
         }
@@ -2311,8 +2348,9 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
 
         try {
             $master->createMediaDir($series_path);
-            if ($this->db->insertSeries($params) && $this->db->updateSeason(array('season_series' => $season_data[0]['series_count'] + 1), array('id' => $this->postData['season_id']))) {
+            if (($id = $this->db->insertSeries($params)) && $this->db->updateSeason(array('season_series' => $season_data[0]['series_count'] + 1), array('id' => $this->postData['season_id']))) {
                 $error = '';
+                $data['series_id'] = $id;
             } else {
                 $data['msg'] = $error;
             }
@@ -2326,7 +2364,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
 
         $response = $this->generateAjaxResponse($data, $error);
 
-        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+        return !$local_use ? new Response(json_encode($response), (empty($error) ? 200 : 500)): $response;
     }
 
     public function add_video_season(){
@@ -2543,6 +2581,96 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
 
+    }
+
+    public function delete_video_season(){
+
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['season_id'])) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array(
+            'action' => 'checkVideoType'
+        );
+        $error = $this->setLocalization('Failed');
+
+        $season_data = $this->db->getSeasonData(array('V_S.id' => $this->postData['season_id']));
+
+        if (!empty($season_data)) {
+            $this->postData['series_id'] = array_unique($this->getFieldFromArray($season_data, 'series_id'));
+            $this->postData['series_files_id'] = array_unique($this->getFieldFromArray($season_data, 'series_files_id'));
+            $data = array_merge_recursive($data, $this->delete_video_season_series(TRUE));
+        }
+
+        $result = $this->db->deleteSeason(array('id' => $this->postData['season_id']));
+        if (is_numeric($result)) {
+            $error = '';
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
+            $data = array_merge_recursive($data, $this->delete_video_season_series(TRUE));
+            $this->checkResponse($data);
+            $data['action'] = 'checkVideoType';
+        }
+
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function delete_video_season_series($local_use = FALSE){
+        if ((!$this->isAjax || $this->method != 'POST' || empty($this->postData['series_id'])) && !$local_use ) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array(
+            'action' => 'checkVideoType'
+        );
+        $error = $this->setLocalization('Failed');
+
+        if (is_array($this->postData['series_id'])) {
+            $params = array('id IN ("' . implode('", "', $this->postData['series_id']) . '") and 1' => 1);
+        } elseif(is_numeric($this->postData['series_id'])) {
+            $params = array('id' => $this->postData['series_id']);
+        } else {
+            $params = array();
+        }
+
+        $result = $this->db->deleteSeries($params);
+        if (is_numeric($result)) {
+            $error = '';
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            } else {
+                $this->db->updateSeason(array('season_series' => 'IF(season_series > 0, season_series - 1, season_series)'), $params);
+            }
+            if (empty($this->postData['series_files_id'])) {
+                reset($params);
+                while(list($key, $val) = each($params)){
+                    if (strpos($key, 'V_S_S') === FALSE) {
+                        $params['V_S_S.'.$key] = $val;
+                        unset($params[$key]);
+                    }
+                }
+                $season_data = $this->db->getSeasonData($params);
+                $this->postData['series_files_id'] = array_unique($this->getFieldFromArray($season_data, 'series_files_id'));
+            }
+            $data = array_merge_recursive($data, $this->remove_video_data(TRUE));
+            $this->checkResponse($data);
+            $data['action'] = 'checkVideoType';
+        }
+
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return !$local_use ? new Response(json_encode($response), (empty($error) ? 200 : 500)): $response;
     }
 
     //------------------------ service method ----------------------------------
@@ -3367,5 +3495,18 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
             'category_id' => '`media_category`.`id` as `category_id`',
             'category_name' =>  '`media_category`.`category_name` as `category_name`'
         );
+    }
+
+    private function checkResponse(&$response){
+        if (is_array($response)) {
+            foreach (array('error', 'success', 'nothing_to_do', 'msg') as $key) {
+                if (array_key_exists($key, $response) && is_array($response[$key])) {
+                    list($key1, $val) = each($response[$key]);
+                    $response[$key] = is_bool($val) ? (bool)array_product($response[$key]) : (((string)$val) != ''  ? implode('. <br> ', $response[$key]) : '');
+                }
+            }
+            unset($response['action']);
+        }
+        return $response;
     }
 }
