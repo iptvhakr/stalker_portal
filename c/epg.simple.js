@@ -149,6 +149,10 @@
                         return;
                     }
 
+                    var now = new Date().getTime()/1000;
+
+                    _debug('now', now);
+
                     if (this.data_items[this.cur_row].rec_id){
                         this.play(this.data_items[this.cur_row].rec_id);
                     }else if(this.data_items[this.cur_row].mark_archive && this.tv_archive){
@@ -159,6 +163,20 @@
                         }
 
                         this.tv_archive.play();
+                    }else if(this.data_items[this.cur_row].start_timestamp < now &&  this.data_items[this.cur_row].stop_timestamp > now){
+
+                        keydown_observer.emulate_key(key.MENU);
+
+                        var ch_idx = stb.player.channels.getIdxById(parseInt(this.ch_id));
+
+                        stb.player.ch_idx = ch_idx || 0;
+                        stb.player.cur_media_item = stb.player.channels[stb.player.ch_idx];
+                        stb.player.cur_tv_item = stb.player.channels[stb.player.ch_idx];
+                        stb.player.last_not_locked_tv_item = stb.player.channels[stb.player.ch_idx];
+
+                        main_menu.hide();
+                        stb.player.play_last();
+
                     }
                 }
             }).bind(key.OK, this);
