@@ -38,7 +38,10 @@ class AudioClubController extends \Controller\BaseStalkerController {
         $this->app['allAudioYears'] = $this->setLocalization($this->db->getAllFromTable('audio_years'), 'name');
 
         $locale = substr($this->app["language"], 0, 2);
-        $this->app['allCountries'] = ($locale != 'ru' ? array_map(function($row) use ($locale){ $row['name'] = $row['name_en']; return $row; }, $this->db->getAllFromTable('countries')): $this->db->getAllFromTable('countries'));
+        $this->app['allCountries'] = ($locale != 'ru' ? array_map(function($row) use ($locale){
+            $row['name'] = $row['name_en'];
+            return $row;
+        }, $this->db->getAllFromTable('countries')): $this->db->getAllFromTable('countries'));
 
         $this->app['allLanguages'] = $this->db->getAllFromTable('audio_languages');
         $this->app['allStatus'] = array(
@@ -75,6 +78,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
 
         $this->app['audioAlbumID'] = -1;
         $this->app['allLanguages'] = $this->db->getAllFromTable('audio_languages');
+
         $this->app['breadcrumbs']->addItem($this->setLocalization('Albums'), $this->app['controller_alias'] . '/audio-albums');
         $this->app['breadcrumbs']->addItem($this->setLocalization('Add audio album'));
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
@@ -107,13 +111,16 @@ class AudioClubController extends \Controller\BaseStalkerController {
         $this->app['audioAlbumEdit'] = TRUE;
         $this->app['audioAlbumID'] = $id;
         $this->app['allLanguages'] = $this->db->getAllFromTable('audio_languages');
+
         $attribute = $this->getDropdownAttributeAudioComposition();
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
         
         $this->app['albumName'] = $this->audio_album['name'];
+
         $this->app['breadcrumbs']->addItem($this->setLocalization('Albums'), $this->app['controller_alias'] . '/audio-albums');
         $this->app['breadcrumbs']->addItem($this->setLocalization('Edit audio album'));
+
         return $this->app['twig']->render("AudioClub_add_audio_albums.twig");
     }
     
@@ -179,7 +186,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
     
     //----------------------- ajax method --------------------------------------
 
-    public function audio_albums_list_json($param = array()) {
+    public function audio_albums_list_json($local_uses = FALSE) {
         
         if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
@@ -204,7 +211,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
             "status" => "`audio_albums`.`status` as `status`"
         );
         $error = $this->setLocalization('Error');
-        $param = (!empty($this->data) ? $this->data : array());
+        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : array());
 
         $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
 
@@ -229,6 +236,10 @@ class AudioClubController extends \Controller\BaseStalkerController {
             $query_param['select'][] = 'audio_albums.id as id';
         }
         $this->cleanQueryParams($query_param, array_keys($filds_for_select), $filds_for_select);
+
+        if (!empty($param['id'])) {
+            $query_param['where']['audio_albums.id'] = $param['id'];
+        }
         
         $response['recordsTotal'] = $this->db->getTotalRowsAudioAlbumsList();
         $response["recordsFiltered"] = $this->db->getTotalRowsAudioAlbumsList($query_param['where'], $query_param['like']);
@@ -241,16 +252,18 @@ class AudioClubController extends \Controller\BaseStalkerController {
 
         $response['data'] = $this->db->getAudioAlbumsList($query_param);
         $response['data'] = $this->setLocalization($response['data'], 'year');
+        reset($response['data']);
         while (list($key, $row) = each($response['data'])){
             $response['data'][$key]['RowOrder'] = "dTRow_" . $row['id'];
-        }        
+        }
+
         $this->getAlbumsGenreNames($response['data']);
         $this->getAlbumsLanguages($response['data']);
         
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         
         $error = "";
-        if ($this->isAjax) {
+        if ($this->isAjax && !$local_uses) {
             $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
         } else {
@@ -269,18 +282,22 @@ class AudioClubController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'manageAudioAlbum';
+        $data['action'] = 'deleteTableRow';
         $data['id'] = $this->postData['albumsid'];
-        $data['album'] = $this->db->deleteAudioAlbum(array('id' => $this->postData['albumsid']));
-        $data['genre'] = $this->db->deleteAudioGenre(array('album_id' => $this->postData['albumsid']));
-        $data['compositions'] = $this->db->deleteAudioCompositions(array('album_id' => $this->postData['albumsid']));
-        
+        $error = $this->setLocalization('Failed');
+        if ($album_count = $this->db->deleteAudioAlbum(array('id' => $this->postData['albumsid']))) {
+            $genre_count = $this->db->deleteAudioGenre(array('album_id' => $this->postData['albumsid']));
+            $compositions_count = $this->db->deleteAudioCompositions(array('album_id' => $this->postData['albumsid']));
+            $data['msg'] = $this->setLocalization('{albm} album and his all {cmps} compositions in {gnr} genres has been deleted', '', $album_count, array('{albm}' => $album_count, '{cmps}' => $compositions_count, '{gnr}' => $genre_count));
+            $error = '';
+        }
+
         $response = $this->generateAjaxResponse($data, '');
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
     
-    public function audio_genres_list_json($param = array()){
+    public function audio_genres_list_json($local_uses = FALSE){
         if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
                 return $no_auth;
@@ -292,7 +309,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
             'recordsFiltered' => 0
         );
         $error = $this->setLocalization('Error');
-        $param = (!empty($this->data) ? $this->data : array());
+        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : array());
 
         $query_param = $this->prepareDataTableParams($param, array('operations', '_'));
 
@@ -316,6 +333,11 @@ class AudioClubController extends \Controller\BaseStalkerController {
             $query_param['order']['audio_genres.name'] = $query_param['order']['name'];
             unset($query_param['order']['name']);
         }
+
+        if (!empty($param['id'])) {
+            $query_param['where']['audio_genres.id'] = $param['id'];
+            unset($query_param['where']['id']);
+        }
         
         $response['recordsTotal'] = $this->db->getTotalRowsAudioGenresList();
         $response["recordsFiltered"] = $this->db->getTotalRowsAudioGenresList($query_param['where'], $query_param['like']);
@@ -326,16 +348,26 @@ class AudioClubController extends \Controller\BaseStalkerController {
             $query_param['limit']['limit'] = FALSE;
         }
         
-        if (!empty($query_param['select']) && !in_array('id', $query_param['select'])) {
+        if (!empty($query_param['select']) || !in_array('id', $query_param['select'])) {
            $query_param['select'][] = 'id';
         }
+
+        if (!in_array('name', $query_param['select'])) {
+            $query_param['select'][] = 'name';
+        }
+        if (!in_array('albums_count', $query_param['select'])) {
+            $query_param['select'][] = 'albums_count';
+        }
         
-        $response['data'] = $this->db->getAudioGenresList($query_param);
+        $response['data'] =  array_map(function($row){
+            $row['RowOrder'] = "dTRow_" . $row['id'];
+            return $row;
+        }, $this->db->getAudioGenresList($query_param));
                 
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         
         $error = "";
-        if ($this->isAjax) {
+        if ($this->isAjax && !$local_uses) {
             $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
         } else {
@@ -356,6 +388,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'addAudioGenre';
         $error = $this->setLocalization('Failed');
+        $this->postData['name'] = trim($this->postData['name']);
         $check = $this->db->getAudioGenresList(array('where' => array('name' => $this->postData['name']), 'order' => array('name' => 'ASC')));
         if (empty($check)) {
             $data['id'] = $this->db->insertAudioGenres(array('name' => $this->postData['name']));
@@ -378,14 +411,21 @@ class AudioClubController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'editAudioGenre';
+        $data['action'] = 'updateTableRow';
+        $data['id'] = $this->postData['id'];
+        $data['data'] = array();
         $error = $this->setLocalization('Failed');
+        $this->postData['name'] = trim($this->postData['name']);
         $check = $this->db->getAudioGenresList(array('where' => array('name' => $this->postData['name']), 'order' => array('name' => 'ASC')));
         if (empty($check)) {
-            $this->db->updateAudioGenres(array('name' => $this->postData['name']), array('id' => $this->postData['id']));
-            $error = '';
-            $data['id'] = $this->postData['id'];
-            $data['name'] = $this->postData['name'];
+            $result = $this->db->updateAudioGenres(array('name' => $this->postData['name']), array('id' => $this->postData['id']));
+            if (is_numeric($result)) {
+                $error = '';
+                if ($result === 0) {
+                    $data['nothing_to_do'] = TRUE;
+                }
+                $data = array_merge_recursive($data, $this->audio_genres_list_json(TRUE));
+            }
         } else {
             $data['nothing_to_do'] = TRUE;
             $error = '';
@@ -406,10 +446,13 @@ class AudioClubController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'removeAudioGenre';
+        $data['action'] = 'deleteTableRow';
         $data['id'] = $this->postData['genresid'];
-        $this->db->deleteAudioGenres(array('id' => $this->postData['genresid']));
-        $response = $this->generateAjaxResponse($data, '');
+        $error = $this->setLocalization('Failed');
+        if ($this->db->deleteAudioGenres(array('id' => $this->postData['genresid']))){
+            $error = '';
+        }
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -423,9 +466,10 @@ class AudioClubController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
         $data = array();
-        $data['action'] = 'checkAudioGenre';
+        $data['action'] = 'checkData';
+        $data['input_id'] = 'audio_genres_name';
         $error = $this->setLocalization('Name already used');
-        if ($this->db->getAudioGenresList(array('where' => array('name' => $this->postData['name']), 'order' => array('name' => 'ASC')))) {
+        if ($this->db->getAudioGenresList(array('where' => array('name' => trim($this->postData['name']), 'id<>' => !empty($this->postData['id']) ? $this->postData['id']: ''), 'order' => array('name' => 'ASC')))) {
             $data['chk_rezult'] = $this->setLocalization('Name already used');
         } else {
             $data['chk_rezult'] = $this->setLocalization('Name is available');
@@ -436,7 +480,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
     
-    public function audio_artists_list_json($param = array()){
+    public function audio_artists_list_json($local_uses = FALSE) {
         if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
                 return $no_auth;
@@ -448,7 +492,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
             'recordsFiltered' => 0
         );
         $error = $this->setLocalization('Error');
-        $param = (!empty($this->data) ? $this->data : array());
+        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : array());
 
         $query_param = $this->prepareDataTableParams($param, array('operations', '_'));
 
@@ -472,7 +516,12 @@ class AudioClubController extends \Controller\BaseStalkerController {
             $query_param['order']['audio_performers.name'] = $query_param['order']['name'];
             unset($query_param['order']['name']);
         }
-        
+
+        if (!empty($param['id'])) {
+            $query_param['where']['audio_performers.id'] = $param['id'];
+            unset($query_param['where']['id']);
+        }
+
         $response['recordsTotal'] = $this->db->getTotalRowsAudioArtistList();
         $response["recordsFiltered"] = $this->db->getTotalRowsAudioArtistList($query_param['where'], $query_param['like']);
 
@@ -482,16 +531,25 @@ class AudioClubController extends \Controller\BaseStalkerController {
             $query_param['limit']['limit'] = FALSE;
         }
         
-        if (!empty($query_param['select']) && !in_array('id', $query_param['select'])) {
+        if (!empty($query_param['select']) || !in_array('id', $query_param['select'])) {
            $query_param['select'][] = 'id';
         }
-        
-        $response['data'] = $this->db->getAudioArtistList($query_param);
+        if (!in_array('name', $query_param['select'])) {
+            $query_param['select'][] = 'name';
+        }
+        if (!in_array('albums_count', $query_param['select'])) {
+            $query_param['select'][] = 'albums_count';
+        }
+
+        $response['data'] = array_map(function($row){
+            $row['RowOrder'] = "dTRow_" . $row['id'];
+            return $row;
+        }, $this->db->getAudioArtistList($query_param));
                 
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         
         $error = "";
-        if ($this->isAjax) {
+        if ($this->isAjax && !$local_uses) {
             $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
         } else {
@@ -512,6 +570,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'addAudioArtist';
         $error = $this->setLocalization('Failed');
+        $this->postData['name'] = trim($this->postData['name']);
         $check = $this->db->getAudioArtistList(array('where' => array('name' => $this->postData['name']), 'order' => array('name' => 'ASC')));
         if (empty($check)) {
             $data['id'] = $this->db->insertAudioArtist(array('name' => $this->postData['name']));
@@ -534,14 +593,23 @@ class AudioClubController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'editAudioArtist';
+        $data['action'] = 'updateTableRow';
+        $data['id'] = $this->postData['id'];
+        $data['data'] = array();
         $error = $this->setLocalization('Failed');
+
+        $this->postData['name'] = trim($this->postData['name']);
+
         $check = $this->db->getAudioArtistList(array('where' => array('name' => $this->postData['name']), 'order' => array('name' => 'ASC')));
         if (empty($check)) {
-            $this->db->updateAudioArtist(array('name' => $this->postData['name']), array('id' => $this->postData['id']));
-            $error = '';
-            $data['id'] = $this->postData['id'];
-            $data['name'] = $this->postData['name'];
+            $result = $this->db->updateAudioArtist(array('name' => $this->postData['name']), array('id' => $this->postData['id']));
+            if (is_numeric($result)) {
+                $error = '';
+                if ($result === 0) {
+                    $data['nothing_to_do'] = TRUE;
+                }
+                $data = array_merge_recursive($data, $this->audio_artists_list_json(TRUE));
+            }
         } else {
             $data['nothing_to_do'] = TRUE;
             $error = '';
@@ -562,10 +630,13 @@ class AudioClubController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'removeAudioArtist';
+        $data['action'] = 'deleteTableRow';
         $data['id'] = $this->postData['artistsid'];
-        $this->db->deleteAudioArtist(array('id' => $this->postData['artistsid']));
-        $response = $this->generateAjaxResponse($data, '');
+        $error = $this->setLocalization('Failed');
+        if ( $this->db->deleteAudioArtist(array('id' => $this->postData['artistsid']))){
+            $error = '';
+        }
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -579,9 +650,10 @@ class AudioClubController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
         $data = array();
-        $data['action'] = 'checkAudioArtist';
+        $data['action'] = 'checkData';
+        $data['input_id'] = 'audio_artists_name';
         $error = $this->setLocalization('Name already used');
-        if ($this->db->getAudioArtistList(array('where' => array('name' => $this->postData['name']), 'order' => array('name' => 'ASC')))) {
+        if ($this->db->getAudioArtistList(array('where' => array('name' => trim($this->postData['name']), 'id<>' => !empty($this->postData['id']) ? $this->postData['id']: '' ), 'order' => array('name' => 'ASC')))) {
             $data['chk_rezult'] = $this->setLocalization('Name already used');
         } else {
             $data['chk_rezult'] = $this->setLocalization('Name is available');
@@ -592,7 +664,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
     
-    public function audio_languages_list_json($param = array()){
+    public function audio_languages_list_json($local_uses = FALSE){
         if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
                 return $no_auth;
@@ -604,7 +676,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
             'recordsFiltered' => 0
         );
         $error = $this->setLocalization('Error');
-        $param = (!empty($this->data) ? $this->data : array());
+        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : array());
 
         $query_param = $this->prepareDataTableParams($param, array('operations', '_'));
 
@@ -628,6 +700,11 @@ class AudioClubController extends \Controller\BaseStalkerController {
             $query_param['order']['audio_languages.name'] = $query_param['order']['name'];
             unset($query_param['order']['name']);
         }
+
+        if (!empty($param['id'])) {
+            $query_param['where']['audio_languages.id'] = $param['id'];
+            unset($query_param['where']['id']);
+        }
         
         $response['recordsTotal'] = $this->db->getTotalRowsAudioLanguageList();
         $response["recordsFiltered"] = $this->db->getTotalRowsAudioLanguageList($query_param['where'], $query_param['like']);
@@ -637,17 +714,27 @@ class AudioClubController extends \Controller\BaseStalkerController {
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }
-        
-        if (!empty($query_param['select']) && !in_array('id', $query_param['select'])) {
+
+        if (!empty($query_param['select']) || !in_array('id', $query_param['select'])) {
            $query_param['select'][] = 'id';
         }
-        
-        $response['data'] = $this->db->getAudioLanguageList($query_param);
+
+        if (!in_array('name', $query_param['select'])) {
+            $query_param['select'][] = 'name';
+        }
+        if (!in_array('track_count', $query_param['select'])) {
+            $query_param['select'][] = 'track_count';
+        }
+
+        $response['data'] = array_map(function($row){
+            $row['RowOrder'] = "dTRow_" . $row['id'];
+            return $row;
+        }, $this->db->getAudioLanguageList($query_param));
                 
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         
         $error = "";
-        if ($this->isAjax) {
+        if ($this->isAjax && !$local_uses) {
             $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
         } else {
@@ -668,6 +755,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'addAudioLanguage';
         $error = $this->setLocalization('Failed');
+        $this->postData['name'] = trim($this->postData['name']);
         $check = $this->db->getAudioLanguageList(array('where' => array('name' => $this->postData['name']), 'order' => array('name' => 'ASC')));
         if (empty($check)) {
             $data['id'] = $this->db->insertAudioLanguage(array('name' => $this->postData['name']));
@@ -690,14 +778,23 @@ class AudioClubController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'editAudioLanguage';
+        $data['action'] = 'updateTableRow';
+        $data['id'] = $this->postData['id'];
+        $data['data'] = array();
+
+        $this->postData['name'] = trim($this->postData['name']);
+
         $error = $this->setLocalization('Failed');
         $check = $this->db->getAudioLanguageList(array('where' => array('name' => $this->postData['name']), 'order' => array('name' => 'ASC')));
         if (empty($check)) {
-            $this->db->updateAudioLanguage(array('name' => $this->postData['name']), array('id' => $this->postData['id']));
-            $error = '';
-            $data['id'] = $this->postData['id'];
-            $data['name'] = $this->postData['name'];
+            $result = $this->db->updateAudioLanguage(array('name' => $this->postData['name']), array('id' => $this->postData['id']));
+            if (is_numeric($result)) {
+                $error = '';
+                if ($result === 0) {
+                    $data['nothing_to_do'] = TRUE;
+                }
+                $data = array_merge_recursive($data, $this->audio_languages_list_json(TRUE));
+            }
         } else {
             $data['nothing_to_do'] = TRUE;
             $error = '';
@@ -718,10 +815,13 @@ class AudioClubController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'removeAudioLanguage';
+        $data['action'] = 'deleteTableRow';
         $data['id'] = $this->postData['languagesid'];
-        $this->db->deleteAudioLanguage(array('id' => $this->postData['languagesid']));
-        $response = $this->generateAjaxResponse($data, '');
+        $error = $this->setLocalization('Failed');
+        if ($this->db->deleteAudioLanguage(array('id' => $this->postData['languagesid']))){
+            $error = '';
+        }
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -735,9 +835,11 @@ class AudioClubController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
         $data = array();
-        $data['action'] = 'checkAudioLanguage';
+        $data['action'] = 'checkData';
+        $data['input_id'] = 'audio_languages_name';
+
         $error = $this->setLocalization('Name already used');
-        if ($this->db->getAudioLanguageList(array('where' => array('name' => $this->postData['name']), 'order' => array('name' => 'ASC')))) {
+        if ($this->db->getAudioLanguageList(array('where' => array('name' => trim($this->postData['name']), 'id<>' => !empty($this->postData['id']) ? $this->postData['id']: '' ), 'order' => array('name' => 'ASC')))) {
             $data['chk_rezult'] = $this->setLocalization('Name already used');
         } else {
             $data['chk_rezult'] = $this->setLocalization('Name is available');
@@ -748,7 +850,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
     
-    public function audio_years_list_json($param = array()){
+    public function audio_years_list_json($local_uses = FALSE){
         if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
                 return $no_auth;
@@ -760,7 +862,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
             'recordsFiltered' => 0
         );
         $error = $this->setLocalization('Error');
-        $param = (!empty($this->data) ? $this->data : array());
+        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : array());
 
         $query_param = $this->prepareDataTableParams($param, array('operations', '_'));
 
@@ -785,6 +887,11 @@ class AudioClubController extends \Controller\BaseStalkerController {
             unset($query_param['order']['name']);
         }
 
+        if (!empty($param['id'])) {
+            $query_param['where']['audio_years.id'] = $param['id'];
+            unset($query_param['where']['id']);
+        }
+
         $response['recordsTotal'] = $this->db->getTotalRowsAudioYearList();
         $response["recordsFiltered"] = $this->db->getTotalRowsAudioYearList($query_param['where'], $query_param['like']);
 
@@ -794,16 +901,25 @@ class AudioClubController extends \Controller\BaseStalkerController {
             $query_param['limit']['limit'] = FALSE;
         }
         
-        if (!empty($query_param['select']) && !in_array('id', $query_param['select'])) {
+        if (!empty($query_param['select']) || !in_array('id', $query_param['select'])) {
            $query_param['select'][] = 'id';
         }
-        
-        $response['data'] = $this->db->getAudioYearList($query_param);
+        if (!in_array('name', $query_param['select'])) {
+            $query_param['select'][] = 'name';
+        }
+        if (!in_array('albums_count', $query_param['select'])) {
+            $query_param['select'][] = 'albums_count';
+        }
+
+        $response['data'] = array_map(function($row){
+            $row['RowOrder'] = "dTRow_" . $row['id'];
+            return $row;
+        }, $this->db->getAudioYearList($query_param));
                 
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         
         $error = "";
-        if ($this->isAjax) {
+        if ($this->isAjax && !$local_uses) {
             $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
         } else {
@@ -824,6 +940,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'addAudioYear';
         $error = $this->setLocalization('Failed');
+        $this->postData['name'] = trim($this->postData['name']);
         $check = $this->db->getAudioYearList(array('where' => array('name' => $this->postData['name']), 'order' => array('name' => 'ASC')));
         if (empty($check)) {
             $data['id'] = $this->db->insertAudioYear(array('name' => $this->postData['name']));
@@ -846,14 +963,22 @@ class AudioClubController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'editAudioYear';
-        $error = $this->setLocalization('Failed');
+        $data['action'] = 'updateTableRow';
+        $data['id'] = $this->postData['id'];
+        $data['data'] = array();
+
+        $this->postData['name'] = trim($this->postData['name']);
+
         $check = $this->db->getAudioYearList(array('where' => array('name' => $this->postData['name']), 'order' => array('name' => 'ASC')));
         if (empty($check)) {
-            $this->db->updateAudioYear(array('name' => $this->postData['name']), array('id' => $this->postData['id']));
-            $error = '';
-            $data['id'] = $this->postData['id'];
-            $data['name'] = $this->postData['name'];
+            $result = $this->db->updateAudioYear(array('name' => $this->postData['name']), array('id' => $this->postData['id']));
+            if (is_numeric($result)) {
+                $error = '';
+                if ($result === 0) {
+                    $data['nothing_to_do'] = TRUE;
+                }
+                $data = array_merge_recursive($data, $this->audio_years_list_json(TRUE));
+            }
         } else {
             $data['nothing_to_do'] = TRUE;
             $error = '';
@@ -874,10 +999,13 @@ class AudioClubController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'removeAudioYear';
+        $data['action'] = 'deleteTableRow';
         $data['id'] = $this->postData['yearsid'];
-        $this->db->deleteAudioYear(array('id' => $this->postData['yearsid']));
-        $response = $this->generateAjaxResponse($data, '');
+        $error = $this->setLocalization('Failed');
+        if ($this->db->deleteAudioYear(array('id' => $this->postData['yearsid']))){
+            $error = '';
+        }
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -891,9 +1019,11 @@ class AudioClubController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
         $data = array();
-        $data['action'] = 'checkAudioYear';
+        $data['action'] = 'checkData';
+        $data['input_id'] = 'audio_years_name';
+
         $error = $this->setLocalization('Name already used');
-        if ($this->db->getAudioYearList(array('where' => array('name' => $this->postData['name']), 'order' => array('name' => 'ASC')))) {
+        if ($this->db->getAudioYearList(array('where' => array('name' =>  trim($this->postData['name']), 'id<>' => !empty($this->postData['id']) ? $this->postData['id']: ''), 'order' => array('name' => 'ASC')))) {
             $data['chk_rezult'] = $this->setLocalization('Name already used');
         } else {
             $data['chk_rezult'] = $this->setLocalization('Name available');
@@ -998,7 +1128,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
 
-    public function audio_albums_composition_list_json($param = array()) {
+    public function audio_albums_composition_list_json($local_uses = FALSE) {
         if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
                 return $no_auth;
@@ -1007,9 +1137,13 @@ class AudioClubController extends \Controller\BaseStalkerController {
         $response = array(
             'data' => array(),
             'recordsTotal' => 0,
-            'recordsFiltered' => 0,
-            'action' => 'setCompositionModal'
+            'recordsFiltered' => 0
         );
+
+        if (!$local_uses) {
+            $response['action'] = 'setCompositionModal';
+        }
+
         $filds_for_select = array(
             "id" => 'audio_compositions.id as `id`', 
             "number" => 'audio_compositions.number as `number`', 
@@ -1023,7 +1157,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
             "language_id" => 'audio_languages.id as `language_id`'
         );
         $error = $this->setLocalization('Error');
-        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
+        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : array());
 
         $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
 
@@ -1064,7 +1198,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
         }        
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         $error = "";
-        if ($this->isAjax) {
+        if ($this->isAjax && !$local_uses) {
             $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
         } else {
@@ -1082,7 +1216,6 @@ class AudioClubController extends \Controller\BaseStalkerController {
         }
         $matches = array();
         $data = array();
-        $data['action'] = 'reorder';
         $error = 'error';
         if (preg_match("/(\d+)/i", $this->postData['id'], $matches)){
             $params = array(
@@ -1134,6 +1267,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'audioTracksManage';
         $track = array($this->postData);
+        $data['data'] = array();
         $error = $this->setLocalization('error');
         if (empty($this->postData['id'])) {
             $params = array(
@@ -1152,14 +1286,26 @@ class AudioClubController extends \Controller\BaseStalkerController {
             $track[0]['number'] = (!empty($max_num[0]['number']) ? $max_num[0]['number']: 1);
         } else {
             $operation = 'updateAlbumsComposition';
-            $track['id'] = $this->postData['id'];
+            $data['id'] = $track['id'] = $this->postData['id'];
+            $data['action'] = 'updateTableRow';
         }
         unset($track[0]['id']);
 
         if (!empty($this->postData['url']) && preg_match('/^(\w+\s)?\w+\:\/\/.*$/i', $this->postData['url'])) {
-            if ($result = call_user_func_array(array($this->db, $operation), $track)) {
+
+            $result = call_user_func_array(array($this->db, $operation), $track);
+
+            if (is_numeric($result)) {
                 $error = '';
+                if ($result === 0) {
+                    $data['nothing_to_do'] = TRUE;
+                }
+                if ($operation == 'updateAlbumsComposition') {
+                    $this->postData['trackid'] = $this->postData['id'];
+                    $data = array_merge_recursive($data, $this->audio_albums_composition_list_json(TRUE));
+                }
             }
+
         } else {
             $data['msg'] = $this->setLocalization('Invalid format links');
         }
@@ -1180,10 +1326,13 @@ class AudioClubController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'audioTracksManage';
+        $data['action'] = 'deleteTableRow';
         $data['id'] = $this->postData['trackid'];
-        $this->db->deleteAudioCompositions(array('id' => $this->postData['trackid']));
-        $response = $this->generateAjaxResponse($data, '');
+        $error = $this->setLocalization('Failed');
+        if ($this->db->deleteAudioCompositions(array('id' => $this->postData['trackid']))){
+            $error = '';
+        }
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -1198,9 +1347,20 @@ class AudioClubController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'audioTracksManage';
+        $data['action'] = 'updateTableRow';
         $data['id'] = $this->postData['trackid'];
-        $this->db->updateAlbumsComposition(array('status' => (int)(!((bool) $this->postData['trackstatus']))), $this->postData['trackid']);
+        $data['data'] = array();
+        $result = $this->db->updateAlbumsComposition(array('status' => (int)(!((bool) $this->postData['trackstatus']))), $this->postData['trackid']);
+
+        if (is_numeric($result)) {
+            $error = '';
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
+            $this->postData['id'] = $this->postData['trackid'];
+            $data = array_merge_recursive($data, $this->audio_albums_composition_list_json(TRUE));
+        }
+
         $response = $this->generateAjaxResponse($data, '');
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
@@ -1216,10 +1376,23 @@ class AudioClubController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'manageAudioAlbum';
+        $data['action'] = 'updateTableRow';
         $data['id'] = $this->postData['albumsid'];
-        $this->db->updateAudioAlbum(array('status' => (int)(!((bool) $this->postData['albumsstatus']))), $this->postData['albumsid']);
-        $response = $this->generateAjaxResponse($data, '');
+        $data['data'] = array();
+        $error = $this->setLocalization('Failed');
+        $result = $this->db->updateAudioAlbum(array('status' => (int)(!((bool) $this->postData['albumsstatus']))), $this->postData['albumsid']);
+
+        if (is_numeric($result)) {
+            $error = '';
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
+            $this->postData['id'] = $this->postData['albumsid'];
+            $data = array_merge_recursive($data, $this->audio_albums_list_json(TRUE));
+        }
+
+
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -1375,7 +1548,6 @@ class AudioClubController extends \Controller\BaseStalkerController {
                     $param[] = $data['id'];
                     unset($param[0]['id']);
                 }
-                
                 
                 if ($return_val = call_user_func_array(array($this->db, $action), $param)) {
                     if ($action == 'updateAudioAlbum') {

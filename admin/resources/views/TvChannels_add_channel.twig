@@ -1005,9 +1005,8 @@
 
         function yelp() {
             $(document).ready(function () {
-                if (typeof (channelListRender) == 'function') {
-                    LoadSelect2Script(DemoSelect2);
-                }
+
+                LoadSelect2Script(DemoSelect2);
 
                 $("#form_enable_tv_archive, #form_allow_pvr").on('change', function () {
                     checkEnableChkBox($(this).attr('id'));
@@ -1265,10 +1264,138 @@
                     }
                 });
 
+                $(document).on('click submit', "#modalbox_ad .channel-form button[type='submit']", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+
+                    if (typeof(conf) == 'object' && typeof(conf.form) != 'undefined') {
+                        conf.form = '#add_channel_link_form';
+                        conf.formContainer = '#modalbox_ad';
+                        $(conf.form).prop('novalidate', 0).removeAttr('novalidate');
+                        if ($(conf.form).isValid({}, conf, true)) {
+                            conf.onSuccess();
+                            $(conf.form).prop('novalidate', 1);
+                        } else {
+                            conf.onError();
+                            return false;
+                        }
+                    }
+
+                    var tmp_id = $("#modalbox_ad").data('tr_id');
+                    var dataObj = {};
+
+                    var currentCMD = $("#modalbox_ad #add_channel_url_base input[name*='cmd']");
+                    var currentCMDVal = $(currentCMD).val();
+                    currentCMDVal = currentCMDVal.replace(/\s/ig, '');
+                    var duplicate = false;
+
+                    $('#cmd_data tr:visible td:first-of-type input[name*="cmd"]').each(function(){
+                        var existsCMDVal = $(this).val();
+                        existsCMDVal = existsCMDVal.replace(/\s/ig, '');
+                        var currID = $(this).closest('tr').attr('id') || false;
+                        if (existsCMDVal == currentCMDVal &&  currID != tmp_id) {
+                            duplicate = true;
+                            return false;
+                        }
+                    });
+
+                    if (duplicate) {
+                        currentCMD.closest('div').after('<span class="help-inline col-xs-12 col-sm-12 duplicate"><span class="txt-danger">' + words['CMD_Exists'] + "</span></span>");
+                        $("#modalbox_ad").scrollTo(0);
+                        currentCMD.focus();
+                        return false;
+                    } else {
+                        currentCMD.closest('div').next('span.duplicate').remove();
+                    }
+
+                    $('#modalbox_ad').find('input, select').each(function () {
+                        var name = (typeof ($(this).attr('name')) != 'undefined') ? $(this).attr('name').replace(/\[\d*?\]/ig, '') : false;
+                        if (!name) {
+                            return true;
+                        }
+                        var type = typeof ($(this).attr('type')) != 'undefined' ? $(this).attr('type') : $(this).get(0).tagName.toLowerCase();
+                        var value = $(this).val() || '';
+                        if (value instanceof Array) {
+                            value = value.join(';');
+                        }
+                        if (type == 'checkbox') {
+                            dataObj[name] = {'value': ($(this).prop('checked') ? 'on' : 'off'), 'type': type};
+                        } else if (type == 'radio') {
+                            if ($(this).prop('checked')) {
+                                dataObj[name] = {'value': $(this).val(), 'type': type};
+                            }
+                        } else if (type == 'select' && $(this).attr('multiple')) {
+                            dataObj[name] = {'value': value, 'type': type};
+                        } else {
+                            dataObj[name] = {'value': value, 'type': type};
+                        }
+                    });
+                    channelUrlDataUpdate("#" + tmp_id, dataObj);
+                    $("#modalbox_ad").find("input, select").prop("disabled", "disabled");
+                    $("#modalbox_ad").find("form").each(function () {
+                        this.reset();
+                    });
+                    $("#modalbox_ad").hide();
+                    return false;
+                });
+
             });
         }
 
         document.addEventListener("DOMContentLoaded", yelp, false);
+
+        function channelUrlDataGet(container){
+            var dataObj = {};
+            $(container).find('input').each(function(){
+                var name = $(this).attr('name').replace(/\[\d*?\]/ig, '');
+                var value = $(this).val();
+                var type = $(this).attr('type');
+                if (type != 'checkbox') {
+                    dataObj[name] = {'value': value, 'type': type};
+                } else {
+                    dataObj[name] = {'value': ($(this).prop('checked') ? 'on': 'off'), 'type': type};
+                }
+            });
+            return dataObj;
+        }
+
+        function channelUrlDataUpdate(container, data){
+            if ($(container).css('display') == 'none'){
+                var clonContainer = $(container).clone(true, true);
+                clonContainer.removeAttr('id');
+                $(clonContainer).insertAfter(container);
+                $(container).css("display", "table-row");
+                var countRow = $(container).parent().find($(container).get(0).tagName+":visible").length;
+                $(container).find('input').each(function(){
+                    $(this).attr('name', $(this).attr('name').replace(/\d+?/ig, countRow));
+                    $(this).attr('id', $(this).attr('id').replace(/\d+?/ig, countRow));
+                });
+            }
+            $(container).find('input').each(function(){
+                $(this).prop("disabled", false).removeAttr("disabled");
+                var name = $(this).attr('name').replace(/\[\d*?\]/ig, '');
+                if (typeof (data[name]) == 'undefined') {
+                    return true;
+                }
+                var type = $(this).attr('type');
+                if (type == 'checkbox') {
+                    if ($(this).attr('name').search('enable_monitoring') != -1) {
+                        var targetLabel = $(this).closest('td').next('td').find('label');
+                        if (targetLabel.text() != '-' && $(this).prop('checked') != (data[name].value == 'on')) {
+                            targetLabel.text('-');
+                            targetLabel.removeClass();
+                        }
+                    }
+                    $(this).prop('checked', (data[name].value == 'on'));
+                } else {
+                    $(this).val(data[name].value);
+                }
+                var label = $(this).prev("label[data-field='"+name+"']");
+                if (label) {
+                    label.text(data[name].value);
+                }
+            });
+        }
 
         function toggleChkSelect(objId){
             var relations = {

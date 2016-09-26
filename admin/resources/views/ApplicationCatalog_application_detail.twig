@@ -188,13 +188,8 @@
                     e.stopPropagation();
                     e.preventDefault();
                     var _this = $(this);
-
-                    if ($(this).attr("disabled")) {
-                        JSErrorModalBox({msg: "{{ 'Action is not available'|trans }}"});
-                    } else {
-                        JSshowModalBox();
-                        ajaxPostSend(_this.attr('href'), _this.data(), false );
-                    }
+                    JSshowModalBox();
+                    ajaxPostSend(_this.attr('href'), _this.data(), false );
 
                     _this.closest('div.open').removeClass('open');
                     return false;

@@ -504,9 +504,7 @@
 
                 $.validate(conf);
 
-                if (typeof (channelListRender) == 'function') {
-                    LoadSelect2Script(DemoSelect2);
-                }
+                LoadSelect2Script(DemoSelect2);
 
                 if (typeof (loadFileUploadScripts) != 'function' || !loadFileUploadScripts(initFileUploader)){
                     JSErrorModalBox({msg: "{{ 'Cannot load File Upload plugin'|trans }}"})

@@ -55,10 +55,10 @@ class TariffsController extends \Controller\BaseStalkerController {
         $this->app['dropdownAttribute'] = $attribute;
         
         $this->app['allPackageTypes'] = $this->setLocalization($this->allPackageTypes, 'title');
-        $this->app['allServices'] = $this->setLocalization(array(
+        $this->app['allServices'] = array(
             array("id" => '2', "title" => $this->setLocalization("complete")),
             array("id" =>  '1', "title" => $this->setLocalization("Optional"))
-        ), 'title');
+        );
 
         $this->getTariffsFilters();
 
@@ -272,7 +272,7 @@ class TariffsController extends \Controller\BaseStalkerController {
             'all_services' => 'services_package.`all_services` as `all_services`'
         );
 
-        $param = (!empty($this->data) ? $this->data : array());
+        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : array());
 
         $query_param = $this->prepareDataTableParams($param, array('operations', '_'));
 
@@ -299,7 +299,10 @@ class TariffsController extends \Controller\BaseStalkerController {
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }
-        $response['data'] = $this->db->getTariffsList($query_param);
+        $response['data'] = array_map(function($row){
+            $row['RowOrder'] = "dTRow_" . $row['id'];
+            return $row;
+        }, $this->db->getTariffsList($query_param));
         $this->setUserCount($response['data']);
 
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
@@ -321,10 +324,18 @@ class TariffsController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'removePackage';
-        $data['msg'] = array('Package' => $this->db->deletePackageById($this->postData['packageid']), 'Services' => $this->db->deleteServicesById($this->postData['packageid']));
-
-        $error = '';
+        $data['action'] = 'deleteTableRow';
+        $data['id'] = $this->postData['packageid'];
+        $error = $this->setLocalization('Failed');
+        $package_result = $this->db->deletePackageById($this->postData['packageid']);
+        $services_result = $this->db->deleteServicesById($this->postData['packageid']);
+        if (is_numeric($package_result) && is_numeric($services_result)) {
+            $data['msg'] = $this->setLocalization("{pckg_rslt} packages and {srvcs_rslt} their services has been removed", '', array($package_result, $services_result), array('{pckg_rslt}' => $package_result, '{srvcs_rslt}' => $services_result));
+            $error = '';
+            if ($package_result === 0 && $services_result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
+        }
 
         $response = $this->generateAjaxResponse($data, $error);
 
@@ -367,7 +378,8 @@ class TariffsController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
         $data = array();
-        $data['action'] = 'checkExternalId';
+        $data['action'] = 'checkData';
+        $data['input_id'] = 'form_external_id';
         $error = $this->setLocalization('ID already used');
         $param = array(
             'where' => array(
@@ -378,7 +390,10 @@ class TariffsController extends \Controller\BaseStalkerController {
         if (!empty($this->postData['selfid'])) {
             $param['where']['id<>'] = trim($this->postData['selfid']);
         }
-        $result = $this->db->getTariffPlansList($param);
+
+        $method = "getTariff" . (!empty($this->postData['plans'])? 'Plan': '') . 'sList';
+
+        $result = $this->db->$method($param);
 
         if (!empty($result)) {
             $data['chk_rezult'] = $this->setLocalization('ID already used');
@@ -440,7 +455,10 @@ class TariffsController extends \Controller\BaseStalkerController {
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }
-        $response['data'] = $this->db->getTariffPlansList($query_param);
+        $response['data'] = array_map(function($row){
+            $row['RowOrder'] = "dTRow_" . $row['id'];
+            return $row;
+        }, $this->db->getTariffPlansList($query_param));
 //        $this->setUserCount($response['data']);
 
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
@@ -462,10 +480,20 @@ class TariffsController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'removePlan';
-        $data['msg'] = array('Plan' => $this->db->deletePlanById($this->postData['planid']), 'Tariff' => $this->db->deleteTariffById($this->postData['planid']));
+        $data['action'] = 'deleteTableRow';
+        $data['id'] = $this->postData['planid'];
+        $error = $this->setLocalization('Failed');
 
-        $error = '';
+        $tariff_result = $this->db->deleteTariffById($this->postData['planid']);
+        $plans_result = $this->db->deletePlanById($this->postData['planid']);
+
+        if (is_numeric($tariff_result) && is_numeric($plans_result)) {
+            $data['msg'] = $this->setLocalization("{trff_rslt} tariff plans and {plns_rslt} their packages has been removed", '', array($tariff_result, $plans_result), array('{trff_rslt}' => $tariff_result, '{plns_rslt}' => $plans_result));
+            $error = '';
+            if ($tariff_result === 0 && $plans_result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
+        }
 
         $response = $this->generateAjaxResponse($data, $error);
 
@@ -536,6 +564,7 @@ class TariffsController extends \Controller\BaseStalkerController {
             $row['state'] = (int) $row['state'];
             $row['initiator'] = $self->setLocalization($row['initiator']);
             $row['modified'] = (int)  strtotime($row['modified']);
+            $row['RowOrder'] = "dTRow_" . $row['id'];
             return $row;
         }, $this->db->getSubscribeLogList($query_param));
 

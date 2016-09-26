@@ -233,7 +233,7 @@
         $(document).ready(function () {
             LoadDataTablesScripts(TestTable1);
             LoadSelect2Script(DemoSelect2);
-           $(document).on('click', "a.main_ajax", function (e) {
+            $(document).on('click', "a.main_ajax", function (e) {
                 e.stopPropagation();
                 e.preventDefault();
                 var _this = $(this);
@@ -247,55 +247,7 @@
                     showTaskForm(_this);
                     return false;
                 }
-
-                if (!_this.data('atcion')) {
-                    $.ajax({
-                        url: $(this).attr('href'),
-                        type: 'POST',
-                        data: $(this).data(),
-                        success: function (data) {
-                            if (data.success) {
-                                if (typeof(data.nothing_to_do) == 'undefined' || !data.nothing_to_do) {
-								    JSSuccessModalBox(data);
-                                }
-								$('#modalbox_ad').hide();
-								$('#modalbox_ad').find('input[type="hidden"]').val('').next().text('');
-								$('#modalbox_ad').find('textarea').val('');
-                                for (var key in data) {
-                                    _this.data(key, data[key]);
-                                }
-                            } else {
-                                notty('{{ 'Some server error'|trans }}','notification');
-                            }
-                        },
-                        error: function (data) {
-                            var errAction = '';
-                            if (typeof(data.responseJSON) == 'object') {
-                                errAction +=  data.responseJSON.action + 'Error';
-                                for (var key in data.responseJSON) {
-                                    _this.data(key, data.responseJSON[key]);
-                                }
-                            }
-                            if ($.isFunction(window[errAction])) {
-                                window[errAction]($(_this));
-                            } else {
-                                JSErrorModalBox(data.responseJSON);
-                            }
-                        },
-                        dataType: "json",
-                        async: false
-                    });
-                } 
-
-                if ($.isFunction(window[$(this).data('action')]) && !$(this).data('error')) {
-                    window[$(this).data('action')]($(this));
-                }
-                _this.closest('div.open').removeClass('open');
-               if (!_this.data('nothing_to_do')) {
-                    $('#datatable-1').DataTable().ajax.reload();
-               } else {
-                   _this.removeData('nothing_to_do');
-               }
+                ajaxPostSend($(this).attr('href'), $(this).data(), false, false);
                 return false;
             });
 
@@ -340,17 +292,20 @@
 
     document.addEventListener("DOMContentLoaded", yelp, false);
 
-    var setMD5Error = function(obj){
-        if ($(obj).data("error")) {
-            $(obj).replaceWith('<span class="txt-danger"> &nbsp;' + $(obj).data("error") + '&nbsp; </span>');
-        }
+    var setMD5 = function(){
+        $("#modalbox a[href$='get-md5']").replaceWith('<span class="txt-success"> &nbsp; {{ 'counting'|trans }} &nbsp; </span>');
+    };
 
+    var setMD5Error = function(obj){
+        if (obj.error) {
+            $("#modalbox a[href$='get-md5']").replaceWith('<span class="txt-danger"> &nbsp;' + obj.error + '&nbsp; </span>');
+        }
     };
 
     var videoinfo = function (obj){
         $('#modalbox').show();
-        $('#modalbox').find('.modal-header-name span').text($(obj).data('title'));
-        var baseInfo = $(obj).data('base_info');
+        $('#modalbox').find('.modal-header-name span').text(obj.title);
+        var baseInfo = obj.base_info;
         if (typeof(baseInfo) == 'string') {
             $('#modalbox').find('.devoops-modal-inner').append('<span>' + baseInfo + '</span>');
         } else if (typeof(baseInfo) == 'object') {
@@ -364,10 +319,12 @@
                 table.find('a').data('media_name', value.path);
                 if (value.files.length > 0 ) {
                     var filesStr = '';
+                    var md5Str = '';
                     $.each(value.files, function(f_index, f_value){
-                        filesStr += '<span class="video_file_name">' + f_value.name + '</span>';
+                        filesStr = '<span class="video_file_name">' + f_value.name + '</span>';
+                        md5Str = '<span class="video_file_name">' + f_value.md5 + '</span>';
+                        table.append('<tr><td colspan="3">' + filesStr + '</td><td >' + md5Str + '</td></tr>');
                     });
-                    table.append('<tr><td colspan="4">' + filesStr + '</td></tr>');
                 }
             });
         }
@@ -379,38 +336,6 @@
         $('#modalbox').find('.devoops-modal-inner').empty();
         $('#modalbox').find('.devoops-modal-bottom').empty();
     }
-
-    function videoenableError(obj){
-        JSErrorModalBox($(obj).data());
-        closeModalBox();
-    }
-
-/*    var videoremove = function (obj){
-        JSSuccessModalBox($(obj).data());
-        $('#datatable-1').DataTable().ajax.reload();
-    };
-
-    var videoremoveError = function (obj){
-        JSErrorModalBox($(obj).data());
-    };
-
-    var videodisable = function (obj){
-        JSSuccessModalBox($(obj).data());
-        $('#datatable-1').DataTable().ajax.reload();
-    };
-
-    var videodisableError = function (obj){
-        JSErrorModalBox($(obj).data());
-    };
-
-    var createtasks = function (obj){
-        JSSuccessModalBox($(obj).data());
-        $('#datatable-1').DataTable().ajax.reload();
-    };
-
-    var createtasksError = function (obj){
-        JSErrorModalBox($(obj).data());
-    };*/
 
     function setEnableDatePicker(obj){
         $('#modalbox').find('.modal-header-name span').text('{{ 'Schedule of publishing'|trans }}');
@@ -503,10 +428,9 @@
             field = $('<input/>').appendTo("#modalbox form");
             field.prop({type: 'hidden', name: name, value: sendData[name]});
         }
-        var data = $(obj).data();
-        if (data && data.msg) {
+        if (obj && obj.msg) {
             field = $('<span/>').appendTo("#modalbox form");
-            field.addClass('col-sm-11').text(data.msg);
+            field.addClass('col-sm-11').text(obj.msg);
         }
 
         $(obj).removeData('video_on_date').removeData('empty_confirm');

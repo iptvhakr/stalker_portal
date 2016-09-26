@@ -96,7 +96,13 @@
                     _this.val(_this.val().replace(/^\s+/ig, '').replace(/\s{2}$/, ' '));
                     _this.next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
                     $('#modalbox button[type="submit"]').removeAttr("disabled");
-                    ajaxPostSend('{{app.request.baseUrl}}/{{app.controller_alias}}/check-audio-genres-name', {name: _this.val()});
+
+                    var sendData = {
+                        id: _this.prev('input[name="id"]').val(),
+                        name: _this.val()
+                    };
+
+                    ajaxPostSend('{{app.request.baseUrl}}/{{app.controller_alias}}/check-audio-genres-name', sendData);
 
                     return false;
                 });
@@ -110,13 +116,7 @@
                     if ($(_this).attr("disabled")) {
                         JSErrorModalBox({msg: "{{ 'Action is not available'|trans }}! " + ($(_this).attr('warning_msg') ? $(_this).attr('warning_msg') : '')});
                     } else {
-                        showModalBox();
-                        var timer = setInterval(function(){
-                            if ($("#modalbox").is(":visible")) {
-                                ajaxPostSend($(_this).attr('href'), sendData, false );
-                                clearInterval(timer);
-                            }
-                        }, 10);
+                        ajaxPostSend($(_this).attr('href'), sendData, false );
                     }
                     $(this).closest('div.open').removeClass('open');
                     return false;
@@ -135,7 +135,7 @@
                     }
                     e.stopPropagation();
                     e.preventDefault();
-                    closeModalBox();
+                    JScloseModalBox();
                     return false;
                 });
 
@@ -143,21 +143,21 @@
                     if (e.currentTarget != e.target) {
                         return;
                     }
-					if( !$('#audio_genres_name').val() ) {  $('#audio_genres_name').css('border','1px solid red');
-					} else {
-					$('#audio_genres_name').css('border','');
-                    var sendData = {
-                        id: $("#modalbox input[type='hidden']").val(),
-                        name: $("#modalbox input[type='text']").val()
-                    };
+                    if( !$('#audio_genres_name').val() ) {
+                        $('#audio_genres_name').css('border','1px solid red');
+                    } else {
+                        $('#audio_genres_name').css('border','');
+                        var sendData = {
+                            id: $("#modalbox input[type='hidden']").val(),
+                            name: $("#modalbox input[type='text']").val()
+                        };
 
-                    e.stopPropagation();
-                    e.preventDefault();
-                    ajaxPostSend($("#modalbox form").attr('action'), sendData, false);
-					notty('<span>{{ 'Done'|trans }}!</span>','success');
-                    closeModalBox();
-                    return false;
-					}
+                        e.stopPropagation();
+                        e.preventDefault();
+                        ajaxPostSend($("#modalbox form").attr('action'), sendData, false);
+                        JScloseModalBox();
+                        return false;
+                    }
                 });
 
                 $(document).on('click', "a.remove-audio-genres", function (e) {
@@ -186,52 +186,10 @@
         document.addEventListener("DOMContentLoaded", yelp, false);
 
         var addAudioGenre = function(data){
-            closeModalBox();
-            $('#datatable-1').DataTable().ajax.reload();
-        };
-        
-        var editAudioGenre = function(data){
-            closeModalBox();
-            $('#datatable-1').DataTable().ajax.reload();
-        };
-        
-        var removeAudioGenre = function (data) {
-            closeModalBox();
+            JSSuccessModalBox(data);
             $('#datatable-1').DataTable().ajax.reload();
         };
 
-        var checkAudioGenre = function (data) {
-            if (typeof(data) != 'undefined') {
-                $('#modalbox button[type="submit"]').removeAttr("disabled");
-                $('#audio_genres_name').next('div').append('<i class="txt-success fa fa-check"></i> ' + data.chk_rezult).css('visibility', 'visible');
-            } else {
-                JSErrorModalBox();
-            }
-        };
-
-        var checkAudioGenreError= function (data) {
-            if (typeof(data) != 'undefined') {
-                $('#modalbox button[type="submit"]').attr("disabled", "disabled");
-                $('#audio_genres_name').next('div').append('<i class="txt-danger fa fa-ban"></i> ' + data.error).css('visibility', 'visible');
-            } else {
-                JSErrorModalBox();
-            }
-        };
-
-        function closeModalBox() {
-            $("#modalbox").hide();
-            $('#modalbox').find('.modal-header-name span').removeClass('txt-danger').empty();
-            $('#modalbox').find('.devoops-modal-inner').empty();
-            $('#modalbox').find('.devoops-modal-bottom').empty();
-        }
-
-        function showModalBox() {
-            $('#modalbox').find('.modal-header-name span').removeClass('txt-danger').text('{{ 'Wait'|trans }}...');
-            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Request is being processed'|trans }}...</span>');
-            $('#modalbox').find('.devoops-modal-bottom').empty();
-            $("#modalbox").show();
-        }
-    
         function openModalBox(obj){
             $('#modalbox').find('.modal-header-name span').text((obj.data('genresid')? '{{ 'Edit'|trans }}': '{{ 'Add'|trans }}') + ' {{ 'genre'|trans }}');
             if ($('#modalbox').find('.devoops-modal-inner').find('input').length == 0) {
@@ -255,6 +213,8 @@
                                 <button type="submit" class="btn btn-success pull-right">{{ 'Save'|trans }}</button>\n\
                                 <button type="reset" class="btn btn-default pull-right" >{{ 'Cancel'|trans }}</button>\n\
                             </div>');
+            } else {
+                $('#modalbox').find('.devoops-modal-inner').find('input').val('');
             }
 
             if (obj.data('genresid')) {
