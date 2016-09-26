@@ -305,10 +305,8 @@
                     if ($.isFunction(window[response.action]) && !response.error) {
                         window[response.action](response);
                     }
-                } else if (response.error) {
-                    alert(response.error);
                 } else {
-                    alert("{{ 'Some server error'|trans }}");
+                    JSErrorModalBox(response);
                 }
                 return false;
             });
@@ -408,15 +406,15 @@
 
                     $(document).on('click', "#modalbox_ad button[type='submit']", function (e) {
 
-								  $.validate({
-  onSuccess : function() {
-                        e.stopPropagation();
-                        e.preventDefault();
-                        var formData = $("#modalbox_ad form").serialize();
-                        ajaxPostSend("{{app.request.baseUrl}}/{{app.controller_alias}}/add-event", formData);
-                        return false;
-						}
-						});
+                        $.validate({
+                            onSuccess : function() {
+                                e.stopPropagation();
+                                e.preventDefault();
+                                var formData = $("#modalbox_ad form").serialize();
+                                ajaxPostSend("{{app.request.baseUrl}}/{{app.controller_alias}}/add-event", formData);
+                                return false;
+                            }
+                        });
                     });
                     $(document).on('click', "#clean_events", function (e) {
                         e.stopPropagation();
@@ -444,30 +442,6 @@
                 return false;
             }
 
-            var addEvent = function(data){
-                alert(data.msg);
-                $('#datatable-1').dataTable().fnReloadAjax();
-                $('#modalbox_ad').click();
-            };
-            var addEventError = function(data){
-                alert(data.msg);
-                $('#datatable-1').dataTable().fnReloadAjax();
-                $('#modalbox_ad').click();
-            };
-            var addAddressList = function(data){
-                alert(data.msg);
-            };
-            var addAddressListError = function(data){
-                alert(data.error);
-            };
-            var cleanEvents = function(data){
-                alert(data.msg);
-                $('#datatable-1').dataTable().fnReloadAjax();
-            };
-            var cleanEventsError = function(data){
-                alert(data.error);
-                $('#datatable-1').dataTable().fnReloadAjax();
-            };
     </script>
 
 {% endblock %}

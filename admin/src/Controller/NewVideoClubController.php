@@ -1875,12 +1875,11 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         $data['action'] = 'deleteTableRow';
         $data['id'] = $this->postData['genresid'];
         $error = $this->setLocalization('Failed');
-        if ($result = $this->db->deleteVideoCatGenres(array('id' => $this->postData['genresid']))) {
-            if (is_numeric($result)) {
-                $error = '';
-                if ($result === 0) {
-                    $data['nothing_to_do'] = TRUE;
-                }
+        $result = $this->db->deleteVideoCatGenres(array('id' => $this->postData['genresid']));
+        if (is_numeric($result)) {
+            $error = '';
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
             }
             $data['msg'] = $this->setLocalization('Deleted') . ' ' . $result;
         }

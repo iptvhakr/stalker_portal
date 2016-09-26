@@ -188,27 +188,12 @@
 
         document.addEventListener("DOMContentLoaded", yelp, false);
               
-        var manageList = function (obj) {
-            JSSuccessModalBox(obj);
-            $('#datatable-1').DataTable().ajax.reload();
-			$("#modalbox").data('complete', 1);
-			closeModalBox();
-        };
-
         function closeModalBox(){
             $("#modalbox").hide();
             $('#modalbox').find('.modal-header-name span').empty();
             $('#modalbox').find('.devoops-modal-inner').empty();
             $('#modalbox').find('.devoops-modal-bottom').empty();
         }
-
-        var manageListError = function(obj){
-            JSErrorModalBox(obj);
-        };
-
-        var errAction = function(){
-            notty('<span>{{ 'Failed'|trans }}!</span>','error');
-        };
 
         function getTemplateForm(templateName){
             $("#modalbox").data('complete', 1);

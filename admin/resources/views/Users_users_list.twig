@@ -819,7 +819,7 @@
                     $("#limit_message").show();
                 }
             }
-            deleteTableRow(obj);
+            deleteTableRow({obj: obj});
         };
         
         function checkFields(obj, e) {
@@ -852,21 +852,7 @@
             $(obj).closest('div.open').removeClass('open');
             $('#modalbox').show();
         }
-
-        var setExpireBillingDate = function(data){
-            JSSuccessModalBox(data);
-            $('#datatable-1').DataTable().ajax.reload();
-        };
-
-        var setExpireBillingDateError = function(data){
-            JSErrorModalBox(data);
-        };
         {% endif %}
-
-        var addEvent = function(data){
-            JSSuccessModalBox(data);
-            $('#modalbox_ad').click();
-        };
 
         var addFilter = function(data){
             var last_filter_block = $('#filter_block div[data-tvfilter]:last');

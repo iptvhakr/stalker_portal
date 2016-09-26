@@ -603,6 +603,8 @@ function ajaxSuccess(data, alertMsg, consoleMsg){
     if (data.success  && !data.error) {
         if ($.isFunction(window[data.action])) {
             window[data.action](data);
+        } else {
+            JSSuccessModalBox(data);
         }
     } else if (data.error) {
         ajaxError({responseJSON: data});
