@@ -213,7 +213,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         $filds_for_select = $this->getSmartApplicationFields();
 
         $error = $this->setLocalization("Error");
-        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
+        $param = (!empty($this->data)?$this->data: $this->postData);
 
         $filter = $this->getSmartApplicationFilters();
 

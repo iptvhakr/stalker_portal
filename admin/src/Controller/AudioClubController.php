@@ -211,7 +211,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
             "status" => "`audio_albums`.`status` as `status`"
         );
         $error = $this->setLocalization('Error');
-        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : array());
+        $param = (!empty($this->data)?$this->data: $this->postData);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
 
@@ -309,7 +309,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
             'recordsFiltered' => 0
         );
         $error = $this->setLocalization('Error');
-        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : array());
+        $param = (!empty($this->data)?$this->data: $this->postData);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', '_'));
 
@@ -492,7 +492,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
             'recordsFiltered' => 0
         );
         $error = $this->setLocalization('Error');
-        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : array());
+        $param = (!empty($this->data)?$this->data: $this->postData);;
 
         $query_param = $this->prepareDataTableParams($param, array('operations', '_'));
 
@@ -676,7 +676,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
             'recordsFiltered' => 0
         );
         $error = $this->setLocalization('Error');
-        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : array());
+        $param = (!empty($this->data)?$this->data: $this->postData);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', '_'));
 
@@ -862,7 +862,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
             'recordsFiltered' => 0
         );
         $error = $this->setLocalization('Error');
-        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : array());
+        $param = (!empty($this->data)?$this->data: $this->postData);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', '_'));
 
@@ -1157,7 +1157,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
             "language_id" => 'audio_languages.id as `language_id`'
         );
         $error = $this->setLocalization('Error');
-        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : array());
+        $param = (!empty($this->data)?$this->data: $this->postData);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
 

@@ -272,7 +272,7 @@ class TariffsController extends \Controller\BaseStalkerController {
             'all_services' => 'services_package.`all_services` as `all_services`'
         );
 
-        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : array());
+        $param = (!empty($this->data)?$this->data: $this->postData);;
 
         $query_param = $this->prepareDataTableParams($param, array('operations', '_'));
 
@@ -427,7 +427,7 @@ class TariffsController extends \Controller\BaseStalkerController {
             'user_default' => 'tariff_plan.`user_default` as `user_default`'
         );
 
-        $param = (!empty($this->data) ? $this->data : array());
+        $param = (!empty($this->data)?$this->data: $this->postData);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', '_'));
 
@@ -523,7 +523,7 @@ class TariffsController extends \Controller\BaseStalkerController {
             'modified' => 'CAST(P_S_L.`modified` as CHAR) as `modified`',
         );
 
-        $param = (!empty($this->data) ? $this->data : array());
+        $param = (!empty($this->data)?$this->data: $this->postData);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', '_'));
 

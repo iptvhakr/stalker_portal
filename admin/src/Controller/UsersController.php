@@ -477,7 +477,7 @@ class UsersController extends \Controller\BaseStalkerController {
             }
         }
 
-        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : array());
+        $param = (!empty($this->data)?$this->data: $this->postData);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', '_', 'reseller_name'));
         if (($search = array_search('state', $query_param['select'])) != FALSE) {
@@ -1076,7 +1076,7 @@ class UsersController extends \Controller\BaseStalkerController {
             'recordsFiltered' => 0
         );
 
-        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : array());
+        $param = (!empty($this->data)?$this->data: $this->postData);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', 'state', '_'));
 
@@ -1233,7 +1233,7 @@ class UsersController extends \Controller\BaseStalkerController {
 
         $error = $this->setLocalization("Error");
 
-        $param = (!empty($this->data) ? $this->data : array());
+        $param = (!empty($this->data)?$this->data: $this->postData);;
 
         $query_param = $this->prepareDataTableParams($param, array('operations', '_'));
 
@@ -1313,7 +1313,7 @@ class UsersController extends \Controller\BaseStalkerController {
             'last_change_status' => "CAST(users.`last_change_status` AS CHAR) as `last_change_status`"
         );
 
-        $param = (!empty($this->data) ? $this->data : array());
+        $param = (!empty($this->data)?$this->data: $this->postData);
 
         $query_param = $this->prepareDataTableParams($param, array('state', '_'));
 
@@ -1603,7 +1603,7 @@ class UsersController extends \Controller\BaseStalkerController {
             'recordsFiltered' => 0
         );
         $error = $this->setLocalization("Error");
-        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : array());
+        $param = (!empty($this->data)?$this->data: $this->postData);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', '_'));
 
