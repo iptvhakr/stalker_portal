@@ -2125,7 +2125,6 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
     }
 
     public function save_video_files($internal_use = FALSE){
-
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['video_id'])) {
             if (!$internal_use) {
                 $this->app->abort(404, $this->setLocalization('Page not found'));
@@ -2143,7 +2142,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         if ( array_key_exists('season_id', $this->postData) && !empty($this->postData['series_id'])) {
             $data['datatable'] = 'f_season_' . $this->postData['season_id'] . '_series_' . $this->postData['series_id'] . '_filedata';
             unset($this->postData['season_id']);
-        } elseif (empty($this->postData['series_id'])){
+        } elseif (array_key_exists('season_id', $this->postData) && empty($this->postData['series_id'])){
             $tmp = $this->add_video_season_series(TRUE);
             $this->postData['series_id'] = $tmp['series_id'];
             $data['action'] = 'checkVideoType';
