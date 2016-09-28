@@ -130,8 +130,10 @@ abstract class Master
                     if ($this->media_protocol == 'http' || $this->media_type == 'remote_pvr'){
                         if (Config::exist('nfs_proxy')){
                             $base_path = 'http://'.Config::get('nfs_proxy').'/media/'.$name.'/'.RESTClient::$from.'/';
-                        }elseif (!empty($this->storages[$name]['wowza_server'])){
-                            $base_path = 'http://'.$this->storages[$name]['storage_ip'].':'.$this->storages[$name]['wowza_port'].'/'.$this->storages[$name]['wowza_app'].'/_definst_/mp4:'.$this->getMediaPath($file, $file_id).'/';
+                        }elseif ($this->storages[$name]['stream_server_type'] == 'wowza'){
+                            $base_path = 'http://'.$this->storages[$name]['storage_ip'].':'.$this->storages[$name]['stream_server_port'].'/'.$this->storages[$name]['stream_server_app'].'/_definst_/mp4:'.$this->getMediaPath($file, $file_id).'/';
+                        }elseif ($this->storages[$name]['stream_server_type'] == 'flussonic'){
+                            $base_path = 'http://'.$this->storages[$name]['storage_ip'].':'.$this->storages[$name]['stream_server_port'].'/'.$this->storages[$name]['stream_server_app'].'/'.$this->getMediaPath($file, $file_id).'/';
                         }else{
                             $base_path = 'http://'.$this->storages[$name]['storage_ip'].'/media/'.$name.'/'.RESTClient::$from.'/';
                         }
@@ -145,7 +147,11 @@ abstract class Master
                         $res['cmd'] = 'auto ';
                     }
 
-                    if (empty($this->storages[$name]['wowza_server'])){
+                    if ($this->storages[$name]['stream_server_type'] == 'wowza'){
+                        $res['cmd'] .= $base_path.'playlist.m3u8?token='.self::createTemporaryLink("1");
+                    }elseif($this->storages[$name]['stream_server_type'] == 'flussonic'){
+                        $res['cmd'] .= $base_path.'index.m3u8?token='.self::createTemporaryLink($this->stb->id);
+                    }else{
                         $res['cmd'] .= $base_path.$this->media_id.'.'.$ext;
 
                         // nginx secure link
@@ -166,8 +172,6 @@ abstract class Master
                         $hash = str_replace('=', '', $hash);
 
                         $res['cmd'] .= '?st='.$hash.'&e='.$expire;
-                    }else{
-                        $res['cmd'] .= $base_path.'playlist.m3u8?token='.$this->createTemporaryLink("1");
                     }
 
                     $file_info = array_filter($storage['files'], function($info) use ($file){
@@ -217,7 +221,7 @@ abstract class Master
                 }else{
                     $redirect_url = '/media/'.$this->getMediaPath($file, $file_id);
 
-                    $link_result = $this->createTemporaryLink($redirect_url);
+                    $link_result = self::createTemporaryLink($redirect_url);
 
                     var_dump($redirect_url, $link_result);
 
@@ -258,7 +262,7 @@ abstract class Master
         }
     }
 
-    protected function createTemporaryLink($val){
+    public static function createTemporaryLink($val){
 
         $key = md5($val.microtime(1).uniqid());
 

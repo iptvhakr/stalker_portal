@@ -592,7 +592,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
 
         $storages = array();
 
-        $data = $this->db->from('storages')->where(array('status' => 1, 'for_records' => 1, 'wowza_server' => 0))->get()->all();
+        $data = $this->db->from('storages')->where(array('status' => 1, 'for_records' => 1, 'stream_server_type' => NULL))->get()->all();
 
         foreach ($data as $idx => $storage){
             $storages[$storage['storage_name']] = $storage;
