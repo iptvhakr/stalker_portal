@@ -77,6 +77,26 @@ $.extend(true, $.fn.dataTable.defaults, {
     "ajax" : {
         data: function(data) {
             data = dataTableDataPrepare(data);
+        },
+        error: function( xhr, textStatus, error ) {
+            if (typeof(xhr) !== 'undefined'){
+                console.log('------------------------------------- request error ---------------------------------------\r\n');
+                console.log(xhr);
+                if ( typeof(xhr.readyState) !== 'undefined' && xhr.readyState == 4 ) {
+                    if (typeof(xhr.status) !== 'undefined' && xhr.status == 401) {
+                        if (typeof(xhr.responseText) !== 'undefined'){
+                            JSErrorModalBox(JSON.parse(xhr.responseText));
+                        }
+                        setTimeout(function(){
+                            window.location.reload(true);
+                        }, 3000);
+                    }
+                }
+                console.log('textStatus - ' + textStatus + '\r\n');
+                console.log('error - ' + error + '\r\n');
+                console.log('------------------------------------- request error end -----------------------------------\r\n');
+            }
+
         }
     },
     "oLanguage": {
