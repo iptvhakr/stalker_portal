@@ -62,6 +62,8 @@ class SettingsController extends \Controller\BaseStalkerController {
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
 
+        $this->app['stbGroups'] = $this->db->getAllFromTable('stb_groups');
+
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
     
@@ -122,9 +124,17 @@ class SettingsController extends \Controller\BaseStalkerController {
         if (!isset($query_param['where'])) {
             $query_param['where'] = array();
         }
-        
+
+        $filds_for_select = $this->getCommonFields();
+        $this->cleanQueryParams($query_param, array_keys($filds_for_select), $filds_for_select);
+
         if (empty($query_param['select'])) {
-            $query_param['select'] = "*";
+            $query_param['select'] = array_values($filds_for_select);
+        }
+
+        if (!empty($param['id'])) {
+            $query_param['where']['I_U_S.id'] = $param['id'];
+            /*unset($query_param['where']['id']);*/
         }
         
         $response['recordsTotal'] = $this->db->getTotalRowsCommonList();
@@ -135,9 +145,9 @@ class SettingsController extends \Controller\BaseStalkerController {
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }
-        if (array_key_exists('id', $param)) {
+        /*if (array_key_exists('id', $param)) {
             $query_param['where']['id'] = $param['id'];
-        }
+        }*/
         
         if (empty($query_param['order'])) {
             $query_param['order']['id'] = 'asc';
@@ -253,7 +263,25 @@ class SettingsController extends \Controller\BaseStalkerController {
             array('name'=>'image_version_contains',     'title'=>$this->setLocalization('Required STB API version'),'checked' => TRUE),
             array('name'=>'hardware_version_contains',  'title'=>$this->setLocalization('Hardware version'),        'checked' => TRUE),
             array('name'=>'enable',                     'title'=>$this->setLocalization('Automatic update'),        'checked' => TRUE),
+            array('name'=>'stb_group_name',             'title'=>$this->setLocalization('User groups'),             'checked' => TRUE),
             array('name'=>'operations',                 'title'=>$this->setLocalization('Operations'),              'checked' => TRUE)
+        );
+    }
+
+    private function getCommonFields(){
+        return array(
+            'id'                        => 'I_U_S.id as `id`',
+            'stb_type'                  => 'I_U_S.stb_type as `stb_type`',
+            'require_image_version'     => 'I_U_S.require_image_version as `require_image_version`',
+            'require_image_date'        => 'I_U_S.require_image_date as `require_image_date`',
+            'update_type'               => 'I_U_S.update_type as `update_type`',
+            'prefix'                    => 'I_U_S.prefix as `prefix`',
+            'image_description_contains'=> 'I_U_S.image_description_contains as `image_description_contains`',
+            'image_version_contains'    => 'I_U_S.image_version_contains as `image_version_contains`',
+            'hardware_version_contains' => 'I_U_S.hardware_version_contains as `hardware_version_contains`',
+            'enable'                    => 'I_U_S.enable as `enable`',
+            'stb_group_id'              => 'S_G.id as `stb_group_id`',
+            'stb_group_name'            => 'S_G.name as `stb_group_name`'
         );
     }
 }

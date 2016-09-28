@@ -215,7 +215,7 @@ class CertificatesController extends \Controller\BaseStalkerController {
     //----------------------- ajax method --------------------------------------
 
     public function current_list_json($local_use = FALSE){
-        if ((!$this->isAjax || $this->method != 'POST') && !$local_use) {
+        if (!$this->isAjax && !$local_use) {
             $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 

@@ -189,33 +189,42 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">{{ 'Image description'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
-                                    <div class="col-xs-10 col-sm-8">
-                                        <div class=" col-xs-10 col-sm-12">
-                                            <input class="form-control own_fields" type="text" title="" value="" name="image_description_contains">
-                                        </div>
+                                    <div class=" col-xs-10 col-sm-10">
+                                        <input class="form-control own_fields" type="text" title="" value="" name="image_description_contains">
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">{{ 'Required image version'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
-                                    <div class="col-xs-10 col-sm-8">
-                                        <div class=" col-xs-10 col-sm-12">
-                                            <input class="form-control own_fields" type="text" title="" value="" name="image_version_contains">
-                                        </div>
+                                    <div class=" col-xs-10 col-sm-10">
+                                        <input class="form-control own_fields" type="text" title="" value="" name="image_version_contains">
                                     </div>
                                 </div>
-                            </div> 
+                            </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">{{ 'Hardware version'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
-                                    <div class="col-xs-10 col-sm-8">
-                                        <div class=" col-xs-10 col-sm-12">
-                                            <input class="form-control own_fields" type="text" title="" value="" name="hardware_version_contains">
-                                        </div>
+                                    <div class=" col-xs-10 col-sm-10">
+                                        <input class="form-control own_fields" type="text" title="" value="" name="hardware_version_contains">
                                     </div>
                                 </div>
-                            </div> 
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">{{ 'User groups'|trans }}</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-10">
+                                        <select name="stb_group_id" id="s2_stb_group_id" class="populate placeholder own_fields">
+                                            <option value="">&nbsp;</option>
+                                            {% if attribute(app, 'stbGroups') is defined and app['stbGroups'] %}
+                                                {% for item in app['stbGroups'] %}
+                                                    <option value="{{ item.id }}">{{ item.name }}</option>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -248,7 +257,7 @@
             modules: 'jsconf',
             onSuccess: function () {
                 var sendData = new Object();
-                var form_fields = $("#modalbox_ad input.own_fields:not(:disabled), #s2_stb_type,  #s2_update_type");
+                var form_fields = $("#modalbox_ad input.own_fields:not(:disabled), #modalbox_ad  select");
                 form_fields.each(function () {
                     if (typeof($(this).attr('type')) != 'undefined' && $(this).attr('type').toLowerCase() == 'checkbox') {
                         sendData[this.name] = $(this).prop('checked') ? 1: 0;
@@ -325,7 +334,7 @@
                 "bInfo": true,
                 "columnDefs": [
                     { className: "action-menu", "targets": [ -1 ] },
-                    {"searchable": false, "targets": [-1, -2, 3]},
+                    {"searchable": false, "targets": [-1, -3, 3]},
                     {"sortable": false, "targets": [-1]}
                 ]
             }).prev('.dataTables_processing').hide('');
