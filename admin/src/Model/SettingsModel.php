@@ -33,7 +33,8 @@ class SettingsModel extends \Model\BaseStalkerModel {
         if (!empty($param['select'])) {
             $this->mysqlInstance->select($param['select']);
         }
-        $this->mysqlInstance->from("image_update_settings")
+        $this->mysqlInstance->from("image_update_settings as I_U_S")
+                ->join('stb_groups as S_G', "I_U_S.stb_group_id", 'S_G.id', 'LEFT')
                 ->where($param['where'])->like($param['like'], 'OR')
                 ->orderby($param['order']);
 
