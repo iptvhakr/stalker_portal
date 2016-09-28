@@ -513,7 +513,7 @@ class NewVideoClubModel extends \Model\BaseStalkerModel {
         return $this->mysqlInstance->update('video_season_series', $data, $where)->total_rows();
     }
 
-    public function getSeriesFiles($where){
+    public function getSeriesFiles($where, $counter = FALSE){
         $this->mysqlInstance
             ->select(array(
                 'V_S_F.*',
@@ -525,6 +525,10 @@ class NewVideoClubModel extends \Model\BaseStalkerModel {
             ->join('video_season_series AS V_S_S', 'V_S_F.series_id', 'V_S_S.id', 'LEFT')
             ->join('video_season AS V_S', 'V_S_S.season_id', 'V_S.id', 'LEFT')
             ->where($where);
+        if ($counter) {
+            $count = $this->mysqlInstance->count()->get()->all('count(*)');
+            return  !empty($count) ? (int) array_sum($count) : 0;
+        }
         return $this->mysqlInstance->get()->all();
     }
 
