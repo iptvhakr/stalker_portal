@@ -647,6 +647,7 @@ _('Resetting password of user access control');
 _('Check EPG-prefix for uniqueness');
 _('Publish or add to schedule');
 _('Unpublish video');
+_('Getting users available and subscribed tv-channels');
 
 /* Launcher profile */
 _('TV');

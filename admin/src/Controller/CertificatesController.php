@@ -219,7 +219,7 @@ class CertificatesController extends \Controller\BaseStalkerController {
             $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
-        if ($no_auth = $this->checkAuth()) {
+        if (empty($this->postData['notty_check']) && $no_auth = $this->checkAuth()) {
             return $no_auth;
         }
 
