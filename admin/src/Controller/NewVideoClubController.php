@@ -659,7 +659,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         
         $media_id = intval($this->postData['videoid']);
         $date_on = date("Y-m-d", strtotime($this->postData['video_on_date']));
-        $files = $this->db->getSeriesFiles(array('V_S_F.video_id' => $media_id, 'V_S_F.accessed' => 1, 'V_S_F.status' => 1));
+        $files = $this->checkPublishedVideoFiles($media_id);
 
         if ($date_on == date("Y-m-d")) {
             if (!empty($files)) {
@@ -2124,7 +2124,6 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
     }
 
     public function save_video_files($internal_use = FALSE){
-
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['video_id'])) {
             if (!$internal_use) {
                 $this->app->abort(404, $this->setLocalization('Page not found'));
@@ -2142,7 +2141,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         if ( array_key_exists('season_id', $this->postData) && !empty($this->postData['series_id'])) {
             $data['datatable'] = 'f_season_' . $this->postData['season_id'] . '_series_' . $this->postData['series_id'] . '_filedata';
             unset($this->postData['season_id']);
-        } elseif (empty($this->postData['series_id'])){
+        } elseif (array_key_exists('season_id', $this->postData) && empty($this->postData['series_id'])){
             $tmp = $this->add_video_season_series(TRUE);
             $this->postData['series_id'] = $tmp['series_id'];
             $data['action'] = 'checkVideoType';
@@ -2160,6 +2159,10 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
             unset($this->postData['clean_old_url']);
         }
         /*unset($this->postData['status']);*/
+
+        if (!empty($params[0]['accessed'])) {
+            $params[0]['accessed'] = $this->checkPublishedVideoFiles($this->postData['video_id'], (!empty($this->postData['series_id']) ? $this->postData['series_id'] : NULL), (!empty($this->postData['id']) ? $this->postData['id'] : FALSE));
+        }
 
         if (!array_key_exists('id', $this->postData)){
             $operation = "insertSeriesFiles";
@@ -2273,7 +2276,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
     }
 
     public function toggle_video_accessed(){
-        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['id'])) {
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['video_id']) || empty($this->postData['id'])) {
             $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
@@ -2284,18 +2287,23 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'dataTableUpdate';
         $error = $this->setLocalization('Something wrong');
+        $check = (int)$this->postData['accessed'] == 0 ? 1 : $this->checkPublishedVideoFiles($this->postData['video_id'], (!empty($this->postData['series_id']) ? $this->postData['series_id']: NULL), $this->postData['id']);
 
-        if ( !empty($this->postData['season_id']) && !empty($this->postData['series_id'])) {
-            $data['datatable'] = 'f_season_' . $this->postData['season_id'] . '_series_' . $this->postData['series_id'] . '_filedata';
-            unset($this->postData['season_id']);
-        } else {
-            $data['datatable'] = 'filedata';
-        }
+        if ($check){
+            if ( !empty($this->postData['season_id']) && !empty($this->postData['series_id'])) {
+                $data['datatable'] = 'f_season_' . $this->postData['season_id'] . '_series_' . $this->postData['series_id'] . '_filedata';
+                unset($this->postData['season_id']);
+            } else {
+                $data['datatable'] = 'filedata';
+            }
 
-        if ($this->db->getSeriesFiles(array('V_S_F.id' => $this->postData['id'])) && $this->db->updateSeriesFiles(array('accessed' => $this->postData['accessed']), array('id' => $this->postData['id']))) {
-            $error = '';
+            if ($this->db->getSeriesFiles(array('V_S_F.id' => $this->postData['id'])) && $this->db->updateSeriesFiles(array('accessed' => $this->postData['accessed']), array('id' => $this->postData['id']))) {
+                $error = '';
+            } else {
+                $data['msg'] = $error;
+            }
         } else {
-            $data['msg'] = $error;
+            $data['msg'] = $error = $this->setLocalization('You can not publish this entry. There are no available video file for this entry.');
         }
 
         $response = $this->generateAjaxResponse($data, $error);
@@ -2338,6 +2346,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         $data['action'] = 'dataTableUpdate';
         if (!empty($this->postData['RowOrder'])) {
             $data['RowOrder'] = $this->postData['RowOrder'];
+            $data['action'] = 'deleteTableRow';
         }
         if ( !$local_use ){
             if ( !empty($this->postData['season_id']) && !empty($this->postData['series_id'])) {
@@ -2362,7 +2371,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         $error = $this->setLocalization('Information not available');
 
         if (empty($this->postData['series_id'])) {
-            $this->postData['series_id'] = $this->db->getSeasonData($params);
+            $this->postData['series_id'] = array_unique($this->getFieldFromArray($this->db->getSeasonData(array('V_S_F.id'=>$this->postData['id'])), 'series_id'));
         }
 
         $result = $this->db->deleteSeriesFiles($params);
@@ -3605,5 +3614,25 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
             unset($response['action']);
         }
         return $response;
+    }
+
+    private function checkPublishedVideoFiles($video_id, $series_id = 'all', $file_id = FALSE){
+        $params = array(
+            'V_S_F.video_id' => $video_id
+        );
+
+        if ($file_id !== FALSE) {
+            $params["IF(V_S_F.file_type = 'video', IF(V_S_F.id = '$file_id', 1, V_S_F.accessed = 1 and V_S_F.status = 1), 0) and 1"] = 1;
+        } else {
+            if ($series_id != 'all') {
+                $params['V_S_F.series_id'] = $series_id;
+            } else {
+                $params["V_S_F.file_type"] = 'video';
+                $params["V_S_F.accessed"] = 1;
+                $params["V_S_F.status"] = 1;
+            }
+        }
+
+        return (bool) $this->db->getSeriesFiles($params, 'COUNT');
     }
 }

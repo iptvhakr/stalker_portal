@@ -217,13 +217,27 @@
             
             (function(){
 
+                stb.cur_place = 'epg';
+
                 if (!this.active_row['epg_cell'][this.cur_cell_col]){
                     if (!this.player_overlay_mode){
                         this.parent.load_params['from_ch_id'] = this.data_items[this.cur_row].ch_id;
                         this.parent.data_items[this.parent.cur_row].id = 0;
                         this.parent.show(true);
+                        this.hide();
+                    }else{
+                        stb.cur_place = 'tv';
+
+                        ch_idx = stb.player.channels.getIdxById(parseInt(this.data_items[this.cur_row].ch_id));
+
+                        stb.player.ch_idx = ch_idx || 0;
+                        stb.player.cur_media_item = stb.player.channels[stb.player.ch_idx];
+                        stb.player.cur_tv_item = stb.player.channels[stb.player.ch_idx];
+                        stb.player.last_not_locked_tv_item = stb.player.channels[stb.player.ch_idx];
+
+                        stb.player.need_show_info = 0;
+                        stb.player.play(stb.player.cur_media_item);
                     }
-                    this.hide();
                     return;
                 }
 
@@ -246,8 +260,21 @@
                             this.parent.load_params['from_ch_id'] = this.data_items[this.cur_row].ch_id;
                             this.parent.data_items[this.parent.cur_row].id = 0;
                             this.parent.show(true);
+                            this.hide();
+                        }else{
+
+                            stb.cur_place = 'tv';
+
+                            var ch_idx = stb.player.channels.getIdxById(parseInt(this.data_items[this.cur_row].ch_id));
+
+                            stb.player.ch_idx = ch_idx || 0;
+                            stb.player.cur_media_item = stb.player.channels[stb.player.ch_idx];
+                            stb.player.cur_tv_item = stb.player.channels[stb.player.ch_idx];
+                            stb.player.last_not_locked_tv_item = stb.player.channels[stb.player.ch_idx];
+
+                            stb.player.need_show_info = 0;
+                            stb.player.play(stb.player.cur_media_item);
                         }
-                        this.hide();
                     }
                 }
             }).bind(key.OK, this);
