@@ -3239,8 +3239,10 @@ player.prototype.hide_info = function(){
     this.info.on = false;
 };
 
-player.prototype._find_nearest_ch_idx = function(direction, condition){
+player.prototype._find_nearest_ch_idx = function(direction, condition, invert_condition){
     _debug('player._find_nearest_channel', direction, condition);
+
+    invert_condition = invert_condition || false;
 
     if (stb.user.fav_itv_on){
         var channels = this.fav_channels;
@@ -3266,28 +3268,54 @@ player.prototype._find_nearest_ch_idx = function(direction, condition){
     if (direction > 0){
 
         for (var i = ch_idx+1; i <= channels.length-1; i++){
-            if (channels[i][param] == value){
-                return i;
+
+            if (invert_condition){
+                if (channels[i][param] != value){
+                    return i;
+                }
+            }else{
+                if (channels[i][param] == value){
+                    return i;
+                }
             }
         }
 
         for (i = 0; i < ch_idx; i++){
-            if (channels[i][param] == value){
-                return i;
+
+            if (invert_condition){
+                if (channels[i][param] != value){
+                    return i;
+                }
+            }else{
+                if (channels[i][param] == value){
+                    return i;
+                }
             }
         }
 
     }else{
 
         for (i = ch_idx-1; i>= 0; i--){
-            if (channels[i][param] == value){
-                return i;
+            if (invert_condition){
+                if (channels[i][param] != value){
+                    return i;
+                }
+            }else{
+                if (channels[i][param] == value){
+                    return i;
+                }
             }
         }
 
         for (i = channels.length-1; i > ch_idx; i--){
-            if (channels[i][param] == value){
-                return i;
+            if (invert_condition){
+                if (channels[i][param] != value){
+                    return i;
+                }
+            }else{
+                if (channels[i][param] == value){
+                    return i;
+                }
             }
         }
 
@@ -3331,11 +3359,15 @@ player.prototype.switch_channel = function(dir, show_info, do_not_invert){
 
                 _debug('nearest this.f_ch_idx', this.f_ch_idx);
             }else{
-            
-                if (this.f_ch_idx < this.fav_channels.length-1){
-                    this.f_ch_idx++;
+
+                if (stb.profile['hide_tv_genres_in_fullscreen']){
+                    this.f_ch_idx = this._find_nearest_ch_idx(dir, {"tv_genre_id" : stb.profile['hide_tv_genres_in_fullscreen'][0]}, true);
                 }else{
-                    this.f_ch_idx = 0;
+                    if (this.f_ch_idx < this.fav_channels.length-1){
+                        this.f_ch_idx++;
+                    }else{
+                        this.f_ch_idx = 0;
+                    }
                 }
             }
             
@@ -3350,11 +3382,15 @@ player.prototype.switch_channel = function(dir, show_info, do_not_invert){
 
                 _debug('nearest this.ch_idx', this.ch_idx);
             }else{
-            
-                if (this.ch_idx < this.channels.length-1){
-                    this.ch_idx++;
-                }else{
-                    this.ch_idx = 0;
+
+                if (stb.profile['hide_tv_genres_in_fullscreen']){
+                    this.ch_idx = this._find_nearest_ch_idx(dir, {"tv_genre_id" : stb.profile['hide_tv_genres_in_fullscreen'][0]}, true);
+                }else {
+                    if (this.ch_idx < this.channels.length - 1) {
+                        this.ch_idx++;
+                    } else {
+                        this.ch_idx = 0;
+                    }
                 }
             }
             
@@ -3371,10 +3407,15 @@ player.prototype.switch_channel = function(dir, show_info, do_not_invert){
 
                 _debug('nearest this.f_ch_idx', this.f_ch_idx);
             }else{
-                if (this.f_ch_idx > 0){
-                    this.f_ch_idx--;
-                }else{
-                    this.f_ch_idx = this.fav_channels.length-1;
+
+                if (stb.profile['hide_tv_genres_in_fullscreen']){
+                    this.f_ch_idx = this._find_nearest_ch_idx(dir, {"tv_genre_id" : stb.profile['hide_tv_genres_in_fullscreen'][0]}, true);
+                }else {
+                    if (this.f_ch_idx > 0) {
+                        this.f_ch_idx--;
+                    } else {
+                        this.f_ch_idx = this.fav_channels.length - 1;
+                    }
                 }
             }
             
@@ -3389,10 +3430,15 @@ player.prototype.switch_channel = function(dir, show_info, do_not_invert){
 
                 _debug('nearest this.ch_idx', this.ch_idx);
             }else{
-                if (this.ch_idx > 0){
-                    this.ch_idx--;
-                }else{
-                    this.ch_idx = this.channels.length-1;
+
+                if (stb.profile['hide_tv_genres_in_fullscreen']){
+                    this.ch_idx = this._find_nearest_ch_idx(dir, {"tv_genre_id" : stb.profile['hide_tv_genres_in_fullscreen'][0]}, true);
+                }else {
+                    if (this.ch_idx > 0) {
+                        this.ch_idx--;
+                    } else {
+                        this.ch_idx = this.channels.length - 1;
+                    }
                 }
             }
             
@@ -4909,6 +4955,8 @@ player.prototype.quick_go_to_ch = function(){
     _debug('ch_num', ch_num);
     
     var item = {};
+
+    _debug('stb.profile[hide_tv_genres_in_fullscreen]', stb.profile['hide_tv_genres_in_fullscreen']);
     
     if (stb.user.fav_itv_on){
         
@@ -4923,6 +4971,11 @@ player.prototype.quick_go_to_ch = function(){
         }
         
         item = this.fav_channels[this.f_ch_idx];
+
+        if (stb.profile['hide_tv_genres_in_fullscreen'] && module.tv.genre && module.tv.genre.id != stb.profile['hide_tv_genres_in_fullscreen'][0] && item.tv_genre_id == stb.profile['hide_tv_genres_in_fullscreen'][0]){
+            _debug('reset item');
+            item = null;
+        }
         
         _debug('item', item);
         
@@ -4939,6 +4992,12 @@ player.prototype.quick_go_to_ch = function(){
         }
         
         item = this.channels[this.ch_idx];
+
+
+        if (stb.profile['hide_tv_genres_in_fullscreen'] && module.tv.genre && module.tv.genre.id != stb.profile['hide_tv_genres_in_fullscreen'][0] && item && item.tv_genre_id == stb.profile['hide_tv_genres_in_fullscreen'][0]){
+            _debug('reset item');
+            item = null;
+        }
         
         _debug('item', item);
     }
