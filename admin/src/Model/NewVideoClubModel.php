@@ -519,7 +519,6 @@ class NewVideoClubModel extends \Model\BaseStalkerModel {
                 'V_S_F.*',
                 'V_S_S.series_number',
                 'V_S.season_number',
-
             ))
             ->from('video_series_files AS V_S_F')
             ->join('video_season_series AS V_S_S', 'V_S_F.series_id', 'V_S_S.id', 'LEFT')

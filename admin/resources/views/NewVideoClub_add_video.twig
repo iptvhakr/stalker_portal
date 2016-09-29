@@ -484,7 +484,11 @@
         var  select2Opt = select2OptMS = select2OptPH = {minimumResultsForSearch: -1, dropdownAutoWidth: false, width: '100%', allowDuplicates: false};
         var  select2OptMS = select2Opt, select2OptPH = select2Opt;
         select2OptMS.maximumSelectionSize = 4;
-        select2OptPH.placeholder = '';
+        select2OptPH.placeholder = {
+            id: "-1",
+            text: "",
+            selected: 'selected'
+        };
 
         function DemoSelect2() {
                 checkCatGenreList('#form_category_id', '#form_cat_genre_id');
@@ -829,6 +833,7 @@
                     $('#file_volume_level').select2(select2Opt);
                     $('#file_protocol').select2(select2Opt);
                     $('#file_accessed').select2(select2Opt);
+                    $('#file_tmp_link_type').select2(select2OptPH);
 
                     if ($(this).data('old-url')) {
                         $("#video_url").val($(this).data('old-url')).after('<input type="hidden" class="own_fields" name="clean_old_url" value="1">');
@@ -1340,11 +1345,11 @@
         function checkProtocol() {
             var protocol = $("#file_protocol");
             if (protocol.val() != 'custom') {
-                protocol.closest('.form-group').next('div.form-group').hide();
-                $('#video_url').attr('disabled', 'disabled');
+                /*protocol.closest('.form-group').next('div.form-group').hide();*/
+                $('#video_url, #file_tmp_link_type').attr('disabled', 'disabled').closest('.form-group').hide();
             } else {
-                protocol.closest('.form-group').next('div.form-group').show();
-                $('#video_url').removeAttr('disabled');
+                /*protocol.closest('.form-group').next('div.form-group').show();*/
+                $('#video_url, #file_tmp_link_type').removeAttr('disabled').closest('.form-group').show();
             }
         }
 
@@ -1817,7 +1822,8 @@
                 file_protocol: 'protocol',
                 file_quality: 'quality',
                 file_volume_level: 'volume_level',
-                file_accessed: 'accessed'
+                file_accessed: 'accessed',
+                file_tmp_link_type: 'tmp_link_type'
             };
             for (var key in fields) {
                 var field = fields[key];
@@ -1836,6 +1842,7 @@
             $('#file_volume_level').select2(select2Opt);
             $('#file_protocol').select2(select2Opt);
             $('#file_accessed').select2(select2Opt);
+            $('#file_tmp_link_type').select2(select2OptPH);
 
             if (!localFilling) {
                 setFileLanguagesSelect();
@@ -2174,6 +2181,19 @@
                             <span class="help-inline col-xs-9 col-sm-9 col-xs-offset-3 col-sm-offset-3">
                                 <span class="small txt-default col-xs-11 col-sm-11">{{ 'Example: ffmpeg http://anon.nasa-global.edgesuite.net/HD_downloads/135_launch_720p.wmv'|trans }}</span>
                             </span>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">{{ 'Temporary link'|trans }}</label>
+                            <div class="col-xs-9 col-sm-9">
+                                <span class="col-xs-12 col-sm-12">
+                                    <select id="file_tmp_link_type" name="tmp_link_type" class="populate placeholder own_fields">
+                                        <option value="">&nbsp;</option>
+                                        <option value="flussonic">Flussonic</option>
+                                        <option value="nginx">Nginx secire link</option>
+                                        <option value="wowza">Wowza</option>
+                                    </select>
+                                </span>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">{{ 'Status'|trans }}</label>

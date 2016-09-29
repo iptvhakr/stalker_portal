@@ -43,9 +43,9 @@ if (@$_POST['add']){
         'external'              => @intval($_POST['external']),
         'for_simple_storage'    => @intval($_POST['for_simple_storage']),
         'not_for_mag100'        => @intval($_POST['not_for_mag100']),
-        'wowza_server'          => @intval($_POST['wowza_server']),
-        'wowza_port'            => @intval($_POST['wowza_port']),
-        'wowza_app'             => @$_POST['wowza_app']
+        'stream_server_type'    => @$_POST['stream_server_type'],
+        'stream_server_port'    => @intval($_POST['stream_server_port']),
+        'stream_server_app'     => @$_POST['stream_server_app']
     ));
 
     header("Location: storages.php");
@@ -77,9 +77,9 @@ if (!empty($id)){
                 'external'              => @intval($_POST['external']),
                 'for_simple_storage'    => @intval($_POST['for_simple_storage']),
                 'not_for_mag100'        => @intval($_POST['not_for_mag100']),
-                'wowza_server'          => @intval($_POST['wowza_server']),
-                'wowza_port'            => @intval($_POST['wowza_port']),
-                'wowza_app'             => @$_POST['wowza_app']
+                'stream_server_type'    => @$_POST['stream_server_type'],
+                'stream_server_port'    => @intval($_POST['stream_server_port']),
+                'stream_server_app'     => @$_POST['stream_server_app']
             ),
             array('id' => intval($_GET['id']))
         );
@@ -201,13 +201,13 @@ a:hover{
             }
         });
 
-        $('.wowza_server').click(function(){
-            if ($(this).attr('checked')){
-                $('.wowza_app_block').show();
-                $('.wowza_port_block').show();
-            }else{
-                $('.wowza_app_block').hide();
-                $('.wowza_port_block').hide();
+        $('.stream_server_type').change(function () {
+            if ($(this).val()) {
+                $('.stream_server_app_block').show();
+                $('.stream_server_port_block').show();
+            } else {
+                $('.stream_server_app_block').hide();
+                $('.stream_server_port_block').hide();
             }
         })
     })
@@ -337,18 +337,24 @@ a:hover{
                     </td>
                 </tr>
                 <tr>
-                    <td><?= _('Wowza VOD')?></td>
-                    <td><input type="checkbox" class="wowza_server" name="wowza_server" value="1" <? if(@$edit_storage['wowza_server']){ echo 'checked="checked"'; } ?>/></td>
+                    <td><?= _('Stream server')?></td>
+                    <td>
+                        <select name="stream_server_type" class="stream_server_type">
+                            <option value="">---</option>
+                            <option value="flussonic" <?= @$edit_storage['stream_server_type'] == 'flussonic' ? 'selected' : '' ?>>Flussonic</option>
+                            <option value="wowza" <?= @$edit_storage['stream_server_type'] == 'wowza' ? 'selected' : '' ?>>Wowza</option>
+                        </select>
+                    </td>
                 </tr>
-                <tr class="wowza_port_block" style="display: <?= empty($edit_storage['wowza_server']) ? 'none' : ''?>">
-                    <td><?= _('Wowza port')?></td>
-                    <td><input type="text" name="wowza_port" value="<?= empty($edit_storage['wowza_port']) ? '1935' : $edit_storage['wowza_port']?>" /></td>
+                <tr class="stream_server_port_block" style="display: <?= empty($edit_storage['stream_server_type']) ? 'none' : ''?>">
+                    <td><?= _('Stream server port')?></td>
+                    <td><input type="text" name="stream_server_port" value="<?= empty($edit_storage['stream_server_port']) ? '1935' : $edit_storage['stream_server_port']?>" /></td>
                 </tr>
-                <tr class="wowza_app_block" style="display: <?= empty($edit_storage['wowza_server']) ? 'none' : ''?>">
-                    <td><?= _('Wowza App')?></td>
-                    <td><input type="text" name="wowza_app" value="<?echo @$edit_storage['wowza_app']?>" /></td>
+                <tr class="stream_server_app_block" style="display: <?= empty($edit_storage['stream_server_type']) ? 'none' : ''?>">
+                    <td><?= _('Stream server App')?></td>
+                    <td><input type="text" name="stream_server_app" value="<?echo @$edit_storage['stream_server_app']?>" /></td>
                 </tr>
-                <tr>
+                <tr style="display: none">
                     <td><?= _('External')?></td>
                     <td><input disabled="disabled" type="checkbox" name="external" value="1" <? if(@$edit_storage['external']){ echo 'checked="checked"'; } ?>/></td>
                 </tr>

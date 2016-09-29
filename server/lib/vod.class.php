@@ -217,6 +217,35 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
         try {
             $res = $master->play($video_id, intval($series), true, $forced_storage, $file_id);
             $res['cmd'] = $this->changeSeriesOnCustomURL($res['cmd'], $series);
+
+            $file = Video::getFileById($file_id);
+
+            if ($file['tmp_link_type'] == 'flussonic'){
+                $res['cmd'] .= (strpos($res['cmd'], '?') ? '&' : '?' ).'token='.Master::createTemporaryLink($this->stb->id);
+            }elseif ($file['tmp_link_type'] == 'nginx'){
+
+                $secret = Config::get('nginx_secure_link_secret');
+
+                if(preg_match('/http(s)?:\/\/([^\/]+)\/(.+)$/', $res['cmd'], $match)){
+                    $uri = '/'.$match[3];
+                }else{
+                    $uri = '';
+                }
+
+                $remote_addr = $this->stb->ip;
+                $expire = time() + Config::getSafe('vclub_nginx_tmp_link_ttl', 7200);
+
+                $hash = base64_encode(md5($secret.$uri.$remote_addr.$expire, true));
+
+                $hash = strtr($hash, '+/', '-_');
+                $hash = str_replace('=', '', $hash);
+
+                $res['cmd'] .= (strpos($res['cmd'], '?') ? '&' : '?' ).'st='.$hash.'&e='.$expire;
+
+            }elseif ($file['tmp_link_type'] == 'wowza'){
+                $res['cmd'] .= (strpos($res['cmd'], '?') ? '&' : '?' ).'token='.Master::createTemporaryLink('1');
+            }
+
         } catch (Exception $e) {
             trigger_error($e->getMessage());
         }
