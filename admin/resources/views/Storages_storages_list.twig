@@ -244,6 +244,34 @@
                                     </span>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Stream server'|trans }}</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-12">
+                                        <select id="file_stream_server_type" name="form[stream_server_type]" class="populate placeholder own_fields">
+                                            <option value="">&nbsp;</option>
+                                            <option value="flussonic">Flussonic</option>
+                                            <option value="wowza">Wowza</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Stream server port'|trans }}<span class="icon-required">*</span></label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-12">
+                                        <input class="form-control" type="text" title="" data-validation=required value="1935" placeholder="1935" id="file_stream_server_port" name="form[stream_server_port]">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Stream server App'|trans }}<span class="icon-required">*</span></label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-12">
+                                        <input class="form-control" type="text" title="" data-validation=required value="" id="file_stream_server_app" name="form[stream_server_app]">
+                                    </div>
+                                </div>
+                            </div>
                             <hr>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Filter'|trans }}</label>
@@ -310,6 +338,19 @@
                                     
     <script type="text/javascript" defer>
 
+        var  select2OptPH = {
+            minimumResultsForSearch: -1,
+            dropdownAutoWidth: false,
+            width: '100%',
+            allowDuplicates: false,
+            placeholder : {
+                id: "-1",
+                text: "",
+                selected: 'selected'
+            }
+        };
+
+
         var conf = {
             form: '#karaoke_form',
             lang : '{{ app.js_validator_language }}',
@@ -320,7 +361,7 @@
             onSuccess: function () {
                 var sendData = {};
 
-                $("#modalbox_ad form input").each(function () {
+                $("#modalbox_ad form").find('input, select').each(function () {
                     sendData[$(this).attr('name')] = $(this).is(':checkbox') ? ($(this).is(':checked') ? 1 : 0) : $(this).val();
                 });
                 hideAdModalBox();
@@ -333,6 +374,10 @@
                 return false;
             }
         };
+
+        function DemoSelect2() {
+            $('#file_stream_server_type').select2(select2OptPH);
+        }
 
         function TestTable1() {
             $('#datatable-1').on('xhr.dt', function (e, settings, json) {
@@ -401,6 +446,14 @@
         function yelp() {
             $(document).ready(function () {
                 $.validate(conf);
+
+                LoadSelect2Script(DemoSelect2);
+
+                $(document).on('change', '#file_stream_server_type', function(e){
+                    var val = $(this, 'option[selected]').val() ? true: false;
+                    $('#file_stream_server_port, #file_stream_server_app').prop('disabled', !val).closest('.form-group')[val? 'show': 'hide']('fast');
+                });
+
                 $(document).on('click', "a.main_ajax[disabled!='disabled']", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
@@ -496,6 +549,7 @@
         function showAdModalBox(title){
             $("#modalbox_ad").find(".modal-header-name").children('span').text(title);
             $("#modalbox_ad").find("input, select").prop("disabled", false).removeAttr('disabled').val('').prop("checked", false).removeAttr('checked');
+            $('#file_stream_server_type').trigger('change');
             $(":checkbox[name*='fake_tv_archive']").closest('.form-group').hide('fast');
             $.validate();
             $(conf.form).get(0).reset();
@@ -518,14 +572,18 @@
                 showAdModalBox('{{ 'Edit storage'|trans }}');
                 $.validate();
                 $(conf.form).get(0).reset();
-                $("#modalbox_ad form input").each(function(){
-                   var name = $(this).attr('name').replace('form[', '').replace(']', ''); 
-                   if (typeof(data.storage[name]) != 'undefined') {
-                       $(this).val(data.storage[name]);
-                       if($(this).is('[type=checkbox]')){
-                           $(this).prop('checked', parseInt(data.storage[name], 10));
-                       } 
-                   }
+                $("#modalbox_ad form").find('input, select').each(function(){
+                    var name = $(this).attr('name').replace('form[', '').replace(']', '');
+                    var val = typeof(data.storage[name]) != 'undefined' && data.storage[name] ? data.storage[name] : '';
+                    if (this.tagName.toLocaleLowerCase() == 'input') {
+                        $(this).val(data.storage[name]);
+                        if($(this).is('[type=checkbox]')){
+                            $(this).prop('checked', parseInt(data.storage[name], 10));
+                        }
+                    } else {
+                        $(this).find('option[value="'+ val +'"]').prop('selected', 'selected');
+                        $(this).trigger('change');
+                    }
                 });
                 if ($(":checkbox[name*='for_records']").is(':checked')) {
                     $(":checkbox[name*='fake_tv_archive'], :checkbox[name*='flussonic_dvr'], :checkbox[name*='wowza_dvr']").closest('.form-group').show('fast').find('input').prop("disabled", false).removeAttr('disabled');
