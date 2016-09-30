@@ -127,23 +127,6 @@
 
         function yelp() {
             $(document).ready(function () {
-                $(document).on('click', "a.main_ajax[disabled!='disabled']", function (e) {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    var sendData = $(this).data();
-                    sendData['task_type'] = '{{ app['task_type'] }}';
-                    ajaxPostSend($(this).attr('href'), sendData, false, false);
-                    $(this).closest('div.open').removeClass('open');
-                    return false;
-                });
-
-                $("#form_reset").on('click', function (e) {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    $(this).closest('form').get(0).reset();
-    {#                    $("#cmd_data").find("tr:visible").remove();#}
-                    return false;
-                });
                 {{ main_macro.get_datepicker_js_script() }}
                 LoadDataTablesScripts(TestTable1);
             });
