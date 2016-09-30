@@ -272,7 +272,7 @@ class TariffsController extends \Controller\BaseStalkerController {
             'all_services' => 'services_package.`all_services` as `all_services`'
         );
 
-        $param = (!empty($this->data)?$this->data: $this->postData);;
+        $param = (!empty($this->data)?$this->data: $this->postData);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', '_'));
 

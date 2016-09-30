@@ -111,8 +111,9 @@
                     e.stopPropagation();
                     e.preventDefault();
                     $("#modalbox").data('complete', 0);
-                    showModalBox();
-                    ajaxPostSend($(this).attr('href'), $(this).data(), false );
+                    JSshowModalBox();
+                    var sendData = $(this).data();
+                    ajaxPostSend($(this).attr('href'), sendData, false, false );
                     $(this).closest('div.open').removeClass('open');
                     return false;
                 });
@@ -124,7 +125,7 @@
                     e.stopPropagation();
                     e.preventDefault();
                     if ($("#modalbox").data('complete') && $("#modalbox").data('complete') == 1) {
-                        closeModalBox();
+                        JScloseModalBox();
                     } else {
                         for (i = 0; i < 3; i++) {
                             $('#modalbox > div').fadeTo('slow', 0.5).fadeTo('slow', 1.0);
@@ -188,37 +189,6 @@
 
         document.addEventListener("DOMContentLoaded", yelp, false);
 
-        var manageList = function (obj) {
-            JSSuccessModalBox(obj);
-            $('#datatable-1').DataTable().ajax.reload();
-        };
-
-        function closeModalBox() {
-            $("#modalbox").hide();
-            $('#modalbox').find('.modal-header-name span').empty();
-            $('#modalbox').find('.devoops-modal-inner').empty();
-            $('#modalbox').find('.devoops-modal-bottom').empty();
-        }
-
-        function showModalBox() {
-            $('#modalbox').find('.modal-header-name span').text('{{ 'Wait'|trans }}...');
-            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Request is being processed'|trans }}...</span>');
-            $('#modalbox').find('.devoops-modal-bottom').empty();
-            $("#modalbox").show();
-        }
-
-        var manageListError = function (obj) {
-            JSErrorModalBox(obj);
-        };
-
-        var errAction = function (obj) {
-            JSErrorModalBox(typeof(obj) != 'undefined' ? obj: {});
-        };
-
-        var buildSaveFormError = function(obj){
-            JSErrorModalBox(obj);
-        };
-
         function buildGetForm() {
             $("#modalbox").hide();
             $("#modalbox").data('complete', 1);
@@ -256,15 +226,6 @@
             if (data.description) {
                 $('#apps_description').text(data.description);
             }
-        };
-
-        var changeStatus = function(obj){
-            manageList(obj);
-        };
-
-        var changeStatusError = function(obj){
-            JSErrorModalBox(obj);
-            $('#app_status').prop('checked', !$('#app_status').is(':checked'));
         };
 
     </script>

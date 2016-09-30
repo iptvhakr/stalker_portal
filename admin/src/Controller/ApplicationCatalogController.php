@@ -162,7 +162,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
 
     //----------------------- ajax method --------------------------------------
 
-    public function application_list_json(){
+    public function application_list_json($local_uses = FALSE) {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
@@ -172,19 +172,37 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             'recordsFiltered' => 0
         );
 
+        $error = $this->setLocalization('Failed');
         try{
             $apps_list = new \AppsManager();
-            $response['data'] = $apps_list->getList();
+            if (!$local_uses) {
+                $response['data'] = array_map(function($row){
+                    $row['RowOrder'] = "dTRow_" . $row['id'];
+                    return $row;
+                },$apps_list->getList());
+                $error = '';
+            } else {
+                $param = (!empty($this->data)?$this->data: $this->postData);
+                $id = !empty($param['id']) ? $param['id'] : NULL;
+                $app = $apps_list->getAppInfo($id);
+                if (!empty($app)) {
+                    unset($app['versions']);
+                    $app['RowOrder'] = "dTRow_" . $app['id'];
+                    $error = '';
+                    $response['data'][] = $app;
+                } else {
+                    $response['msg'] = $error = $this->setLocalization('Application is not defined');
+                }
+            }
         } catch (\Exception $e){
-            $response['error'] = $error = $this->setLocalization('Failed to get the list of applications');
+            $response['msg'] = $error = $this->setLocalization('Failed to get the list of applications');
         }
 
         $response['recordsTotal'] = $response['recordsFiltered'] = count($response['data']);
 
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
-        $error = '';
 
-        if ($this->isAjax) {
+        if ($this->isAjax && !$local_uses) {
             $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
         } else {
@@ -332,7 +350,6 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
     }
 
     public function application_get_data_from_repo(){
-
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['apps']['url'])) {
             $this->app->abort(404, $this->setLocalization('Page not found'));
         }
@@ -343,7 +360,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
 
         $response['action'] = 'buildSaveForm';
         $response['data'] = array();
-        $response['error'] = '';
+        $response['msg'] = '';
         try{
             $repo =  new \GitHub($this->postData['apps']['url']);
             $response['data'] = $repo->getFileContent('package.json');
@@ -351,7 +368,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
                 $response['data']['repository']['url'] = $this->postData['apps']['url'];
             }
         } catch(\GitHubError $e){
-            $response['error'] = $this->setLocalization($e->getMessage());
+            $response['msg'] = $this->setLocalization($e->getMessage());
         }
 
         $response = $this->generateAjaxResponse($response);
@@ -386,7 +403,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             }
 
         } catch(\Exception $e){
-            $response['error'] = $this->setLocalization($e->getMessage());
+            $response['msg'] = $this->setLocalization($e->getMessage());
         }
 
         $response = $this->generateAjaxResponse($response);
@@ -402,17 +419,18 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
 
-        $response['action'] = 'manageList';
+        $response['action'] = 'updateTableData';
         $postData = $this->postData['apps'];
         if (!empty($postData['url'])) {
             $app = $this->db->getApplication(array('url' => $postData['url']));
             if (empty($app) && $this->db->insertApplication($postData)) {
-                $response['error'] = $error = '';
+                $error = '';
+                $response['msg'] = $this->setLocalization('Installed');
             } else {
-                $response['error'] = $error = $this->setLocalization('Perhaps the application is already installed. You can update it if the new version is available or uninstall and install again');
+                $response['msg'] = $error = $this->setLocalization('Perhaps the application is already installed. You can update it if the new version is available or uninstall and install again');
             }
         } else {
-            $response['error'] = $error = $this->setLocalization('URL of application is not defined');
+            $response['msg'] = $error = $this->setLocalization('URL of application is not defined');
         }
 
         $response = $this->generateAjaxResponse($response);
@@ -433,19 +451,19 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         if (!empty($postData['url'])) {
             $app = $this->db->getSmartApplication(array('url' => $postData['url']));
             if (empty($app) && $this->db->insertSmartApplication($postData)) {
-                $response['error'] = $error = '';
+                $response['msg'] = $error = '';
             } else {
-                $response['error'] = $error = $this->setLocalization('Perhaps the application is already installed. You can update it if the new version is available or uninstall and install again');
+                $response['msg'] = $error = $this->setLocalization('Perhaps the application is already installed. You can update it if the new version is available or uninstall and install again');
             }
         } else {
-            $response['error'] = $error = $this->setLocalization('Package name is not defined');
+            $response['msg'] = $error = $this->setLocalization('Package name is not defined');
         }
 
         $response = $this->generateAjaxResponse($response);
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
 
-    public function application_version_list_json(){
+    public function application_version_list_json($local_uses = FALSE){
 
         if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
@@ -477,7 +495,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             $apps_list = new \AppsManager();
             $app = $apps_list->getAppInfo($id);
         } catch (\Exception $e){
-            $response['error'] = $error = $this->setLocalization('Failed to get the list of versions of this applications') . '. ' . $e->getMessage();
+            $response['msg'] = $error = $this->setLocalization('Failed to get the list of versions of this applications') . '. ' . $e->getMessage();
             $app = FALSE;
         }
 
@@ -486,6 +504,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
                 if ($version === FALSE || $version == $row['version']) {
                     $row['published'] = (int)strtotime($row['published']);
                     $row['published'] = $row['published'] < 0 ? 0 : $row['published'];
+                    $row['RowOrder'] = "dTRow_" . str_replace('.', '_', $row['version']);
                     return $row;
                 }
             }, $app['versions'])));
@@ -540,7 +559,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             $app['versions'] = $apps_list->getAppVersions($id);
             $app['conflicts'] = $apps_list->getConflicts($id, $version);
         } catch (\Exception $e){
-            $response['error'] = $error = $this->setLocalization('Failed to get the list of versions of this applications') . '. ' . $e->getMessage();
+            $response['msg'] = $error = $this->setLocalization('Failed to get the list of versions of this applications') . '. ' . $e->getMessage();
             $app = FALSE;
         }
         if ($app !== FALSE) {
@@ -588,15 +607,15 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
 
             $result = $this->db->updateApplication(array('options' => $option), $app_id);
             if (is_numeric($result)) {
-                $response['error'] = $error = '';
+                $response['msg'] = $error = '';
                 if ($result === 0) {
                     $response['nothing_to_do'] = TRUE;
                 }
             } else {
-                $response['error'] = $error = $this->setLocalization('Failed to update the parameters of application launch');
+                $response['msg'] = $error = $this->setLocalization('Failed to update the parameters of application launch');
             }
         } else {
-            $response['error'] = $error = $this->setLocalization('Application is undefined');
+            $response['msg'] = $error = $this->setLocalization('Application is undefined');
         }
 
         $response = $this->generateAjaxResponse($response);
@@ -621,15 +640,15 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
 
             $result = $this->db->updateSmartApplication(array('options' => $option), $app_id);
             if (is_numeric($result)) {
-                $response['error'] = $error = '';
+                $response['msg'] = $error = '';
                 if ($result === 0) {
                     $response['nothing_to_do'] = TRUE;
                 }
             } else {
-                $response['error'] = $error = $this->setLocalization('Failed to update the parameters of application launch');
+                $response['msg'] = $error = $this->setLocalization('Failed to update the parameters of application launch');
             }
         } else {
-            $response['error'] = $error = $this->setLocalization('Application is undefined');
+            $response['msg'] = $error = $this->setLocalization('Application is undefined');
         }
 
         $response = $this->generateAjaxResponse($response);
@@ -659,18 +678,18 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
                     $result = $apps->updateApp($this->postData['id'], $this->postData['version']);
                 }
                 if ($result !==FALSE ) {
-                    $response['error'] = $error = '';
+                    $response['msg'] = $error = '';
                     $response['installed'] = 1;
                 } else {
-                    $response['error'] = $error = $this->setLocalization('Error of installing the application');
+                    $response['msg'] = $error = $this->setLocalization('Error of installing the application');
                 }
             } catch(\PharException $e){
-                $response['error'] = $this->setLocalization($e->getMessage());
+                $response['msg'] = $this->setLocalization($e->getMessage());
             } catch(\Exception $e){
-                $response['error'] = $this->setLocalization($e->getMessage());
+                $response['msg'] = $this->setLocalization($e->getMessage());
             }
         } else {
-            $response['error'] = $error = $this->setLocalization('Application is undefined');
+            $response['msg'] = $error = $this->setLocalization('Application is undefined');
         }
 
         $response = $this->generateAjaxResponse($response);
@@ -745,26 +764,26 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
                         $result = $apps->updateApp($id, $this->postData['version']);
                     }
                     if ($result !== FALSE) {
-                        $response['error'] = $error = '';
+                        $response['msg'] = $error = '';
                         $response['installed'] = 1;
                     } else {
-                        $response['error'] = $error = $this->setLocalization('Error of installing the application');
+                        $response['msg'] = $error = $this->setLocalization('Error of installing the application');
                     }
                 } catch (\PharException $e) {
-                    $response['error'] = $this->setLocalization($e->getMessage());
+                    $response['msg'] = $this->setLocalization($e->getMessage());
                 } catch (\SmartLauncherAppsManagerException $e) {
-                    $response['error'] = $this->setLocalization($e->getMessage());
+                    $response['msg'] = $this->setLocalization($e->getMessage());
                 } catch (\SmartLauncherAppsManagerConflictException $e) {
-                    $response['error'] = $this->setLocalization($e->getMessage());
+                    $response['msg'] = $this->setLocalization($e->getMessage());
                     foreach ($e->getConflicts() as $row) {
-                        $response['error'] .= "<br>" . (!empty($row['target']) ? " $row[target] with " : '') . " $row[alias] $row[current_version]" . PHP_EOL;
+                        $response['msg'] .= "<br>" . (!empty($row['target']) ? " $row[target] with " : '') . " $row[alias] $row[current_version]" . PHP_EOL;
                     }
-                    $response['msg'] = $response['error'];
+                    $response['msg'] = $response['msg'];
                 } catch (\Exception $e) {
-                    $response['error'] = $this->setLocalization($e->getMessage());
+                    $response['msg'] = $this->setLocalization($e->getMessage());
                 }
             } else {
-                $response['error'] = $error = $this->setLocalization('Application is undefined');
+                $response['msg'] = $error = $this->setLocalization('Application is undefined');
             }
         }
         $response = $this->generateAjaxResponse($response);
@@ -785,7 +804,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
 
-        $response['action'] = 'manageList';
+        $response['action'] = 'deleteTableRow';
         if (!empty($this->postData['id'])) {
             ignore_user_abort(true);
             set_time_limit(0);
@@ -795,18 +814,20 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             try{
                 $apps = new \AppsManager();
                 $apps->deleteApp($this->postData['id'], $this->postData['version']);
-                $response['error'] = $error = '';
+                $error = '';
+                $response['msg'] = $this->setLocalization('Deleted');
 
                 if ($app_db[0]['current_version'] == $this->postData['version']) {
                     $response['installed'] = 0;
                 }
 
+                $response['id'] =  $this->postData['id'];
             } catch(\Exception $e){
-                $response['error'] = $error = $this->setLocalization('Error of uninstalling the application.');
-                $response['error'] .= ' ' . $this->setLocalization($e->getMessage());
+                $response['msg'] = $error = $this->setLocalization('Error of uninstalling the application.');
+                $response['msg'] .= ' ' . $this->setLocalization($e->getMessage());
             }
         } else {
-            $response['error'] = $error = $this->setLocalization('Application is undefined');
+            $response['msg'] = $error = $this->setLocalization('Application is undefined');
         }
 
         $response = $this->generateAjaxResponse($response);
@@ -832,18 +853,18 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             try{
                 $apps = new \SmartLauncherAppsManager($this->app['language']);
                 $apps->deleteApp($this->postData['id'], $this->postData['version']);
-                $response['error'] = $error = '';
+                $response['msg'] = $error = '';
 
                 if ($app_db[0]['current_version'] == $this->postData['version']) {
                     $response['installed'] = 0;
                 }
 
             } catch(\Exception $e){
-                $response['error'] = $error = $this->setLocalization('Error of uninstalling the application.');
-                $response['error'] .= ' ' . $this->setLocalization($e->getMessage());
+                $response['msg'] = $error = $this->setLocalization('Error of uninstalling the application.');
+                $response['msg'] .= ' ' . $this->setLocalization($e->getMessage());
             }
         } else {
-            $response['error'] = $error = $this->setLocalization('Application is undefined');
+            $response['msg'] = $error = $this->setLocalization('Application is undefined');
         }
 
         $response = $this->generateAjaxResponse($response);
@@ -863,7 +884,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         $response['action'] = 'changeStatus';
         $response['field'] = 'app_status';
         $postData = $this->postData;
-        $id = $postData['id'];
+        $response['id'] = $id = $postData['id'];
         $key = '';
         if (array_key_exists('status', $postData)) {
             $postData['status'] = !empty($postData['status']) && $postData['status'] != 'false' && $postData['status'] !== FALSE ? 1: 0;
@@ -880,18 +901,21 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
 
         $result = $this->db->updateApplication($postData, $id);
         if (is_numeric($result)) {
-            $response['error'] = $error = '';
+            $response['msg'] = $error = '';
             if (!empty($postData['current_version'])) {
                 $response['msg'] = $this->setLocalization('Activated. Current version') . ' ' . $postData['current_version'];
+            } else {
+                $response = array_merge_recursive($response, $this->application_list_json(TRUE));
+                $response['action'] = 'updateTableRow';
             }
             if ($result === 0) {
                 $data['nothing_to_do'] = TRUE;
             }
-            $response['installed'] = !empty($postData[$key]) && $postData[$key] != 'false' && $postData[$key] !== FALSE? 1: 0;;
+            $response['installed'] = !empty($postData[$key]) && $postData[$key] != 'false' && $postData[$key] !== FALSE? 1: 0;
         } else {
-            $response['error'] = $error = $this->setLocalization('Failed to activated of application.');
+            $response['msg'] = $error = $this->setLocalization('Failed to activated of application.');
             if (!empty($postData['current_version'])) {
-                $response['error'] = $error .= $this->setLocalization('Version') . ' ' . $postData['current_version'];
+                $response['msg'] = $error .= $this->setLocalization('Version') . ' ' .$postData['current_version'];
             }
             $response['installed'] = (int)!(!empty($postData[$key]) && $postData[$key] != 'false' && $postData[$key] !== FALSE? 1: 0);
         }
@@ -946,7 +970,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         if (!$response['conflicts'] || !$postData['status']) {
             $result = $this->db->updateSmartApplication($postData, $id);
             if (is_numeric($result)) {
-                $response['error'] = $error = '';
+                $response['msg'] = $error = '';
                 if (!empty($postData['current_version'])) {
                     $response['msg'] = $this->setLocalization('Activated. Current version') . ' ' . $postData['current_version'];
                 }
@@ -955,9 +979,9 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
                 }
                 $response['installed'] = !empty($postData[$key]) && $postData[$key] != 'false' && $postData[$key] !== FALSE? 1: 0;;
             } else {
-                $response['error'] = $error = $this->setLocalization('Failed to activated of application.');
+                $response['msg'] = $error = $this->setLocalization('Failed to activated of application.');
                 if (!empty($postData['current_version'])) {
-                    $response['error'] = $error .= $this->setLocalization('Version') . ' ' . $postData['current_version'];
+                    $response['msg'] = $error .= $this->setLocalization('Version') . ' ' . $postData['current_version'];
                 }
                 $response['installed'] = (int)!(!empty($postData[$key]) && $postData[$key] != 'false' && $postData[$key] !== FALSE? 1: 0);
             }
@@ -978,13 +1002,14 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
 
-        $response['action'] = 'manageList';
+        $response['action'] = 'deleteTableRow';
+        $response['id'] = $this->postData['id'];
 
         if ($this->db->deleteApplication($this->postData)) {
-            $response['error'] = $error = '';
+            $error = '';
             $response['msg'] = $this->setLocalization('Application has been deleted');
         } else {
-            $response['error'] = $error = $this->setLocalization('Failed to delete application.');
+            $response['msg'] = $error = $this->setLocalization('Failed to delete application.');
         }
 
         $response = $this->generateAjaxResponse($response);
@@ -1005,10 +1030,10 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         try{
             $apps = new \SmartLauncherAppsManager($this->app['language']);
             $apps->deleteApp($this->postData['id']);
-            $response['error'] = $error = '';
+            $response['msg'] = $error = '';
             $response['msg'] = $this->setLocalization('Application has been deleted');
         } catch (\SmartLauncherAppsManagerException $e) {
-            $response['error'] = $error = $this->setLocalization('Failed to delete application.') . $e->getMessage();
+            $response['msg'] = $error = $this->setLocalization('Failed to delete application.') . $e->getMessage();
         }
 
         $response = $this->generateAjaxResponse($response);

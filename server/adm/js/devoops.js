@@ -841,6 +841,7 @@ function JScloseModalBox(){
     $("#modalbox").hide();
     $("#modalbox_ad").hide();
     $("#modalbox").data('complete', 1);
+    $("#modalbox_ad").data('complete', 1);
 }
         
 function JSshowModalBox(type){
@@ -860,6 +861,7 @@ function JSSuccessModalBox(data) {
     $("#modalbox").hide();
     $("#modalbox_ad").hide();
     $("#modalbox").data('complete', 1);
+    $("#modalbox_ad").data('complete', 1);
 }
 
 function JSErrorModalBox(data){
@@ -874,6 +876,7 @@ function JSErrorModalBox(data){
         notty('<span>' + words['Failed'] + '! ' + msg + '!</span>', 'error');
     }
     $("#modalbox").data('complete', 1);
+    $("#modalbox_ad").data('complete', 1);
 }
 
 function setActiveFilter(obj){
