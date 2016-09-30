@@ -24,7 +24,7 @@ VALUES    ('users',         'get-autocomplete-watching-tv',             1, 'Auto
           ('users',      'get-autocomplete-watching-movie',             1, 'Auto-complete for watching-movie filter'),
           ('users', 'get-autocomplete-stbfirmware-version',             1, 'Auto-complete for stbfirmware-version filter');
 
---//@UNDO
+-- //@UNDO
 
 UPDATE `filters` SET `title` = 'User country', `type` = 'STRING', `values_set` = '' WHERE `method` = 'getUsersByCountry';
 UPDATE `filters` SET `title` = 'Users status' WHERE `method`='getUsersByStatus';

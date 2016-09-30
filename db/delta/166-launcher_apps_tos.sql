@@ -138,7 +138,7 @@ UPDATE `apps_tos` SET `tos_en` = '
 </p>'
 WHERE `alias` = 'launcher_apps';
 
---//@UNDO
+-- //@UNDO
 
 DELETE FROM `apps_tos` WHERE `alias` = 'launcher_apps';
 ALTER TABLE `apps_tos` DROP COLUMN `alias`;

@@ -2,7 +2,7 @@
 
 ALTER TABLE `launcher_apps` ADD COLUMN `options` TEXT;
 
---//@UNDO
+-- //@UNDO
 
 ALTER TABLE `launcher_apps` DROP COLUMN `options`;
 

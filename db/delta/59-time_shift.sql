@@ -11,7 +11,7 @@ ALTER TABLE `users` ADD `ts_delay` varchar(64) NOT NULL default 'on_pause';
 ALTER TABLE `itv` ADD `allow_local_timeshift` tinyint NOT NULL default 0;
 UPDATE `itv` SET `allow_local_timeshift`=`allow_local_pvr`;
 
---//@UNDO
+-- //@UNDO
 
 ALTER TABLE `users` DROP `ts_enabled`;
 ALTER TABLE `users` DROP `ts_enable_icon`;

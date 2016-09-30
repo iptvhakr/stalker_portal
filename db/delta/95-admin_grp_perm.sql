@@ -361,7 +361,7 @@ VALUES
 ('video-club',      'video-logs',                           0, 'Logs of movie',  0),
 ('video-club',      'video-logs-json',                      1, 'Logs of movie by page + filters',  0);
 
---//@UNDO
+-- //@UNDO
 
 DROP TABLE IF EXISTS `adm_grp_action_access`;
 

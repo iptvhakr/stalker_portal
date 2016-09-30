@@ -1,5 +1,5 @@
 --
 
-ALTER TABLE `epg` MODIFY `time` timestamp DEFAULT 0;
+ALTER TABLE `epg` MODIFY `time` timestamp null default null;
 
---//@UNDO
+-- //@UNDO

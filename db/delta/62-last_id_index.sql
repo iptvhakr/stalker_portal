@@ -2,7 +2,7 @@
 
 ALTER TABLE `last_id` ADD index ident(`ident`);
 
---//@UNDO
+-- //@UNDO
 
 ALTER TABLE `last_id` DROP index ident;
 

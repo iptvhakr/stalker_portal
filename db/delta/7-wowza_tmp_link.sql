@@ -5,7 +5,7 @@ ALTER TABLE `itv` ADD `monitoring_status` tinyint default 0;
 ALTER TABLE `itv` ADD `monitoring_status_updated` datetime;
 ALTER TABLE `itv` ADD `enable_monitoring` tinyint default 0;
 ALTER TABLE `itv` ADD `monitoring_url` varchar(128) NOT NULL default '';
---//@UNDO
+-- //@UNDO
 
 ALTER TABLE `itv` DROP `wowza_tmp_link`;
 ALTER TABLE `itv` DROP `wowza_dvr`;

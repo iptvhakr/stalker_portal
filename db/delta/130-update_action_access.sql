@@ -8,6 +8,6 @@ VALUES    ('tv-channels',     'iptv-list-json',                             1, '
           ('video-club',      'video-moderators-addresses-list-json',       1, 'List of STBs of video-moderators by page + filters'),
           ('users',           'users-consoles-groups-list-json',            1, 'List of STB by page + filters');
 
---//@UNDO
+-- //@UNDO
 
 --

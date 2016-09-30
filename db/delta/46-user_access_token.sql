@@ -2,7 +2,7 @@
 
 ALTER TABLE `users` ADD `access_token` varchar(64) NOT NULL default '';
 
---//@UNDO
+-- //@UNDO
 
 ALTER TABLE `users` DROP `access_token`;
 

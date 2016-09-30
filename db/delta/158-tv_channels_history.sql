@@ -9,7 +9,7 @@ CREATE TABLE `deleted_channels` (
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET = UTF8;
 
---//@UNDO
+-- //@UNDO
 
 ALTER TABLE `itv` DROP COLUMN `added`;
 

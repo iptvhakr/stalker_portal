@@ -143,7 +143,7 @@ INSERT INTO `acl` VALUES
 UPDATE `administrators` SET gid=1 WHERE access=1;
 UPDATE `administrators` SET gid=2 WHERE access=2;
 
---//@UNDO
+-- //@UNDO
 
 DROP TABLE `acl`;
 

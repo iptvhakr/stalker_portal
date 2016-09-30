@@ -8,9 +8,9 @@ CREATE TABLE `schedule_events` (
   `post_function`   VARCHAR(255) DEFAULT NULL,
   `recipient`       VARCHAR(255) NOT NULL,
   `periodic`        TINYINT(1)   NOT NULL DEFAULT 0,
-  `date_begin`      TIMESTAMP    NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `date_end`        TIMESTAMP    NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `last_run`        TIMESTAMP    NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `date_begin`      TIMESTAMP    NULL DEFAULT NULL,
+  `date_end`        TIMESTAMP    NULL DEFAULT NULL,
+  `last_run`        TIMESTAMP    NULL DEFAULT NULL,
   `schedule`        VARCHAR(255) NOT NULL,
   `state`           TINYINT(1)   NOT NULL DEFAULT 0,
   `reboot_after_ok` TINYINT(4)   DEFAULT '0',
@@ -28,7 +28,7 @@ VALUES    ('events',               'event-scheduler',             0, 'List of sc
           ('events',              'scheduler-remove',             1, 'Removing the scheduled events'),
           ('events',        'scheduler-toggle-state',             1, 'Stopping or starting the scheduled events');
 
---//@UNDO
+-- //@UNDO
 
 DROP TABLE `schedule_events`;
 

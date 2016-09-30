@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `ch_link_on_streamer`(
 ALTER TABLE `users` ADD `now_playing_link_id` int not null default 0;
 ALTER TABLE `users` ADD `now_playing_streamer_id` int not null default 0;
 
---//@UNDO
+-- //@UNDO
 
 DROP TABLE `ch_links`;
 DROP TABLE `streaming_servers`;

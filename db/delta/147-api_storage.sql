@@ -11,7 +11,7 @@ CREATE TABLE `api_storage` (
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET = UTF8;
 
---//@UNDO
+-- //@UNDO
 
 DROP TABLE `api_storage`;
 

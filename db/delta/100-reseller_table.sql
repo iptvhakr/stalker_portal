@@ -3,7 +3,7 @@
 CREATE TABLE IF NOT EXISTS `reseller` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(100) NOT NULL DEFAULT '',
-  `created` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created` DATETIME,
   `modified` TIMESTAMP NOT NULL,
   PRIMARY KEY (`id`)) DEFAULT CHARSET = utf8;
 
@@ -25,7 +25,7 @@ VALUES  ('admins',                   'resellers-list',            0, 'Resellers.
         ('users',             'move-user-to-reseller',            1, 'Change reseller for current user',  0, 1),
         ('users',       'move-user-group-to-reseller',            1, 'Change reseller for current group',  0, 1);
 
---//@UNDO
+-- //@UNDO
 
 DROP TABLE IF EXISTS `reseller`;
 ALTER TABLE `administrators` DROP COLUMN `reseller_id`;

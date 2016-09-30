@@ -8,8 +8,8 @@ CREATE TABLE IF NOT EXISTS `video_rent`(
   `video_id` int NOT NULL default 0,
   `price` varchar(32) NOT NULL default '',
   `rent_history_id` int NOT NULL default 0,
-  `rent_date` timestamp default 0,
-  `rent_end_date` timestamp default 0,
+  `rent_date` timestamp null default null,
+  `rent_end_date` timestamp null default null,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -18,16 +18,16 @@ CREATE TABLE IF NOT EXISTS `video_rent_history`(
   `uid` int NOT NULL default 0,
   `video_id` int NOT NULL default 0,
   `price` varchar(32) NOT NULL default '',
-  `rent_date` timestamp default 0,
-  `rent_end_date` timestamp default 0,
-  `start_watching_date` timestamp default 0,
+  `rent_date` timestamp null default null,
+  `rent_end_date` timestamp null default null,
+  `start_watching_date` timestamp null default null,
   `watched` tinyint default 0,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 ALTER TABLE `image_update_settings` ADD `stb_type` VARCHAR(64) NOT NULL DEFAULT '';
 
---//@UNDO
+-- //@UNDO
 
 ALTER TABLE `services_package` DROP `rent_duration`;
 

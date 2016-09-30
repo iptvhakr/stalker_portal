@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS `updates`(
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8;
 
---//@UNDO
+-- //@UNDO
 
 DROP TABLE `updates`;
 

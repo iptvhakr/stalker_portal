@@ -45,7 +45,7 @@ CREATE TABLE `messages_templates` (
   `header`  VARCHAR(255) NOT NULL,
   `body`    TEXT         NULL,
   `author`  INT(11)      NOT NULL,
-  `created` DATETIME     NOT NULL,
+  `created` DATETIME,
   `edited`  TIMESTAMP    NOT NULL,
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET = utf8;
@@ -67,7 +67,7 @@ VALUES    ('users',             'users-filters-list',             0, 'List of fi
 
 ALTER TABLE `events` ADD COLUMN `header` VARCHAR(128) NULL AFTER `event`;
 
---//@UNDO
+-- //@UNDO
 
 DROP TABLE `filters`;
 DROP TABLE `filter_set`;

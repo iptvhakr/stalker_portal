@@ -15,7 +15,7 @@ INSERT INTO `adm_grp_action_access`
 VALUES  ('tariffs',         'subscribe-log',                    0, 'Logs on/off of user\'s packages ',  0),
         ('tariffs',         'subscribe-log-json',               1, 'Logs on/off of user\'s packages by page + filters',  0);
 
---//@UNDO
+-- //@UNDO
 
 DROP TABLE IF EXISTS `package_subscribe_log`;
 

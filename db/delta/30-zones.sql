@@ -20,7 +20,7 @@ ALTER TABLE `streaming_servers` ADD `stream_zone` int not null default 0;
 ALTER TABLE `ch_links` ADD `enable_monitoring` tinyint default 0;
 
 UPDATE `itv` SET monitoring_status=1;
---//@UNDO
+-- //@UNDO
 
 DROP TABLE `stream_zones`;
 

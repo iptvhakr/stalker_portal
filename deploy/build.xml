@@ -8,7 +8,7 @@
 
     <target name="build" description="Build task">
 
-        <exec command="apt-get -y install php-soap php5-intl php-gettext php5-memcache php5-curl php5-mysql php5-mcrypt php5-tidy php5-imagick php5-geoip curl npm"
+        <exec command="apt-get -y install php-soap php5-intl php-gettext php5-memcache php5-curl php5-mysql php5-mcrypt php5-tidy php5-imagick php5-geoip curl npm "
               level="info" outputProperty="install.error.msg" returnProperty="install.error.code"/>
 
         <if>
@@ -253,6 +253,38 @@
                             </else>
                         </if>
                     </then>
+                    <elseif>
+                        <available file="/etc/php/7.0/apache2/php.ini" property="extension_ini_path" type="file" />
+                            <then>
+                            <exec command="cat /etc/php/7.0/apache2/php.ini | grep '^zend_extension' | grep -v 'ioncube_loader' | wc -l" outputProperty="zend_extension_available" level="info" />
+                            <echo level="info" msg="Zend extensions available: ${zend_extension_available}" />
+                            <if>
+                                <not>
+                                    <equals arg1="${zend_extension_available}" arg2="0"/>
+                                </not>
+                                <then>
+                                    <echo message="Please add the following line to your php.ini file as first Zend extension and restart apache" level="warning"/>
+                                    <echo message="zend_extension=${extension_dir}/ioncube_loader_lin_${php_version}.so" level="warning"/>
+                                </then>
+                                <else>
+                                    <if>
+                                        <available file="/etc/php/7.0/mods-available" property="extension_ini_path" type="dir" />
+                                        <then>
+                                            <touch file="/etc/php/7.0/mods-available/ioncube.ini" />
+                                            <chmod file="/etc/php/7.0/mods-available/ioncube.ini" mode="0644" />
+                                            <echo file="/etc/php/7.0/mods-available/ioncube.ini" message="zend_extension=${extension_dir}/ioncube_loader_lin_${php_version}.so" />
+                                            <symlink target="/etc/php/7.0/mods-available/ioncube.ini" link="/etc/php/7.0/apache2/conf.d/00-ioncube.ini" />
+                                            <symlink target="/etc/php/7.0/mods-available/ioncube.ini" link="/etc/php/7.0/cli/conf.d/00-ioncube.ini" />
+                                        </then>
+                                        <else>
+                                            <echo message="Please add the following line to your php.ini file as first Zend extension and restart apache" level="warning"/>
+                                            <echo message="zend_extension=${extension_dir}/ioncube_loader_lin_${php_version}.so" level="warning"/>
+                                        </else>
+                                    </if>
+                                </else>
+                            </if>
+                        </then>
+                    </elseif>
                     <else>
                         <echo message="Please add the following line to your php.ini file as first Zend extension and restart apache" level="warning"/>
                         <echo message="zend_extension=${extension_dir}/ioncube_loader_lin_${php_version}.so" level="warning"/>

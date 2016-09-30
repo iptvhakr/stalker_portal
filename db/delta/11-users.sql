@@ -7,7 +7,7 @@ ALTER TABLE `itv` ADD `cmd_1` varchar(128) NOT NULL default '';
 ALTER TABLE `itv` ADD `cmd_2` varchar(128) NOT NULL default '';
 ALTER TABLE `itv` ADD `cmd_3` varchar(128) NOT NULL default '';
 ALTER TABLE `stream_error` ADD `event` tinyint unsigned default 0;
---//@UNDO
+-- //@UNDO
 
 ALTER TABLE `users` DROP `fname`;
 ALTER TABLE `storages` DROP `wowza_server`;

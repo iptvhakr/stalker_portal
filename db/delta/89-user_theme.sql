@@ -2,7 +2,7 @@
 
 ALTER TABLE `users` ADD `theme` VARCHAR(128) NOT NULL DEFAULT '';
 
---//@UNDO
+-- //@UNDO
 
 ALTER TABLE `users` DROP `theme`;
 

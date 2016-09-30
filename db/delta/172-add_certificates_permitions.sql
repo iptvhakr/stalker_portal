@@ -9,6 +9,6 @@ VALUES    ('certificates',                                        '',         0,
           ('certificates',                       'current-list-json',         1, 'Getting list of current certificates'),
           ('certificates',                     'certificate-install',         1, 'Installation of confirmed certificate');
 
---//@UNDO
+-- //@UNDO
 
 --

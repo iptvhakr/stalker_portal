@@ -26,7 +26,7 @@ VALUES    ('application-catalog',    'smart-application-list',                  
           ('application-catalog',    'smart-application-delete',                    1, 'Application for SmartLauncher. Delete application'),
           ('application-catalog',    'smart-application-reset-all',                 1, 'Application for SmartLauncher. Uninstalling all old applications and installation of latest base apps');
 
---//@UNDO
+-- //@UNDO
 
 DROP TABLE IF EXISTS `agaa_tmp`;
 

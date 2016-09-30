@@ -2,7 +2,7 @@
 
 ALTER TABLE `apps` ADD COLUMN `config` text;
 
---//@UNDO
+-- //@UNDO
 
 ALTER TABLE `apps` DROP COLUMN `config`;
 

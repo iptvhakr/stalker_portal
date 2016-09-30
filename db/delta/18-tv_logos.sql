@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `user_downloads`(
     PRIMARY KEY (`id`),
     UNIQUE KEY (`uid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
---//@UNDO
+-- //@UNDO
 
 ALTER TABLE `itv` DROP `logo`;
 

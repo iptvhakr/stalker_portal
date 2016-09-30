@@ -47,7 +47,7 @@ ALTER TABLE `video` ADD COLUMN `is_series` TINYINT(1) NOT NULL DEFAULT 0;
 ALTER TABLE `screenshots` ADD COLUMN `video_episodes` TINYINT(1) NOT NULL DEFAULT 0;
 ALTER TABLE `video` ADD COLUMN `year_end` INT(11) NOT NULL DEFAULT 0;
 
---//@UNDO
+-- //@UNDO
 
 DROP TABLE `video_season`;
 DROP TABLE `video_season_series`;

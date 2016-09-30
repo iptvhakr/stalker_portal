@@ -7,4 +7,4 @@ CREATE TABLE IF NOT EXISTS `media_favorites`(
     PRIMARY KEY (`id`),
     UNIQUE KEY (`uid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
---//@UNDO
+-- //@UNDO

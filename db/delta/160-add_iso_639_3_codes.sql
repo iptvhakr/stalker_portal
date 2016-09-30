@@ -192,7 +192,7 @@ INSERT INTO `adm_grp_action_access`
           (`controller_name`,         `action_name`, `is_ajax`, `description`)
 VALUES    ('new-video-club',  'get-media-info-json',         1, 'Getting media-info from source');
 
---//@UNDO
+-- //@UNDO
 
 ALTER TABLE `languages` DROP COLUMN `iso_639_3_code`;
 

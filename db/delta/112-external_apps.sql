@@ -6,8 +6,8 @@ CREATE TABLE `apps` (
   `current_version` varchar(16) NOT NULL DEFAULT '',
   `status` TINYINT NOT NULL DEFAULT 0, /* 0 - off, 1 - on */
   `options` TEXT,
-  `added` timestamp DEFAULT 0,
-  `updated` timestamp DEFAULT 0,
+  `added` timestamp null default null,
+  `updated` timestamp null default null,
   UNIQUE INDEX `url` (`url`),
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8;
@@ -21,7 +21,7 @@ CREATE TABLE `apps_tos` (
 
 INSERT INTO apps_tos (`tos_en`) VALUE ('Terms of Use text'); /* todo: text */
 
---//@UNDO
+-- //@UNDO
 
 DROP TABLE `apps`;
 DROP TABLE `apps_tos`;

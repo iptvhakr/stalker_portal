@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS `vclub_ad_deny_category`(
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8;
 
---//@UNDO
+-- //@UNDO
 
 ALTER TABLE `vclub_ad` DROP `status`;
 

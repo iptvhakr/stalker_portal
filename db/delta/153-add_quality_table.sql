@@ -19,7 +19,7 @@ VALUES(NUll, '240', 'Regular quality', '320', '240'),
       (NUll, '4K', 'Ultra high quality', '3840', '2160');
 
 
---//@UNDO
+-- //@UNDO
 
 DROP TABLE `quality`;
 

@@ -22,7 +22,7 @@ VALUES    ('video-club',         'video-categories',                    0, 'List
           ('video-club',         'remove-video-genres',                 1, 'Remove the video genre'),
           ('video-club',         'check-video-genres-name',             1, 'Validation names video genre');
 
---//@UNDO
+-- //@UNDO
 
 ALTER TABLE `media_category` DROP COLUMN `modified`;
 ALTER TABLE `cat_genre` DROP COLUMN `modified`;

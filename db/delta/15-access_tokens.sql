@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS `access_tokens`(
     `id` int NOT NULL auto_increment,
     `uid` int NOT NULL default 0,
     `token` varchar(128) NOT NULL default '',
-    `expires` timestamp default 0,
+    `expires` timestamp null default null,
     PRIMARY KEY (`id`),
     UNIQUE KEY (`token`),
     UNIQUE KEY (`uid`)
@@ -32,4 +32,4 @@ CREATE TABLE IF NOT EXISTS `image_update_settings`(
 
 ALTER TABLE users modify image_version varchar(64) NOT NULL default '';
 
---//@UNDO
+-- //@UNDO

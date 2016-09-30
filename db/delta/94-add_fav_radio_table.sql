@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS `fav_radio` (
   UNIQUE INDEX `uid_UNIQUE` (`uid` ASC)
 ) DEFAULT CHARSET = utf8;
 
---//@UNDO
+-- //@UNDO
 
 DROP TABLE IF EXISTS `fav_radio`;
 

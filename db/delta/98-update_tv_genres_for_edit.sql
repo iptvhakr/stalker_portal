@@ -17,7 +17,7 @@ VALUES    ('tv-channels',         'restart-all-archives',         1, 'Restart al
           ('tv-channels',         'check-tv-genres-name',         1, 'Validation names tv genre',  0),
           ('tv-channels',         'tv-genres-reorder',            1, 'Change the order of genres',  0);
 
---//@UNDO
+-- //@UNDO
 
 ALTER TABLE `tv_genre` DROP COLUMN `number`;
 ALTER TABLE `tv_genre` DROP COLUMN `modified`;

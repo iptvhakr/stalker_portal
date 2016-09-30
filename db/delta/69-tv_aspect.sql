@@ -9,7 +9,7 @@ CREATE TABLE `tv_aspect` (
   PRIMARY KEY (`id`)
 );
 
---//@UNDO
+-- //@UNDO
 
 DROP TABLE `tv_aspect`;
 

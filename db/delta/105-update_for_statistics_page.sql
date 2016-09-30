@@ -14,7 +14,7 @@ VALUES  ('index',           'index-datatable1-list-json',         1,            
         ('index',           'index-datatable4-list-json',         1,              1,              1,              1, 'Getting data for index page',        1),
         ('index',           'index-datatable5-list-json',         1,              1,              1,              1, 'Getting data for index page',        1);
 
---//@UNDO
+-- //@UNDO
 
 DROP TABLE IF EXISTS `users_activity`;
 

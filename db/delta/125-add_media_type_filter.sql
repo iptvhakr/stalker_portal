@@ -5,7 +5,7 @@ INSERT INTO `filters` (`title`,       `description`,                            
 
 UPDATE `filters` SET `title` = 'Streaming server' WHERE `method` = 'getUsersByUsingStreamServer';
 
---//@UNDO
+-- //@UNDO
 
 DELETE FROM `filters` WHERE `method` = 'getUsersByPlayingType';
 

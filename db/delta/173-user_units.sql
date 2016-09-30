@@ -2,7 +2,7 @@
 
 ALTER TABLE `users` ADD COLUMN `units` ENUM('metric', 'imperial') NOT NULL;
 
---//@UNDO
+-- //@UNDO
 
 ALTER TABLE `users` DROP COLUMN `units`;
 

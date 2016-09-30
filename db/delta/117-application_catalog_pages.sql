@@ -78,6 +78,6 @@ UPDATE `apps_tos` SET `tos_en` = '
 </p>
 ';
 
---//@UNDO
+-- //@UNDO
 
 --

@@ -145,7 +145,7 @@ INSERT INTO `languages` VALUES(133, 'Yoruba', 'yo');
 INSERT INTO `languages` VALUES(134, 'Chinese', 'zh');
 INSERT INTO `languages` VALUES(135, 'Zulu', 'zu');
 
---//@UNDO
+-- //@UNDO
 
 DROP TABLE `languages`;
 

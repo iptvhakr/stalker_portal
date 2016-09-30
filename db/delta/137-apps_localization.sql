@@ -2,7 +2,7 @@
 
 ALTER TABLE `apps` ADD `localization` TEXT;
 
---//@UNDO
+-- //@UNDO
 
 ALTER TABLE `apps` DROP `localization`;
 

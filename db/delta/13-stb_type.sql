@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS `censored_channels`(
     UNIQUE KEY (`uid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
---//@UNDO
+-- //@UNDO
 
 ALTER TABLE `users` DROP `stb_type`;
 ALTER TABLE `users` DROP `serial_number`;

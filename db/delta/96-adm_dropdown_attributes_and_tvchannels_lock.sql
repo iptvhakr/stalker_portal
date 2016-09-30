@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS `admin_dropdown_attributes` (
 
 ALTER TABLE `itv` ADD COLUMN `locked` TINYINT NOT NULL DEFAULT 0;
 
---//@UNDO
+-- //@UNDO
 
 DROP TABLE IF EXISTS `admin_dropdown_attributes`;
 ALTER TABLE `itv` DROP `locked`;

@@ -14,7 +14,7 @@ ALTER TABLE `storages` ADD INDEX status_simple (`status`, `for_simple_storage`);
 
 ALTER TABLE `radio` ADD `volume_correction` int NOT NULL default 0;
 
---//@UNDO
+-- //@UNDO
 
 ALTER TABLE `itv` DROP INDEX base_ch;
 ALTER TABLE `ch_links` DROP INDEX ch_id;

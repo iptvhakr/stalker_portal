@@ -8,7 +8,7 @@ ALTER TABLE `storages` CHANGE `wowza_app` `stream_server_app` varchar(128) NOT N
 ALTER TABLE `storages` CHANGE `wowza_port` `stream_server_port` varchar(8) NOT NULL DEFAULT '';
 ALTER TABLE `storages` DROP COLUMN `wowza_server`;
 
---//@UNDO
+-- //@UNDO
 
 ALTER TABLE `video_series_files` DROP COLUMN `tmp_link_type`;
 

@@ -38,7 +38,7 @@ UPDATE `agaa_tmp` SET `id` = `id` + @max;
 INSERT INTO `adm_grp_action_access` SELECT * FROM `agaa_tmp`;
 DROP TABLE `agaa_tmp`;
 
---//@UNDO
+-- //@UNDO
 
 DELETE FROM `adm_grp_action_access`  WHERE `controller_name` = "new-video-club";
 DROP TABLE IF EXISTS `agaa_tmp`;

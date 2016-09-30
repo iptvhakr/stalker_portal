@@ -7,7 +7,7 @@ CREATE TABLE `audio_albums` (
   `year_id` int NOT NULL DEFAULT 0,
   `country_id` int NOT NULL DEFAULT 0,
   `cover` varchar(32) NOT NULL DEFAULT '',
-  `added` timestamp DEFAULT 0,
+  `added` timestamp null default null,
   `status` tinyint NOT NULL DEFAULT 0,
   INDEX `performer` (`performer_id`),
   INDEX `country` (`country_id`),
@@ -23,7 +23,7 @@ CREATE TABLE `audio_compositions` (
   `protocol` varchar(128) NOT NULL DEFAULT 'custom',
   `url` varchar(128) NOT NULL DEFAULT '',
   `status` tinyint NOT NULL DEFAULT 0,
-  `added` timestamp DEFAULT 0,
+  `added` timestamp null default null,
   INDEX `album` (`album_id`),
   INDEX `language` (`language_id`),
   PRIMARY KEY (`id`)
@@ -32,14 +32,14 @@ CREATE TABLE `audio_compositions` (
 CREATE TABLE `audio_performers` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(128) NOT NULL DEFAULT '',
-  `modified` timestamp DEFAULT 0,
+  `modified` timestamp null default null,
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8;
 
 CREATE TABLE `audio_genres` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(128) NOT NULL DEFAULT '',
-  `modified` timestamp DEFAULT 0,
+  `modified` timestamp null default null,
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8;
 
@@ -78,7 +78,7 @@ CREATE TABLE `audio_genre` (
 CREATE TABLE `audio_years` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(128) NOT NULL DEFAULT '',
-  `modified` timestamp DEFAULT 0,
+  `modified` timestamp null default null,
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8;
 
@@ -102,7 +102,7 @@ INSERT INTO `audio_years` (`name`, `modified`) VALUES
 CREATE TABLE `audio_languages` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(128) NOT NULL DEFAULT '',
-  `modified` timestamp DEFAULT 0,
+  `modified` timestamp null default null,
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8;
 
@@ -116,7 +116,7 @@ INSERT INTO `audio_languages` (`name`, `modified`) VALUES
   ('Portuguese', NOW()),
   ('Turkish', NOW());
 
---//@UNDO
+-- //@UNDO
 
 DROP TABLE `audio_albums`;
 DROP TABLE `audio_compositions`;

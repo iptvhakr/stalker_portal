@@ -131,6 +131,6 @@ UPDATE `apps_tos` SET `tos_en` = '
 <span>The failure of the Company to require full or strict performance of any term set forth herein shall not effect the right to require full and strict performance of any term at any time thereafter.  If any one or more of the provisions of the Conditions of Use shall be held to be invalid, illegal or unenforceable, the other provisions shall not be effected and the Conditions of Use shall be construed as if such invalid, illegal or unenforceable provision had not been contained herein.  Nothing in these Conditions of Use shall be construed as creating any direct or beneficial right in or on behalf of any third party.  These Conditions of Use shall constitute the entire and only agreement between the parties hereto, and any representation, affirmation of fact, and course of prior dealing, promise, or condition in connection therewith or usage of the trade not incorporated herein shall not be binding on the Company.  No waiver, alteration or modification of the provisions hereof shall be binding unless in writing and signed by the specifically authorized representative of the Company.</span>
 </p>';
 
---//@UNDO
+-- //@UNDO
 
 --

@@ -2,7 +2,7 @@
 
 ALTER TABLE `events` ADD COLUMN `post_function` VARCHAR(255) NULL;
 
---//@UNDO
+-- //@UNDO
 
 ALTER TABLE `events` DROP COLUMN `post_function`;
 

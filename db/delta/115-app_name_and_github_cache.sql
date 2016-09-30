@@ -7,12 +7,12 @@ CREATE TABLE `github_api_cache` (
   `url` varchar(255) NOT NULL DEFAULT '',
   `etag` varchar(128) NOT NULL DEFAULT '',
   `data` TEXT,
-  `updated` timestamp DEFAULT 0,
+  `updated` timestamp null default null,
   UNIQUE INDEX `url` (`url`),
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8;
 
---//@UNDO
+-- //@UNDO
 
 ALTER TABLE `apps` DROP COLUMN `name`;
 DROP TABLE `github_api_cache`;

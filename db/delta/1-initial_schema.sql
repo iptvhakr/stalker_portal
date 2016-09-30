@@ -110,7 +110,7 @@ CREATE TABLE IF NOT EXISTS `itv`(
     `number` int NOT NULL default 0,
     `censored` tinyint default 0,
     `cmd` varchar(128) NOT NULL default '',
-    `descr` text NOT NULL,
+    `descr` text,
     `cost` int NOT NULL default 0,
     `count` int  NOT NULL default 0,
     `status` tinyint unsigned NOT NULL default 1,
@@ -165,8 +165,8 @@ CREATE TABLE IF NOT EXISTS `screenshots`(
 CREATE TABLE IF NOT EXISTS `epg`(
     `id` int NOT NULL auto_increment,
     `ch_id` int NOT NULL default 0,
-    `time` timestamp not null,
-    `time_to` timestamp not null,
+    `time` timestamp NULL DEFAULT NULL,
+    `time_to` timestamp NULL DEFAULT NULL,
     `duration` int NOT NULL default 0,
     `name` varchar(128) NOT NULL default '',
     `descr` varchar(255) NOT NULL default '',
@@ -251,20 +251,20 @@ CREATE TABLE IF NOT EXISTS `users`(
     `hd` tinyint default 0,
     `main_notify` tinyint default 1,
     `fav_itv_on` tinyint default 0,
-    `now_playing_start` timestamp default 0,
+    `now_playing_start` timestamp NULL default NULL,
     `now_playing_type` tinyint default 0,
     `now_playing_content` varchar(255) NOT NULL default '',
     `additional_services_on` tinyint default 1,
-    `time_last_play_tv` timestamp default 0,
-    `time_last_play_video` timestamp default 0,
+    `time_last_play_tv` timestamp NULL default NULL,
+    `time_last_play_video` timestamp null default null,
     `operator_id` int NOT NULL default 0,
     `storage_name` varchar(255) NOT NULL default '',
     `hd_content` tinyint default 0,
     `image_version` varchar(255) NOT NULL default '0',
-    `last_change_status` timestamp default 0,
-    `last_start` timestamp default 0,
-    `last_active` timestamp default 0,
-    `keep_alive` timestamp default 0,
+    `last_change_status` timestamp null default null,
+    `last_start` timestamp null default null,
+    `last_active` timestamp null default null,
+    `keep_alive` timestamp null default null,
     PRIMARY KEY (`id`),
     UNIQUE KEY `mac` (`mac`),
     KEY `keep_alive` (`keep_alive`),
@@ -297,7 +297,7 @@ CREATE TABLE IF NOT EXISTS `events`(
     `reboot_after_ok` tinyint default 0,
     `priority` tinyint default 2, /* 1-system events, 2-system message */
     `addtime` datetime,
-    `eventtime` timestamp default 0,
+    `eventtime` timestamp null default null,
     PRIMARY KEY (`id`),
     KEY `eventtime` (`eventtime`),
     KEY `uid` (`uid`),
@@ -429,8 +429,8 @@ CREATE TABLE IF NOT EXISTS `video_records`(
 CREATE TABLE IF NOT EXISTS `rec_files`(
     `id` int NOT NULL auto_increment,
     `ch_id` int NOT NULL default 0,
-    `t_start` timestamp default 0,
-    `t_stop`  timestamp default 0,
+    `t_start` timestamp null default null,
+    `t_stop`  timestamp null default null,
     `atrack`  varchar(32) NOT NULL default '',
     `vtrack`  varchar(32) NOT NULL default '',
     `length` int NOT NULL default 0,
@@ -449,13 +449,13 @@ CREATE TABLE IF NOT EXISTS `users_rec`(
     `program_id` int NOT NULL default 0,
     `uid` int NOT NULL default 0,
     `file_id` int NOT NULL default 0,
-    `t_start` timestamp default 0,
-    `t_stop` timestamp default 0,
-    `end_record` timestamp default 0,
+    `t_start` timestamp null default null,
+    `t_stop` timestamp null default null,
+    `end_record` timestamp null default null,
     `atrack` varchar(32) NOT NULL default '',
     `vtrack` varchar(32) NOT NULL default '',
     `length` int NOT NULL default 0,
-    `last_play` datetime default 0,
+    `last_play` datetime,
     `ended` tinyint default 0, /* 0-not ended, 1-ended */
     `started` tinyint default 0,
     PRIMARY KEY (`id`)
@@ -464,8 +464,8 @@ CREATE TABLE IF NOT EXISTS `users_rec`(
 CREATE TABLE IF NOT EXISTS `pvr`(
     `id` int NOT NULL auto_increment,
     `ch_id` int NOT NULL default 0,
-    `t_start` timestamp default 0,
-    `t_stop`  timestamp default 0,
+    `t_start` timestamp null default null,
+    `t_stop`  timestamp null default null,
     `atrack`  varchar(32) NOT NULL default '',
     `vtrack`  varchar(32) NOT NULL default '',
     `length` int NOT NULL default 0,
@@ -485,7 +485,7 @@ CREATE TABLE IF NOT EXISTS `moderator_tasks`(
     `ended` tinyint default 0,
     `rejected` tinyint default 0, /* 1 - rejected, 0 - ended */
     `archived` tinyint default 0,
-    `archived_time` datetime default 0,
+    `archived_time` datetime,
     PRIMARY KEY (`id`),
     KEY `to_user` (`ended`,`archived`,`to_usr`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -506,7 +506,7 @@ CREATE TABLE IF NOT EXISTS `moderators_history`(
 
 CREATE TABLE IF NOT EXISTS `tasks_archive`(
     `id` int NOT NULL auto_increment,
-    `date` date NOT NULL default 0,
+    `date` date,
     `year` int NOT NULL default 0,
     `month` tinyint default 0,
     PRIMARY KEY (`id`)
@@ -514,7 +514,7 @@ CREATE TABLE IF NOT EXISTS `tasks_archive`(
 
 CREATE TABLE IF NOT EXISTS `daily_played_video`(
     `id` int NOT NULL auto_increment,
-    `date` date NOT NULL default 0,
+    `date` date,
     `count` int NOT NULL default 0,
     PRIMARY KEY (`id`),
     UNIQUE KEY (`date`)
@@ -553,7 +553,7 @@ CREATE TABLE IF NOT EXISTS `stream_error`(
 
 CREATE TABLE IF NOT EXISTS `karaoke_archive`(
     `id` int NOT NULL auto_increment,
-    `date` datetime NOT NULL default 0,
+    `date` datetime,
     `year` int NOT NULL default 0,
     `month` tinyint default 0,
     PRIMARY KEY (`id`)
@@ -564,7 +564,7 @@ CREATE TABLE IF NOT EXISTS `permitted_video`(
     `o_name` varchar(255) NOT NULL default '',
     `year` int not null default 0,
     `genre` tinyint default 0,
-    `added` datetime NOT NULL default 0,
+    `added` datetime,
     PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -803,7 +803,7 @@ CREATE TABLE IF NOT EXISTS `stb_played_video`(
     `id` int NOT NULL auto_increment,
     `uid` int NOT NULL default 0,
     `video_id` int NOT NULL default 0,
-    `playtime` timestamp default 0,
+    `playtime` timestamp null default null,
     PRIMARY KEY (`id`),
     KEY `uid_video_id` (`uid`,`video_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -852,7 +852,7 @@ CREATE TABLE IF NOT EXISTS `media_claims_log`(
 
 CREATE TABLE IF NOT EXISTS `daily_media_claims`(
     `id` int NOT NULL auto_increment,
-    `date` date NOT NULL default 0,
+    `date` date,
     `vclub_sound` int NOT NULL default 0,
     `vclub_video` int NOT NULL default 0,
     `itv_sound` int NOT NULL default 0,
@@ -964,7 +964,7 @@ CREATE TABLE IF NOT EXISTS `cities`(
     KEY `timezone` (`timezone`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
---//@UNDO
+-- //@UNDO
 
 TRUNCATE `genre`;
 TRUNCATE `cat_genre`;

@@ -15,12 +15,12 @@ CREATE TABLE `launcher_apps` (
   `autoupdate` tinyint(4) NOT NULL DEFAULT 0,
   `config` text,
   `localization` text,
-  `added` timestamp DEFAULT 0,
-  `updated` timestamp DEFAULT 0,
+  `added` timestamp null default null,
+  `updated` timestamp null default null,
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET = UTF8;
 
---//@UNDO
+-- //@UNDO
 
 DROP TABLE `launcher_apps`;
 

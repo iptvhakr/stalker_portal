@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS `dvb_channels`(
   UNIQUE KEY (`uid`)
 ) DEFAULT CHARSET=utf8;
 
---//@UNDO
+-- //@UNDO
 
 DROP TABLE `dvb_channels`;
 

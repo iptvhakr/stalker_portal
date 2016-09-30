@@ -2,7 +2,7 @@
 
 ALTER TABLE `video` ADD `low_quality` tinyint NOT NULL DEFAULT 0;
 
---//@UNDO
+-- //@UNDO
 
 ALTER TABLE `video` DROP `low_quality`;
 

@@ -8,4 +8,4 @@ CREATE TABLE IF NOT EXISTS `storages_failure`(
     INDEX storage(`storage_id`, `added`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
---//@UNDO
+-- //@UNDO

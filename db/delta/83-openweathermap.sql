@@ -24,16 +24,16 @@ CREATE TABLE `openweathermap_cache` (
   `id` int NOT NULL AUTO_INCREMENT,
   `current` text,
   `forecast` text,
-  `updated_current` timestamp DEFAULT 0,
-  `updated_forecast` timestamp DEFAULT 0,
+  `updated_current` timestamp null default null,
+  `updated_forecast` timestamp null default null,
   `city_id` int NOT NULL DEFAULT 0,
-  `last_request` timestamp DEFAULT 0,
+  `last_request` timestamp null default null,
   PRIMARY KEY (`id`),
   UNIQUE KEY `city_id` (`city_id`)
 ) DEFAULT CHARSET=utf8;
 
-ALTER TABLE `weatherco_cache` ADD `updated_current` timestamp DEFAULT 0;
-ALTER TABLE `weatherco_cache` ADD `updated_forecast` timestamp DEFAULT 0;
+ALTER TABLE `weatherco_cache` ADD `updated_current` timestamp null default null;
+ALTER TABLE `weatherco_cache` ADD `updated_forecast` timestamp null default null;
 UPDATE weatherco_cache SET updated_current = updated, updated_forecast=updated;
 
 SET NAMES utf8;
@@ -21386,7 +21386,7 @@ INSERT INTO all_cities (id, name, name_ru, country, country_id, admin1_code, adm
 ("1106542", "Chitungwiza", "", "ZW", "716", "10", "", "", "", "-18.01274", "31.07555", "Africa/Harare");
 
 
---//@UNDO
+-- //@UNDO
 
 DROP TABLE `all_cities`;
 

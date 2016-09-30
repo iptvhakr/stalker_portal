@@ -6,6 +6,6 @@ VALUES    ('users',    'tariff-and-service-control',                        0, '
           ('users',    'billing-date-control',                              0, 'Managing of billing date for users on edit page'),
           ('users',    'user-reseller-control',                             0, 'Managing of users reseller on edit page');
 
---//@UNDO
+-- //@UNDO
 
 --

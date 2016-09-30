@@ -2,7 +2,7 @@
 
 ALTER TABLE `users` ADD `verified` tinyint NOT NULL;
 
---//@UNDO
+-- //@UNDO
 
 ALTER TABLE `users` DROP `verified`;
 

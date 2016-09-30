@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `pvr_storages`(
 
 INSERT INTO pvr_storages (ch_id, storage_name) SELECT itv.id, storage_name FROM itv CROSS JOIN storages WHERE storages.status=1 AND for_records=1 AND allow_pvr=1;
 
---//@UNDO
+-- //@UNDO
 
 ALTER TABLE `storages` DROP `apache_port`;
 

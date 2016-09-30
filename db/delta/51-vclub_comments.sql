@@ -2,7 +2,7 @@
 
 ALTER TABLE `video` ADD `comments` text;
 
---//@UNDO
+-- //@UNDO
 
 ALTER TABLE `video` DROP `comments`;
 

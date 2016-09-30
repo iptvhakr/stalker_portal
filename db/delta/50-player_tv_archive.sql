@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS `played_tv_archive`(
   PRIMARY KEY (`id`)
 );
 
---//@UNDO
+-- //@UNDO
 
 DROP TABLE `played_tv_archive`;
 
