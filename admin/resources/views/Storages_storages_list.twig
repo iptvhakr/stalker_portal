@@ -458,8 +458,8 @@
                     e.stopPropagation();
                     e.preventDefault();
                     $("#modalbox").data('complete', 0);
-                    JSshowModalBox();
                     var sendData = $(this).data();
+                    JSshowModalBox();
                     ajaxPostSend($(this).attr('href'), sendData, false, false, true);
                     $(this).closest('div.open').removeClass('open');
                     return false;
@@ -473,7 +473,7 @@
                     e.stopPropagation();
                     e.preventDefault();
                     if ($("#modalbox").data('complete') && $("#modalbox").data('complete') == 1) {
-                        closeModalBox();
+                        JScloseModalBox();
                     } else {
                         for(i=0;i<3;i++) {
                             $('#modalbox > div').fadeTo('slow', 0.5).fadeTo('slow', 1.0);
@@ -529,22 +529,6 @@
         }
 
         document.addEventListener("DOMContentLoaded", yelp, false);
-
-        var listMsg = function(data){
-            JSSuccessModalBox(data);
-            $('#datatable-1').DataTable().ajax.reload();
-        };
-        
-        var listMsgError = function(data){
-            JSErrorModalBox(data);
-        };
-        
-        function closeModalBox(){
-            $("#modalbox").hide();
-            $('#modalbox').find('.modal-header-name span').empty();
-            $('#modalbox').find('.devoops-modal-inner').empty();
-            $('#modalbox').find('.devoops-modal-bottom').empty();
-        }
 
         function showAdModalBox(title){
             $("#modalbox_ad").find(".modal-header-name").children('span').text(title);
