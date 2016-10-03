@@ -84,25 +84,31 @@ class SettingsController extends \Controller\BaseStalkerController {
         $data['name'] = $data['title'] = $data['preview'] = '';
         $themes = Middleware::getThemes();
         if (!empty($themes) && array_key_exists($this->postData['themename'], $themes) ) {
-            $this->db->setCurrentTheme($this->postData['themename']);
-            $error = '';
-            
-            $event = new \SysEvent();
-            $event->setUserListByMac('online');
-            $event->sendReboot();
+            $result = $this->db->setCurrentTheme($this->postData['themename']);
+            if (is_numeric($result)) {
+                $error = '';
+                if ($result === 0) {
+                    $data['nothing_to_do'] = TRUE;
+                } else {
+                    $event = new \SysEvent();
+                    $event->setUserListByMac('online');
+                    $event->sendReboot();
+                }
+            }
 
             $theme = $themes[$this->postData['themename']];
             
             $data['name'] = $theme['id'];
             $data['title']= $theme['name'];
             $data['preview'] = $theme['preview'];
+            $data['msg'] = $this->setLocalization('Theme changed. Current theme: {thmnm}', '', TRUE, array('{thmnm}' => $theme['name']));
         }
         $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
     
-    public function common_list_json(){
+    public function common_list_json($local_uses = FALSE){
         if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
                 return $no_auth;
@@ -117,7 +123,7 @@ class SettingsController extends \Controller\BaseStalkerController {
         );
         
         $error = $this->setLocalization("Error");
-        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
+        $param = (!empty($this->data)?$this->data: $this->postData);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
 
@@ -134,7 +140,6 @@ class SettingsController extends \Controller\BaseStalkerController {
 
         if (!empty($param['id'])) {
             $query_param['where']['I_U_S.id'] = $param['id'];
-            /*unset($query_param['where']['id']);*/
         }
         
         $response['recordsTotal'] = $this->db->getTotalRowsCommonList();
@@ -145,15 +150,12 @@ class SettingsController extends \Controller\BaseStalkerController {
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }
-        /*if (array_key_exists('id', $param)) {
-            $query_param['where']['id'] = $param['id'];
-        }*/
         
         if (empty($query_param['order'])) {
             $query_param['order']['id'] = 'asc';
         }
         $commonList = $this->db->getCommonList($query_param);
-        $convert = ($this->method == 'GET');
+        $convert = ($this->method == 'GET' || $local_uses);
         $response['data'] = array_map(function($val) use($convert){
             $val['enable'] = (int)$val['enable'];
             if ($convert) {
@@ -162,12 +164,13 @@ class SettingsController extends \Controller\BaseStalkerController {
                     $val['require_image_date'] = 0;
                 }
             }
+            $val['RowOrder'] = "dTRow_" . $val['id'];
             return $val;
         }, $commonList);
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         
         $error = "";
-        if ($this->isAjax) {
+        if ($this->isAjax && !$local_uses) {
             $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
         } else {
@@ -186,13 +189,13 @@ class SettingsController extends \Controller\BaseStalkerController {
         }
         
         $data = array();
-        $data['action'] = 'manageCommon';
+        $data['action'] = 'updateTableData';
         $item = array($this->postData);
         if (empty($this->postData['id'])) {
             $operation = 'insertCommon';
         } else {
             $operation = 'updateCommon';
-            $item['id'] = $this->postData['id'];
+            $data['id'] = $item['id'] = $this->postData['id'];
         }
 
         unset($item[0]['id']);
@@ -203,6 +206,13 @@ class SettingsController extends \Controller\BaseStalkerController {
             $error = '';
             if ($result === 0) {
                 $data['nothing_to_do'] = TRUE;
+            }
+            if ($operation == 'updateCommon') {
+                $data = array_merge_recursive($data, $this->common_list_json(TRUE));
+                $data['action'] = 'updateTableRow';
+                $data['msg'] = $this->setLocalization('Changed');
+            } else {
+                $data['msg'] = $this->setLocalization('Added');
             }
         }
         $response = $this->generateAjaxResponse($data, $error);
@@ -220,10 +230,18 @@ class SettingsController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'manageCommon';
+        $data['action'] = 'deleteTableRow';
         $data['id'] = $this->postData['id'];        
-        $error = '';    
-        $this->db->deleteCommon(array('id' => $this->postData['id']));
+        $error = $this->setLocalization('Failed');
+
+        $result = $this->db->deleteCommon(array('id' => $this->postData['id']));
+        if (is_numeric($result)) {
+            $error = '';
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
+            $data['msg'] = $this->setLocalization('Deleted');
+        }
         
         $response = $this->generateAjaxResponse($data);
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
@@ -240,10 +258,22 @@ class SettingsController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'manageCommon';
+        $data['action'] = 'updateTableData';
         $data['id'] = $this->postData['id'];
-        $this->db->updateCommon(array('enable' => (int)(!((bool) $this->postData['enable']))), $this->postData['id']);
-        $error = '';    
+
+        $error = $this->setLocalization('Failed');
+
+        $result = $this->db->updateCommon(array('enable' => (int)(!((bool) $this->postData['enable']))), $this->postData['id']);
+        if (is_numeric($result)) {
+            $error = '';
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
+            $data = array_merge_recursive($data, $this->common_list_json(TRUE));
+            $data['msg'] = $this->setLocalization('Changed');
+            $data['action'] = 'updateTableRow';
+        }
+
         $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
