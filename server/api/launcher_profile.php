@@ -137,7 +137,7 @@ foreach ($installed_apps as $app) {
             .'://'.(strpos($_SERVER['HTTP_HOST'], ':') > 0 ? $_SERVER['HTTP_HOST'] : $_SERVER['HTTP_HOST'].':'.$_SERVER['SERVER_PORT'])
             .'/'.Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/')
             .$app['alias']
-            .'/'.$app['current_version'].(isset($app['config']['main']) ? '/'.$app['config']['main'] : '/app/');
+            .'/'.$app['current_version'].(isset($app['config']['entry']) ? '/'.$app['config']['entry'] : '/app/');
 
         $app['config']['dependencies'] = $app_manager->getFullAppDependencies($app['id']);
 

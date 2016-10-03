@@ -375,13 +375,6 @@ class SmartLauncherAppsManager
         $update_data['is_unique'] = isset($info['config']['unique']) && $info['config']['unique'] ? 1 : 0;
         $update_data['status'] = 1;
 
-        if (isset($info['main'])){
-            if (empty($info['config'])){
-                $info['config'] = array();
-            }
-            $info['config']['main'] = $info['main'];
-        }
-
         if (!empty($info['config'])){
             $update_data['config'] = json_encode($info['config']);
         }
