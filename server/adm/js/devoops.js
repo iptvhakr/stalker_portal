@@ -948,7 +948,7 @@ function updateTableData(obj){
     } catch (e){
         console.log(e);
     }
-    if (obj.msg) {
+    if (typeof(obj.msg) != 'undefined') {
         JSSuccessModalBox(obj);
     }
 }
