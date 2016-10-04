@@ -309,16 +309,6 @@ function init(){
         }
     }).bind(key.AUDIO);
 
-    keydown_observer.addCustomEventListener("keypress", function(event){
-
-        if (stb.power_off && event.key != key.USB_MOUNTED && event.key != key.USB_UNMOUNTED){
-            stb.switchPower();
-            return false;
-        }
-
-        return true;
-    });
-
     (function(){
         
         stb.switchPower();
