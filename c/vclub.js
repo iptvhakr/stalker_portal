@@ -1012,7 +1012,7 @@
 
             if (this.current_movie.for_rent && !this.current_movie.hasOwnProperty('rent_info')){
 
-                self.rent_confirm.video_id = self.data_items[self.cur_row].id;
+                self.rent_confirm.video_id = self.data_items[self.cur_row].video_id || self.data_items[self.cur_row].id;
                 self.rent_confirm.show();
 
                 this.play_url = play_url;

@@ -1276,9 +1276,9 @@ class UsersController extends \Controller\BaseStalkerController {
             $row['time'] = (int) strtotime($row['time']);
             $row['RowOrder'] = "dTRow_" . $row['id'];
 
-            if (!$row['mac'] && $row['user_mac']){
+            if (empty($row['mac']) && !empty($row['user_mac'])){
                 $row['mac'] = $row['user_mac'];
-            }elseif (!$row['mac'] && !$row['user_mac'] && $row['uid']){
+            }elseif (empty($row['mac']) && empty($row['user_mac']) && !empty($row['uid'])){
                 $row['mac'] = $row['uid'];
             }else{
                 $row['mac'] = (string) $row['mac'];

@@ -610,6 +610,11 @@ class StatisticsController extends \Controller\BaseStalkerController {
         $filters = $this->getStatisticsFilters($like_filter);
 
         $filds_for_select = $this->getFieldFromArray($this->getTvArchiveDropdownAttribute(), 'name');
+        $filds_for_select = array_combine($filds_for_select, $filds_for_select);
+        if (($pos = array_search('name', $filds_for_select)) !== FALSE) {
+            unset($filds_for_select[$pos]);
+            $filds_for_select['name'] = 'itv.`name` as `name`';
+        }
                 
         $error = "Error";
         $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
@@ -647,6 +652,8 @@ class StatisticsController extends \Controller\BaseStalkerController {
         if (!empty($query_param['like']) && array_key_exists('total_duration', $query_param['like'])) {
             unset($query_param['like']['total_duration']);
         }
+
+        $this->cleanQueryParams($query_param, array_keys($filds_for_select), $filds_for_select);
 
         $response['recordsTotal'] = $this->db->getTvArchiveTotalRows();
         $response["recordsFiltered"] = $this->db->getTvArchiveTotalRows($query_param['where'], $query_param['like']);
@@ -686,6 +693,11 @@ class StatisticsController extends \Controller\BaseStalkerController {
         $filters = $this->getStatisticsFilters($like_filter);
                
         $filds_for_select = $this->getFieldFromArray($this->getTvArchiveDropdownAttribute(), 'name');
+        $filds_for_select = array_combine($filds_for_select, $filds_for_select);
+        if (($pos = array_search('name', $filds_for_select)) !== FALSE) {
+            unset($filds_for_select[$pos]);
+            $filds_for_select['name'] = 'itv.`name` as `name`';
+        }
                 
         $error = "Error";
         $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
@@ -724,6 +736,8 @@ class StatisticsController extends \Controller\BaseStalkerController {
         if (!empty($query_param['like']) && array_key_exists('total_duration', $query_param['like'])) {
             unset($query_param['like']['total_duration']);
         }
+
+        $this->cleanQueryParams($query_param, array_keys($filds_for_select), $filds_for_select);
 
         $response['recordsTotal'] = $this->db->getTimeShiftTotalRows();
         $response["recordsFiltered"] = $this->db->getTimeShiftTotalRows($query_param['where'], $query_param['like']);
@@ -836,6 +850,11 @@ class StatisticsController extends \Controller\BaseStalkerController {
         $filters = $this->getStatisticsFilters($like_filter);
                
         $filds_for_select = $this->getFieldFromArray($this->getTvDropdownAttribute(), 'name');
+        $filds_for_select = array_combine($filds_for_select, $filds_for_select);
+        if (($pos = array_search('name', $filds_for_select)) !== FALSE) {
+            unset($filds_for_select[$pos]);
+            $filds_for_select['name'] = 'itv.`name` as `name`';
+        }
                 
         $error = $this->setLocalization("Error");
         $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
@@ -865,7 +884,9 @@ class StatisticsController extends \Controller\BaseStalkerController {
         if (!empty($query_param['like']) && array_key_exists('counter', $query_param['like'])) {
             unset($query_param['like']['counter']);
         }
-                       
+
+        $this->cleanQueryParams($query_param, array_keys($filds_for_select), $filds_for_select, TRUE);
+
         $response['recordsTotal'] = $this->db->getTvTotalRows();
         $response["recordsFiltered"] = $this->db->getTvTotalRows($query_param['where'], $query_param['like']);
         if (empty($query_param['limit']['limit'])) {

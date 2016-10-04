@@ -881,7 +881,7 @@ class TariffsController extends \Controller\BaseStalkerController {
     private function getLogsDropdownAttribute() {
         return array(
             array('name'=>'id',             'title'=>$this->setLocalization('ID'),              'checked' => TRUE),
-            array('name'=>'mac',            'title'=>$this->setLocalization('MAC'),             'checked' => TRUE),
+            array('name'=>'mac',            'title'=>$this->setLocalization('User'),            'checked' => TRUE),
             array('name'=>'package',        'title'=>$this->setLocalization('Package name'),    'checked' => TRUE),
             array('name'=>'state',          'title'=>$this->setLocalization('State'),           'checked' => TRUE),
             array('name'=>'initiator_name', 'title'=>$this->setLocalization('Initiator'),       'checked' => TRUE),
