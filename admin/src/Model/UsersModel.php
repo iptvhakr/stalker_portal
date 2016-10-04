@@ -280,6 +280,7 @@ class UsersModel extends \Model\BaseStalkerModel {
             $this->mysqlInstance->join('users', 'user_log.uid', 'users.id', 'LEFT');
         }
 
+        $this->mysqlInstance->select(array('user_log.id as id'));
         $this->mysqlInstance->select(array('users.mac as user_mac'));
 
         $this->mysqlInstance->select(array('user_log.type as type'));

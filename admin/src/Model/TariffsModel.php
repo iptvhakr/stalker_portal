@@ -162,6 +162,9 @@ class TariffsModel extends \Model\BaseStalkerModel {
         if (!empty($param['select'])) {
             $this->mysqlInstance->select($param['select']);
         }
+        if (!empty($this->reseller_id)) {
+            $this->mysqlInstance->where(array('U.reseller_id' => $this->reseller_id));
+        }
         $this->mysqlInstance->from('package_subscribe_log as P_S_L')
             ->join('users as U', 'P_S_L.user_id', 'U.id', 'LEFT')
             ->join('administrators as A', 'P_S_L.initiator_id', 'A.id', 'LEFT')
@@ -177,6 +180,9 @@ class TariffsModel extends \Model\BaseStalkerModel {
     public function getTotalRowsSubscribeLogList($where = array(), $like = array(), $user_id = FALSE) {
         if ($user_id !== FALSE && !array_key_exists('user_id', $where)) {
             $where['user_id'] = $user_id;
+        }
+        if (!empty($this->reseller_id)) {
+            $this->mysqlInstance->where(array('U.reseller_id' => $this->reseller_id));
         }
         $this->mysqlInstance->count()->from('package_subscribe_log as P_S_L')
             ->join('services_package as S_P', 'P_S_L.package_id', 'S_P.id', 'LEFT')
