@@ -5650,7 +5650,7 @@ player.prototype.video_claim = function(type){
         {
             "type"      : "vod",
             "action"    : "set_claim",
-            "id"        : this.cur_media_item.id,
+            "id"        : self.cur_media_item.video_id || self.cur_media_item.id,
             "real_type" : type
         },
         function(result){
