@@ -65,15 +65,13 @@ $config['options']['pluginsPath'] = '../../../plugins/';
 $config['options']['stalkerHost'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
     .'://'.(strpos($_SERVER['HTTP_HOST'], ':') > 0 ? $_SERVER['HTTP_HOST'] : $_SERVER['HTTP_HOST'].':'.$_SERVER['SERVER_PORT']);
 
-$config['options']['stalkerApiHost'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
-    .'://'.(strpos($_SERVER['HTTP_HOST'], ':') > 0 ? $_SERVER['HTTP_HOST'] : $_SERVER['HTTP_HOST'].':'.$_SERVER['SERVER_PORT'])
-    .Config::getSafe('portal_url', '/stalker_portal/')
-    .'api/v3/';
+$config['options']['stalkerApiPath']    = Config::getSafe('portal_url', '/stalker_portal/') . 'api/v3/';
+$config['options']['stalkerAuthPath']   = Config::getSafe('portal_url', '/stalker_portal/') . 'auth/token.php';
+$config['options']['stalkerLoaderPath'] = Config::getSafe('portal_url', '/stalker_portal/') . 'c/';
 
-$config['options']['stalkerAuthHost'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
-    .'://'.(strpos($_SERVER['HTTP_HOST'], ':') > 0 ? $_SERVER['HTTP_HOST'] : $_SERVER['HTTP_HOST'].':'.$_SERVER['SERVER_PORT'])
-    .Config::getSafe('portal_url', '/stalker_portal/')
-    .'auth/token.php';
+$config['options']['stalkerApiHost'] = $config['options']['stalkerHost'].$config['options']['stalkerApiPath'];
+
+$config['options']['stalkerAuthHost'] = $config['options']['stalkerHost'] . $config['options']['stalkerAuthPath'];
 
 $config['options']['sap'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
     .'://'.(strpos($_SERVER['HTTP_HOST'], ':') > 0 ? $_SERVER['HTTP_HOST'] : $_SERVER['HTTP_HOST'].':'.$_SERVER['SERVER_PORT'])
