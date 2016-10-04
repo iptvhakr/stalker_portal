@@ -221,7 +221,7 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
     }
     
     public function getStorages() {
-        return $this->mysqlInstance->from('storages')->where(array('status' => 1, 'for_records' => 1,  'stream_server_type' => null))->get()->all();
+        return $this->mysqlInstance->from('storages')->where(array('status' => 1, 'for_records' => 1, 'stream_server_type' => null))->get()->all();
     }
     
     public function updateLogoName($id, $logo){
