@@ -1,5 +1,11 @@
 {
+    "autoload": {
+        "psr-0": {
+            "Stalker": "src"
+        }
+    },
     "require": {
-        "cboden/ratchet": "0.3.*"
+        "cboden/ratchet": "0.3.*",
+        "react/zmq": "0.2.*|0.3.*"
     }
 }
