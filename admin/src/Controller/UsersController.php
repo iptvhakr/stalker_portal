@@ -1829,8 +1829,10 @@ class UsersController extends \Controller\BaseStalkerController {
         $all_themes = Middleware::getThemes();
 
         $themes = array();
+        $themes[''] = 'Default';
+
         if (array_key_exists('default', $all_themes)) {
-            $themes['default'] = 'default';
+            $themes['default'] = 'Default ';
             unset($all_themes['default']);
         }
 
