@@ -2302,6 +2302,23 @@ function common_xpcom(){
     }
 }
 
+var upstream = {
+
+    connection : null,
+
+    setup : function () {
+        
+    },
+
+    subscribe : function (topic) {
+        
+    },
+
+    load : function (params) {
+        
+    }
+};
+
 var screensaver = {
 
     on : false,

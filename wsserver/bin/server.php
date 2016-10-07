@@ -6,7 +6,7 @@ $pusher = new Stalker\Pusher;
 $context = new React\ZMQ\Context($loop);
 $pull = $context->getSocket(ZMQ::SOCKET_PULL);
 $pull->bind('tcp://127.0.0.1:5555'); // Binding to 127.0.0.1 means the only client that can connect is itself
-$pull->on('message', array($pusher, 'onBlogEntry'));
+$pull->on('message', array($pusher, 'onMessage'));
 
 
 // Set up our WebSocket server for clients wanting real-time updates
