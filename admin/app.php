@@ -17,6 +17,7 @@ require_once PROJECT_PATH . '/../server/lib/core/cacheresult.class.php';
 require_once PROJECT_PATH . '/../server/lib/core/cache.class.php';
 require_once PROJECT_PATH . '/../server/lib/core/licensemanager.class.php';
 require_once PROJECT_PATH . '/../server/lib/oauth/authaccesshandler.class.php';
+require_once PROJECT_PATH . '/../server/lib/core/advertising.class.php';
 
 use Stalker\Lib\Core\Config;
 

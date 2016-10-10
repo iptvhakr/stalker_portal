@@ -63,8 +63,9 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
 
         if ($this->method == 'POST' && array_key_exists('form', $this->postData)) {
             $data = $this->postData['form'];
-        } elseif (!empty($this->data['id']) || ! empty($this->postData['id'])) {
+        } elseif (!empty($this->data['id']) || !empty($this->postData['id'])) {
             $data = $this->db->getRegisterList(array(
+                'select' => array('E_A_R.id as id', 'E_A_R.name as name', 'E_A_R.phone as phone', 'E_A_R.email as email', 'E_A_R.region as region', 'E_A_R.admin_id as admin_id'),
                 'where' => array('E_A_R.id' => (!empty($this->data['id'])? $this->data['id']: $this->postData['id']))
             ));
             $data = !empty($data) && is_array($data) ? $data[0] : array('admin_id' => $this->app['user_id']);
@@ -187,6 +188,52 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
 
+    public function request_new_source(){
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['owner'])) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array();
+        $data['action'] = 'messageBlock';
+        $error = $this->setLocalization('Failed');
+
+        $registration = $this->db->getRegisterList(array('select' => array('E_A_R.name as name', 'E_A_R.email as email', 'E_A_R.phone as phone', 'E_A_R.region as region'), 'where' => array('E_A_R.id' => $this->postData['owner'])));
+
+        $registration = array_filter(array_pop($registration));
+
+        if (count($registration) != 4) {
+            $data['msg'] = '<div class="col-md-12">'.
+                '<span class="col-md-12 txt-default">'. $this->setLocalization('The registration data are incomplete. To edit data please go to the link: ').
+                    '<a href="' . $this->workURL . '/' .$this->app['controller_alias'] . '/verta-media-register?id=' . $this->postData['owner'] . '">' .
+                        $this->setLocalization('edit register data') .
+                    '</a>' .
+                '</span>'.
+            '</div>';
+            $data['button_block'] = FALSE;
+            $data['data_empty'] = TRUE;
+            $error = '';
+        } else {
+            try{
+                $registration['requery'] = TRUE;
+                if (call_user_func_array(array('\Stalker\Lib\Core\Advertising', 'registration'), $registration)) {
+                    $data['button_block'] = TRUE;
+                    $data['msg'] = $this->setLocalization('Requested');
+                    $error = '';
+                }
+            } catch (\Exception $e) {
+                $data['msg'] = $e->getMessage();
+            }
+        }
+
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
     //------------------------ service method ----------------------------------
 
     private function buildRegisterForm(&$data = array(), $show = FALSE) {
@@ -196,11 +243,11 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
         $builder = $this->app['form.factory'];
 
         $regions = array(
-            '1' => 'First region',
-            '2' => 'Second region',
-            '3' => 'Third region',
-            '4' => 'Fourth region',
-            '5' => 'Fifth region',
+            'first_region' => 'First region',
+            'second_region' => 'Second region',
+            'third_region' => 'Third region',
+            'fourth_region' => 'Fourth region',
+            'fifth_region' => 'Fifth region',
         );
 
         $form = $builder->createBuilder('form', $data)

@@ -6,7 +6,7 @@ CREATE TABLE `ext_adv_register` (
   `name` varchar(64) NOT NULL DEFAULT '',
   `phone` varchar(64) NOT NULL DEFAULT '',
   `email` varchar(64) NOT NULL DEFAULT '',
-  `region` tinyint(3) NULL,
+  `region` varchar(64) NOT NULL DEFAULT '',
   `added`  timestamp NULL DEFAULT NULL,
   `updated`  timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
