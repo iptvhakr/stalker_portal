@@ -71,6 +71,4 @@ interface Stb
     public function setClockOnVideo();
 
     public function logout();
-
-    public function getAd();
 }
