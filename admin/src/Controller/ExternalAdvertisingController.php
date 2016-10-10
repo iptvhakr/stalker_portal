@@ -78,12 +78,21 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
         $form = $this->buildRegisterForm($data);
 
         if ($this->saveRegisterData($form)) {
-            if (!empty($data['submit_type']) && $data['submit_type'] == 'skip') {
-                return $this->app->redirect($this->workURL . '/' .$this->app['controller_alias'] . '/verta-media-settings');
+            if (!empty($data['submit_type'])) {
+                if ($data['submit_type'] == 'skip') {
+                    return $this->app->redirect($this->workURL . '/' . $this->app['controller_alias'] . '/verta-media-settings');
+                } else if ($data['submit_type'] == 'save') {
+                    try {
+                        \Stalker\Lib\Core\Advertising::registration($data['name'], $data['email'], $data['phone'], $data['region']);
+                    } catch (\Exception $e) {
+
+                    }
+                }
+                $this->app['breadcrumbs']->addItem($this->setLocalization('Congratulations!'));
+                return $this->app['twig']->render('ExternalAdvertising_verta_media_register_confirm.twig');
             }
-            $this->app['breadcrumbs']->addItem($this->setLocalization('Congratulations!'));
-            return $this->app['twig']->render('ExternalAdvertising_verta_media_register_confirm.twig');
         }
+
         $this->app['form'] = $form->createView();
         $this->app['breadcrumbs']->addItem($this->setLocalization('Register'));
 
@@ -397,6 +406,7 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
         }
         return FALSE;
     }
+
     private function getDropdownAttribute(){
         $attribute = array(
             array('name' => 'id',       'title' => $this->setLocalization('ID'),        'checked' => TRUE),
