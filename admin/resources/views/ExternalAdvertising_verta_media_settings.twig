@@ -1,0 +1,109 @@
+{% extends 'layout.twig' %}
+{% set title = ('Advertising'|trans ~ ': ' ~ 'Settings'|trans) | trans %}
+
+{% block content %}
+
+    <div id="add_channel">
+        {{ form_start(app['form'], {'method': 'POST', 'action': (app.request.baseUrl ~ '/' ~ app.controller_alias  ~ '/' ~ app.action_alias) | trans, 'attr': {'class': 'form-horizontal', 'role': 'form', 'id': 'form_'}}) }}
+        <div class="bg-danger">
+            <div class="bg-danger">
+                {{ form_errors(app['form']) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="box">
+                    <div class="box-content" id="form_container">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label "><strong>{{ 'Settings'|trans }}</strong></label>
+                        </div>
+                        {{ form_widget(app['form'].owner, {'attr': {'class': 'form-control'}}) }}
+                        {% set lastKey = 0 %}
+                        {% if attribute(app['form'], 'source') is defined %}
+                        {% for sourceField in app['form'].source %}
+                            {% set lastKey = lastKey + 1 %}
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'Source'|trans }} # {{ lastKey }}</label>
+                            <div class="col-xs-10 col-sm-8">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(sourceField, {'attr': {}}) }}
+                                </div>
+                                <div>
+                                    <div class="bg-danger">
+                                        {{ form_errors(sourceField) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% endif %}
+                        {% for newSourceField in app['form'].new_source %}
+                            {% set lastKey = lastKey + 1 %}
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label ">{{ 'Source'|trans }} # {{ lastKey }}</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-6">
+                                        {{ form_widget(newSourceField, {'attr': {}}) }}
+                                    </div>
+                                    <div>
+                                        <div class="bg-danger">
+                                            {{ form_errors(newSourceField) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <div class="form-group">
+                            <div class="col-xs-10 col-sm-8">
+                                <div class=" col-xs-10 col-sm-8">
+                                    <div class="pull-right">
+                                        <a id="request_new_source" href="#" class="btn btn-success green pull-right" >{{ 'Request new source'|trans }}</a>
+                                        <a id="add_new_source" href="#" class="btn btn-success green pull-right" data-prototype="{{ form_widget(app['form'].new_source.vars.prototype)|e }}">{{ 'Add source'|trans }}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="box">
+                    <div class="box-content">
+                        <div class="form-group">
+                            <div class="col-xs-10 col-sm-8">
+                                <div class=" col-xs-10 col-sm-8">
+                                    {{ form_widget(app['form'].save, { 'label': 'Save'|trans , attr: {'class': 'btn btn-success green pull-left'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="">
+            {{ form_rest(app.form) }}
+        </div>
+        {{ form_end(app['form']) }}
+    </div>
+    <script type="text/javascript" defer>
+
+        function yelp() {
+            $(document).ready(function () {
+                $('#add_new_source').click(function(e) {
+                    e.preventDefault();
+                    e.preventDefault();
+                    var newWidget = $(this).attr('data-prototype');
+                    var itemCount = $('input[id^="form_new_source_"]').length;
+                    var itemContainer = $('input[id^="form_new_source_"]:last').closest('.form-group').clone(true);
+                    newWidget = newWidget.replace(/__name__/g, itemCount);
+                    itemContainer.find('input').replaceWith(newWidget);
+                    itemContainer.find('label').text("{{ 'Source'|trans }} # " + ($('input[id^="form_"][type="text"]').length + 1));
+                    itemContainer.insertBefore($(this).closest('.form-group'));
+                    return false;
+                });
+            });
+        }
+        document.addEventListener("DOMContentLoaded", yelp, false);
+
+    </script>
+{% endblock %}
