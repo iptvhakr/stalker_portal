@@ -2068,6 +2068,107 @@ function common_xpcom(){
         return cur_place_num;
     };
 
+    this.advert = {
+
+        current : {},
+        ticking_timeout : 0,
+
+        start : function (callback) {
+            _debug('stb.advert.get_ad');
+
+            stb.load(
+                {
+                    "type"   : "advertising",
+                    "action" : "get_ad",
+                    "video_mode" : stb.video_mode
+                },
+                function (result) {
+                    _debug('on get_ad', result);
+
+                    this.current = result;
+
+                    if (result && result.ad) {
+
+                        main_menu.hide();
+
+                        stb.player.prev_layer = main_menu;
+
+                        stb.player.play({
+                            'id': 0,
+                            'cmd': result.ad,
+                            'type': 'ad',
+                            'is_advert': true,
+                            'ad_tracking': result.tracking,
+                            'stop_callback': callback
+
+                        });
+
+                        stb.player.ad_indication.show();
+
+                    }else{
+                        callback();
+                    }
+                }
+            )
+        },
+
+        track : function (urls) {
+            _debug('stb.advert.track', urls);
+_debug('------------------------------------------');
+
+            if (!Array.isArray(urls)){
+                return false;
+            }
+
+            urls.forEach(function (url) {
+
+                _debug('tracking call', url);
+
+                var req = new XMLHttpRequest();
+
+                req.open("GET", url);
+
+                req.onreadystatechange = function(){
+                    if (req.readyState == 4) {
+                        if (req.status == 200) {
+                            _debug('on track ok');
+                        }else{
+                            _debug('on track error', req.status);
+                        }
+                        req = null;
+                    }
+                };
+
+                req.send(null);
+            });
+        },
+
+        start_ticking : function(media_len){
+            _debug('stb.advert.start_ticking', media_len);
+            window.clearInterval(this.ticking_timeout);
+            this.ticking_timeout = window.setInterval(function () {
+
+                var pos_time = stb.GetPosTime();
+
+                var quartile = media_len/4;
+
+                if (Math.abs(quartile - pos_time) <= 1 && stb.player.cur_media_item.ad_tracking.hasOwnProperty('firstQuartile')){
+                    stb.advert.track(stb.player.cur_media_item.ad_tracking['firstQuartile'])
+                }else if(Math.abs(2*quartile - pos_time) <= 1 && stb.player.cur_media_item.ad_tracking.hasOwnProperty('midpoint')){
+                    stb.advert.track(stb.player.cur_media_item.ad_tracking['midpoint'])
+                }else if(Math.abs(3*quartile - pos_time) <= 1 && stb.player.cur_media_item.ad_tracking.hasOwnProperty('thirdQuartile')){
+                    stb.advert.track(stb.player.cur_media_item.ad_tracking['thirdQuartile'])
+                }
+
+            }, 1000);
+        },
+
+        stop_ticking : function () {
+            _debug('stb.advert.stop_ticking');
+            window.clearInterval(this.ticking_timeout);
+        }
+    };
+
     this.clock = {
 
         start : function(){
