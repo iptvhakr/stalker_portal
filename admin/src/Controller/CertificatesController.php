@@ -395,7 +395,11 @@ class CertificatesController extends \Controller\BaseStalkerController {
             if ($form->isValid()) {
                 $date = new \DateTime('now');
                 $data['date_from'] = $date->getTimestamp();
-                $date->modify('+1 year');
+                if ($data['quantity'] == 1){
+                    $date->modify('+3 month');
+                }else{
+                    $date->modify('+1 year');
+                }
                 $data['date_to'] = $date->getTimestamp();
                 $sert = new LicenseManager();
 
