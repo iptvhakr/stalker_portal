@@ -51,7 +51,7 @@ class ExternalAdvertisingModel extends \Model\BaseStalkerModel {
 
         if ($counter) {
             $result = $this->mysqlInstance->count()->get()->first();
-            return array_sum($result);
+            return is_array($result) ? array_sum($result) : $result;
         }
         if (!empty($param['limit']['limit']) && !$counter) {
             $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
@@ -108,7 +108,7 @@ class ExternalAdvertisingModel extends \Model\BaseStalkerModel {
 
         if ($counter) {
             $result = $this->mysqlInstance->count()->get()->first();
-            return array_sum($result);
+            return is_array($result) ? array_sum($result) : $result;
         }
         if (!empty($param['limit']['limit']) && !$counter) {
             $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
@@ -124,5 +124,70 @@ class ExternalAdvertisingModel extends \Model\BaseStalkerModel {
     public function updateSourceData($params, $id){
         $where = array('id'=>$id);
         return $this->mysqlInstance->update('ext_adv_sources', $params, $where)->total_rows();
+    }
+
+    public function insertCompanyData($params){
+        return $this->mysqlInstance->insert('ext_adv_companies', $params)->insert_id();
+    }
+
+    public function updateCompanyData($params, $id){
+        $where = array('id'=>$id);
+        return $this->mysqlInstance->update('ext_adv_companies', $params, $where)->total_rows();
+    }
+
+    public function deleteCompanyData($params){
+        if (is_numeric($params)) {
+            $params = array('id' => $params);
+        }
+        return $this->mysqlInstance->delete('ext_adv_companies', $params)->total_rows();
+    }
+
+    public function getCompanyRowsList($incoming = array(), $all = FALSE) {
+        if ($all) {
+            $incoming['like'] = array();
+        }
+        return $this->getCompanyList($incoming, TRUE);
+    }
+
+    public function getCompanyList($param, $counter = FALSE) {
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+
+        $this->mysqlInstance->from('ext_adv_companies as E_A_C');
+
+        if (array_key_exists('joined', $param)) {
+            foreach ($param['joined'] as $table => $keys) {
+                $this->mysqlInstance->join($table, $keys['left_key'], $keys['right_key'], $keys['type']);
+            }
+        }
+
+        if (!empty($this->reseller_id)) {
+            $this->mysqlInstance->where(array('reseller_id' => $this->reseller_id));
+        }
+
+        if (!empty($param['where'])) {
+            $this->mysqlInstance->where($param['where']);
+        }
+        if (!empty($param['like'])) {
+            $this->mysqlInstance->like($param['like'], 'OR');
+        }
+        if (!empty($param['order'])) {
+            $this->mysqlInstance->orderby($param['order']);
+        }
+
+        if (!empty($param['groupby'])) {
+            $this->mysqlInstance->groupby($param['groupby']);
+        }
+
+        if ($counter) {
+            $result = $this->mysqlInstance->count()->get()->first();
+            return is_array($result) ? array_sum($result) : $result;
+        }
+        if (!empty($param['limit']['limit']) && !$counter) {
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
+        }
+
+        return $this->mysqlInstance->get()->all();
     }
 }

@@ -6,10 +6,7 @@
     <div id="iptv_list">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                {#{{ main_macro.get_filter('status', 'Status'|trans, 'id', 'title', app['allStatus'], 3, NULL, NULL, TRUE) }}
-                {{ main_macro.get_filter('lic_count', 'License count'|trans, 'count', 'title', app['allLicCount'], 3, NULL, NULL, TRUE) }}#}
-
-                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/certificate-request" class="btn btn-success green pull-right">{{ 'Add company'|trans }}</a>
+                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/verta-media-company-add" class="btn btn-success green pull-right">{{ 'Add company'|trans }}</a>
             </div>
         </div>
         <div class="row">
@@ -63,9 +60,9 @@
                 "bPaginate": true,
                 "bInfo": true,
                 "aoColumnDefs": [
-                    /*{className: "action-menu", "targets": [-1]},*/
-                    {"searchable": false/*, "targets": [0, 2, 3, 5, 7, -1]*/},
-                    {"sortable": false/*, "targets": [0, 5, 6, -1]*/}
+                    {className: "action-menu", "targets": [-1]},
+                    {"searchable": false, "targets": [-1, -2]},
+                    {"sortable": false, "targets": [-1]}
                 ]
             }).prev('.dataTables_processing').hide(50);
         }
@@ -99,13 +96,6 @@
                     }
                     return false;
                 });
-                $("#iptv_list").on('click', 'div[data-tvfilter] ul a', function(e){
-                    e.stopPropagation();
-                    e.preventDefault();
-                    $(this).closest('.open').removeClass('open');
-                    $(this).closest('[data-tvfilter]').data('filterval', $(this).data('filter')).find("span:nth-of-type(2)").text($(this).text());
-                    $("#datatable-1").DataTable().draw();
-                });
 
                 LoadDataTablesScripts(TestTable1);
             });
@@ -114,38 +104,33 @@
         document.addEventListener("DOMContentLoaded", yelp, false);
 
         function rowDataPrepare(item){
-            item.lic_count = typeof (lic_count_set[item.lic_count]) != 'undefined'? lic_count_set[item.lic_count]: item.lic_count;
-            var status = item.status;
-            item.status = status_set[item.status];
-            if (item.awaiting) {
-                item.status = "<a class='main_ajax txt-success' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/certificate-install' data-id='" + item.id + "'>{{ 'Install'|trans }}</a>";
-            } else if ( status == 5 ) {
-                item.status += "<br><a class='txt-danger' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/certificate-request?id=" + item.id + "'>{{ 'Сertificate request'|trans }}</a>";
-            }
-            var dateSet = new Date();
-            dateSet.setTime(item.cert_begin * 1000);
-            item.cert_begin = dateSet.toLocaleFormat("%d.%m.%Y");
-            dateSet.setTime(item.cert_end * 1000);
-            item.cert_end = dateSet.toLocaleFormat("%d.%m.%Y");
 
-            if (item.expires_30_days) {
-                item.cert_end += "<br><a class='txt-danger' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/certificate-request?id=" + item.id + "'>{{ 'Сertificate request'|trans }}</a>";
-            }
+            item.name = "<a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/verta-media-company-edit?id=" + item.id + "'>" + item.name + "</a>";
 
-            item.id = "<a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/certificate-detail?id=" + item.id + "'>" + item.id + "</a>";
+            item.operations = "<div class='col-xs-3 col-sm-8'>\n\
+                                    <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                        <i class='pull-right fa fa-cog'></i>\n\
+                                    </a>\n\
+                                    <ul class='dropdown-menu pull-right'>\n\
+                                        <li>\n\
+                                            <a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/verta-media-company-edit?id=" + item.id + "'>\n\
+                                                <span>{{ 'Edit'|trans }}</span>\n\
+                                            </a>\n\
+                                        </li>\n\
+                                        <li>\n\
+                                            <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-company-state' data-id='" + item.id + "' data-status='" + item.status + "'>\n\
+                                                <span>" + (item.status != 0 ? "{{ 'Deactivate'|trans }}" : "{{ 'Activate'|trans }}") + "</span>\n\
+                                            </a>\n\
+                                        </li>\n\
+                                        <li>\n\
+                                            <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/delete-company' data-id='" + item.id + "'>\n\
+                                                <span>{{ 'Delete'|trans }}</span>\n\
+                                            </a>\n\
+                                        </li>\n\
+                                    </ul>\n\
+                                </div>";
+            item.status = item.status ? "{{ 'Active'|trans }}" : "{{ 'Inactive'|trans }}";
             return item;
-        }
-
-        function reDrawDataTable(data){
-            if (data.data) {
-                var newData = [];
-                $('#datatable-1').dataTable().fnClearTable();
-                for (var i in data.data) {
-                    newData.push(rowDataPrepare(data.data[i]));
-                }
-                $('#datatable-1').dataTable().fnAddData(newData);
-                $('#datatable-1').DataTable().rows().invalidate(newData).draw();
-            }
         }
 
     </script>

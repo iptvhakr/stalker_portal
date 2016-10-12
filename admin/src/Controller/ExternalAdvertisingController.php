@@ -99,16 +99,55 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
-    public function verta_media_company_detail() {
+    public function verta_media_company_add() {
 
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
 
+        $form = $this->buildCompanyForm($data);
+
+        if ($this->saveCompanyData($form)){
+            return $this->app->redirect($this->workURL . '/' .$this->app['controller_alias'] . '/verta-media-company-list');
+        }
+
+        $this->app['form'] = $form->createView();
+
         $this->app['breadcrumbs']->addItem($this->setLocalization('List of companies'), $this->app['controller_alias'] . '/verta-media-company-list');
-        $this->app['breadcrumbs']->addItem($this->setLocalization('Certificate request'));
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Company add'));
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
+    }
+
+    public function verta_media_company_edit() {
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        if ($this->method == 'POST' && !empty($this->postData['form']['id'])) {
+            $data = $this->postData['form'];
+        } else if ($this->method == 'GET' && !empty($this->data['id'])) {
+            $data = $this->verta_media_company_list_json(TRUE);
+            $data = !empty($data['data']) ? $data['data'][0]:array();
+        }
+
+        if (empty($data)) {
+            return $this->app->redirect($this->workURL . '/' .$this->app['controller_alias'] . '/verta-media-company-add');
+        }
+
+        $form = $this->buildCompanyForm($data);
+
+        if ($this->saveCompanyData($form)){
+            return $this->app->redirect($this->workURL . '/' .$this->app['controller_alias'] . '/verta-media-company-list');
+        }
+
+        $this->app['form'] = $form->createView();
+
+        $this->app['breadcrumbs']->addItem($this->setLocalization('List of companies'), $this->app['controller_alias'] . '/verta-media-company-list');
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Company edit'));
+
+        return $this->app['twig']->render("ExternalAdvertising_verta_media_company_add.twig");
     }
 
     public function verta_media_settings(){
@@ -163,20 +202,65 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
     //----------------------- ajax method --------------------------------------
 
     public function verta_media_company_list_json($local_use = FALSE){
-        if (!$this->isAjax && !$local_use) {
-            $this->app->abort(404, $this->setLocalization('Page not found'));
+        if ($this->isAjax) {
+            if ($no_auth = $this->checkAuth()) {
+                return $no_auth;
+            }
         }
 
-        $data['data'] = array();
-        $error = $this->setLocalization('Failed');
-        $error = '';
+        $response = array(
+            'data' => array(),
+            'recordsTotal' => 0,
+            'recordsFiltered' => 0
+        );
 
-        $data['recordsTotal'] = 0;
-        $data["recordsFiltered"] = 0;
+        $filds_for_select = $this->getCompanyFields();
+        $error = $this->setLocalization('Error');
+        $param = (!empty($this->data)?$this->data: $this->postData);
 
-        $response = $this->generateAjaxResponse($data, $error);
+        $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
 
-        return $local_use ? $response: new Response(json_encode($response), (empty($error) ? 200 : 500));
+        if (!isset($query_param['where'])) {
+            $query_param['where'] = array();
+        }
+
+        if (empty($query_param['select'])) {
+            $query_param['select'] = array_values($filds_for_select);
+        }
+        $this->cleanQueryParams($query_param, array_keys($filds_for_select), $filds_for_select);
+
+        if (!empty($param['id'])) {
+            $query_param['where']['E_A_C.`id`'] = $param['id'];
+        }
+
+        if (!empty($this->app['reseller'])) {
+            $query_param['joined'] = $this->getJoinedCompanyTables();
+        }
+
+        $response['recordsTotal'] = $this->db->getCompanyRowsList($query_param, 'ALL');
+        $response["recordsFiltered"] = $this->db->getCompanyRowsList($query_param);
+
+        if (empty($query_param['limit']['limit'])) {
+            $query_param['limit']['limit'] = 50;
+        } elseif ($query_param['limit']['limit'] == -1) {
+            $query_param['limit']['limit'] = FALSE;
+        }
+
+        $response['data'] = array_map(function($row){
+            $row['RowOrder'] = "dTRow_" . $row['id'];
+            settype($row['status'], 'int');
+            return $row;
+        },$this->db->getCompanyList($query_param));
+
+        $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
+
+        $error = "";
+        if ($this->isAjax && !$local_use) {
+            $response = $this->generateAjaxResponse($response);
+            return new Response(json_encode($response), (empty($error) ? 200 : 500));
+        } else {
+            return $response;
+        }
     }
 
     public function toggle_company_state(){
@@ -189,8 +273,46 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'updateTableData';
+        $data['action'] = 'updateTableRow';
+        $data['id'] = $this->postData['id'];
+        $data['data'] = array();
         $error = $this->setLocalization('Failed');
+
+        $result = $this->db->updateCompanyData(array('status' => empty($this->postData['status'])), $this->postData['id']);
+        if (is_numeric($result)) {
+            $error = '';
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
+            $data = array_merge_recursive($data, $this->verta_media_company_list_json(TRUE));
+        }
+
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function delete_company(){
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['id'])) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array();
+        $data['action'] = 'deleteTableRow';
+        $data['id'] = $this->postData['id'];
+        $error = $this->setLocalization('Failed');
+
+        $result = $this->db->deleteCompanyData($this->postData['id']);
+        if (is_numeric($result)) {
+            $error = '';
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
+        }
 
         $response = $this->generateAjaxResponse($data, $error);
 
@@ -407,21 +529,175 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
         return FALSE;
     }
 
+    private function buildCompanyForm(&$data = array(), $show = FALSE){
+
+        $this->app['is_show'] = $show;
+
+        $builder = $this->app['form.factory'];
+
+        $sources = $this->db->getSourceList(array(
+            'select' => array('E_A_S.id as id', 'E_A_S.source as source'),
+            'where' => array('A.id' => $this->app['user_id']),
+            'joined' => $this->getJoinedSettingsTables()
+        ));
+
+        $sources = array_combine($this->getFieldFromArray($sources, 'id'), $this->getFieldFromArray($sources, 'source'));
+        $platforms = array(
+            'settopbox' => 'Set-Top Box',
+            'ios' => 'iOS',
+            'android' => 'Android',
+            'smarttv' => 'SmartTV'
+        );
+
+        $choise_labels = array(
+            $this->setLocalization('Run applications'),
+            $this->setLocalization('Before starting the movie - Video Club'),
+            $this->setLocalization('During the movie playback - Video Club')
+        );
+
+        if (!empty($data['old_skin_pos'])) {
+            $data['old_skin_pos'] = $this->prepareBitMaskField($data['old_skin_pos']);
+        } else {
+            $data['old_skin_pos'] = array_fill(0, 3, 0);
+        }
+
+        if (!empty($data['smart_skin_pos'])) {
+            $data['smart_skin_pos'] = $this->prepareBitMaskField($data['smart_skin_pos']);
+        } else {
+            $data['smart_skin_pos'] = array_fill(0, 3, 0);
+        }
+
+        if (array_key_exists('status', $data)) {
+            settype($data['status'], 'bool');
+        }
+
+        $form = $builder->createBuilder('form', $data)
+            ->add('id', 'hidden')
+            ->add('name', 'text', array(
+                'attr'      => array('class' => 'form-control', 'data-validation' => 'required'),
+                'required' => TRUE
+            ))
+            ->add('source', 'choice', array(
+                    'choices' => $sources,
+                    'required' => TRUE,
+                    'attr' => array('readonly' => $show, 'disabled' => $show, 'class' => 'populate placeholder', 'data-validation' => 'required'),
+                    'data' => (empty($data['source']) ? '': $data['source']),
+                )
+            )
+            ->add('platform', 'choice', array(
+                    'choices' => $platforms,
+                    'required' => TRUE,
+                    'attr' => array('readonly' => $show, 'disabled' => $show, 'class' => 'populate placeholder', 'data-validation' => 'required'),
+                    'data' => (empty($data['platform']) ? '': $data['platform']),
+                )
+            )
+            ->add('status', 'checkbox', array(
+                    'label' => ' ',
+                    'required' => FALSE,
+                    'label_attr' => array('class'=> 'label-success'),
+                    'attr' => array('readonly' => $show, 'disabled' => $show, 'class' => 'form-control'),
+                )
+            )
+            ->add('old_skin_pos', 'collection', array(
+                'entry_type'   => 'checkbox',
+                'entry_options'  => array(
+                    'attr'      => array('class' => 'form-control', 'style'=> 'display: inline-block; height: auto; width: auto;'),
+                    'label' => $choise_labels
+                )
+            ))
+            ->add('smart_skin_pos', 'collection', array(
+                'entry_type'   => 'checkbox',
+                'entry_options'  => array(
+                    'attr'      => array('class' => 'form-control', 'style'=> 'display: inline-block; height: auto; width: auto;'),
+                    'label' => $choise_labels
+                )
+            ))
+            ->add('save', 'submit');
+        return $form->getForm();
+    }
+
+    private function saveCompanyData(&$form) {
+
+        if (!empty($this->method) && $this->method == 'POST') {
+            $form->handleRequest($this->request);
+            $data = $form->getData();
+
+            if ($form->isValid()) {
+                reset($data);
+                while(list($key, $field) = each($data)){
+                    if (is_array($field)) {
+                        $data[$key] = implode('', array_map(function($val){return (int)$val; }, $field));
+                    }
+                }
+                $curr_fields = $this->db->getTableFields('ext_adv_companies');
+                $curr_fields = $this->getFieldFromArray($curr_fields, 'Field');
+                $curr_fields = array_flip($curr_fields);
+
+                $data = array_intersect_key($data, $curr_fields);
+                $data['updated'] = 'NOW()';
+
+                if (!empty($data['id'])) {
+                    $operation = 'update';
+                    $id = $data['id'];
+                    unset($data['id']);
+                    $params = array($data, $id);
+                } else {
+                    $operation = 'insert';
+                    $data['added'] = 'NOW()';
+                    $params = array($data);
+                }
+
+                $result = call_user_func_array(array($this->db, $operation.'CompanyData'), $params);
+
+                if (is_numeric($result)) {
+                    return TRUE;
+                }
+            }
+        }
+        return FALSE;
+    }
+
     private function getDropdownAttribute(){
         $attribute = array(
-            array('name' => 'id',       'title' => $this->setLocalization('ID'),        'checked' => TRUE),
-            array('name' => 'title',    'title' => $this->setLocalization('Title'),     'checked' => TRUE),
-            array('name' => 'platform', 'title' => $this->setLocalization('Platform'),  'checked' => TRUE),
-            array('name' => 'status',   'title' => $this->setLocalization('Status'),    'checked' => TRUE)
+            array('name' => 'id',           'title' => $this->setLocalization('ID'),        'checked' => TRUE),
+            array('name' => 'name',         'title' => $this->setLocalization('Title'),     'checked' => TRUE),
+            array('name' => 'platform',     'title' => $this->setLocalization('Platform'),  'checked' => TRUE),
+            array('name' => 'status',       'title' => $this->setLocalization('Status'),    'checked' => TRUE),
+            array('name' => 'operations',   'title' => $this->setLocalization('Operations'),'checked' => TRUE)
         );
         return $attribute;
     }
 
     private function getJoinedSettingsTables(){
         return array(
-            'ext_adv_register as E_A_R' => array('left_key' => 'E_A_S.owner', 'right_key' => 'E_A_R.admin_id', 'type' => 'LEFT'),
+            'ext_adv_register as E_A_R' => array('left_key' => 'E_A_S.owner', 'right_key' => 'E_A_R.id', 'type' => 'LEFT'),
             'administrators as A' => array( 'left_key' => 'E_A_R.admin_id', 'right_key' => 'A.id', 'type' => 'LEFT')
         );
     }
 
+    private function getJoinedCompanyTables(){
+        return array_merge(array(
+            'ext_adv_sources as E_A_S' => array('left_key' => 'E_A_C.source', 'right_key' => 'E_A_S.id', 'type' => 'LEFT'),
+        ), $this->getJoinedSettingsTables());
+    }
+
+    private function getCompanyFields(){
+        return array(
+            "id" => "E_A_C.`id` as `id`",
+            "name" => "E_A_C.`name` as `name`",
+            "platform" => "E_A_C.`platform` as `platform`",
+            "status" => "E_A_C.`status` as `status`",
+            "old_skin_pos" => "E_A_C.`old_skin_pos` as `old_skin_pos`",
+            "smart_skin_pos" => "E_A_C.`smart_skin_pos` as `smart_skin_pos`"
+        );
+    }
+
+    private function prepareBitMaskField($data){
+        if (is_string($data)){
+            $data =  str_split($data);
+        }
+        return array_replace(array_fill(0, 3, FALSE), array_map(function($val){
+            return $val == (is_numeric($val) ?  1 : 'on');
+        }, $data));
+    }
 }
