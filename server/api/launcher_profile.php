@@ -65,6 +65,8 @@ $config['options']['pluginsPath'] = '../../../plugins/';
 $config['options']['stalkerHost'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
     .'://'.(strpos($_SERVER['HTTP_HOST'], ':') > 0 ? $_SERVER['HTTP_HOST'] : $_SERVER['HTTP_HOST'].':'.$_SERVER['SERVER_PORT']);
 
+$config['options']['appsPackagesPath'] = '/'.Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/');
+
 $config['options']['stalkerApiPath']    = Config::getSafe('portal_url', '/stalker_portal/') . 'api/v3/';
 $config['options']['stalkerAuthPath']   = Config::getSafe('portal_url', '/stalker_portal/') . 'auth/token.php';
 $config['options']['stalkerLoaderPath'] = Config::getSafe('portal_url', '/stalker_portal/') . 'c/';
@@ -131,11 +133,19 @@ foreach ($installed_apps as $app) {
 
         $app['config']['version'] = $app['current_version'];
 
-        $app['config']['url'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
-            .'://'.(strpos($_SERVER['HTTP_HOST'], ':') > 0 ? $_SERVER['HTTP_HOST'] : $_SERVER['HTTP_HOST'].':'.$_SERVER['SERVER_PORT'])
-            .'/'.Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/')
-            .$app['alias']
-            .'/'.$app['current_version'].(isset($app['config']['entry']) ? '/'.$app['config']['entry'] : '/app/');
+        if (!isset($app['config']['uris'])){
+            $app['config']['url'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
+                .'://'.(strpos($_SERVER['HTTP_HOST'], ':') > 0 ? $_SERVER['HTTP_HOST'] : $_SERVER['HTTP_HOST'].':'.$_SERVER['SERVER_PORT'])
+                .'/'.Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/')
+                .$app['alias']
+                .'/';
+
+            $app['config']['entry'] = isset($app['config']['entry']) ? $app['config']['entry'] : 'app/';
+        }
+
+        if ($app['options'] && ($options = json_decode($app['options'], 1))){
+            $app['config']['options'] = $options;
+        }
 
         $app['config']['dependencies'] = $app_manager->getFullAppDependencies($app['id']);
 
