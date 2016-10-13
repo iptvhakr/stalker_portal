@@ -37,15 +37,15 @@ CREATE TABLE `ext_adv_companies` (
 INSERT INTO `adm_grp_action_access`
           (`controller_name`,              `action_name`,               `is_ajax`, `description`)
 VALUES    ('external-advertising',         '',                                  0, 'External Advertising'),
-          ('external-advertising',         'verta-media-company-list',          0, 'List of companies'),
-          ('external-advertising',         'verta-media-register',              0, 'Register form for new client'),
-          ('external-advertising',         'verta-media-company-add',           0, 'Adding new ad-company'),
-          ('external-advertising',         'verta-media-company-edit',          0, 'Editing exists ad-company'),
-          ('external-advertising',         'verta-media-settings',              0, 'Form for viewing, adding, editing and requesting sources for ad-companies'),
-          ('external-advertising',         'verta-media-company-list-json',     1, 'List of companies by page + filters'),
-          ('external-advertising',         'toggle-company-state',              1, 'Toggle company state'),
-          ('external-advertising',         'delete-company',                    1, 'Deleting exists ad-company'),
-          ('external-advertising',         'request-new-source',                1, 'Make request for getting new source for ad-company');
+          ('external-advertising',         'company-list',          0, 'List of companies'),
+          ('external-advertising',         'register',              0, 'Register form for new client'),
+          ('external-advertising',         'company-add',           0, 'Adding new ad-company'),
+          ('external-advertising',         'company-edit',          0, 'Editing exists ad-company'),
+          ('external-advertising',         'settings',              0, 'Form for viewing, adding, editing and requesting sources for ad-companies'),
+          ('external-advertising',         'company-list-json',     1, 'List of companies by page + filters'),
+          ('external-advertising',         'toggle-company-state',  1, 'Toggle company state'),
+          ('external-advertising',         'delete-company',        1, 'Deleting exists ad-company'),
+          ('external-advertising',         'request-new-source',    1, 'Make request for getting new source for ad-company');
 
 --//@UNDO
 
