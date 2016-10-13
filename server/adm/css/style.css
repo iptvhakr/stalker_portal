@@ -1093,9 +1093,9 @@ a.disabled, a.disabled:focus, a.disabled:hover, a.disabled:active, a.disabled.ac
 }
 .btn-warning, .btn-warning.disabled, .btn-warning[disabled], fieldset[disabled] .btn-warning, .btn-warning.disabled:hover, .btn-warning[disabled]:hover, fieldset[disabled] .btn-warning:hover, .btn-warning.disabled:focus, .btn-warning[disabled]:focus, fieldset[disabled] .btn-warning:focus, .btn-warning.disabled:active, .btn-warning[disabled]:active, fieldset[disabled] .btn-warning:active, .btn-warning.disabled.active, .btn-warning[disabled].active, fieldset[disabled] .btn-warning.active, .progress-bar-warning,
 .table > thead > tr > td.warning, .table > tbody > tr > td.warning, .table > tfoot > tr > td.warning, .table > thead > tr > th.warning, .table > tbody > tr > th.warning, .table > tfoot > tr > th.warning, .table > thead > tr.warning > td, .table > tbody > tr.warning > td, .table > tfoot > tr.warning > td, .table > thead > tr.warning > th, .table > tbody > tr.warning > th, .table > tfoot > tr.warning > th {
-  background-color: #DFD271;
+  background-color: #FF9900;
   border-color: rgba(0, 0, 0, 0.3);
-  color: #f8f8f8;
+  color: #333333;
 }
 .btn-danger, .btn-danger.disabled, .btn-danger[disabled], fieldset[disabled] .btn-danger, .btn-danger.disabled:hover, .btn-danger[disabled]:hover, fieldset[disabled] .btn-danger:hover, .btn-danger.disabled:focus, .btn-danger[disabled]:focus, fieldset[disabled] .btn-danger:focus, .btn-danger.disabled:active, .btn-danger[disabled]:active, fieldset[disabled] .btn-danger:active, .btn-danger.disabled.active, .btn-danger[disabled].active, fieldset[disabled] .btn-danger.active, .progress-bar-danger,
 .table > thead > tr > td.danger, .table > tbody > tr > td.danger, .table > tfoot > tr > td.danger, .table > thead > tr > th.danger, .table > tbody > tr > th.danger, .table > tfoot > tr > th.danger, .table > thead > tr.danger > td, .table > tbody > tr.danger > td, .table > tfoot > tr.danger > td, .table > thead > tr.danger > th, .table > tbody > tr.danger > th, .table > tfoot > tr.danger > th {
@@ -3315,9 +3315,10 @@ span.serial + span{
     border-radius: inherit !important;
 }
 
-#iptv_list .green{
+#iptv_list .green, #add_channel .green{
     background-color: #0F9C16 !important;
     color: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.3);
 }
 #filter_param  .dropdown-menu{ width:300px;}
 #filter_param{
@@ -3617,7 +3618,7 @@ z-index:10;
 }
 
 /*#add_channel *, #modalbox_ad *{*/
-#add_channel *:not(dt):not(dl):not(dd), #modalbox_ad *:not(dt):not(dl):not(dd){
+#add_channel *:not(dt):not(dl):not(dd):not(strong), #modalbox_ad *:not(dt):not(dl):not(dd):not(strong){
     font-weight: normal;
 }
 

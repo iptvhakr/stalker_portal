@@ -345,7 +345,7 @@ class SemVerExpression
             return '>=' . $major . '.' . $minor . ' <' . $major . '.' . ($minor + 1) . '.0-';
         }
 
-        return '>=' . $major . '.' . $minor . '.' . $patch . $build . $prtag . ' <' . ($major == 1 ? $major+1 : 0) . '.' . ($major == 0 && $minor!=0 ? $minor+1 : 0) . '.'.($major == 0 && $minor == 0 ? $patch+1 : 0).'-';
+        return '>=' . $major . '.' . $minor . '.' . $patch . $build . $prtag . ' <' . ($major >= 1 ? $major+1 : 0) . '.' . ($major == 0 && $minor!=0 ? $minor+1 : 0) . '.'.($major == 0 && $minor == 0 ? $patch+1 : 0).'-';
     }
 
     /**

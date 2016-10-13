@@ -398,5 +398,24 @@
         "action": {
 
         }
+    },
+    "18": {
+        "name": _("Advertising"),
+        "new": true,
+        "alias": "external-advertising",
+        "icon": "fa fa-dollar",
+        "icon2": "pull-right fa fa-chevron-left",
+        "action": {
+            "1": {
+                "name": _("List of companies"),
+                "alias": "verta-media-company-list",
+                "icon": ""
+            },
+            "2": {
+                "name": _("Settings"),
+                "alias": "verta-media-settings",
+                "icon": ""
+            }
+        }
     }
 }
