@@ -550,9 +550,9 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
         );
 
         $choise_labels = array(
-            $this->setLocalization('Run applications'),
-            $this->setLocalization('Before starting the movie - Video Club'),
-            $this->setLocalization('During the movie playback - Video Club')
+            $this->setLocalization('Before launching the application'),
+            $this->setLocalization('Before launching the movie'),
+            $this->setLocalization('During the movie playback')
         );
 
         if (!empty($data['old_skin_pos'])) {

@@ -18,7 +18,7 @@
                             <label class="col-sm-2 control-label "><strong>{{ 'Companies'|trans }}</strong></label>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label ">{{ 'Company name'|trans }}<span class="icon-required">*</span></label>
+                            <label class="col-sm-2 control-label ">{{ 'Campaign'|trans }}<span class="icon-required">*</span></label>
                             <div class="col-xs-10 col-sm-8">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].id, {'attr': {}}) }}
@@ -78,7 +78,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label ">{{ 'Ad position'|trans }}</label>
                             <div class="col-xs-10 col-sm-8">
-                                <label class="col-sm-12 text-left">{{ 'OLD SKIN'|trans }}</label>
+                                <label class="col-sm-12 text-left">{{ 'Standard skin'|trans }}</label>
                                 {% for key, addPositionField in app['form'].old_skin_pos %}
                                     <div class=" col-xs-10 col-sm-8">
                                         {{ form_widget(addPositionField, {'attr': {}}) }}
@@ -95,7 +95,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label ">&nbsp;</label>
                             <div class="col-xs-10 col-sm-8">
-                                <label class="col-sm-12 text-left">{{ 'SMART LAUNCHER SKINS'|trans }}</label>
+                                <label class="col-sm-12 text-left">{{ 'New SMART LAUNCHER'|trans }}</label>
                                 {% for key, addPositionField in app['form'].smart_skin_pos %}
                                     <div class=" col-xs-10 col-sm-8">
                                         {{ form_widget(addPositionField, {'attr': {}}) }}
