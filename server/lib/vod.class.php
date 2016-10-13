@@ -146,6 +146,8 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
 
         $vclub_ad = new VclubAdvertising();
 
+        //todo: ad
+
         if (!$disable_ad && empty($link['error'])){
 
             $video = Video::getById($media_id);

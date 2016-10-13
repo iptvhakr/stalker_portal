@@ -1021,6 +1021,12 @@ player.prototype.event_callback = function(event, params){
         {
             try{
 
+                if (this.cur_media_item.hasOwnProperty('ad_tracking')){
+                    if (this.cur_media_item.ad_tracking.hasOwnProperty('complete')){
+                        stb.advert.track(this.cur_media_item.ad_tracking['complete'])
+                    }
+                }
+
                 if (this.cur_media_item.stop_callback){
                     this.cur_media_item.stop_callback();
                     return;
@@ -1320,6 +1326,21 @@ player.prototype.event_callback = function(event, params){
                 this.progress_bar.stop();
             }
 
+            if (this.cur_media_item.hasOwnProperty('ad_tracking')){
+
+                if (this.cur_media_item.ad_tracking.hasOwnProperty('impression')){
+                    stb.advert.track(this.cur_media_item.ad_tracking['impression'])
+                }
+
+                if (this.cur_media_item.ad_tracking.hasOwnProperty('creativeView')){
+                    stb.advert.track(this.cur_media_item.ad_tracking['creativeView'])
+                }
+
+                if (this.cur_media_item.ad_tracking.hasOwnProperty('start')){
+                    stb.advert.track(this.cur_media_item.ad_tracking['start'])
+                }
+            }
+
             if (this.cur_media_item.hasOwnProperty('volume_correction')){
                 this.volume.correct_level(parseInt(this.cur_media_item.volume_correction));
             }else{
@@ -1410,6 +1431,11 @@ player.prototype.event_callback = function(event, params){
             if (this.info.on){
                 this.set_pos_button_to_cur_time();
             }
+
+            if (this.cur_media_item.hasOwnProperty('ad_tracking')){
+
+                stb.advert.start_ticking(this.cur_media_length);
+            }
             
             /*if (this.is_tv){
                 this.send_last_tv_id(this.cur_tv_item.id);
@@ -1480,6 +1506,12 @@ player.prototype.event_callback = function(event, params){
         {
 
             stb.key_lock = false;
+
+            if (this.cur_media_item.hasOwnProperty('ad_tracking')){
+                if (this.cur_media_item.ad_tracking.hasOwnProperty('error')){
+                    stb.advert.track(this.cur_media_item.ad_tracking['error'])
+                }
+            }
 
             if (this.cur_media_item.stop_callback){
                 this.cur_media_item.stop_callback();
@@ -2172,7 +2204,7 @@ player.prototype.define_media_type = function(cmd){
         
         _debug('stb.cur_place', stb.cur_place);
         
-        if ((cmd.indexOf('mmsh://') >=0 || cmd.indexOf('rtsp://') >=0 || cmd.indexOf('rtmp://') >=0 || cmd.indexOf('udp://') >=0 || cmd.indexOf('rtp://') >=0 || cmd.indexOf('http://') >=0 || cmd.indexOf('dvb://') >=0) && !this.active_time_shift && stb.cur_place != 'demo' && stb.cur_place != 'internet' && stb.cur_place != 'epg_simple' && stb.cur_place != 'epg' && stb.cur_place != 'radio' && stb.cur_place != 'vclub' && stb.cur_place != 'karaoke' && stb.cur_place != 'audioclub' && !this.cur_media_item.is_audio && !this.cur_media_item.promo && !this.cur_media_item.radio){
+        if ((cmd.indexOf('mmsh://') >=0 || cmd.indexOf('rtsp://') >=0 || cmd.indexOf('rtmp://') >=0 || cmd.indexOf('udp://') >=0 || cmd.indexOf('rtp://') >=0 || cmd.indexOf('http://') >=0 || cmd.indexOf('dvb://') >=0) && !this.active_time_shift && stb.cur_place != 'demo' && stb.cur_place != 'internet' && stb.cur_place != 'epg_simple' && stb.cur_place != 'epg' && stb.cur_place != 'radio' && stb.cur_place != 'vclub' && stb.cur_place != 'karaoke' && stb.cur_place != 'audioclub' && !this.cur_media_item.is_audio && !this.cur_media_item.promo && !this.cur_media_item.radio && !this.cur_media_item.is_advert){
             this.is_tv = true;
         }else{
             this.is_tv = false;
@@ -2273,6 +2305,7 @@ player.prototype.play = function(item){
 
     this.ad_indication.hide();
     this.ad_skip_indication.hide();
+    stb.advert.stop_ticking();
 
     if (this.pause.on){
         this.hide_pause();
@@ -2661,6 +2694,8 @@ player.prototype.stop = function(){
     _debug('player.stop');
 
     this.on_stop && this.on_stop();
+
+    stb.advert.stop_ticking();
 
     if (this.cur_media_item.stop_callback){
         this.cur_media_item.stop_callback();
@@ -3818,6 +3853,11 @@ player.prototype.bind = function(){
                 module.epg.show(false, true);
             }else{
                 this.show_prev_layer();
+                if (this.cur_media_item.hasOwnProperty('ad_tracking')){
+                    if (this.cur_media_item.ad_tracking.hasOwnProperty('close')){
+                        stb.advert.track(this.cur_media_item.ad_tracking['close'])
+                    }
+                }
             }
         }
     }).bind(key.EXIT, this);
