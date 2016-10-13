@@ -267,12 +267,6 @@
                     e.preventDefault();
                     $.validate();
                     $('#karaoke_form').get(0).reset();
-                    var tmp_id = $('#datatable-1 tr:last').attr('id');
-                    if (!tmp_id) {
-                        tmp_id = "tr_" + $.randString();
-                        $('#datatable-1 tr:last').attr('id', tmp_id);
-                    }
-                    $("#modalbox_ad").data('tr_id', tmp_id);
                     $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Add server'|trans }}');
                     $("#modalbox_ad input").prop("disabled", false).removeAttr('disabled').val('');
                     $("#modalbox_ad input[type='hidden']").attr('disabled', 'disabled').val('');
@@ -289,26 +283,6 @@
         }
 
         document.addEventListener("DOMContentLoaded", yelp, false);
-              
-        var manageServerList = function (obj) {
-            JSSuccessModalBox(obj);
-            $("#modalbox_ad").trigger('click');
-            $('#datatable-1').DataTable().ajax.reload();
-        };
-
-        var manageServerListError = function (obj) {
-            JSErrorModalBox(obj);
-        };
-
-        var serverListMsg = function(data){
-            notty("{{ 'Deleted'|trans }} " + (typeof(data.msg) != 'undefined'? data.msg: 0) + " {{ 'servers'|trans }} ",'success');
-            $("#modalbox_ad").trigger('click');
-            $('#datatable-1').DataTable().ajax.reload();
-        };
-
-        var serverListMsgError = function(data){
-            JSErrorModalBox(data);
-        };
 
         var setServerModal = function (data) {
             $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Edit'|trans }}');

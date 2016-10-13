@@ -126,7 +126,7 @@
                     e.stopPropagation();
                     e.preventDefault();
                     if ($("#modalbox").data('complete') && $("#modalbox").data('complete') == 1) {
-                        closeModalBox();
+                        JScloseModalBox();
                     } else {
                         for (i = 0; i < 3; i++) {
                             $('#modalbox > div').fadeTo('slow', 0.5).fadeTo('slow', 1.0);
@@ -202,42 +202,12 @@
             return item;
         }
 
-        function closeModalBox() {
-            $("#modalbox").hide();
-            $('#modalbox').find('.modal-header-name span').removeClass('txt-danger').empty();
-            $('#modalbox').find('.devoops-modal-inner').empty();
-            $('#modalbox').find('.devoops-modal-bottom').empty();
-        }
-
-        function showModalBox() {
-            $('#modalbox').find('.modal-header-name span').removeClass('txt-danger').text('{{ 'Wait'|trans }}...');
-            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Request is being processed'|trans }}...</span>');
-            $('#modalbox').find('.devoops-modal-bottom').empty();
-            $("#modalbox").show();
-        }
-
         function checkLicCountFilter(val){
             return (val == lic_count_set[$('[data-tvfilter="lic_count"]').data('filterval')]) || ($('[data-tvfilter="lic_count"]').data('filterval') == '0');
         }
 
         function checkStatusFilter(val){
             return (val.search(status_set[$('[data-tvfilter="status"]').data('filterval')]) != -1) || ($('[data-tvfilter="status"]').data('filterval') == 0);
-        }
-
-        function updateTableData(){
-            ajaxPostSend('{{ app.request.baseUrl }}/{{ app.controller_alias }}/current-list-json', {}, false, false, false);
-        }
-
-        function reDrawDataTable(data){
-            if (data.data) {
-                var newData = [];
-                $('#datatable-1').dataTable().fnClearTable();
-                for (var i in data.data) {
-                    newData.push(rowDataPrepare(data.data[i]));
-                }
-                $('#datatable-1').dataTable().fnAddData(newData);
-                $('#datatable-1').DataTable().rows().invalidate(newData).draw();
-            }
         }
 
     </script>

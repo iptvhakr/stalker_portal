@@ -278,7 +278,7 @@ class TasksController extends \Controller\BaseStalkerController {
 
     //----------------------- ajax method --------------------------------------
     
-    public function tasks_list_json(){
+    public function tasks_list_json($local_uses = FALSE){
         if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
                 return $no_auth;
@@ -289,11 +289,10 @@ class TasksController extends \Controller\BaseStalkerController {
             'data' => array(),
             'recordsTotal' => 0,
             'recordsFiltered' => 0,
-            'action' => 'setKaraokeModal',
             'table' => 'moderator_tasks'
         );
-        $error = "Error";
-        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
+        $error = $this->setLocalization("Error");
+        $param = (!empty($this->data)?$this->data: $this->postData);
         
         $like_filter = array();
         $filter = $this->getTasksFilters($like_filter);
@@ -358,6 +357,10 @@ class TasksController extends \Controller\BaseStalkerController {
         }
         
         $query_param['groupby'][] = (($response['table']!='karaoke') ? 'M_T.id':  'K.id');
+
+        if (!empty($param['taskid'])) {
+            $query_param['where'][end($query_param['groupby'])] = $param['taskid'];
+        }
         
         $response['recordsTotal'] = $this->db->getTotalRowsTasksList($query_param, TRUE);
         $response["recordsFiltered"] = $this->db->getTotalRowsTasksList($query_param);
@@ -371,12 +374,13 @@ class TasksController extends \Controller\BaseStalkerController {
         $response['data'] = array_map(function($val){
             $val['state'] = (int)$val['state']; 
             $date = new \DateTime($val['start_time']);
+            $val['RowOrder'] = "dTRow_" . $val['id'];
             $val['start_time'] =  $date->getTimestamp();
             return $val;
         }, $this->db->getTasksList($query_param));
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         $error = "";
-        if ($this->isAjax) {
+        if ($this->isAjax && !$local_uses) {
             $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
         } else {
@@ -384,7 +388,7 @@ class TasksController extends \Controller\BaseStalkerController {
         }
     }
     
-    public function tasks_report_json(){
+    public function tasks_report_json($local_uses = FALSE){
         if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
                 return $no_auth;
@@ -395,11 +399,10 @@ class TasksController extends \Controller\BaseStalkerController {
             'data' => array(),
             'recordsTotal' => 0,
             'recordsFiltered' => 0,
-            'action' => 'setKaraokeModal',
             'table' => 'moderator_tasks'
         );
-        $error = "Error";
-        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
+        $error = $this->setLocalization("Error");
+        $param = (!empty($this->data)?$this->data: $this->postData);
 
         $like_filter = array();
         $filter = $this->getTasksFilters($like_filter);
@@ -489,12 +492,13 @@ class TasksController extends \Controller\BaseStalkerController {
         $response['data'] = array_map(function($val){
             $val['state'] = (int)$val['state']; 
             $val['start_time'] = (int)  strtotime($val['start_time']); 
-            $val['end_time'] = (int)  strtotime($val['end_time']); 
+            $val['end_time'] = (int)  strtotime($val['end_time']);
+            $val['RowOrder'] = "dTRow_" . $val['id'];
             return $val;
         }, $this->db->getTasksList($query_param));
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         $error = "";
-        if ($this->isAjax) {
+        if ($this->isAjax && !$local_uses) {
             $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
         } else {
@@ -513,7 +517,7 @@ class TasksController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'manageTasks';
+        $data['action'] = 'updateTableRow';
         $data['id'] = $this->postData['taskid'];
         $error = $this->setLocalization('Error');
         
@@ -524,6 +528,10 @@ class TasksController extends \Controller\BaseStalkerController {
             $error = '';
             if ($result === 0) {
                 $data['nothing_to_do'] = TRUE;
+            }
+            $data = array_merge_recursive($data, $this->tasks_list_json(TRUE));
+            if (empty($data['data'])) {
+                $data['action'] = 'deleteTableRow';
             }
         }
         

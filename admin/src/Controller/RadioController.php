@@ -109,7 +109,7 @@ class RadioController extends \Controller\BaseStalkerController {
             }
         }
 
-        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : array());
+        $param = (!empty($this->data)?$this->data: $this->postData);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', '_'));
 

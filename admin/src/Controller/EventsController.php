@@ -234,7 +234,7 @@ class EventsController extends \Controller\BaseStalkerController {
 
         $error = "";
 
-        $param = (!empty($this->data) ? $this->data : array());
+        $param = (!empty($this->data)?$this->data: $this->postData);
 
         $query_param = $this->prepareDataTableParams($param, array( '_'));
 
@@ -414,7 +414,7 @@ class EventsController extends \Controller\BaseStalkerController {
         );
 
         $error = $this->setLocalization("Error");
-        $param = (!empty($this->data) ? $this->data : array());
+        $param = (!empty($this->data)?$this->data: $this->postData);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', '_'));
 
@@ -547,7 +547,7 @@ class EventsController extends \Controller\BaseStalkerController {
         );
 
         $error = $this->setLocalization("Error");
-        $param = (!empty($this->data) ? $this->data : array());
+        $param = (!empty($this->data)?$this->data: $this->postData);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', '_', 'next_run', 'event_trans'));
 

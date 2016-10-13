@@ -918,7 +918,6 @@ class StatisticsController extends \Controller\BaseStalkerController {
             'data' => array(),
             'recordsTotal' => 0,
             'recordsFiltered' => 0,
-            'action' => 'setKaraokeModal',
             'table' => 'moderator_tasks'
         );
         $error = "Error";
@@ -1019,7 +1018,7 @@ class StatisticsController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
         $data = array();
-        $data['action'] = 'manageClaims';
+        $data['action'] = 'updateTableData';
         /*$data['msg'] = $this->setLocalization("Well done!");*/
         $error = $this->setLocalization('Error');
 
@@ -1028,6 +1027,7 @@ class StatisticsController extends \Controller\BaseStalkerController {
             $this->db->truncateTable("media_claims");
             $this->db->truncateTable("media_claims_log");
             $error = "";
+            $data['msg'] = $this->setLocalization('Cleared all');
         } else {
             $query_params = array(
                 'select' => array('id', 'date'),
@@ -1098,6 +1098,7 @@ class StatisticsController extends \Controller\BaseStalkerController {
 
                 $this->db->deleteClaimsLogs(array('id'=>$this->getFieldFromArray($log, 'id')));
                 $error = '';
+                $data['msg'] = $this->setLocalization('Cleared');
             } else {
                 $data['msg'] = $this->setLocalization("Nothing in this category");
                 $error = '';
