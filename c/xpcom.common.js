@@ -2078,7 +2078,7 @@ function common_xpcom(){
 
             stb.load(
                 {
-                    "type"   : "advertising",
+                    "type"   : "stb",
                     "action" : "get_ad",
                     "video_mode" : stb.video_mode
                 },

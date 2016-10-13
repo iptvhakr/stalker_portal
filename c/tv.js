@@ -1937,23 +1937,19 @@
                             
                             
                             return function(){
+                                _debug('genre.id', genre.id);
 
-                                stb.advert.start(
-                                    function () {
-                                        _debug('genre.id', genre.id);
+                                if (genre.censored){
 
-                                        if (genre.censored){
-
-                                            module.tv.parent_password_promt.callback = function(){
-                                                main_menu.hide();
-                                                module.tv._show(genre);
-                                            };
-                                            module.tv.parent_password_promt.show();
-                                        }else{
-                                            main_menu.hide();
-                                            module.tv._show(genre);
-                                        }
-                                    });
+                                    module.tv.parent_password_promt.callback = function(){
+                                        main_menu.hide();
+                                        module.tv._show(genre);
+                                    };
+                                    module.tv.parent_password_promt.show();
+                                }else{
+                                    main_menu.hide();
+                                    module.tv._show(genre);
+                                }
                             }
                             
                         })(genres[i])
