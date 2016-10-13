@@ -558,13 +558,13 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
         if (!empty($data['old_skin_pos'])) {
             $data['old_skin_pos'] = $this->prepareBitMaskField($data['old_skin_pos']);
         } else {
-            $data['old_skin_pos'] = array_fill(0, 3, 0);
+            $data['old_skin_pos'] = array_fill(0, 3, FALSE);
         }
 
         if (!empty($data['smart_skin_pos'])) {
             $data['smart_skin_pos'] = $this->prepareBitMaskField($data['smart_skin_pos']);
         } else {
-            $data['smart_skin_pos'] = array_fill(0, 3, 0);
+            $data['smart_skin_pos'] = array_fill(0, 3, FALSE);
         }
 
         if (array_key_exists('status', $data)) {
