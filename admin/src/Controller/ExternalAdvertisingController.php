@@ -24,7 +24,7 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
     public function index() {
 
         if (empty($this->app['action_alias'])) {
-            return $this->app->redirect($this->app['controller_alias'] . '/verta-media-company-list');
+            return $this->app->redirect($this->app['controller_alias'] . '/company-list');
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -34,7 +34,7 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
-    public function verta_media_company_list() {
+    public function company_list() {
 
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
@@ -42,7 +42,7 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
 
         $check_register = $this->db->getRegisterRowsList(array('where' => array('A.id' => $this->app['user_id'])), 'ALL');
         if (empty($check_register)) {
-            return $this->app->redirect($this->workURL . '/' .$this->app['controller_alias'] . '/verta-media-register');
+            return $this->app->redirect($this->workURL . '/' .$this->app['controller_alias'] . '/register');
         }
 
         if (empty($this->data['filters'])) {
@@ -56,7 +56,7 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
-    public function verta_media_register(){
+    public function register(){
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
@@ -80,7 +80,7 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
         if ($this->saveRegisterData($form)) {
             if (!empty($data['submit_type'])) {
                 if ($data['submit_type'] == 'skip') {
-                    return $this->app->redirect($this->workURL . '/' . $this->app['controller_alias'] . '/verta-media-settings');
+                    return $this->app->redirect($this->workURL . '/' . $this->app['controller_alias'] . '/settings');
                 } else if ($data['submit_type'] == 'save') {
                     try {
                         \Stalker\Lib\Core\Advertising::registration($data['name'], $data['email'], $data['phone'], $data['region']);
@@ -89,7 +89,7 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
                     }
                 }
                 $this->app['breadcrumbs']->addItem($this->setLocalization('Congratulations!'));
-                return $this->app['twig']->render('ExternalAdvertising_verta_media_register_confirm.twig');
+                return $this->app['twig']->render('ExternalAdvertising_register_confirm.twig');
             }
         }
 
@@ -99,7 +99,7 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
-    public function verta_media_company_add() {
+    public function company_add() {
 
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
@@ -108,18 +108,18 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
         $form = $this->buildCompanyForm($data);
 
         if ($this->saveCompanyData($form)){
-            return $this->app->redirect($this->workURL . '/' .$this->app['controller_alias'] . '/verta-media-company-list');
+            return $this->app->redirect($this->workURL . '/' .$this->app['controller_alias'] . '/company-list');
         }
 
         $this->app['form'] = $form->createView();
 
-        $this->app['breadcrumbs']->addItem($this->setLocalization('List of companies'), $this->app['controller_alias'] . '/verta-media-company-list');
+        $this->app['breadcrumbs']->addItem($this->setLocalization('List of companies'), $this->app['controller_alias'] . '/company-list');
         $this->app['breadcrumbs']->addItem($this->setLocalization('Company add'));
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
-    public function verta_media_company_edit() {
+    public function company_edit() {
 
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
@@ -128,36 +128,36 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
         if ($this->method == 'POST' && !empty($this->postData['form']['id'])) {
             $data = $this->postData['form'];
         } else if ($this->method == 'GET' && !empty($this->data['id'])) {
-            $data = $this->verta_media_company_list_json(TRUE);
+            $data = $this->company_list_json(TRUE);
             $data = !empty($data['data']) ? $data['data'][0]:array();
         }
 
         if (empty($data)) {
-            return $this->app->redirect($this->workURL . '/' .$this->app['controller_alias'] . '/verta-media-company-add');
+            return $this->app->redirect($this->workURL . '/' .$this->app['controller_alias'] . '/company-add');
         }
 
         $form = $this->buildCompanyForm($data);
 
         if ($this->saveCompanyData($form)){
-            return $this->app->redirect($this->workURL . '/' .$this->app['controller_alias'] . '/verta-media-company-list');
+            return $this->app->redirect($this->workURL . '/' .$this->app['controller_alias'] . '/company-list');
         }
 
         $this->app['form'] = $form->createView();
 
-        $this->app['breadcrumbs']->addItem($this->setLocalization('List of companies'), $this->app['controller_alias'] . '/verta-media-company-list');
+        $this->app['breadcrumbs']->addItem($this->setLocalization('List of companies'), $this->app['controller_alias'] . '/company-list');
         $this->app['breadcrumbs']->addItem($this->setLocalization('Company edit'));
 
-        return $this->app['twig']->render("ExternalAdvertising_verta_media_company_add.twig");
+        return $this->app['twig']->render("ExternalAdvertising_company_add.twig");
     }
 
-    public function verta_media_settings(){
+    public function settings(){
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
 
         $check_register = $this->db->getRegisterRowsList(array('where' => array('A.id' => $this->app['user_id'])), 'ALL');
         if (empty($check_register)) {
-            return $this->app->redirect($this->workURL . '/' .$this->app['controller_alias'] . '/verta-media-register');
+            return $this->app->redirect($this->workURL . '/' .$this->app['controller_alias'] . '/register');
         }
 
         if ($this->method == 'POST' && array_key_exists('form', $this->postData)) {
@@ -192,7 +192,7 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
         $form = $this->buildSettingsForm($data);
 
         if($this->saveSettingsData($form)) {
-            return $this->app->redirect($this->workURL . '/' .$this->app['controller_alias'] . '/verta-media-settings');
+            return $this->app->redirect($this->workURL . '/' .$this->app['controller_alias'] . '/settings');
         }
         $this->app['form'] = $form->createView();
 
@@ -201,7 +201,7 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
 
     //----------------------- ajax method --------------------------------------
 
-    public function verta_media_company_list_json($local_use = FALSE){
+    public function company_list_json($local_use = FALSE){
         if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
                 return $no_auth;
@@ -284,7 +284,7 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
             if ($result === 0) {
                 $data['nothing_to_do'] = TRUE;
             }
-            $data = array_merge_recursive($data, $this->verta_media_company_list_json(TRUE));
+            $data = array_merge_recursive($data, $this->company_list_json(TRUE));
         }
 
         $response = $this->generateAjaxResponse($data, $error);
@@ -339,7 +339,7 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
         if (count($registration) != 4) {
             $data['msg'] = '<div class="col-md-12">'.
                 '<span class="col-md-12 txt-default">'. $this->setLocalization('The registration data are incomplete. To edit data please go to the link: ').
-                    '<a href="' . $this->workURL . '/' .$this->app['controller_alias'] . '/verta-media-register?id=' . $this->postData['owner'] . '">' .
+                    '<a href="' . $this->workURL . '/' .$this->app['controller_alias'] . '/register?id=' . $this->postData['owner'] . '">' .
                         $this->setLocalization('edit register data') .
                     '</a>' .
                 '</span>'.

@@ -6,7 +6,7 @@
     <div id="iptv_list">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/verta-media-company-add" class="btn btn-success green pull-right">{{ 'Add company'|trans }}</a>
+                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/company-add" class="btn btn-success green pull-right">{{ 'Add company'|trans }}</a>
             </div>
         </div>
         <div class="row">
@@ -48,7 +48,7 @@
                 "processing": true,
                 "serverSide": true,
                 "ajax" : {
-                    "url" : "{{ app.request.baseUrl }}/{{ app.controller_alias }}/verta-media-company-list-json"
+                    "url" : "{{ app.request.baseUrl }}/{{ app.controller_alias }}/company-list-json"
                 },
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
@@ -105,7 +105,7 @@
 
         function rowDataPrepare(item){
 
-            item.name = "<a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/verta-media-company-edit?id=" + item.id + "'>" + item.name + "</a>";
+            item.name = "<a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/company-edit?id=" + item.id + "'>" + item.name + "</a>";
 
             item.operations = "<div class='col-xs-3 col-sm-8'>\n\
                                     <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
@@ -113,7 +113,7 @@
                                     </a>\n\
                                     <ul class='dropdown-menu pull-right'>\n\
                                         <li>\n\
-                                            <a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/verta-media-company-edit?id=" + item.id + "'>\n\
+                                            <a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/company-edit?id=" + item.id + "'>\n\
                                                 <span>{{ 'Edit'|trans }}</span>\n\
                                             </a>\n\
                                         </li>\n\

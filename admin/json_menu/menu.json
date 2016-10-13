@@ -408,12 +408,12 @@
         "action": {
             "1": {
                 "name": _("List of companies"),
-                "alias": "verta-media-company-list",
+                "alias": "company-list",
                 "icon": ""
             },
             "2": {
                 "name": _("Settings"),
-                "alias": "verta-media-settings",
+                "alias": "settings",
                 "icon": ""
             }
         }
