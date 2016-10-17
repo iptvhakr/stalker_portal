@@ -147,7 +147,12 @@ foreach ($installed_apps as $app) {
             $app['config']['options'] = $options;
         }
 
-        $app['config']['dependencies'] = $app_manager->getFullAppDependencies($app['id']);
+        try{
+            $app['config']['dependencies'] = $app_manager->getFullAppDependencies($app['id']);
+        }catch (SmartLauncherAppsManagerException $e){
+            error_log($e->getMessage());
+            continue;
+        }
 
         if ($app['localization']){
 
