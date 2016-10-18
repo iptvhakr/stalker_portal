@@ -4,6 +4,7 @@ use Stalker\Lib\Core\Mysql;
 use Stalker\Lib\Core\Stb;
 use Stalker\Lib\Core\Config;
 use Stalker\Lib\Core\Cache;
+use Stalker\Lib\Core\Advertising;
 
 /**
  * Main VOD class.
@@ -146,30 +147,37 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
 
         $vclub_ad = new VclubAdvertising();
 
-        //todo: ad
+        $advertising = new Advertising();
+        $advert = $advertising->getAd();
 
         if (!$disable_ad && empty($link['error'])){
 
             $video = Video::getById($media_id);
 
-            $picked_ad = $vclub_ad->getOneWeightedRandom($video['category_id']);
+            if ($advert){
+                //todo: ad
+            }else{
 
-            if (!empty($picked_ad)){
+                $picked_ad = $vclub_ad->getOneWeightedRandom($video['category_id']);
 
-                $link['cmd'] = $_REQUEST['cmd'];
+                if (!empty($picked_ad)){
 
-                $link = array(
-                    array(
-                        'id'    => 0,
-                        'ad_id' => $picked_ad['id'],
-                        'ad_must_watch' => $picked_ad['must_watch'],
-                        'type'  => 'ad',
-                        'cmd'   => $picked_ad['url'],
-                        'subtitles' => $subtitles
-                    ),
-                    $link
-                );
+                    $link['cmd'] = $_REQUEST['cmd'];
+
+                    $link = array(
+                        array(
+                            'id'    => 0,
+                            'ad_id' => $picked_ad['id'],
+                            'ad_must_watch' => $picked_ad['must_watch'],
+                            'type'  => 'ad',
+                            'cmd'   => $picked_ad['url'],
+                            'subtitles' => $subtitles
+                        ),
+                        $link
+                    );
+                }
             }
+
         }
 
         var_dump($link);
