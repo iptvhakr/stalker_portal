@@ -596,7 +596,7 @@ class SmartLauncherAppsManager
             if ($range->satisfiedBy(new SemVer($dep_app['current_version']))){
                 //$full_dependencies[$package] = '../../../'.($dep_app['type'] == 'plugin' ? 'plugins/' : '').$package.'/'.$dep_app['current_version'].'/';
                 $full_dependencies[$package] = $dep_app['current_version'];
-            }else{
+            }elseif(!$dep_app['is_unique']){
                 $dep_app_path = realpath(PROJECT_PATH.'/../../'
                     .Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/')
                     .($app['type'] == 'plugin' ? 'plugins/' : '')
@@ -626,6 +626,8 @@ class SmartLauncherAppsManager
                 }
 
                 $full_dependencies[$package] = $max_version;
+            }else{
+                throw new SmartLauncherAppsManagerException('Unresolved dependency '.$dep_app['alias'].' for '.$app['alias']);
             }
 
         }
