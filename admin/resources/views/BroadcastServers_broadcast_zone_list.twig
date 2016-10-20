@@ -108,17 +108,6 @@
         }
 
         document.addEventListener("DOMContentLoaded", yelp, false);
-              
-        var manageZoneList = function (obj) {
-            $('#datatable-1').DataTable().ajax.reload();
-        };
-        
-        var zoneListMsg = function(data){
-            if (typeof(data.msg) != 'undefined' && data.msg) {
-                notty("{{ 'Deleted'|trans }} " + data.msg.Zone + " {{ 'zone for'|trans }} " + data.msg.Countries + " {{ 'countries'|trans }}","success");
-            }
-            manageZoneList(data);
-        }
-        
+
     </script>
 {% endblock %}

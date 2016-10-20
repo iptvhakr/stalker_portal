@@ -113,7 +113,7 @@ class AdminPanelEvents extends SysEvent {
 
     public function set_event_send_msg() {
         if (array_key_exists('msg', $this->postData) && array_key_exists('header', $this->postData)) {
-            if (!empty($this->postData['need_reboot'])) {
+            if (!empty($this->postData['reboot_after_ok'])) {
                 $this->sendMsgAndReboot($this->postData['msg'], $this->postData['header']);
             } else {
                 $this->sendMsg($this->postData['msg'], $this->postData['header']);

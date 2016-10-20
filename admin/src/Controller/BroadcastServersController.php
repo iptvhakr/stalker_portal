@@ -131,7 +131,7 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
 
     //----------------------- ajax method --------------------------------------
     
-    public function broadcast_servers_list_json() {
+    public function broadcast_servers_list_json($local_uses = FALSE) {
         if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
                 return $no_auth;
@@ -148,7 +148,7 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
         $filds_for_select = $this->getServersFields();
                 
         $error = $this->setLocalization("Error");
-        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
+        $param = (!empty($this->data)?$this->data: $this->postData);
 
         $like_filter = array();
         $filter = $this->getStatisticsFilters($like_filter);
@@ -187,11 +187,14 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
         
         $query_param['select'][] = 'stream_zone';
         
-        $response["data"] = $this->db->getServersList($query_param);
+        $response["data"] =  array_map(function($row){
+            $row['RowOrder'] = "dTRow_" . $row['id'];
+            return $row;
+        }, $this->db->getServersList($query_param));
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         
         $error = "";
-        if ($this->isAjax) {
+        if ($this->isAjax && !$local_uses) {
             $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
         } else {
@@ -239,7 +242,10 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
             $query_param['limit']['limit'] = FALSE;
         }
         
-        $response["data"] = $this->db->getZoneList($query_param);
+        $response["data"] = array_map(function($row){
+            $row['RowOrder'] = "dTRow_" . $row['id'];
+            return $row;
+        }, $this->db->getZoneList($query_param));
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         
         $error = "";
@@ -261,10 +267,20 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'zoneListMsg';
-        $data['msg'] = array('Zone' => $this->db->deleteZone($this->postData['id']), 'Countries' => $this->db->deleteCountriesInZone($this->postData['id']));
+        $data['action'] = 'deleteTableRow';
+        $data['id'] = $this->postData['id'];
 
-        $error = '';
+        $error = $this->setLocalization('Failed');
+
+        $result_zone = $this->db->deleteZone($this->postData['id']);
+        $result_countries = $this->db->deleteCountriesInZone($this->postData['id']);
+        if (is_numeric($result_zone) && is_numeric($result_countries)) {
+            $error = '';
+            if (($result_zone + $result_countries) === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
+            $data['msg'] = $this->setLocalization("Deleted {rslt_zn} zone for {rslt_cntrs} countries", '', TRUE, array('{rslt_zn}' => $result_zone, '{rslt_cntrs}' => $result_countries));
+        }
 
         $response = $this->generateAjaxResponse($data, $error);
 
@@ -281,10 +297,18 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'serverListMsg';
-        $data['msg'] = $this->db->deleteServers($this->postData['id']);
+        $data['action'] = 'deleteTableRow';
+        $data['id'] = $this->postData['id'];
+        $error = $this->setLocalization('Failed');
 
-        $error = '';
+        $result = $this->db->deleteServers($this->postData['id']);
+        if (is_numeric($result)) {
+            $error = '';
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
+            $data['msg'] = $this->setLocalization('Deleted') . ': ' . $result;
+        }
 
         $response = $this->generateAjaxResponse($data, $error);
 
@@ -302,10 +326,21 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'manageServerList';
+        $data['action'] = 'updateTableData';
         $data['id'] = $this->postData['id'];
-        $this->db->updateServers(array('status' => (int)(!((bool) $this->postData['status']))), $this->postData['id']);
-        $error = '';    
+        $error = $this->setLocalization('Failed');
+
+        $result = $this->db->updateServers(array('status' => (int)(!((bool) $this->postData['status']))), $this->postData['id']);
+        if (is_numeric($result)) {
+            $error = '';
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
+            $data = array_merge_recursive($data, $this->broadcast_servers_list_json(TRUE));
+            $data['action'] = 'updateTableRow';
+            $data['msg'] = $this->setLocalization('Changed');
+        }
+
         $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
@@ -322,7 +357,7 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
         }
         
         $data = array();
-        $data['action'] = 'manageServerList';
+        $data['action'] = 'updateTableData';
         $item = array($this->postData);
         $error = $this->setLocalization('error');
         if (empty($this->postData['id'])) {
@@ -339,6 +374,14 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
                 $error = '';
                 if ($result === 0) {
                     $data['nothing_to_do'] = TRUE;
+                }
+                if ($operation == 'updateServers') {
+                    $data = array_merge_recursive($data, $this->broadcast_servers_list_json(TRUE));
+                    $data['action'] = 'updateTableRow';
+                    $data['id'] = $this->postData['id'];
+                    $data['msg'] = $this->setLocalization('Changed');
+                } else {
+                    $data['msg'] = $this->setLocalization('Saved');
                 }
             }
         } else {

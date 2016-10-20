@@ -51,6 +51,12 @@
                         var favorites =json.data[i].favorites;
                         var login =json.data[i].login;
 
+                        if ($("#s2_filter").length != 0 ) {
+                            if ($("#s2_filter option[value='" + id + "']").length == 0) {
+                                $("#s2_filter").append('<option value="' + id + '" data-filter-descriprion="' + json.data[i].filter_set + '">' + json.data[i].title + '</option>');
+                            }
+                        }
+
                         json.data[i].login = '<a href="#">' + json.data[i].login + '</a>';
                         json.data[i].title = '<a href="{{ app.request.baseUrl }}/users/users-list?filter_set='+ id +'">' + json.data[i].title + '</a>';
                         json.data[i].for_all = (json.data[i].for_all ? "{{ 'For all'|trans }}": "{{ 'Only for'|trans }} " + login);
@@ -113,27 +119,9 @@
                 $(document).on('click', "a.main_ajax[disabled!='disabled']", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
-                    $("#modalbox").data('complete', 0);
-                    showModalBox();
                     var sendData = $(this).data();
                     ajaxPostSend($(this).attr('href'), sendData, false, false, true);
                     $(this).closest('div.open').removeClass('open');
-                    return false;
-                });
-
-                $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
-                    if (e.currentTarget != e.target) {
-                        return;
-                    }
-                    e.stopPropagation();
-                    e.preventDefault();
-                    if ($("#modalbox").data('complete') && $("#modalbox").data('complete') == 1) {
-                        closeModalBox();
-                    } else {
-                        for(i=0;i<3;i++) {
-                            $('#modalbox > div').fadeTo('slow', 0.5).fadeTo('slow', 1.0);
-                        }
-                    }
                     return false;
                 });
 
@@ -164,32 +152,6 @@
         }
 
         document.addEventListener("DOMContentLoaded", yelp, false);
-              
-        var manageList = function (obj) {
-            /*notty('<span>{{ 'Finish'|trans }}!</span>','success');*/
-            JSSuccessModalBox(obj);
-            $('#datatable-1').DataTable().ajax.reload();
-        };
-
-        var manageListError = function (obj) {
-            JSErrorModalBox(obj);
-        };
-
-        function closeModalBox(){
-            $("#modalbox").hide();
-            $('#modalbox').find('.modal-header-name span').empty();
-            $('#modalbox').find('.devoops-modal-inner').empty();
-            $('#modalbox').find('.devoops-modal-bottom').empty();
-        }
-        
-        function showModalBox(){
-			notty('<span>{{ 'Request is being processed'|trans }}...</span>','notification');
-        }
-
-
-        var errAction = function(){
-            notty('<span>{{ 'Failed'|trans }}!</span>','error');
-        };
 
     </script>
 {% endblock %}

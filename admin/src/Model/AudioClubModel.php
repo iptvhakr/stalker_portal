@@ -310,7 +310,7 @@ class AudioClubModel extends \Model\BaseStalkerModel {
     }
     
     public function updateAudioAlbum($param, $id){
-        return $this->mysqlInstance->update('audio_albums', $param, array('id'=>$id))->total_rows() || 1;
+        return $this->mysqlInstance->update('audio_albums', $param, array('id'=>$id))->total_rows();
     }
     
     public function getAudioAlbum($id){
@@ -358,7 +358,7 @@ class AudioClubModel extends \Model\BaseStalkerModel {
     
     public function updateAlbumsComposition($param, $where){
         $where = (is_array($where)? $where: array('id'=>$where));
-        return $this->mysqlInstance->update('audio_compositions', $param, $where)->total_rows() || 1;
+        return $this->mysqlInstance->update('audio_compositions', $param, $where)->total_rows();
     }
     
     public function insertAlbumsComposition($param){

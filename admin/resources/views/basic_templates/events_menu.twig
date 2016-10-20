@@ -168,7 +168,7 @@
                                 <div class=" col-xs-10 col-sm-6">
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" value="1" name="need_reboot">
+                                            <input type="checkbox" value="1" name="reboot_after_ok">
                                             <i class="fa fa-square-o small"></i>
                                         </label>
                                     </div>
@@ -290,7 +290,8 @@
 
 <script type="text/javascript" defer>
 
-    var select2Opt = {minimumResultsForSearch: -1, dropdownAutoWidth: false, width: '100%'};
+    var select2Opt = {minimumResultsForSearch: -1, dropdownAutoWidth: false, width: '100%'}
+    var no_table_operations = true;
 
     var conf = {
         form: '#form_',
@@ -301,6 +302,7 @@
         modules: 'jsconf, date',
         onSuccess: function () {
             var formData = $("#modalbox_ad form").serialize();
+            formData['no_table_operations'] = no_table_operations;
             ajaxPostSend("{{app.request.baseUrl}}/events/add-event", formData);
             $("#modalbox_ad form").get(0).reset();
             return false;
@@ -343,8 +345,11 @@
         return true;
     }
 
-    function eventsMenuHandlers() {
+    function eventsMenuHandlers(events_page) {
 
+        if (typeof (events_page) !== 'undefind' && events_page) {
+            no_table_operations = false;
+        }
         $.validate(conf);
 
         LoadSelect2Script(DemoSelect2);
@@ -450,27 +455,6 @@
         });
         return false;
     }
-
-    var addEvent = function (data) {
-        JSSuccessModalBox(data);
-        $('#datatable-1').dataTable().fnReloadAjax();
-        $('#modalbox_ad').click();
-    };
-    var addEventError = function (data) {
-        JSErrorModalBox(data);
-        $('#datatable-1').dataTable().fnReloadAjax();
-        $('#modalbox_ad').click();
-    };
-    var addAddressList = function (data) {
-        var msg = '';
-        if (typeof(data) != 'undefined') {
-            msg = (typeof(data.msg) != 'undefined' ? data.msg : '');
-        }
-        notty('<span>' + words['Done'] + '! ' + msg + '</span>', 'success');
-    };
-    var addAddressListError = function (data) {
-        JSErrorModalBox(data);
-    };
 </script>
 {% if attribute(app, 'messagesTemplates') is defined and app.messagesTemplates|length> 0%}
     {% for item in app.messagesTemplates %}

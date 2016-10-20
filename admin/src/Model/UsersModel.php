@@ -243,8 +243,8 @@ class UsersModel extends \Model\BaseStalkerModel {
         return $this->mysqlInstance->count()->from('users')->where($params)->get()->counter();
     }
     
-    public function checkConsoleName($name) {
-        return $this->mysqlInstance->count()->from('stb_groups')->where(array('name' => $name))->get()->counter();
+    public function checkConsoleName($params = array()) {
+        return $this->mysqlInstance->count()->from('stb_groups')->where($params)->get()->counter();
     }
     
     public function deleteConsoleItem($param){
@@ -280,6 +280,7 @@ class UsersModel extends \Model\BaseStalkerModel {
             $this->mysqlInstance->join('users', 'user_log.uid', 'users.id', 'LEFT');
         }
 
+        $this->mysqlInstance->select(array('user_log.id as id'));
         $this->mysqlInstance->select(array('users.mac as user_mac'));
 
         $this->mysqlInstance->select(array('user_log.type as type'));

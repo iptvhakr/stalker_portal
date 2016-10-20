@@ -86,34 +86,14 @@
                     $('#modalbox button[type="submit"]').attr("disabled", "disabled");
                     if (regExp.test(mac_val)) {
                         $('#modalbox button[type="submit"]').removeAttr("disabled");
-                        $.ajax({
-                            url: 'users/check-console-item',
-                            type: 'POST',
-                            data: {mac: mac_val, uid: $('#modalbox input[name="uid"]').val()},
-                            success: function (data) {
-                                if (data.success) {
-                                    $('#modalbox button[type="submit"]').removeAttr("disabled");
-                                    _this.next('div').append('<i class="txt-success fa fa-check"></i> ' + data.chk_rezult).css('visibility', 'visible');
-                                } else if (data.error) {
-                                    $('#modalbox button[type="submit"]').attr("disabled", "disabled");
-                                    console.log(data.error);
-                                } else {
-                                    $('#modalbox button[type="submit"]').removeAttr("disabled");
-                                    console.log("{{ 'Some server error'|trans }}");
-                                }
-                            },
-                            error: function (data) {
-                                if (typeof (data.responseJSON) != 'undefined' && typeof (data.responseJSON.error) != 'undefined') {
-                                    $('#modalbox button[type="submit"]').attr("disabled", "disabled");
-                                    _this.next('div').append('<i class="txt-danger fa fa-ban"></i> ' + data.responseJSON.error).css('visibility', 'visible');
-                                } else {
-                                    $('#modalbox button[type="submit"]').removeAttr("disabled");
-                                    console.log("{{ 'Some network error or access denied'|trans }}");
-                                }
-                            },
-                            dataType: "json",
-                            async: false
-                        });
+
+                        var sendData = {
+                            mac: mac_val,
+                            uid: $('#modalbox input[name="uid"]').val()
+                        };
+
+                        ajaxPostSend("{{ app.request.baseUrl }}/{{ app.controller_alias }}/check-console-item", sendData, false, false);
+
                     } else {
                         _this.next('div').append('<i class="txt-danger fa fa-ban"></i> {{ 'Enter the MAC-address according to the format'|trans }}').css('visibility', 'visible');
                     }

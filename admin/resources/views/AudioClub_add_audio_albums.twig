@@ -468,12 +468,6 @@
                 $("#add_track").on("click", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
-                    var tmp_id = $('#datatable-1 tr:last').attr('id');
-                    if (!tmp_id) {
-                        tmp_id = "tr_" + $.randString();
-                        $('#datatable-1 tr:last').attr('id', tmp_id);
-                    }
-                    $("#modalbox_ad").data('tr_id', tmp_id);
 
                     $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Add track'|trans }}');
                     $("#modalbox_ad input").prop("disabled", false).removeAttr('disabled').val('');
@@ -559,8 +553,8 @@
                     $("#modalbox_ad input[name='" + field_name + "']").val(row[field_name]);
                 }
                 $("#modalbox_ad select[name='language_id'] option").each(function () {
-                    $(this).attr('selected', $(this).val().toString() == data.data[0]['language_id'].toString());
-                })
+                    $(this).prop('selected', $(this).val().toString() == data.data[0]['language_id'].toString());
+                });
             }
             $("#modalbox_ad input").removeAttr('disabled');
             $('#s2_track_lang').select2(select2Opt);
@@ -574,11 +568,11 @@
         };
 
         var setCompositionModalError = function (data) {
-            alert('Error no data');
+            JSErrorModalBox(data);
         };
 
         var audioTracksManage = function () {
-            $("#modalbox_ad").click();
+            JScloseModalBox();
             $('#datatable-1').DataTable().ajax.reload();
         };
 
@@ -593,9 +587,6 @@
             JSErrorModalBox(data);
         };
 
-        var closeModalBox = function(){
-            JScloseModalBox();
-        };
     </script>
 
 {% endblock %}

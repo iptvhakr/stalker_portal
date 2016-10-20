@@ -206,17 +206,17 @@ class EventsController extends \Controller\BaseStalkerController {
 
     //----------------------- ajax method --------------------------------------
 
-    public function events_list_json(){
-        $response = array(
-            'data' => array(),
-            'recordsTotal' => 0,
-            'recordsFiltered' => 0
-        );
+    public function events_list_json($local_uses = FALSE) {
         if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
                 return $no_auth;
             }
         }
+        $response = array(
+            'data' => array(),
+            'recordsTotal' => 0,
+            'recordsFiltered' => 0
+        );
         $filds_for_select = array(
             'events_id' => "events.`id` as `events_id`",
             'addtime' => "CAST(events.`addtime` AS CHAR) as `addtime`",
@@ -234,7 +234,7 @@ class EventsController extends \Controller\BaseStalkerController {
 
         $error = "";
 
-        $param = (!empty($this->data) ? $this->data : array());
+        $param = (!empty($this->data)?$this->data: $this->postData);
 
         $query_param = $this->prepareDataTableParams($param, array( '_'));
 
@@ -262,7 +262,11 @@ class EventsController extends \Controller\BaseStalkerController {
             $query_param['limit']['limit'] = FALSE;
         }
 
-        $response['data'] = $this->db->getEventsList($query_param);
+        $response['data'] = array_map(function($row){
+            $row['RowOrder'] = "dTRow_" . $row['events_id'];
+            return $row;
+        }, $this->db->getEventsList($query_param));
+
         $allevents = $this->formEvent;
         $allevents = array_combine($this->getFieldFromArray($allevents, 'id'), $this->getFieldFromArray($allevents, 'title'));
 
@@ -294,7 +298,7 @@ class EventsController extends \Controller\BaseStalkerController {
         }, $response['data']);
 
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
-        if ($this->isAjax) {
+        if ($this->isAjax && !$local_uses) {
             $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
         } else {
@@ -312,7 +316,7 @@ class EventsController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'addEvent';
+        $data['action'] = 'updateTableData';
         $data['msg'] = $this->setLocalization('Added') . ' ' . $this->setLocalization('for'). ' ';
         $error = $this->setLocalization('Error. Event has not been added.');
 
@@ -381,17 +385,23 @@ class EventsController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'cleanEvents';
+        $data['action'] = 'updateTableData';
         $result = $this->postData['uid'] == 'all' ? $this->db->deleteAllEvents() : $this->db->deleteEventsByUID($this->postData['uid']);
-        $data['msg'] = $this->setLocalization('Deleted') . ' ' . (is_numeric($result)? $result: $this->setLocalization($result)) . ' ' . $this->setLocalization('events');
-        $error = '';
+
+        if (!is_bool($result)) {
+            $data['msg'] = $this->setLocalization('Deleted') . ' ' . (is_numeric($result)? $result: $this->setLocalization((string)$result)) . ' ' . $this->setLocalization('events');
+            $error = '';
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
+        }
 
         $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
 
-    public function message_templates_list_json(){
+    public function message_templates_list_json($local_uses = FALSE){
         if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
                 return $no_auth;
@@ -404,7 +414,7 @@ class EventsController extends \Controller\BaseStalkerController {
         );
 
         $error = $this->setLocalization("Error");
-        $param = (!empty($this->data) ? $this->data : array());
+        $param = (!empty($this->data)?$this->data: $this->postData);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', '_'));
 
@@ -434,14 +444,14 @@ class EventsController extends \Controller\BaseStalkerController {
         $response['data'] = array_map(function($row){
             $row['created'] = (int)strtotime($row['created']) * 1000;
             $row['edited'] = (int)strtotime($row['edited']) * 1000;
+            $row['RowOrder'] = "dTRow_" . $row['id'];
             return $row;
         }, $this->db->getMsgTemplates($query_param));
 
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         $error = '';
 
-        if ($this->isAjax) {
-
+        if ($this->isAjax && !$local_uses) {
             $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
         } else {
@@ -459,7 +469,7 @@ class EventsController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'manageList';
+        $data['action'] = 'updateTableData';
         $error = $this->setLocalization('Not enough data');
 
         $tpl_data['params'] = $this->postData['msg_tpl'];
@@ -479,8 +489,11 @@ class EventsController extends \Controller\BaseStalkerController {
         $return_id = 0;
         if ($return_id = call_user_func_array(array($this->db, $operation."MsgTemplate"), $tpl_data)) {
             $error = '';
-            if ($operation == 'insert') {
-                $data['return_id'] = $return_id;
+            if ($operation != 'insert')  {
+                $this->postData['id'] = $tpl_data['id'];
+                $data = array_merge_recursive($data, $this->message_templates_list_json(TRUE));
+                $data['action'] = 'updateTableRow';
+                $data['id'] = $tpl_data['id'];
             }
         } else {
             $data['msg'] = $this->setLocalization('Nothing to do');
@@ -503,11 +516,16 @@ class EventsController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'manageList';
+        $data['action'] = 'deleteTableRow';
+        $data['id'] = $this->postData['id'];
         $error = $this->setLocalization('Failed');
 
-        if ($error = $this->db->deleteMsgTemplate($this->postData['id'])) {
+        $result = $this->db->deleteMsgTemplate($this->postData['id']);
+        if (is_numeric($result)) {
             $error = '';
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
         }
 
         $response = $this->generateAjaxResponse($data, $error);
@@ -515,7 +533,7 @@ class EventsController extends \Controller\BaseStalkerController {
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
 
-    public function event_scheduler_list_json(){
+    public function event_scheduler_list_json($local_uses = FALSE) {
 
         if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
@@ -529,7 +547,7 @@ class EventsController extends \Controller\BaseStalkerController {
         );
 
         $error = $this->setLocalization("Error");
-        $param = (!empty($this->data) ? $this->data : array());
+        $param = (!empty($this->data)?$this->data: $this->postData);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', '_', 'next_run', 'event_trans'));
 
@@ -625,13 +643,15 @@ class EventsController extends \Controller\BaseStalkerController {
             if (!empty($recipient) && is_array($recipient)) {
                 $row = array_merge($row, (array)$recipient);
             }
+            settype($row['reboot_after_ok'], 'int');
+            $row['RowOrder'] = "dTRow_" . $row['id'];
             return $row;
         }, $this->db->getScheduleEvents($query_param));
 
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         $error = '';
 
-        if ($this->isAjax) {
+        if ($this->isAjax && !$local_uses) {
             if (!empty($response['data']) && !empty($this->postData['id'])) {
                 $response['data'][0] = array_merge($response['data'][0], array_map(function($row){
                     return is_numeric($row) ? str_pad((string) $row, 2, '0', STR_PAD_LEFT) : $row;
@@ -659,7 +679,7 @@ class EventsController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'addEvent';
+        $data['action'] = 'updateTableData';
         $error = $this->setLocalization('Not enough data');
 
         $from_db = array_flip($this->getFieldFromArray($this->db->getTableFields('schedule_events'), 'Field'));
@@ -669,7 +689,7 @@ class EventsController extends \Controller\BaseStalkerController {
         $form_post['recipient'] = $this->$recipient_func($form_post);
         $form_post['periodic'] = (int)str_replace('schedule_type_', '', $form_post['type']) - 1;
         $form_post['state'] = 1;
-        $form_post['reboot_after_ok'] = (int)(!empty($form_post['need_reboot']) && (string)$form_post['need_reboot'] != 'false' && (string)$form_post['need_reboot'] != 'off' && (string)$form_post['need_reboot'] != 'false' && (string)$form_post['need_reboot'] != '0');
+        $form_post['reboot_after_ok'] = (int)(!empty($form_post['reboot_after_ok']) && (string)$form_post['reboot_after_ok'] != 'false' && (string)$form_post['reboot_after_ok'] != 'off' && (string)$form_post['reboot_after_ok'] != '0');
 
         if (array_key_exists('month', $form_post)) {
             $form_post['month'] = (int)$form_post['month'];
@@ -704,6 +724,7 @@ class EventsController extends \Controller\BaseStalkerController {
             $operation = 'update';
             $params[] = array_replace($from_db, array_intersect_key($form_post, $from_db));
             $params[] = $id;
+
         } else {
             $operation = 'insert';
             $params[] = array_replace($from_db, array_intersect_key($form_post, $from_db));
@@ -716,9 +737,13 @@ class EventsController extends \Controller\BaseStalkerController {
             if ($result === 0) {
                 $data['nothing_to_do'] = TRUE;
                 $data['msg'] = $this->setLocalization('Nothing to do');
+            } elseif ($operation != 'insert')  {
+                $this->postData['id'] = $id;
+                $data = array_merge_recursive($data, $this->event_scheduler_list_json(TRUE));
+                $data['action'] = 'updateTableRow';
+                $data['id'] = $id;
             }
         }
-
 
         $response = $this->generateAjaxResponse($data, $error);
 
@@ -735,11 +760,20 @@ class EventsController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'addEvent';
-        $error = $this->setLocalization('Nothing to do');
+        $data['action'] = 'updateTableRow';
+        $data['id'] = $this->postData['id'];
+        $error = $this->setLocalization('Failed');;
 
-        if ($this->db->updateScheduleEvents(array('state' => !((int)$this->postData['state'])), $this->postData['id'])){
+        $result = $this->db->updateScheduleEvents(array('state' => !((int)$this->postData['state'])), $this->postData['id']);
+
+        if (is_numeric($result)) {
             $error = '';
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            } else {
+                $data = array_merge_recursive($data, $this->event_scheduler_list_json(TRUE));
+                $data['action'] = 'updateTableRow';
+            }
         }
 
         $response = $this->generateAjaxResponse($data, $error);
@@ -758,11 +792,16 @@ class EventsController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'addEvent';
+        $data['action'] = 'deleteTableRow';
+        $data['id'] = $this->postData['id'];
         $error = $this->setLocalization('Not enough data');
 
-        if ($this->db->deleteScheduleEvents($this->postData['id'])){
+        $result = $this->db->deleteScheduleEvents($this->postData['id']);
+        if (is_numeric($result)) {
             $error = '';
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
         }
 
         $response = $this->generateAjaxResponse($data, $error);
