@@ -155,7 +155,18 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
             $video = Video::getById($media_id);
 
             if ($advert){
-                //todo: ad
+
+                $link = array(
+                    array(
+                        'id'          => 0,
+                        'media_type'  => 'advert',
+                        'cmd'         => $advert['ad'],
+                        'is_advert'   => true,
+                        'ad_tracking' => $advert['tracking']
+                    ),
+                    $link
+                );
+
             }else{
 
                 $picked_ad = $vclub_ad->getOneWeightedRandom($video['category_id']);
@@ -166,12 +177,12 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
 
                     $link = array(
                         array(
-                            'id'    => 0,
-                            'ad_id' => $picked_ad['id'],
+                            'id'            => 0,
+                            'ad_id'         => $picked_ad['id'],
                             'ad_must_watch' => $picked_ad['must_watch'],
-                            'type'  => 'ad',
-                            'cmd'   => $picked_ad['url'],
-                            'subtitles' => $subtitles
+                            'media_type'    => 'vclub_ad',
+                            'cmd'           => $picked_ad['url'],
+                            'subtitles'     => $subtitles
                         ),
                         $link
                     );

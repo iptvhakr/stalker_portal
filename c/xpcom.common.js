@@ -2096,9 +2096,10 @@ function common_xpcom(){
                         stb.player.play({
                             'id': 0,
                             'cmd': result.ad,
-                            'type': 'ad',
+                            'media_type': 'advert',
                             'is_advert': true,
                             'ad_tracking': result.tracking,
+                            'ad_must_watch' : result.ad_must_watch,
                             'stop_callback': callback
 
                         });
@@ -2114,7 +2115,6 @@ function common_xpcom(){
 
         track : function (urls) {
             _debug('stb.advert.track', urls);
-_debug('------------------------------------------');
 
             if (!Array.isArray(urls)){
                 return false;
