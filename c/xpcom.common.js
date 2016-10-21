@@ -1165,6 +1165,8 @@ function common_xpcom(){
 
                 this.profile['ts_enable_icon'] = parseInt(this.profile['ts_enable_icon'], 10);
 
+                stb.advert.config = this.user['config'] || {};
+
                 if (!this.user['update_url']){
                     try{
                         this.user['update_url'] = stb.RDir('getenv update_url').clearnl();
@@ -2071,10 +2073,13 @@ function common_xpcom(){
     this.advert = {
 
         current : {},
+        config : {},
         ticking_timeout : 0,
 
         start : function (callback) {
             _debug('stb.advert.get_ad');
+
+            stb.key_lock = true;
 
             stb.load(
                 {
@@ -2085,7 +2090,20 @@ function common_xpcom(){
                 function (result) {
                     _debug('on get_ad', result);
 
+                    stb.key_lock = false;
+
                     this.current = result;
+
+                    if (result && result.config) {
+                        this.config = result.config;
+                    }
+
+                    _debug('this.config', this.config);
+
+                    if (this.config.hasOwnProperty('places') && this.config['places'].hasOwnProperty('before_app') && this.config['places']['before_app'] == 0){
+                        callback();
+                        return;
+                    }
 
                     if (result && result.ad) {
 
