@@ -554,7 +554,11 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
                 if ($version === FALSE || $version == $row['version']) {
                     /*$row['published'] = (int)strtotime($row['published']);*/
                     $row['published'] = $row['published'] < 0 ? 0 : $row['published'];
-                    $row['conflicts'] = $apps_list->getConflicts($id, $row['version']);
+                    try{
+                        $row['conflicts'] = $apps_list->getConflicts($id, $row['version']);
+                    }catch (\Exception $e){
+                        $row['error'] = $e->getMessage();
+                    }
                     return $row;
                 }
             }, $app['versions'])));

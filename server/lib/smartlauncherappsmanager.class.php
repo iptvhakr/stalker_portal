@@ -635,6 +635,12 @@ class SmartLauncherAppsManager
         return $full_dependencies;
     }
 
+    /**
+     * @param $app_id
+     * @param null $version
+     * @return array
+     * @throws SmartLauncherAppsManagerException
+     */
     public function getConflicts($app_id, $version = null) {
 
         $app = $original_app = Mysql::getInstance()->from('launcher_apps')->where(array('id' => $app_id))->get()->first();
