@@ -502,7 +502,7 @@ class SmartLauncherAppsManager
         return $app_localizations;
     }
 
-    public function addApplication($url, $autoinstall = false, $skip_info_check = false){
+    public function addApplication($url, $autoinstall = false, $skip_info_check = false, $version = null){
 
         $app = Mysql::getInstance()->from('launcher_apps')->where(array('url' => $url))->get()->first();
 
@@ -516,7 +516,7 @@ class SmartLauncherAppsManager
         ))->insert_id();
 
         if ($autoinstall){
-            $this->installApp($app_id, null, $skip_info_check);
+            $this->installApp($app_id, $version, $skip_info_check);
         }else{
             $this->getAppInfo($app_id, true);
         }
@@ -844,7 +844,7 @@ class SmartLauncherAppsManager
 
         Mysql::getInstance()->delete('launcher_apps', array('url' => $metapackage));
 
-        $this->syncApps();
+        //$this->syncApps();
 
         return (bool) $result;
     }
