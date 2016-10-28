@@ -146,18 +146,18 @@ class SmartLauncherAppsManager
 
             $app['installed'] = $app_path && is_dir($app_path);
 
-            if ($app['installed'] && isset($app['config']['icons']['paths']['720']) && isset($app['config']['icons']['states']['normal']) && !empty($_SERVER['HTTP_HOST'])){
-                $icon_path = realpath($app_path.'/app/'.$app['config']['icons']['paths']['720'].$app['config']['icons']['states']['normal']);
+            if ($app['installed'] && isset($app['config']['uris']['icons']['720']['logoNormal']) && !empty($_SERVER['HTTP_HOST'])){
+                $icon_path = realpath($app_path.'/app/'.$app['config']['uris']['icons']['720']['logoNormal']);
                 $app['icon'] = $icon_path && is_readable($icon_path) ?
                         'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
                         .'://'.(strpos($_SERVER['HTTP_HOST'], ':') > 0 ? $_SERVER['HTTP_HOST'] : $_SERVER['HTTP_HOST'].':'.$_SERVER['SERVER_PORT'])
                         .'/'.Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/')
                         .$app['alias']
                         .'/'.$app['current_version'].'/app/'
-                        .$app['config']['icons']['paths']['720'].$app['config']['icons']['states']['normal']
+                        .$app['config']['uris']['icons']['720']['logoNormal']
                     : '';
 
-                $icon_big_path = realpath($app_path.'/app/'.$app['config']['icons']['paths']['1080'].$app['config']['icons']['states']['normal']);
+                $icon_big_path = realpath($app_path.'/app/'.$app['config']['uris']['icons']['1080']['logoNormal']);
 
                 $app['icon_big'] = $icon_big_path && is_readable($icon_big_path) ?
                     'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
@@ -165,11 +165,11 @@ class SmartLauncherAppsManager
                     .'/'.Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/')
                     .$app['alias']
                     .'/'.$app['current_version'].'/app/'
-                    .$app['config']['icons']['paths']['1080'].$app['config']['icons']['states']['normal']
+                    .$app['config']['uris']['icons']['1080']['logoNormal']
                     : '';
 
                 if ($app['icon'] || $app['icon_big']){
-                    $app['backgroundColor'] = isset($app['config']['backgroundColor']) ? $app['config']['backgroundColor'] : '';
+                    $app['backgroundColor'] = isset($app['config']['colors']['splashBackground']) ? $app['config']['colors']['splashBackground'] : '';
                 }
             }
         }else{
@@ -237,14 +237,12 @@ class SmartLauncherAppsManager
 
         if (isset($info['versions']) && is_array($info['versions'])){
 
-            //@todo --------- a temporary patch for missing field "time" ---------
             if (array_key_exists('time', $info)) {
                 unset($info['time']['modified']);
                 unset($info['time']['created']);
             } else {
                 $info['time'] = array_combine($info['versions'], array_pad(array(), count($info['versions']), 0));
             }
-            //@todo -----------------------------------------------------------------
 
             foreach ($info['time'] as $ver => $time){
 
@@ -736,16 +734,13 @@ class SmartLauncherAppsManager
 
     public function syncApps(){
 
-        $repos = Config::getSafe('launcher_apps_repos', array());
+        $repos = Config::getSafe('launcher_apps_extra_metapackages', array());
+
+        $npm = new Npm();
 
         foreach ($repos as $repo){
-            $info = file_get_contents($repo);
 
-            if (!$info){
-                continue;
-            }
-
-            $info = json_decode($info, true);
+            $info = $npm->info($repo);
 
             if (!$info){
                 continue;
@@ -777,19 +772,38 @@ class SmartLauncherAppsManager
 
         $orig_metapackage = $metapackage;
 
+        if (strpos($orig_metapackage, '@')){
+            list($orig_metapackage_name, $ver) = explode('@', $orig_metapackage);
+        }else{
+            $orig_metapackage_name = $orig_metapackage;
+        }
+
         if (is_null($metapackage)){
-            $metapackage = Config::getSafe('launcher_apps_metapackage', 'mag-apps-base');
+            $metapackage = Config::getSafe('launcher_apps_base_metapackage', 'stalker-apps-base');
         }
 
         if (empty($metapackage)){
             return false;
         }
 
+        if (!strpos($metapackage, '@')){
+
+            $stalker_version = file_get_contents('../../c/version.js');
+            $start = strpos($stalker_version, "'")+1;
+            $end = strrpos($stalker_version, "'");
+            $stalker_version = substr($stalker_version, $start, $end-$start);
+
+            $metapackage_name = $metapackage;
+            $metapackage .= $metapackage_name.'@'.$stalker_version;
+        }else{
+            list($metapackage_name, $stalker_version) = explode('@', $metapackage);
+        }
+
         $npm = Npm::getInstance();
 
         if (is_null($orig_metapackage)) {
 
-            $info = $npm->info($metapackage);
+            $info = $npm->info($metapackage_name, $stalker_version);
 
             if (!$info) {
                 return false;
@@ -807,7 +821,7 @@ class SmartLauncherAppsManager
         if ($apps_path){
             $ignore = array('.','..');
             if ($orig_metapackage){
-                $ignore[] = $orig_metapackage;
+                $ignore[] = $orig_metapackage_name;
             }
             $files = array_diff(scandir($apps_path), $ignore);
             foreach ($files as $file){
@@ -818,9 +832,9 @@ class SmartLauncherAppsManager
 
         $this->sendToCallback("Installing metapackage ".$metapackage."...");
 
-        $result = $this->addApplication($metapackage, true, !is_null($orig_metapackage));
+        $result = $this->addApplication($metapackage_name, true, !is_null($orig_metapackage), $stalker_version);
 
-        Mysql::getInstance()->delete('launcher_apps', array('url' => $metapackage));
+        Mysql::getInstance()->delete('launcher_apps', array('url' => $metapackage_name));
 
         //$this->syncApps();
 
