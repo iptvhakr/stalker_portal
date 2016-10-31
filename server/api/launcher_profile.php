@@ -130,24 +130,31 @@ foreach ($installed_apps as $app) {
 
 
     if ($app['config']){
-
+        $app['config']['packageName'] = $app['url'];
         $app['config']['version'] = $app['current_version'];
 
         if (!isset($app['config']['uris'])){
+
+            $app['config']['entry'] = isset($app['config']['entry']) ? $app['config']['entry'] : 'app/';
+
             $app['config']['url'] = 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
                 .'://'.(strpos($_SERVER['HTTP_HOST'], ':') > 0 ? $_SERVER['HTTP_HOST'] : $_SERVER['HTTP_HOST'].':'.$_SERVER['SERVER_PORT'])
                 .'/'.Config::getSafe('launcher_apps_path', 'stalker_launcher_apps/')
                 .$app['alias']
-                .'/';
-
-            $app['config']['entry'] = isset($app['config']['entry']) ? $app['config']['entry'] : 'app/';
+                .'/'.$app['config']['version']
+                .'/'.$app['config']['entry'];
         }
 
         if ($app['options'] && ($options = json_decode($app['options'], 1))){
             $app['config']['options'] = $options;
         }
 
-        $app['config']['dependencies'] = $app_manager->getFullAppDependencies($app['id']);
+        try{
+            $app['config']['dependencies'] = $app_manager->getFullAppDependencies($app['id']);
+        }catch (SmartLauncherAppsManagerException $e){
+            error_log($e->getMessage());
+            continue;
+        }
 
         if ($app['localization']){
 

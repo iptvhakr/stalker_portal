@@ -428,19 +428,42 @@ var main_menu = {
             stb.notice.show(get_word('msg_service_off'));
             return;
         }
-        
+
+        var self = this;
+
         if (this.map[1].sub && this.map[1].sub[this.active_sub] && typeof(this.map[1].sub[this.active_sub].cmd) == 'object'){
             
             var context = this.map[1].sub[this.active_sub].cmd.context || window;
-            
-            this.map[1].sub[this.active_sub].cmd.func.apply(context, this.map[1].sub[this.active_sub].cmd.args);
-            
+
+            stb.advert.start(
+                function () {
+                    self.map[1].sub[self.active_sub].cmd.func.apply(context, self.map[1].sub[self.active_sub].cmd.args);
+                }
+            )
+
         }else if (this.map[1].sub && this.map[1].sub[this.active_sub] && typeof(this.map[1].sub[this.active_sub].cmd) == 'function'){
-            this.map[1].sub[this.active_sub].cmd();
+
+            stb.advert.start(
+                function () {
+                    self.map[1].sub[self.active_sub].cmd()
+                }
+            );
+
         }else if (this.map[1].sub && this.map[1].sub[this.active_sub] && typeof(this.map[1].sub[this.active_sub].cmd) == 'string'){
-            eval(this.map[1].sub[this.active_sub].cmd);
+
+            stb.advert.start(
+                function () {
+                    eval(self.map[1].sub[self.active_sub].cmd);
+                }
+            );
+
         }else{
-            this.map[1].cmd();
+
+            stb.advert.start(
+                function () {
+                    self.map[1].cmd();
+                }
+            );
         }
     },
     
