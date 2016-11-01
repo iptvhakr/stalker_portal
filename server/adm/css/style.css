@@ -542,6 +542,18 @@ z-index:20;
     padding-right: 0 !important;
 }
 
+.no-margin {
+    margin: 0 !important;
+}
+
+.no-margin-left {
+    margin-left: 0 !important;
+}
+
+.no-margin-right {
+    margin-right: 0 !important;
+}
+
 .padding-15 {
   padding:15px !important;
 }

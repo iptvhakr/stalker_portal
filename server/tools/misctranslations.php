@@ -319,6 +319,8 @@ _('Clear the list of events');
 
 _('Start page');
 _('Saving settings drop-down menu user');
+_('Checking state of flag of opinion form');
+_('Setting state of flag of opinion form');
 
 _('Info portal');
 _('Phone book by page + filters');

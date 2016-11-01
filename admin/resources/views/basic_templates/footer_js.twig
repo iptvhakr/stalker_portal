@@ -211,7 +211,72 @@
             } else if (!certificateCheck.closed){
                 createCertModal();
             }
+
+            {% if attribute(app, 'userlogin') is defined and app['userlogin'] == 'admin' %}
+            var opinionCheck = localStorage.getItem('opinionCheck');
+            if (!opinionCheck) {
+                ajaxPostSend('{{app.request.baseUrl}}/index/opinion-check', false, false, true);
+            } else {
+                setOpinionModal(JSON.parse(opinionCheck));
+            }
+
+            $(document).on('click', 'a[href$="auth-user-logout"]', function(){
+                localStorage.removeItem('opinionCheck');
+            });
+
+            {% endif %}
         });
 
     </script>
+        {% if attribute(app, 'userlogin') is defined and app['userlogin'] == 'admin' %}
+
+    <script type="text/javascript" defer="defer">
+        function setOpinionModal(data){
+            if (!data.remind) {
+                JScloseModalBox();
+                $("#modalbox .devoops-modal-header").hide();
+                $("#modalbox .devoops-modal-bottom").hide();
+                $("#modalbox .devoops-modal-inner").html($("#opinion_modal_template").html());
+                $("#opinion_fill").attr('href', data.link);
+                $("#modalbox").on('click', '.devoops-modal-inner a', function(e){
+                    JScloseModalBox();
+                    ajaxPostSend('{{app.request.baseUrl}}/index/opinion-set', $(this).data(), false, false, true);
+                    if ($(this).hasClass('main_ajax')) {
+                        e.stopPropagation();
+                        e.preventDefault();
+                    }
+                });
+                $(document).on('hide', '#modalbox', function(){
+                    $(this).find('.devoops-modal-header, .devoops-modal-bottom').each(function(){
+                        if(!$(this).is(':visible')){
+                            $(this).show();
+                        }
+                    });
+                });
+                $("#modalbox").show();
+            }
+            localStorage.setItem('opinionCheck', JSON.stringify(data));
+        }
+
+        function setOpinionData(data){
+            localStorage.setItem('opinionCheck', JSON.stringify(data));
+        }
+    </script>
+
+    <script type="text/template" id="opinion_modal_template">
+        <div class="col-sm-12" style="margin: 0 !important; padding: 10px 45px !important;">
+            <h1 class="text-center">{{ 'How did we do?'|trans }}</h1>
+            <br>
+            <p>{{ 'Hi ...,'|trans }}</p>
+            <p>{{ 'We wanted to know how it\'s going since we worked with you to resolve CA-274185. We\'ve prepared a short survey that you can fill out to share your thoughts with us. Your answers will help us serve you better in the future, and it will only take a few minutes to complete the survey.'|trans }}</p>
+            <p>{{ 'Cheers,'|trans }}</p>
+            <p>{{ 'The Customer Advocates Team'|trans }}</p>
+            <p>{{ 'Take the survey'|trans }}</p>
+            <p>{{ 'P.S. from our lawyers: The information provided in this survey will be treated with the strictest confidence. Your answers will be used internally by Atlassian employees to improve our products and support offering.'|trans }}</p>
+            <a id="opinion_fill" target="_blank" class="btn btn-default col-sm-3 no-padding-left no-padding-right" data-opinion="fill">{{ 'Fill in the form'|trans }}</a>
+            <a id="opinion_remind" class="btn btn-default col-sm-4 col-sm-offset-1 no-padding-left no-padding-right main_ajax" data-opinion="remind">{{ 'Remind me later'|trans }}</a>
+            <a id="opinion_no" class="btn btn-default col-sm-3 col-sm-offset-1 no-padding-left no-padding-right main_ajax" data-opinion="no">{{ 'No, thanks'|trans }}</a>
+        </div>
+    </script>
+        {% endif %}
 </footer>
