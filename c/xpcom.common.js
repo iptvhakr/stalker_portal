@@ -2076,6 +2076,10 @@ function common_xpcom(){
         start : function (callback) {
             _debug('stb.advert.get_ad');
 
+            //todo: temporary disabled ad
+
+            return callback();
+
             stb.load(
                 {
                     "type"   : "stb",
@@ -2114,7 +2118,6 @@ function common_xpcom(){
 
         track : function (urls) {
             _debug('stb.advert.track', urls);
-_debug('------------------------------------------');
 
             if (!Array.isArray(urls)){
                 return false;
