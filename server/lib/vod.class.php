@@ -902,8 +902,20 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
 
         $offset = $this->page * self::max_page_items;
 
-        $episodes = Mysql::getInstance()->from('video_season_series')
-            ->where(array('season_id' => $season_id))
+        $episodes = Mysql::getInstance()
+            ->select('video_season_series.*')
+            ->from('video_season_series')
+            ->join('video_series_files',
+                array(
+                    'video_season_series.id' => 'video_series_files.series_id',
+                    'video_series_files.file_type' => '"video"'
+                    ), null, 'LEFT')
+            ->where(
+                array(
+                    'season_id' => $season_id,
+                    'video_series_files.accessed' => 1
+                ))
+            ->groupby('video_season_series.id')
             ->orderby('series_number');
 
         $episodes->limit(self::max_page_items, $offset);
