@@ -2153,6 +2153,9 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         $this->postData['languages'] = (!empty($this->postData['languages']) && is_array($this->postData['languages'])) ? serialize($this->postData['languages']): serialize(array());
 
         $this->postData['status'] = 1;
+        if ($this->postData['file_type'] == 'sub') {
+            $this->postData['quality'] = '';
+        }
         $clean_old_url = FALSE;
         if (!empty($this->postData['clean_old_url'])){
             $clean_old_url = TRUE;
