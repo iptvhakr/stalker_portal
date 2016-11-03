@@ -69,9 +69,34 @@ $.extend(true, $.fn.dataTable.defaults, {
             }
         });
     },
+    "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+        if (aData && aData.RowOrder) {
+            nRow.setAttribute('id', aData.RowOrder);  //Initialize row id for every row
+        }
+    },
     "ajax" : {
         data: function(data) {
             data = dataTableDataPrepare(data);
+        },
+        error: function( xhr, textStatus, error ) {
+            if (typeof(xhr) !== 'undefined'){
+                console.log('------------------------------------- request error ---------------------------------------\r\n');
+                console.log(xhr);
+                if ( typeof(xhr.readyState) !== 'undefined' && xhr.readyState == 4 ) {
+                    if (typeof(xhr.status) !== 'undefined' && xhr.status == 401) {
+                        if (typeof(xhr.responseText) !== 'undefined'){
+                            JSErrorModalBox(JSON.parse(xhr.responseText));
+                        }
+                        setTimeout(function(){
+                            window.location.reload(true);
+                        }, 3000);
+                    }
+                }
+                console.log('textStatus - ' + textStatus + '\r\n');
+                console.log('error - ' + error + '\r\n');
+                console.log('------------------------------------- request error end -----------------------------------\r\n');
+            }
+
         }
     },
     "oLanguage": {
@@ -104,16 +129,17 @@ $.extend( $.fn.dataTableExt.oStdClasses, {
 
 
 /* API method to get paging information */
-$.fn.dataTableExt.oApi.fnPagingInfo = function ( oSettings )
+$.fn.dataTableExt.oApi.fnPagingInfo = function ( oSettings)
 {
+    var page = oSettings.pageNoAjax && !(oSettings.pageNoAjax instanceof Object)? oSettings.pageNoAjax: Math.ceil( oSettings._iDisplayStart / oSettings._iDisplayLength );
 	return {
 		"iStart":         oSettings._iDisplayStart,
 		"iEnd":           oSettings.fnDisplayEnd(),
 		"iLength":        oSettings._iDisplayLength,
-		"iTotal":         oSettings.fnRecordsTotal(),
+		"iTotal":         oSettings.b_server_side ? oSettings._iRecordsTotal * 1 : oSettings.aiDisplayMaster.length, // oSettings.fnRecordsTotal(),
 		"iFilteredTotal": oSettings.fnRecordsDisplay(),
 		"iPage":          oSettings._iDisplayLength === -1 ?
-			0 : Math.ceil( oSettings._iDisplayStart / oSettings._iDisplayLength ),
+			0 : page , //Math.ceil( oSettings._iDisplayStart / oSettings._iDisplayLength ),
 		"iTotalPages":    oSettings._iDisplayLength === -1 ?
 			0 : Math.ceil( oSettings.fnRecordsDisplay() / oSettings._iDisplayLength )
 	};
@@ -145,7 +171,7 @@ $.extend( $.fn.dataTableExt.oPagination, {
 
 		"fnUpdate": function ( oSettings, fnDraw ) {
 			var iListLength = 5;
-			var oPaging = oSettings.oInstance.fnPagingInfo();
+			var oPaging = oSettings.oInstance.fnPagingInfo(oSettings);
 			var an = oSettings.aanFeatures.p;
 			var i, ien, j, sClass, iStart, iEnd, iHalf=Math.floor(iListLength/2);
 
@@ -197,6 +223,123 @@ $.extend( $.fn.dataTableExt.oPagination, {
 	}
 } );
 
+$.fn.dataTableExt.oApi.fnUpdateCurrentRow = function ( oSettings, row, data ){
+
+    if (oSettings.oInstance.DataTable().row( row ) && data && data.data && data.data.length == 1) {
+        $(oSettings.oInstance).trigger('xhr.dt', [oSettings, data]);
+        var newData = data.data[0]; //rowDataPrepare(
+        newData.rerendered = true;
+        oSettings.oInstance.dataTable().fnUpdate(newData, row, null, false, false);
+    }
+
+};
+
+$.fn.dataTableExt.oApi.fnRemoveCurrentRow = function ( oSettings, row ){
+
+    if (oSettings.oInstance.DataTable().row( row )) {
+        oSettings.oInstance.DataTable().rows( row ).remove(); // .invalidate('data')
+        oSettings._iRecordsDisplay--;
+        oSettings._iRecordsTotal--;
+        if (oSettings.aoData.length ) {
+            oSettings.oInstance.reDrawNoAjax();
+        } else if (oSettings._iRecordsTotal) {
+            oSettings.pageNoAjax--;
+            oSettings.oInstance.DataTable().page(oSettings._iDisplayStart >= oSettings._iDisplayLength ? 'previous': 'next').draw(false);
+        }
+    }
+};
+
+$.fn.dataTableExt.oApi.reDrawNoAjax = function(oSettings) {
+    oSettings.pageNoAjax = oSettings.oInstance.DataTable().page();
+    oSettings.ajax_data_get = oSettings.oInstance.dataTable.settings[0]['bAjaxDataGet'];
+    oSettings.b_server_side = oSettings.oInstance.dataTable.settings[0]['oFeatures'];
+    oSettings.oInstance.dataTable.settings[0]['bAjaxDataGet'] = false;
+    /*oSettings._iRecordsDisplay = oSettings.oInstance.DataTable().data().length;*/
+    oSettings.oInstance.DataTable().page(oSettings.pageNoAjax).draw(false);
+    /*oSettings.oInstance.dataTable.settings[0]['oFeatures'] = false; // oSettings.oInstance._fnUpdateInfo();*/
+    oSettings.oInstance.dataTable.settings[0]['bAjaxDataGet'] = oSettings.ajax_data_get;
+    oSettings.oInstance.dataTable.settings[0]['oFeatures'] = oSettings.b_server_side;
+    oSettings.oInstance._fnCustomUpdateInfo(oSettings.pageNoAjax);
+};
+
+$.fn.dataTableExt.oApi._fnCustomUpdateInfo = function( settings , page) {
+    /* Show information about the table
+    * * `\_START\_` - Display index of the first record on the current page
+     * * `\_END\_` - Display index of the last record on the current page
+     * * `\_TOTAL\_` - Number of records in the table after filtering
+     * * `\_MAX\_` - Number of records in the table without filtering
+     * * `\_PAGE\_` - Current page number
+     * * `\_PAGES\_` - Total number of pages of data in the table
+    * */
+    var nodes = settings.aanFeatures.i;
+    if ( nodes.length === 0 ) {
+        return;
+    }
+    var oFeatures = settings.oInstance.dataTable.settings[0]['oFeatures'],
+        lang  = settings.oLanguage,
+        start = (settings._iDisplayStart+ 1), // + (page * settings._iDisplayLength) ,
+        max   = settings.fnRecordsTotal(),
+        total = settings.fnRecordsDisplay();
+        settings.oInstance.dataTable.settings[0]['oFeatures'] = false;
+
+    var
+        end   = settings.fnDisplayEnd() + (page * settings._iDisplayLength),
+        out   = total ? lang.sInfo : lang.sInfoEmpty;
+
+    if ( total !== max ) {
+        /* Record set after filtering */
+        out += ' ' + lang.sInfoFiltered;
+    }
+
+    // Convert the macros
+    out += lang.sInfoPostFix;
+    out = out.replace(/_START_/g, settings.fnFormatNumber.call( settings, start ) ).
+            replace(/_END_/g,   settings.fnFormatNumber.call( settings, end ) ).
+            replace(/_MAX_/g,   settings.fnFormatNumber.call( settings, max )).
+            replace(/_TOTAL_/g,   settings.fnFormatNumber.call( settings, total ) );
+    out = settings.oInstance._fnInfoMacros( out );
+
+    var callback = lang.fnInfoCallback;
+    if ( callback !== null ) {
+        out = callback.call( settings.oInstance,
+            settings, start, end, max, total, out
+        );
+    }
+
+    settings.oInstance.dataTable.settings[0]['oFeatures'] = oFeatures;
+
+    $(nodes).html( out );
+};
+
+$.fn.dataTableExt.oApi.fnCheckJSON = function ( oSettings ){
+
+    var lengthM = oSettings.json.data.length > oSettings.aoData.length ? oSettings.json.data.length : oSettings.aoData.length;
+    for (var i = 0; i < lengthM; i ++) {
+        if (i < oSettings.aoData.length) {
+            if (oSettings.json.data[i]) {
+                var status = 0;
+                for ( var p in oSettings.aoData[i]._aData) {
+                    if (typeof(oSettings.json.data[i][p]) != 'undefined' && oSettings.aoData[i]._aData[p] == oSettings.json.data[i][p]) {
+                        status = 1;
+                    } else {
+                        status = 0;
+                        break;
+                    }
+                }
+                if (!status) {
+                    oSettings.json.data.splice(i, 1);
+                    i--;
+                }
+            } else {
+                oSettings.json.data.push(oSettings.aoData[i]);
+                i--;
+            }
+        } else if( i < oSettings.json.data.length) {
+            oSettings.json.data.splice(i, oSettings.json.length - i);
+            lengthM = oSettings.json.data.length;
+        }
+    }
+};
 
 /*
  * TableTools Bootstrap compatibility

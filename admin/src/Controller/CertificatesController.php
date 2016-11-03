@@ -215,23 +215,35 @@ class CertificatesController extends \Controller\BaseStalkerController {
     //----------------------- ajax method --------------------------------------
 
     public function current_list_json($local_use = FALSE){
-        if ((!$this->isAjax || $this->method != 'POST') && !$local_use) {
+        if (!$this->isAjax && !$local_use) {
             $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
-        if ($no_auth = $this->checkAuth()) {
+        if (empty($this->postData['notty_check']) && $no_auth = $this->checkAuth()) {
             return $no_auth;
         }
 
-        $data['action'] = empty($this->postData['notty_check']) ? 'reDrawDataTable': 'topModalMsg';
+        if (!empty($this->postData['notty_check'])){
+            $data['action'] = 'topModalMsg';
+        }
+
+        $param = (!empty($this->data)?$this->data: $this->postData);
         $data['data'] = array();
+        if (!empty($param['id'])) {
+            $data['id'] = $param['id'];
+        }
         $error = '';
 
         try{
             $status_label = array_combine($this->getFieldFromArray($this->app['allStatus'], 'label'), $this->getFieldFromArray($this->app['allStatus'], 'id'));
 
             $sert = new LicenseManager();
-            $lics_arr = $sert->getLicenses();
+
+            if ($local_use && !empty($param['id'])) {
+                $lics_arr = array($sert->getLicense($param['id']));
+            } else {
+                $lics_arr = $sert->getLicenses();
+            }
 
             $expires_30_days = 60*60*24*30;
             $now = time();
@@ -246,7 +258,8 @@ class CertificatesController extends \Controller\BaseStalkerController {
                     'status'            => $status_label[$lics->getStatusStr()],
                     'status_bool'       => $lics->getStatus(),
                     'awaiting'          => $lics->getStatus() && ($lics->getHash() !== $lics->getServerHash()),
-                    'expires_30_days'   => ($lics->getDateTo() - $now) <= $expires_30_days
+                    'expires_30_days'   => ($lics->getDateTo() - $now) <= $expires_30_days,
+                    'RowOrder'          => "dTRow_" . $lics->getId()
                 );
             }
 
@@ -275,6 +288,9 @@ class CertificatesController extends \Controller\BaseStalkerController {
         try{
             $sert = new LicenseManager();
             $sert->updateLicense((int) $this->postData['id']);
+            $data = array_merge_recursive($data, $this->current_list_json(TRUE));
+            $data['action'] = 'updateTableRow';
+            $data['msg'] = $this->setLocalization('Installed');
         } catch (\Exception $e) {
             $error = $e->getMessage();
         }

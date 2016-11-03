@@ -303,7 +303,7 @@
                                     <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Message text'|trans }}</label>
                                     <div class="col-xs-10 col-sm-8">
                                         <div class=" col-xs-10 col-sm-12">
-                                            <textarea class="form-control" rows="4" title="" value="" name="msg" id="msg_textarea" data-validation=required></textarea>
+                                            <textarea class="form-control" rows="4" title="" name="msg" id="msg_textarea" data-validation=required></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -328,7 +328,7 @@
                                         <div class=" col-xs-10 col-sm-6">
                                             <div class="checkbox">
                                                 <label>
-                                                    <input type="checkbox" value="1" name="need_reboot">
+                                                    <input type="checkbox" value="1" name="reboot_after_ok">
                                                     <i class="fa fa-square-o small"></i>
                                                 </label>
                                             </div>
@@ -584,20 +584,6 @@
         }
         return false;
     }
-
-    var addEvent = function (data) {
-        JSSuccessModalBox(data);
-        $('#datatable-1').dataTable().fnReloadAjax();
-        $('#modalbox_ad button[type="reset"]').trigger("click");
-        $('#modalbox_ad form input[type="hidden"][name="id"]').val('');
-    };
-
-    var addEventError = function (data) {
-        JSErrorModalBox(data);
-        $('#datatable-1').dataTable().fnReloadAjax();
-        $('#modalbox_ad button[type="reset"]').trigger("click");
-        $('#modalbox_ad form input[type="hidden"][name="id"]').val('');
-    };
 
 </script>
 {% if attribute(app, 'messagesTemplates') is defined and app.messagesTemplates|length> 0%}

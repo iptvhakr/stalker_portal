@@ -99,48 +99,6 @@
                 $(document).on('click', '.btn.DTTT_button_print', function(){
                     $("#table_container").removeClass('col-sm-offset-2');{#.parents().map(function(){$(this).css('padding-left', 0);});#}
                 });
-                $(document).on('click', "a.main_ajax", function (e) {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    var _this = $(this);
-
-                    $.ajax({
-                        url: $(this).attr('href'),
-                        type: 'POST',
-                        data: $(this).data(),
-                        success: function (data) {
-                            if (data.success) {
-                                for (var key in data) {
-                                    _this.data(key, data[key]);
-                                }
-                            } else {
-                                alert("{{ 'Some server error'|trans }}");
-                            }
-                        },
-                        error: function (data) {
-                            var errAction = '';
-                            if (typeof (data.responseJSON) == 'object') {
-                                errAction += data.responseJSON.action + 'Error';
-                                for (var key in data.responseJSON) {
-                                    _this.data(key, data.responseJSON[key]);
-                                }
-                            }
-                            if ($.isFunction(window[errAction])) {
-                                window[errAction]($(_this));
-                            } else {
-                                alert("{{ 'Some network error or access denied'|trans }}");
-                            }
-                        },
-                        dataType: "json",
-                        async: false
-                    });
-
-                    if ($.isFunction(window[$(this).data('action')]) && !$(this).data('error')) {
-                        window[$(this).data('action')]($(this));
-                    }
-                    _this.closest('div.open').removeClass('open');
-                    return false;
-                });
 
                 LoadDataTablesScripts(TestTable1);
             });

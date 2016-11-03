@@ -4,6 +4,7 @@ use Stalker\Lib\Core\Mysql;
 use Stalker\Lib\Core\Stb;
 use Stalker\Lib\Core\Config;
 use Stalker\Lib\Core\Cache;
+use Stalker\Lib\Core\Advertising;
 
 /**
  * Main VOD class.
@@ -146,27 +147,47 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
 
         $vclub_ad = new VclubAdvertising();
 
+        $advertising = new Advertising();
+        $advert = $advertising->getAd(Stb::getInstance()->id);
+
         if (!$disable_ad && empty($link['error'])){
 
             $video = Video::getById($media_id);
 
-            $picked_ad = $vclub_ad->getOneWeightedRandom($video['category_id']);
+            if ($advert && !empty($advert['config']['places']) && $advert['config']['places']['before_video'] == 1){
+
+                $link = array(
+                    array(
+                        'id'            => 0,
+                        'media_type'    => 'advert',
+                        'cmd'           => $advert['ad'],
+                        'is_advert'     => true,
+                        'ad_tracking'   => $advert['tracking'],
+                        'ad_must_watch' => 25
+                    ),
+                    $link
+                );
+
+            }else{
+
+                $picked_ad = $vclub_ad->getOneWeightedRandom($video['category_id']);
 
             if (!empty($picked_ad)){
 
                 $link['cmd'] = $_REQUEST['cmd'];
 
-                $link = array(
-                    array(
-                        'id'    => 0,
-                        'ad_id' => $picked_ad['id'],
-                        'ad_must_watch' => $picked_ad['must_watch'],
-                        'type'  => 'ad',
-                        'cmd'   => $picked_ad['url'],
-                        'subtitles' => $subtitles
-                    ),
-                    $link
-                );
+                    $link = array(
+                        array(
+                            'id'            => 0,
+                            'ad_id'         => $picked_ad['id'],
+                            'ad_must_watch' => $picked_ad['must_watch'],
+                            'media_type'    => 'vclub_ad',
+                            'cmd'           => $picked_ad['url'],
+                            'subtitles'     => $subtitles
+                        ),
+                        $link
+                    );
+                }
             }
 
         }

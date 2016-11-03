@@ -12,7 +12,7 @@ a {outline:none; text-decoration:none;}
 #footer {position:absolute; height:50px; width:590px; top:380px; left:20px;}
 #footer input[type=button] {position:relative; height:42px; min-width:120px; margin-left:20px;  padding-bottom:1px; background:none; white-space:nowrap; font-family:"Myriad Pro"; font-size:22px; font-weight:bold; color:#fff; float:right; border-width: 0 25px; -webkit-border-image: url(576/btn.png) 0 25 0 25 stretch stretch; text-shadow:0 2px 0 #122748;}
 #footer input[type=button]:focus {background:none; border-width: 0 25px; -webkit-border-image: url(576/btn_act.png) 0 25 0 25 stretch stretch;}
-#blueback {position:absolute; height:295px; width:580px; margin-top:68px; margin-left:15px; }
+#blueback {position:absolute; height:295px; min-width:600px; width:600px; margin-top:68px; margin-left:15px; }
 #blueback input[type="checkbox"] {position: absolute;left: -9999px;}
 #blueback input[type="checkbox"] + label {background: url(576/checkbox.png) 0 0 no-repeat;padding:13px 0 13px 26px;display:block;margin:5px 10px;}
 #blueback input[type="checkbox"]:focus + label {background: url(576/checkbox_act.png) 0 0 no-repeat;}
@@ -37,7 +37,7 @@ a {outline:none; text-decoration:none;}
 #blueback input[type=text].ds {display:inline;position:relative; height:30px; width: 60px; margin:4px 0 4px 10px; background: none; font-family:"Trebuchet MS"; font-size:20px; color:#135; border-width: 0 6px; -webkit-border-image: url(576/input.png) 0 6 0 6 stretch stretch; cursor:url(576/cursor.gif);}
 #blueback input[type=text].ds:focus {display:inline;margin:4px 0 4px 10px;position:relative;font-size:20px; font-weight:bold; -webkit-border-image: url(576/input_act.png) 0 6 0 6 stretch stretch;}
 #blueback td.ds{width:350px;}
-#blueback td.dev{width:840px;max-width: 900px;}
+#blueback td.dev{width:840px;max-width: 840px;}
 #blueback span.ds {font-family:"Trebuchet MS"; font-size:30px; margin:0 -3 0 8; font-weight:bold; color:#fff;}
 
 #ch {height: 50px;}

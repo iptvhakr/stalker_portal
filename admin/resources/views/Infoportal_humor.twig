@@ -247,15 +247,5 @@
             $("#modalbox_ad").show();
         };
 
-        var manageHumor = function (obj) {
-            JSSuccessModalBox(obj);
-            $("#modalbox_ad").click();
-            $('#datatable-1').DataTable().ajax.reload();
-        };
-
-        var manageHumorError = function (obj) {
-            JSErrorModalBox(obj);
-        };
-        
     </script>
 {% endblock %}

@@ -74,9 +74,6 @@
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
-                "fnRowCallback": function (nRow, aData, iDisplayIndex) {
-                    nRow.setAttribute('id', aData.RowOrder);  //Initialize row id for every row
-                },
                 {% if attribute(app, 'dropdownAttribute') is defined %}
                 {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
                 {% endif %}
@@ -108,31 +105,9 @@
                     }
                     _this.next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
                     $('#modalbox button[type="submit"]').removeAttr("disabled");
-                    $.ajax({
-                        url: '{{app.request.baseUrl}}/{{app.controller_alias}}/check-tv-genres-name',
-                        type: 'POST',
-                        data: {title: _this.val()},
-                        success: function (data) {
-                            if (data.success) {
-                                $('#modalbox button[type="submit"]').removeAttr("disabled");
-                                _this.next('div').empty().append('<i class="txt-success fa fa-check"></i> ' + data.chk_rezult).css('visibility', 'visible');
-                            } else {
-                                $('#modalbox button[type="submit"]').attr("disabled", "disabled");
-                                JSErrorModalBox(data);
-                            }
-                        },
-                        error: function (data) {
-                            if (typeof (data.responseJSON) != 'undefined' && typeof (data.responseJSON.error) != 'undefined') {
-                                $('#modalbox button[type="submit"]').attr("disabled", "disabled");
-                                _this.next('div').empty().append('<i class="txt-danger fa fa-ban"></i> ' + data.responseJSON.error).css('visibility', 'visible');
-                            } else {
-                                $('#modalbox button[type="submit"]').removeAttr("disabled");
-                                JSErrorModalBox('{{ 'Some network error or access denied'|trans }}');
-                            }
-                        },
-                        dataType: "json",
-                        async: true
-                    });
+
+                    ajaxPostSend('{{app.request.baseUrl}}/{{app.controller_alias}}/check-tv-genres-name', {title: _this.val()})
+
                     return false;
                 });
 
@@ -149,17 +124,6 @@
                     e.preventDefault();
                     openModalBox($(this));
                     return false
-                });
-
-                $(document).on('click', "#modalbox button[type='reset'], #modalbox, #modalbox a.close-link, #modalbox a.close-link *", function (e) {
-                    if (e.currentTarget != e.target) {
-                        return;
-                    }
-                    e.stopPropagation();
-                    e.preventDefault();
-                    JScloseModalBox();
-                    /*closeModalBox();*/
-                    return false;
                 });
 
                 $(document).on('click submit', "#modalbox button[type='submit'], #modalbox form", function (e) {
