@@ -17,6 +17,7 @@ class Pusher implements WampServerInterface {
      * @param string $message JSON'ified string we'll receive from ZeroMQ
      */
     public function onMessage($message) {
+        var_dump($message);
         $messageData = json_decode($message, true);
 
         // If the lookup topic object isn't set there is no one to publish to

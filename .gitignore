@@ -1,6 +1,7 @@
 
 /.idea
 /admin/vendor
+/wsserver/vendor
 /admin/composer.lock
 /deploy/composer.lock
 /screenshots
