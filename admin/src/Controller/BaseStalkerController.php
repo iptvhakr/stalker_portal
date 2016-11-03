@@ -41,6 +41,7 @@ class BaseStalkerController {
         8 => 'all',
     );
     protected $sidebar_cache_time;
+    protected $language_codes_en = array();
 
     public function __construct(Application $app, $modelName = '') {
         $this->app = $app;
@@ -576,11 +577,13 @@ class BaseStalkerController {
     }
 
     protected function getLanguageCodesEN($code = FALSE) {
-        $return_array = $this->db->getAllFromTable('languages', 'name');
+        if (empty($this->language_codes_en)) {
+            $this->language_codes_en = $this->db->getAllFromTable('languages', 'name');
 
-        $return_array = $this->setLocalization(array_combine($this->getFieldFromArray($return_array, 'iso_639_code'), $this->getFieldFromArray($return_array, 'name')));
+            $this->language_codes_en = $this->setLocalization(array_combine($this->getFieldFromArray($this->language_codes_en, 'iso_639_code'), $this->getFieldFromArray($this->language_codes_en, 'name')));
+        }
 
-        return ($code !== FALSE) ? (is_array($return_array) && array_key_exists($code, $return_array) ? $return_array[$code]: '') : $return_array;
+        return ($code !== FALSE) ? (is_array($this->language_codes_en) && array_key_exists($code, $this->language_codes_en) ? $this->language_codes_en[$code]: '') : $this->language_codes_en;
     }
 
     private function checkCachedMenu($menu_name) {

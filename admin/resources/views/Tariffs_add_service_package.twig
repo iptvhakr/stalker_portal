@@ -20,6 +20,7 @@
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].id, {'attr': {'class': 'form-control'}}) }}
                                     {{ form_widget(app['form'].external_id, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
+                                    <div></div>
                                 </div>
                                 <div>
                                     <div class="bg-danger">
@@ -224,7 +225,6 @@
 
                 $(document).on('change', '#form_external_id', function (e) {
                     var _this = $(this);
-                    _this.next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
                     ajaxPostSend('{{app.request.baseUrl}}/{{app.controller_alias}}/check-external-id', {externalid: _this.val(), selfid: $('#form_id').val()}, false);
                 });
 
@@ -283,11 +283,7 @@
                         $('#form_rent_duration').attr('disabled', 'disabled').closest('.form-group').hide();
                         $('#form_price').attr('disabled', 'disabled').closest('.form-group').hide();
                     }
-                    
-                    /*if ($(this).data('currtype') == type) {
-                        return;
-                    }*/
-                    
+
                     $(this).data('currtype', type);
                     
                     $('#form_services').empty();
@@ -369,15 +365,5 @@
                 $('#form_services').attr('disabled', 'disabled');
             }
         };
-        
-        var checkExternalId = function(data){
-            $('#form_external_id').next('div').append('<i class="txt-success fa fa-check"></i> ' + data.chk_rezult).css('visibility', 'visible');
-        };
-        
-        var checkExternalIdError = function(data){
-            var msg = '';
-            msg = (typeof(data.responseJSON) != 'undefined') ? data.responseJSON.error: data.chk_rezult;
-            $('#form_external_id').next('div').append('<i class="txt-danger fa fa-ban"></i> ' + msg).css('visibility', 'visible');
-        }
     </script>
 {% endblock %}

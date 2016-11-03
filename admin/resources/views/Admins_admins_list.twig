@@ -296,7 +296,6 @@
                         }
                     });
                     var action = _this.closest("#modalbox").find('form').attr('action');
-                    JSshowModalBox();
                     ajaxPostSend(action, sendData, false, false);
                     return false;
 
@@ -316,14 +315,14 @@
                     e.stopPropagation();
                     e.preventDefault();
                     $("#modalbox").data('complete', 1);
-                    $('#modalbox').find('.modal-header-name span').text("{{ 'Resellers'|trans }}");
+                    $('#modalbox .modal-header-name span').text("{{ 'Resellers'|trans }}");
                     var reseller_id = $(this).data('reseller_id');
-                    $('#modalbox').find('.devoops-modal-inner').html($("#modal_move_reseller_form_body").html());
-                    $('#modalbox').find('.devoops-modal-inner').find("input[name='id']").val($(this).data('id'));
-                    $('#modalbox').find('.devoops-modal-inner').find("input[name='source_id']").val(reseller_id);
+                    $('#modalbox .devoops-modal-inner').html($("#modal_move_reseller_form_body").html());
+                    $('#modalbox .devoops-modal-inner input[name="id"]').val($(this).data('id'));
+                    $('#modalbox .devoops-modal-inner input[name="source_id"]').val(reseller_id);
                     $('#target_reseller option').removeAttr('selected');
                     $('#target_reseller option[value="'+ reseller_id +'"]').attr('selected', 'selected');
-                    $('#modalbox').find('.devoops-modal-bottom').html($("#modal_move_form_buttons").html());
+                    $('#modalbox .devoops-modal-bottom').html($("#modal_move_form_buttons").html());
 
                     $("#target_reseller").select2(select2Opt);
 
@@ -338,14 +337,14 @@
                     e.stopPropagation();
                     e.preventDefault();
                     $("#modalbox").data('complete', 1);
-                    $('#modalbox').find('.modal-header-name span').text("{{ 'Groups'|trans }}");
+                    $('#modalbox .modal-header-name span').text("{{ 'Groups'|trans }}");
                     var group_id = $(this).data('group_id');
-                    $('#modalbox').find('.devoops-modal-inner').html($("#modal_move_group_form_body").html());
-                    $('#modalbox').find('.devoops-modal-inner').find("input[name='id']").val($(this).data('id'));
-                    $('#modalbox').find('.devoops-modal-inner').find("input[name='source_id']").val(group_id);
+                    $('#modalbox .devoops-modal-inner').html($("#modal_move_group_form_body").html());
+                    $('#modalbox .devoops-modal-inner input[name="id"]').val($(this).data('id'));
+                    $('#modalbox .devoops-modal-inner input[name="source_id"]').val(group_id);
                     $('#target_group option').removeAttr('selected');
                     $('#target_group option[value="'+ group_id +'"]').attr('selected', 'selected');
-                    $('#modalbox').find('.devoops-modal-bottom').html($("#modal_move_form_buttons").html());
+                    $('#modalbox .devoops-modal-bottom').html($("#modal_move_form_buttons").html());
 
                     $("#target_group").select2(select2Opt);
 
@@ -359,7 +358,7 @@
                 $("#add_admin").on("click", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
-                    $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Adding administrator'|trans }}');
+                    $("#modalbox_ad .modal-header-name span").text('{{ 'Adding administrator'|trans }}');
                     $("#adm_login").next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
                     $("#modalbox_ad input").prop("disabled", false).removeAttr('disabled').val('');
                     $("#modalbox_ad input[type='hidden']").attr('disabled', 'disabled').val('');
@@ -382,34 +381,7 @@
                     _this.next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
                     $('#modalbox_ad button[type="submit"]').removeAttr("disabled");
                     if (_this.val()) {
-                        $.ajax({
-                            url: '{{app.request.baseUrl}}/{{app.controller_alias}}/check-admins-login',
-                            type: 'POST',
-                            data: {login: _this.val()},
-                            success: function (data) {
-                                if (data.success) {
-                                    $('#modalbox_ad button[type="submit"]').removeAttr("disabled");
-                                    _this.next('div').append('<i class="txt-success fa fa-check"></i> ' + data.chk_rezult).css({display:'block', visibility: 'visible'});
-                                } else if (data.error) {
-                                    $('#modalbox_ad button[type="submit"]').attr("disabled", "disabled");
-                                    console.log(data.error);
-                                } else {
-                                    $('#modalbox_ad button[type="submit"]').removeAttr("disabled");
-                                    console.log("{{ 'Some server error'|trans }}");
-                                }
-                            },
-                            error: function (data) {
-                                if (typeof (data.responseJSON) != 'undefined' && typeof (data.responseJSON.error) != 'undefined') {
-                                    $('#modalbox_ad button[type="submit"]').attr("disabled", "disabled");
-                                    _this.next('div').append('<i class="txt-danger fa fa-ban"></i> ' + data.responseJSON.error).css({display:'block', visibility: 'visible'});
-                                } else {
-                                    $('#modalbox_ad button[type="submit"]').removeAttr("disabled");
-                                    console.log("{{ 'Some network error or access denied'|trans }}");
-                                }
-                            },
-                            dataType: "json",
-                            async: false
-                        });
+                        ajaxPostSend('{{app.request.baseUrl}}/{{app.controller_alias}}/check-admins-login', {login: _this.val()}, false, false);
                     }
                     return false;
                 });
@@ -422,7 +394,7 @@
         document.addEventListener("DOMContentLoaded", yelp, false);
 
         var setAdminsModal = function (data) {
-            $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Editing administrator'|trans }}');
+            $("#modalbox_ad .modal-header-name span").text('{{ 'Editing administrator'|trans }}');
             if (data.data.length == 1) {
                 var row = data.data[0];
                 for (var field_name in row) {
@@ -458,31 +430,6 @@
             $('#modalbox_ad button[type="submit"]').removeAttr("disabled");
             $("#modalbox_ad").show();
         };
-
-        var manageAdminsList = function (obj) {
-            JSSuccessModalBox(obj);
-            $("#modalbox_ad").trigger("click");
-            $('#datatable-1').DataTable().ajax.reload();
-        };
-
-        var manageAdminsListError = function (obj) {
-            JSErrorModalBox(obj);
-            $("#modalbox_ad").trigger("click");
-            $("#modalbox_ad").trigger("click");
-        };
-
-        {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
-        var manageAdmins = function (obj) {
-            JSSuccessModalBox(obj);
-            $("#modalbox_ad").trigger("click");
-            $('#datatable-1').DataTable().ajax.reload();
-        };
-
-        var manageAdminsError = function (obj) {
-            JSErrorModalBox(obj);
-            $("#modalbox_ad").trigger("click");
-        };
-        {% endif %}
 
     </script>
 

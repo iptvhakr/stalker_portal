@@ -39,10 +39,48 @@
 
         function yelp() {
             $(document).ready(function () {
-                if (typeof (channelListRender) == 'function') {
-                    channelListRender('#channelListContainer');
-                }
-            
+
+                //
+                // Swap 2 elements on page. Used by WinMove function
+                //
+                jQuery.fn.swap = function (b, parentArray) {
+                    b = jQuery(b)[0];
+                    var a = this[0];
+                    var a_num = $(a).find('span.curr_num').data('number');
+                    var b_num = $(b).find('span.curr_num').data('number');
+                    var remove = $(b).children('div').hasClass('empty');
+
+                    b.parentNode.insertBefore(a, b);
+
+                    if (typeof(parentArray) == 'object' && parentArray.length !=0) {
+                        a_num = parseInt(a_num, 10) - 1;
+                        b_num = parseInt(b_num, 10) - 1;
+
+                        var direction = a_num < b_num ? 1: -1;
+                        var next_num = a_num + direction;
+
+                        while( Math.abs(b_num - next_num + direction) > 0) {
+                            if ( typeof(parentArray[next_num]) != 'undefined' && typeof(parentArray[next_num].locked) != 'undefined' &&  !parentArray[next_num].locked) {
+                                var temp_a_number = parentArray[a_num].number;
+                                var temp_next_number = parentArray[next_num].number;
+
+                                var temp_a = parentArray[a_num];
+                                parentArray[a_num] = parentArray[next_num];
+                                parentArray[next_num] = temp_a;
+
+                                parentArray[a_num].number = temp_a_number;
+                                parentArray[next_num].number = temp_next_number;
+
+                                a_num = next_num;
+                            }
+                            next_num += direction;
+                        }
+                    }
+                    return this;
+                };
+
+                channelListRender('#channelListContainer');
+
                 $(document).on('click', '#iptv_list_move_send', function(e){
                     e.stopPropagation();
                     e.preventDefault();
@@ -116,23 +154,7 @@
                         return false;
                     });
                 }
-                
-                $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
-                    if (e.currentTarget != e.target) {
-                        return;
-                    }
-                    e.stopPropagation();
-                    e.preventDefault();
-                    if ($("#modalbox").data('complete') && $("#modalbox").data('complete') == 1) {
-                        closeModalBox();
-                    } else {
-                        for(i=0;i<3;i++) {
-                            $('#modalbox > div').fadeTo('slow', 0.5).fadeTo('slow', 1.0);
-                        }
-                    }
-                    return false;
-                });
-                
+
                 $('#channelListContainer').on('click', '.box-icons a', function (e) {
                     e.preventDefault();
                     e.stopPropagation();
@@ -156,6 +178,114 @@
         }
 
         document.addEventListener( "DOMContentLoaded", yelp, false );
+
+        function channelListRender(container){
+
+            var _container = $(container);
+            _container.empty();
+            var maxBlockHeight = $(window).height()- _container.offset().top - 50;
+            _container.height(maxBlockHeight);
+            maxBlockHeight -= $(document).height() - $(window).height();
+            _container.height(maxBlockHeight +10);
+            var maxBlockWidth = $(window).width()- _container.offset().left - 50;
+            _container.width(maxBlockWidth+10);
+            var maxItemOnBlock = Math.floor(maxBlockHeight/50);
+            var currentCount = 0;
+            for (var i= 0; i< channelList.length; ) {
+                var currentBlock = $("<div/>", {'class': 'no-padding'}).appendTo(_container);
+                var currentItemsBlock = $("<div/>", {'class': 'no-padding'}).appendTo(currentBlock)
+                for ( var j = currentCount; j < (currentCount + maxItemOnBlock) && j < channelList.length; j++) {
+                    if (typeof(channelList[j]) == 'undefined') {
+                        continue;
+                    }
+                    currentItemsBlock.append(getChannelListItem(j+1, channelList[j]));
+                    i++;
+                }
+                currentBlock.prepend('<div class=" counter"><span>' + (currentCount + 1) + '-'+ (j) + '</span></div>');
+                currentCount = j;
+                currentBlock.css('top', 0);
+                currentBlock.css('left', (Math.ceil(currentCount/maxItemOnBlock) - 1)*250);
+                if (j >= channelList.length) {
+                    break;
+                }
+            }
+
+            WinMove();
+        }
+
+        function WinMove() {
+            var parentArray = (typeof(channelList) != 'undefined') ? channelList : {};
+            $("div.box").draggable({
+                revert: true,
+                zIndex: 2000,
+                cursor: "crosshair",
+                handle: '.box-name',
+                class: 'highlight',
+                opacity: 0.8
+            })
+                    .droppable({
+                        tolerance: 'pointer',
+//                activeClass: "ui-state-hover",
+                        hoverClass: "highlight",//"ui-state-active",
+                        drop: function (event, ui) {
+                            var draggable = ui.draggable;
+                            var droppable = $(this);
+                            var dragPos = draggable.position();
+                            var dropPos = droppable.position();
+                            draggable.swap(droppable, parentArray);
+                            setTimeout(function () {
+                                var dropmap = droppable.find('[id^=map-]');
+                                var dragmap = draggable.find('[id^=map-]');
+                                if (dragmap.length > 0 || dropmap.length > 0) {
+                                    dragmap.resize();
+                                    dropmap.resize();
+                                }
+                                else {
+                                    draggable.resize();
+                                    droppable.resize();
+                                }
+
+                            }, 50);
+                            setTimeout(function () {
+
+                                draggable.find('[id^=map-]').resize();
+                                droppable.find('[id^=map-]').resize();
+                            }, 250);
+                            if ($("#channelListContainer").length > 0) {
+                                setTimeout(function () {
+                                    channelListRender('#channelListContainer');
+                                }, 300);
+                            }
+                        }
+                    });
+            $('div.box.no-drop').draggable( "disable" ).droppable( "disable" );
+        }
+
+        function getChannelListItem(num, item){
+            var return_val = '<div class="box '+(item.locked? 'no-drop': '')+'"  style="position:relative; z-index:30;">\n\
+                <div class="box-header '+ (item.empty == '1'? 'empty': '') + '"  style="position:relative; z-index:30;">\n\
+                    <div class="box-name col-sm-11"  style="position:relative; z-index:30;">\n\
+                        <span class="curr_num col-xs-1 col-sm-1 no-padding" data-number="'+num+'">'+item.number+'</span>\n\
+                        <div class="channel col-xs-10 col-sm-10 no-padding">\n\
+                            <span class="no-padding">\n\
+                              <!----  <img class="img-rounded" src="'+item.logo+'" alt="">--->\n\
+                            </span>\n\
+                            <a style="position:relative; z-index:300;" href="'+item.link+'" class="no-padding">'+item.name+'</a>';
+            if (item.empty != '1') {
+                return_val +='<div class="box-icons col-sm-1 no-padding"><a style="position:relative; z-index:300;" class="lock-link">\n\
+                        <i data-id="' + item.id + '" class="fa fa-'+(!item.locked? 'un': '')+'lock"></i>\n\
+                        </a></div>';
+            }
+            return_val +='    </div>\n\
+                    </div>';
+
+
+            return_val +='  <div class="no-move"></div>\n\
+                </div>\n\
+            </div>';
+            return return_val;
+        }
+
 
         function closeModalBox(){
             $.noty.closeAll();

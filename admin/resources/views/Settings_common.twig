@@ -189,33 +189,42 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">{{ 'Image description'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
-                                    <div class="col-xs-10 col-sm-8">
-                                        <div class=" col-xs-10 col-sm-12">
-                                            <input class="form-control own_fields" type="text" title="" value="" name="image_description_contains">
-                                        </div>
+                                    <div class=" col-xs-10 col-sm-10">
+                                        <input class="form-control own_fields" type="text" title="" value="" name="image_description_contains">
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">{{ 'Required image version'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
-                                    <div class="col-xs-10 col-sm-8">
-                                        <div class=" col-xs-10 col-sm-12">
-                                            <input class="form-control own_fields" type="text" title="" value="" name="image_version_contains">
-                                        </div>
+                                    <div class=" col-xs-10 col-sm-10">
+                                        <input class="form-control own_fields" type="text" title="" value="" name="image_version_contains">
                                     </div>
                                 </div>
-                            </div> 
+                            </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">{{ 'Hardware version'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
-                                    <div class="col-xs-10 col-sm-8">
-                                        <div class=" col-xs-10 col-sm-12">
-                                            <input class="form-control own_fields" type="text" title="" value="" name="hardware_version_contains">
-                                        </div>
+                                    <div class=" col-xs-10 col-sm-10">
+                                        <input class="form-control own_fields" type="text" title="" value="" name="hardware_version_contains">
                                     </div>
                                 </div>
-                            </div> 
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">{{ 'User groups'|trans }}</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-10">
+                                        <select name="stb_group_id" id="s2_stb_group_id" class="populate placeholder own_fields">
+                                            <option value="">&nbsp;</option>
+                                            {% if attribute(app, 'stbGroups') is defined and app['stbGroups'] %}
+                                                {% for item in app['stbGroups'] %}
+                                                    <option value="{{ item.id }}">{{ item.name }}</option>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -248,7 +257,7 @@
             modules: 'jsconf',
             onSuccess: function () {
                 var sendData = new Object();
-                var form_fields = $("#modalbox_ad input.own_fields:not(:disabled), #s2_stb_type,  #s2_update_type");
+                var form_fields = $("#modalbox_ad input.own_fields:not(:disabled), #modalbox_ad  select");
                 form_fields.each(function () {
                     if (typeof($(this).attr('type')) != 'undefined' && $(this).attr('type').toLowerCase() == 'checkbox') {
                         sendData[this.name] = $(this).prop('checked') ? 1: 0;
@@ -256,7 +265,6 @@
                         sendData[this.name] = $(this).val();
                     }
                 });
-                showModalBox();
                 ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
                 return false;
             },
@@ -325,7 +333,7 @@
                 "bInfo": true,
                 "columnDefs": [
                     { className: "action-menu", "targets": [ -1 ] },
-                    {"searchable": false, "targets": [-1, -2, 3]},
+                    {"searchable": false, "targets": [-1, -3, 3]},
                     {"sortable": false, "targets": [-1]}
                 ]
             }).prev('.dataTables_processing').hide('');
@@ -338,7 +346,6 @@
                     e.stopPropagation();
                     e.preventDefault();
                     $("#modalbox").data('complete', 0);
-                    showModalBox();
                     var sendData = $(this).data();
                     ajaxPostSend($(this).attr('href'), sendData, false, false);
                     $(this).closest('div.open').removeClass('open');
@@ -371,7 +378,7 @@
                     e.stopPropagation();
                     e.preventDefault();
                     if ($("#modalbox").data('complete') && $("#modalbox").data('complete') == 1) {
-                        closeModalBox();
+                        JScloseModalBox();
                     } else {
                         for(i=0;i<3;i++) {
                             $('#modalbox > div').fadeTo('slow', 0.5).fadeTo('slow', 1.0);
@@ -383,7 +390,7 @@
                 $("#add_common_item").on("click", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
-                    closeModalBox();
+                    JScloseModalBox();
                     $.validate();
                     $(conf.form).get(0).reset();
                     $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Add update'|trans }}');
@@ -402,7 +409,7 @@
         document.addEventListener("DOMContentLoaded", yelp, false);
         
         var setCommonModal = function (data) {
-            closeModalBox();
+            JScloseModalBox();
             $.validate();
             $(conf.form).get(0).reset();
             $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Edit update'|trans }}');
@@ -420,41 +427,6 @@
             $("select[id^='s2_']").select2(select2Opt);
             $("#modalbox_ad").show();
         };
-        
-        var manageCommon = function (obj) {
-            if (typeof(obj.nothing_to_do) == 'undefined' || !obj.nothing_to_do) {
-                notty('<span>{{ 'Finish'|trans }}!</span>', 'success');
-                var msg_type = typeof(obj.msg);
-                msg_type = msg_type.toLowerCase();
-                if (msg_type != 'undefined') {
-                    if (msg_type == 'string') {
-                        notty('<span>' + obj.msg + '</span>');
-                    } else if (msg_type == 'array' || msg_type == 'object') {
-                        for (var i in obj.msg) {
-                            notty('<br><span>' + obj.msg[i] + '</span>');
-                        }
-                    }
-                }
-                $('#datatable-1').DataTable().ajax.reload();
-            }
-            $("#modalbox_ad").hide();
-        };
-        
-        function closeModalBox(){
-            $("#modalbox").hide();
-            $('#modalbox').find('.modal-header-name span').empty();
-            $('#modalbox').find('.devoops-modal-inner').empty();
-            $('#modalbox').find('.devoops-modal-bottom').empty();
-        }
-        
-        function showModalBox(){
-			notty('<span>{{ 'Request is being processed'|trans }}...</span>','notification');
-          
-        }
-        
-        var errAction = function(){
-            notty('<span>{{ 'Failed'|trans }}!</span>','error');            
-        };
-        
+
     </script>
 {% endblock %}

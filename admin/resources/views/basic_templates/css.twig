@@ -4,7 +4,7 @@
         <link href="//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css" rel="stylesheet">
         <link href="{{ app.request.baseUrl }}/plugins/fancybox/jquery.fancybox.css" rel="stylesheet">
         <link href="{{ app.request.baseUrl }}/plugins/select2/select2.css" rel="stylesheet">
-        <link href="{{ app.request.baseUrl }}/css/style.css{% if attribute(app, 'current_version') is defined and app['current_version']%}?ver={{ app['current_version'] }}{% endif %}" rel="stylesheet">
+        <link href="{{ app.request.baseUrl }}/css/style.css?ver={{ random() }}{% if 0 and attribute(app, 'current_version') is defined and app['current_version']%}?ver={{ app['current_version'] }}{% endif %}" rel="stylesheet">
         <link href="{{ app.request.baseUrl }}/css/jquery.dataTables.css" type="text/css" rel="stylesheet" />
         <link href="{{ app.request.baseUrl }}/css/countries_flags/flag-icon.css" rel="stylesheet">
         <link href="{{ app.request.baseUrl }}/css/countries_flags/docs.css" rel="stylesheet">

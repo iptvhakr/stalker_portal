@@ -47,6 +47,15 @@
                             date = new Date(date * 1000);
                             json.data[i]['modified'] = date.toLocaleFormat("%b %d, %Y %H:%M");
                         }
+
+                        if (!json.data[i]['mac'] && json.data[i]['user_id']) {
+                            json.data[i]['mac'] = json.data[i]['user_id'];
+                        }
+
+                        if (!json.data[i]['package']) {
+                            json.data[i]['package'] = '---';
+                        }
+
                         json.data[i]['state'] = json.data[i]['state'] ? '{{ app.allPackageStates[1].title }}': '{{ app.allPackageStates[0].title }}';
                         json.data[i]['mac'] = '<a href="{{ app.request.baseUrl }}/users/edit-users?id=' + json.data[i]['user_id'] + '">'+ json.data[i]['mac'] +'</a>';
                     }

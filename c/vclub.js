@@ -1184,8 +1184,10 @@
                                 stb.player.cur_media_item.keep_original_name = true;
                                 stb.player.cur_media_item.ad_must_watch = result[0].ad_must_watch;
                                 stb.player.cur_media_item.show_osd = true;
-                                stb.player.cur_media_item.media_type = 'vclub_ad';
+                                stb.player.cur_media_item.media_type = result[0].media_type;
                                 stb.player.cur_media_item.ad_id = result[0].ad_id;
+                                stb.player.cur_media_item.is_advert = result[0].is_advert;
+                                stb.player.cur_media_item.ad_tracking = result[0].ad_tracking;
 
                                 stb.key_lock = true;
 

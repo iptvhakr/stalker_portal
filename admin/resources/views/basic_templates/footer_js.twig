@@ -11,14 +11,14 @@
         <script src="{{app.relativePath}}c/version.js{% if attribute(app, 'current_version') is defined and app['current_version']%}?ver={{ app['current_version'] }}{% endif %}"></script>
         <!-- All functions for this theme + document.ready processing -->
         <script src="{{app.request.baseUrl}}/plugins/form-validator/jquery.form-validator.min.js"></script>
-        <script src="{{app.request.baseUrl}}/js/devoops.js{% if attribute(app, 'current_version') is defined and app['current_version']%}?ver={{ app['current_version'] }}{% endif %}"></script>
+        <script src="{{app.request.baseUrl}}/js/devoops.js?ver={{ random() }}{% if 0 and attribute(app, 'current_version') is defined and app['current_version']%}?ver={{ app['current_version'] }}{% endif %}"></script>
         <script src="{{app.request.baseUrl}}/plugins/multiselect_transfer/jquery.selso.js"></script>
 
         <script src="{{app.request.baseUrl}}/plugins/datatables/jquery.dataTables.js"></script>
         <script src="{{app.request.baseUrl}}/plugins/datatables/ZeroClipboard.js"></script>
         <script src="{{app.request.baseUrl}}/plugins/datatables/TableTools.js"></script>
         <script src="{{app.request.baseUrl}}/plugins/datatables/fnReloadAjax.js"></script>
-        <script src="{{app.request.baseUrl}}/plugins/datatables/dataTables.bootstrap.js{% if attribute(app, 'current_version') is defined and app['current_version']%}?ver={{ app['current_version'] }}{% endif %}"></script>
+        <script src="{{app.request.baseUrl}}/plugins/datatables/dataTables.bootstrap.js?{#ver={{ random() }}#}{% if 0 and attribute(app, 'current_version') is defined and app['current_version']%}?ver={{ app['current_version'] }}{% endif %}"></script>
         <script src="{{app.request.baseUrl}}/plugins/datatables/jquery.dataTables.rowReordering.js"></script>
 
         <script src="{{app.request.baseUrl}}/plugins/select2/select2.full.js"></script>
@@ -207,7 +207,7 @@
             }
             var cTime = new Date();
             if ((cTime.getTime() - certificateCheck.timestamp) > 86400000 ) {
-                ajaxPostSend('{{app.request.baseUrl}}/certificates/current-list-json', {notty_check: 1});
+                ajaxPostSend('{{app.request.baseUrl}}/certificates/current-list-json', {notty_check: 1}, false, false, true);
             } else if (!certificateCheck.closed){
                 createCertModal();
             }

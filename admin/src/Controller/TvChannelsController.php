@@ -234,8 +234,8 @@ class TvChannelsController extends \Controller\BaseStalkerController {
 
     //----------------------- ajax method --------------------------------------
 
-    public function iptv_list_json(){
-        if ($this->isAjax) {
+    public function iptv_list_json($local_uses = FALSE){
+        if ($this->isAjax && !$local_uses) {
             if ($no_auth = $this->checkAuth()) {
                 return $no_auth;
             }
@@ -248,7 +248,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         );
 
         $error = "Error";
-        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
+        $param = (!empty($this->data)?$this->data: $this->postData);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_', 'claims'));
 
@@ -259,6 +259,11 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $filter = $this->getIPTVfilters();
 
         $query_param['where'] = array_merge($query_param['where'], $filter);
+
+        if (!empty($param['id'])) {
+            $query_param['where']['id'] = $param['id'];
+        }
+
         $filds_for_select = $this->getAllChannelsFields();
 
         $query_param['select'] = array_values($filds_for_select);
@@ -309,6 +314,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                 settype($allChannels[$num]['video_counter'], 'int');
                 settype($allChannels[$num]['no_epg'], 'int');
                 settype($allChannels[$num]['wrong_epg'], 'int');
+                $allChannels[$num]['RowOrder'] = "dTRow_" . $row['id'];
                 if (($monitoring_status = $this->getMonitoringStatus($row)) !== FALSE) {
                     $allChannels[$num]['monitoring_status'] = $monitoring_status;
                     $response["data"][] = $allChannels[$num];
@@ -329,7 +335,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         $error = "";
 
-        if ($this->isAjax) {
+        if ($this->isAjax && !$local_uses) {
             $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
         } else {
@@ -341,11 +347,11 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
-        if (empty($this->data['id']) || (!is_numeric($this->data['id']))) {
+        if (empty($this->postData['id']) || (!is_numeric($this->postData['id']))) {
             $this->app->abort(404, $this->setLocalization('Cannot find channel'));
         }
 
-        $channel = $this->db->getChannelById($this->data['id']);
+        $channel = $this->db->getChannelById($this->postData['id']);
 
         if (!empty($channel)) {
 
@@ -353,16 +359,17 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             $response = $this->delete_logo(TRUE);
 
             $tv_archive = new \TvArchive();
-            $tv_archive->deleteTasks(intval($this->data['id']));
+            $tv_archive->deleteTasks(intval($this->postData['id']));
 
-            $ch_links = $this->db->getChannelLinksById($this->data['id']);
+            $ch_links = $this->db->getChannelLinksById($this->postData['id']);
             if (is_array($ch_links)) {
                 $this->db->deleteCHLink($this->getFieldFromArray($ch_links, 'id'));
             }
 
-            $response['rows'] = $this->db->removeChannel($this->data['id']);
+            $response['rows'] = $this->db->removeChannel($this->postData['id']);
         }
-        $response['action'] = 'remove';
+        $response['action'] = 'deleteTableRow';
+        $response['id'] = $this->postData['id'];
 
         $response = $this->generateAjaxResponse($response, $response['error']);
 
@@ -373,21 +380,22 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
-        if (empty($this->data['id']) || (!is_numeric($this->data['id']))) {
+        if (empty($this->postData['id']) || (!is_numeric($this->postData['id']))) {
             $this->app->abort(404, $this->setLocalization('Cannot find channel'));
         }
 
-        $rows = $this->db->changeChannelStatus($this->data['id'], 0);
+        $rows = $this->db->changeChannelStatus($this->postData['id'], 0);
 
         $data = array(
-            'rows' => $rows,
-            'action' => $this->setLocalization('Publish'),
-            'status' => $this->setLocalization('Unpublished'),
-            'urlactfrom' => 'disable',
-            'urlactto' => 'enable');
+            'id' => $this->postData['id'],
+            'action' => 'updateTableRow',
+            'data' => array()
+        );
         $error = '';
         if (empty($rows)) {
             $data['msg'] = $error = $this->setLocalization('Nothing to do');
+        } else {
+            $data = array_merge_recursive($data, $this->iptv_list_json(TRUE));
         }
 
         $response = $this->generateAjaxResponse($data, $error);
@@ -399,23 +407,23 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
-        if (empty($this->data['id']) || (!is_numeric($this->data['id']))) {
+        if (empty($this->postData['id']) || (!is_numeric($this->postData['id']))) {
             $this->app->abort(404, $this->setLocalization('Cannot find channel'));
         }
 
-        $rows = $this->db->changeChannelStatus($this->data['id'], 1);
+        $rows = $this->db->changeChannelStatus($this->postData['id'], 1);
 
         $data = array(
-            'rows' => $rows,
-            'action' => $this->setLocalization('Unpublish'),
-            'status' => $this->setLocalization('Published'),
-            'urlactfrom' => 'enable',
-            'urlactto' => 'disable'
+            'id' => $this->postData['id'],
+            'action' => 'updateTableRow',
+            'data' => array()
         );
 
         $error = '';
         if (empty($rows)) {
             $data['msg'] = $error = $this->setLocalization('Nothing to do');
+        } else {
+            $data = array_merge_recursive($data, $this->iptv_list_json(TRUE));
         }
 
         $response = $this->generateAjaxResponse($data, $error);
@@ -647,8 +655,8 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
 
-    public function epg_list_json(){
-        if ($this->isAjax) {
+    public function epg_list_json($local_uses = FALSE){
+        if ($this->isAjax && !$local_uses) {
             if ($no_auth = $this->checkAuth()) {
                 return $no_auth;
             }
@@ -657,12 +665,15 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $response = array(
             'data' => array(),
             'recordsTotal' => 0,
-            'recordsFiltered' => 0,
-            'action' => 'setEPGModal'
+            'recordsFiltered' => 0
         );
 
+        if (!$local_uses){
+            $response['action'] = 'setEPGModal';
+        }
+
         $error = $this->setLocalization("Error");
-        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
+        $param = (!empty($this->data)?$this->data: $this->postData);;
 
         $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
 
@@ -696,12 +707,13 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $response['data'] = array_map(function($val){
             $val['status'] = (int)$val['status'];
             $val['updated'] = (int) strtotime($val['updated']);
+            $val['RowOrder'] = "dTRow_" . $val['id'];
             return $val;
         }, $EPGList);
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
 
         $error = "";
-        if ($this->isAjax) {
+        if ($this->isAjax && !$local_uses) {
             $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
         } else {
@@ -728,7 +740,8 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             $check = $this->db->searchOneEPGParam(array('uri' => trim($this->postData['uri'])));
         } else {
             $operation = 'updateEPG';
-            $item['id'] = $this->postData['id'];
+            $data['id'] = $item['id'] = $this->postData['id'];
+            $data['action'] = 'updateTableRow';
         }
         unset($item[0]['id']);
         $error = ' ';
@@ -738,6 +751,8 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                 $error = '';
                 if ($result === 0) {
                     $data['nothing_to_do'] = TRUE;
+                } else {
+                    $data = array_merge_recursive($data, $this->epg_list_json(TRUE));
                 }
             }
         } else {
@@ -760,10 +775,12 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'manageEPG';
+        $data['action'] = 'deleteTableRow';
         $data['id'] = $this->postData['id'];
-        $error = '';
-        $this->db->deleteEPG(array('id' => $this->postData['id']));
+        $error = $this->setLocalization('Failed');
+        if ($this->db->deleteEPG(array('id' => $this->postData['id']))){
+            $error = '';
+        }
 
         $response = $this->generateAjaxResponse($data);
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
@@ -780,10 +797,11 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'manageEPG';
+        $data['action'] = 'updateTableRow';
         $data['id'] = $this->postData['id'];
         $this->db->updateEPG(array('status' => (int)(!((bool) $this->postData['status']))), $this->postData['id']);
         $error = '';
+        $data = array_merge_recursive($data, $this->epg_list_json(TRUE));
         $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
@@ -798,7 +816,8 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
         $data = array();
-        $data['action'] = 'checkRadioName';
+        $data['action'] = 'checkData'; //checkData
+        $data['input_id'] = 'form_uri';
         $error = $this->setLocalization('URL is busy');
 
         if ($this->db->searchOneEPGParam(array('uri' => trim($this->postData['param']), 'id<>' => trim($this->postData['epgid'])))) {
@@ -879,9 +898,9 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
 
-    public function tv_genres_list_json(){
+    public function tv_genres_list_json($local_uses = FALSE){
 
-        if ($this->isAjax) {
+        if ($this->isAjax && !$local_uses) {
             if ($no_auth = $this->checkAuth()) {
                 return $no_auth;
             }
@@ -893,12 +912,16 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         );
 
         $error = $this->setLocalization('Error');
-        $param = (!empty($this->data) ? $this->data : array());
+        $param = (!empty($this->data)?$this->data: $this->postData);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', '_', 'localized_title', 'RowOrder'));
 
         if (!isset($query_param['where'])) {
             $query_param['where'] = array();
+        }
+
+        if (!empty($param['id'])) {
+            $query_param['where']['id'] = $param['id'];
         }
 
         $response['recordsTotal'] = $this->db->getTotalRowsTvGenresList();
@@ -927,7 +950,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
 
         $error = "";
-        if ($this->isAjax) {
+        if ($this->isAjax && !$local_uses) {
             $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
         } else {
@@ -973,7 +996,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'editTvGenre';
+        $data['action'] = 'updateTableRow';
         $error = $this->setLocalization('Failed');
         $check = $this->db->getTvGenresList(array(
             'select'=>array('*'),
@@ -987,6 +1010,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                 $error = '';
                 $data['id'] = $this->postData['id'];
                 $data['title'] = $this->postData['title'];
+                $data = array_merge_recursive($data, $this->tv_genres_list_json(TRUE));
             } elseif(is_numeric($result)) {
                 $error = '';
                 $data['msg'] = ' ' . $this->setLocalization('Nothing to do');
@@ -1011,7 +1035,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'removeTvGenre';
+        $data['action'] = 'deleteTableRow';
         $data['id'] = $this->postData['genresid'];
         $error = $this->setLocalization('Failed');
 
@@ -1036,7 +1060,8 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
         $data = array();
-        $data['action'] = 'checkTvGenre';
+        $data['action'] = 'checkData';
+        $data['input_id'] = 'tv_genres_title';
         $error = $this->setLocalization('Name already used');
         if ($this->db->getTvGenresList(array(
             'select'=>array('*'),
@@ -1248,13 +1273,20 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
-        $data['action'] = 'manageChannelTable';
+        $data = array(
+            'id' => $this->postData['media_id'],
+            'action' => 'updateTableRow',
+            'data' => array()
+        );
         $error = $this->setLocalization('Failed');
         $result = $this->db->resetMediaClaims($this->postData['media_id']);
         if (is_numeric($result)) {
             $error = '';
             if ($result === 0) {
                 $data['nothing_to_do'] = TRUE;
+            } else {
+                $this->postData['id'] = $this->postData['media_id'];
+                $data = array_merge_recursive($data, $this->iptv_list_json(TRUE));
             }
         } else {
             $data['msg'] = $error;

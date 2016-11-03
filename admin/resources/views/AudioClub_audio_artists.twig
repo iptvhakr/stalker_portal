@@ -90,10 +90,16 @@
                     e.stopPropagation();
                     e.preventDefault();
                     var _this = $(this);
+
                     _this.val(_this.val().replace(/^\s+/ig, '').replace(/\s{2}$/, ' '));
                     _this.next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
                     $('#modalbox button[type="submit"]').removeAttr("disabled");
-                    ajaxPostSend('{{app.request.baseUrl}}/{{app.controller_alias}}/check-audio-artists-name', {name: _this.val()});
+
+                    var sendData = {
+                        id: _this.prev('input[name="id"]').val(),
+                        name: _this.val()
+                    };
+                    ajaxPostSend('{{app.request.baseUrl}}/{{app.controller_alias}}/check-audio-artists-name', sendData);
 
                     return false;
                 });
@@ -107,13 +113,7 @@
                     if ($(_this).attr("disabled")) {
                         JSErrorModalBox({msg: "{{ 'Action is not available'|trans }}! " + ($(_this).attr('warning_msg') ? $(_this).attr('warning_msg') : '')});
                     } else {
-                        showModalBox();
-                        var timer = setInterval(function(){
-                            if ($("#modalbox").is(":visible")) {
-                                ajaxPostSend($(_this).attr('href'), sendData, false );
-                                clearInterval(timer);
-                            }
-                        }, 10);
+                        ajaxPostSend($(_this).attr('href'), sendData, false );
                     }
                     $(this).closest('div.open').removeClass('open');
                     return false;
@@ -132,7 +132,7 @@
                     }
                     e.stopPropagation();
                     e.preventDefault();
-                    closeModalBox();
+                    JScloseModalBox();
                     return false;
                 });
 
@@ -153,8 +153,7 @@
                         e.stopPropagation();
                         e.preventDefault();
                         ajaxPostSend($("#modalbox form").attr('action'), sendData, false);
-                        closeModalBox();
-                        notty('<span>{{ 'Done'|trans }}!</span>','success');
+                        JScloseModalBox();
                         return false;
 					}
                 });
@@ -185,57 +184,9 @@
         document.addEventListener("DOMContentLoaded", yelp, false);
 
         var addAudioArtist = function(data){
-            closeModalBox();
+            JSSuccessModalBox(data);
             $('#datatable-1').DataTable().ajax.reload();
         };
-        
-        var editAudioArtist = function(data){
-            closeModalBox();
-            $('#datatable-1').DataTable().ajax.reload();
-        };
-        
-        var removeAudioArtist = function (data) {
-            closeModalBox();
-            $('#datatable-1').DataTable().ajax.reload();
-        };
-
-        var checkAudioArtist = function (data) {
-            if (typeof(data) != 'undefined') {
-                $('#modalbox button[type="submit"]').removeAttr("disabled");
-                $('#audio_artists_name').next('div').append('<i class="txt-success fa fa-check"></i> ' + data.chk_rezult).css('visibility', 'visible');
-            } else {
-                JSErrorModalBox();
-            }
-        };
-
-        var checkAudioArtistError= function (data) {
-            if (typeof(data) != 'undefined') {
-                $('#modalbox button[type="submit"]').attr("disabled", "disabled");
-                $('#audio_artists_name').next('div').append('<i class="txt-danger fa fa-ban"></i> ' + data.error).css('visibility', 'visible');
-            } else {
-                JSErrorModalBox();
-            }
-        };
-
-        function closeModalBox() {
-            $("#modalbox").hide();
-            $('#modalbox').find('.modal-header-name span').removeClass('txt-danger').empty();
-            $('#modalbox').find('.devoops-modal-inner').empty();
-            $('#modalbox').find('.devoops-modal-bottom').empty();
-        }
-
-        function showModalBox() {
-            $('#modalbox').find('.modal-header-name span').removeClass('txt-danger').text('{{ 'Wait'|trans }}...');
-            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Request is being processed'|trans }}...</span>');
-            $('#modalbox').find('.devoops-modal-bottom').empty();
-            $("#modalbox").show();
-        }
-
-/*        function closeModalBox(){
-            $("#modalbox").hide();
-            $('#modalbox').find('.modal-header-name span').empty();
-            $('#modalbox').find('.devoops-modal-inner').find('input').val('');
-        }*/
 
         function openModalBox(obj){
             $('#modalbox').find('.modal-header-name span').text((obj.data('artistsid')? '{{ 'Edit'|trans }}': '{{ 'Add'|trans }}') + ' {{ 'artist'|trans }}');
@@ -260,6 +211,8 @@
                                 <button type="submit" class="btn btn-success pull-right">{{ 'Save'|trans }}</button>\n\
                                 <button type="reset" class="btn btn-default pull-right" >{{ 'Cancel'|trans }}</button>\n\
                             </div> </form>');
+            } else {
+                $('#modalbox').find('.devoops-modal-inner').find('input').val('');
             }
 
             if (obj.data('artistsid')) {

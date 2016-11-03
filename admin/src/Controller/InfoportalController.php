@@ -83,7 +83,7 @@ class InfoportalController extends \Controller\BaseStalkerController {
 
     //----------------------- ajax method --------------------------------------
 
-    public function phone_book_list_json() {
+    public function phone_book_list_json($local_uses = FALSE) {
         if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
                 return $no_auth;
@@ -142,11 +142,15 @@ class InfoportalController extends \Controller\BaseStalkerController {
             $query_param['where']['id'] = $param['id'];
         }
         
-        $response['data'] = $this->db->getPhoneBoockList($table_prefix, $query_param);
+        $response['data'] = array_map(function($row){
+            $row['RowOrder'] = "dTRow_" . $row['id'];
+            return $row;
+        }, $this->db->getPhoneBoockList($table_prefix, $query_param));
+
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         
         $error = "";
-        if ($this->isAjax) {
+        if ($this->isAjax && !$local_uses) {
             $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
         } else {
@@ -154,7 +158,7 @@ class InfoportalController extends \Controller\BaseStalkerController {
         }
     }
 
-    public function humor_list_json() {
+    public function humor_list_json($local_uses = FALSE) {
         if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
                 return $no_auth;
@@ -208,12 +212,13 @@ class InfoportalController extends \Controller\BaseStalkerController {
         $response['data'] = $this->db->getHumorList($query_param);
         $response['data'] = array_map(function($row){
             $row['added'] = (int) strtotime($row['added']);
+            $row['RowOrder'] = "dTRow_" . $row['id'];
             return $row;
         }, $response['data']);
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         
         $error = "";
-        if ($this->isAjax) {
+        if ($this->isAjax && !$local_uses) {
             $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
         } else {
@@ -232,7 +237,7 @@ class InfoportalController extends \Controller\BaseStalkerController {
         }
         
         $data = array();
-        $data['action'] = 'managePhoneBook';
+        $data['action'] = 'updateTableData';
         $item = array($this->postData);
 
         $error = $this->setLocalization('error');
@@ -243,7 +248,7 @@ class InfoportalController extends \Controller\BaseStalkerController {
             } else {
                 $operation = 'updatePhoneBoock';
                 $available = !((bool) $this->db->getTotalRowsPhoneBoockList($this->postData['phoneboocksource'], array('id<>' => $this->postData['id'],'num' => $this->postData['num'])));
-                $item['id'] = $this->postData['id'];
+                $data['id'] = $item['id'] = $this->postData['id'];
             }
             unset($item[0]['id']);
             unset($item[0]['phoneboocksource']);
@@ -255,6 +260,12 @@ class InfoportalController extends \Controller\BaseStalkerController {
                     $error = '';
                     if ($result === 0) {
                         $data['nothing_to_do'] = TRUE;
+                    }
+                    if ($operation == 'updatePhoneBoock') {
+                        $data = array_merge_recursive($data, $this->phone_book_list_json(TRUE));
+                        $data['action'] = 'updateTableRow';
+                    } else {
+                        $data['msg'] = $this->setLocalization('Added');
                     }
                 }
 
@@ -280,10 +291,17 @@ class InfoportalController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'managePhoneBook';
+        $data['action'] = 'deleteTableRow';
         $data['id'] = $this->postData['id'];        
-        $error = '';    
-        $this->db->deletePhoneBoock($this->postData['phoneboocksource'], array('id' => $this->postData['id']));
+        $error = '';
+        $result = $this->db->deletePhoneBoock($this->postData['phoneboocksource'], array('id' => $this->postData['id']));
+
+        if (is_numeric($result)) {
+            $error = '';
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
+        }
         
         $response = $this->generateAjaxResponse($data);
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
@@ -300,7 +318,7 @@ class InfoportalController extends \Controller\BaseStalkerController {
         }
         
         $data = array();
-        $data['action'] = 'manageHumor';
+        $data['action'] = 'updateTableData';
         $item = array($this->postData);
 
         $error = 'error';
@@ -309,7 +327,7 @@ class InfoportalController extends \Controller\BaseStalkerController {
             $item[0]['added'] = "NOW()";
         } else {
             $operation = 'updateHumor';
-            $item['id'] = $this->postData['id'];
+            $data['id'] = $item['id'] = $this->postData['id'];;
         }
         unset($item[0]['id']);
 
@@ -319,6 +337,12 @@ class InfoportalController extends \Controller\BaseStalkerController {
             $error = '';
             if ($result === 0) {
                 $data['nothing_to_do'] = TRUE;
+            }
+            if ($operation == 'updateHumor'){
+                $data = array_merge_recursive($data, $this->humor_list_json(TRUE));
+                $data['action'] = 'updateTableRow';
+            } else {
+                $data['msg'] = $this->setLocalization('Added');
             }
         }
         
@@ -337,10 +361,16 @@ class InfoportalController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'manageHumor';
+        $data['action'] = 'deleteTableRow';
         $data['id'] = $this->postData['id'];        
-        $error = '';    
-        $this->db->deleteHumor(array('id' => $this->postData['id']));
+        $error = '';
+        $result = $this->db->deleteHumor(array('id' => $this->postData['id']));
+        if (is_numeric($result)) {
+            $error = '';
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
+        }
         
         $response = $this->generateAjaxResponse($data);
         return new Response(json_encode($response), (empty($error) ? 200 : 500));

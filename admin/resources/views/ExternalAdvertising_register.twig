@@ -1,0 +1,186 @@
+{% extends 'layout.twig' %}
+{% set title = ('Advertising'|trans ~ ': ' ~ 'Registering'|trans) | trans %}
+
+{% block content %}
+
+    <div id="add_channel">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="box">
+                    <div class="box-content">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p>
+                                    <strong>{{ 'Monetize your auditory with our Video Ad Exchange!'|trans }}</strong>
+                                </p>
+                                <p>
+                                    {{ 'We have been working hard to build one of the industry’s leading video advertising marketplaces, and today, our business approach locates only advertising campaigns that truly perform.'|trans }}
+                                    <br>
+                                    {{ 'We offering our experienced and skilled strategical insights that make your ad revenue increase exponentially.'|trans }}
+                                </p>
+                                <p>
+                                    {{ 'Partnering with all the top advertising agencies, trading desks, ad networks, DSPs and premium direct advertisers we offer you world-wide targeting and the most competitive CPM rates.'|trans }}
+                                </p>
+                                <p>
+                                    {{ 'With our extended reporting, you receive a full and detailed picture of your performance down to granular insights.'|trans }}
+                                </p>
+                                <p>
+                                    {{ 'Our developers and managers create the synergy that tailor-makes our offerings to fit our partners’ demands. From the moment you get on board with us we will provide you with a dedicated assistance and a sophisticated video monetization strategy analysis.'|trans }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{ form_start(app['form'], {'method': 'POST', 'action': (app.request.baseUrl ~ '/' ~ app.controller_alias  ~ '/' ~ app.action_alias) | trans, 'attr': {'class': 'form-horizontal', 'role': 'form', 'id': 'form_'}}) }}
+        <div class="bg-danger">
+            <div class="bg-danger">
+                {{ form_errors(app['form']) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="box">
+                    <div class="box-content">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label "><strong>{{ 'GET STARTED'|trans }}</strong></label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'Full Name'|trans }}<span class="icon-required">*</span></label>
+                            <div class="col-xs-10 col-sm-8">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].id, {'attr': {'class': 'form-control'}}) }}
+                                    {{ form_widget(app['form'].admin_id, {'attr': {'class': 'form-control'}}) }}
+                                    {{ form_widget(app['form'].submit_type, {'attr': {'class': 'form-control'}}) }}
+                                    {{ form_widget(app['form'].name, {'attr': {'class': 'form-control', 'data-validation': 'required'}}) }}
+								</div>
+                                <div>
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].name) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'Phone'|trans }}<span class="icon-required">*</span></label>
+                            <div class="col-xs-10 col-sm-8">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].phone, {'attr': {'class': 'form-control', 'data-validation': 'required'}}) }}
+                                </div>
+                                <div>
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].phone) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'Email'|trans }}<span class="icon-required">*</span></label>
+                            <div class="col-xs-10 col-sm-8">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].email, {'attr': {'class': 'form-control',  'placeholder': 'mail@example.com', 'data-validation': 'required'} }) }}
+                                </div>
+                                <div>
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].email) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'Region'|trans }}<span class="icon-required">*</span></label>
+                            <div class="col-xs-10 col-sm-8">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].region, {'attr': {'class': 'populate placeholder', 'data-validation': 'required'} }) }}
+                                </div>
+                                <div>
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].region) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">&nbsp;</label>
+                            <div class="col-xs-10 col-sm-8">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].accept_terms, {'attr': {'class': 'form-control', 'style': 'display: inline-block; height: auto; width: auto;'}}) }}
+                                    {{ form_label(app['form'].accept_terms, 'By clicking "Register" button, I accept the Terms of Service.'|trans, {'label_attr': {'class': 'control-label' }}) }}
+                                </div>
+                                <div>
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].accept_terms) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-10 col-sm-8">
+                                <div class=" col-xs-10 col-sm-8">
+                                    <div class="pull-right">
+                                        {{ form_widget(app['form'].skip, { 'label': 'I\'m already registered - skip this step'|trans , attr: {'class': 'btn btn-success green pull-right'}}) }}
+                                        {{ form_widget(app['form'].save, { 'label': 'Register'|trans , attr: {'class': 'btn btn-warning pull-right'}}) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="">
+            {{ form_rest(app.form) }}
+        </div>
+        {{ form_end(app['form']) }}  
+    </div>
+    <script type="text/javascript" defer>
+
+        var select2Opt = {minimumResultsForSearch: -1, dropdownAutoWidth: false, width: '100%'};
+
+        var conf = {
+            form: '#form_',
+            lang : '{{ app.js_validator_language }}',
+            showHelpOnFocus : true,
+            validateHiddenInputs: true,
+            modules: 'jsconf',
+            onSuccess: function () {
+                $(conf.form).get(0).submit();
+                return true;
+            },
+            onError: function () {
+                return false;
+            }
+        };
+
+        function DemoSelect2() {
+            $('#form_region').select2(select2Opt);
+        }
+        
+        function yelp() {
+            $(document).ready(function () {
+                $.validate(conf);
+
+                $("#form_save, #form_skip").on('click', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var submitType = $(this).attr('id').replace('form_', '');
+                    if (submitType == 'skip') {
+                        $(conf.form).find('input, select').filter(':visible:not([type="checkbox"])').prop('disabled', 'disabled');
+                    }
+                    if ($(conf.form).isValid({}, conf, true)) {
+                        $("#form_submit_type").val(submitType);
+                        conf.onSuccess();
+                    } else {
+                        conf.onError();
+                    }
+                    return false;
+                });
+
+                LoadSelect2Script(DemoSelect2);
+            });
+        }
+        document.addEventListener("DOMContentLoaded", yelp, false);
+
+    </script>
+{% endblock %}
