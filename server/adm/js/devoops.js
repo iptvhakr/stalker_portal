@@ -604,6 +604,8 @@ function ajaxSuccess(data, alertMsg, consoleMsg){
     if (data.success  && !data.error) {
         if ($.isFunction(window[data.action])) {
             window[data.action](data);
+        } else {
+            JSSuccessModalBox(data);
         }
     } else if (data.error) {
         ajaxError({responseJSON: data});
@@ -658,9 +660,9 @@ function ajaxError(data, alertMsg, consoleMsg){
             window['errAction']();
         } else if (data.responseJSON){
             var msg = '';
-            if (typeof (data.responseJSON.msg) != 'undefined') {
+            if (data && data.responseJSON && data.responseJSON.msg) {
                 msg = data.responseJSON.msg;
-            } else if (typeof (data.responseJSON.error) != 'undefined') {
+            } else if (data && data.responseJSON && data.responseJSON.error) {
                 msg = data.responseJSON.error;
             }
             JSErrorModalBox({msg: msg});
@@ -840,6 +842,7 @@ function JScloseModalBox(){
     $("#modalbox").hide();
     $("#modalbox_ad").hide();
     $("#modalbox").data('complete', 1);
+    $("#modalbox_ad").data('complete', 1);
 }
         
 function JSshowModalBox(type){
@@ -859,6 +862,7 @@ function JSSuccessModalBox(data) {
     $("#modalbox").hide();
     $("#modalbox_ad").hide();
     $("#modalbox").data('complete', 1);
+    $("#modalbox_ad").data('complete', 1);
 }
 
 function JSErrorModalBox(data){
@@ -873,6 +877,7 @@ function JSErrorModalBox(data){
         notty('<span>' + words['Failed'] + '! ' + msg + '!</span>', 'error');
     }
     $("#modalbox").data('complete', 1);
+    $("#modalbox_ad").data('complete', 1);
 }
 
 function setActiveFilter(obj){
@@ -944,8 +949,9 @@ function updateTableData(obj){
     } catch (e){
         console.log(e);
     }
-
-    JSSuccessModalBox(obj);
+    if (typeof(obj) != 'undefined' && typeof(obj.msg) != 'undefined') {
+        JSSuccessModalBox(obj);
+    }
 }
 
 function updateTableDataError(obj){
@@ -956,14 +962,14 @@ function checkData(obj){
     if (typeof(obj.input_id) != 'undefined') {
         $("#" + obj.input_id).next('div').empty().append('<i class="txt-success fa fa-check"></i> ' + obj.chk_rezult).css('visibility', 'visible').show();
 
-        var errFields = $('#modalbox [type="submit"]').data('err-fields') || '';
+        var errFields = $('div[id^="modalbox"]:visible [type="submit"]').data('err-fields') || '';
 
         errFields = errFields.replace(obj.input_id + '|', '');
 
         if (errFields.length == 0){
-            $('#modalbox [type="submit"]').prop('disabled', false);
+            $('div[id^="modalbox"]:visible [type="submit"]').prop('disabled', false);
         }
-        $('#modalbox [type="submit"]').data('err-fields', errFields);
+        $('div[id^="modalbox"]:visible [type="submit"]').data('err-fields', errFields);
     } else {
         JSSuccessModalBox({msg: obj.chk_rezult});
     }
@@ -973,12 +979,12 @@ function checkDataError(obj){
     if (typeof(obj.input_id) != 'undefined') {
         $("#" + obj.input_id).next('div').empty().append('<i class="txt-danger fa fa-ban"></i> ' + obj.chk_rezult).css('visibility', 'visible').show();
 
-        var errFields = $('#modalbox [type="submit"]').data('err-fields') || '';
+        var errFields = $('div[id^="modalbox"]:visible [type="submit"]').data('err-fields') || '';
 
         if (errFields.length == 0 || errFields.split('|').indexOf(obj.input_id) == -1) {
-            $('#modalbox [type="submit"]').data('err-fields', errFields + obj.input_id + '|');
+            $('div[id^="modalbox"]:visible [type="submit"]').data('err-fields', errFields + obj.input_id + '|');
         }
-        $('#modalbox [type="submit"]').prop('disabled', true);
+        $('div[id^="modalbox"]:visible [type="submit"]').prop('disabled', true);
     } else {
         JSErrorModalBox({msg: obj.chk_rezult});
     }

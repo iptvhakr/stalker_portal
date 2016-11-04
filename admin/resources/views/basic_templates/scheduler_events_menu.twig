@@ -585,20 +585,6 @@
         return false;
     }
 
-    var addEvent = function (data) {
-        JSSuccessModalBox(data);
-        $('#datatable-1').dataTable().fnReloadAjax();
-        $('#modalbox_ad button[type="reset"]').trigger("click");
-        $('#modalbox_ad form input[type="hidden"][name="id"]').val('');
-    };
-
-    var addEventError = function (data) {
-        JSErrorModalBox(data);
-        $('#datatable-1').dataTable().fnReloadAjax();
-        $('#modalbox_ad button[type="reset"]').trigger("click");
-        $('#modalbox_ad form input[type="hidden"][name="id"]').val('');
-    };
-
 </script>
 {% if attribute(app, 'messagesTemplates') is defined and app.messagesTemplates|length> 0%}
     {% for item in app.messagesTemplates %}

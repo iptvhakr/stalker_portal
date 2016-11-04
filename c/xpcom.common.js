@@ -1165,6 +1165,8 @@ function common_xpcom(){
 
                 this.profile['ts_enable_icon'] = parseInt(this.profile['ts_enable_icon'], 10);
 
+                stb.advert.config = this.user['config'] || {};
+
                 if (!this.user['update_url']){
                     try{
                         this.user['update_url'] = stb.RDir('getenv update_url').clearnl();
@@ -2071,11 +2073,18 @@ function common_xpcom(){
     this.advert = {
 
         current : {},
+        config : {},
         ticking_timeout : 0,
 
         start : function (callback) {
             _debug('stb.advert.get_ad');
 
+            //todo: temporary disabled ad
+
+            return callback();
+
+            stb.key_lock = true;
+            
             stb.load(
                 {
                     "type"   : "stb",
@@ -2085,7 +2094,20 @@ function common_xpcom(){
                 function (result) {
                     _debug('on get_ad', result);
 
+                    stb.key_lock = false;
+
                     this.current = result;
+
+                    if (result && result.config) {
+                        this.config = result.config;
+                    }
+
+                    _debug('this.config', this.config);
+
+                    if (this.config.hasOwnProperty('places') && this.config['places'].hasOwnProperty('before_app') && this.config['places']['before_app'] == 0){
+                        callback();
+                        return;
+                    }
 
                     if (result && result.ad) {
 
@@ -2096,9 +2118,10 @@ function common_xpcom(){
                         stb.player.play({
                             'id': 0,
                             'cmd': result.ad,
-                            'type': 'ad',
+                            'media_type': 'advert',
                             'is_advert': true,
                             'ad_tracking': result.tracking,
+                            'ad_must_watch' : result.ad_must_watch,
                             'stop_callback': callback
 
                         });
@@ -2114,7 +2137,6 @@ function common_xpcom(){
 
         track : function (urls) {
             _debug('stb.advert.track', urls);
-_debug('------------------------------------------');
 
             if (!Array.isArray(urls)){
                 return false;

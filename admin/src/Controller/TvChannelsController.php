@@ -248,7 +248,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         );
 
         $error = "Error";
-        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : array());
+        $param = (!empty($this->data)?$this->data: $this->postData);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_', 'claims'));
 
@@ -673,7 +673,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         }
 
         $error = $this->setLocalization("Error");
-        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
+        $param = (!empty($this->data)?$this->data: $this->postData);;
 
         $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
 
@@ -912,7 +912,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         );
 
         $error = $this->setLocalization('Error');
-        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
+        $param = (!empty($this->data)?$this->data: $this->postData);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', '_', 'localized_title', 'RowOrder'));
 

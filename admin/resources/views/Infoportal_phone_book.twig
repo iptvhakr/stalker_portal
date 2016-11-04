@@ -264,20 +264,5 @@
             $("#modalbox_ad").show();
         };
 
-        var removePhoneBook = function (obj) {
-            var cRow = $(obj).closest('tr');
-            $('#datatable-1').DataTable().row(cRow).remove().draw(false);
-        };
-        
-        var managePhoneBook = function (obj) {
-            JSSuccessModalBox(obj);
-            $("#modalbox_ad").trigger("click");
-            $('#datatable-1').DataTable().ajax.reload();
-        };
-
-        var managePhoneBookError = function(obj){
-            JSErrorModalBox(obj);
-        };
-        
     </script>
 {% endblock %}

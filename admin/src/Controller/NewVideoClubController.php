@@ -413,7 +413,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
             "accessed" => "`video`.`accessed` as `accessed`"
         );
         $error = $this->setLocalization("Error");
-        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
+        $param = (!empty($this->data)?$this->data: $this->postData);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
 
@@ -1074,7 +1074,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         );
 
         $error = $this->setLocalization("Error");
-        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
+        $param = (!empty($this->data)?$this->data: $this->postData);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
 
@@ -1145,7 +1145,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         }
 
         $error = $this->setLocalization("Error");
-        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
+        $param = (!empty($this->data)?$this->data: $this->postData);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
 
@@ -1295,7 +1295,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         );
 
         $error = $this->setLocalization("Error");
-        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
+        $param = (!empty($this->data)?$this->data: $this->postData);;
 
         $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
 
@@ -1486,7 +1486,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         );
 
         $error = $this->setLocalization('Error');
-        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
+        $param = (!empty($this->data)?$this->data: $this->postData);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', '_', 'localized_title', 'RowOrder'));
 
@@ -1734,7 +1734,7 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         }
 
         $error = $this->setLocalization('Error');
-        $param = (!empty($this->data) ? $this->data : array());
+        $param = (!empty($this->data)?$this->data: $this->postData);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', '_', 'localized_title', 'category_name', 'RowOrder'));
 
@@ -1875,12 +1875,11 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         $data['action'] = 'deleteTableRow';
         $data['id'] = $this->postData['genresid'];
         $error = $this->setLocalization('Failed');
-        if ($result = $this->db->deleteVideoCatGenres(array('id' => $this->postData['genresid']))) {
-            if (is_numeric($result)) {
-                $error = '';
-                if ($result === 0) {
-                    $data['nothing_to_do'] = TRUE;
-                }
+        $result = $this->db->deleteVideoCatGenres(array('id' => $this->postData['genresid']));
+        if (is_numeric($result)) {
+            $error = '';
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
             }
             $data['msg'] = $this->setLocalization('Deleted') . ' ' . $result;
         }

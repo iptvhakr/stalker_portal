@@ -91,7 +91,7 @@ class StoragesController extends \Controller\BaseStalkerController {
     
     //----------------------- ajax method --------------------------------------
     
-    public function storages_list_json() {
+    public function storages_list_json($local_uses = FALSE){
         if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
                 return $no_auth;
@@ -108,8 +108,8 @@ class StoragesController extends \Controller\BaseStalkerController {
                
         $filds_for_select = $this->getListFields();
                 
-        $error = "Error";
-        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
+        $error = $this->setLocalization("Error");
+        $param = (!empty($this->data)?$this->data: $this->postData);
         
         $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
 
@@ -130,12 +130,19 @@ class StoragesController extends \Controller\BaseStalkerController {
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }
-        
-        $response["data"] = $this->db->getListList($query_param);
+
+        if (!empty($param['id']) && is_numeric($param['id'])) {
+            $query_param['where']['S.`id`'] = $param['id'];
+        }
+
+        $response["data"] = array_map(function($row){
+            $row['RowOrder'] = "dTRow_" . $row['id'];
+            return $row;
+        }, $this->db->getListList($query_param));
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         
         $error = "";
-        if ($this->isAjax) {
+        if ($this->isAjax && !$local_uses) {
             $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
         } else {
@@ -153,7 +160,7 @@ class StoragesController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'listMsg';
+        $data['action'] = 'updateTableData';
         $error = $this->setLocalization('Error');
         if ($this->postData['id'] != 'all') {
             $result = $this->db->getListList(array('select'=>array('storage_name'), 'where'=>array('id'=>$this->postData['id'])));
@@ -165,8 +172,10 @@ class StoragesController extends \Controller\BaseStalkerController {
         if (is_numeric($result)) {
             $data['msg'] = $this->setLocalization('A cache has been reset') . (!empty($names)? ' ' . $this->setLocalization('for') . ' ' .implode(', ', $names): ' ' . $this->setLocalization('for all servers'));
             $error = '';
-            if ($result === 0) {
-                $data['nothing_to_do'] = TRUE;
+            if (!empty($names) && $this->postData['id'] != 'all') {
+                $data['id'] = $this->postData['id'];
+                $data = array_merge_recursive($data, $this->storages_list_json(TRUE));
+                $data['action'] = 'updateTableRow';
             }
         }
 
@@ -189,7 +198,7 @@ class StoragesController extends \Controller\BaseStalkerController {
         ob_flush();
         sleep(1);
         $data = array();
-        $data['action'] = 'listMsg';
+        $data['action'] = 'updateTableData';
         
         $updated_video = 0;
         $updated_karaoke = 0;
@@ -205,7 +214,7 @@ class StoragesController extends \Controller\BaseStalkerController {
             ob_start();
             ob_implicit_flush (FALSE);
             $master = new \VideoMaster();
-            $master->getAllGoodStoragesForMediaFromNet($row, true);
+            $master->getAllGoodStoragesForMediaFromNet($row, true, true);
             ob_end_clean();
             
             unset($master);
@@ -221,7 +230,7 @@ class StoragesController extends \Controller\BaseStalkerController {
             ob_start();
             ob_implicit_flush (FALSE);
             $master = new \KaraokeMaster();
-            $master->getAllGoodStoragesForMediaFromNet($row);
+            $master->getAllGoodStoragesForMediaFromNet($row, true, true);
             ob_end_clean();
             
             unset($master);
@@ -265,15 +274,15 @@ class StoragesController extends \Controller\BaseStalkerController {
 
         
         $data = array();
-        $data['action'] = 'listMsg';
+        $data['action'] = 'updateTableData';
         $storage = array($this->postData['form']);
-        $error = 'error';
+        $error = $this->setLocalization('Failed');
         if (!empty($storage[0]['storage_name']) && !empty($storage[0]['storage_ip']) && !empty($storage[0]['apache_port'])) {
             if (empty($this->postData['form']['id'])) {
                 $operation = 'insertStorages';
             } else {
                 $operation = 'updateStorages';
-                $storage['id'] = $this->postData['form']['id'];
+                $data['id'] = $storage['id'] = $this->postData['form']['id'];
             }
             unset($storage[0]['id']);
 
@@ -288,8 +297,14 @@ class StoragesController extends \Controller\BaseStalkerController {
                 if ($result === 0) {
                     $data['nothing_to_do'] = TRUE;
                 }
-            }
 
+                if ($operation == 'updateStorages') {
+                    $this->postData['id'] = $this->postData['form']['id'];;
+                    $data = array_merge_recursive($data, $this->storages_list_json(TRUE));
+                    $data['action'] = 'updateTableRow';
+                    $data['msg'] = $this->setLocalization('Changed');
+                }
+            }
         } else {
             $error = $data['msg'] = $this->setLocalization('Fill in the required fields');
         }
@@ -309,10 +324,22 @@ class StoragesController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'listMsg';
+        $data['action'] = 'updateTableData';
         $data['id'] = $this->postData['id'];
-        $this->db->updateStorages(array('status' => (int)(!((bool) $this->postData['status']))), $this->postData['id']);
-        $error = '';    
+
+        $error = $this->setLocalization('Failed');
+
+        $result = $this->db->updateStorages(array('status' => (int)(!((bool) $this->postData['status']))), $this->postData['id']);
+        if (is_numeric($result)) {
+            $error = '';
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
+            $data = array_merge_recursive($data, $this->storages_list_json(TRUE));
+            $data['action'] = 'updateTableRow';
+            $data['msg'] = $this->setLocalization('Changed');
+        }
+
         $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
@@ -328,11 +355,18 @@ class StoragesController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'listMsg';
-        $result = $this->db->deleteStorages($this->postData['id']);
-        $data['msg'] = $this->setLocalization('Deleted') . " " . (!empty($result)? $result: '');
+        $data['action'] = 'deleteTableRow';
+        $data['id'] = $this->postData['id'];
+        $error = $this->setLocalization('Failed');
 
-        $error = '';
+        $result = $this->db->deleteStorages($this->postData['id']);
+        if (is_numeric($result)) {
+            $error = '';
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
+            $data['msg'] = $this->setLocalization('Deleted') . " " . (!empty($result)? $result: '');
+        }
 
         $response = $this->generateAjaxResponse($data, $error);
 
@@ -352,7 +386,7 @@ class StoragesController extends \Controller\BaseStalkerController {
         
         $filds_for_select = $this->getSearchFields();
         $error = $this->setLocalization("Error");
-        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
+        $param = (!empty($this->data)?$this->data: $this->postData);
         
         $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
         if (!isset($query_param['where'])) {
@@ -380,7 +414,6 @@ class StoragesController extends \Controller\BaseStalkerController {
         $this->cleanQueryParams($query_param, array_keys($filds_for_select), $filds_for_select);
 
         if (!empty($query_param['like']["count(`storage_name`)"])) {
-//            $query_param['having']["on_storages like '" . $query_param['like']["count(`storage_name`)"] . "' and '1'"] = '1';
             unset($query_param['like']["count(`storage_name`)"]);
         }
 
@@ -394,12 +427,10 @@ class StoragesController extends \Controller\BaseStalkerController {
         }
         
         $response['data'] = $this->db->getVideoList($query_param);
-//        while (list($key, $row) = each($response['data'])){
-//            $response['data'][$key]['RowOrder'] = "dTRow_" . $row['id'];
-//        }
 
         $response['data'] = array_map(function($row){
             $row['last_played'] = (int) strtotime($row['last_played']);
+            $row['RowOrder'] = "dTRow_" . $row['id'];
             return $row;
         }, $response['data']);
         
@@ -439,9 +470,9 @@ class StoragesController extends \Controller\BaseStalkerController {
 
                
         $filds_for_select = $this->getLogsFields();
-                
-        $error = "Error";
-        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
+
+        $error = $this->setLocalization("Error");
+        $param = (!empty($this->data)?$this->data: $this->postData);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
 
@@ -466,6 +497,7 @@ class StoragesController extends \Controller\BaseStalkerController {
         $response["data"] = $this->db->getLogsList($query_param);
         $response['data'] = array_map(function($row){
             $row['added'] = (int) strtotime($row['added']);
+            $row['RowOrder'] = "dTRow_" . $row['id'];
             return $row;
         }, $response['data']);
         
@@ -528,6 +560,7 @@ class StoragesController extends \Controller\BaseStalkerController {
 
     private function getLogsDropdownAttribute() {
         return array(
+            array('name' => 'id',       'title' => $this->setLocalization('ID'),    'checked' => FALSE),
             array('name' => 'added',    'title' => $this->setLocalization('Time'),  'checked' => TRUE),
             array('name' => 'log_txt',  'title' => $this->setLocalization('Message'),'checked' => TRUE)
         );
@@ -535,6 +568,7 @@ class StoragesController extends \Controller\BaseStalkerController {
     
     private function getLogsFields(){
         return array(
+            "id" => "M_L.`id` as `id`",
             "added" => "CAST(M_L.`added` AS CHAR) as `added`",
             "log_txt" => "M_L.`log_txt` as `log_txt`"
         );

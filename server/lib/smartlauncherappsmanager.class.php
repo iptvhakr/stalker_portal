@@ -626,9 +626,6 @@ class SmartLauncherAppsManager
             throw new SmartLauncherAppsManagerException('App not found, id=' . $app_id);
         }
 
-        $npm = Npm::getInstance();
-        //$info = $npm->info($app['url'], $version);
-
         $info = self::getNpmInfo($app, $version);
 
         if (empty($info)){
@@ -645,12 +642,14 @@ class SmartLauncherAppsManager
 
             $range = new SemVerExpression($version_expression);
 
-            if ($package == 'mag-app-stalker-api'){
+            if ($package == 'magcore-app-auth-stalker'){
 
                 $sap_path = realpath(PROJECT_PATH.'/../deploy/src/sap/');
                 $sap_versions = array_diff(scandir($sap_path), array('.','..'));
 
-                //$dep_info = $npm->info($package);
+                if (empty($dep_app)){
+                    $dep_app = array('id' => 0, 'url' => $package);
+                }
 
                 $dep_info = self::getNpmInfo($dep_app);
 
@@ -676,6 +675,32 @@ class SmartLauncherAppsManager
                         'current_version' => $version_expression,
                         'target'          => $app['url']
                     );
+                }
+
+            } elseif ($package == 'magcore-theme'){
+
+                $themes = Mysql::getInstance()->from('launcher_apps')->where(array('type' => 'theme', 'status' => 1))->get()->all();
+
+                if (empty($dep_app) || empty($dep_app['current_version'])){
+                    continue;
+                }
+
+                foreach ($themes as $theme){
+                    $theme_info = self::getNpmInfo($theme);
+
+                    $theme_dependencies = isset($theme_info['dependencies']) ? $theme_info['dependencies'] : array();
+
+                    if (!isset($theme_dependencies['magcore-theme'])){
+                        continue;
+                    }
+
+                    if (!$range->satisfiedBy(new SemVer($dep_app['current_version']))){
+                        $conflicts[] = array(
+                            'alias'           => $theme['url'].' - '.$package,
+                            'current_version' => $dep_app['current_version'],
+                            'target'          => $app['url']
+                        );
+                    }
                 }
             }
 

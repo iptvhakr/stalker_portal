@@ -1,0 +1,43 @@
+{% extends 'layout.twig' %}
+{% set title = ('Advertising'|trans ~ ': ' ~ 'Congratulations!'|trans) | trans %}
+
+{% block content %}
+
+    <div id="add_channel">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="box">
+                    <div class="box-content">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p class="text-center">
+                                    <strong>{{ 'Thanks for your interest!'|trans }}</strong>
+                                </p>
+                                <p class="text-center">
+                                    <strong>{{ 'One of our specialists will get in touch with you soon.'|trans }}</strong>
+                                </p>
+                                <p class="text-center">
+                                    <strong>{{ 'Best regards,'|trans }}</strong>
+                                    <br>
+                                    <strong>{{ 'Stalker Team'|trans }}</strong>
+                                </p>
+                                <p class="text-center">
+                                    <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/settings">{{ 'Continue'|trans }}</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" defer>
+
+        function yelp() {
+            $(document).ready(function () {
+            });
+        }
+        document.addEventListener("DOMContentLoaded", yelp, false);
+
+    </script>
+{% endblock %}

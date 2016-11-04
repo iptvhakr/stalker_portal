@@ -455,27 +455,6 @@
         });
         return false;
     }
-
-    var addEvent = function (data) {
-        JSSuccessModalBox(data);
-        $('#datatable-1').dataTable().fnReloadAjax();
-        $('#modalbox_ad').click();
-    };
-    var addEventError = function (data) {
-        JSErrorModalBox(data);
-        $('#datatable-1').dataTable().fnReloadAjax();
-        $('#modalbox_ad').click();
-    };
-    var addAddressList = function (data) {
-        var msg = '';
-        if (typeof(data) != 'undefined') {
-            msg = (typeof(data.msg) != 'undefined' ? data.msg : '');
-        }
-        notty('<span>' + words['Done'] + '! ' + msg + '</span>', 'success');
-    };
-    var addAddressListError = function (data) {
-        JSErrorModalBox(data);
-    };
 </script>
 {% if attribute(app, 'messagesTemplates') is defined and app.messagesTemplates|length> 0%}
     {% for item in app.messagesTemplates %}

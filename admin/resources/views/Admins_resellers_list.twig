@@ -130,10 +130,10 @@
                                                                     <span> {{ 'Delete'|trans }} </span>\n\
                                                                 </a>\n\
                                                             </li>";
+                            json.data[i].name = '<a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/resellers-list-json" data-id="' + id + '">' + name + '</a>';
                         }
                         json.data[i].operations += "</ul>\n\
                                                     </div>";
-                        json.data[i].name = '<a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/resellers-list-json" data-id="' + id + '">' + name + '</a>';
                         if (json.data[i].max_users <= 0) {
                             json.data[i].max_users = "&#8734";
                         }
@@ -207,7 +207,6 @@
                         }
                     });
                     var action = _this.closest("div[id*='modalbox']").find('form').attr('action');
-                    JSshowModalBox();
                     ajaxPostSend(action, sendData, false, false);
                     return false;
                 });
@@ -236,8 +235,9 @@
                                 <span class="col-xs-12 col-sm-12">\n\
                                     <input type="hidden" class="own_fields" name="source_id" value="'+ $(this).data('id') + '">\n\
                                     <select class="own_fields" name="target_id" id="target_reseller">\n\
-                    {% if attribute(app, 'allData') is defined %}
-                        {% for row in app.allData %}
+                                        <option value="-" >{{ 'Empty'|trans }}</option>\n\
+                    {% if attribute(app, 'allResellers') is defined %}
+                        {% for row in app.allResellers %}
                                     <option value="{{ row.id }}" >{{ row.name }}</option>\n\
                         {% endfor %}
                     {% endif %}
@@ -280,16 +280,5 @@
             $("#modalbox_ad").show();
         };
 
-       
-        var manageResellerList = function (obj) {
-            JSSuccessModalBox(obj);
-            $("#modalbox_ad").click();
-            $('#datatable-1').DataTable().ajax.reload();
-        };
-
-        var manageResellerListError = function(data){
-            JSErrorModalBox(data);
-        }
-        
     </script>
 {% endblock %}

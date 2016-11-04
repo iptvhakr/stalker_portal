@@ -586,6 +586,17 @@ _('Application for SmartLauncher. Restoring installed applications from list of 
 _('Application for SmartLauncher. Updating applications');
 _('Application for SmartLauncher. Checking for updates for applications');
 
+_('External Advertising');
+_('List of companies');
+_('Register form for new client');
+_('Adding new ad-company');
+_('Editing exists ad-company');
+_('Form for viewing, adding, editing and requesting sources for ad-companies');
+_('List of companies by page + filters');
+_('Toggle company state');
+_('Deleting exists ad-company');
+_('Make request for getting new source for ad-company');
+
 _('once');
 _('every');
 _('minute');
