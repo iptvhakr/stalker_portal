@@ -266,7 +266,19 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
 
             }elseif ($file['tmp_link_type'] == 'wowza'){
                 $res['cmd'] .= (strpos($res['cmd'], '?') ? '&' : '?' ).'token='.Master::createTemporaryLink('1');
+            } elseif ($file['tmp_link_type'] == 'edgecast_auth'){
+                $res['cmd'] .= (strpos($res['cmd'], '?') ? '&' : '?' ). Itv::getEdgeCastAuthToken('EDGECAST_VIDEO_SECURITY_TOKEN_TTL');
             }
+
+            array_walk($file, function(&$row, $key){
+                $row = $key . ' = ' . $row;
+            });
+
+            error_log('---------------');
+            error_log(implode('; ', $file));
+            error_log('---------------');
+            error_log($res['cmd']);
+            error_log('---------------');
 
         } catch (Exception $e) {
             trigger_error($e->getMessage());
@@ -331,10 +343,10 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
             throw new Exception("Video not found");
         }
 
+error_log('tut - ' . __LINE__);
         if (!empty($video['rtsp_url']) && !$file_id) {
             return $video['rtsp_url'];
         }
-
         $link = $this->getLinkByVideoId($video_id, $series, $forced_storage, $file_id);
 
         if (empty($link['cmd'])) {
