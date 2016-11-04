@@ -276,12 +276,6 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
                 $row = $key . ' = ' . $row;
             });
 
-            error_log('---------------');
-            error_log(implode('; ', $file));
-            error_log('---------------');
-            error_log($res['cmd']);
-            error_log('---------------');
-
         } catch (Exception $e) {
             trigger_error($e->getMessage());
         }
@@ -345,7 +339,6 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
             throw new Exception("Video not found");
         }
 
-error_log('tut - ' . __LINE__);
         if (!empty($video['rtsp_url']) && !$file_id) {
             return $video['rtsp_url'];
         }
