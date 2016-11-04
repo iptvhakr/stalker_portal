@@ -3176,6 +3176,19 @@ border-bottom:1px solid #E3E3E3;padding-left:6px !important; padding-right:5px;}
 
 
 .btn-default{height:32px; padding-bottom:15px !important;}
+
+.opinion_form {
+    padding: 0 20px 0 0 !important;
+}
+
+.opinion_form .btn-default{
+    border-color: #cbcaca;
+}
+
+.opinion_form p{
+    font-size: 13px;
+}
+
 .DTTT_button_print, .btn-success {
 color:#FFCD1C; background-color:#000 !important; height:32px; padding-bottom:15px !important;}
 #ajax-content{min-height:600px;}
@@ -3327,7 +3340,7 @@ span.serial + span{
     border-radius: inherit !important;
 }
 
-#iptv_list .green, #add_channel .green{
+#iptv_list .green, #add_channel .green, #modalbox .green {
     background-color: #0F9C16 !important;
     color: #ffffff !important;
     border-color: rgba(0, 0, 0, 0.3);
