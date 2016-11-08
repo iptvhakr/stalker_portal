@@ -52,6 +52,10 @@ class Admin
         return $this->profile['reseller_id'];
     }
 
+    public function getOpinionFormFlag(){
+        return $this->profile['opinion_form_flag'];
+    }
+
     public static function checkAuthorization($login, $pass) {
 
         $admin = Mysql::getInstance()
