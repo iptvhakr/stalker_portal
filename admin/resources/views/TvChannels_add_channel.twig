@@ -1030,6 +1030,7 @@
                     $("#s2_stream_server option").prop('selected', false).removeAttr('selected');
                     $("#s2_stream_server").prop('disabled', 'disabled');
                     $("#s2_stream_server").closest(".form-group").hide();
+                    $("#s2_use_http_tmp_link").val('').trigger('change');
                     $("#add_channel_load_balancing input[type='checkbox'][name*='enable_balancer_monitoring']").prop('checked', false).closest(".form-group").hide();
                     $("#add_channel_link_monitoring input[type='checkbox'][name*='enable_monitoring']").prop('checked', false);
                     $("#add_channel_link_monitoring input[type='text'][name*='monitoring_url']").prop('disabled', 'disabled').closest(".form-group").hide();
@@ -1297,15 +1298,19 @@
             $(container).find('input').each(function(){
                 $(this).prop("disabled", false).removeAttr("disabled");
                 var name = $(this).attr('name').replace(/\[\d*?\]/ig, '');
+                var type = $(this).attr('type');
 
                 var shortName = name.replace(/[^\[]*\[([^\]]*).*$/ig, '$1');
                 if (linkTypeFields.indexOf(shortName) != -1) {
-                    $(this).prop('checked', $("#s2_use_http_tmp_link").val() == shortName);
+                    if (type == 'checkbox') {
+                        $(this).prop('checked', $("#s2_use_http_tmp_link").val() == shortName);
+                    } else {
+                        $(this).val($("#s2_use_http_tmp_link").val() == shortName ? 'on': 'off');
+                    }
                     return true;
                 } else if (typeof (data[name]) == 'undefined') {
                     return true;
                 }
-                var type = $(this).attr('type');
                 if (type == 'checkbox') {
                     if ($(this).attr('name').search('enable_monitoring') != -1) {
                         var targetLabel = $(this).closest('td').next('td').find('label');
