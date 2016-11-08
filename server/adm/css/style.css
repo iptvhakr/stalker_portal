@@ -1806,6 +1806,11 @@ border: 1px solid #F3E3AA;
 .login-form>input[type="password"]:not(:first-child):not(:last-child){
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
+    margin-bottom: 0;
+}
+
+.login-form>.alert{
+    margin-bottom: 0;
 }
 
 .has-success .form-control {
