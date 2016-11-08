@@ -880,7 +880,13 @@
             }
         };
 
-        var linkTypeFields = ['use_http_tmp_link', 'wowza_tmp_link', 'nginx_secure_link', 'flussonic_tmp_link', 'xtream_codes_support'];
+        var linkTypeFields = [
+            {% if attribute(app, 'httpTmpLink') is defined %}
+            {% for row in app['httpTmpLink'] %}
+            '{{ row.value }}'{% if not loop.last %},{% endif %}
+            {% endfor %}
+            {% endif %}
+        ];
 
         function DemoSelect2() {
             $('#form_tv_genre_id').select2(select2Opt);

@@ -2030,7 +2030,8 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             array('value' => 'wowza_tmp_link', 'label' => $this->setLocalization('WOWZA'), 'check_module' => FALSE),
             array('value' => 'nginx_secure_link', 'label' => $this->setLocalization('NGINX'), 'check_module' => FALSE),
             array('value' => 'flussonic_tmp_link', 'label' => $this->setLocalization('Flussonic'), 'check_module' => FALSE),
-            array('value' => 'xtream_codes_support', 'label' => $this->setLocalization('Xtream-Codes'), 'check_module' => TRUE)
+            array('value' => 'xtream_codes_support', 'label' => $this->setLocalization('Xtream-Codes'), 'check_module' => TRUE),
+            array('value' => 'edgecast_auth_support', 'label' => $this->setLocalization('EdgeCast'), 'check_module' => TRUE)
         );
     }
 }
