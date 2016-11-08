@@ -12,11 +12,18 @@ body {background-color: #fff;}
             <div class=" panel-info ">
                 <div style="padding-top:30px" class="panel-body">
                     <center><img src="img/llogo.png"></center>
-                    <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+
                     <form action="./login" method="POST" class="form-signin" role="form">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="{{ 'Username'|trans }}" name="username"/>
+                        <div class="input-group login-form {% if app['error_local'] %}has-error{% endif %}">
+                            <input type="text" class="form-control " placeholder="{{ 'Username'|trans }}" name="username"/>
                             <input type="password" class="form-control " placeholder="{{ 'Password'|trans }}" name="password"/>
+                            {% if app['error_local'] %}
+                                <div class="alert col-sm-12">
+                                    <i class="fa fa-warning txt-danger"></i>&nbsp;
+                                    <span class="txt-danger">{{ app['error_local'] }}</span>
+                                </div>
+                            {% endif %}
+
                             <input type="submit" class="btn lobtn btn-lg btn-block" value="{{ 'Sign in'|trans }}">
                         </div>
                     </form>

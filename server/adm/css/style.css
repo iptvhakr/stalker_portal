@@ -1793,6 +1793,21 @@ border: 1px solid #F3E3AA;
 .txt-danger, .has-error .help-block, .has-error .control-label, .has-error .radio, .has-error .checkbox, .has-error .radio-inline, .has-error .checkbox-inline {
   color: #D15E5E !important;
 }
+
+.login-form.has-error input[type="text"], .login-form.has-error input[type="password"], .login-form.has-error .txt-danger{
+    border-color: #d32f2f;
+}
+
+.login-form>input[type="text"]:first-child {
+    border-top-right-radius: 5px ;
+    border-bottom-left-radius: 0;
+}
+
+.login-form>input[type="password"]:not(:first-child):not(:last-child){
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
 .has-success .form-control {
   border-color:#63CC9E;
 }
