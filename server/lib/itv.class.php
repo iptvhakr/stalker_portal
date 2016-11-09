@@ -160,6 +160,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv {
                 $channel['use_load_balancing'] = $link['use_load_balancing'];
                 $channel['xtream_codes_support'] = $link['xtream_codes_support'];
                 $channel['edgecast_auth_support'] = $link['edgecast_auth_support'];
+                $channel['akamai_auth_support'] = $link['akamai_auth_support'];
             }
         }
 
@@ -244,6 +245,16 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv {
                 $token = self::getEdgeCastAuthToken();
 
                 if (!$token && (extension_loaded('mcrypt') || extension_loaded('mcrypt.so'))) {
+                    throw new ItvLinkException('link_fault');
+                } else {
+                    $channel['cmd'] = $channel['cmd'] . (strpos($channel['cmd'], '?') ? '&' : '?') . $token;
+                }
+
+            } elseif ($channel['akamai_auth_support']) {
+
+                $token = self::getAkamaiToken();
+
+                if (!$token) {
                     throw new ItvLinkException('link_fault');
                 } else {
                     $channel['cmd'] = $channel['cmd'] . (strpos($channel['cmd'], '?') ? '&' : '?') . $token;
@@ -1967,6 +1978,27 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv {
         }
         mcrypt_module_close($td);
         return $hash;
+    }
+
+    public static function getAkamaiToken($token_type = 'AKAMAI_TV_SECURITY_TOKEN_TTL') {
+
+        $acl = '/*';
+        $field_delimiter = '~';
+        $m_token = 'exp='.(Config::get($token_type)).$field_delimiter;
+        $m_token .= 'acl='.rawurlencode($acl).$field_delimiter;
+        // produce the signature and append to the tokenized string
+        $signature = hash_hmac("SHA256", rtrim((string)$m_token, $field_delimiter), self::h2b(Config::get('AKAMAI_KEY')));
+        return 'hdnts='.$m_token.'hmac='.$signature;
+    }
+
+    protected function h2b($str) {
+        $bin = "";
+        $i = 0;
+        do {
+            $bin .= chr(hexdec($str{$i}.$str{($i + 1)}));
+            $i += 2;
+        } while ($i < strlen($str));
+        return $bin;
     }
 }
 
