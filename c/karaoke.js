@@ -8,7 +8,7 @@
         
         this.layer_name = 'karaoke';
         
-        this.row_blocks  = ['singer', 'name'];
+        this.row_blocks  = ['fav', 'singer', 'name'];
         
         this.load_params = {
             "type"   : "karaoke",
@@ -18,9 +18,24 @@
         this.superclass = ListLayer.prototype;
         
         this.sort_menu = {};
-        
+
+        this.other_menu = {};
+
         this.search_box = {};
-        
+
+        this.init = function() {
+
+            _debug('karaoke.init');
+
+            this.superclass.init.call(this);
+
+            this.load_fav_karaoke();
+
+            this.load_fav_ids();
+
+            this.init_search_box();
+        };
+
         this.load_abc = function(){
             _debug('karaoke.load_abc');
             
@@ -80,11 +95,241 @@
                 this.sort_menu.show();
             }
         };
-        
-        this.init_search_box = function(options){
-            this.search_box = new search_box(this, options);
-            this.search_box.init();
-            this.search_box.bind();
+
+        this.init_fav_menu = function(map, options){
+            this.fav_menu = new bottom_menu(this, options);
+            this.fav_menu.init(map);
+            this.fav_menu.bind();
+        };
+
+        this.add_to_fav = function(){
+            _debug('karaoke.add_to_fav');
+
+            _debug('this.player.fav_karaoke before', stb.player.fav_karaoke_ids);
+
+            stb.player.fav_karaoke_ids.push(this.data_items[this.cur_row].id);
+
+            _debug('this.player.fav_karaoke after', stb.player.fav_karaoke_ids);
+
+            this.data_items[this.cur_row].fav = 1;
+
+            this.map[this.cur_row].fav_block.show();
+            this.active_row.fav_block.show();
+
+            if (typeof (stb.player.fav_karaoke) == 'undefined') {
+                stb.player.fav_karaoke = [];
+            }
+
+            this.data_items[this.cur_row].number = stb.player.fav_karaoke.length + 1;
+
+            stb.player.fav_karaoke.push(this.data_items[this.cur_row]);
+
+            this.save_fav_ids();
+        };
+
+        this.del_from_fav = function(){
+            _debug('karaoke.del_from_fav');
+
+            _debug('this.player.fav_karaoke before', stb.player.fav_karaoke_ids);
+
+            var fav_idx = stb.player.fav_karaoke_ids.indexOf(this.data_items[this.cur_row].id);
+
+            var removed_idx = stb.player.fav_karaoke_ids.splice(fav_idx, 1);
+
+            _debug('removed_idx', removed_idx);
+
+            _debug('this.player.fav_karaoke after', stb.player.fav_karaoke_ids);
+
+            this.data_items[this.cur_row].fav = 0;
+
+            this.map[this.cur_row].fav_block.hide();
+            this.active_row.fav_block.hide();
+
+            if (typeof (stb.player.fav_karaoke) == 'undefined') {
+                stb.player.fav_karaoke = [];
+            }
+            var fav_karaoke_idx = stb.player.fav_karaoke.getIdxByVal('id', this.data_items[this.cur_row].id);
+
+            if (fav_karaoke_idx !== null){
+                stb.player.fav_karaoke.splice(fav_karaoke_idx, 1);
+            }
+
+            this.save_fav_ids();
+        };
+
+        this.add_del_fav = function(){
+            _debug('karaoke.add_del_fav');
+
+            if(this.data_items[this.cur_row].fav){
+                this.del_from_fav();
+            }else{
+                this.add_to_fav();
+            }
+        };
+
+        this.load_fav_karaoke = function(){
+
+            stb.load(
+
+                {
+                    'type'  : 'karaoke',
+                    'action': 'get_all_fav_karaoke',
+                    'fav'   : 1
+                },
+
+                function(result){
+                    _debug('all_fav_karaoke', result);
+
+                    stb.loader.add_pos(stb.load_step, 'fav_karaoke loaded');
+
+                    stb.player.fav_karaoke = typeof(result) != 'undefined' && result ? result.data : [];
+
+                    _debug('stb.player.fav_karaoke', stb.player.fav_karaoke);
+                    /*this.karaoke_loaded();*/
+                },
+
+                this
+            )
+        };
+
+        this.load_fav_ids = function(){
+
+            stb.load(
+
+                {
+                    'type'   : 'karaoke',
+                    'action' : 'get_fav_ids'
+                },
+
+                function(result){
+                    _debug('fav_karaoke_ids', result);
+                    stb.player.fav_karaoke_ids  = typeof(result) != 'undefined' && result ? result : [];
+                    _debug('stb.player.fav_karaoke_ids', stb.player.fav_karaoke_ids);
+                },
+
+                this
+            )
+        };
+
+        this.save_fav_ids = function(){
+            _debug('karaoke.save_fav');
+            var scope = this;
+
+            stb.load(
+
+                {
+                    'type'   : 'karaoke',
+                    'action' : 'set_fav',
+                    'fav_karaoke' : stb.player.fav_karaoke_ids.join(',')
+                },
+
+                function(result){
+                    _debug('fav_saved', result);
+
+                    stb.load(
+
+                        {
+                            'type'  : 'karaoke',
+                            'action': 'get_all_fav_karaoke',
+                            'fav'   : 1
+                        },
+
+                        function(result){
+                            _debug('get_all_fav_karaoke result', result);
+
+                            stb.player.fav_karaoke =  typeof(result) != 'undefined' && result ? result.data : [];
+                        },
+
+                        this
+                    )
+                },
+
+                this
+            )
+        };
+
+        this.init_other_menu = function(map, options){
+            this.other_menu = new bottom_menu(this, options);
+            this.other_menu.init(map);
+            this.other_menu.bind();
+        };
+
+        this.other_switcher = function(){
+            if (this.other_menu && this.other_menu.on){
+                this.other_menu.hide();
+            }else{
+                this.other_menu.show();
+            }
+        };
+
+        this.init_search_box = function(){
+            _debug('karaoke.init_search_box');
+            var scope = this;
+
+            /* KARAOKE SEARCH DIALOG */
+            this.search_box = new ModalForm({"title" : get_word('karaoke_search_box')});
+            this.search_box.enableOnExitClose();
+            this.search_box.addItem(new ModalFormInput(
+                {
+                    "name" : "search_box_input",
+                    "oninput": function(){
+                        scope.karaoke_search();
+                    }
+                }
+            ));
+            this.search_box.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("cancel_btn"),
+                    "onclick" : function(){
+                        scope.search_box.reset();
+                        scope.search_box.hide();
+                    }
+                }
+            ));
+
+            this.search_box.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("ok_btn"),
+                    "onclick" : function(){
+                        scope.karaoke_search();
+                        scope.search_box.hide();
+                    }
+                }
+            ));
+
+            this.search_box.addCustomEventListener('hide', function(){
+                _debug('search_box_dialog', 'hide');
+                if (typeof(stb.IsVirtualKeyboardActive) == 'function' && stb.IsVirtualKeyboardActive()) {
+                    stb.HideVirtualKeyboard && stb.HideVirtualKeyboard();
+                }
+            });
+
+            this.search_box.addCustomEventListener('show', function(){
+                _debug('search_box_dialog', 'show');
+                if (typeof(stb.IsVirtualKeyboardActive) == 'function' && !stb.IsVirtualKeyboardActive()) {
+                    stb.ShowVirtualKeyboard && stb.ShowVirtualKeyboard();
+                }
+                scope.update_header_path([{"alias" : "search", "item" : ''}]);
+                scope.karaoke_search();
+            });
+
+            this.karaoke_search = function(){
+
+                var search_str = scope.search_box.getItemByName("search_box_input").getValue();
+                _debug('this.load_params.search', search_str);
+
+                try{
+                    if (scope.on && (search_str.length >= 3 || search_str.length == 0 )){
+                        scope.load_params.search = search_str;
+                        scope.update_header_path([{"alias" : "search", "item" : search_str.length >= 3 ? '"' + search_str + '"' : ''}]);
+                        scope.load_data();
+                        scope.reset();
+                    }
+                }catch(e){
+                    _debug(e);
+                }
+
+            }
         };
         
         this.search_box_switcher = function(){
@@ -178,8 +423,8 @@
     karaoke.init_color_buttons([
         {"label" : word['karaoke_view'], "cmd" : (function(){})},
         {"label" : word['karaoke_sort'], "cmd" : karaoke.sort_menu_switcher},
-        {"label" : word['karaoke_search'], "cmd" : karaoke.search_box_switcher},
-        {"label" : word['karaoke_sampling'], "cmd" : karaoke.sidebar_switcher}
+        {"label" : word['karaoke_favorite'],  "cmd" : karaoke.add_del_fav},
+        {"label" : word['karaoke_find'], "cmd" : karaoke.other_switcher}
     ]);
     
     //karaoke.color_buttons[karaoke.color_buttons.getIdxByVal('color', 'red')].text_obj.setClass('disable_color_btn_text');
@@ -193,20 +438,43 @@
     
     karaoke.init_sort_menu(
         [
-            {"label" : word['karaoke_by_performer'], "cmd" : function(){this.parent.load_params.sortby = 'singer'}},
-            {"label" : word['karaoke_by_title'], "cmd" : function(){this.parent.load_params.sortby = 'name'}}
+            {"label" : word['karaoke_by_performer'], "cmd" : function(){this.parent.load_params.sortby = 'singer'; this.parent.load_params.fav = false;}},
+            {"label" : word['karaoke_by_title'], "cmd" : function(){this.parent.load_params.sortby = 'name'; this.parent.load_params.fav = false;}},
+            {"label" : word['karaoke_only_favorite'], "cmd" : function(){this.parent.load_params.sortby = 'fav'; this.parent.load_params.fav = true;}}
         ],
         {
             "offset_x" : 217,
             "color"    : "green"
         }
     );
-    
-    karaoke.init_search_box(
+
+    var fav_menu_map = [
         {
-            "offset_x"  : 323,
-            "color"     : "yellow",
-            "languages" : get_word('search_box_languages')
+            "label": get_word('karaoke_fav_add') + '/' + get_word('karaoke_fav_del'),
+            "cmd": function () {
+                karaoke.add_del_fav();
+            }
+        }
+    ];
+
+    karaoke.init_fav_menu(
+        fav_menu_map,
+        {
+            "color"    : "yellow",
+            "need_reset_load_data" : false,
+            "need_update_header" : false
+        }
+    );
+
+    karaoke.init_other_menu(
+        [
+            {"label" : word['karaoke_search_box'], "cmd" : function(){this.parent.search_box_switcher()}},
+            {"label" : word['karaoke_sampling'],  "cmd" : function(){this.parent.sidebar_switcher()}}
+        ],
+        {
+            "offset_x" : 520,
+            "color"    : "blue",
+            "need_reset_load_data" : false
         }
     );
     

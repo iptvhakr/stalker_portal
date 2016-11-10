@@ -19,12 +19,18 @@ $words['current_weather_not_configured'] = _('The weather is not configured');
 // karaoke
 $words['karaoke_view'] = _('VIEW');
 $words['karaoke_sort'] = _('SORT');
+$words['karaoke_find'] = _('FIND');
 $words['karaoke_search'] = _('SEARCH');
+$words['karaoke_search_box'] = _('search');
 $words['karaoke_sampling'] = _('PICKING');
 $words['karaoke_by_letter'] = _('BY LETTER');
 $words['karaoke_by_performer'] = _('BY NAME');
 $words['karaoke_by_title'] = _('BY TITLE');
+$words['karaoke_only_favorite'] = _('only favorite');
 $words['karaoke_title'] = _('KARAOKE');
+$words['karaoke_favorite'] = _('FAVORITE');
+$words['karaoke_fav_add'] = _('add');
+$words['karaoke_fav_del'] = _('del');
 
 // layer
 $words['layer_page'] = _('PAGE');

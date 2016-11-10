@@ -11,4 +11,12 @@ interface Karaoke
     public function setClaim();
 
     public function getOrderedList();
+
+    public function setFav();
+
+    public function getAllFavKaraoke();
+
+    public function setFavStatus();
+
+    public function getFavIds();
 }
