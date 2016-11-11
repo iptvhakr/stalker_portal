@@ -11,6 +11,7 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
             'wowza_tmp_link' => '',
             'nginx_secure_link' => '',
             'flussonic_tmp_link' => '',
+            'nimble_auth_support' => '',
             'xtream_codes_support' => '',
             'enable_monitoring' => FALSE,
             'enable_balancer_monitoring' => '',
@@ -127,6 +128,7 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
                             'enable_tv_archive' => (int)(!empty($data['enable_tv_archive']) && $data['enable_tv_archive'] !== 'off'),
                             'wowza_dvr' => (int)(!empty($data['wowza_dvr']) && $data['wowza_dvr'] !== 'off'),
                             'flussonic_dvr' => (int)(!empty($data['flussonic_dvr']) && $data['flussonic_dvr'] !== 'off'),
+                            'nimble_dvr' => (int)(!empty($data['nimble_dvr']) && $data['nimble_dvr'] !== 'off'),
                             'censored' => (int)(!empty($data['censored']) && $data['censored'] !== 'off'),
                             'base_ch' => (int)(!empty($data['base_ch']) && $data['base_ch'] !== 'off'),
                             'bonus_ch' => (int)(!empty($data['bonus_ch']) && $data['bonus_ch'] !== 'off'),
@@ -180,6 +182,7 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
                             'enable_tv_archive' => (int)(!empty($data['enable_tv_archive']) && $data['enable_tv_archive'] !== 'off'),
                             'wowza_dvr' => (int)(!empty($data['wowza_dvr']) && $data['wowza_dvr'] !== 'off'),
                             'flussonic_dvr' => (int)(!empty($data['flussonic_dvr']) && $data['flussonic_dvr'] !== 'off'),
+                            'nimble_dvr' => (int)(!empty($data['nimble_dvr']) && $data['nimble_dvr'] !== 'off'),
                             'censored' => (int)(!empty($data['censored']) && $data['censored'] !== 'off'),
                             'base_ch' => (int)(!empty($data['base_ch']) && $data['base_ch'] !== 'off'),
                             'bonus_ch' => (int)(!empty($data['bonus_ch']) && $data['bonus_ch'] !== 'off'),
@@ -221,7 +224,7 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
     }
     
     public function getStorages() {
-        return $this->mysqlInstance->from('storages')->where(array('status' => 1, 'for_records' => 1, 'stream_server_type' => null))->get()->all();
+        return $this->mysqlInstance->from('storages')->where(array('status' => 1, 'for_records' => 1, 'stream_server_type and 1' => 1))->get()->all();
     }
     
     public function updateLogoName($id, $logo){
