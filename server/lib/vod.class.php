@@ -266,8 +266,10 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
 
                 $res['cmd'] .= (strpos($res['cmd'], '?') ? '&' : '?' ).'st='.$hash.'&e='.$expire;
 
-            }elseif ($file['tmp_link_type'] == 'wowza'){
+            } elseif ($file['tmp_link_type'] == 'wowza'){
                 $res['cmd'] .= (strpos($res['cmd'], '?') ? '&' : '?' ).'token='.Master::createTemporaryLink('1');
+            } elseif ($file['tmp_link_type'] == 'nimble'){
+                $res['cmd'] .= (strpos($res['cmd'], '?') ? '&' : '?' ). Itv::getNimbleHttpAuthToken($res['cmd'], 'NIMBLE_VIDEO_VALID_MINUTES');
             }
 
         } catch (Exception $e) {
