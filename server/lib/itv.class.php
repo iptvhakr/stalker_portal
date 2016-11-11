@@ -2034,7 +2034,6 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
         }
         $tmp_arr = explode('/', trim($initial_url, '/'));
         $video_url = '/' . array_pop($tmp_arr);
-        $initial_url = implode('/', $tmp_arr);
 
         $str2hash = Stb::getInstance()->ip . Config::get('NIMBLE_KEY') . $today . $validminutes;
 
@@ -2047,7 +2046,6 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
         $base64urlsignature = base64_encode($urlsignature);
 
         return "wmsAuthSign=$base64urlsignature" . $video_url;
-
     }
 
     public static function getNimbleHttpAuthToken($initial_url, $token_type = 'NIMBLE_TV_VALID_MINUTES') {
@@ -2058,8 +2056,6 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
         if (($pos = strpos($initial_url, '?'))) {
             $initial_url = substr($initial_url, 0, $pos);
         }
-
-        $initial_url = "http://video.wmspanel.com/live/stream/playlist.m3u8";
 
 //Part of the stream name which is being use in signature
         $tmp_arr = explode('/', trim($initial_url, '/'));
