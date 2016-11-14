@@ -2061,7 +2061,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
 //Part of the stream name which is being use in signature
         $tmp_arr = explode('/', trim($initial_url, '/'));
 
-        $signed_stream = $tmp_arr[count($tmp_arr) - 3] . '/' . $tmp_arr[count($tmp_arr) - 2];
+        $signed_stream = count($tmp_arr) > 3 ? $tmp_arr[count($tmp_arr) - 3] . '/' . $tmp_arr[count($tmp_arr) - 2] : '';
 
         $str2hash = Stb::getInstance()->ip . Config::get('NIMBLE_KEY') . $today . $validminutes . $signed_stream;
         $md5raw = md5($str2hash, true);
