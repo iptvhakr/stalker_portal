@@ -269,6 +269,7 @@ _('Change the order of compositions in the album');
 _('Editing a composition');
 _('Removing a composition');
 _('Change the on/off state of the composition');
+_('Getting audio-info from source');
 _('List of artists');
 _('List of artists by page + filters');
 _('Edit artist');

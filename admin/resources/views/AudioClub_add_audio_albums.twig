@@ -201,25 +201,26 @@
             <form class="form-horizontal" role="form" id="track_form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/audio-tracks-manage">
             <div class="devoops-modal-inner">
                 <div class="box">
-                    <div class="box-content">
+                    <div class="box-content no-padding">
+                        <div class="col-sm-8 col-sm-offset-2" id="file_form_input_container">
                             <!-- track name -->
                             <div class="form-group">
-                                <label class="col-sm-2 control-label col-sm-offset-1">{{ 'Title'|trans }}<span class="icon-required">*</span></label>
-                                <div class="col-xs-10 col-sm-6 no-padding">
+                                <label class="col-sm-2 control-label">{{ 'Title'|trans }}<span class="icon-required">*</span></label>
+                                <div class="col-xs-10 col-sm-10 no-padding">
                                     <div class=" col-xs-10 col-sm-10 ">
                                         <input type="hidden" name="id">
                                         <input type="text" name="name" data-validation='required' class='form-control'>
                                     </div>
-                                    <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">{{ 'You can use symbols from the list: ! @ # $ % ^ & * ( ) _ - + : ; , .'|trans }}</span>
-                                    </span>
+                                        <span class="help-inline col-xs-10 col-sm-10">
+                                            <span class="small txt-default">{{ 'You can use symbols from the list: ! @ # $ % ^ & * ( ) _ - + : ; , .'|trans }}</span>
+                                        </span>
                                 </div>
                             </div>
 
                             <!-- language -->
                             <div class="form-group">
-                                <label class="col-sm-2 control-label col-sm-offset-1">{{ 'Language'|trans }}<span class="icon-required">*</span></label>
-                                <div class="col-xs-10 col-sm-6 no-padding">
+                                <label class="col-sm-2 control-label">{{ 'Language'|trans }}<span class="icon-required">*</span></label>
+                                <div class="col-xs-10 col-sm-10 no-padding">
                                     <div class=" col-xs-10 col-sm-6 ">
                                         <select class="populate placeholder" data-validation='required' name="language_id" id="s2_track_lang">
                                             {% if attribute(app, 'allLanguages') is defined %}
@@ -234,14 +235,27 @@
 
                             <!-- URL -->
                             <div class="form-group">
-                                <label class="col-sm-2 control-label col-sm-offset-1">{{ 'URL'|trans }}<span class="icon-required">*</span></label>
-                                <div class="col-xs-10 col-sm-6 no-padding">
+                                <label class="col-sm-2 control-label">{{ 'URL'|trans }}<span class="icon-required">*</span></label>
+                                <div class="col-xs-10 col-sm-10 no-padding">
                                     <div class=" col-xs-10 col-sm-10">
-                                        <input type="text" name="url" data-validation = 'custom' data-validation-regexp = '^(\w+\s)?\w+\:\/\/.+$' data-validation-error-msg = "{{ 'Invalid format links'|trans }}" class='form-control'>
+                                        <input id="audio_url" type="text" name="url" data-validation = 'custom' data-validation-regexp = '^(\w+\s)?\w+\:\/\/.+$' data-validation-error-msg = "{{ 'Invalid format links'|trans }}" class='form-control'>
                                     </div>
                                 </div>
                             </div>
-                    
+
+                            <!-- duration -->
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">{{ 'Duration'|trans }}<span class="icon-required">*</span></label>
+                                <div class="col-xs-10 col-sm-10 no-padding">
+                                    <div class=" col-xs-10 col-sm-10">
+                                        <input type="text" name="duration" class='form-control'>
+                                    </div>
+                                    <span class="help-inline col-xs-10 col-sm-10">
+                                        <span class="small txt-default">{{ 'Track duration in seconds'|trans }}</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -537,6 +551,39 @@
                     return false;
                 });
 
+                $("#modalbox_ad").on('blur keypress', '#audio_url', function(e){
+                    if (e && e.type && (e.type == "blur" || e.type == 'focusout' || (e.type == "keypress" && e.keyCode && e.keyCode == 13))) {
+
+                        conf.form = '#' + $("#modalbox_ad form").attr('id');
+
+                        if ($(conf.form).isValid({}, conf, true)) {
+                            getMediaInfo();
+                        } else {
+                            conf.onError();
+                            return false;
+                        }
+                    }
+                });
+
+                $("#modalbox_ad").on('click', '#media_info button', function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+
+                    var fieldData = [{}];
+
+                    $("#media_info span").each(function(){
+                        if ($(this).data('info-key')) {
+                            fieldData[0][$(this).data('info-key')] = $(this).data('info-val');
+                        }
+                    });
+
+                    setCompositionModal({data: fieldData}, true);
+                });
+
+                $(document).on('hide', '#modalbox_ad', function(){
+                    cleanMediaInfo();
+                });
+
                 LoadSelect2Script(DemoSelect2);
                 LoadDataTablesScripts(TestTable1);
 		
@@ -545,9 +592,9 @@
 
         document.addEventListener("DOMContentLoaded", yelp, false);
 
-        var setCompositionModal = function (data) {
+        var setCompositionModal = function (data, localFilling) {
             $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Edit track'|trans }}');
-            if (data.data.length == 1) {
+            if (data.data.length == 1 ) {
                 var row = data.data[0];
                 for (var field_name in row) {
                     $("#modalbox_ad input[name='" + field_name + "']").val(row[field_name]);
@@ -565,6 +612,9 @@
             });
 
             $("#modalbox_ad").show();
+            if (!localFilling) {
+                getMediaInfo();
+            }
         };
 
         var setCompositionModalError = function (data) {
@@ -587,6 +637,93 @@
             JSErrorModalBox(data);
         };
 
+        var getMediaInfo = function() {
+            var sendData = {};
+            $("#file_form_input_container").find("input,select").each(function(i){
+                var val = this.tagName.toUpperCase() == 'INPUT' ? $(this).val(): $(this).find('option:selected').val();
+                if (val) {
+                    sendData[$(this).attr('name')] = val;
+                }
+            });
+            $("#file_form_input_container").find('input,select').prop('readonly', 'readonly').prop('disabled', 'disabled');
+            $("#modalbox_ad div.devoops-modal-bottom").find('button').addClass('disabled').prop('disabled', 'disabled');
+            if (!$("#media_info").length) {
+                $("#file_form_input_container").removeClass('col-sm-offset-2').after($("#media_info_body").html()).delay(1000).promise().done(function(){
+                    $("#media_info").css({opacity: 1, width: '29%'});
+                });
+            } else {
+                cleanMediaInfo();
+            }
+
+            ajaxPostSend("{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-media-info-json", sendData, false, false, true);
+
+        };
+
+        var cleanMediaInfo = function(){
+            $("#file_form_input_container").find('input,select').prop('readonly', false).prop('disabled', false).removeAttr('readonly').removeAttr('disabled');
+            $("#modalbox_ad div.devoops-modal-bottom").find('button').removeClass('disabled').prop('disabled', false).removeAttr('disabled');
+            $("#media_info").removeClass('filled').find('button').addClass('disabled').prop('disabled', 'disabled');
+            $("#media_info").children().not('button').remove();
+        };
+
+        var setMediaInfo = function(data){
+            cleanMediaInfo();
+            if (data.id && $('#file_id').length == 0) {
+                $("#video_id").before("<input type='hidden' class='own_fields form-control' name='id' id='file_id' value='' readonly='readonly'>");
+            }
+            if($('#file_id').length && (!$('#file_id').val() || $('#file_id').val() == '0')) {
+                $('#file_id').val(data.id ? data.id: 0);
+            }
+            if (data.data) {
+                $("#media_info").addClass('filled').find('button').removeClass('disabled').prop('disabled', false).removeAttr('disabled');
+                var infoField = $($("#media_info_info").html()).prependTo("#media_info");
+                if (!data.error){
+                    infoField.addClass('bg-default').addClass('txt-default').text("{{ 'Media info from source'|trans }}");
+                }
+                if (data.data.datatable) {
+                    $("#" + data.data.datatable).DataTable().ajax.reload();
+                    delete data.data.datatable;
+                }
+                for(var key in data.data){
+                    var infoField = $($("#media_info_info").html()).insertAfter(infoField);
+                    var textVal = data.data[key];
+                    var textLabel = words && words[key] ? words[key]: key;
+                    if (key == 'languages') {
+                        textVal = [];
+                        $.each(data.data[key], function(){
+                            textVal.push($("#file_" + key + " option[value='" + this + "']").text());
+                        });
+                        textVal = textVal.join(', ');
+                    } else if (key == 'quality') {
+                        textVal = $("#file_" + key + " option[value='" + textVal + "']").text();
+                    }
+                    infoField.addClass('bg-default').addClass('txt-default').text(textLabel + ": " + textVal);
+                    infoField.data({'info-key': key, 'info-val': data.data[key] instanceof Array? data.data[key].join(','): data.data[key]});
+                }
+            }
+        };
+
+        var setMediaInfoError = function(data) {
+            setMediaInfo(data);
+            $("#media_info").addClass('filled');
+            var infoField = $($("#media_info_info").html()).prependTo("#media_info");
+            infoField.addClass('bg-warning').addClass('txt-danger').text("{{ 'No media info'|trans }}");
+            var addMessage = data.msg || data.error;
+            if (addMessage) {
+                var infoField2 = $($("#media_info_info").html()).insertAfter(infoField);
+                infoField2.addClass('bg-warning').addClass('txt-danger').text(addMessage);
+            }
+        };
+    </script>
+
+    <script type="text/template" id="media_info_body">
+        <div class="col-sm-4" id="media_info">
+            <button class="btn btn-success btn-block disabled" disabled="disabled">{{ 'Autofill'|trans }}</button>
+        </div>
+    </script>
+
+    <script type="text/template" id="media_info_info">
+        <span class="col-sm-12 center" data-info-key="" data-info-val=""></span>
     </script>
 
 {% endblock %}
