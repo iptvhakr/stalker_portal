@@ -269,6 +269,7 @@ _('Change the order of compositions in the album');
 _('Editing a composition');
 _('Removing a composition');
 _('Change the on/off state of the composition');
+_('Getting audio-info from source');
 _('List of artists');
 _('List of artists by page + filters');
 _('Edit artist');
@@ -319,6 +320,8 @@ _('Clear the list of events');
 
 _('Start page');
 _('Saving settings drop-down menu user');
+_('Checking state of flag of opinion form');
+_('Setting state of flag of opinion form');
 
 _('Info portal');
 _('Phone book by page + filters');

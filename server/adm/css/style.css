@@ -542,6 +542,18 @@ z-index:20;
     padding-right: 0 !important;
 }
 
+.no-margin {
+    margin: 0 !important;
+}
+
+.no-margin-left {
+    margin-left: 0 !important;
+}
+
+.no-margin-right {
+    margin-right: 0 !important;
+}
+
 .padding-15 {
   padding:15px !important;
 }
@@ -1781,6 +1793,26 @@ border: 1px solid #F3E3AA;
 .txt-danger, .has-error .help-block, .has-error .control-label, .has-error .radio, .has-error .checkbox, .has-error .radio-inline, .has-error .checkbox-inline {
   color: #D15E5E !important;
 }
+
+.login-form.has-error input[type="text"], .login-form.has-error input[type="password"], .login-form.has-error .txt-danger{
+    border-color: #d32f2f;
+}
+
+.login-form>input[type="text"]:first-child {
+    border-top-right-radius: 5px ;
+    border-bottom-left-radius: 0;
+}
+
+.login-form>input[type="password"]:not(:first-child):not(:last-child){
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    margin-bottom: 0;
+}
+
+.login-form>.alert{
+    margin-bottom: 0;
+}
+
 .has-success .form-control {
   border-color:#63CC9E;
 }
@@ -3164,6 +3196,19 @@ border-bottom:1px solid #E3E3E3;padding-left:6px !important; padding-right:5px;}
 
 
 .btn-default{height:32px; padding-bottom:15px !important;}
+
+.opinion_form {
+    padding: 0 20px 0 0 !important;
+}
+
+.opinion_form .btn-default{
+    border-color: #cbcaca;
+}
+
+.opinion_form p{
+    font-size: 13px;
+}
+
 .DTTT_button_print, .btn-success {
 color:#FFCD1C; background-color:#000 !important; height:32px; padding-bottom:15px !important;}
 #ajax-content{min-height:600px;}
@@ -3315,7 +3360,7 @@ span.serial + span{
     border-radius: inherit !important;
 }
 
-#iptv_list .green, #add_channel .green{
+#iptv_list .green, #add_channel .green, #modalbox .green {
     background-color: #0F9C16 !important;
     color: #ffffff !important;
     border-color: rgba(0, 0, 0, 0.3);
