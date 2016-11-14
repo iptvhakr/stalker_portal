@@ -1150,7 +1150,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
             "name" => 'audio_compositions.name as `name`', 
             "url" => 'audio_compositions.url as `url`', 
             "language" => 'audio_languages.name as `language`', 
-            "duration" => '0 as `duration`', 
+            "duration" => '`duration`',
             "tasks" => '0 as `tasks`', 
             "complaints" => '0 as `complaints`',
             "status" => 'audio_compositions.status as `status`',
@@ -1395,6 +1395,66 @@ class AudioClubController extends \Controller\BaseStalkerController {
         $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function get_media_info_json(){
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['id'])) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array(
+            'action' => 'setMediaInfo',
+            'data' => array()
+        );
+
+        $error = '';
+        $url = '';
+        $probe = FALSE;
+
+        if (!empty($this->postData['url'])) {
+            $url = $this->postData['url'];
+        } elseif (!empty($this->postData['id'])) {
+            $id = intval($this->postData['id']);
+            $composition = $this->db->getAlbumsCompositionList(array('where' => array('audio_compositions.id' => $id)));
+            if (!empty($composition)) {
+                reset($composition);
+                list($num, $row) = each($composition);
+                $url = $row['url'];
+            }
+        } else {
+            $error = $this->setLocalization('Empty URL');
+        }
+
+        if (!empty($url) && empty($error)) {
+            $url = end(explode(' ', trim($url)));
+
+            if (!empty($url)) {
+                try{
+                    $probe = \FFMpeg\FFProbe::create();
+                    $audio = $probe->streams($url)->audios()->first();
+                    $data['data']['duration'] = round(@floatval($audio->get('duration')));
+                    $data['data']['bit rate'] = round(@floatval($audio->get('bit_rate')) / 1000 ) . 'kbps';
+                    $data['data']['codec name'] = $audio->get('codec_long_name');
+                } catch(\Exception $e){
+                    if (class_exists('\FFMpeg\FFProbe') && !empty($probe)) {
+                        $error = $this->setLocalization('Failed') . '. ' . $e->getMessage();
+                    } else {
+                        $error = $this->setLocalization('Failed') . '. ' . $this->setLocalization('Unable to load FFProbe library. Please install "ffmpeg" or other package with this library(eg "libav-tools")');
+                    }
+                }
+
+            }
+        }
+
+        $data['msg'] = $error;
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+
     }
     
     //------------------------ service method ----------------------------------

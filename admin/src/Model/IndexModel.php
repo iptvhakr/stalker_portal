@@ -108,4 +108,8 @@ class IndexModel extends \Model\BaseStalkerModel {
     public function getUsersActivity(){
         return $this->mysqlInstance->select(array('unix_timestamp(`time`) as `time`', 'users_online'))->from('users_activity')->get()->all();
     }
+
+    public function getOpinionFormFlag($flag = NULL){
+        return $this->mysqlInstance->update('administrators', array('opinion_form_flag' => $flag), array('id' => $this->admin_id))->total_rows();
+    }
 }
