@@ -255,7 +255,8 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
 
             } else if ($channel['nimble_auth_support']){
 
-                $channel['cmd'] .= (strpos($channel['cmd'], '?') ? '&' : '?') . preg_match('/https?\:\/\//i', $channel['cmd']) ? self::getNimbleHttpAuthToken($channel['cmd']) : self::getNimbleRtspAuthToken($channel['cmd']);
+                $channel['cmd'] .= (strpos($channel['cmd'], '?') !== FALSE ? '&' : '?');
+                $channel['cmd'] .= preg_match('/https?\:\/\//i', $channel['cmd']) ? self::getNimbleHttpAuthToken($channel['cmd']) : self::getNimbleRtspAuthToken($channel['cmd']);
 
             } else{
 
