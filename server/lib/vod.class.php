@@ -129,7 +129,7 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
 
             $options = $user->getServicesByType('option');
 
-            if ($options && array_search('disable_vclub_ad', $options) !== false){
+            if ($options && (array_search('disable_vclub_ad', $options) !== false || array_search('disable_ad', $options) !== false)){
                 $disable_ad = true;
             }
         }
