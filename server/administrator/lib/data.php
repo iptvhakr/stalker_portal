@@ -36,7 +36,7 @@ function get_data(){
                     }
 
                     $master = new VideoMaster();
-                    $good_storages = $master->getAllGoodStoragesForMediaFromNet($media_id, true);
+                    $good_storages = $master->getAllGoodStoragesForMediaFromNet($media_id, 0, true);
                     
                     foreach ($good_storages as $name => $data){
                         $arr[] = array(
@@ -74,7 +74,7 @@ function get_data(){
                     $media_id = intval($data);
 
                     $master = new KaraokeMaster();
-                    $good_storages = $master->getAllGoodStoragesForMediaFromNet($media_id, true);
+                    $good_storages = $master->getAllGoodStoragesForMediaFromNet($media_id, 0, true);
                     
                     if(count($good_storages) > 0){
                         set_karaoke_status($media_id, 1);
