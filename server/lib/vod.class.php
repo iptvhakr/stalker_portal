@@ -154,7 +154,7 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
 
             $video = Video::getById($media_id);
 
-            if ($advert && !empty($advert['config']['places']) && $advert['config']['places']['before_video'] == 1){
+            if ($advert && !empty($advert['config']['places']) && in_array(102, $advert['config']['places'])){
 
                 $link = array(
                     array(

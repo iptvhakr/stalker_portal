@@ -2100,7 +2100,7 @@ function common_xpcom(){
 
                     _debug('this.config', this.config);
 
-                    if (!this.config || this.config.hasOwnProperty('places') && this.config['places'].hasOwnProperty('before_app') && this.config['places']['before_app'] == 0){
+                    if (!this.config || !this.config.hasOwnProperty('places') || this.config['places'].indexOf(101) == -1){
                         callback();
                         return;
                     }
