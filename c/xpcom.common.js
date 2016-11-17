@@ -762,6 +762,9 @@ function common_xpcom(){
                             throw new Error(er);
                         }
                         _debug(result.text);
+                        if (connection_problem.on && stb.cur_place == 'tv' && stb.player.on){
+                            stb.player.play_last();
+                        }
                         connection_problem.hide();
                         authentication_problem.hide();
                         callback.call(context, result.js);
