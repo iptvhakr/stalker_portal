@@ -407,7 +407,7 @@
         "icon2": "pull-right fa fa-chevron-left",
         "action": {
             "1": {
-                "name": _("List of companies"),
+                "name": _("List of campaigns"),
                 "alias": "company-list",
                 "icon": ""
             },

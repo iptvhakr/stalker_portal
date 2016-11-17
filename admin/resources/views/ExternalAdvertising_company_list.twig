@@ -1,12 +1,12 @@
 {% extends 'layout.twig' %}
 {% import '/macro/iptw_macro.twig' as main_macro %}
-{% set title = ('Advertising'|trans ~ ': ' ~ 'List of companies'|trans) | trans %}
+{% set title = ('Advertising'|trans ~ ': ' ~ 'List of campaigns'|trans) | trans %}
 
 {% block content %}
     <div id="iptv_list">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/company-add" class="btn btn-success green pull-right">{{ 'Add company'|trans }}</a>
+                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/company-add" class="btn btn-success green pull-right">{{ 'Add campaign'|trans }}</a>
             </div>
         </div>
         <div class="row">

@@ -4,6 +4,32 @@
 {% block content %}
 
     <div id="add_channel">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="box">
+                    <div class="box-content">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h4><strong>{{ 'Source'|trans }}</strong></h4>
+                                <hr style="margin-top: 0;">
+                            </div>
+                            <div class="col-sm-5">
+                                <p>
+                                    {{ 'To identify your subscribers in the system, you need to get Source Code.'|trans }}
+                                </p>
+                                <p>
+                                    {{ 'If you have gone through the registration process, a manager will contact you shortly and provide your personal Source.'|trans }}
+                                </p>
+                                <p>
+                                    {{ 'If after a long time you do not get an answer from a manager or you need an extra Source, or you receive a message about blocked Source, please contact us'|trans }}:
+                                    <a href="mailto:stalker@infomir.eu">stalker@infomir.eu</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         {{ form_start(app['form'], {'method': 'POST', 'action': (app.request.baseUrl ~ '/' ~ app.controller_alias  ~ '/' ~ app.action_alias) | trans, 'attr': {'class': 'form-horizontal', 'role': 'form', 'id': 'form_'}}) }}
         <div class="bg-danger">
             <div class="bg-danger">
@@ -14,65 +40,59 @@
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="box">
                     <div class="box-content" id="form_container">
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label "><strong>{{ 'Settings'|trans }}</strong></label>
-                        </div>
-                        {{ form_widget(app['form'].owner, {'attr': {'class': 'form-control'}}) }}
+                        <div class="row">
                         {% set lastKey = 0 %}
                         {% if attribute(app['form'], 'source') is defined %}
                         {% for sourceField in app['form'].source %}
                             {% set lastKey = lastKey + 1 %}
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label ">{{ 'Source'|trans }} # {{ lastKey }}</label>
-                            <div class="col-xs-10 col-sm-8">
-                                <div class=" col-xs-10 col-sm-6">
-                                    {{ form_widget(sourceField, {'attr': {}}) }}
-                                </div>
-                                <div>
-                                    <div class="bg-danger">
-                                        {{ form_errors(sourceField) }}
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label ">{{ 'Source'|trans }} # {{ lastKey }}</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-5">
+                                        {{ form_widget(sourceField, {'attr': {}}) }}
+                                        <div class="bg-danger">
+                                            {{ form_errors(sourceField) }}
+                                        </div>
                                     </div>
+                                    <div class="col-sm-12"></div>
+                                    <span class="help-inline col-xs-10 col-sm-5">
+                                        <span class="small txt-default">{{ 'Enter your Source'|trans }}</span>
+                                    </span>
                                 </div>
                             </div>
-                        </div>
-                        {% endfor %}
+                            {% endfor %}
                         {% endif %}
                         {% for newSourceField in app['form'].new_source %}
                             {% set lastKey = lastKey + 1 %}
                             <div class="form-group">
                                 <label class="col-sm-2 control-label ">{{ 'Source'|trans }} # {{ lastKey }}</label>
                                 <div class="col-xs-10 col-sm-8">
-                                    <div class=" col-xs-10 col-sm-6">
+                                    <div class=" col-xs-10 col-sm-5">
                                         {{ form_widget(newSourceField, {'attr': {}}) }}
-                                    </div>
-                                    <div>
                                         <div class="bg-danger">
                                             {{ form_errors(newSourceField) }}
                                         </div>
                                     </div>
+                                    {% if loop.last %}
+                                    <div class=" col-xs-10 col-sm-5 add_new_source_container">
+                                        <div class="pull-left">
+                                            <a id="add_new_source" href="#" class="" data-prototype="{{ form_widget(app['form'].new_source.vars.prototype)|e }}">{{ 'Add source'|trans }}</a>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                    <div class="col-sm-12"></div>
+                                    <span class="help-inline col-xs-10 col-sm-5">
+                                        <span class="small txt-default">{{ 'Enter your Source'|trans }}</span>
+                                    </span>
                                 </div>
                             </div>
                         {% endfor %}
-                        <div class="form-group">
-                            <div class="col-xs-10 col-sm-8">
-                                <div class=" col-xs-10 col-sm-8">
-                                    <div class="pull-right">
-                                        <a id="request_new_source" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/request-new-source" class="btn btn-success green pull-right main_ajax" data-owner="{{ app['form'].owner.vars.value }}" >{{ 'Request new source'|trans }}</a>
-                                        <a id="add_new_source" href="#" class="btn btn-success green pull-right" data-prototype="{{ form_widget(app['form'].new_source.vars.prototype)|e }}">{{ 'Add source'|trans }}</a>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label ">&nbsp;</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-5">
+                                        {{ form_widget(app['form'].save, { 'label': 'Save'|trans , attr: {'class': 'btn btn-success green pull-left'}}) }}
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="box">
-                    <div class="box-content">
-                        <div class="form-group">
-                            <div class="col-xs-10 col-sm-8">
-                                <div class=" col-xs-10 col-sm-8">
-                                    {{ form_widget(app['form'].save, { 'label': 'Save'|trans , attr: {'class': 'btn btn-success green pull-left'}}) }}
                                 </div>
                             </div>
                         </div>
@@ -84,6 +104,46 @@
             {{ form_rest(app.form) }}
         </div>
         {{ form_end(app['form']) }}
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="box">
+                    <div class="box-content">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h4><strong>{{ 'Request additional Source'|trans }}</strong></h4>
+                                <hr style="margin-top: 0;">
+                            </div>
+                            <div class="col-sm-5">
+                                <p>
+                                    {{ 'To request an additional Source, contact us by email'|trans }}:
+                                    <a href="mailto:stalker@infomir.eu">stalker@infomir.eu</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="box">
+                    <div class="box-content">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h4><strong>{{ 'Change of registration data'|trans }}</strong></h4>
+                                <hr style="margin-top: 0;">
+                            </div>
+                            <div class="col-sm-5">
+                                <p>
+                                    {{ 'To change registration data, contact us by email'|trans }}:
+                                    <a href="mailto:stalker@infomir.eu">stalker@infomir.eu</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <script type="text/javascript" defer>
 
@@ -98,59 +158,13 @@
                     newWidget = newWidget.replace(/__name__/g, itemCount);
                     itemContainer.find('input').replaceWith(newWidget);
                     itemContainer.find('label').text("{{ 'Source'|trans }} # " + ($('input[id^="form_"][type="text"]').length + 1));
-                    itemContainer.insertBefore($(this).closest('.form-group'));
-                    return false;
-                });
-
-                $(document).on('click', "a.main_ajax:not([disabled])", function (e) {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    var _this = this;
-                    $("#modalbox").data('complete', 0);
-                    var sendData = $(_this).data();
-                    ajaxPostSend($(_this).attr('href'), sendData, false );
-                    $(this).closest('div.open').removeClass('open');
-                    return false;
-                });
-
-                $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function (e) {
-                    if (e.currentTarget != e.target) {
-                        return;
-                    }
-                    e.stopPropagation();
-                    e.preventDefault();
-                    if ($("#modalbox").data('complete') && $("#modalbox").data('complete') == 1) {
-                        JScloseModalBox();
-                    } else {
-                        for (i = 0; i < 3; i++) {
-                            $('#modalbox > div').fadeTo('slow', 0.5).fadeTo('slow', 1.0);
-                        }
-                    }
+                    itemContainer.insertAfter($(this).closest('.form-group'));
+                    $(this).closest(".add_new_source_container").remove();
                     return false;
                 });
             });
         }
         document.addEventListener("DOMContentLoaded", yelp, false);
-
-        var messageBlock = function(obj){
-            if (obj.data_empty) {
-                $("#modalbox").hide();
-                $("#modalbox").data('complete', 1);
-                $('#modalbox').find('.modal-header-name span').text("{{ 'Empty register data'|trans }}");
-                $('#modalbox').find('.devoops-modal-inner').html(obj.msg);
-                $('#modalbox').find('.devoops-modal-bottom').hide();
-                $('#modalbox').show();
-            } else {
-                JSSuccessModalBox(obj);
-            }
-            if (obj.button_block) {
-                $("#request_new_source").prop('disabled', 'disabled').addClass('disabled');
-            }
-        };
-
-        var messageBlockError = function(obj){
-            JSErrorModalBox(obj);
-        };
 
     </script>
 {% endblock %}

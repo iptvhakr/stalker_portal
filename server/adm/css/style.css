@@ -393,6 +393,20 @@ z-index:20;
     margin-left:10px;
     margin-right:10px;
 }
+
+.box.bordered {
+    border: 1px solid #D3D3D3;
+    border-radius: 5px;
+}
+
+.box.bordered .box-content{
+    border-radius: inherit;
+}
+
+.no-border {
+    border: 0 none transparent;
+}
+
 .full-content .box {
   border: 0;
   margin-bottom: 0;
@@ -637,7 +651,8 @@ label.myErrorClass {
 
 .col-sm-2.no-modified{
     margin-right: 0;
-    padding-right: 15px;
+    padding-right: 15px !important;
+    padding-left: 15px;
     width: 16.6667%;
 }
 
