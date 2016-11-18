@@ -869,3 +869,11 @@ _('Xhosa');
 _('Yoruba');
 _('Chinese');
 _('Zulu');
+
+_('Start applications');
+_('Application Startup');
+_('Before starting the film in Video Club');
+_('During movie playback in Video Club');
+_('Before starting TV section');
+_('Before starting Video Club section');
+_('Before starting Radio section');

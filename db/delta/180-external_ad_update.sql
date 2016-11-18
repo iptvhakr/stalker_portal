@@ -31,27 +31,27 @@ CREATE TABLE `ext_adv_positions`(
 ) DEFAULT CHARSET = UTF8;
 
 INSERT INTO `ext_adv_positions` (`platform`, `position_code`, `label`)
-    VALUES  ('stb', 101, 'Before launching the application'),
-            ('stb', 102, 'Before launching the movie in the VideoClub'),
-            ('stb', 103, 'During the movie playback in the VideoClub'),
-            ('stb', 201, 'Before launching the application'),
-            ('stb', 202, 'Before launching the movie in the VideoClub'),
-            ('stb', 203, 'During the movie playback in the VideoClub'),
-            ('android', 301, 'Before launching the application'),
-            ('android', 302, 'Before launching a TV section'),
-            ('android', 303, 'Before launching a VideoClub section'),
-            ('android', 304, 'Before launching a Radio section'),
-            ('android', 305, 'Before launching the movie in the VideoClub'),
-            ('android', 306, 'During the movie playback in the VideoClub'),
-            ('ios', 401, 'Before launching the application'),
-            ('ios', 402, 'Before launching a TV section'),
-            ('ios', 403, 'Before launching a VideoClub section'),
-            ('ios', 404, 'Before launching a Radio section'),
-            ('ios', 405, 'Before launching the movie in the VideoClub'),
-            ('ios', 406, 'During the movie playback in the VideoClub'),
-            ('smarttv', 501, 'Before launching the application'),
-            ('smarttv', 502, 'Before launching the movie in the VideoClub'),
-            ('smarttv', 503, 'During the movie playback in the VideoClub');
+    VALUES  ('stb', 101, 'Start applications'),
+            ('stb', 102, 'Before starting the film in Video Club'),
+            ('stb', 103, 'During movie playback in Video Club'),
+            ('stb', 201, 'Start applications'),
+            ('stb', 202, 'Before starting the film in Video Club'),
+            ('stb', 203, 'During movie playback in Video Club'),
+            ('android', 301, 'Application Startup'),
+            ('android', 302, 'Before starting TV section'),
+            ('android', 303, 'Before starting Video Club section'),
+            ('android', 304, 'Before starting Radio section'),
+            ('android', 305, 'Before starting the film in Video Club'),
+            ('android', 306, 'During movie playback in Video Club'),
+            ('ios', 401, 'Application Startup'),
+            ('ios', 402, 'Before starting TV section'),
+            ('ios', 403, 'Before starting Video Club section'),
+            ('ios', 404, 'Before starting Radio section'),
+            ('ios', 405, 'Before starting the film in Video Club'),
+            ('ios', 406, 'During movie playback in Video Club'),
+            ('smarttv', 501, 'Application Startup'),
+            ('smarttv', 502, 'Before starting the film in Video Club'),
+            ('smarttv', 503, 'During movie playback in Video Club');
 
 DELETE FROM `adm_grp_action_access` WHERE `controller_name` = 'external-advertising' AND `action_name` = 'request-new-source';
 
