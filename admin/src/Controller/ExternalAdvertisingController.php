@@ -458,10 +458,10 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
         );
 
         $this->app['platform_list'] = array(
-            'stb' => array('101' => 'STANDART SKIN', '201' => 'SMART LAUNCHER SKINS'),
-            'ios' => array('401' => 'iOS'),
-            'android' => array('301' => 'Android'),
-            'smarttv' => array('501' => 'SmartTV')
+            'stb' => array('101' => $this->setLocalization('STANDART SKIN'), '201' => $this->setLocalization('SMART LAUNCHER SKINS')),
+            'ios' => array('401' => $this->setLocalization('iOS')),
+            'android' => array('301' => $this->setLocalization('Android')),
+            'smarttv' => array('501' => $this->setLocalization('SmartTV'))
         );
 
         if (array_key_exists('status', $data)) {
@@ -479,7 +479,7 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
             }
             foreach($ad_positions as $row) {
                 if($row['platform'] == $platform){
-                    $parts_labels[$platform][$row['position_code']] = $row['label'];
+                    $parts_labels[$platform][$row['position_code']] = $this->setLocalization($row['label']);
                     $data[$platform][$row['position_code']] = array_key_exists($row['position_code'], $data[$platform]) && $data[$platform][$row['position_code']];
                 }
             }

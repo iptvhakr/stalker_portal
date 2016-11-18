@@ -46,7 +46,7 @@
                         {% for sourceField in app['form'].source %}
                             {% set lastKey = lastKey + 1 %}
                             <div class="form-group">
-                                <label class="col-sm-2 control-label ">{{ 'Source'|trans }} # {{ lastKey }}</label>
+                                <label class="col-sm-2 control-label ">{{ 'source'|trans }} # {{ lastKey }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-5">
                                         {{ form_widget(sourceField, {'attr': {}}) }}
@@ -65,7 +65,7 @@
                         {% for newSourceField in app['form'].new_source %}
                             {% set lastKey = lastKey + 1 %}
                             <div class="form-group">
-                                <label class="col-sm-2 control-label ">{{ 'Source'|trans }} # {{ lastKey }}</label>
+                                <label class="col-sm-2 control-label ">{{ 'source'|trans }} # {{ lastKey }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-5">
                                         {{ form_widget(newSourceField, {'attr': {}}) }}
@@ -157,7 +157,7 @@
                     var itemContainer = $('input[id^="form_new_source_"]:last').closest('.form-group').clone(true);
                     newWidget = newWidget.replace(/__name__/g, itemCount);
                     itemContainer.find('input').replaceWith(newWidget);
-                    itemContainer.find('label').text("{{ 'Source'|trans }} # " + ($('input[id^="form_"][type="text"]').length + 1));
+                    itemContainer.find('label').text("{{ 'source'|trans }} # " + ($('input[id^="form_"][type="text"]').length + 1));
                     itemContainer.insertAfter($(this).closest('.form-group'));
                     $(this).closest(".add_new_source_container").remove();
                     return false;
