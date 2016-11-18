@@ -103,40 +103,7 @@
                 e.preventDefault();
                 var _this = $(this);
 
-                $.ajax({
-                    url: $(this).attr('href'),
-                    type: 'POST',
-                    data: $(this).data(),
-                    success: function (data) {
-                        if (data.success) {
-                            for (var key in data) {
-                                _this.data(key, data[key]);
-                            }
-                        } else {
-                            JSErrorModalBox({msg:"{{ 'Some server error'|trans }}"});
-                        }
-                    },
-                    error: function (data) {
-                        var errAction = '';
-                        if (typeof(data.responseJSON) == 'object') {
-                            errAction +=  data.responseJSON.action + 'Error';
-                            for (var key in data.responseJSON) {
-                                _this.data(key, data.responseJSON[key]);
-                            }
-                        }
-                        if ($.isFunction(window[errAction])) {
-                            window[errAction]($(_this));
-                        } else {
-                            JSErrorModalBox({msg: "{{ 'Some network error or access denied'|trans }}"});
-                        }
-                    },
-                    dataType: "json",
-                    async: false
-                });
-
-                if ($.isFunction(window[$(this).data('action')]) && !$(this).data('error')) {
-                    window[$(this).data('action')]($(this));
-                }
+                ajaxPostSend($(this).attr('href'), $(this).data(), false, false);
                 _this.closest('div.open').removeClass('open');
                 return false;
             });
@@ -144,18 +111,6 @@
     }
     
     document.addEventListener("DOMContentLoaded", yelp, false);
-    
-    var removeAds = function(obj){
-        JSSuccessModalBox(obj);
-        $('#datatable-1').DataTable().ajax.reload();
-    };
 
-    var toggleVideoAdsStatus = function(obj){
-        $('#datatable-1').DataTable().ajax.reload();
-    };
-
-    var errAction = function(obj){
-        JSErrorModalBox(obj);
-    }
 </script>
 {% endblock %}

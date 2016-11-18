@@ -319,6 +319,8 @@ _('Clear the list of events');
 
 _('Start page');
 _('Saving settings drop-down menu user');
+_('Checking state of flag of opinion form');
+_('Setting state of flag of opinion form');
 
 _('Info portal');
 _('Phone book by page + filters');
@@ -508,6 +510,7 @@ _('List of video categories by page + filters');
 _('Change the order of categories');
 _('List of video genres');
 _('List of video genres by page + filters');
+_('Validation of number of the video-category');
 
 _('admin');
 _('List of tv genres');
@@ -583,6 +586,17 @@ _('Application for SmartLauncher. Restoring installed applications from list of 
 _('Application for SmartLauncher. Updating applications');
 _('Application for SmartLauncher. Checking for updates for applications');
 
+_('External Advertising');
+_('List of companies');
+_('Register form for new client');
+_('Adding new ad-company');
+_('Editing exists ad-company');
+_('Form for viewing, adding, editing and requesting sources for ad-companies');
+_('List of companies by page + filters');
+_('Toggle company state');
+_('Deleting exists ad-company');
+_('Make request for getting new source for ad-company');
+
 _('once');
 _('every');
 _('minute');
@@ -646,6 +660,7 @@ _('Resetting password of user access control');
 _('Check EPG-prefix for uniqueness');
 _('Publish or add to schedule');
 _('Unpublish video');
+_('Getting users available and subscribed tv-channels');
 
 /* Launcher profile */
 _('TV');
@@ -704,6 +719,8 @@ _('Deleting info about one video file from database');
 _('Adding episodes into season');
 _('Adding seasons into video');
 _('Getting media-info from source');
+_('Deleting season of video serial with series and files');
+_('Deleting series of video serial with files');
 
 _('Regular quality');
 _('Good quality');
@@ -852,3 +869,11 @@ _('Xhosa');
 _('Yoruba');
 _('Chinese');
 _('Zulu');
+
+_('Start applications');
+_('Application Startup');
+_('Before starting the film in Video Club');
+_('During movie playback in Video Club');
+_('Before starting TV section');
+_('Before starting Video Club section');
+_('Before starting Radio section');

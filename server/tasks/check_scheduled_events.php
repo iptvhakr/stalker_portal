@@ -9,9 +9,9 @@ use Stalker\Lib\Core\Mysql;
 
 $run_start_time = time();
 
-$five_minute_interval = $run_start_time - ($run_start_time % 300) + 300;
+$five_minute_interval = $run_start_time - ($run_start_time % 300);
 
-echo strftime('%Y-%m-%d %H:%M:%S', $five_minute_interval), PHP_EOL;
+echo "Scheduled events time - ", strftime('%Y-%m-%d %H:%M:%S', $five_minute_interval), PHP_EOL;
 
 $_SERVER['TARGET'] = 'ADM';
 $schedule_events = Mysql::getInstance()->from("`schedule_events`")->where(array(
@@ -30,9 +30,11 @@ $cronTab->setCurrentTime('now');
 foreach ($schedule_events as $row) {
     if (!empty($row['schedule'])) {
         $cronTab->setExpression($row['schedule']);
-        $next_run_interval = $five_minute_interval - $cronTab->getNextRunDate()->getTimestamp();
+        $next_run_interval = $cronTab->getNextRunDate(NULL, NULL, TRUE)->getTimestamp() - $five_minute_interval;
 
-        if ($next_run_interval < 0 || $next_run_interval > 300) {
+        echo "next_run_interval - $next_run_interval", PHP_EOL;
+
+        if (abs($next_run_interval) > 30) {
             continue;
         }
 

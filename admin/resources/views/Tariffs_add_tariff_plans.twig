@@ -146,7 +146,7 @@
                 $(document).on('change', '#form_external_id', function (e) {
                     var _this = $(this);
                     _this.next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
-                    ajaxPostSend('{{app.request.baseUrl}}/{{app.controller_alias}}/check-external-id', {externalid: _this.val(), selfid: $('#form_id').val()}, false);
+                    ajaxPostSend('{{app.request.baseUrl}}/{{app.controller_alias}}/check-external-id', {externalid: _this.val(), selfid: $('#form_id').val(), plans: true}, false);
                 });
                 
                 $(document).on('click', '#form_save', function(e){

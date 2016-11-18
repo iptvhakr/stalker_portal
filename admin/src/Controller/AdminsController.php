@@ -118,14 +118,14 @@ class AdminsController extends \Controller\BaseStalkerController {
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
 
-        $this->app['allResellers'] = 1;
+        $this->app['allResellers'] = $this->db->getAllFromTable('reseller');
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
     //----------------------- ajax method --------------------------------------
     
-    public function admins_list_json(){
+    public function admins_list_json($local_uses = FALSE){
         if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
                 return $no_auth;
@@ -135,14 +135,16 @@ class AdminsController extends \Controller\BaseStalkerController {
         $response = array(
             'data' => array(),
             'recordsTotal' => 0,
-            'recordsFiltered' => 0,
-            'action' => 'setAdminsModal'
+            'recordsFiltered' => 0
         );
+        if (!$local_uses) {
+            $response['action'] = 'setAdminsModal';
+        }
 
         $filds_for_select = $this->getAdminsFields();
                 
         $error = "Error";
-        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
+        $param = (!empty($this->data)?$this->data: $this->postData);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
 
@@ -173,11 +175,14 @@ class AdminsController extends \Controller\BaseStalkerController {
             $query_param['limit']['limit'] = FALSE;
         }
 
-        $response["data"] = $this->db->getAdminsList($query_param);
+        $response["data"] = array_map(function($row){
+            $row['RowOrder'] = "dTRow_" . $row['id'];
+            return $row;
+        }, $this->db->getAdminsList($query_param));
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
 
         $error = "";
-        if ($this->isAjax) {
+        if ($this->isAjax && !$local_uses) {
             $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
         } else {
@@ -194,7 +199,8 @@ class AdminsController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
         $data = array();
-        $data['action'] = 'checkAdminsLogin';
+        $data['action'] = 'checkData';
+        $data['input_id'] = 'adm_login';
         $error = $this->setLocalization('Login is already used');
 
         if (preg_match('/^[A-Za-z0-9_]+$/i', $this->postData['login'])) {
@@ -223,9 +229,9 @@ class AdminsController extends \Controller\BaseStalkerController {
         }
         
         $data = array();
-        $data['action'] = 'manageAdminsList';
+        $data['action'] = 'updateTableData';
         $item = array($this->postData);
-        $error = $this->setLocalization('error');
+        $error = $this->setLocalization('Failed');
 
         if (!empty($this->postData['login']) && $this->postData['login'] == 'admin') {
             unset($item[0]['login']);
@@ -251,21 +257,31 @@ class AdminsController extends \Controller\BaseStalkerController {
 
         unset($item[0]['id']);
         unset($item[0]['re_pass']);
+        $result = $need_authorization = FALSE;
 
         if (((!empty($item[0]['login']) && preg_match('/^[A-Za-z0-9_]+$/i', $item[0]['login'])) || $operation != 'insertAdmin') && !empty($item[0])) {
             if (!empty($item[0]['login']) && $item[0]['login'] != $this->admin->getLogin() && !empty($item['id']) && $item['id'] == $this->admin->getId()){
                 $data['msg'] = $error = $this->setLocalization('You can not change your own login');
-            } elseif ($result = call_user_func_array(array($this->db, $operation), array($item))) {
+            } elseif (($result = call_user_func_array(array($this->db, $operation), array($item))) && is_numeric($result)) {
                 $error = '';
-                if ($operation == 'updateAdmin' && $new_pass && !empty($item['id']) && $item['id'] == $this->admin->getId()) {
-                    if (\Admin::checkAuthorization($this->admin->getLogin(), $new_pass)){
-                        $data['msg'] = $this->setLocalization('Your password has been changed');
-                    } else {
-                        $data['msg'] = $error = $this->setLocalization('Need authorization');
+                if ($operation == 'updateAdmin') {
+                    if ($new_pass && $item['id'] == $this->admin->getId()) {
+                        if (\Admin::checkAuthorization($this->admin->getLogin(), $new_pass)){
+                            $data['msg'] = $this->setLocalization('Your password has been changed');
+                        } else {
+                            $data['msg'] = $error = $this->setLocalization('Need authorization');
+                            $need_authorization = TRUE;
+                        }
                     }
+                    $data = array_merge_recursive($data, $this->admins_list_json(TRUE));
+                    $data['id'] = $item['id'];
+                    $data['action'] = 'updateTableRow';
+                    $data['msg'] = $this->setLocalization('Changed');
+                } else {
+                    $data['msg'] = $this->setLocalization('Added');
                 }
                 $this->cleanSideBars();
-            } else if (!empty($this->postData['login']) && $this->postData['login'] == 'admin') {
+            } elseif (!empty($this->postData['login']) && $this->postData['login'] == 'admin') {
                 $data['msg'] = $error;
             } else {
                 $data['nothing_to_do'] = TRUE;
@@ -276,7 +292,7 @@ class AdminsController extends \Controller\BaseStalkerController {
 
         $response = $this->generateAjaxResponse($data, $error);
 
-        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+        return new Response(json_encode($response), (empty($error) ? 200 : ($need_authorization ? 403: 500)));
     }
     
     public function remove_admin() {
@@ -289,34 +305,42 @@ class AdminsController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'manageAdminsList';
+        $data['action'] = 'deleteTableRow';
         $data['id'] = $this->postData['id'];        
-        $error = '';    
-        $this->db->deleteAdmin(array('id' => $this->postData['id']));
+        $error = '';
+        $result = $this->db->deleteAdmin(array('id' => $this->postData['id']));
+        if (is_numeric($result)) {
+            $error = '';
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
+        }
         $this->cleanSideBars();
 
         $response = $this->generateAjaxResponse($data);
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
     
-    public function admins_groups_list_json(){
+    public function admins_groups_list_json($local_uses = FALSE){
         if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
                 return $no_auth;
             }
         }
-        
+
         $response = array(
             'data' => array(),
             'recordsTotal' => 0,
-            'recordsFiltered' => 0,
-            'action' => 'setAdminsGroupsModal'
+            'recordsFiltered' => 0
         );
-        
+        if (!$local_uses) {
+            $response['action'] = 'setAdminsGroupsModal';
+        }
+
         $filds_for_select = $this->getAdminGroupsFields();
                 
         $error = $this->setLocalization("Error");
-        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
+        $param = (!empty($this->data)?$this->data: $this->postData);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
 
@@ -353,6 +377,7 @@ class AdminsController extends \Controller\BaseStalkerController {
                 if (empty($row['reseller_id'])) {
                     $row['reseller_id'] = '-';
                 }
+                $row['RowOrder'] = "dTRow_" . $row['id'];
                 return $row;
             }, $this->db->getAdminGropsList($query_param));
         } else {
@@ -361,7 +386,7 @@ class AdminsController extends \Controller\BaseStalkerController {
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         
         $error = "";
-        if ($this->isAjax) {
+        if ($this->isAjax && !$local_uses) {
             $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
         } else {
@@ -378,7 +403,8 @@ class AdminsController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
         $data = array();
-        $data['action'] = 'checkAdminGroupsName';
+        $data['action'] = 'checkData';
+        $data['input_id'] = 'adm_name';
         $error = $this->setLocalization('Group name is already used');
         if ($this->db->getAdminGropsList(array('select'=>array('A_G.*'), 'where' => array('A_G.name' => $this->postData['name']), 'order' => array('A_G.name' => 'ASC')))) {
             $data['chk_rezult'] = $this->setLocalization('Group name is already used');
@@ -402,7 +428,7 @@ class AdminsController extends \Controller\BaseStalkerController {
         }
         
         $data = array();
-        $data['action'] = 'manageAdminGroupsList';
+        $data['action'] = 'updateTableData';
         $item = array($this->postData);
 
         $error = $this->setLocalization('error');
@@ -419,6 +445,14 @@ class AdminsController extends \Controller\BaseStalkerController {
             $error = '';
             if ($result === 0) {
                 $data['nothing_to_do'] = TRUE;
+            }
+            if ($operation == 'updateAdminsGroup') {
+                $data = array_merge_recursive($data, $this->admins_groups_list_json(TRUE));
+                $data['id'] = $item['id'];
+                $data['action'] = 'updateTableRow';
+                $data['msg'] = $this->setLocalization('Changed');
+            } else {
+                $data['msg'] = $this->setLocalization('Added');
             }
         }
 
@@ -437,7 +471,7 @@ class AdminsController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'manageAdminGroupsList';
+        $data['action'] = 'deleteTableRow';
         $data['id'] = $this->postData['id'];        
         $error = $this->setLocalization('Error');
         $admin_count = $this->db->getAdminsTotalRows(array('gid' => $data['id']));
@@ -504,7 +538,7 @@ class AdminsController extends \Controller\BaseStalkerController {
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
 
-    public function resellers_list_json(){
+    public function resellers_list_json($local_uses = FALSE){
         if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
                 return $no_auth;
@@ -514,15 +548,17 @@ class AdminsController extends \Controller\BaseStalkerController {
         $response = array(
             'data' => array(),
             'recordsTotal' => 0,
-            'recordsFiltered' => 0,
-            'action' => 'setResellerModal'
+            'recordsFiltered' => 0
         );
+        if (!$local_uses) {
+            $response['action'] = 'setResellerModal';
+        }
 
 
         $filds_for_select = $this->getResellerFields();
 
         $error = "Error";
-        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
+        $param = (!empty($this->data)?$this->data: $this->postData);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
 
@@ -547,6 +583,10 @@ class AdminsController extends \Controller\BaseStalkerController {
         }
         if (!empty($query_param['like'][$filds_for_select['users_count']])) {
             unset($query_param['like'][$filds_for_select['users_count']]);
+        }
+
+        if (!empty($param['id'])) {
+            $query_param['where']['id'] = $param['id'];
         }
 
         $response['recordsTotal'] = $this->db->getResellersTotalRows();
@@ -593,12 +633,13 @@ class AdminsController extends \Controller\BaseStalkerController {
             $row['created'] = $row['created'] < 0 ? 0 : $row['created'];
             $row['modified'] = (int)strtotime($row['modified']);
             $row['modified'] = $row['created'] < 0 ? 0 : $row['modified'];
+            $row['RowOrder'] = "dTRow_" . $row['id'];
             return $row;
         }, $response["data"]);
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
 
         $error = "";
-        if ($this->isAjax) {
+        if ($this->isAjax && !$local_uses) {
             $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
         } else {
@@ -616,10 +657,10 @@ class AdminsController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'manageResellerList';
+        $data['action'] = 'updateTableData';
         $item = array($this->postData);
 
-        $error = 'error';
+        $error = $this->setLocalization('Failed');
         if (empty($this->postData['id'])) {
             $operation = 'insertReseller';
         } else {
@@ -634,6 +675,14 @@ class AdminsController extends \Controller\BaseStalkerController {
             $error = '';
             if ($result === 0) {
                 $data['nothing_to_do'] = TRUE;
+            }
+            if ($operation == 'updateReseller') {
+                $data = array_merge_recursive($data, $this->resellers_list_json(TRUE));
+                $data['id'] = $item['id'];
+                $data['action'] = 'updateTableRow';
+                $data['msg'] = $this->setLocalization('Changed');
+            } else {
+                $data['msg'] = $this->setLocalization('Added');
             }
         }
 
@@ -652,7 +701,7 @@ class AdminsController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'manageResellerList';
+        $data['action'] = 'deleteTableRow';
         $data['id'] = $this->postData['id'];
         $error = '';
 
@@ -680,7 +729,7 @@ class AdminsController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'manageResellerList';
+        $data['action'] = 'updateTableData';
         $source_id = $this->postData['source_id'] !== '-' ? $this->postData['source_id']: NULL;
         $target_id = $this->postData['target_id'] !== '-' ? $this->postData['target_id']: NULL;
         $error = '';
@@ -709,8 +758,8 @@ class AdminsController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'manageAdmins';
-        $admin_id = $this->postData['id'];
+        $data['action'] = 'updateTableRow';
+        $data['id'] = $admin_id = $this->postData['id'];
         $source_id = $this->postData['source_id'] !== '-' ? $this->postData['source_id']: NULL;
         $target_id = $this->postData['target_id'] !== '-' ? $this->postData['target_id']: NULL;
         $error = '';
@@ -724,6 +773,7 @@ class AdminsController extends \Controller\BaseStalkerController {
         if (!empty($count_reseller) && $source_id !== $target_id) {
             $this->db->updateResellerMemberByID('administrators', $admin_id, $target_id);
             $data['msg'] = $this->setLocalization('Moved');
+            $data = array_merge_recursive($data, $this->admins_list_json(TRUE));
             $this->cleanSideBars();
         } else {
             $error = $data['msg'] = empty($count_reseller) ? $this->setLocalization('Not found reseller for moving') : $this->setLocalization('Nothing to do');
@@ -744,7 +794,7 @@ class AdminsController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'manageGroupsResellerList';
+        $data['action'] = 'updateTableData';
         $admin_id = $this->postData['id'];
         $source_id = $this->postData['source_id'] !== '-' ? $this->postData['source_id']: NULL;
         $target_id = $this->postData['target_id'] !== '-' ? $this->postData['target_id']: NULL;
@@ -758,7 +808,10 @@ class AdminsController extends \Controller\BaseStalkerController {
 
         if (!empty($count_reseller) && $source_id !== $target_id) {
             $this->db->updateResellerMemberByID('admin_groups', $admin_id, $target_id);
+            $data = array_merge_recursive($data, $this->admins_groups_list_json(TRUE));
             $data['msg'] = $this->setLocalization('Moved');
+            $data['id'] = $admin_id;
+            $data['action'] = 'updateTableRow';
             $this->cleanSideBars();
         } else {
             $error = $data['msg'] = empty($count_reseller) ? $this->setLocalization('Not found reseller for moving') : $this->setLocalization('Nothing to do');
@@ -779,8 +832,8 @@ class AdminsController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'manageAdminsList';
-        $admin_id = $this->postData['id'];
+        $data['action'] = 'updateTableRow';
+        $data['id'] = $admin_id = $this->postData['id'];
         $source_id = $this->postData['source_id'] !== '-' ? $this->postData['source_id']: NULL;
         $target_id = $this->postData['target_id'] !== '-' ? $this->postData['target_id']: NULL;
         $error = '';
@@ -799,6 +852,7 @@ class AdminsController extends \Controller\BaseStalkerController {
                 if ($result === 0) {
                     $data['nothing_to_do'] = TRUE;
                 }
+                $data = array_merge_recursive($data, $this->admins_list_json(TRUE));
                 $this->cleanSideBars();
             }
         } else {
@@ -825,7 +879,7 @@ class AdminsController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'manageAdminGroupsList';
+        $data['action'] = 'updateTableData';
         $source_id = $this->postData['source_id'] !== '-' ? $this->postData['source_id']: NULL;
         $target_id = $this->postData['target_id'] !== '-' ? $this->postData['target_id']: NULL;
         $error = '';

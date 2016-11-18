@@ -8,7 +8,7 @@
                         {% if item.icon %}
                             <i class="{{ item.icon }}"></i>
                         {% endif %}
-                        <span>{{ item.name }} {% if attribute(item, "new") is defined %}<sup><span class="txt-danger">New!</span></sup><span>{% endif %}</span>
+                        <span>{{ item.name }} {% if attribute(item, "new") is defined %}<sup><span class="txt-danger">New!</span></sup>{% endif %}</span>
                         {% if attribute(item, 'add_params') is defined %}
                             {% autoescape false%}
                             {{ item['add_params'] }}

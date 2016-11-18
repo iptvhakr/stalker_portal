@@ -330,5 +330,52 @@ class IndexController extends \Controller\BaseStalkerController {
 
     }
 
+    public function opinion_check(){
+        if (!$this->isAjax) {
+            $this->app->abort(404, 'Page not found');
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array();
+        $data['action'] = 'setOpinionModal';
+        $error = '';
+        $data['remind'] = $this->app['request']->getSession()->get('remind', FALSE);
+
+        if ($this->admin->isSuperUser() && (is_null($this->admin->getOpinionFormFlag()) || $this->admin->getOpinionFormFlag() == 'remind')) {
+            $data['link'] = $this->app['language'] == 'ru' ? 'https://goo.gl/forms/2bZsWJ06feIas5Aa2': 'https://goo.gl/forms/AQx9JhtJ9FYaBEJa2';
+        } else {
+            $data['remind'] = TRUE;
+        }
+
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function opinion_set(){
+        if (!$this->isAjax || empty($this->postData['opinion'])) {
+            $this->app->abort(404, 'Page not found');
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array();
+        $data['action'] = 'setOpinionData';
+        $data['remind'] = TRUE;
+        $data['link'] = $this->app['language'] == 'ru' ? 'https://goo.gl/forms/2bZsWJ06feIas5Aa2': 'https://goo.gl/forms/AQx9JhtJ9FYaBEJa2';
+        $error = '';
+
+        $this->db->getOpinionFormFlag($this->postData['opinion']);
+        $this->app['request']->getSession()->set('remind', TRUE);
+
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
     //------------------------ service method ----------------------------------
 }

@@ -47,12 +47,7 @@
             $('#datatable-1').on('xhr.dt', function (e, settings, json) {
                 if (typeof (json.data) == 'object') {
                     for (var i in json.data) {
-                        cels = getCeils(json.data[i]);
-                        json.data[i].mac = cels.mac;
-                        json.data[i].uid = cels.uid;
-                        json.data[i].operations = cels.operations;
-                        json.data[i].name = cels.name;
-                        json.data[i].reseller_name = cels.reseller_name;
+                        json.data[i] = getCeils(json.data[i]);
                     }
                 }
             }).dataTable({
@@ -82,37 +77,14 @@
             $(document).ready(function () {
                 
                 $(document).on('change', '#console_name', function(e){
-                    var _this = $(this);
-                    _this.next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
-                    $('#modalbox button[type="submit"]').removeAttr("disabled");
-                   $.ajax({
-                        url: 'users/check-console-name',
-                        type: 'POST',
-                        data: {name: _this.val()},
-                        success: function (data) {
-                            if (data.success) {
-                                $('#modalbox button[type="submit"]').removeAttr("disabled");
-                                _this.next('div').append('<i class="txt-success fa fa-check"></i> ' + data.chk_rezult).css('visibility', 'visible');
-                            } else if (data.error){
-                                $('#modalbox button[type="submit"]').attr("disabled", "disabled");
-                                console.log(data.error);
-                            } else {
-                                $('#modalbox button[type="submit"]').removeAttr("disabled");
-                                console.log("{{ 'Some server error'|trans }}");
-                            }
-                        },
-                        error: function (data) {
-                            if (typeof(data.responseJSON) != 'undefined' && typeof(data.responseJSON.error) != 'undefined') {
-                                $('#modalbox button[type="submit"]').attr("disabled", "disabled");
-                                _this.next('div').append('<i class="txt-danger fa fa-ban"></i> ' + data.responseJSON.error).css('visibility', 'visible');
-                            } else {
-                                $('#modalbox button[type="submit"]').removeAttr("disabled");
-                                console.log("{{ 'Some network error or access denied'|trans }}");
-                            }
-                        },
-                        dataType: "json",
-                        async: false
-                    });
+
+                    var sendData = {
+                        name: $(this).val(),
+                        id: $("#modalbox input[name='id']").val()
+                    };
+
+                    ajaxPostSend("{{ app.request.baseUrl }}/{{ app.controller_alias }}/check-console-name", sendData, false, false);
+
                 });
                 
                 $(document).on('click', "a.main_ajax", function (e) {
@@ -138,35 +110,15 @@
                     $("#modalbox").data('complete', 1);
                     $('#modalbox').find('.modal-header-name span').text("{{ 'Resellers'|trans }}");
                     var reseller_id = $(this).data('reseller_id');
-                    var formHtml = '\n\
-                <div class="box-content">\n\
-                    <form class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-user-group-to-reseller">\n\
-                        <div class="form-group">\n\
-                            <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Reseller name'|trans }}</label>\n\
-                            <div class="col-xs-10 col-sm-8">\n\
-                                <span class="col-xs-12 col-sm-12">\n\
-                                    <input type="hidden" class="own_fields" name="consolegroupid" value="'+ $(this).data('consolegroupid') + '">\n\
-                                    <input type="hidden" class="own_fields" name="source_id" value="'+ reseller_id + '">\n\
-                                    <select class="own_fields" name="target_id" id="target_reseller">\n\
-                    {% if attribute(app, 'allResellers') is defined %}
-                            {% for row in app.allResellers %}
-                            <option value="{{ row.id }}" >{{ row.name }}</option>\n\
-                    {% endfor %}
-                    {% endif %}
-                                    </select>\n\
-                                </span>\n\
-                            </div>\n\
-                        </div>\n\
-                    </form>\n\
-                </div>';
-                    $('#modalbox').find('.devoops-modal-inner').html(formHtml);
+
+                    $('#modalbox .devoops-modal-inner').html($("#modal_change_reseller_form").html());
+                    $('#modalbox .devoops-modal-inner input[name="consolegroupid"]').val($(this).data('consolegroupid'));
+
                     $('#target_reseller option').removeAttr('selected');
                     $('#target_reseller option[value="'+ reseller_id +'"]').attr('selected', 'selected');
-                    $('#modalbox').find('.devoops-modal-bottom').html('<div class="pull-right no-padding">&nbsp;</div>\n\
-                        <div class="pull-right no-padding">\n\
-                            <button type="submit" class="btn btn-success pull-right">{{ 'Move'|trans }}</button>\n\
-                            <button type="reset" class="btn btn-default pull-right" >{{ 'Cancel'|trans }}</button>\n\
-                        </div>');
+
+                    $('#modalbox .devoops-modal-bottom').html($("#modal_form_buttons").html());
+                    $('#modalbox .devoops-modal-bottom button[type="submit"]').text("{{ 'Move'|trans }}");
 
                     $("#target_reseller").select2(select2Opt);
 
@@ -186,7 +138,8 @@
                     e.stopPropagation();
                     e.preventDefault();
 
-                    closeModalBox();
+                    JScloseModalBox();
+
                     return false;
                 });
 
@@ -200,7 +153,7 @@
                     e.stopPropagation();
                     e.preventDefault();
                     ajaxPostSend($("#modalbox form").attr('action'), sendData);
-                    closeModalBox();
+                    JScloseModalBox();
                     return false;
                 });
                 LoadDataTablesScripts(TestTable1);
@@ -219,40 +172,15 @@
             JSErrorModalBox(obj);
         };
 
-    function closeModalBox(){
-        $("#modalbox").hide();
-        $('#modalbox').find('.modal-header-name span').empty();
-        $('#modalbox').find('.devoops-modal-inner').empty();
-    }
     
     function openModalBox(obj){
-        $('#modalbox').find('.modal-header-name span').text((obj.data('consolegroupid')? "{{ 'Edit'|trans }}": "{{ 'Add'|trans }}") + ' {{ 'group'|trans }}');
-        if ($('#modalbox').find('.devoops-modal-inner').find('input').length == 0) {
-            $('#modalbox').find('.devoops-modal-inner').html('\n\
-                <div class="box-content">\n\
-                    <form class="form-horizontal" role="form">\n\
-                        <div class="form-group">\n\
-                            <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Title'|trans }}<span class="icon-required">*</span></label>\n\
-                            <div class="col-xs-10 col-sm-8">\n\
-                                <span class="col-xs-8 col-sm-8">\n\
-                                    <input type="hidden" class="own_fields" name="id">\n\
-                                    <input type="text" class="own_fields form-control " data-validation=required name="name" id="console_name">\n\
-                                    <div class="bg-danger"></div>\n\
-                                </span>\n\
-                            </div>\n\
-                        </div>\n\
-                    </form>\n\
-                </div>');
-            $('#modalbox').find('.devoops-modal-bottom').html('<div class="pull-right no-padding">&nbsp;</div>\n\
-                        <div class="col-xs-10 col-sm-5 pull-right no-padding">\n\
-                            <button type="submit" class="btn btn-success col-sm-5 pull-right">{{ 'Save'|trans }}</button>\n\
-                            <button type="reset" class="btn btn-default col-sm-5 pull-left" >{{ 'Cancel'|trans }}</button>\n\
-                        </div>');
-        }
-        
+        $('#modalbox .modal-header-name span').text((obj.data('consolegroupid')? "{{ 'Edit'|trans }}": "{{ 'Add'|trans }}") + ' {{ 'group'|trans }}');
+        $('#modalbox .devoops-modal-inner').html($("#modal_group_name_form").html());
+        $('#modalbox .devoops-modal-bottom').html($("#modal_form_buttons").html());
+
         if (obj.data('consolegroupid')) {
-            $('#modalbox').find('.devoops-modal-inner').find('input[type="hidden"]').val(obj.data('consolegroupid'));
-            $('#modalbox').find('.devoops-modal-inner').find('input[type="text"]').val(obj.closest('tr').find('td:first a').text());
+            $('#modalbox .devoops-modal-inner input[type="hidden"]').val(obj.data('consolegroupid'));
+            $('#modalbox .devoops-modal-inner input[type="text"]').val(obj.data('consolegroupname'));
         }
         $('#modalbox button[type="submit"]').removeAttr("disabled");
         $('#console_name').next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
@@ -269,9 +197,10 @@
         {% endfor %}
         {% endif %}
         var ceils = {};
+        ceils.RowOrder = data.RowOrder;
         ceils.name = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/users-groups-consoles-list?id='+data.id+'">'+data.name+'</a>';
         var reseller_id = '' + (typeof (data.reseller_id) != 'undefined' ? data.reseller_id: '-') + '';
-        ceils.users_count  = '0';
+        ceils.users_count  = data.users_count;
         ceils.reseller_name = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-user-group-to-reseller" data-consolegroupid="'+data.id+'" data-reseller_id="'+reseller_id+'">' + resellers[reseller_id] + '</a>';
         ceils.operations = "<div class='col-xs-3 col-sm-8'>\n\
                                 <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
@@ -279,7 +208,7 @@
                                 </a>\n\
                                 <ul class='dropdown-menu pull-right'>\n\
                                     <li>\n\
-                                        <a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-console-group'  id='edit_console_group_"+data.id+"' data-consolegroupid='" + data.id + "'>\n\
+                                        <a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-console-group'  id='edit_console_group_"+data.id+"' data-consolegroupid='" + data.id + "' data-consolegroupname='" + data.name + "'>\n\
                                             <span>{{ 'Edit'|trans }}</span>\n\
                                         </a>\n\
                                     </li>\n\
@@ -300,4 +229,55 @@
         return ceils;
     }
     </script>
+
+    <script type="text/template" id="modal_group_name_form">
+        <div class="box-content">
+            <form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Title'|trans }}<span class="icon-required">*</span></label>
+                    <div class="col-xs-10 col-sm-8">
+                        <span class="col-xs-8 col-sm-8">
+                            <input type="hidden" class="own_fields" name="id">
+                            <input type="text" class="own_fields form-control " data-validation=required name="name" id="console_name">
+                            <div class=""></div>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </script>
+
+    <script type="text/template" id="modal_form_buttons">
+        <div class="pull-right no-padding">&nbsp;</div>
+        <div class="col-xs-10 col-sm-5 pull-right no-padding">
+            <button type="submit" class="btn btn-success col-sm-5 pull-right">{{ 'Save'|trans }}</button>
+            <button type="reset" class="btn btn-default col-sm-5 pull-left" >{{ 'Cancel'|trans }}</button>
+        </div>
+    </script>
+
+    {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
+        <script type="text/template" id="modal_change_reseller_form">
+            <div class="box-content">
+                <form class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-user-group-to-reseller">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Reseller name'|trans }}</label>
+                        <div class="col-xs-10 col-sm-8">
+                            <span class="col-xs-12 col-sm-12">
+                                <input type="hidden" class="own_fields" name="consolegroupid" value="">
+                                <input type="hidden" class="own_fields" name="source_id" value="">
+                                <select class="own_fields" name="target_id" id="target_reseller">
+                                    {% if attribute(app, 'allResellers') is defined %}
+                                        {% for row in app.allResellers %}
+                                    <option value="{{ row.id }}" >{{ row.name }}</option>
+                                        {% endfor %}
+                                    {% endif %}
+                                </select>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </script>
+    {% endif %}
+
 {% endblock %}

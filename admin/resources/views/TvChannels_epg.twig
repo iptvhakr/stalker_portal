@@ -235,7 +235,7 @@
 
         function yelp() {
             $(document).ready(function () {
-                $(document).on('click', "a.main_ajax[disabled!='disabled']", function (e) {
+                $(document).on('click', "a.main_ajax", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
                     $("#modalbox").data('complete', 0);
@@ -298,23 +298,7 @@
                     }
                     return false;
                 });
-                
-                $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
-                    if (e.currentTarget != e.target) {
-                        return;
-                    }
-                    e.stopPropagation();
-                    e.preventDefault();
-                    if ($("#modalbox").data('complete') && $("#modalbox").data('complete') == 1) {
-                        closeModalBox();
-                    } else {
-                        for(i=0;i<3;i++) {
-                            $('#modalbox > div').fadeTo('slow', 0.5).fadeTo('slow', 1.0);
-                        }
-                    }
-                    return false;
-                });
-                
+
                 $("#add_epg_item").on("click", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
@@ -337,30 +321,11 @@
                 $(document).on('change keyup', '#form_uri', function (e) {
                     var _this = $(this);
                     _this.next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
+                    _this.closest('form').find('[type="submit"]').prop('disabled', false);
 
-                    $.ajax({
-                        url: "{{ app.request.baseUrl }}/{{ app.controller_alias }}/epg-check-uri",
-                        type: 'POST',
-                        data: {param: _this.val(), epgid: $('#form_id').val()},
-                        success: function (data) {
-                            if (data.success) {
-                                _this.next('div').append('<i class="txt-success fa fa-check"></i> ' + data.chk_rezult).css('visibility', 'visible');
-                            } else if (data.error) {
-                                console.log(data.error);
-                            } else {
-                                console.log("{{ 'Some server error'|trans }}");
-                            }
-                        },
-                        error: function (data) {
-                            if (typeof(data.responseJSON) != 'undefined' && typeof(data.responseJSON.error) != 'undefined') {
-                                _this.next('div').append('<i class="txt-danger fa fa-ban"></i> ' + data.responseJSON.error).css('visibility', 'visible');
-                            } else {
-                                console.log("{{ 'Some network error or access denied'|trans }}");
-                            }
-                        },
-                        dataType: "json",
-                        async: false
-                    });
+                    if (_this.val()) {
+                        ajaxPostSend("{{ app.request.baseUrl }}/{{ app.controller_alias }}/epg-check-uri", {param: _this.val(), epgid: $('#form_id').val()});
+                    }
                 });
 
                 $(document).on('change keyup', '#form_id_prefix', function(e){
@@ -425,11 +390,6 @@
             $("#modalbox_ad").show();
         };
 
-        var removeEPG = function (obj) {
-            var cRow = $(obj).closest('tr');
-            $('#datatable-1').DataTable().row(cRow).remove().draw(false);
-        };
-        
         var manageEPG = function (obj) {
             $("#modalbox_ad").click();
             JSSuccessModalBox(obj);
@@ -443,24 +403,6 @@
         function closeModalBox(){
             JScloseModalBox();
         }
-
-        var checkData = function(obj){
-            if (typeof(obj.input_id) != 'undefined') {
-                $("#" + obj.input_id).next('div').append('<i class="txt-success fa fa-check"></i> ' + obj.chk_rezult).css('visibility', 'visible');
-                $("#" + obj.input_id).closest('form').find('[type="submit"]').prop('disabled', false);
-            } else {
-                JSSuccessModalBox({msg: obj.chk_rezult});
-            }
-        };
-
-        var checkDataError = function(obj){
-            if (typeof(obj.input_id) != 'undefined') {
-                $("#" + obj.input_id).next('div').append('<i class="txt-danger fa fa-ban"></i> ' + obj.chk_rezult).css('visibility', 'visible');
-                $("#" + obj.input_id).closest('form').find('[type="submit"]').prop('disabled', true);
-            } else {
-                JSErrorModalBox({msg: obj.chk_rezult});
-            }
-        };
 
         var errAction = function(){
             JSErrorModalBox({msg: '<span>{{ 'Failed'|trans }}!</span>'});

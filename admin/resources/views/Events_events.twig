@@ -123,13 +123,5 @@
         }
         document.addEventListener("DOMContentLoaded", yelp, false);
 
-        var cleanEvents = function(data){
-            JSSuccessModalBox(data);
-            $('#datatable-1').dataTable().fnReloadAjax();
-        };
-        var cleanEventsError = function(data){
-            JSErrorModalBox(data);
-            $('#datatable-1').dataTable().fnReloadAjax();
-        };
     </script>
 {% endblock %}

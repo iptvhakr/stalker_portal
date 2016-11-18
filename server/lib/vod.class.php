@@ -64,12 +64,14 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
                     ->get()
                     ->first();
 
-                $file_id = Mysql::getInstance()->from('video_series_files')
-                    ->where(array(
-                        'series_id' => $episode['id']
+                if ($file['series_id'] != $episode['id']){
+                    $file_id = Mysql::getInstance()->from('video_series_files')
+                        ->where(array(
+                            'series_id' => $episode['id']
                         ))
-                    ->get()
-                    ->first('id');
+                        ->get()
+                        ->first('id');
+                }
             }
         }
 
@@ -147,31 +149,43 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
 
         $vclub_ad = new VclubAdvertising();
 
-        $advertising = new Advertising();
-        $advert = $advertising->getAd();
+        /*$advertising = new Advertising();
+        $advert = $advertising->getAd(Stb::getInstance()->id);*/
 
         if (!$disable_ad && empty($link['error'])){
 
             $video = Video::getById($media_id);
 
-            if ($advert){
-                //todo: ad
+            if (!empty($advert) && !empty($advert['config']['places']) && $advert['config']['places']['before_video'] == 1){
+
+                $link = array(
+                    array(
+                        'id'            => 0,
+                        'media_type'    => 'advert',
+                        'cmd'           => $advert['ad'],
+                        'is_advert'     => true,
+                        'ad_tracking'   => $advert['tracking'],
+                        'ad_must_watch' => 25
+                    ),
+                    $link
+                );
+
             }else{
 
                 $picked_ad = $vclub_ad->getOneWeightedRandom($video['category_id']);
 
-                if (!empty($picked_ad)){
+            if (!empty($picked_ad)){
 
-                    $link['cmd'] = $_REQUEST['cmd'];
+                $link['cmd'] = $_REQUEST['cmd'];
 
                     $link = array(
                         array(
-                            'id'    => 0,
-                            'ad_id' => $picked_ad['id'],
+                            'id'            => 0,
+                            'ad_id'         => $picked_ad['id'],
                             'ad_must_watch' => $picked_ad['must_watch'],
-                            'type'  => 'ad',
-                            'cmd'   => $picked_ad['url'],
-                            'subtitles' => $subtitles
+                            'media_type'    => 'vclub_ad',
+                            'cmd'           => $picked_ad['url'],
+                            'subtitles'     => $subtitles
                         ),
                         $link
                     );
@@ -911,8 +925,20 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
 
         $offset = $this->page * self::max_page_items;
 
-        $episodes = Mysql::getInstance()->from('video_season_series')
-            ->where(array('season_id' => $season_id))
+        $episodes = Mysql::getInstance()
+            ->select('video_season_series.*')
+            ->from('video_season_series')
+            ->join('video_series_files',
+                array(
+                    'video_season_series.id' => 'video_series_files.series_id',
+                    'video_series_files.file_type' => '"video"'
+                    ), null, 'LEFT')
+            ->where(
+                array(
+                    'season_id' => $season_id,
+                    'video_series_files.accessed' => 1
+                ))
+            ->groupby('video_season_series.id')
             ->orderby('series_number');
 
         $episodes->limit(self::max_page_items, $offset);
@@ -992,7 +1018,8 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
             ->where(
                 array(
                     'video_id'  => $movie_id,
-                    'file_type' => 'video'
+                    'file_type' => 'video',
+                    'accessed'  => 1
                 )
             );
 

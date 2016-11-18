@@ -273,16 +273,6 @@
                     return false;
                 });
 
-                $(document).on('click', "a.main_ajax[disabled][href*='toggle-karaoke-accessed']", function (e) {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    var data = { error: "{{ 'File unavailable and cannot be published'|trans }}"};
-                    JSshowModalBox();
-                    JSErrorModalBox(data);
-                    $(this).closest('div.open').removeClass('open');
-                    return false;
-                });
-
                 $("#form_reset").on('click', function (e) {
                     e.stopPropagation();
                     e.preventDefault();
@@ -302,7 +292,9 @@
                     return false;
                 });
 
-                $('#s2_protocol').on('change', function(){checkModalProtocol()});
+                $('#s2_protocol').on('change', function(){
+                    checkModalProtocol();
+                });
 
                 $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
                     if (e.currentTarget != e.target) {
@@ -319,12 +311,6 @@
                     e.preventDefault();
                     $.validate();
                     $('#karaoke_form').get(0).reset();
-                    var tmp_id = $('#datatable-1 tr:last').attr('id');
-                    if (!tmp_id) {
-                        tmp_id = "tr_" + $.randString();
-                        $('#datatable-1 tr:last').attr('id', tmp_id);
-                    }
-                    $("#modalbox_ad").data('tr_id', tmp_id);
                     $("#modalbox_ad").find(".modal-header-name").children('span').text("{{ 'Add'|trans }}");
                     $("#modalbox_ad input").prop("disabled", false).removeAttr('disabled').val('');
                     $("#modalbox_ad input[type='hidden']").attr('disabled', 'disabled').val('');
@@ -359,22 +345,8 @@
             $("#modalbox_ad").show();
         };
 
-        var removeKaraoke = function (obj) {
-            var cRow = $(obj).closest('tr');
-            $('#datatable-1').DataTable().row(cRow).remove().draw(false);
-        };
-
         var manageKaraoke = function (obj) {
-            $("#modalbox_ad").click();
-            $('#datatable-1').DataTable().ajax.reload();
-        };
-
-        var manageKaraokeError = function(obj){
-            /*if (typeof(obj.error) != 'undefined' && obj.error.length > 0) {
-                alert(obj.error);
-            }*/
-            JSshowModalBox();
-            JSErrorModalBox(obj);
+            JSSuccessModalBox(obj);
             $('#datatable-1').DataTable().ajax.reload();
         };
 

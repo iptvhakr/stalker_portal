@@ -1,0 +1,202 @@
+{% extends 'layout.twig' %}
+{% set title = ('Advertising'|trans ~ ': ' ~ 'Campaign'|trans) | trans %}
+
+{% block content %}
+
+    <div id="add_channel">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="box">
+                    <div class="box-content">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h4><strong>{{ 'Set the audience for advertising'|trans }}</strong></h4>
+                                <hr style="margin-top: 0;">
+                            </div>
+                            <div class="col-sm-5">
+                                <p>
+                                    {{ 'Select the source, used devices and display advertising format.'|trans }}
+                                    {{ 'Do not forget to save your changes when you\'re done.'|trans }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{ form_start(app['form'], {'method': 'POST', 'action': (app.request.baseUrl ~ '/' ~ app.controller_alias  ~ '/' ~ app.action_alias) | trans, 'attr': {'class': 'form-horizontal', 'role': 'form', 'id': 'form_'}}) }}
+        <div class="bg-danger">
+            <div class="bg-danger">
+                {{ form_errors(app['form']) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="box">
+                    <div class="box-content">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'Title'|trans }}</label>
+                            <div class="col-xs-10 col-sm-8">
+                                <div class=" col-xs-10 col-sm-5">
+                                    {{ form_widget(app['form'].id, {'attr': {}}) }}
+                                    {{ form_widget(app['form'].name, {'attr': {}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].name) }}
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">{{ 'Name the audience of the ad campaign.'|trans }}</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'Source'|trans }}<span class="icon-required">*</span></label>
+                            <div class="col-xs-10 col-sm-8">
+                                <div class=" col-xs-10 col-sm-5">
+                                    {{ form_widget(app['form'].source, {'attr': {'class': 'form-control', 'data-validation': 'required'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].source) }}
+                                    </div>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">
+                                        {{ 'Select Source.'|trans }}
+                                        {{ 'It identifies your subscribers in the system and allows you to count impressions advertising.'|trans }}
+                                        <br>
+                                        {{ 'You can have multiple Source.'|trans }}
+                                        {{ 'This allows you to track your income for different audiences.'|trans }}
+                                        <br>
+                                        {{ 'You can request additional Source in the settings.'|trans }}
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'Platform'|trans }}<span class="icon-required">*</span></label>
+                            <div class="col-xs-10 col-sm-8">
+                                <div class=" col-xs-10 col-sm-5">
+                                    {{ form_widget(app['form'].platform, {'attr': {'class': 'form-control', 'data-validation': 'required'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].platform) }}
+                                    </div>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">
+                                        {{ 'Select the platform for advertising clips.'|trans }}
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">{{ 'Ad position'|trans }}</label>
+                            <div class="col-xs-10 col-sm-8" style="margin-top: 8px;">
+                        {% for platform_part, label_part in app['platform_list'] %}
+                            <div id="{{ platform_part }}_part" {% if platform_part != app['form'].platform.vars.value %}style="display: none;"{% endif %}>
+                                {% for key, addPositionField in app['form'][platform_part] %}
+                                    {% if attribute(label_part, key) is defined %}
+                                <label class="col-sm-12 text-left"><strong>{{ label_part[key] }}</strong></label>
+                                    {% endif %}
+                                    <div class=" col-xs-10 col-sm-8">
+                                        {{ form_widget(addPositionField) }}
+                                        {{ form_label(addPositionField, addPositionField.vars.label[key]) }}
+                                    </div>
+                                    <div>
+                                        <div class="bg-danger">
+                                            {{ form_errors(addPositionField) }}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'Status'|trans }}</label>
+                            <div class="col-xs-10 col-sm-8">
+                                <div class=" col-xs-10 col-sm-5">
+                                    <span class="col-xs-12 col-sm-12 no-padding">
+                                        <div class="mswitch">
+                                            {{ form_widget(app['form'].status, {'attr': {}}) }}
+                                            {{ form_label(app['form'].status) }}
+                                        </div>
+                                    </span>
+                                </div>
+                                <div>
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].status) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-10 col-sm-9">
+                                <div class=" col-xs-10 col-sm-8 col-sm-offset-2">
+                                    {{ form_widget(app['form'].save, { 'label': 'Save'|trans , attr: {'class': 'btn btn-success green'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="">
+            {{ form_rest(app.form) }}
+        </div>
+        {{ form_end(app['form']) }}  
+    </div>
+    <script type="text/javascript" defer>
+
+        var select2Opt = {minimumResultsForSearch: -1, dropdownAutoWidth: false, width: '100%'};
+
+        var conf = {
+            form: '#form_',
+            lang : '{{ app.js_validator_language }}',
+            showHelpOnFocus : true,
+            validateHiddenInputs: true,
+            modules: 'jsconf',
+            onSuccess: function () {
+                $(conf.form).get(0).submit();
+                return true;
+            },
+            onError: function () {
+                return false;
+            }
+        };
+
+        function DemoSelect2() {
+            $('select').select2(select2Opt);
+        }
+        
+        function yelp() {
+            $(document).ready(function () {
+                $.validate(conf);
+
+                $("#form_save").on('click', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    if ($(conf.form).isValid({}, conf, true)) {
+                        conf.onSuccess();
+                    } else {
+                        conf.onError();
+                    }
+                    return false;
+                });
+
+                LoadSelect2Script(DemoSelect2);
+
+                $(document).on('change', "#form_platform", function(e){
+                    var selectedVal = $(this).val();
+                    $(this).find("option").each(function(){
+                        if($(this).val() != selectedVal) {
+                            $("#" + $(this).val() + "_part").hide().find("input[type='checkbox']").prop("checked", false).removeAttr("checked");
+                        } else {
+                            $("#" + $(this).val() + "_part").show();
+                        }
+                    });
+                })
+            });
+        }
+        document.addEventListener("DOMContentLoaded", yelp, false);
+
+    </script>
+{% endblock %}

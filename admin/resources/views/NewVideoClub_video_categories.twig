@@ -77,9 +77,6 @@
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
-                "fnRowCallback": function (nRow, aData, iDisplayIndex) {
-                    nRow.setAttribute('id', aData.RowOrder);  //Initialize row id for every row
-                },
                 {% if attribute(app, 'dropdownAttribute') is defined %}
                 {{ main_macro.get_datatable_column(app['dropdownAttribute']) }}
                 {% endif %}
@@ -105,36 +102,26 @@
                     e.stopPropagation();
                     e.preventDefault();
                     var _this = $(this);
-                    _this.next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
-                    $('#modalbox button[type="submit"]').removeAttr("disabled");
-                    $.ajax({
-                        url: '{{app.request.baseUrl}}/{{app.controller_alias}}/check-video-categories-name',
-                        type: 'POST',
-                        data: {category_name: _this.val(), edit: _this.prev('input[name="id"]').val() != ''},
-                        success: function (data) {
-                            if (data.success) {
-                                $('#modalbox button[type="submit"]').removeAttr("disabled");
-                                _this.next('div').append('<i class="txt-success fa fa-check"></i> ' + data.chk_rezult).css('visibility', 'visible');
-                            } else if (data.error) {
-                                $('#modalbox button[type="submit"]').attr("disabled", "disabled");
-                                console.log(data.error);
-                            } else {
-                                $('#modalbox button[type="submit"]').removeAttr("disabled");
-                                console.log('{{ 'Some server error'|trans }}');
-                            }
-                        },
-                        error: function (data) {
-                            if (typeof (data.responseJSON) != 'undefined' && typeof (data.responseJSON.error) != 'undefined') {
-                                $('#modalbox button[type="submit"]').attr("disabled", "disabled");
-                                _this.next('div').append('<i class="txt-danger fa fa-ban"></i> ' + data.responseJSON.error).css('visibility', 'visible');
-                            } else {
-                                $('#modalbox button[type="submit"]').removeAttr("disabled");
-                                console.log('{{ 'Some network error or access denied'|trans }}');
-                            }
-                        },
-                        dataType: "json",
-                        async: false
-                    });
+                    var sendData = {
+                        category_name: _this.val(),
+                        id: _this.prev('input[name="id"]').val()
+                    };
+                    ajaxPostSend('{{app.request.baseUrl}}/{{app.controller_alias}}/check-video-categories-name', sendData);
+
+                    return false;
+                });
+
+                $(document).on('change keyup', '#video_num', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var _this = $(this);
+                    var sendData = {
+                        category_num: _this.val(),
+                        id: $('#modalbox').find('input[name="id"]').val()
+                    };
+
+                    ajaxPostSend('{{app.request.baseUrl}}/{{app.controller_alias}}/check-video-categories-number', sendData);
+
                     return false;
                 });
 
@@ -192,45 +179,15 @@
         document.addEventListener("DOMContentLoaded", yelp, false);
 
         var addVideoCategory = function(data){
-            $("#modalbox").data('complete', 1);
-            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Done'|trans }}! ' + (data.msg ? data.msg : '') +  '</span>');
+            JSSuccessModalBox(data);
             $('#datatable-1').DataTable().ajax.reload();
         };
 
         var addVideoCategoryError = function(data){
-            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Error'|trans }}! ' + (data.error? data.error: '') +  '</span>');
-            $("#modalbox").data('complete', 1);
+            JSErrorModalBox(data);
         };
 
-        var editVideoCategory = function(data){
-            $("#modalbox").data('complete', 1);
-            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Done'|trans }}! ' + (data.msg ? data.msg : '') +  '</span>');
-            $('#datatable-1').DataTable().ajax.reload();
-        };
-        var editVideoCategoryError = function(data){
-            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Error'|trans }}! ' + (data.error? data.error: '') +  '</span>');
-            $("#modalbox").data('complete', 1);
-        };
-        
-        var reorder = function(data){
-            JSSuccessModalBox(data);
-            $('#datatable-1').DataTable().ajax.reload();
-        };
-        var reorderError = function(data){
-            JSErrorModalBox()(data);
-            $('#datatable-1').DataTable().ajax.reload();
-        };
-        
-        var removeVideoCategory = function (data) {
-            $("#modalbox").data('complete', 1);
-            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Done'|trans }}! ' + (data.msg ? data.msg : '') +  '</span>');
-            $('#datatable-1').DataTable().ajax.reload();
-        };
-        var removeVideoCategoryError = function(data){
-            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Error'|trans }}! ' + (data.error? data.error: '') +  '</span>');
-            $("#modalbox").data('complete', 1);
-        };
-        
+
     function closeModalBox(){
         $("#modalbox").hide();
         $('#modalbox').find('.modal-header-name span').empty();
@@ -249,14 +206,14 @@
                                 <span class="col-xs-8 col-sm-8">\n\
                                     <input type="hidden" name="id">\n\
                                     <input type="text" class="own_fields form-control " name="category_name" id="video_category_name">\n\
-                                    <div class="bg-danger"></div>\n\
+                                    <div class="">&nbsp;</div>\n\
                                 </span>\n\
                             </div>\n\
                             <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Number'|trans }}</label>\n\
                             <div class="col-xs-10 col-sm-8">\n\
                                 <span class="col-xs-8 col-sm-8">\n\
                                     <input type="text" class="own_fields form-control " name="num" id="video_num">\n\
-                                    <div class="bg-danger"></div>\n\
+                                    <div class="">&nbsp;</div>\n\
                                 </span>\n\
                             </div>\n\
                             <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Age restriction'|trans }}</label>\n\
@@ -288,8 +245,6 @@
         }
         $('#modalbox').find('.devoops-modal-inner').find('input[name="censored"]').prop('checked', obj.data('cat-censored') && ('' + obj.data('cat-censored')) == '1');
         $('#modalbox button[type="submit"]').removeAttr("disabled");
-        $('#video_category_name').next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
-        $('#video_num').next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
         $('#modalbox form').attr('action', obj.attr('href'));
         $("#modalbox").show();
         obj.closest('div.open').removeClass('open');

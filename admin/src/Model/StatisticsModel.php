@@ -102,6 +102,9 @@ class StatisticsModel extends \Model\BaseStalkerModel {
         if (!empty($param['select'])) {
             $this->mysqlInstance->select($param['select']);
         }
+        if (!empty($this->reseller_id)) {
+            $this->mysqlInstance->where(array('reseller_id' => $this->reseller_id));
+        }
         $this->mysqlInstance->from("users")
                         ->where($param['where'])
                         ->where(array('NOT `users`.`time_last_play_tv`'=>NULL))
@@ -118,6 +121,9 @@ class StatisticsModel extends \Model\BaseStalkerModel {
     public function getNoActiveAbonentVideoList($param, $counter = FALSE) {
         if (!empty($param['select'])) {
             $this->mysqlInstance->select($param['select']);
+        }
+        if (!empty($this->reseller_id)) {
+            $this->mysqlInstance->where(array('reseller_id' => $this->reseller_id));
         }
         $this->mysqlInstance->from("users")
                         ->where($param['where'])
@@ -178,6 +184,11 @@ class StatisticsModel extends \Model\BaseStalkerModel {
         if (!empty($param['select'])) {
             $this->mysqlInstance->select($param['select']);
         }
+
+        if (!empty($this->reseller_id)) {
+            $this->mysqlInstance->where(array('reseller_id' => $this->reseller_id));
+        }
+
         $this->mysqlInstance->from("`media_claims_log` as M_C_L")
                             ->join('`itv` as I', 'M_C_L.`media_id`', 'I.`id` and M_C_L.`media_type` = "itv"', "LEFT")
                             ->join('`karaoke` as K', 'M_C_L.`media_id`', 'K.`id` and M_C_L.`media_type` = "karaoke"', "LEFT")
@@ -216,6 +227,10 @@ class StatisticsModel extends \Model\BaseStalkerModel {
                         ->like($param['like'], 'OR')
                         ->groupby('ch_id')
                         ->orderby('counter', 'DESC');
+        if (!empty($this->reseller_id)) {
+            $this->mysqlInstance->join('users', 'played_tv_archive.uid', 'users.id', 'LEFT')
+                                ->where(array('reseller_id' => $this->reseller_id));
+        }
 
         if (!empty($param['limit']['limit'])) {
             $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
@@ -251,6 +266,10 @@ class StatisticsModel extends \Model\BaseStalkerModel {
                         ->like($param['like'], 'OR')
                         ->groupby('ch_id')
                         ->orderby('counter', 'DESC');
+        if (!empty($this->reseller_id)) {
+            $this->mysqlInstance->join('users', 'played_timeshift.uid', 'users.id', 'LEFT')
+                                ->where(array('reseller_id' => $this->reseller_id));
+        }
 
         if (!empty($param['limit']['limit'])) {
             $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
@@ -293,6 +312,10 @@ class StatisticsModel extends \Model\BaseStalkerModel {
                         ->groupby(array("users.id"))
                         ->orderby($param['order']);
 
+        if (!empty($this->reseller_id)) {
+            $this->mysqlInstance->where(array('reseller_id' => $this->reseller_id));
+        }
+
         if (!empty($param['limit']['limit'])) {
             $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
@@ -320,6 +343,10 @@ class StatisticsModel extends \Model\BaseStalkerModel {
                         ->groupby(array("users.id"))
                         ->orderby($param['order']);
 
+        if (!empty($this->reseller_id)) {
+            $this->mysqlInstance->where(array('reseller_id' => $this->reseller_id));
+        }
+
         if (!empty($param['limit']['limit'])) {
             $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
@@ -343,7 +370,10 @@ class StatisticsModel extends \Model\BaseStalkerModel {
                         ->where(array('NOT readed'=>NULL))
                         ->groupby(array("mac"))
                         ->orderby($param['order']);
-        
+        if (!empty($this->reseller_id)) {
+            $this->mysqlInstance->join('users', 'readed_anec.mac', 'users.mac', 'LEFT')
+                                ->where(array('reseller_id' => $this->reseller_id));
+        }
         if (!empty($param['limit']['limit'])) {
             $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
@@ -386,6 +416,10 @@ class StatisticsModel extends \Model\BaseStalkerModel {
         if (!empty($param['limit']['limit'])) {
             $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
+        if (!empty($this->reseller_id)) {
+            $this->mysqlInstance->join("users", "played_itv.uid", "users.id", "LEFT")
+                                ->where(array('reseller_id' => $this->reseller_id));
+        }
         
         if ($counter) {
             $result = $this->mysqlInstance->get()->all();
@@ -417,13 +451,21 @@ class StatisticsModel extends \Model\BaseStalkerModel {
         if (!empty($param['select'])) {
             $this->mysqlInstance->select($param['select']);
         }
+
         $this->mysqlInstance->from($param['from']);
+
         if (array_key_exists('joined', $param)) {
             foreach ($param['joined'] as $table => $keys) {
                 $this->mysqlInstance->join($table, $keys['left_key'], $keys['right_key'], $keys['type']);
             }
         }
+
+        if (!empty($this->reseller_id)) {
+            $this->mysqlInstance->where(array('reseller_id' => $this->reseller_id));
+        }
+
         $this->mysqlInstance->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
+
         if (!empty($param['groupby'])) {
             $this->mysqlInstance->groupby($param['groupby']);
         }

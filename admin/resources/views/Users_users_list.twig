@@ -208,7 +208,7 @@
                                     <div class=" col-xs-10 col-sm-6">
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" value="1" name="need_reboot">
+                                                <input type="checkbox" value="1" name="reboot_after_ok">
                                                 <i class="fa fa-square-o small"></i>
                                             </label>
                                         </div>
@@ -328,29 +328,48 @@
                                     
     <script type="text/javascript" defer>
 
-        var dayNamesMin = [
-            '{{ 'Sun'|trans }}',
-            '{{ 'Mon'|trans }}',
-            '{{ 'Tue'|trans }}',
-            '{{ 'Wed'|trans }}',
-            '{{ 'Thu'|trans }}',
-            '{{ 'Fri'|trans }}',
-            '{{ 'Sat'|trans }}'
-        ];
-        var monthNames = [
-            '{{ 'January'|trans }}',
-            '{{ 'February'|trans }}',
-            '{{ 'March'|trans }}',
-            '{{ 'April'|trans }}',
-            '{{ 'May'|trans }}',
-            '{{ 'June'|trans }}',
-            '{{ 'July'|trans }}',
-            '{{ 'August'|trans }}',
-            '{{ 'September'|trans }}',
-            '{{ 'October'|trans }}',
-            '{{ 'November'|trans }}',
-            '{{ 'December'|trans }}'
-        ];
+        var datepickerBaseOpt = {
+            numberOfMonths: 1,
+            firstDay    : 1,
+            language: '{% if attribute(app, 'locale') is defined and app['locale']|length == 2 %}{{ app['locale'] }}{% else %}en{% endif %}',
+            dateFormat  : 'dd-mm-yy',
+            dayNamesMin : [
+                '{{ 'Sun'|trans }}',
+                '{{ 'Mon'|trans }}',
+                '{{ 'Tue'|trans }}',
+                '{{ 'Wed'|trans }}',
+                '{{ 'Thu'|trans }}',
+                '{{ 'Fri'|trans }}',
+                '{{ 'Sat'|trans }}'
+            ],
+            monthNames  : [
+                '{{ 'January'|trans }}',
+                '{{ 'February'|trans }}',
+                '{{ 'March'|trans }}',
+                '{{ 'April'|trans }}',
+                '{{ 'May'|trans }}',
+                '{{ 'June'|trans }}',
+                '{{ 'July'|trans }}',
+                '{{ 'August'|trans }}',
+                '{{ 'September'|trans }}',
+                '{{ 'October'|trans }}',
+                '{{ 'November'|trans }}',
+                '{{ 'December'|trans }}'
+            ],
+            onClose: function (selectedDate) {
+                var dateParam, inputNeighbor;
+                if ($(this).attr('id').slice(-3) == '_to') {
+                    dateParam = "maxDate";
+                    inputNeighbor = $(this).prev('input');
+                } else {
+                    dateParam = "minDate";
+                    inputNeighbor = $(this).next('input');
+                }
+                if (inputNeighbor && inputNeighbor.length) {
+                    inputNeighbor.datepicker("option", dateParam, selectedDate);
+                }
+            }
+        };
 
         var mediaTypeName = [
             {% for key, val in app.mediaTypeName %}
@@ -514,29 +533,6 @@
         function yelp() {
             $(document).ready(function () {
 
-                $("#datepicker_from").datepicker({
-                    numberOfMonths: 1,
-                    language: '{% if attribute(app, 'locale') is defined and app['locale']|length == 2 %}{{ app['locale'] }}{% else %}en{% endif %}',
-                    dateFormat: 'dd/mm/yy',
-                    dayNamesMin : dayNamesMin,
-                    monthNames  : monthNames,
-                    onClose: function (selectedDate) {
-                        $("#datepicker_to").datepicker("option", "minDate", selectedDate);
-                        $('#datatable-1').DataTable().ajax.reload();
-                    }
-                });
-                $("#datepicker_to").datepicker({
-                    numberOfMonths: 1,
-                    language: '{% if attribute(app, 'locale') is defined and app['locale']|length == 2 %}{{ app['locale'] }}{% else %}en{% endif %}',
-                    dateFormat: 'dd/mm/yy',
-                    dayNamesMin : dayNamesMin,
-                    monthNames  : monthNames,
-                    onClose: function (selectedDate) {
-                        $("#datepicker_from").datepicker("option", "maxDate", selectedDate);
-                        $('#datatable-1').DataTable().ajax.reload();
-                    }
-                });
-
                 $('#filter_param').css({left: "10px", top: "2px"});
                 $('#filter_param').parent().css({minHeight: '42px'});
                 switch ($("#s2_event").val()) {
@@ -559,40 +555,7 @@
                         return false;
                     }
 
-                    $.ajax({
-                        url: $(this).attr('href'),
-                        type: 'POST',
-                        data: $(this).data(),
-                        success: function (data) {
-                            if (data.success) {
-                                for (var key in data) {
-                                    _this.data(key, data[key]);
-                                }
-                            } else {
-                                alert("{{ 'Some server error' }}");
-                            }
-                        },
-                        error: function (data) {
-                            var errAction = '';
-                            if (typeof (data.responseJSON) == 'object') {
-                                errAction += data.responseJSON.action + 'Error';
-                                for (var key in data.responseJSON) {
-                                    _this.data(key, data.responseJSON[key]);
-                                }
-                            }
-                            if ($.isFunction(window[errAction])) {
-                                window[errAction]($(_this));
-                            } else {
-                                alert("{{ 'Some network error or access denied' }}");
-                            }
-                        },
-                        dataType: "json",
-                        async: false
-                    });
-
-                    if ($.isFunction(window[$(this).data('action')]) && !$(this).data('error')) {
-                        window[$(this).data('action')]($(this));
-                    }
+                    ajaxPostSend($(this).attr('href'), $(this).data(), false, false);
                     _this.closest('div.open').removeClass('open');
                     return false;
                 });
@@ -629,7 +592,6 @@
                     var regExp = /([0-9a-fA-F]{2}([:]|$)){6}$/ig;
                     if ($.trim(mac) != '' && regExp.test(mac)) {
                         macField.val(mac).attr('readonly', 'readonly');
-{#                        macField.closest('.form-group').hide();#}
                     } else {
                         macField.removeAttr('readonly').next('div').append('<i class="txt-danger fa fa-ban"></i> {{ 'Enter MAC-address according to the format'|trans }}').css('visibility', 'visible');
                     }
@@ -652,8 +614,9 @@
                     return false;
                 });
 
-                $(document).on('click', '#reset_enable_date', function(e){
-                    closeModalBox();
+                $(document).on('hide', '#modalbox', function(e){
+                    $("div[id*='datepicker']").removeClass('dp_white');
+                    $('#modalbox .devoops-modal').removeAttr('style');
                 });
                 {% endif %}
                 {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
@@ -663,35 +626,14 @@
                     $("#modalbox").data('complete', 1);
                     $('#modalbox').find('.modal-header-name span').text("{{ 'Resellers'|trans }}");
                     var reseller_id = $(this).data('reseller_id');
-                    var formHtml = '\n\
-                <div class="box-content">\n\
-                    <form class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-user-to-reseller">\n\
-                        <div class="form-group">\n\
-                            <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Reseller name'|trans }}</label>\n\
-                            <div class="col-xs-10 col-sm-8">\n\
-                                <span class="col-xs-12 col-sm-12">\n\
-                                    <input type="hidden" class="own_fields" name="id" value="'+ $(this).data('id') + '">\n\
-                                    <input type="hidden" class="own_fields" name="source_id" value="'+ reseller_id + '">\n\
-                                    <select class="own_fields" name="target_id" id="target_reseller">\n\
-                    {% if attribute(app, 'allResellers') is defined %}
-                        {% for row in app.allResellers %}
-                            <option value="{{ row.id }}" >{{ row.name }}</option>\n\
-                        {% endfor %}
-                    {% endif %}
-                                    </select>\n\
-                                </span>\n\
-                            </div>\n\
-                        </div>\n\
-                    </form>\n\
-                </div>';
-                    $('#modalbox').find('.devoops-modal-inner').html(formHtml);
+                    $('#modalbox').find('.devoops-modal-inner').html($("#move_user_to_reseller_template").html());
+                    $('#modalbox input[name="id"]').val($(this).data('id'));
+                    $('#modalbox input[name="source_id"]').val(reseller_id);
                     $('#target_reseller option').removeAttr('selected');
                     $('#target_reseller option[value="'+ reseller_id +'"]').attr('selected', 'selected');
-                    $('#modalbox').find('.devoops-modal-bottom').html('<div class="pull-right no-padding">&nbsp;</div>\n\
-                        <div class="pull-right no-padding">\n\
-                            <button type="submit" class="btn btn-success pull-right">{{ 'Move'|trans }}</button>\n\
-                            <button type="reset" class="btn btn-default pull-right" >{{ 'Cancel'|trans }}</button>\n\
-                        </div>');
+
+                    $('#modalbox').find('.devoops-modal-bottom').html($("#modal_form_button_template").html());
+                    $('#modalbox button[type="submit"]').text("{{ 'Move'|trans }}");
 
                     $("#target_reseller").select2(select2Opt);
 
@@ -699,6 +641,7 @@
                     $(this).closest('div.open').removeClass('open');
                     return false;
                 });
+                {% endif %}
 
                 $(document).on('click', "#modalbox button[type='submit']", function (e) {
                     var _this = $(this);
@@ -715,22 +658,10 @@
                         }
                     });
                     var action = _this.closest("#modalbox").find('form').attr('action');
-                    JSshowModalBox();
                     ajaxPostSend(action, sendData, false, false);
                     return false;
 
                 });
-
-                $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
-                    if (e.currentTarget != e.target) {
-                        return;
-                    }
-                    e.stopPropagation();
-                    e.preventDefault();
-                    closeModalBox();
-                    return false;
-                });
-                {% endif %}
 
                 $(document).on('click', "#modalbox_ad button[type='submit']", function (e) {
                     e.stopPropagation();
@@ -743,17 +674,8 @@
                 $(document).on('change', "#filter_param li:not(:first-child) input[type='checkbox']", function (e) {
                     if (this.checked) {
                         ajaxPostSend("{{app.request.baseUrl}}/{{app.controller_alias}}/get-filter", {text_id: $(this).val()});
-                        /*$(this).closest('.open').removeClass('open');*/
                     } else {
                         $('div[data-tvfilter="' + $(this).val() + '"]').remove();
-                        /*var hrefM = window.location.href;
-                        hrefM += window.location.search == '' ? '?': '';
-                        var filterRegExp = new RegExp('\\&?filters\\[' + $(this).val() + '[^=]*=[^&|^$]*', 'ig');
-                        if (filterRegExp.test(hrefM)) {
-                            window.location.href = hrefM.replace(filterRegExp, '&filters['+$(this).val()+']=without').replace('?&', '?').replace('&&', '&');
-                        } else {
-                            window.location.href = (hrefM + '&filters['+$(this).val()+']=without').replace('?&', '?').replace('&&', '&');
-                        }*/
                     }
                 });
 
@@ -778,27 +700,7 @@
                     $(this).closest('[data-filterval]').find('a.dropdown-toggle span:nth-child(2)').text(filter_str);
                 });
 
-                $('.datepicker[id^="filter_string"]').datepicker({
-                            language    : '{% if attribute(app, 'locale') is defined and app['locale']|length == 2 %}{{ app['locale'] }}{% else %}en{% endif %}',
-                            dateFormat  : 'dd-mm-yy',
-                            firstDay    : 1,
-                            dayNamesMin : dayNamesMin,
-                            monthNames  : monthNames,
-                            onClose: function (selectedDate) {
-                                var dateParam, inputNeighbor;
-                                if ($(this).attr('id').slice(-3) == '_to') {
-                                    dateParam = "maxDate";
-                                    inputNeighbor = $(this).prev('input');
-                                } else {
-                                    dateParam = "minDate";
-                                    inputNeighbor = $(this).next('input');
-                                }
-                                if (inputNeighbor && inputNeighbor.length) {
-                                    inputNeighbor.datepicker("option", dateParam, selectedDate);
-                                }
-                            }
-                        }
-                );
+                $('.datepicker[id^="filter_string"]').datepicker($.extend(datepickerBaseOpt, {minDate: null}));
 
                 $(document).on("click", "#apply_filter_button", function(e){
                     e.stopPropagation();
@@ -834,49 +736,17 @@
 
                     filter_set.filter_set = encodeURIComponent(JSON.stringify(filter_set.filter_set));
 
-                    var formHtml = '\n\
-                    <div class="box-content">\n\
-                        <form class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/save-filter">\n\
-                            <div class="form-group">\n\
-                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Filter name'|trans }}</label>\n\
-                                <div class="col-xs-10 col-sm-8">\n\
-                                    <span class="col-xs-12 col-sm-12">\n\
-                                        <input type="hidden" class="own_fields" name="filter_set[id]" value="'+ filter_set.id + '">\n\
-                                        <input type="hidden" class="own_fields" name="filter_set[admin_id]" value="'+ filter_set.admin_id + '">\n\
-                                        <input type="hidden" class="own_fields" name="filter_set[filter_set]" value=\''+ filter_set.filter_set + '\'>\n\
-                                        <input type="text" class="own_fields form-control" name="filter_set[title]" value="'+ filter_set.title + '">\n\
-                                    </span>\n\
-                                </div>\n\
-                            </div>\n\
-                            <div class="form-group">\n\
-                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'For all'|trans }}</label>\n\
-                                <div class="col-xs-10 col-sm-8">\n\
-                                    <span class="col-xs-12 col-sm-12">\n\
-                                        <div class="checkbox">\n\
-                                            <label>\n\
-                                                <input type="checkbox" class="own_fields" name="filter_set[for_all]" ' + (filter_set.for_all ? 'checked="checked"' : '') + '">\n\
-                                                <i class="fa fa-square-o small"></i>\n\
-                                            </label>\n\
-                                        </div>\n\
-                                    </span>\n\
-                                </div>\n\
-                            </div>\n\
-                            <div class="form-group">\n\
-                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Description'|trans }}</label>\n\
-                                <div class="col-xs-10 col-sm-8">\n\
-                                    <span class="col-xs-12 col-sm-12">\n\
-                                        <textarea class="own_fields form-control" name="filter_set[description]">'+filter_set.description+'</textarea>\n\
-                                    </span>\n\
-                                </div>\n\
-                            </div>\n\
-                        </form>\n\
-                    </div>';
-                    $('#modalbox').find('.devoops-modal-inner').html(formHtml);
-                    $('#modalbox').find('.devoops-modal-bottom').html('<div class="pull-right no-padding">&nbsp;</div>\n\
-                        <div class="pull-right no-padding">\n\
-                            <button type="submit" class="btn btn-success pull-right">{{ 'Save'|trans }}</button>\n\
-                            <button type="reset" class="btn btn-default pull-right" >{{ 'Cancel'|trans }}</button>\n\
-                        </div>');
+                    $('#modalbox').find('.devoops-modal-inner').html($("#save_filter_template").html());
+                    $('#modalbox input[name="filter_set[id]"]').val(filter_set.id);
+                    $('#modalbox input[name="filter_set[admin_id]"]').val(filter_set.admin_id);
+                    $('#modalbox input[name="filter_set[filter_set]"]').val(filter_set.filter_set);
+                    $('#modalbox input[name="filter_set[title]"]').val(filter_set.title);
+                    $('#modalbox input[name="filter_set[for_all]"]').prop('checked', filter_set.for_all);
+                    $('#modalbox textarea').text(filter_set.description);
+
+                    $('#modalbox').find('.devoops-modal-bottom').html($("#modal_form_button_template").html());
+                    $('#modalbox button[type="submit"]').text("{{ 'Save'|trans }}");
+
                     $('#modalbox').show();
                     return false;
                 });
@@ -912,19 +782,12 @@
                     return false;
                 });
 
+                $(document).on('click', "span.select2-selection__choice__remove", function(e){
+                    e.stopPropagation();
+                });
+
                 $('input.autocomplete').each(function(){
-                    var _this = $(this);
-                    _this.autocomplete({
-                        source: "{{app.request.baseUrl}}/{{app.controller_alias}}/get-autocomplete-" + _this.prop('name').replace("_", "-"),
-                        minLength: 3,
-                        messages:{
-                            noResults: "{{ 'No search results'|trans }}"
-                        },
-                        close: function( event, ui ) {
-                            _this.closest('[data-filterval]').data('filterval', _this.val());
-                            _this.closest('[data-filterval]').find('a.dropdown-toggle span:nth-child(2)').text(_this.val());
-                        }
-                    });
+                    $(this).autocomplete(autoCompleteInit($(this)));
                 });
 
                 $(document).on('click', 'div[data-tvfilter] a:first-child', function(e){
@@ -938,12 +801,6 @@
                     JScloseModalBox();
                 });
 
-/*                $("[id^='filter_s2_']").each(function(){
-                    if ($(this).find('option:selected').length == 0) {
-                        $($(this).find('option').get(0)).prop('selected', 'selected');
-                    }
-                });*/
-
                 LoadDataTablesScripts(TestTable1);
                 LoadSelect2Script(DemoSelect2);
             });
@@ -952,20 +809,17 @@
 
         document.addEventListener("DOMContentLoaded", yelp, false);
 
-        var toggleUserStatus = function (obj) {
-            $('#datatable-1').DataTable().ajax.reload();
-        };
-
         var removeUser = function (obj) {
-            if (obj.data('add_button')) {
-                $("#add_button").show();
-                $("#limit_message").hide();
-            } else {
-                $("#add_button").hide();
-                $("#limit_message").show();
+            if (typeof(obj.add_button) != 'undefined') {
+                if (obj.add_button) {
+                    $("#add_button").show();
+                    $("#limit_message").hide();
+                } else {
+                    $("#add_button").hide();
+                    $("#limit_message").show();
+                }
             }
-            var cRow = $(obj).closest('tr');
-            $('#datatable-1').DataTable().row(cRow).remove().draw(false);
+            deleteTableRow({obj: obj});
         };
         
         function checkFields(obj, e) {
@@ -985,62 +839,19 @@
 
         {% if attribute(app, 'enableBilling') is defined and app.enableBilling %}
         function setExpireDateModal(obj){
-            $('#modalbox').find('.modal-header-name span').text('{{ 'Expire billing date'|trans }}');
-            $('#modalbox').find('.devoops-modal-inner').empty().append("<form class='form-horizontal' role='form' action='{{ app.request.baseUrl }}/{{ app.controller_alias }}/set-expire-billing-date'>");
-            $('#modalbox').find('form')
-                    .append("<input type='hidden' class='own_fields' name='setaction' value='set'>")
-                    .append("<input type='hidden' class='own_fields' name='userid' value='" + obj.data('userid') + "'>")
-                    .append("<input type='text' readonly='readonly' class='datepicker col-sm-11 own_fields' style='margin-left: 15px;' data-date-format='dd-mm-yy' name='expire_date' id='expire_date_datepicker'>");
-            $('#modalbox').find('.devoops-modal-bottom').empty()
-                    .append('<button class="btn btn-default col-sm-4 pull-left" type="reset" id="reset_enable_date">{{ 'Cancel'|trans }}</button>')
-                    .append('<button class="btn btn-success col-sm-4 pull-right" type="submit" id="apply_enable_date">{{ 'Set date'|trans }}</button>');
-            $('#modalbox').find('.devoops-modal').width(400);
-            $("#expire_date_datepicker").datepicker({
-                        language    : '{% if attribute(app, 'locale') is defined and app['locale']|length == 2 %}{{ app['locale'] }}{% else %}en{% endif %}',
-                        dateFormat  : 'dd-mm-yy',
-                        firstDay    : 1,
-                        minDate     : new Date(),
-                        dayNamesMin : dayNamesMin,
-                        monthNames  : monthNames
-                    }
-            );
+            $('#modalbox .modal-header-name span').text('{{ 'Expire billing date'|trans }}');
+            $('#modalbox .devoops-modal-inner').html($("#expire_date_template").html());
+            $('#modalbox input[name="userid"]').val(obj.data('userid'));
+            $('#modalbox .devoops-modal-bottom').html($("#modal_form_button_template").html());
+            $('#modalbox button[type="reset"]').removeClass('pull-right').addClass('pull-left').parent('div').removeClass('pull-right').removeClass('no-padding');
+            $('#modalbox button[type="submit"]').text("{{ 'Set date'|trans }}");
+
+            $('#modalbox .devoops-modal').width(400);
+            $("#expire_date_datepicker").datepicker($.extend(datepickerBaseOpt, {minDate: new Date(), onClose: null}));
             $("div[id*='datepicker']").addClass('dp_white');
             $(obj).closest('div.open').removeClass('open');
             $('#modalbox').show();
         }
-
-        var setExpireBillingDate = function(data){
-            JSSuccessModalBox(data);
-            $('#datatable-1').DataTable().ajax.reload();
-        };
-
-        var setExpireBillingDateError = function(data){
-            JSErrorModalBox(data);
-        };
-        {% endif %}
-
-        function closeModalBox(){
-            $('#modalbox').find('.modal-header-name span').empty();
-            $('#modalbox').find('.devoops-modal-inner').empty();
-            $('#modalbox').find('.devoops-modal-bottom').empty();
-            $("div[id*='datepicker']").removeClass('dp_white');
-            $('#modalbox').hide();
-        }
-
-        var addEvent = function(data){
-            JSSuccessModalBox(data);
-            $('#modalbox_ad').click();
-        };
-
-        {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
-        var manageUserReseller = function (obj) {
-            JSSuccessModalBox(obj);
-            $('#datatable-1').DataTable().ajax.reload();
-        };
-
-        var manageUserResellerError = function (obj) {
-            JSErrorModalBox(obj);
-        };
         {% endif %}
 
         var addFilter = function(data){
@@ -1108,17 +919,7 @@
             '<button type="button" class="btn btn-success filter_string"  data-postponed="1"><i class="fa fa-check"></i></button>' +
             '</div>');
             var _this = $( '#filter_string_'+ filter_data.text_id );
-            _this.autocomplete({
-                source: "{{app.request.baseUrl}}/{{app.controller_alias}}/get-autocomplete-" + _this.prop('name').replace("_", "-"),
-                minLength: 3,
-                messages:{
-                    noResults: "{{ 'No search results'|trans }}"
-                },
-                close: function( event, ui ) {
-                    _this.closest('[data-filterval]').data('filterval', _this.val());
-                    _this.closest('[data-filterval]').find('a.dropdown-toggle span:nth-child(2)').text(_this.val());
-                }
-            });
+            _this.autocomplete(autoCompleteInit(_this));
         }
 
         function createFilterDate(filter_data){
@@ -1129,27 +930,21 @@
             '<input type="text" class="datepicker filter_string" data-date-format="dd-mm-yy" name="'+ filter_data.text_id +'[to]" id="filter_string_'+ filter_data.text_id +'_to" value="">' +
             '<button type="button" class="btn btn-success filter_string" data-postponed="1"></i><i class="fa fa-check"></button>' +
             '</div>');
-            $('[id^="filter_string_'+ filter_data.text_id + '"]').datepicker({
-                        language    : '{% if attribute(app, 'locale') is defined and app['locale']|length == 2 %}{{ app['locale'] }}{% else %}en{% endif %}',
-                        dateFormat  : 'dd-mm-yy',
-                        firstDay    : 1,
-                        dayNamesMin : dayNamesMin,
-                        monthNames  : monthNames,
-                        onClose: function (selectedDate) {
-                            var dateParam, inputNeighbor;
-                            if ($(this).attr('id').slice(-3) == '_to') {
-                                dateParam = "maxDate";
-                                inputNeighbor = $(this).prev('input');
-                            } else {
-                                dateParam = "minDate";
-                                inputNeighbor = $(this).next('input');
-                            }
-                            if (inputNeighbor && inputNeighbor.length) {
-                                inputNeighbor.datepicker("option", dateParam, selectedDate);
-                            }
-                        }
-                    }
-            );
+            $('[id^="filter_string_'+ filter_data.text_id + '"]').datepicker($.extend(datepickerBaseOpt, {minDate: null}));
+        }
+
+        function autoCompleteInit(targetObj) {
+            return {
+                source: "{{app.request.baseUrl}}/{{app.controller_alias}}/get-autocomplete-" + targetObj.prop('name').replace("_", "-"),
+                minLength: 3,
+                messages:{
+                    noResults: "{{ 'No search results'|trans }}"
+                },
+                close: function( event, ui ) {
+                    targetObj.closest('[data-filterval]').data('filterval', targetObj.val());
+                    targetObj.closest('[data-filterval]').find('a.dropdown-toggle span:nth-child(2)').text(targetObj.val());
+                }
+            }
         }
 
     </script>
@@ -1160,4 +955,87 @@
             </script>
         {% endfor %}
     {% endif %}
+
+    <script type="text/template" id="save_filter_template">
+        <div class="box-content">
+            <form class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/save-filter">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Filter name'|trans }}</label>
+                    <div class="col-xs-10 col-sm-8">
+                        <span class="col-xs-12 col-sm-12">
+                            <input type="hidden" class="own_fields" name="filter_set[id]" value="">
+                            <input type="hidden" class="own_fields" name="filter_set[admin_id]" value="">
+                            <input type="hidden" class="own_fields" name="filter_set[filter_set]" value="">
+                            <input type="text" class="own_fields form-control" name="filter_set[title]" value="">
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label col-sm-offset-1">{{ 'For all'|trans }}</label>
+                    <div class="col-xs-10 col-sm-8">
+                        <span class="col-xs-12 col-sm-12">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" class="own_fields" name="filter_set[for_all]">
+                                    <i class="fa fa-square-o small"></i>
+                                </label>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Description'|trans }}</label>
+                    <div class="col-xs-10 col-sm-8">
+                        <span class="col-xs-12 col-sm-12">
+                            <textarea class="own_fields form-control" name="filter_set[description]"></textarea>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </script>
+
+    {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
+    <script type="text/template" id="move_user_to_reseller_template">
+        <div class="box-content">
+            <form class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-user-to-reseller">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Reseller name'|trans }}</label>
+                    <div class="col-xs-10 col-sm-8">
+                        <span class="col-xs-12 col-sm-12">
+                            <input type="hidden" class="own_fields" name="id" value="">
+                            <input type="hidden" class="own_fields" name="source_id" value="">
+                            <select class="own_fields" name="target_id" id="target_reseller">
+                                {% if attribute(app, 'allResellers') is defined %}
+                                    {% for row in app.allResellers %}
+                                <option value="{{ row.id }}" >{{ row.name }}</option>
+                                    {% endfor %}
+                                {% endif %}
+                            </select>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </script>
+    {% endif %}
+
+    {% if attribute(app, 'enableBilling') is defined and app.enableBilling %}
+    <script type="text/template" id="expire_date_template">
+        <form class='form-horizontal' role='form' action='{{ app.request.baseUrl }}/{{ app.controller_alias }}/set-expire-billing-date'>
+            <input type='hidden' class='own_fields' name='setaction' value='set'>
+            <input type='hidden' class='own_fields' name='userid' value=''>
+            <input type='text' readonly='readonly' class='datepicker col-sm-11 own_fields' style='margin-left: 15px;' data-date-format='dd-mm-yy' name='expire_date' id='expire_date_datepicker'>
+        </form>
+    </script>
+    {% endif %}
+
+    <script type="text/template" id="modal_form_button_template">
+        <div class="pull-right no-padding">&nbsp;</div>
+        <div class="pull-right no-padding">
+            <button type="submit" class="btn btn-success pull-right">{{ 'Save'|trans }}</button>
+            <button type="reset" class="btn btn-default pull-right" >{{ 'Cancel'|trans }}</button>
+        </div>
+    </script>
+
 {% endblock %}

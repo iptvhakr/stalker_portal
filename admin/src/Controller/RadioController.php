@@ -101,7 +101,7 @@ class RadioController extends \Controller\BaseStalkerController {
 
     //----------------------- ajax method --------------------------------------
 
-    public function radio_list_json($param = array()) {
+    public function radio_list_json($local_uses = FALSE) {
         $response = array();
         if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
@@ -109,7 +109,7 @@ class RadioController extends \Controller\BaseStalkerController {
             }
         }
 
-        $param = (!empty($this->data) ? $this->data : array());
+        $param = (!empty($this->data)?$this->data: $this->postData);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', '_'));
 
@@ -128,6 +128,10 @@ class RadioController extends \Controller\BaseStalkerController {
 
         if (!empty($query_param['like']) && array_key_exists('volume_correction', $query_param['like'])) {
             $query_param['like']['volume_correction'] = '%' . ((int) trim($query_param['like']['volume_correction'], '%')) / 5 . '%';
+        }
+
+        if (!empty($param['radioid'])) {
+            $query_param['where']['id'] = $param['radioid'];
         }
 
         $response['recordsTotal'] = $this->db->getTotalRowsRadioList();
@@ -155,6 +159,7 @@ class RadioController extends \Controller\BaseStalkerController {
             reset($response['data']);
             while (list($key, $row) = each($response['data'])) {
                 if ($monitoring_status = $this->getMonitoringStatus($row)) {
+                    $response['data'][$key]['RowOrder'] = "dTRow_" . $row['id'];
                     $response['data'][$key]['monitoring_status'] = $monitoring_status;
                 } else {
                     unset($response['data'][$key]);
@@ -163,7 +168,7 @@ class RadioController extends \Controller\BaseStalkerController {
         }
 
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
-        if ($this->isAjax) {
+        if ($this->isAjax && !$local_uses) {
             $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
         } else {
@@ -181,14 +186,13 @@ class RadioController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'toggleRadioStatus';
+        $data['action'] = 'updateTableRow';
+        $data['id'] = $this->postData['radioid'];
         $error = $this->setLocalization('Failed');
 
-        if ($this->db->toggleRadioStatus($this->postData['radioid'], (int) (!$this->postData['radiostatus']))) {
+        if (($result = $this->db->toggleRadioStatus($this->postData['radioid'], (int) (!$this->postData['radiostatus']))) && is_numeric($result)) {
             $error = '';
-            $data['title'] = (!$this->postData['radiostatus'] ? $this->setLocalization('Unpublish') : $this->setLocalization('Publish'));
-            $data['status'] = (!$this->postData['radiostatus'] ? '<span class="txt-success">' . $this->setLocalization('Published') . '</span>' : '<span class="txt-danger">' . $this->setLocalization('Unpublished') . '</span>');
-            $data['radiostatus'] = (int) !$this->postData['radiostatus'];
+            $data = array_merge_recursive($data, $this->radio_list_json(TRUE));
         }
 
         $response = $this->generateAjaxResponse($data, $error);
@@ -206,9 +210,13 @@ class RadioController extends \Controller\BaseStalkerController {
         }
 
         $data = array();
-        $data['action'] = 'removeRadio';
-        $this->db->deleteRadioById($this->postData['radioid']);
-        $error = '';
+        $data['action'] = 'deleteTableRow';
+        $data['id'] = $this->postData['radioid'];
+        $error = $this->setLocalization('Failed');
+
+        if ($this->db->deleteRadioById($this->postData['radioid'])){
+            $error = '';
+        }
 
         $response = $this->generateAjaxResponse($data, $error);
 
@@ -224,7 +232,8 @@ class RadioController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
         $data = array();
-        $data['action'] = 'checkRadioName';
+        $data['action'] = 'checkData';
+        $data['input_id'] = 'form_name';
         $error = $this->setLocalization('Name already used');
         
         if ($this->db->searchOneRadioParam(array('name' => trim($this->postData['param']), 'id<>' => trim($this->postData['radioid'])))) {
@@ -247,7 +256,8 @@ class RadioController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
         $data = array();
-        $data['action'] = 'checkRadioNumber';
+        $data['action'] = 'checkData';
+        $data['input_id'] = 'form_number';
         if (is_numeric($this->postData['param'])) {
             $error = $this->setLocalization('Number is not unique');
             if ($this->db->searchOneRadioParam(array('number' => trim($this->postData['param']), 'id<>' => trim($this->postData['radioid'])))) {

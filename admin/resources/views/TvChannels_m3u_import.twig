@@ -130,16 +130,6 @@
                     return false;
                 });
 
-                $(document).on('click', "#modalbox button[type='reset'], #modalbox, #modalbox a.close-link, #modalbox a.close-link *", function (e) {
-                    if (e.currentTarget != e.target) {
-                        return;
-                    }
-                    e.stopPropagation();
-                    e.preventDefault();
-                    JScloseModalBox();
-                    return false;
-                });
-
                 $(document).on('click', '#clean_channels', function(e){
                     e.stopPropagation();
                     e.preventDefault();

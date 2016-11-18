@@ -1019,6 +1019,9 @@ player.prototype.event_callback = function(event, params){
     switch(event){
         case 1: // End of stream
         {
+
+            playback_limit.reset();
+
             try{
 
                 if (this.cur_media_item.hasOwnProperty('ad_tracking')){
@@ -1178,6 +1181,9 @@ player.prototype.event_callback = function(event, params){
                                     delete cur_media_item.media_type;
                                     cur_media_item.disable_ad = true;
                                     module && module.vclub && module.vclub.set_ad_ended_time && module.vclub.set_ad_ended_time(this.cur_media_item.ad_id, stb.GetPosTime(), stb.GetMediaLen(), true);
+                                }else if (this.cur_media_item.media_type == 'advert'){
+                                    delete cur_media_item.media_type;
+                                    cur_media_item.disable_ad = true;
                                 }
 
                                 if (cur_media_item.hasOwnProperty('ad_must_watch')){
@@ -1505,6 +1511,8 @@ player.prototype.event_callback = function(event, params){
         case 5: // Not found
         {
 
+            playback_limit.reset();
+
             stb.key_lock = false;
 
             if (this.cur_media_item.hasOwnProperty('ad_tracking')){
@@ -1666,6 +1674,9 @@ player.prototype.event_callback = function(event, params){
                             if (this.cur_media_item.media_type && this.cur_media_item.media_type == 'vclub_ad'){
                                 delete cur_media_item.media_type;
                                 module && module.vclub && module.vclub.set_ad_ended_time && module.vclub.set_ad_ended_time(this.cur_media_item.ad_id, stb.GetPosTime(), stb.GetMediaLen(), true);
+                            }else if (this.cur_media_item.media_type == 'advert'){
+                                delete cur_media_item.media_type;
+                                cur_media_item.disable_ad = true;
                             }
 
                             if (cur_media_item.hasOwnProperty('ad_must_watch')){
@@ -2788,7 +2799,7 @@ player.prototype.stop = function(){
 
         if (this.cur_media_item.media_type == 'vclub_ad'){
             module && module.vclub && module.vclub.set_ad_ended_time && module.vclub.set_ad_ended_time(this.cur_media_item.ad_id, end_time, stb.GetMediaLen());
-        }else{
+        }else if (this.cur_media_item.media_type != 'advert'){
             module && module.vclub && module.vclub.set_not_ended && module.vclub.set_not_ended(this.cur_media_item.id, cur_series, end_time);
         }
     }
@@ -2797,7 +2808,7 @@ player.prototype.stop = function(){
 
         if (this.cur_media_item.media_type == 'vclub_ad'){
             module && module.vclub && module.vclub.set_ad_ended_time && module.vclub.set_ad_ended_time(this.cur_media_item.ad_id, end_time, stb.GetMediaLen());
-        }else{
+        }else if (this.cur_media_item.media_type != 'advert'){
             module && module.vclub && module.vclub.set_ended && module.vclub.set_ended(this.cur_media_item.id);
         }
     }
@@ -4079,7 +4090,7 @@ player.prototype.bind = function(){
 
         var self = this;
 
-        if (this.cur_media_item.media_type != 'vclub_ad' && this.cur_media_item.hasOwnProperty('series') && this.cur_media_item.series && this.cur_media_item.series.length > 0){
+        if (this.cur_media_item.media_type != 'vclub_ad' && this.cur_media_item.media_type != 'advert' && this.cur_media_item.hasOwnProperty('series') && this.cur_media_item.series && this.cur_media_item.series.length > 0){
 
             _debug('this.cur_media_item.cur_series before', this.cur_media_item.cur_series);
             _debug('this.cur_media_item.series.length', this.cur_media_item.series.length);
@@ -4196,6 +4207,11 @@ player.prototype.bind = function(){
         }
 
         if (!this.cur_media_item.playlist){
+
+            if (this.cur_media_item.media_type == 'advert') {
+                this.show_prev_layer();
+            }
+
             return;
         }
 
@@ -4246,6 +4262,9 @@ player.prototype.bind = function(){
             delete cur_media_item.media_type;
             cur_media_item.disable_ad = true;
             module && module.vclub && module.vclub.set_ad_ended_time && module.vclub.set_ad_ended_time(this.cur_media_item.ad_id, stb.GetPosTime(), stb.GetMediaLen());
+        }else if (this.cur_media_item.media_type == 'advert'){
+            delete cur_media_item.media_type;
+            cur_media_item.disable_ad = true;
         }
 
         this.play(cur_media_item);

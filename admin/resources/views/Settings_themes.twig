@@ -45,29 +45,12 @@
                     e.preventDefault();
                     var objHref = ($(this).attr('href'))? $(this).attr('href'): $(this).data('href');
                     $("#modalbox").data('complete', 0);
-                    showModalBox();
                     var sendData = $(this).data();
                     ajaxPostSend(objHref, sendData, false, false);
                     $(this).closest('div.open').removeClass('open');
                     return false;
                 });
-                
-                $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
-                    if (e.currentTarget != e.target) {
-                        return;
-                    }
-                    e.stopPropagation();
-                    e.preventDefault();
-                    if ($("#modalbox").data('complete') && $("#modalbox").data('complete') == 1) {
-                        closeModalBox();
-                    } else {
-                        for(i=0;i<3;i++) {
-                            $('#modalbox > div').fadeTo('slow', 0.5).fadeTo('slow', 1.0);
-                        }
-                    }
-                    return false;
-                });
-                
+
                 // Load Fancybox2 and make gallery in callback
                 LoadFancyboxScript(DemoGallery);
 
@@ -79,18 +62,7 @@
         
         var manageTheme = function (obj) {
             changeTheme(obj);
-            notty('<span>{{ 'Finish'|trans }}!</span>','success');
-            var msg_type = typeof(obj.msg);
-            msg_type = msg_type.toLowerCase();
-            if (msg_type != 'undefined'){
-                if (msg_type == 'string') {
-                     notty('<span>' + obj.msg + '</span>');
-                } else if (msg_type == 'array' || msg_type == 'object') {
-                    for (var i in obj.msg){
-                         notty('<br><span>' + obj.msg[i] + '</span>');
-                    }
-                }
-            }
+            JSSuccessModalBox(obj);
         };
         
         var changeTheme = function(obj){
@@ -110,21 +82,6 @@
                 }
             });
         };
-        
-        var errAction = function(){
-            notty('<span>{{ 'Failed'|trans }}!</span>','error'); 
-        };
-        
-        function closeModalBox(){
-            $("#modalbox").hide();
-            $('#modalbox').find('.modal-header-name span').empty();
-            $('#modalbox').find('.devoops-modal-inner').empty();
-            $('#modalbox').find('.devoops-modal-bottom').empty();
-        }
-        
-        function showModalBox(){
-			notty('<span>{{ 'Request is being processed'|trans }}...</span>','notification');
-        }
-        
+
     </script>
 {% endblock %}

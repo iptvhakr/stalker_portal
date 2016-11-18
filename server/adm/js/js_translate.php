@@ -59,5 +59,7 @@ $words['width'] = _('width');
 $words['height'] = _('height');
 $words['quality'] = _('quality');
 $words['languages'] = _('languages');
+$words['action_is_disabled'] = _('Action is disabled');
+$words['action_is_not_available'] = _('Action is not available');
 
 echo json_encode($words);

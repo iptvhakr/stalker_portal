@@ -11,14 +11,14 @@
         <script src="{{app.relativePath}}c/version.js{% if attribute(app, 'current_version') is defined and app['current_version']%}?ver={{ app['current_version'] }}{% endif %}"></script>
         <!-- All functions for this theme + document.ready processing -->
         <script src="{{app.request.baseUrl}}/plugins/form-validator/jquery.form-validator.min.js"></script>
-        <script src="{{app.request.baseUrl}}/js/devoops.js{% if attribute(app, 'current_version') is defined and app['current_version']%}?ver={{ app['current_version'] }}{% endif %}"></script>
+        <script src="{{app.request.baseUrl}}/js/devoops.js?ver={{ random() }}{% if 0 and attribute(app, 'current_version') is defined and app['current_version']%}?ver={{ app['current_version'] }}{% endif %}"></script>
         <script src="{{app.request.baseUrl}}/plugins/multiselect_transfer/jquery.selso.js"></script>
 
         <script src="{{app.request.baseUrl}}/plugins/datatables/jquery.dataTables.js"></script>
         <script src="{{app.request.baseUrl}}/plugins/datatables/ZeroClipboard.js"></script>
         <script src="{{app.request.baseUrl}}/plugins/datatables/TableTools.js"></script>
         <script src="{{app.request.baseUrl}}/plugins/datatables/fnReloadAjax.js"></script>
-        <script src="{{app.request.baseUrl}}/plugins/datatables/dataTables.bootstrap.js{% if attribute(app, 'current_version') is defined and app['current_version']%}?ver={{ app['current_version'] }}{% endif %}"></script>
+        <script src="{{app.request.baseUrl}}/plugins/datatables/dataTables.bootstrap.js?{#ver={{ random() }}#}{% if 0 and attribute(app, 'current_version') is defined and app['current_version']%}?ver={{ app['current_version'] }}{% endif %}"></script>
         <script src="{{app.request.baseUrl}}/plugins/datatables/jquery.dataTables.rowReordering.js"></script>
 
         <script src="{{app.request.baseUrl}}/plugins/select2/select2.full.js"></script>
@@ -207,11 +207,90 @@
             }
             var cTime = new Date();
             if ((cTime.getTime() - certificateCheck.timestamp) > 86400000 ) {
-                ajaxPostSend('{{app.request.baseUrl}}/certificates/current-list-json', {notty_check: 1});
+                ajaxPostSend('{{app.request.baseUrl}}/certificates/current-list-json', {notty_check: 1}, false, false, true);
             } else if (!certificateCheck.closed){
                 createCertModal();
             }
+
+            {% if attribute(app, 'userlogin') is defined and app['userlogin'] == 'admin' %}
+            var opinionCheck = localStorage.getItem('opinionCheck');
+            if (!opinionCheck) {
+                ajaxPostSend('{{app.request.baseUrl}}/index/opinion-check', false, false, true);
+            } else {
+                setOpinionModal(JSON.parse(opinionCheck));
+            }
+
+            $(document).on('click', 'a[href$="auth-user-logout"]', function(){
+                localStorage.removeItem('opinionCheck');
+            });
+
+            {% endif %}
         });
 
     </script>
+        {% if attribute(app, 'userlogin') is defined and app['userlogin'] == 'admin' %}
+
+    <script type="text/javascript" defer="defer">
+        function setOpinionModal(data){
+            if (!data.remind) {
+                JScloseModalBox();
+                $("#modalbox .devoops-modal-header span").text("{{ 'Feedback form'|trans }}");
+                $("#modalbox .devoops-modal-inner").html($("#opinion_modal_body_template").html());
+                $("#modalbox .devoops-modal-bottom").html($("#opinion_modal_btn_template").html());
+                $("#opinion_fill").attr('href', data.link);
+                $("#modalbox").on('click', '.devoops-modal-bottom a', function(e){
+                    JScloseModalBox();
+                    ajaxPostSend('{{app.request.baseUrl}}/index/opinion-set', $(this).data(), false, false, true);
+                    if ($(this).hasClass('main_ajax')) {
+                        e.stopPropagation();
+                        e.preventDefault();
+                    }
+                });
+                $(document).on('hide', '#modalbox', function(){
+                    $(this).find('.devoops-modal-header, .devoops-modal-bottom').each(function(){
+                        if(!$(this).is(':visible')){
+                            $(this).show();
+                        }
+                    });
+                });
+                $("#modalbox").show();
+            }
+            localStorage.setItem('opinionCheck', JSON.stringify(data));
+        }
+
+        function setOpinionData(data){
+            localStorage.setItem('opinionCheck', JSON.stringify(data));
+        }
+    </script>
+
+            <script type="text/template" id="opinion_modal_body_template">
+                <div class="col-sm-4" style="margin: 0 !important; padding: 10px 20px !important;">
+                    <img src="{{app.request.baseUrl}}/img/foto_sazhienko.jpg" class="img-thumbnail">
+                </div>
+                <div class="col-sm-8 opinion_form opinion_form">
+                    <h4>{{ 'Dear user!'|trans }}</h4>
+                    <hr>
+                    <p>{{ 'We thank you for your trust and we would like to know more about your experience with Stalker Middleware. How satisfied are you with the product and what should be improved?'|trans }}</p>
+                    <p>{{ 'Please fill out the form by clicking the appropriate button below.'|trans }}</p>
+                    <br>
+                    <p>{{ 'Yours sincerely,'|trans }}
+                        <br>
+                        {{ 'Stalker Middleware Product Manager'|trans }}
+                        <br>
+                        {{ 'Alexander Sazhyienko'|trans }}
+                        <br>
+                        {{ 'and the entire development team'|trans }}</p>
+                    <br>
+                    <p style="font-style: oblique;">* {{ 'We will not disclose your personal information. The answers will not be shared with third parties'|trans }}</p>
+                </div>
+            </script>
+
+            <script type="text/template" id="opinion_modal_btn_template">
+                <div class="col-sm-9 col-sm-offset-3 opinion_form">
+                    <a id="opinion_fill" target="_blank" class="btn btn-success green col-sm-3 col-sm-offset-1 no-padding-left no-padding-right pull-right" data-opinion="fill">{{ 'Fill in the form'|trans }}</a>
+                    <a id="opinion_remind" class="btn btn-default col-sm-3 col-sm-offset-1 no-padding-left no-padding-right main_ajax pull-right" data-opinion="remind">{{ 'Remind me later'|trans }}</a>
+                    <a id="opinion_no" class="btn btn-default col-sm-3 col-sm-offset-1 no-padding-left no-padding-right main_ajax pull-right" data-opinion="no">{{ 'No, thanks'|trans }}</a>
+                </div>
+            </script>
+        {% endif %}
 </footer>
