@@ -606,7 +606,9 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
                 $result = call_user_func_array(array($this->db, $operation.'CompanyData'), $params);
 
                 if (is_numeric($result)) {
-                    $this->db->addAdPositions($operation == 'update' ? $id: $result, $get_positions);
+                    if (!empty($get_positions)) {
+                        $this->db->addAdPositions($operation == 'update' ? $id: $result, $get_positions);
+                    }
                     return TRUE;
                 }
             }
