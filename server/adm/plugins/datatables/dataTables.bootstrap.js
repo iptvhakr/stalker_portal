@@ -14,6 +14,13 @@ $.extend(true, $.fn.dataTable.defaults, {
         $(oSettings.nTableWrapper).on("input keypress keyup", "input", function (e) {
             this.value = this.value.replace(/^\s+/ig, '').replace(/\s{2}/ig, ' ');
         });
+
+        if ($("#attribute_set").length == 0) {
+            $(".dataTables_ajax_update_button, .dataTables_filter").each(function(){
+                var rt = ($(window).width() - ($(this).offset().left + $( this).outerWidth()));
+                $( this).css('right', rt - 69);
+            });
+        }
 	},
     "fnDrawCallback": function (oSettings) {
         var paginateRow = $(oSettings.nTableWrapper).find('div.dataTables_paginate');
