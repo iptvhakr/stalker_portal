@@ -40,8 +40,8 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
 
-        $check_register = $this->db->getRegisterRowsList(array('where' => array('A.id' => $this->app['user_id'])), 'ALL');
-        if (empty($check_register)) {
+        $tos = $this->db->getTOS('external_ad');
+        if (empty($tos) || empty($tos[0]['accepted'])) {
             return $this->app->redirect($this->workURL . '/' .$this->app['controller_alias'] . '/register');
         }
 
@@ -63,17 +63,12 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
 
         if ($this->method == 'POST' && array_key_exists('form', $this->postData)) {
             $data = $this->postData['form'];
-        } elseif (!empty($this->data['id']) || !empty($this->postData['id'])) {
-            $data = $this->db->getRegisterList(array(
-                'select' => array('E_A_R.id as id', 'E_A_R.name as name', 'E_A_R.phone as phone', 'E_A_R.email as email', 'E_A_R.region as region', 'E_A_R.admin_id as admin_id'),
-                'where' => array('E_A_R.id' => (!empty($this->data['id'])? $this->data['id']: $this->postData['id']))
-            ));
-            $data = !empty($data) && is_array($data) ? $data[0] : array('admin_id' => $this->app['user_id']);
         } else {
-            $data = array('admin_id' => $this->app['user_id']);
+            $data = array();
         }
 
-        $data['accept_terms'] = !empty($data['accept_terms']) && ($data['accept_terms'] == 'on' || (int)$data['accept_terms'] == 1);
+        $data['accept_terms_save'] = !empty($data['accept_terms_save']) && ($data['accept_terms_save'] == 'on' || (int)$data['accept_terms_save'] == 1);
+        $data['accept_terms_skip'] = !empty($data['accept_terms_skip']) && ($data['accept_terms_skip'] == 'on' || (int)$data['accept_terms_skip'] == 1);
 
         $form = $this->buildRegisterForm($data);
 
@@ -105,7 +100,7 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
 
-        $form = $this->buildCompanyForm($data);
+        $form = $this->buildCompanyForm();
 
         if ($this->saveCompanyData($form)){
             return $this->app->redirect($this->workURL . '/' .$this->app['controller_alias'] . '/company-list');
@@ -113,8 +108,8 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
 
         $this->app['form'] = $form->createView();
 
-        $this->app['breadcrumbs']->addItem($this->setLocalization('List of companies'), $this->app['controller_alias'] . '/company-list');
-        $this->app['breadcrumbs']->addItem($this->setLocalization('Company add'));
+        $this->app['breadcrumbs']->addItem($this->setLocalization('List of campaigns'), $this->app['controller_alias'] . '/company-list');
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Campaign add'));
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -136,6 +131,12 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
             return $this->app->redirect($this->workURL . '/' .$this->app['controller_alias'] . '/company-add');
         }
 
+        $data[$data['platform']] = array();
+        $is_positions = $this->db->getAdPositions($data['id']);
+        if (!empty($is_positions)) {
+            $data[$data['platform']] = array_combine(array_values($is_positions), array_fill(0, count($is_positions), TRUE));
+        }
+
         $form = $this->buildCompanyForm($data);
 
         if ($this->saveCompanyData($form)){
@@ -144,8 +145,8 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
 
         $this->app['form'] = $form->createView();
 
-        $this->app['breadcrumbs']->addItem($this->setLocalization('List of companies'), $this->app['controller_alias'] . '/company-list');
-        $this->app['breadcrumbs']->addItem($this->setLocalization('Company edit'));
+        $this->app['breadcrumbs']->addItem($this->setLocalization('List of campaigns'), $this->app['controller_alias'] . '/company-list');
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Campaign edit'));
 
         return $this->app['twig']->render("ExternalAdvertising_company_add.twig");
     }
@@ -155,37 +156,26 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
 
-        $check_register = $this->db->getRegisterRowsList(array('where' => array('A.id' => $this->app['user_id'])), 'ALL');
-        if (empty($check_register)) {
+        $tos = $this->db->getTOS('external_ad');
+        if (empty($tos) || empty($tos[0]['accepted'])) {
             return $this->app->redirect($this->workURL . '/' .$this->app['controller_alias'] . '/register');
         }
 
         if ($this->method == 'POST' && array_key_exists('form', $this->postData)) {
             $data = $this->postData['form'];
         } else {
-            if (!empty($this->data['id']) || !empty($this->postData['id'])) {
-                $id = !empty($this->data['id']) ? $this->data['id'] : $this->postData['id'];
-            } else {
-                $registration = $this->db->getRegisterList(array('select' => array('E_A_R.id as owner', 'E_A_R.admin_id', 'A.reseller_id'), 'where' => array('A.id' => $this->app['user_id'])));
-                $registration = end($registration);
-                $id = $registration['owner'];
-            }
-
             $data = $this->db->getSourceList(array(
-                'select' => array('E_A_S.id', 'E_A_S.owner', 'E_A_S.source'),
-                'where' => array('E_A_S.owner' => $id),
-                'joined' => $this->getJoinedSettingsTables()
+                'select' => array('E_A_S.id', 'E_A_S.source'),
             ));
             if (!empty($data)) {
                 $sources = $this->getFieldFromArray($data, 'source');
                 $ids = $this->getFieldFromArray($data, 'id');
                 $data = array(
-                    'owner' => $id,
                     'source' => !empty($sources) ? array_combine($ids, $sources) : array(''),
                     'new_source' => array('')
                 );
             } else {
-                $data = array('owner' => $id, 'new_source' => array(''));
+                $data = array('new_source' => array(''));
             }
         }
 
@@ -319,57 +309,9 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
 
-    public function request_new_source(){
-        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['owner'])) {
-            $this->app->abort(404, $this->setLocalization('Page not found'));
-        }
-
-        if ($no_auth = $this->checkAuth()) {
-            return $no_auth;
-        }
-
-        $data = array();
-        $data['action'] = 'messageBlock';
-        $error = $this->setLocalization('Failed');
-
-        $registration = $this->db->getRegisterList(array('select' => array('E_A_R.name as name', 'E_A_R.email as email', 'E_A_R.phone as phone', 'E_A_R.region as region'), 'where' => array('E_A_R.id' => $this->postData['owner'])));
-
-        $registration = array_filter(array_pop($registration));
-
-        if (count($registration) != 4) {
-            $data['msg'] = '<div class="col-md-12">'.
-                '<span class="col-md-12 txt-default">'. $this->setLocalization('The registration data are incomplete. To edit data please go to the link: ').
-                    '<a href="' . $this->workURL . '/' .$this->app['controller_alias'] . '/register?id=' . $this->postData['owner'] . '">' .
-                        $this->setLocalization('edit register data') .
-                    '</a>' .
-                '</span>'.
-            '</div>';
-            $data['button_block'] = FALSE;
-            $data['data_empty'] = TRUE;
-            $error = '';
-        } else {
-            try{
-                $registration['requery'] = TRUE;
-                if (call_user_func_array(array('\Stalker\Lib\Core\Advertising', 'registration'), $registration)) {
-                    $data['button_block'] = TRUE;
-                    $data['msg'] = $this->setLocalization('Requested');
-                    $error = '';
-                }
-            } catch (\Exception $e) {
-                $data['msg'] = $e->getMessage();
-            }
-        }
-
-        $response = $this->generateAjaxResponse($data, $error);
-
-        return new Response(json_encode($response), (empty($error) ? 200 : 500));
-    }
-
     //------------------------ service method ----------------------------------
 
-    private function buildRegisterForm(&$data = array(), $show = FALSE) {
-
-        $this->app['is_show'] = $show;
+    private function buildRegisterForm(&$data = array()) {
 
         $builder = $this->app['form.factory'];
 
@@ -382,29 +324,17 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
         );
 
         $form = $builder->createBuilder('form', $data)
-            ->add('id', 'hidden')
-            ->add('admin_id', 'hidden')
             ->add('submit_type', 'hidden')
-            ->add('name', 'text', array(
-                    'attr' => array('readonly' => $show, 'disabled' => $show))
-            )
-            ->add('phone', 'text', array(
-                    'attr' => array('readonly' => $show, 'disabled' => $show))
-            )
-            ->add('email', 'text', array(
-                    'attr' => array('readonly' => $show, 'disabled' => $show))
-            )
+            ->add('name', 'text')
+            ->add('phone', 'text')
+            ->add('email', 'text')
             ->add('region', 'choice', array(
                     'choices' => $regions,
-                    'attr' => array('readonly' => $show, 'disabled' => $show),
                     'data' => (empty($data['region']) ? '': $data['region']),
                 )
             )
-            ->add('accept_terms', 'checkbox', array(
-                    'required' => TRUE,
-                    'attr' => array('readonly' => $show, 'disabled' => $show),
-                )
-            )
+            ->add('accept_terms_save', 'checkbox', array('required'  => FALSE))
+            ->add('accept_terms_skip', 'checkbox', array('required'  => FALSE))
             ->add('save', 'submit')
             ->add('skip', 'submit');
         return $form->getForm();
@@ -416,31 +346,13 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
             $form->handleRequest($this->request);
             $data = $form->getData();
 
-            if ($data['accept_terms'] && $form->isValid()) {
-                $curr_fields = $this->db->getTableFields('ext_adv_register');
-                $curr_fields = $this->getFieldFromArray($curr_fields, 'Field');
-                $curr_fields = array_flip($curr_fields);
-
-                $data = array_intersect_key($data, $curr_fields);
-                $data['updated'] = 'NOW()';
-
-                if (!empty($data['id'])) {
-                    $operation = 'update';
-                    $id = $data['id'];
-                    $params = array($data, $id);
-                }else {
-                    $operation = 'insert';
-                    $data['added'] = 'NOW()';
-                    $params = array($data);
-                }
-                unset($data['id']);
-
-                $result = call_user_func_array(array($this->db, $operation.'RegisterData'), $params);
+            if (($data['accept_terms_save'] || $data['accept_terms_skip']) && $form->isValid()) {
+                $result = call_user_func_array(array($this->db, 'setAcceptedTOS'), array('external_ad'));
                 if (is_numeric($result)) {
                     return TRUE;
                 }
-            } elseif (!$data['accept_terms']) {
-                $form->get('accept_terms')->addError(new FormError($this->setLocalization('You need accept Terms of Service.')));
+            } elseif (!($data['accept_terms_save'] || $data['accept_terms_skip'])) {
+                $form->get('accept_terms_' . $data['submit_type'])->addError(new FormError($this->setLocalization('You need accept Terms of Service.')));
             }
         }
         return FALSE;
@@ -452,8 +364,7 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
 
         $builder = $this->app['form.factory'];
 
-        $form = $builder->createBuilder('form', $data)
-            ->add('owner', 'hidden');
+        $form = $builder->createBuilder('form', $data);
         if (!empty($data['source'])) {
             $form->add('source', 'collection', array(
                 'entry_type'   => 'text',
@@ -493,7 +404,6 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
 
                 $result = 0;
                 $params = array(
-                    'owner' => $data['owner'],
                     'updated' => 'NOW()'
                 );
 
@@ -536,39 +446,43 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
         $builder = $this->app['form.factory'];
 
         $sources = $this->db->getSourceList(array(
-            'select' => array('E_A_S.id as id', 'E_A_S.source as source'),
-            'where' => array('A.id' => $this->app['user_id']),
-            'joined' => $this->getJoinedSettingsTables()
+            'select' => array('E_A_S.id as id', 'E_A_S.source as source')
         ));
 
         $sources = array_combine($this->getFieldFromArray($sources, 'id'), $this->getFieldFromArray($sources, 'source'));
         $platforms = array(
-            'settopbox' => 'Set-Top Box',
+            'stb' => 'Set-Top Box',
             'ios' => 'iOS',
             'android' => 'Android',
             'smarttv' => 'SmartTV'
         );
 
-        $choise_labels = array(
-            $this->setLocalization('Before launching the application'),
-            $this->setLocalization('Before launching the movie'),
-            $this->setLocalization('During the movie playback')
+        $this->app['platform_list'] = array(
+            'stb' => array('101' => 'STANDART SKIN', '201' => 'SMART LAUNCHER SKINS'),
+            'ios' => array('401' => 'iOS'),
+            'android' => array('301' => 'Android'),
+            'smarttv' => array('501' => 'SmartTV')
         );
-
-        if (!empty($data['old_skin_pos'])) {
-            $data['old_skin_pos'] = $this->prepareBitMaskField($data['old_skin_pos']);
-        } else {
-            $data['old_skin_pos'] = array_fill(0, 3, FALSE);
-        }
-
-        if (!empty($data['smart_skin_pos'])) {
-            $data['smart_skin_pos'] = $this->prepareBitMaskField($data['smart_skin_pos']);
-        } else {
-            $data['smart_skin_pos'] = array_fill(0, 3, FALSE);
-        }
 
         if (array_key_exists('status', $data)) {
             settype($data['status'], 'bool');
+        }
+
+        $ad_positions = $this->db->getAllFromTable('ext_adv_positions', 'position_code');
+        $parts_labels = array();
+        foreach($platforms as $platform=>$label) {
+            if (!array_key_exists($platform, $data)) {
+                $data[$platform] = array();
+            }
+            if (!array_key_exists($platform, $parts_labels)) {
+                $parts_labels[$platform] = array();
+            }
+            foreach($ad_positions as $row) {
+                if($row['platform'] == $platform){
+                    $parts_labels[$platform][$row['position_code']] = $row['label'];
+                    $data[$platform][$row['position_code']] = array_key_exists($row['position_code'], $data[$platform]) && $data[$platform][$row['position_code']];
+                }
+            }
         }
 
         $form = $builder->createBuilder('form', $data)
@@ -588,7 +502,7 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
                     'choices' => $platforms,
                     'required' => TRUE,
                     'attr' => array('readonly' => $show, 'disabled' => $show, 'class' => 'populate placeholder', 'data-validation' => 'required'),
-                    'data' => (empty($data['platform']) ? '': $data['platform']),
+                    'data' => (empty($data['platform']) ? 'stb': $data['platform']),
                 )
             )
             ->add('status', 'checkbox', array(
@@ -598,38 +512,80 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
                     'attr' => array('readonly' => $show, 'disabled' => $show, 'class' => 'form-control'),
                 )
             )
-            ->add('old_skin_pos', 'collection', array(
-                'entry_type'   => 'checkbox',
-                'entry_options'  => array(
-                    'attr'      => array('class' => 'form-control', 'style'=> 'display: inline-block; height: auto; width: auto;'),
-                    'label' => $choise_labels
-                )
+            ->add('save', 'submit')
+            ->add('stb', 'collection', array(
+                'type' => 'checkbox',
+                'options' => array(
+                    'required' => FALSE,
+                    'label' => $parts_labels['stb']
+                ),
+                'required' => FALSE,
+                'allow_add' => TRUE,
+                'allow_delete' => TRUE,
+                'prototype' => FALSE
             ))
-            ->add('smart_skin_pos', 'collection', array(
-                'entry_type'   => 'checkbox',
-                'entry_options'  => array(
-                    'attr'      => array('class' => 'form-control', 'style'=> 'display: inline-block; height: auto; width: auto;'),
-                    'label' => $choise_labels
-                )
+            ->add('ios', 'collection', array(
+                'type' => 'checkbox',
+                'options' => array(
+                    'required' => FALSE,
+                    'label' => $parts_labels['ios']
+                ),
+                'required' => FALSE,
+                'allow_add' => TRUE,
+                'allow_delete' => TRUE,
+                'prototype' => FALSE
             ))
-            ->add('save', 'submit');
+            ->add('android', 'collection', array(
+                'type' => 'checkbox',
+                'options' => array(
+                    'required' => FALSE,
+                    'label' => $parts_labels['android']
+                ),
+                'required' => FALSE,
+                'allow_add' => TRUE,
+                'allow_delete' => TRUE,
+                'prototype' => FALSE
+            ))
+            ->add('smarttv', 'collection', array(
+                'type' => 'checkbox',
+                'options' => array(
+                    'required' => FALSE,
+                    'label' => $parts_labels['smarttv']
+                ),
+                'required' => FALSE,
+                'allow_add' => TRUE,
+                'allow_delete' => TRUE,
+                'prototype' => FALSE
+            ));
+
         return $form->getForm();
     }
 
     private function saveCompanyData(&$form) {
-
         if (!empty($this->method) && $this->method == 'POST') {
             $form->handleRequest($this->request);
             $data = $form->getData();
-
             if ($form->isValid()) {
-                reset($data);
-                while(list($key, $field) = each($data)){
-                    if (is_array($field)) {
-                        $data[$key] = implode('', array_map(function($val){return (int)$val; }, $field));
+                $get_positions = array();
+                foreach( array( 'stb', 'ios', 'android', 'smarttv') as $platform){
+                    if (array_key_exists($platform, $data)) {
+                        $get_positions = array_merge($get_positions, array_keys($data[$platform]));
                     }
                 }
-                $curr_fields = $this->db->getTableFields('ext_adv_companies');
+
+                if (!empty($data['id'])) {
+                    $is_positions = $this->db->getAdPositions($data['id']);
+                    if (!empty($is_positions)) {
+                        $del_position = array_diff($is_positions, $get_positions);
+                        $get_positions = array_diff($get_positions, $is_positions);
+                        if (!empty($del_position)){
+                            $this->db->delAdPositions($data['id'], $del_position);
+                        }
+                    }
+                }
+
+
+                $curr_fields = $this->db->getTableFields('ext_adv_campaigns');
                 $curr_fields = $this->getFieldFromArray($curr_fields, 'Field');
                 $curr_fields = array_flip($curr_fields);
 
@@ -650,6 +606,7 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
                 $result = call_user_func_array(array($this->db, $operation.'CompanyData'), $params);
 
                 if (is_numeric($result)) {
+                    $this->db->addAdPositions($operation == 'update' ? $id: $result, $get_positions);
                     return TRUE;
                 }
             }
@@ -668,17 +625,10 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
         return $attribute;
     }
 
-    private function getJoinedSettingsTables(){
-        return array(
-            'ext_adv_register as E_A_R' => array('left_key' => 'E_A_S.owner', 'right_key' => 'E_A_R.id', 'type' => 'LEFT'),
-            'administrators as A' => array( 'left_key' => 'E_A_R.admin_id', 'right_key' => 'A.id', 'type' => 'LEFT')
-        );
-    }
-
     private function getJoinedCompanyTables(){
-        return array_merge(array(
+        return array(
             'ext_adv_sources as E_A_S' => array('left_key' => 'E_A_C.source', 'right_key' => 'E_A_S.id', 'type' => 'LEFT'),
-        ), $this->getJoinedSettingsTables());
+        );
     }
 
     private function getCompanyFields(){
@@ -686,18 +636,7 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
             "id" => "E_A_C.`id` as `id`",
             "name" => "E_A_C.`name` as `name`",
             "platform" => "E_A_C.`platform` as `platform`",
-            "status" => "E_A_C.`status` as `status`",
-            "old_skin_pos" => "E_A_C.`old_skin_pos` as `old_skin_pos`",
-            "smart_skin_pos" => "E_A_C.`smart_skin_pos` as `smart_skin_pos`"
+            "status" => "E_A_C.`status` as `status`"
         );
-    }
-
-    private function prepareBitMaskField($data){
-        if (is_string($data)){
-            $data =  str_split($data);
-        }
-        return array_replace(array_fill(0, 3, FALSE), array_map(function($val){
-            return $val == (is_numeric($val) ?  1 : 'on');
-        }, $data));
     }
 }

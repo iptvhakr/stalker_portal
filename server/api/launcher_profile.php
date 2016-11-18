@@ -130,7 +130,7 @@ foreach ($installed_apps as $app) {
 
 
     if ($app['config']){
-
+        $app['config']['packageName'] = $app['url'];
         $app['config']['version'] = $app['current_version'];
 
         if (!isset($app['config']['uris'])){

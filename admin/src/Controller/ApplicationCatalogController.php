@@ -393,6 +393,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
             if (strpos($search_str, "://") === FALSE) {
                 $repo =  new \Npm();
                 $response['data'] = $repo->info($search_str, (!empty($this->postData['version'])? $this->postData['version']: NULL));
+                $response['data']['name'] = isset($response['data']['config']['type']) && $response['data']['config']['type'] == 'app' && isset($response['data']['config']['name']) ? $response['data']['config']['name'] : $response['data']['name'];
                 if (!empty($response['data'])) {
                     $response['data']['repository']['url'] = $search_str;
                 } else {
@@ -568,7 +569,11 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
                 if ($version === FALSE || $version == $row['version']) {
                     /*$row['published'] = (int)strtotime($row['published']);*/
                     $row['published'] = $row['published'] < 0 ? 0 : $row['published'];
-                    $row['conflicts'] = $apps_list->getConflicts($id, $row['version']);
+                    try{
+                        $row['conflicts'] = $apps_list->getConflicts($id, $row['version']);
+                    }catch (\Exception $e){
+                        $row['error'] = $e->getMessage();
+                    }
                     return $row;
                 }
             }, $app['versions'])));

@@ -762,6 +762,9 @@ function common_xpcom(){
                             throw new Error(er);
                         }
                         _debug(result.text);
+                        if (connection_problem.on && stb.cur_place == 'tv' && stb.player.on){
+                            stb.player.play_last();
+                        }
                         connection_problem.hide();
                         authentication_problem.hide();
                         callback.call(context, result.js);
@@ -2079,8 +2082,12 @@ function common_xpcom(){
         start : function (callback) {
             _debug('stb.advert.get_ad');
 
-            stb.key_lock = true;
+            //todo: temporary disabled ad
 
+            return callback();
+
+            stb.key_lock = true;
+            
             stb.load(
                 {
                     "type"   : "stb",

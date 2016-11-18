@@ -699,91 +699,22 @@
                                     </span>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="box">
-                        <a class="collapse-link">
-                            <div class="box-header">
-                                <div class="box-name">
-                                    <div class="row">
-                                        <div class="col-xs-10 col-sm-4">
-                                            <span>{{ 'Temporary URL'|trans }}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="box-icons">
-                                    <i class="fa fa-chevron-up"></i>
-                                </div>
-                                <div class="no-move"></div>
-                            </div>
-                        </a>
-                        <div class="box-content" id="add_channel_temp_http_link">
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">{{ 'Enable Temporary URL'|trans }}</label>
+                                <label class="col-sm-3 control-label">{{ 'Temporary URL'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-6">
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" name="form[use_http_tmp_link][]">
-                                                <i class="fa fa-square-o small"></i>
-                                            </label>
-                                        </div>
+                                        <select class="populate placeholder" name="form[use_http_tmp_link][]" id="s2_use_http_tmp_link">
+                                            <option value="">&nbsp;</option>
+                                            {% if attribute(app, 'httpTmpLink') is defined %}
+                                                {% for row in app['httpTmpLink'] %}
+                                                    <option value="{{ row.value }}" data-check-module={% if row.check_module and not app['mcrypt_enabled'] %}0{% else %}1{% endif %}>{{ row.label }}</option>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </select>
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
                                         <span class="small txt-default">{{ 'Protect channel from unauthorized access'|trans }}</span>
                                     </span>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">{{ 'WOWZA support'|trans }}</label>
-                                <div class="col-xs-10 col-sm-8">
-                                    <div class=" col-xs-10 col-sm-6">
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" name="form[wowza_tmp_link][]">
-                                                <i class="fa fa-square-o small"></i>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">{{ 'NGINX secure link'|trans }}</label>
-                                <div class="col-xs-10 col-sm-8">
-                                    <div class=" col-xs-10 col-sm-6">
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" name="form[nginx_secure_link][]">
-                                                <i class="fa fa-square-o small"></i>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">{{ 'Flussonic support'|trans }}</label>
-                                <div class="col-xs-10 col-sm-8">
-                                    <div class=" col-xs-10 col-sm-6">
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" name="form[flussonic_tmp_link][]">
-                                                <i class="fa fa-square-o small"></i>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">{{ 'Xtream-Codes support'|trans }}</label>
-                                <div class="col-xs-10 col-sm-8">
-                                    <div class=" col-xs-10 col-sm-6">
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" name="form[xtream_codes_support][]" data-check-module={% if not app['mcrypt_enabled'] %}0{% else %}1{% endif %}>
-                                                <i class="fa fa-square-o small"></i>
-                                            </label>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -947,10 +878,13 @@
             }
         };
 
+        var linkTypeFields = ['use_http_tmp_link', 'wowza_tmp_link', 'nginx_secure_link', 'flussonic_tmp_link', 'xtream_codes_support'];
+
         function DemoSelect2() {
             $('#form_tv_genre_id').select2(select2Opt);
             $('#form_volume_correction').select2(select2Opt);
             $('#s2_priority').select2(select2Opt);
+            $('#s2_use_http_tmp_link').select2(select2Opt);
             $('#s2_stream_server').select2(select2Opt);
             $('#form_pvr_storage_names').select2(select2Opt);
             $('#form_storage_names').select2(select2Opt);
@@ -1096,6 +1030,7 @@
                     $("#s2_stream_server option").prop('selected', false).removeAttr('selected');
                     $("#s2_stream_server").prop('disabled', 'disabled');
                     $("#s2_stream_server").closest(".form-group").hide();
+                    $("#s2_use_http_tmp_link").val('').trigger('change');
                     $("#add_channel_load_balancing input[type='checkbox'][name*='enable_balancer_monitoring']").prop('checked', false).closest(".form-group").hide();
                     $("#add_channel_link_monitoring input[type='checkbox'][name*='enable_monitoring']").prop('checked', false);
                     $("#add_channel_link_monitoring input[type='text'][name*='monitoring_url']").prop('disabled', 'disabled').closest(".form-group").hide();
@@ -1134,7 +1069,20 @@
                         if (typeof (data[name]) == 'undefined') {
                             return true;
                         }
+
                         $(this).prop("disabled", false).removeAttr("disabled");
+
+                        var shortName = name.replace(/[^\[]*\[([^\]]*).*$/ig, '$1');
+                        if ($("#s2_use_http_tmp_link").attr('name').search(shortName) != -1) {
+                            $.each(linkTypeFields, function(i, linkVal){
+                                var fieldName = 'form[' + linkVal + ']';
+                                if (data[fieldName] && (('' + data[fieldName].value) == '1' || data[fieldName].value == 'on')) {
+                                    $("#s2_use_http_tmp_link").val(linkVal).trigger('change');
+                                }
+                            });
+                            return true;
+                        }
+
                         var type = typeof ($(this).attr('type')) != 'undefined' ? $(this).attr('type') : $(this).get(0).tagName.toLowerCase();
                         if (type == 'select') {
                             var lSelect = $(this);
@@ -1157,12 +1105,6 @@
                             $(this).val(data[name].value);
                         }
                     });
-
-                    if ($("#modalbox_ad input[name*='use_http_tmp_link']").prop("checked")) {
-                        linkTypeFields.closest(".form-group").show();
-                    } else {
-                        linkTypeFields.val('off').prop('checked', false).closest(".form-group").hide();
-                    }
 
                     if (!$("#add_channel_load_balancing input[type='checkbox'][name*='use_load_balancing']").is(':checked')) {
                         $("#s2_stream_server option").prop('selected', false).removeAttr('selected');
@@ -1207,32 +1149,14 @@
                     }
                 });
 
-                var linkTypeFields = $("#modalbox_ad input[name*='wowza_tmp_link'], #modalbox_ad input[name*='nginx_secure_link'], #modalbox_ad input[name*='flussonic_tmp_link'], #modalbox_ad input[name*='xtream_codes_support']");
-
-                $("#modalbox_ad").on('change', "input[name*='use_http_tmp_link']", function(e){
-                    if ($(this).prop("checked")) {
-                        linkTypeFields.closest(".form-group").show();
-                    } else {
-                        linkTypeFields.val('off').prop('checked', false).closest(".form-group").hide();
+                $("#s2_use_http_tmp_link").on('select2:select', function(e){
+                    if ($(this).find('option[value="' + $(this).val() + '"]').data('check-module') == '0' ) {
+                        JSErrorModalBox({msg: "{{ 'For enabling this option you need enable mcrypt php-extension'|trans}}"});
+                        $(this).val('').trigger('change');
+                        e.stopPropagation();
+                        e.preventDefault();
+                        return false;
                     }
-                });
-
-                $("#modalbox_ad").on('click', "input[name*='wowza_tmp_link'] + i, input[name*='nginx_secure_link'] + i, input[name*='flussonic_tmp_link'] + i, input[name*='xtream_codes_support'] + i", function(e){
-                    e.stopPropagation();
-                    e.preventDefault();
-                    var checkBox = $(this).prev('input');
-                    var currState = !checkBox.prop("checked");
-                    if (checkBox.get(0).hasAttribute('data-check-module') && '' + checkBox.data('check-module') == '0') {
-                        currState = false;
-                        JSErrorModalBox({msg: "{{ 'For enabling Xtream-Codes Support you need enable mcrypt php-extension'|trans}}"});
-                    }
-                    if (currState) {
-                        linkTypeFields.val('off').prop('checked', false);
-                        checkBox.val('on');
-                    } else {
-                        checkBox.val('off');
-                    }
-                    checkBox.prop("checked", currState);
                 });
 
                 $("#add_channel .form-group").each(function(i){
@@ -1374,10 +1298,19 @@
             $(container).find('input').each(function(){
                 $(this).prop("disabled", false).removeAttr("disabled");
                 var name = $(this).attr('name').replace(/\[\d*?\]/ig, '');
-                if (typeof (data[name]) == 'undefined') {
+                var type = $(this).attr('type');
+
+                var shortName = name.replace(/[^\[]*\[([^\]]*).*$/ig, '$1');
+                if (linkTypeFields.indexOf(shortName) != -1) {
+                    if (type == 'checkbox') {
+                        $(this).prop('checked', $("#s2_use_http_tmp_link").val() == shortName);
+                    } else {
+                        $(this).val($("#s2_use_http_tmp_link").val() == shortName ? 'on': 'off');
+                    }
+                    return true;
+                } else if (typeof (data[name]) == 'undefined') {
                     return true;
                 }
-                var type = $(this).attr('type');
                 if (type == 'checkbox') {
                     if ($(this).attr('name').search('enable_monitoring') != -1) {
                         var targetLabel = $(this).closest('td').next('td').find('label');
@@ -1395,6 +1328,9 @@
                     label.text(data[name].value);
                 }
             });
+
+            $(container).find('input[name*="use_http_tmp_link"]').prop('checked', $("#s2_use_http_tmp_link").val() ? true: false);
+
         }
 
         function toggleChkSelect(objId){

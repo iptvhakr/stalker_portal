@@ -125,7 +125,10 @@
                             json.data[i]['published'] = '---';
                         }
 
-                        if (item.conflicts && item.conflicts.length !=0) {
+                        if (item.error) {
+                            json.data[i].conflicts = '<p class="text-danger">'+item.error+'<br/>'; + '</p>';
+                            is_conflicts = true;
+                        }else if (item.conflicts && item.conflicts.length !=0) {
                             var conflicts = '<p class="text-danger">{{ 'conflicts with'|trans }}<br/>';
                             for(var j in item.conflicts) {
                                 conflicts += item.conflicts[j]['alias'] + ' ' + item.conflicts[j]['current_version'] + '<br>';
