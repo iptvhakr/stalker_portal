@@ -189,6 +189,15 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
+    public function tos() {
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        return $this->app['twig']->render($this->getTemplateName(__METHOD__));
+    }
+
     //----------------------- ajax method --------------------------------------
 
     public function company_list_json($local_use = FALSE){
