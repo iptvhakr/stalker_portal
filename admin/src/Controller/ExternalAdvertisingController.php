@@ -470,9 +470,10 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
 
         $ad_positions = $this->db->getAllFromTable('ext_adv_positions', 'position_code');
         $parts_labels = array();
+        $parts_platform = array();
         foreach($platforms as $platform=>$label) {
-            if (!array_key_exists($platform, $data)) {
-                $data[$platform] = array();
+            if (!array_key_exists($platform, $parts_platform)) {
+                $parts_platform[$platform] = array();
             }
             if (!array_key_exists($platform, $parts_labels)) {
                 $parts_labels[$platform] = array();
@@ -480,10 +481,13 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
             foreach($ad_positions as $row) {
                 if($row['platform'] == $platform){
                     $parts_labels[$platform][$row['position_code']] = $this->setLocalization($row['label']);
-                    $data[$platform][$row['position_code']] = array_key_exists($row['position_code'], $data[$platform]) && $data[$platform][$row['position_code']];
+                    $parts_platform[$platform][$row['position_code']] = array_key_exists($row['position_code'], $data[$platform]) && $data[$platform][$row['position_code']];
                 }
             }
+            ksort($parts_platform[$platform]);
         }
+
+        $data = array_merge($data, $parts_platform);
 
         $form = $builder->createBuilder('form', $data)
             ->add('id', 'hidden')
