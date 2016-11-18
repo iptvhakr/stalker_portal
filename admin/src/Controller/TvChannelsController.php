@@ -1385,6 +1385,8 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             }
         }
 
+        $this->app['httpTmpLink'] = $this->getHttpTmpLink();
+
         $form = $builder->createBuilder('form', $data)
                 ->add('id', 'hidden')
                 ->add('number', 'text', array(
@@ -2017,5 +2019,15 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             }
         }
         return $data;
+    }
+
+    private function getHttpTmpLink(){
+        return array(
+            array('value' => 'use_http_tmp_link', 'label' => $this->setLocalization('Stalker'), 'check_module' => FALSE),
+            array('value' => 'wowza_tmp_link', 'label' => $this->setLocalization('WOWZA'), 'check_module' => FALSE),
+            array('value' => 'nginx_secure_link', 'label' => $this->setLocalization('NGINX'), 'check_module' => FALSE),
+            array('value' => 'flussonic_tmp_link', 'label' => $this->setLocalization('Flussonic'), 'check_module' => FALSE),
+            array('value' => 'xtream_codes_support', 'label' => $this->setLocalization('Xtream-Codes'), 'check_module' => TRUE)
+        );
     }
 }

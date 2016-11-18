@@ -285,6 +285,7 @@ $(document).ready(function () {
             e.stopPropagation();
             e.preventDefault();
             $.cookies.set('language', $(this).data('locale'), {expiresAt: new Date( 2037, 1, 1 )});
+            localStorage.removeItem('opinionCheck');
             window.location.reload(true);
             return false;
         });

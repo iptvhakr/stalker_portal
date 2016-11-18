@@ -2082,12 +2082,8 @@ function common_xpcom(){
         start : function (callback) {
             _debug('stb.advert.get_ad');
 
-            //todo: temporary disabled ad
-
-            return callback();
-
             stb.key_lock = true;
-            
+
             stb.load(
                 {
                     "type"   : "stb",

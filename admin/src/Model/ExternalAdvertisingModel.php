@@ -8,65 +8,12 @@ class ExternalAdvertisingModel extends \Model\BaseStalkerModel {
         parent::__construct();
     }
 
-    public function getRegisterRowsList($incoming = array(), $all = FALSE) {
-        if ($all) {
-            $incoming['like'] = array();
-        }
-        return $this->getRegisterList($incoming, TRUE);
+    public function getTOS($alias){
+        return $this->mysqlInstance->from('apps_tos')->where(array('alias' => $alias))->get()->all();
     }
 
-    public function getRegisterList($param, $counter = FALSE) {
-        if (!empty($param['select'])) {
-            $this->mysqlInstance->select($param['select']);
-        }
-
-        $this->mysqlInstance->from('ext_adv_register as E_A_R');
-
-        if (array_key_exists('joined', $param)) {
-            foreach ($param['joined'] as $table => $keys) {
-                $this->mysqlInstance->join($table, $keys['left_key'], $keys['right_key'], $keys['type']);
-            }
-        }
-
-        if (!empty($this->reseller_id)) {
-            $this->mysqlInstance->where(array('reseller_id' => $this->reseller_id));
-        }
-
-        if (empty($param['joined']) || !array_key_exists('administrators as A', $param['joined'])) {
-            $this->mysqlInstance->join('administrators as A', 'E_A_R.admin_id', 'A.id', 'LEFT');
-        }
-        if (!empty($param['where'])) {
-            $this->mysqlInstance->where($param['where']);
-        }
-        if (!empty($param['like'])) {
-            $this->mysqlInstance->like($param['like'], 'OR');
-        }
-        if (!empty($param['order'])) {
-            $this->mysqlInstance->orderby($param['order']);
-        }
-
-        if (!empty($param['groupby'])) {
-            $this->mysqlInstance->groupby($param['groupby']);
-        }
-
-        if ($counter) {
-            $result = $this->mysqlInstance->count()->get()->first();
-            return is_array($result) ? array_sum($result) : $result;
-        }
-        if (!empty($param['limit']['limit']) && !$counter) {
-            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
-        }
-
-        return $this->mysqlInstance->get()->all();
-    }
-
-    public function insertRegisterData($params){
-        return $this->mysqlInstance->insert('ext_adv_register', $params)->insert_id();
-    }
-
-    public function updateRegisterData($params, $id){
-        $where = array('id'=>$id);
-        return $this->mysqlInstance->update('ext_adv_register', $params, $where)->total_rows();
+    public function setAcceptedTOS($alias){
+        return $this->mysqlInstance->update('apps_tos', array('accepted'=>1), array('alias' => $alias))->total_rows();
     }
 
     public function getSourceRowsList($incoming = array(), $all = FALSE) {
@@ -87,9 +34,6 @@ class ExternalAdvertisingModel extends \Model\BaseStalkerModel {
             foreach ($param['joined'] as $table => $keys) {
                 $this->mysqlInstance->join($table, $keys['left_key'], $keys['right_key'], $keys['type']);
             }
-        }
-        if (!empty($this->reseller_id)) {
-            $this->mysqlInstance->where(array('reseller_id' => $this->reseller_id));
         }
 
         if (!empty($param['where'])) {
@@ -127,19 +71,19 @@ class ExternalAdvertisingModel extends \Model\BaseStalkerModel {
     }
 
     public function insertCompanyData($params){
-        return $this->mysqlInstance->insert('ext_adv_companies', $params)->insert_id();
+        return $this->mysqlInstance->insert('ext_adv_campaigns', $params)->insert_id();
     }
 
     public function updateCompanyData($params, $id){
         $where = array('id'=>$id);
-        return $this->mysqlInstance->update('ext_adv_companies', $params, $where)->total_rows();
+        return $this->mysqlInstance->update('ext_adv_campaigns', $params, $where)->total_rows();
     }
 
     public function deleteCompanyData($params){
         if (is_numeric($params)) {
             $params = array('id' => $params);
         }
-        return $this->mysqlInstance->delete('ext_adv_companies', $params)->total_rows();
+        return $this->mysqlInstance->delete('ext_adv_campaigns', $params)->total_rows();
     }
 
     public function getCompanyRowsList($incoming = array(), $all = FALSE) {
@@ -154,16 +98,12 @@ class ExternalAdvertisingModel extends \Model\BaseStalkerModel {
             $this->mysqlInstance->select($param['select']);
         }
 
-        $this->mysqlInstance->from('ext_adv_companies as E_A_C');
+        $this->mysqlInstance->from('ext_adv_campaigns as E_A_C');
 
         if (array_key_exists('joined', $param)) {
             foreach ($param['joined'] as $table => $keys) {
                 $this->mysqlInstance->join($table, $keys['left_key'], $keys['right_key'], $keys['type']);
             }
-        }
-
-        if (!empty($this->reseller_id)) {
-            $this->mysqlInstance->where(array('reseller_id' => $this->reseller_id));
         }
 
         if (!empty($param['where'])) {
@@ -189,5 +129,20 @@ class ExternalAdvertisingModel extends \Model\BaseStalkerModel {
         }
 
         return $this->mysqlInstance->get()->all();
+    }
+
+    public function getAdPositions($id){
+        return $this->mysqlInstance->select('position_code')->from('ext_adv_campaigns_position')->where(array('campaigns_id' => $id))->get()->all('position_code');
+    }
+
+    public function delAdPositions($id, $positions){
+        return $this->mysqlInstance->delete('ext_adv_campaigns_position', array('campaigns_id' => $id, 'position_code in (' . implode(', ', $positions) . ') and 1' => 1))->total_rows();
+    }
+
+    public function addAdPositions($id, $positions){
+        $insert = array_map(function($val) use ($id){
+            return array('campaigns_id' => $id, 'position_code' => $val);
+        }, $positions);
+        return $this->mysqlInstance->insert('ext_adv_campaigns_position', $insert)->total_rows();
     }
 }

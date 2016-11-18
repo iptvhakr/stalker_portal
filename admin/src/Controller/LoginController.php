@@ -13,12 +13,14 @@ class LoginController extends \Controller\BaseStalkerController {
     }
 
     public function index() {
+        $error = FALSE;
         if ($this->method == 'POST' && isset($this->postData['username']) && isset($this->postData['password'])) {
             if (\Admin::checkAuthorization($this->postData['username'], $this->postData['password'])){
                 return $this->app->redirect($this->workURL);
+            } else {
+                $error = $this->setLocalization('Incorrect Username or Password');
             }
         }
-        $error = array('user_undefined' => $this->setLocalization('User is undefined'));
         $this->app['error_local'] = $error;
         
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
