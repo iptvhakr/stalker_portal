@@ -492,7 +492,7 @@
             }
         };
 
-        var  select2Opt = select2OptMS = select2OptPH = {minimumResultsForSearch: -1, dropdownAutoWidth: false, width: '100%', allowDuplicates: false};
+        var  select2Opt = select2OptMS = select2OptPH = {minimumResultsForSearch: -1, dropdownAutoWidth: false, width: '100%', allowDuplicates: true};
         var  select2OptMS = select2Opt, select2OptPH = select2Opt;
         select2OptMS.maximumSelectionSize = 4;
         select2OptPH.placeholder = {
@@ -511,7 +511,7 @@
         }
 
         function setFileLanguagesSelect(){
-            var file_languages = $('#file_languages').select2(select2Opt);
+            var file_languages = $('#file_languages').select2(select2OptMS);
             if ($('#fileLangCloneList').length) {
                 $('#fileLangCloneList').remove();
             }
