@@ -143,6 +143,7 @@ class ExternalAdvertisingModel extends \Model\BaseStalkerModel {
         $insert = array_map(function($val) use ($id){
             return array('campaigns_id' => $id, 'position_code' => $val);
         }, $positions);
-        return $this->mysqlInstance->insert('ext_adv_campaigns_position', $insert)->total_rows();
+
+        return $this->mysqlInstance->insert('ext_adv_campaigns_position', array_values($insert))->total_rows();
     }
 }
