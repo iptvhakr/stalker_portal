@@ -4263,6 +4263,13 @@ player.prototype.bind = function(){
             cur_media_item.disable_ad = true;
             module && module.vclub && module.vclub.set_ad_ended_time && module.vclub.set_ad_ended_time(this.cur_media_item.ad_id, stb.GetPosTime(), stb.GetMediaLen());
         }else if (this.cur_media_item.media_type == 'advert'){
+
+            if (cur_media_item.hasOwnProperty('ad_tracking')){
+                if (cur_media_item.ad_tracking.hasOwnProperty('close')){
+                    stb.advert.track(cur_media_item.ad_tracking['close'])
+                }
+            }
+
             delete cur_media_item.media_type;
             cur_media_item.disable_ad = true;
         }

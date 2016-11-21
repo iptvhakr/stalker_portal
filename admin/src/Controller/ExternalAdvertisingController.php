@@ -189,6 +189,15 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
+    public function tos() {
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        return $this->app['twig']->render($this->getTemplateName(__METHOD__));
+    }
+
     //----------------------- ajax method --------------------------------------
 
     public function company_list_json($local_use = FALSE){
@@ -316,11 +325,11 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
         $builder = $this->app['form.factory'];
 
         $regions = array(
-            'first_region' => 'First region',
-            'second_region' => 'Second region',
-            'third_region' => 'Third region',
-            'fourth_region' => 'Fourth region',
-            'fifth_region' => 'Fifth region',
+            'North America' => 'North America',
+            'APAC' => 'APAC',
+            'LATAM' => 'LATAM',
+            'Europe' => 'Europe',
+            'Other' => 'Other'
         );
 
         $form = $builder->createBuilder('form', $data)

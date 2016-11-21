@@ -2079,15 +2079,22 @@ function common_xpcom(){
         config : {},
         ticking_timeout : 0,
 
-        start : function (callback) {
+        start : function (cb) {
             _debug('stb.advert.get_ad');
 
-            //todo: temporary disabled ad
+            var callback = function () {
+                try{
+                    stb.Stop();
+                }catch(e){
+                    _debug(e);
+                }
+                main_menu.show();
 
-            return callback();
+                cb();
+            };
 
             stb.key_lock = true;
-            
+
             stb.load(
                 {
                     "type"   : "stb",
@@ -2107,7 +2114,7 @@ function common_xpcom(){
 
                     _debug('this.config', this.config);
 
-                    if (this.config.hasOwnProperty('places') && this.config['places'].hasOwnProperty('before_app') && this.config['places']['before_app'] == 0){
+                    if (!this.config || !this.config.hasOwnProperty('places') || this.config['places'].indexOf(101) == -1){
                         callback();
                         return;
                     }
