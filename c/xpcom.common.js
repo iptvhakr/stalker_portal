@@ -2079,8 +2079,19 @@ function common_xpcom(){
         config : {},
         ticking_timeout : 0,
 
-        start : function (callback) {
+        start : function (cb) {
             _debug('stb.advert.get_ad');
+
+            var callback = function () {
+                try{
+                    stb.Stop();
+                }catch(e){
+                    _debug(e);
+                }
+                main_menu.show();
+
+                cb();
+            };
 
             stb.key_lock = true;
 
