@@ -4285,6 +4285,7 @@ table.dataTable thead th {
 #files_container .dataTables_wrapper > .row-fluid > .span6 {
     float: left;
     min-width: 50%;
+    position: relative;
 }
 
 #files_container .dataTables_wrapper .dataTables_filter label{
