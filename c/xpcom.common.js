@@ -2127,7 +2127,7 @@ function common_xpcom(){
 
                         stb.player.play({
                             'id': 0,
-                            'cmd': result.ad,
+                            'cmd': 'ffmpeg '+result.ad,
                             'media_type': 'advert',
                             'is_advert': true,
                             'ad_tracking': result.tracking,
