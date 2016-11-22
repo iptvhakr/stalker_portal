@@ -252,11 +252,13 @@ $.fn.dataTableExt.oApi.fnRemoveCurrentRow = function ( oSettings, row ){
         oSettings.oInstance.DataTable().rows( row ).remove(); // .invalidate('data')
         oSettings._iRecordsDisplay--;
         oSettings._iRecordsTotal--;
-        if (oSettings.aoData.length ) {
+        if (oSettings.aoData.length > 0) {
             oSettings.oInstance.reDrawNoAjax();
         } else if (oSettings._iRecordsTotal) {
             oSettings.pageNoAjax--;
             oSettings.oInstance.DataTable().page(oSettings._iDisplayStart >= oSettings._iDisplayLength ? 'previous': 'next').draw(false);
+        } else {
+            oSettings.oInstance.DataTable().ajax.reload();
         }
     }
 };
