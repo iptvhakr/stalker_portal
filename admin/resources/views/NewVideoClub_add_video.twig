@@ -512,6 +512,11 @@
 
         function setFileLanguagesSelect(){
             var file_languages = $('#file_languages').select2(select2OptMS);
+            $.fn.select2.amd.require(['select2/compat/matcher'], function (oldMatcher) {
+                $('#file_languages').select2({
+                    matcher: oldMatcher(matchStart)
+                })
+            });
             if ($('#fileLangCloneList').length) {
                 $('#fileLangCloneList').remove();
             }
@@ -520,6 +525,7 @@
             var cloneList = fileLangList.clone(true, true);
             cloneList.insertAfter(fileLangList);
 
+            fileLangList.width("99%");
             cloneList.attr('id', 'fileLangCloneList').css({width: '92%', top: 0, left: 10, position: 'absolute'});
             file_languages.next().css({visibility: 'hidden'});
 
@@ -1989,6 +1995,14 @@
         };
 
         var emptyFunction = function(){}
+
+        function matchStart (term, text) {
+            if (text.toUpperCase().indexOf(term.toUpperCase()) == 0) {
+                return true;
+            }
+
+            return false;
+        }
 
     </script>
 
