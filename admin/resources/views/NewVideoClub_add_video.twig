@@ -1447,6 +1447,10 @@
                     $('#kinopoisk_url').html(fieldValue);
                 }
             });
+            if (!$("#modalbox > div").is(":visible")) {
+                $("#modalbox > div").show(50);
+            }
+            JScloseModalBox();
         }
 
         var setSerial = function (data) {
