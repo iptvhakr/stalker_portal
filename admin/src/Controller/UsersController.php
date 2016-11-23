@@ -359,6 +359,9 @@ class UsersController extends \Controller\BaseStalkerController {
             $this->user['expire_billing_date'] = str_replace('.', '-', $this->user['expire_billing_date']);
         }
         $this->user['version'] = preg_replace("/(\r\n|\n\r|\r|\n|\s){2,}/i", "$1", stripcslashes($this->user['version']));
+        if (empty($this->user['login']) && !empty($this->user['id'])) {
+            $this->user['login'] = $this->user['id'];
+        }
         $form = $this->buildUserForm($this->user, TRUE);
 
         if ($this->saveUsersData($form, TRUE)) {
