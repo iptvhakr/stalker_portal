@@ -408,23 +408,6 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
         return $this->mysqlInstance->from('ch_links')->where($where)->get()->all();
     }
 
-    public function getFirstFreeChannelNumber() {
-        $min = (int) $this->mysqlInstance->query("SELECT min(`itv`.`number`) as `empty_number` FROM `itv`")->first('empty_number');
-        if ($min > 1) {
-            return 1;
-        } else {
-            return $this->mysqlInstance
-                ->query("SELECT (`itv`.`number`+1) as `empty_number`
-                    FROM `itv`
-                    WHERE (
-                        SELECT 1 FROM `itv` as `st` WHERE `st`.`number` = (`itv`.`number` + 1) LIMIT 1
-                    ) IS NULL
-                    ORDER BY `itv`.`number`
-                    LIMIT 1")
-                ->first('empty_number');
-        }
-    }
-
     public function getLastChannelNumber() {
         return $this->mysqlInstance
             ->query("SELECT max(`itv`.`number`) as `last_number` FROM `itv`")

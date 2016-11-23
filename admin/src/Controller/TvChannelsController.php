@@ -1367,7 +1367,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         if (!empty($data['number'])){
             $def_number = $data['number'];
         } else {
-            $def_number = $this->db->getFirstFreeChannelNumber();
+            $def_number = $this->db->getFirstFreeNumber('itv');
         }
 
         if (!empty($data['name'])){

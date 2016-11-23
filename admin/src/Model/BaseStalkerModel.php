@@ -97,4 +97,22 @@ class BaseStalkerModel {
     public function getDropdownAttribute($param) {
         return $this->mysqlInstance->from('admin_dropdown_attributes')->where($param)->get()->first();
     }
+
+
+    public function getFirstFreeNumber($table, $field = 'number') {
+        $min = (int) $this->mysqlInstance->query("SELECT min(`$table`.`$field`) as `empty_number` FROM `$table`")->first('empty_number');
+        if ($min > 1) {
+            return 1;
+        } else {
+            return $this->mysqlInstance
+                ->query("SELECT (`$table`.`$field`+1) as `empty_number`
+                    FROM `$table`
+                    WHERE (
+                        SELECT 1 FROM `$table` as `st` WHERE `st`.`$field` = (`$table`.`$field` + 1) LIMIT 1
+                    ) IS NULL
+                    ORDER BY `$table`.`$field`
+                    LIMIT 1")
+                ->first('empty_number');
+        }
+    }
 }

@@ -279,6 +279,9 @@ class RadioController extends \Controller\BaseStalkerController {
 
     private function buildRadioForm(&$data = array(), $edit = FALSE) {
 
+        if (empty($data['number'])) {
+            $data['number'] = $this->db->getFirstFreeNumber('radio');
+        }
         $builder = $this->app['form.factory'];
         $form = $builder->createBuilder('form', $data)
                 ->add('id', 'hidden')
