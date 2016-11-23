@@ -495,11 +495,14 @@
         var  select2Opt = select2OptMS = select2OptPH = {minimumResultsForSearch: -1, dropdownAutoWidth: false, width: '100%', allowDuplicates: true};
         var  select2OptMS = select2Opt, select2OptPH = select2Opt;
         select2OptMS.maximumSelectionSize = 4;
+        select2OptMS.minimumResultsForSearch = 1;
         select2OptPH.placeholder = {
             id: "-1",
             text: "",
             selected: 'selected'
         };
+
+        var s2Opts;
 
         function DemoSelect2() {
                 checkCatGenreList('#form_category_id', '#form_cat_genre_id');
@@ -510,13 +513,23 @@
                 $('#form_age').select2(select2Opt);
         }
 
+        function matchStart (term, text) {
+            $("#fileLangCloneList").find('input').val(term);
+            return text.toUpperCase().indexOf(term.toUpperCase()) != -1;
+        }
+
+        function changeLangBlockHeight(){
+            if ($("#fileLangCloneList").height() >= $('#file_languages').next().height()) {
+                $("#fileLangCloneList").parent().css({paddingTop: $("#fileLangCloneList").height() - $('#file_languages').next().height() + 'px'});
+            } else {
+                $("#fileLangCloneList").find('.select2-selection').css({minHeight: $('#file_languages').next().height() + 'px'});
+                $("#fileLangCloneList").parent().css({paddingTop: 0});
+            }
+        }
+
         function setFileLanguagesSelect(){
-            var file_languages = $('#file_languages').select2(select2OptMS);
-            $.fn.select2.amd.require(['select2/compat/matcher'], function (oldMatcher) {
-                $('#file_languages').select2({
-                    matcher: oldMatcher(matchStart)
-                })
-            });
+            var file_languages  = $('#file_languages').select2(s2Opts);
+
             if ($('#fileLangCloneList').length) {
                 $('#fileLangCloneList').remove();
             }
@@ -525,9 +538,10 @@
             var cloneList = fileLangList.clone(true, true);
             cloneList.insertAfter(fileLangList);
 
-            fileLangList.width("99%");
-            cloneList.attr('id', 'fileLangCloneList').css({width: '92%', top: 0, left: 10, position: 'absolute'});
-            file_languages.next().css({visibility: 'hidden'});
+            cloneList.attr('id', 'fileLangCloneList').css({width: '93%', top: 0, left: 10, position: 'absolute'});
+            /*file_languages.next().css({visibility: 'hidden'});*/
+            cloneList.find('input').css({minWidth: '10px'});
+
 
             cloneList.on('select2:selecting', function(e){
                 e.stopPropagation();
@@ -539,6 +553,32 @@
                 e.preventDefault();
                 return false;
             });
+
+            fileLangList.find('li, li *').on('input keyup change', function(){
+                var oInput = fileLangList.find('input');
+                var inputWidth = cloneList.find('input').outerWidth();
+                var calcWidth = oInput.val().length * 10;
+                if (inputWidth < calcWidth) {
+                    inputWidth = calcWidth;
+                }
+                cloneList.find('input').css('width', inputWidth).val(oInput.val());
+            });
+
+            function getInputWidth(){
+                var containerWidth = cloneList.find('ul').innerWidth();
+                var rowWidth = 0;
+                cloneList.find('ul').children().each(function(){
+                    if (!$(this).hasClass('select2-search--inline')) {
+                        var oWidth = $(this).outerWidth() + 10;
+                        rowWidth += oWidth;
+                        if (rowWidth >= containerWidth) {
+                            rowWidth = oWidth;
+                        }
+                    }
+                });
+                var inputWith = containerWidth - rowWidth - 20;
+                return inputWith < 20 ?  'auto': inputWith;
+            }
 
             file_languages.on('select2:selecting', function(e){
                 var lastTimestamp = $("#fileLangCloneList").data('last-timestamp');
@@ -556,11 +596,9 @@
             });
 
             file_languages.on('select2:select', function(e){
-                if ($("#fileLangCloneList").height() >= $('#file_languages').next().height()) {
-                    $(this).parent().css({paddingTop: $("#fileLangCloneList").height() - $('#file_languages').next().height() + 'px'});
-                } else {
-                    $("#fileLangCloneList").find('.select2-selection').css({minHeight: $('#file_languages').next().height() + 'px'})
-                }
+                changeLangBlockHeight();
+                fileLangList.find('input').val('');
+                cloneList.find('input').css({width: getInputWidth()}).val('');
             });
 
             $("#file_languages, #fileLangCloneList").on('select2:closing', function(e){
@@ -570,9 +608,12 @@
                 } else {
                     conf.onError();
                 }
+                fileLangList.find('input').val('');
+                cloneList.find('input').css({width: getInputWidth()}).val('');
+                changeLangBlockHeight();
             });
 
-            $("#fileLangCloneList ul").on('mouseup mousedown select2:selecting select2:opening keyup keydown input query', 'li, li *', function(e){
+            $("#fileLangCloneList ul").on('mouseup mousedown select2:selecting select2:opening keyup keydown input', 'li, li *', function(e){
                 e.stopPropagation();
                 e.preventDefault();
                 return false;
@@ -588,11 +629,7 @@
                     langData.push($(this).data('val'));
                 });
                 $('#file_languages').val(langData).trigger('change.select2');
-                if ($("#fileLangCloneList").height() >= $('#file_languages').next().height()) {
-                    $("#fileLangCloneList").parent().css({paddingTop: $("#fileLangCloneList").height() - $('#file_languages').next().height() + 'px'});
-                } else {
-                    $("#fileLangCloneList").find('.select2-selection').css({minHeight: $('#file_languages').next().height() + 'px'})
-                }
+                changeLangBlockHeight();
                 $('#file_languages').data().select2.trigger('close');
                 return false;
             });
@@ -737,6 +774,14 @@
 
         function yelp() {
             $(document).ready(function () {
+
+                $.fn.select2.amd.require([
+                    "select2/core",
+                    "select2/utils",
+                    "select2/compat/matcher"
+                ], function (Select2, Utils, oldMatcher) {
+                    s2Opts = $.extend(select2OptMS, {matcher: oldMatcher(matchStart)});
+                });
 
                 $.getJSON("{{ app.datatable_lang_file }}", function(data){
                     dataTableLang = data;
@@ -1995,14 +2040,6 @@
         };
 
         var emptyFunction = function(){}
-
-        function matchStart (term, text) {
-            if (text.toUpperCase().indexOf(term.toUpperCase()) == 0) {
-                return true;
-            }
-
-            return false;
-        }
 
     </script>
 
