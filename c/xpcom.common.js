@@ -1052,6 +1052,8 @@ function common_xpcom(){
             stb.ExecAction('reboot');
         }
 
+        gSTB.StandByMode = 1; // always active stand-by
+
         screensaver.init();
 
         if (this.user['allowed_stb_types'] && !this.profile['strict_stb_type_check'] && this.user['allowed_stb_types'].indexOf('aurahd') !== -1){
