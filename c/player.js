@@ -1036,9 +1036,9 @@ player.prototype.event_callback = function(event, params){
                 }
 
                 //this.prev_layer && this.prev_layer.show && this.prev_layer.show.call(this.prev_layer, true);
-                
+
                 this.play_auto_ended = true;
-                
+
                 if (this.media_type == 'stream' && (this.is_tv || stb.cur_place == 'radio')){
                     _debug('stream error');
 
@@ -1216,7 +1216,7 @@ player.prototype.event_callback = function(event, params){
                                 this.play(module.time_shift.cur_media_item);
                                 break;
                             }
-                            
+
                         }else{
                             this.cur_media_item = module.time_shift.stored_media_item;
                             this.cur_tv_item    = this.cur_media_item;
@@ -1235,7 +1235,7 @@ player.prototype.event_callback = function(event, params){
                         _debug('this.cur_media_length', this.cur_media_length);
                         _debug('this.cur_pos_time', this.cur_pos_time);
                         */
-                        
+
                         if ((this.cur_media_length - this.cur_pos_time) > 60 ){
 
                             if (module.tv_archive){
@@ -1255,18 +1255,18 @@ player.prototype.event_callback = function(event, params){
                             }
                         }
                     }
-                    
+
                     if(this.prev_layer && this.prev_layer.show){
                         this.prev_layer.show.call(this.prev_layer, true);
                     }
-                    
+
                     this.stop();
                 }
-                
+
             }catch(e){
                 _debug(e);
             }
-            
+
             break;
         }
         case 2: // Receive information about stream
@@ -1433,7 +1433,7 @@ player.prototype.event_callback = function(event, params){
             }
             _debug('player.cur_media_length', this.cur_media_length);
             _debug('player.cur_pos_time', this.cur_pos_time);
-            
+
             if (this.info.on){
                 this.set_pos_button_to_cur_time();
             }
@@ -1442,25 +1442,25 @@ player.prototype.event_callback = function(event, params){
 
                 stb.advert.start_ticking(this.cur_media_length);
             }
-            
+
             /*if (this.is_tv){
                 this.send_last_tv_id(this.cur_tv_item.id);
             }*/
-            
+
             window.clearTimeout(this.send_played_video_timer);
-            
+
             _debug('stb.cur_place', stb.cur_place);
-            
+
             if (stb.cur_place == 'vclub'){
-                
+
                 var time_send_played = (this.cur_media_length*0.7) * 1000;
                 _debug('time_send_played,', time_send_played);
-                
+
                 this.send_played_video_timer = window.setTimeout(
                     function(){
                         self.send_played_video(self.cur_media_item.video_id || self.cur_media_item.id);
                     },
-                    
+
                     time_send_played
                 )
             }
@@ -1576,7 +1576,7 @@ player.prototype.event_callback = function(event, params){
                         this.play_last(true);
                     }
                 }
-                
+
             }else{
 
                 if (this.cur_media_item.media_type != 'vclub_ad' && this.play_continuously && this.cur_media_item.hasOwnProperty('series') && this.cur_media_item.series && this.cur_media_item.series.length > 0){
@@ -1690,7 +1690,7 @@ player.prototype.event_callback = function(event, params){
                     }
                 }
                 stb.remount_storages(
-                
+
                     function(){
                         if (self.event5_counter == 1){
                             self.play(self.cur_media_item);
@@ -1698,11 +1698,11 @@ player.prototype.event_callback = function(event, params){
                             if(self.prev_layer && self.prev_layer.show){
                                 self.prev_layer.show.call(self.prev_layer, true);
                             }
-                            
+
                             self.stop();
-                            
+
                             stb.notice.show(get_word('player_server_unavailable'));
-                        }  
+                        }
                     }
                 )
             }
@@ -1714,6 +1714,13 @@ player.prototype.event_callback = function(event, params){
                 this.get_pids();
                 this.set_media_aspect();
             }
+            break;
+        }
+
+        case 9: // Teletext subtitles
+        {
+            this.get_pids(); // todo:
+
             break;
         }
         case 35:
