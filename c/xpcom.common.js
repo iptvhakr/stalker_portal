@@ -2127,6 +2127,8 @@ function common_xpcom(){
 
                         stb.player.prev_layer = main_menu;
 
+                        stb.key_lock = true;
+
                         stb.player.play({
                             'id': 0,
                             'cmd': 'ffmpeg '+result.ad,
