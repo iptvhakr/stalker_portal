@@ -490,7 +490,7 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
             foreach($ad_positions as $row) {
                 if($row['platform'] == $platform){
                     $parts_labels[$platform][$row['position_code']] = $this->setLocalization($row['label']);
-                    $parts_platform[$platform][$row['position_code']] = array_key_exists($row['position_code'], $data[$platform]) && $data[$platform][$row['position_code']];
+                    $parts_platform[$platform][$row['position_code']] = array_key_exists($platform, $data) && array_key_exists($row['position_code'], $data[$platform]) && $data[$platform][$row['position_code']];
                 }
             }
             ksort($parts_platform[$platform]);
