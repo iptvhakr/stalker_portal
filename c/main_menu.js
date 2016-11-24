@@ -459,11 +459,15 @@ var main_menu = {
 
         }else{
 
-            stb.advert.start(
-                function () {
-                    self.map[1].cmd();
-                }
-            );
+            if (self.map[1] && self.map[1].module && self.map[1].module.layer_name && self.map[1].module.layer_name == 'settings'){
+                self.map[1].cmd();
+            }else{
+                stb.advert.start(
+                    function () {
+                        self.map[1].cmd();
+                    }
+                );
+            }
         }
     },
     
