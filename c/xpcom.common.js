@@ -1052,6 +1052,8 @@ function common_xpcom(){
             stb.ExecAction('reboot');
         }
 
+        gSTB.StandByMode = 1; // always active stand-by
+
         screensaver.init();
 
         if (this.user['allowed_stb_types'] && !this.profile['strict_stb_type_check'] && this.user['allowed_stb_types'].indexOf('aurahd') !== -1){
@@ -2125,9 +2127,11 @@ function common_xpcom(){
 
                         stb.player.prev_layer = main_menu;
 
+                        stb.key_lock = true;
+
                         stb.player.play({
                             'id': 0,
-                            'cmd': result.ad,
+                            'cmd': 'ffmpeg '+result.ad,
                             'media_type': 'advert',
                             'is_advert': true,
                             'ad_tracking': result.tracking,

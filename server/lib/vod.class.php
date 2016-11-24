@@ -149,8 +149,8 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
 
         $vclub_ad = new VclubAdvertising();
 
-        /*$advertising = new Advertising();
-        $advert = $advertising->getAd(Stb::getInstance()->id);*/
+        $advertising = new Advertising();
+        $advert = $advertising->getAd(Stb::getInstance()->id);
 
         if (!$disable_ad && empty($link['error'])){
 
@@ -162,7 +162,7 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
                     array(
                         'id'            => 0,
                         'media_type'    => 'advert',
-                        'cmd'           => $advert['ad'],
+                        'cmd'           => 'ffmpeg '.$advert['ad'],
                         'is_advert'     => true,
                         'ad_tracking'   => $advert['tracking'],
                         'ad_must_watch' => 25
