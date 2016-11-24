@@ -101,7 +101,7 @@ class BaseStalkerModel {
 
     public function getFirstFreeNumber($table, $field = 'number') {
         $min = (int) $this->mysqlInstance->query("SELECT min(`$table`.`$field`) as `empty_number` FROM `$table`")->first('empty_number');
-        if ($min > 1) {
+        if ($min > 1 || $min < 1) {
             return 1;
         } else {
             return $this->mysqlInstance
