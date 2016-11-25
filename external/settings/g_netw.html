@@ -21,7 +21,8 @@ function onLoad()
             "wired":[parent.t('Wired (Ethernet)'),1],
             "pppoe":[parent.t('PPPoE'),2],
             "wireless":[parent.t('Wireless (Wi-Fi)'),3],
-            "speed":[parent.t('Speed test'),4]
+            "speed":[parent.t('Speed test'),4],
+            "traceroute":[parent.t('Extended diagnostics'),5]
         }
         for (var i=0;i<parent.prof.modules.length;i++){
             if(parent.prof.modules[i].name=="net_info"){number=i;break;}
@@ -36,7 +37,25 @@ function onLoad()
         d.id='i'+mid;
         d.value=parent.t('Back');
         document.getElementById('menu_buttons').innerHTML=text;
+
+        buttonHeight = getNumericalCSSAtr('i1', 'height');
+        menuButtonsTop = getNumericalCSSAtr('menu_buttons', 'margin-top');
+
+        if (buttonHeight != null && menuButtonsTop != null && menuButtonsTop >= buttonHeight/2 ) {
+            buttonHeight = buttonHeight/2;
+            document.getElementById('menu_buttons').style['margin-top'] = menuButtonsTop > buttonHeight ? menuButtonsTop - buttonHeight: buttonHeight;
+        }
+
         document.getElementById("i1").focus();
+}
+
+function getNumericalCSSAtr(id, attr ){
+    attrVal = window.getComputedStyle(document.getElementById(id)).getPropertyValue(attr).replace('px', '');
+    if (attrVal) {
+        attrVal = parseInt(attrVal, 10);
+        return !isNaN(attrVal) ? attrVal : 0;
+    }
+    return null;
 }
 
 function ent(a)
@@ -134,6 +153,7 @@ function change(a){}
 </script>
 <script language="JavaScript" src="js/pres.js"></script>
 <script type="text/javascript" src="../../c/speedtest.js"></script>
+<script type="text/javascript" src="../../c/traceroute.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <body onload="onLoad()" onkeydown="pressKey(event);">
         <div align="center" id="menu_buttons" style="display:block;">
@@ -188,6 +208,7 @@ function change(a){}
           <tr>
             <td align="right"><div id="tt3" class="list_head"></div></td>
             <td><span id="tt31" class="item_name"></span></td>
+          </tr>
         </table>
         </div>
     <div id="footer">
