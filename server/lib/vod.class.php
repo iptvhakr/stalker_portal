@@ -150,47 +150,56 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
         $vclub_ad = new VclubAdvertising();
 
         $advertising = new Advertising();
-        $advert = $advertising->getAd(Stb::getInstance()->id);
+        $campaigns = $advertising->getAds(Stb::getInstance()->id);
 
         if (!$disable_ad && empty($link['error'])){
 
+            $playlist = array();
+
             $video = Video::getById($media_id);
 
-            if ($advert && !empty($advert['config']['places']) && in_array(102, $advert['config']['places'])){
+            if ($campaigns && count($campaigns) > 0){
+var_dump(count($campaigns));
+                foreach ($campaigns as $campaign){
 
-                $link = array(
-                    array(
-                        'id'            => 0,
-                        'media_type'    => 'advert',
-                        'cmd'           => 'ffmpeg '.$advert['ad'],
-                        'is_advert'     => true,
-                        'ad_tracking'   => $advert['tracking'],
-                        'ad_must_watch' => 25
-                    ),
-                    $link
-                );
+                    if (!empty($campaign['campaign']['places']) && in_array(102, $campaign['campaign']['places'])){
+                        $playlist[] = array(
+                            'id'            => 0,
+                            'media_type'    => 'advert',
+                            'cmd'           => 'ffmpeg '.$campaign['ad'],
+                            'is_advert'     => true,
+                            'ad_tracking'   => $campaign['tracking'],
+                            'ad_must_watch' => 25
+                        );
+                    }
+                }
+
+                if (count($playlist)){
+                    $playlist[] = $link;
+                    $link = $playlist;
+                }
 
             }else{
 
                 $picked_ad = $vclub_ad->getOneWeightedRandom($video['category_id']);
 
-            if (!empty($picked_ad)){
+                if (!empty($picked_ad)){
 
-                $link['cmd'] = $_REQUEST['cmd'];
+                    $link['cmd'] = $_REQUEST['cmd'];
 
-                    $link = array(
-                        array(
-                            'id'            => 0,
-                            'ad_id'         => $picked_ad['id'],
-                            'ad_must_watch' => $picked_ad['must_watch'],
-                            'media_type'    => 'vclub_ad',
-                            'cmd'           => $picked_ad['url'],
-                            'subtitles'     => $subtitles
-                        ),
-                        $link
-                    );
+                        $link = array(
+                            array(
+                                'id'            => 0,
+                                'ad_id'         => $picked_ad['id'],
+                                'ad_must_watch' => $picked_ad['must_watch'],
+                                'media_type'    => 'vclub_ad',
+                                'cmd'           => $picked_ad['url'],
+                                'subtitles'     => $subtitles
+                            ),
+                            $link
+                        );
+                    }
                 }
-            }
 
         }
 

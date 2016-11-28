@@ -1181,7 +1181,7 @@ player.prototype.event_callback = function(event, params){
                                     delete cur_media_item.media_type;
                                     cur_media_item.disable_ad = true;
                                     module && module.vclub && module.vclub.set_ad_ended_time && module.vclub.set_ad_ended_time(this.cur_media_item.ad_id, stb.GetPosTime(), stb.GetMediaLen(), true);
-                                }else if (this.cur_media_item.media_type == 'advert'){
+                                }else if (idx == (this.cur_media_item.playlist.length - 1) && this.cur_media_item.media_type == 'advert'){
                                     delete cur_media_item.media_type;
                                     cur_media_item.disable_ad = true;
                                 }
@@ -1674,7 +1674,7 @@ player.prototype.event_callback = function(event, params){
                             if (this.cur_media_item.media_type && this.cur_media_item.media_type == 'vclub_ad'){
                                 delete cur_media_item.media_type;
                                 module && module.vclub && module.vclub.set_ad_ended_time && module.vclub.set_ad_ended_time(this.cur_media_item.ad_id, stb.GetPosTime(), stb.GetMediaLen(), true);
-                            }else if (this.cur_media_item.media_type == 'advert'){
+                            }else if (idx == (this.cur_media_item.playlist.length - 1) && this.cur_media_item.media_type == 'advert'){
                                 delete cur_media_item.media_type;
                                 cur_media_item.disable_ad = true;
                             }
@@ -4270,8 +4270,10 @@ player.prototype.bind = function(){
                 }
             }
 
-            delete cur_media_item.media_type;
-            cur_media_item.disable_ad = true;
+            if (idx == this.cur_media_item.playlist.length){
+                delete cur_media_item.media_type;
+                cur_media_item.disable_ad = true;
+            }
         }
 
         this.play(cur_media_item);

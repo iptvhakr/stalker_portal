@@ -1167,7 +1167,7 @@
                             stb.player.prev_layer = self;
                             stb.player.need_show_info = 1;
 
-                            if (result.length && result.length == 2){
+                            if (result.length && result.length >= 2){
                                 stb.player.need_show_info = 0;
 
                                 if (result[1].hasOwnProperty('subtitles')){
@@ -1180,7 +1180,9 @@
                                 }
 
                                 stb.player.cur_media_item.cmd = result[0].cmd;
-                                stb.player.cur_media_item.playlist = [result[0].cmd, result[1].cmd];
+                                stb.player.cur_media_item.playlist = result.map(function (item) {
+                                    return item.cmd;
+                                });
                                 stb.player.cur_media_item.keep_original_name = true;
                                 stb.player.cur_media_item.ad_must_watch = result[0].ad_must_watch;
                                 stb.player.cur_media_item.show_osd = true;
