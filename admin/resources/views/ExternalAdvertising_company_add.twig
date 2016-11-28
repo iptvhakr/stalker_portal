@@ -96,6 +96,7 @@
                                     {% if attribute(label_part, key) is defined %}
                                 <label class="col-sm-12 text-left"><strong>{{ label_part[key] }}</strong></label>
                                     {% endif %}
+                                    {% if not (key == 103) %}
                                     <div class=" col-xs-10 col-sm-8">
                                         {{ form_widget(addPositionField) }}
                                         {{ form_label(addPositionField, addPositionField.vars.label[key]) }}
@@ -105,6 +106,7 @@
                                             {{ form_errors(addPositionField) }}
                                         </div>
                                     </div>
+                                    {% endif %}
                                 {% endfor %}
                             </div>
                         {% endfor %}
@@ -139,7 +141,7 @@
                 </div>
             </div>
         </div>
-        <div style="">
+        <div style="display: none;">
             {{ form_rest(app.form) }}
         </div>
         {{ form_end(app['form']) }}  
