@@ -1719,7 +1719,7 @@ player.prototype.event_callback = function(event, params){
 
         case 9: // Teletext subtitles
         {
-            this.get_pids(); // todo:
+            this.get_pids();
 
             break;
         }
@@ -5654,11 +5654,11 @@ player.prototype.build_con_menu = function(){
     _debug('player.build_con_menu');
     
     if (this.con_menu.map.length > 2){
-        return;
+        this.con_menu.map.splice(2, this.con_menu.map.length - 2);
     }
 
     if (stb && stb.Set3DConversionMode){
-        mode = stb.Get3DConversionMode ? stb.Get3DConversionMode(): 0;
+        var mode = stb.Get3DConversionMode ? stb.Get3DConversionMode(): 0;
         this.con_menu.map.unshift(
             {
                 "title" : get_word('3D mode'),
