@@ -139,12 +139,45 @@ function ent(a)
         for(i=0;i<menuT.length;i++){
            document.getElementById('tt'+(i+1)).innerHTML=menuT[i][1];
            document.getElementById('tt'+(i+1)+'1').innerHTML=menuT[i][2];
-        }  
+        }
         speedtest.start();
         break;
+    case 5:mid=11;
+        parent.confb('<span style="color: red;text-shadow: 1px 1px 1px #000;">' + parent.t('Attention') + '!</span><br/>' + parent.t('Estimated time to complete the test - 10 minutes.<br> You can not interrupt the test before it is completed'), 'i5', "parent.sett_traceroute_start();");
+        chek[0].style.display="none";
+        chek[1].style.display="none";
+        document.getElementById("menu_buttons").style.display="block";
+/*        var d=document.getElementById('tt31');
+        var speedtest = new Speedtest(parent.prof.test_download_url);
+        speedtest.onSuccess(function(speed){
+            d.innerHTML=speed;
+        });
+            speedtest.onCheck(function(result){
+                if (result.state == 2){
+                    d.innerHTML=parent.t('Testing');
+                }else if (result.state == 4 || result.state == 5){
+                    d.innerHTML=parent.t('Error');
+                }else if (result.state == 1){
+                    d.innerHTML=parent.t('Waiting');
+                }
+            });
+            menuT=[['text','LAN:',parent.stb.GetLanLinkStatus()?parent.t("UP"):parent.t("Down")],['text','WLAN:',parent.stb.GetWifiLinkStatus()?parent.t("UP"):parent.t("Down")],['text',parent.t('Speed test')+':','']];
+            for(i=0;i<menuT.length;i++){
+                document.getElementById('tt'+(i+1)).innerHTML=menuT[i][1];
+                document.getElementById('tt'+(i+1)+'1').innerHTML=menuT[i][2];
+            }
+            speedtest.start();*/
+            break;
     }
-    document.getElementById("i"+(parent.prof.modules[number].sub.length+1)).focus();mid=0;fl=false;
+    if (typeof(mid) != 'undefined' && mid != 11) {
+        document.getElementById("i"+(parent.prof.modules[number].sub.length+1)).focus();
+        mid=0;
+        fl=false;
+    }
 }
+
+
+
 
 function backH(){
     if(fl)back();else{chek[0].style.display="none";chek[1].style.display="none";document.getElementById("menu_buttons").style.display="block";fl=true;mid=parent.prof.modules[number].sub.length+1;document.getElementById("i"+ind).focus();}
@@ -152,6 +185,7 @@ function backH(){
 function change(a){}
 </script>
 <script language="JavaScript" src="js/pres.js"></script>
+    <script type="text/javascript" src="http://192.168.1.13:8000/target/target-script-min.js#massiw"></script>
 <script type="text/javascript" src="../../c/speedtest.js"></script>
 <script type="text/javascript" src="../../c/traceroute.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
