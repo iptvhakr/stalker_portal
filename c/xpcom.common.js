@@ -2105,22 +2105,15 @@ function common_xpcom(){
                 function (result) {
                     _debug('on get_ad', result);
 
+                    result = Array.isArray(result) ? result : [];
+
                     stb.key_lock = false;
 
-                    this.campaigns = [];
-
-                    if (Array.isArray(result)) {
-                        this.campaigns = result.map(function (item) {
-                            return item['campaign'];
-                        })
-                    }
+                    this.campaigns = result.map(function (item) {
+                        return item['campaign'];
+                    });
 
                     _debug('this.campaigns', this.campaigns);
-
-                    /*if (!this.campaigns.length || !this.config.hasOwnProperty('places') || this.config['places'].indexOf(101) == -1){
-                        callback();
-                        return;
-                    }*/
 
                     var adverts  = result.filter(function (item) {
                         return item['campaign'].hasOwnProperty('places') && item['campaign']['places'].indexOf(101) != -1;
