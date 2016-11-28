@@ -176,7 +176,12 @@ function ent(a)
     }
 }
 
-
+parent.sett_traceroute_start = function() {
+    var traceroute = new Traceroute();
+    traceroute.start();
+    parent.traceroute_results = traceroute.getResult();
+    document.getElementById("i"+ind).focus();
+};
 
 
 function backH(){
