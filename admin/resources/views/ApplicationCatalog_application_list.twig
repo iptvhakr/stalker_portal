@@ -37,6 +37,31 @@
 
     <script type="text/javascript" defer="defer">
 
+        var conf = {
+            form: '#form_',
+            lang : '{{ app.js_validator_language }}',
+            showHelpOnFocus : true,
+            validateHiddenInputs: true,
+            ignore: ['.ignore'],
+            modules: 'jsconf',
+            onSuccess: function () {
+                var sendData = {};
+
+                $(this.form).find('input, select').filter(':not(disabled)').each(function () {
+                    sendData[$(this).attr('name')] = $(this).is(':checkbox') ? ($(this).is(':checked') ? 1 : 0) : $(this).val();
+                });
+                $.validate();
+                $(conf.form).get(0).reset();
+                JScloseModalBox();
+                JSshowModalBox();
+                ajaxPostSend($(conf.form).attr('action'), sendData, false, false, true);
+                return false;
+            },
+            onError: function () {
+                return false;
+            }
+        };
+
         function TestTable1() {
             $('#datatable-1').on('xhr.dt', function (e, settings, json) {
                 if (typeof (json.data) == 'object') {
@@ -107,6 +132,7 @@
 
         function yelp() {
             $(document).ready(function () {
+                $.validate(conf);
                 $(document).on('click', "a.main_ajax", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
@@ -151,18 +177,14 @@
                 $(document).on('click', "#modalbox button[type='submit']", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
-                    var sendData = new Object();
-                    var form_fields = $("#modalbox").find('form').find(".own_fields:not(:disabled)");
-                    form_fields.each(function () {
-                        if ($(this).val()) {
-                            if (this.type.toUpperCase() != 'CHECKBOX' || this.checked) {
-                                sendData[this.name] = $(this).val();
-                            }
-                        }
-                    });
-                    var action = $("#modalbox").find('form').attr('action');
-                    JSshowModalBox();
-                    ajaxPostSend(action, sendData, false, false);
+
+                    conf.form = "#" + $("#modalbox").find('form').attr('id');
+
+                    if ($(conf.form).isValid({}, conf, true)) {
+                        conf.onSuccess();
+                    } else {
+                        conf.onError();
+                    }
                     return false;
                 });
 
@@ -210,6 +232,9 @@
 
 
         var fillModalForm = function (data) {
+            conf.form = "#" + $("#modalbox").find('form').attr('id');
+            $.validate();
+            $(conf.form).get(0).reset();
             if (data.repository && data.repository.url) {
                 var regExp = new RegExp('\\.git$', 'gi');
                 $('#apps_url').val(data.repository.url.replace(regExp, ''));
@@ -232,12 +257,12 @@
 
     <script type="text/template" id="modal_get_form_body">
         <div class="box-content">
-            <form class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-get-data-from-repo">
+            <form class="form-horizontal" id="form_" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-get-data-from-repo">
                 <div class="form-group">
-                    <label class="col-sm-2 control-label col-sm-offset-1">{{ 'URL'|trans }}</label>
+                    <label class="col-sm-2 control-label col-sm-offset-1">{{ 'URL'|trans }}<span class="icon-required">*</span></label>
                     <div class="col-xs-10 col-sm-8">
                         <span class="col-xs-12 col-sm-12">
-                            <input type="text" class="own_fields form-control" name="apps[url]" value="" id="apps_url">
+                            <input type="text" class="own_fields form-control" name="apps[url]" value="" id="apps_url" data-validation=required>
                         </span>
                         <span class="help-inline col-xs-12 col-sm-12">
                             <span class="small txt-default">{{ 'Enter URL to the application repository'|trans }}</span>
@@ -258,7 +283,7 @@
 
     <script type="text/template" id="modal_save_form_body">
         <div class="box-content">
-            <form class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-add">
+            <form class="form-horizontal" role="form" id="form_" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/application-add">
                 <div class="form-group">
                     <label class="col-sm-2 control-label col-sm-offset-1">{{ 'URL'|trans }}</label>
                     <div class="col-xs-10 col-sm-8">

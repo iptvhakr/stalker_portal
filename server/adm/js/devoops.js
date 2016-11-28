@@ -74,14 +74,14 @@ function LoadDataTablesScripts(callback) {
     $.fn.dataTableExt.aoFeatures.push( {
         "fnInit": function( oDTSettings ) {
             var filterContainer = $(oDTSettings.nTableWrapper).find("#" + oDTSettings.sTableId + '_filter');
-            if (filterContainer.length) {
+            if (filterContainer.length && filterContainer.next("button.dataTables_ajax_update_button").length == 0) {
                 var newTableId = "dataTables_ajax_update_button_" + $.random(1000000);
                 filterContainer.after('<button id="'+newTableId+'" class="btn dataTables_ajax_update_button" type="button"><i class="fa fa-refresh"></i></button>');
                 $(document).on("click", "#" + newTableId, function(){
                     if (oDTSettings.aoServerParams.length) {
                         $("#" + oDTSettings.sTableId).DataTable().ajax.reload();
                     } else if (typeof (updateTableData) == 'function') {
-                        updateTableData();
+                        updateTableData({tableId: oDTSettings.sTableId});
                     }
                 });
             }
@@ -935,9 +935,13 @@ function updateTableRowError(obj){
 function updateTableData(obj){
     try{
         var dTRow, oTables = new Array();
-        if (obj && (obj.RowOrder || obj.id)) {
-            dTRow = (obj.RowOrder ? obj.RowOrder : (obj.id ? 'dTRow_' + obj.id : false));
-            oTables.push($("#" + dTRow.replace('#', '')).closest('table'));
+        if (obj && (obj.RowOrder || obj.id || obj.tableId)) {
+            if (!obj.tableId) {
+                dTRow = (obj.RowOrder ? obj.RowOrder : (obj.id ? 'dTRow_' + obj.id : false));
+                oTables.push($("#" + dTRow.replace('#', '')).closest('table'));
+            } else {
+                oTables.push($("#" + obj.tableId.replace('#', '')));
+            }
         } else {
             oTables = $("table.dataTable:visible");
         }

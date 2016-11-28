@@ -16,9 +16,14 @@ $.extend(true, $.fn.dataTable.defaults, {
         });
 
         if ($("#attribute_set").length == 0) {
-            $(".dataTables_ajax_update_button, .dataTables_filter").each(function(){
-                var rt = ($(window).width() - ($(this).offset().left + $( this).outerWidth()));
-                $( this).css('right', rt - 69);
+            $(oSettings.nTableWrapper).find(".dataTables_ajax_update_button, .dataTables_filter").each(function(){
+                var rt = 5;
+                var nextEl = $(this).next();
+                while(nextEl.length != 0){
+                    rt += nextEl.outerWidth() + 10;
+                    nextEl = nextEl.next();
+                }
+                $( this).css('right', rt);
             });
         }
 	},
@@ -247,11 +252,13 @@ $.fn.dataTableExt.oApi.fnRemoveCurrentRow = function ( oSettings, row ){
         oSettings.oInstance.DataTable().rows( row ).remove(); // .invalidate('data')
         oSettings._iRecordsDisplay--;
         oSettings._iRecordsTotal--;
-        if (oSettings.aoData.length ) {
+        if (oSettings.aoData.length > 0) {
             oSettings.oInstance.reDrawNoAjax();
         } else if (oSettings._iRecordsTotal) {
             oSettings.pageNoAjax--;
             oSettings.oInstance.DataTable().page(oSettings._iDisplayStart >= oSettings._iDisplayLength ? 'previous': 'next').draw(false);
+        } else {
+            oSettings.oInstance.DataTable().ajax.reload();
         }
     }
 };
