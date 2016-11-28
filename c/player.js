@@ -1520,8 +1520,8 @@ player.prototype.event_callback = function(event, params){
                     stb.advert.track(this.cur_media_item.ad_tracking['error'])
                 }
             }
-
-            if (this.cur_media_item.stop_callback){
+            _debug('this.cur_media_item', this.cur_media_item);
+            if (this.cur_media_item.stop_callback && !this.cur_media_item.playlist){
                 this.cur_media_item.stop_callback();
                 return;
             }
@@ -1581,7 +1581,7 @@ player.prototype.event_callback = function(event, params){
 
                 if (this.cur_media_item.media_type != 'vclub_ad' && this.play_continuously && this.cur_media_item.hasOwnProperty('series') && this.cur_media_item.series && this.cur_media_item.series.length > 0){
 
-                    var series_idx = this.cur_media_item.series.indexOf(this.cur_media_item.cur_series);
+                    var series_idx = this.cur_media_item.series.lastIndexOf(this.cur_media_item.cur_series);
 
                     _debug('series_idx before', series_idx);
 
@@ -1640,7 +1640,7 @@ player.prototype.event_callback = function(event, params){
                         }
 
                     }else{
-                        var idx = this.cur_media_item.playlist.indexOf(this.cur_media_item.cmd);
+                        var idx = this.cur_media_item.playlist.lastIndexOf(this.cur_media_item.cmd);
 
                         _debug('playlist idx', idx);
 
@@ -1685,8 +1685,13 @@ player.prototype.event_callback = function(event, params){
 
                             this.play(cur_media_item);
 
-                            break;
+                        }else{
+                            if (this.cur_media_item.stop_callback){
+                                this.cur_media_item.stop_callback();
+                            }
                         }
+
+                        break;
                     }
                 }
                 stb.remount_storages(
@@ -2211,11 +2216,11 @@ player.prototype.volume = new function(){
 player.prototype.define_media_type = function(cmd){
     _debug('player.define_media_type', cmd);
 
-    if (cmd.indexOf('://') > 0){
+    if (cmd.indexOf('://') > 0 && !this.cur_media_item.is_advert){
         
         _debug('stb.cur_place', stb.cur_place);
         
-        if ((cmd.indexOf('mmsh://') >=0 || cmd.indexOf('rtsp://') >=0 || cmd.indexOf('rtmp://') >=0 || cmd.indexOf('udp://') >=0 || cmd.indexOf('rtp://') >=0 || cmd.indexOf('http://') >=0 || cmd.indexOf('dvb://') >=0) && !this.active_time_shift && stb.cur_place != 'demo' && stb.cur_place != 'internet' && stb.cur_place != 'epg_simple' && stb.cur_place != 'epg' && stb.cur_place != 'radio' && stb.cur_place != 'vclub' && stb.cur_place != 'karaoke' && stb.cur_place != 'audioclub' && !this.cur_media_item.is_audio && !this.cur_media_item.promo && !this.cur_media_item.radio && !this.cur_media_item.is_advert){
+        if ((cmd.indexOf('mmsh://') >=0 || cmd.indexOf('rtsp://') >=0 || cmd.indexOf('rtmp://') >=0 || cmd.indexOf('udp://') >=0 || cmd.indexOf('rtp://') >=0 || cmd.indexOf('http://') >=0 || cmd.indexOf('dvb://') >=0) && !this.active_time_shift && stb.cur_place != 'demo' && stb.cur_place != 'internet' && stb.cur_place != 'epg_simple' && stb.cur_place != 'epg' && stb.cur_place != 'radio' && stb.cur_place != 'vclub' && stb.cur_place != 'karaoke' && stb.cur_place != 'audioclub' && !this.cur_media_item.is_audio && !this.cur_media_item.promo && !this.cur_media_item.radio){
             this.is_tv = true;
         }else{
             this.is_tv = false;
@@ -2519,7 +2524,7 @@ player.prototype.play = function(item){
             }
         }
 
-    }else if (cmd.indexOf('/usbdisk') > 0 || cmd.indexOf('/USB-') > 0 || cmd.indexOf('/ram/mnt/smb/') > 0 || cmd.indexOf('/av/') > 0 || cmd.indexOf('/UPnP/') > 0 || stb.cur_place == 'media_browser'){
+    }else if (cmd.indexOf('/usbdisk') > 0 || cmd.indexOf('/USB-') > 0 || cmd.indexOf('/ram/mnt/smb/') > 0 || cmd.indexOf('/av/') > 0 || cmd.indexOf('/UPnP/') > 0 || stb.cur_place == 'media_browser' || stb.player.cur_media_item.media_type == 'advert' || stb.player.cur_media_item.media_type == 'vclub_ad'){
 
         this.play_now(cmd);
 
@@ -4215,7 +4220,7 @@ player.prototype.bind = function(){
             return;
         }
 
-        var idx = this.cur_media_item.playlist.indexOf(this.cur_media_item.cmd);
+        var idx = this.cur_media_item.playlist.lastIndexOf(this.cur_media_item.cmd);
 
         _debug('idx', idx);
 

@@ -1190,6 +1190,7 @@
                                 stb.player.cur_media_item.ad_id = result[0].ad_id;
                                 stb.player.cur_media_item.is_advert = result[0].is_advert;
                                 stb.player.cur_media_item.ad_tracking = result[0].ad_tracking;
+                                stb.player.media_type = 'file';
 
                                 stb.key_lock = true;
 

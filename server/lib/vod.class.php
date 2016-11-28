@@ -159,7 +159,7 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
             $video = Video::getById($media_id);
 
             if ($campaigns && count($campaigns) > 0){
-var_dump(count($campaigns));
+
                 foreach ($campaigns as $campaign){
 
                     if (!empty($campaign['campaign']['places']) && in_array(102, $campaign['campaign']['places'])){
