@@ -164,7 +164,7 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
 
                     if (!empty($campaign['campaign']['places']) && in_array(102, $campaign['campaign']['places'])){
                         $playlist[] = array(
-                            'id'            => 0,
+                            'id'            => $campaign['campaign']['id'],
                             'media_type'    => 'advert',
                             'cmd'           => 'ffmpeg '.$campaign['ad'],
                             'is_advert'     => true,

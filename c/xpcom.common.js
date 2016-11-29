@@ -2143,7 +2143,8 @@ function common_xpcom(){
                                     stb.player.need_show_info = 0;
 
                                     stb.player.play({
-                                        'id': 0,
+                                        'id': ad.campaign['id'],
+                                        'ad_id': ad.campaign['id'],
                                         'cmd': 'ffmpeg ' + ad.ad,
                                         'media_type': 'advert',
                                         'is_advert': true,

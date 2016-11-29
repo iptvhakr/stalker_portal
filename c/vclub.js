@@ -1171,7 +1171,7 @@
 
                             if (result.length && result.length >= 2){
 
-                                var movie = result.splice(result.length-1);
+                                var movie = result.splice(result.length-1)[0];
 
                                 _debug('movie', movie);
 
@@ -1179,19 +1179,26 @@
 
                                     _debug('movie callback');
 
+                                    self.hide(true);
+
                                     try{
                                         stb.Stop();
                                     }catch(e){
                                         _debug(e);
                                     }
 
+                                    _debug('movie', movie);
+                                    _debug('cur_media_item', cur_media_item);
+
                                     stb.player.cur_media_item = cur_media_item.clone();
 
-                                    stb.player.cur_media_item.subtitles = result.subtitles.map(function(item, idx){
-                                        item.pid  = 'external_'+idx;
-                                        item.lang = [item.lang, ''];
-                                        return item;
-                                    });
+                                    if (movie.hasOwnProperty('subtitles')){
+                                        stb.player.cur_media_item.subtitles = movie.subtitles.map(function(item, idx){
+                                            item.pid  = 'external_'+idx;
+                                            item.lang = [item.lang, ''];
+                                            return item;
+                                        });
+                                    }
 
                                     stb.player.play_now(movie);
                                 };
@@ -1211,6 +1218,8 @@
                                             return function () {
                                                 _debug('ad callback', ad);
 
+                                                self.hide(true);
+
                                                 stb.player.prev_layer = self;
 
                                                 stb.key_lock = true;
@@ -1218,12 +1227,12 @@
                                                 stb.player.need_show_info = 0;
 
                                                 stb.player.play({
-                                                    'id': 0,
-                                                    'ad_id' : ad.ad_id,
-                                                    'cmd': 'ffmpeg ' + ad.ad,
+                                                    'id': ad.id,
+                                                    'ad_id' : ad.id,
+                                                    'cmd': ad.cmd,
                                                     'media_type': 'advert',
                                                     'is_advert': true,
-                                                    'ad_tracking': ad.tracking,
+                                                    'ad_tracking': ad.ad_tracking,
                                                     'ad_must_watch': ad.ad_must_watch,
                                                     'stop_callback': cb
                                                 });
@@ -1235,15 +1244,14 @@
                                     }
                                 }
 
-                                self.hide();
-
                                 stb.player.prev_layer = self;
 
                                 stb.key_lock = true;
 
                                 stb.player.play({
-                                    'id': 0,
-                                    'cmd': 'ffmpeg '+adverts[0].cmd,
+                                    'id': adverts[0].id,
+                                    'ad_id': adverts[0].id,
+                                    'cmd': adverts[0].cmd,
                                     'media_type': 'advert',
                                     'is_advert': true,
                                     'ad_tracking': adverts[0].ad_tracking,
