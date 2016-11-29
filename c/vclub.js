@@ -1248,6 +1248,8 @@
 
                                 stb.key_lock = true;
 
+                                stb.player.need_show_info = 0;
+
                                 stb.player.play({
                                     'id': adverts[0].id,
                                     'ad_id': adverts[0].id,

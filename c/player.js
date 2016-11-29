@@ -3888,6 +3888,8 @@ player.prototype.bind = function(){
                     if (this.cur_media_item.ad_tracking.hasOwnProperty('close')){
                         stb.advert.track(this.cur_media_item.ad_tracking['close'])
                     }
+
+                    this.cur_media_item.stop_callback && this.cur_media_item.stop_callback();
                 }
             }
         }
@@ -4226,15 +4228,6 @@ player.prototype.bind = function(){
             }, 4000);
         }
 
-        if (!this.cur_media_item.playlist){
-
-            if (this.cur_media_item.media_type == 'advert') {
-                this.show_prev_layer();
-            }
-
-            return;
-        }
-
         var idx = this.cur_media_item.playlist.lastIndexOf(this.cur_media_item.cmd);
 
         _debug('idx', idx);
@@ -4298,6 +4291,9 @@ player.prototype.bind = function(){
                 delete cur_media_item.media_type;
                 cur_media_item.disable_ad = true;
             }
+
+            cur_media_item.stop_callback && cur_media_item.stop_callback();
+            return;
         }
 
         this.play(cur_media_item);
