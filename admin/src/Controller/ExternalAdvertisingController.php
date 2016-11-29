@@ -419,7 +419,7 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
                 foreach($old_sources as $source_id => $source_val) {
                     if (is_numeric($result)) {
                         $params['source'] = $source_val;
-                        $result += $this->db->updateSourceData($params, $source_id);
+                        $result += (!empty($source_val) ? $this->db->updateSourceData($params, $source_id): $this->db->deleteSourceData($source_id));
                     } else {
                         $result = FALSE;
                         break;
