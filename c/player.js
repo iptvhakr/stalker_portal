@@ -1031,6 +1031,11 @@ player.prototype.event_callback = function(event, params){
                 }
 
                 if (this.cur_media_item.stop_callback){
+
+                    this.ad_indication.hide();
+                    this.ad_skip_indication.hide();
+                    stb.advert.stop_ticking();
+
                     this.cur_media_item.stop_callback();
                     return;
                 }
@@ -1080,17 +1085,6 @@ player.prototype.event_callback = function(event, params){
                         );
                     }
                 }else{
-
-                    if (this.cur_media_item.media_type == 'advert'){
-
-                        this.ad_indication.hide();
-                        this.ad_skip_indication.hide();
-                        stb.advert.stop_ticking();
-
-                        cur_media_item.stop_callback && cur_media_item.stop_callback();
-
-                        return;
-                    }
 
                     if (this.cur_media_item.media_type != 'vclub_ad' && this.play_continuously && this.cur_media_item.hasOwnProperty('series') && this.cur_media_item.series && this.cur_media_item.series.length > 0){
 
@@ -1529,7 +1523,12 @@ player.prototype.event_callback = function(event, params){
                 }
             }
             _debug('this.cur_media_item', this.cur_media_item);
-            if (this.cur_media_item.stop_callback && !this.cur_media_item.playlist){
+            if (this.cur_media_item.stop_callback){
+
+                this.ad_indication.hide();
+                this.ad_skip_indication.hide();
+                stb.advert.stop_ticking();
+
                 this.cur_media_item.stop_callback();
                 return;
             }
@@ -1586,16 +1585,6 @@ player.prototype.event_callback = function(event, params){
                 }
                 
             }else{
-
-                if (this.cur_media_item.media_type == 'advert'){
-
-                    this.ad_indication.hide();
-                    this.ad_skip_indication.hide();
-                    stb.advert.stop_ticking();
-
-                    cur_media_item.stop_callback && cur_media_item.stop_callback();
-                    return;
-                }
 
                 if (this.cur_media_item.media_type != 'vclub_ad' && this.play_continuously && this.cur_media_item.hasOwnProperty('series') && this.cur_media_item.series && this.cur_media_item.series.length > 0){
 
@@ -1700,10 +1689,6 @@ player.prototype.event_callback = function(event, params){
 
                             this.play(cur_media_item);
 
-                        }else{
-                            if (this.cur_media_item.stop_callback){
-                                this.cur_media_item.stop_callback();
-                            }
                         }
 
                         break;
