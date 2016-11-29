@@ -1159,30 +1159,46 @@
                                 _debug('player.on_stop');
                                 if (result.hasOwnProperty('cmd')){
                                     player.delete_link(result.cmd);
-                                }else if (result.length && result[1].cmd){
-                                    player.delete_link(result[1].cmd);
+                                }else if (result.length && result[result.length - 1].cmd){
+                                    player.delete_link(result[result.length - 1].cmd);
                                 }
                             }})(stb.player);
 
                             stb.player.prev_layer = self;
                             stb.player.need_show_info = 1;
 
+                            var cur_media_item = stb.player.cur_media_item.clone();
+
                             if (result.length && result.length >= 2){
 
                                 var movie = result.splice(result.length-1);
 
+                                _debug('movie', movie);
+
                                 var callback = function () {
+
+                                    _debug('movie callback');
 
                                     try{
                                         stb.Stop();
                                     }catch(e){
                                         _debug(e);
                                     }
-                                    self.hide(true);
+
+                                    stb.player.cur_media_item = cur_media_item.clone();
+
+                                    stb.player.cur_media_item.subtitles = result.subtitles.map(function(item, idx){
+                                        item.pid  = 'external_'+idx;
+                                        item.lang = [item.lang, ''];
+                                        return item;
+                                    });
+
                                     stb.player.play_now(movie);
                                 };
 
                                 var adverts = result;
+
+                                _debug('adverts', adverts);
 
                                 for (var i=0; i<adverts.length; i++){
 
@@ -1193,8 +1209,7 @@
                                         callback = (function (ad, cb) {
 
                                             return function () {
-                                                _debug('ad', ad);
-                                                self.hide(true);
+                                                _debug('ad callback', ad);
 
                                                 stb.player.prev_layer = self;
 
@@ -1228,18 +1243,16 @@
 
                                 stb.player.play({
                                     'id': 0,
-                                    'cmd': 'ffmpeg '+adverts[0].ad,
+                                    'cmd': 'ffmpeg '+adverts[0].cmd,
                                     'media_type': 'advert',
                                     'is_advert': true,
-                                    'ad_tracking': adverts[0].tracking,
+                                    'ad_tracking': adverts[0].ad_tracking,
                                     'ad_must_watch' : adverts[0].ad_must_watch,
                                     'stop_callback': callback
 
                                 });
 
                                 stb.player.ad_indication.show();
-
-                                return;
 
                             }else if (result.hasOwnProperty('subtitles')){
 
@@ -1248,9 +1261,11 @@
                                     item.lang = [item.lang, ''];
                                     return item;
                                 });
+
+                                stb.player.play_now(result);
                             }
 
-                            stb.player.play_now(result);
+                            //stb.player.play_now(result);
                         }else{
                             //callback && callback(result.cmd);
                             self.add_download.call(self, self.data_items[self.cur_row], url);
