@@ -1081,6 +1081,17 @@ player.prototype.event_callback = function(event, params){
                     }
                 }else{
 
+                    if (this.cur_media_item.media_type == 'advert'){
+
+                        this.ad_indication.hide();
+                        this.ad_skip_indication.hide();
+                        stb.advert.stop_ticking();
+
+                        cur_media_item.stop_callback && cur_media_item.stop_callback();
+
+                        return;
+                    }
+
                     if (this.cur_media_item.media_type != 'vclub_ad' && this.play_continuously && this.cur_media_item.hasOwnProperty('series') && this.cur_media_item.series && this.cur_media_item.series.length > 0){
 
                         _debug('this.cur_media_item.cur_series before', this.cur_media_item.cur_series);
@@ -1181,14 +1192,6 @@ player.prototype.event_callback = function(event, params){
                                     delete cur_media_item.media_type;
                                     cur_media_item.disable_ad = true;
                                     module && module.vclub && module.vclub.set_ad_ended_time && module.vclub.set_ad_ended_time(this.cur_media_item.ad_id, stb.GetPosTime(), stb.GetMediaLen(), true);
-                                }else if (idx == (this.cur_media_item.playlist.length - 1) && this.cur_media_item.media_type == 'advert'){
-
-                                    this.ad_indication.hide();
-                                    this.ad_skip_indication.hide();
-                                    stb.advert.stop_ticking();
-
-                                    delete cur_media_item.media_type;
-                                    cur_media_item.disable_ad = true;
                                 }
 
                                 if (cur_media_item.hasOwnProperty('ad_must_watch')){
@@ -1584,6 +1587,16 @@ player.prototype.event_callback = function(event, params){
                 
             }else{
 
+                if (this.cur_media_item.media_type == 'advert'){
+
+                    this.ad_indication.hide();
+                    this.ad_skip_indication.hide();
+                    stb.advert.stop_ticking();
+
+                    cur_media_item.stop_callback && cur_media_item.stop_callback();
+                    return;
+                }
+
                 if (this.cur_media_item.media_type != 'vclub_ad' && this.play_continuously && this.cur_media_item.hasOwnProperty('series') && this.cur_media_item.series && this.cur_media_item.series.length > 0){
 
                     var series_idx = this.cur_media_item.series.lastIndexOf(this.cur_media_item.cur_series);
@@ -1679,14 +1692,6 @@ player.prototype.event_callback = function(event, params){
                             if (this.cur_media_item.media_type && this.cur_media_item.media_type == 'vclub_ad'){
                                 delete cur_media_item.media_type;
                                 module && module.vclub && module.vclub.set_ad_ended_time && module.vclub.set_ad_ended_time(this.cur_media_item.ad_id, stb.GetPosTime(), stb.GetMediaLen(), true);
-                            }else if (idx == (this.cur_media_item.playlist.length - 1) && this.cur_media_item.media_type == 'advert'){
-
-                                this.ad_indication.hide();
-                                this.ad_skip_indication.hide();
-                                stb.advert.stop_ticking();
-
-                                delete cur_media_item.media_type;
-                                cur_media_item.disable_ad = true;
                             }
 
                             if (cur_media_item.hasOwnProperty('ad_must_watch')){
@@ -4228,6 +4233,22 @@ player.prototype.bind = function(){
             }, 4000);
         }
 
+        if (this.cur_media_item.media_type == 'advert'){
+
+            this.ad_indication.hide();
+            this.ad_skip_indication.hide();
+            stb.advert.stop_ticking();
+
+            if (this.cur_media_item.hasOwnProperty('ad_tracking')){
+                if (this.cur_media_item.ad_tracking.hasOwnProperty('close')){
+                    stb.advert.track(this.cur_media_item.ad_tracking['close'])
+                }
+            }
+
+            this.cur_media_item.stop_callback && this.cur_media_item.stop_callback();
+            return;
+        }
+
         var idx = this.cur_media_item.playlist.lastIndexOf(this.cur_media_item.cmd);
 
         _debug('idx', idx);
@@ -4275,25 +4296,6 @@ player.prototype.bind = function(){
             delete cur_media_item.media_type;
             cur_media_item.disable_ad = true;
             module && module.vclub && module.vclub.set_ad_ended_time && module.vclub.set_ad_ended_time(this.cur_media_item.ad_id, stb.GetPosTime(), stb.GetMediaLen());
-        }else if (this.cur_media_item.media_type == 'advert'){
-
-            this.ad_indication.hide();
-            this.ad_skip_indication.hide();
-            stb.advert.stop_ticking();
-
-            if (cur_media_item.hasOwnProperty('ad_tracking')){
-                if (cur_media_item.ad_tracking.hasOwnProperty('close')){
-                    stb.advert.track(cur_media_item.ad_tracking['close'])
-                }
-            }
-
-            if (idx == this.cur_media_item.playlist.length){
-                delete cur_media_item.media_type;
-                cur_media_item.disable_ad = true;
-            }
-
-            cur_media_item.stop_callback && cur_media_item.stop_callback();
-            return;
         }
 
         this.play(cur_media_item);
