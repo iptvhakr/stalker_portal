@@ -2140,6 +2140,8 @@ function common_xpcom(){
 
                                     stb.key_lock = true;
 
+                                    stb.player.need_show_info = 0;
+
                                     stb.player.play({
                                         'id': 0,
                                         'cmd': 'ffmpeg ' + ad.ad,

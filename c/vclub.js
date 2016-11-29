@@ -1168,34 +1168,77 @@
                             stb.player.need_show_info = 1;
 
                             if (result.length && result.length >= 2){
-                                stb.player.need_show_info = 0;
 
-                                if (result[1].hasOwnProperty('subtitles')){
+                                var movie = result.splice(result.length-1);
 
-                                    stb.player.cur_media_item.subtitles = result[1].subtitles.map(function(item, idx){
-                                        item.pid  = 'external_'+idx;
-                                        item.lang = [item.lang, ''];
-                                        return item;
-                                    });
+                                var callback = function () {
+
+                                    try{
+                                        stb.Stop();
+                                    }catch(e){
+                                        _debug(e);
+                                    }
+                                    self.hide(true);
+                                    stb.player.play_now(movie);
+                                };
+
+                                var adverts = result;
+
+                                for (var i=0; i<adverts.length; i++){
+
+                                    var advert = adverts[i];
+
+                                    if (i != adverts.length-1){
+
+                                        callback = (function (ad, cb) {
+
+                                            return function () {
+                                                _debug('ad', ad);
+                                                self.hide(true);
+
+                                                stb.player.prev_layer = self;
+
+                                                stb.key_lock = true;
+
+                                                stb.player.need_show_info = 0;
+
+                                                stb.player.play({
+                                                    'id': 0,
+                                                    'ad_id' : ad.ad_id,
+                                                    'cmd': 'ffmpeg ' + ad.ad,
+                                                    'media_type': 'advert',
+                                                    'is_advert': true,
+                                                    'ad_tracking': ad.tracking,
+                                                    'ad_must_watch': ad.ad_must_watch,
+                                                    'stop_callback': cb
+                                                });
+
+                                                stb.player.ad_indication.show();
+                                            }
+
+                                        })(advert, callback);
+                                    }
                                 }
 
-                                stb.player.cur_media_item.cmd = result[0].cmd;
-                                stb.player.cur_media_item.playlist = result.map(function (item) {
-                                    return item.cmd;
-                                });
-                                stb.player.cur_media_item.keep_original_name = true;
-                                stb.player.cur_media_item.ad_must_watch = result[0].ad_must_watch;
-                                stb.player.cur_media_item.show_osd = true;
-                                stb.player.cur_media_item.media_type = result[0].media_type;
-                                stb.player.cur_media_item.ad_id = result[0].ad_id;
-                                stb.player.cur_media_item.is_advert = result[0].is_advert;
-                                stb.player.cur_media_item.ad_tracking = result[0].ad_tracking;
-                                stb.player.media_type = 'file';
+                                self.hide();
+
+                                stb.player.prev_layer = self;
 
                                 stb.key_lock = true;
 
-                                stb.player.play_now(result[0]);
+                                stb.player.play({
+                                    'id': 0,
+                                    'cmd': 'ffmpeg '+adverts[0].ad,
+                                    'media_type': 'advert',
+                                    'is_advert': true,
+                                    'ad_tracking': adverts[0].tracking,
+                                    'ad_must_watch' : adverts[0].ad_must_watch,
+                                    'stop_callback': callback
+
+                                });
+
                                 stb.player.ad_indication.show();
+
                                 return;
 
                             }else if (result.hasOwnProperty('subtitles')){
