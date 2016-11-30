@@ -11,6 +11,7 @@ function Traceroute(option){
     this._time = option && option.time ? option.time: 210 ;
     this._loadingQueue = [];
     this._start_time = null;
+    this._end_time = null;
     this._is_run = false;
     this.result = [];
     this.resultCallback = option && typeof(option.callback) == 'function' ? option.callback : function(){};
@@ -24,25 +25,32 @@ Traceroute.prototype.start = function(){
     if (this._loadingQueue.length == 0 && this.checkLoading()) {
         this.stopLoading();
     }
+    this._start_time = new Date();
+    this._end_time = new Date();
     if ( this._time ) {
+        this._end_time.setSeconds(this._start_time.getSeconds() + (this._time * this._domains.length) + 60);
         var self = this;
-        for ( var i = 0; i < this._domains.length; ++i ) {
-            var domain = this._domains[i];
+        this._domains.forEach(function(item){
+            console.log('domain: ' + item);
             setTimeout(function () { // run mtr
-                console.log('run mtr for domain: ' + domain);
-                result = parent.gSTB.RDir('mtr --report --no-dns --report-cycles ' + self._time + ' ' + domain);
-                /*result = result.split('\n');
+                self._is_run = true;
+                console.log('run mtr for domain: ' + item);
+                result = parent.gSTB.RDir('mtr --report --no-dns --report-cycles ' + self._time + ' ' + item);
+                /*result = '';*/
+                result = result.split('\n');
                 result.shift();
                 result.shift();
                 result.pop();
+
                 result = result.map(function ( item ) {
-                    return item.trim().replace(/\s{2,}/g, ' ').split(' ');
-                });*/
+                    tmp = item.trim().replace(/\s{2,}/g, ' ').split(' ');
+                    return [tmp[1], tmp[2], Math.round(tmp[5])];
+                });
                 self.result.push(result);
                 self.resultCallback(result);
                 self._is_run = self._domains.length != self.result.length;
-            }, 0);
-        }
+            }, 500);
+        });
         this.checkProgress();
     }
 };
@@ -84,6 +92,25 @@ Traceroute.prototype.checkProgress = function () {
 
 Traceroute.prototype.getResult = function(){
     return this.result;
+};
+
+Traceroute.prototype.getStartTime = function(){
+    return arguments[0] ? this._getNormTime('start') : (this._start_time instanceof Date ? this._start_time.getTime(): 0);
+};
+
+Traceroute.prototype.getEndTime = function(){
+    return arguments[0] ? this._getNormTime('end') : (this._end_time instanceof Date ? this._end_time.getTime(): 0);
+};
+
+Traceroute.prototype._getNormTime = function(){
+    gTime = arguments[0] && arguments[0] == 'end' ? '_end_time': '_start_time';
+    if (this[gTime] instanceof Date) {
+        h = this[gTime].getHours();
+        m = this[gTime].getMinutes();
+    } else {
+        h = m = 0 ;
+    }
+    return (h < 10 ? '0' + h : h )  + ':' + (m < 10 ? '0' + m : m );
 };
 
 /*

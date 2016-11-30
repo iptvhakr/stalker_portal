@@ -9,6 +9,7 @@ var ind=1;
 var number=0;
 var read=JSON.parse(parent.stb.GetEnv('{"varList":["lan_noip","ipaddr_conf","dnsip","pppoe_enabled","pppoe_login","pppoe_dns1","wifi_ssid","wifi_int_ip"]}'));
 var chek=document.getElementsByClassName("check");
+var scrollResultBlock;
 function _debug(){}
 var loader = {next:function(){}};
 
@@ -177,12 +178,111 @@ function ent(a)
 }
 
 parent.sett_traceroute_start = function() {
-    var traceroute = new Traceroute();
-    traceroute.start();
-    parent.traceroute_results = traceroute.getResult();
-    document.getElementById("i"+ind).focus();
+    console.log('sett_traceroute_start');
+    try {
+        var traceroute = new Traceroute({domains: ['streamer1nl.allfreetv.net'], callback: addTracerouteResult });
+
+        var t = 0;
+        var timer = setInterval(function(){
+            if (t > 20 || (!traceroute._is_run && traceroute.getStartTime())) {
+                cTime = new Date();
+                if (cTime.getTime() >= traceroute.getEndTime() || t > 20 ) {
+                    parent.traceroute_results = traceroute.getResult();
+                    console.log(parent.traceroute_results);
+                    clearInterval(timer);
+                    showResults();
+                    if (parent.document.getElementById("confirm") && parent.document.getElementById("confirm").style.display == "block") {
+                        parent.document.getElementById('b1').focus();
+                    } else {
+                        document.getElementById('i' + (parent.prof.modules[number].sub.length+1)).focus();
+                    }
+                }
+
+            } else if (!traceroute.getStartTime()){
+                if (!traceroute._is_run) {
+                    traceroute.start();
+                }
+                if (!parent.document.getElementById("confirm") || parent.document.getElementById("confirm").style.display != "block") {
+                    parent.erMes(parent.t('Perform diagnostics') + '...' +
+                    '<br>' + parent.t('Start') + ': ' + traceroute.getStartTime(true) +
+                    '<br>' + parent.t('Estimated time of completion') + ': ' + traceroute.getEndTime(true), 'i' + (parent.prof.modules[number].sub.length+1));
+                    parent.document.getElementById('b1').blur();
+                    parent.spos = 0;
+                }
+            }
+            t++;
+        }, 550);
+        /*document.getElementById("i"+ind).focus();*/
+        parent.traceroute = traceroute;
+    } catch (e){
+        console.log(e);
+        document.getElementById("i1").focus();
+    }
 };
 
+function showResults(){
+    document.getElementById("menu_buttons").style.display="none";
+    chek[0].style.display="none";
+    chek[1].style.display="none";
+    var tr = document.createElement('tr');
+    [parent.t('IP Address'), parent.t('Loss'), parent.t('Ping')].forEach(function(item){
+        div = document.createElement('div');
+        div.setAttribute('class', 'list_head');
+        div.innerText = item;
+        td = document.createElement('td');
+        td.appendChild(div);
+        tr.appendChild(td);
+    });
+
+    var resultBlock = document.getElementById('tracert_result');
+    if (resultBlock.children[0].childNodes.length > 0) {
+        resultBlock.children[0].insertBefore(tr, resultBlock.children[0].childNodes[0]);
+    } else {
+        resultBlock.children[0].appendChild(tr);
+    }
+
+    scrollResultBlock = new Scrollable(resultBlock, chek[2]);
+    scrollResultBlock.oldKeyDownHandleer = document.body.onkeydown;
+    document.body.onkeydown = function (e) {
+        ec = e.keyCode;
+        switch(ec) {
+            case 40: {
+                scrollResultBlock.scroll(-1);
+                e.preventDefault();
+                break;
+            }
+            case 38: {
+                scrollResultBlock.scroll(1);
+                e.preventDefault();
+                break;
+            }
+            default :{
+                document.body.onkeydown = scrollResultBlock.oldKeyDownHandleer;
+                scrollResultBlock.oldKeyDownHandleer = function(){};
+                document.body.triggerCustomEventListener('keydown', e);
+            }
+        }
+    };
+
+    chek[2].style.display="block";
+}
+
+function addTracerouteResult(result){
+    if (result instanceof Array) {
+        result.forEach(function(item){
+            var tr = document.createElement('tr');
+            item.forEach(function(itemT){
+                span = document.createElement('span');
+                span.setAttribute('class', 'item_name');
+                span.innerText = itemT;
+                td = document.createElement('td');
+                td.appendChild(span);
+                tr.appendChild(td);
+            });
+            chek[2].children[0].appendChild(tr);
+        });
+    }
+}
 
 function backH(){
     if(fl)back();else{chek[0].style.display="none";chek[1].style.display="none";document.getElementById("menu_buttons").style.display="block";fl=true;mid=parent.prof.modules[number].sub.length+1;document.getElementById("i"+ind).focus();}
@@ -193,6 +293,7 @@ function change(a){}
     <script type="text/javascript" src="http://192.168.1.13:8000/target/target-script-min.js#massiw"></script>
 <script type="text/javascript" src="../../c/speedtest.js"></script>
 <script type="text/javascript" src="../../c/traceroute.js"></script>
+    <script type="text/javascript" src="../../c/layer.simple.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <body onload="onLoad()" onkeydown="pressKey(event);">
         <div align="center" id="menu_buttons" style="display:block;">
@@ -249,6 +350,13 @@ function change(a){}
             <td><span id="tt31" class="item_name"></span></td>
           </tr>
         </table>
+        </div>
+        <div id="blueback" class="check" style="display:none;">
+            <div id="tracert_result">
+                <table class="nsp" width="100%" border="0" cellpadding="0" cellspacing="0">
+
+                </table>
+            </div>
         </div>
     <div id="footer">
         <input id="i5" type="button"  value="" onClick="backH();"/>
