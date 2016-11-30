@@ -467,7 +467,7 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
         );
 
         $this->app['platform_list'] = array(
-            'stb' => array('101' => $this->setLocalization('STANDART SKIN'), '201' => $this->setLocalization('SMART LAUNCHER SKINS')),
+            'stb' => array('101' => $this->setLocalization('Stalker Classic'), '201' => $this->setLocalization('Stalker Smart Launcher')),
             'ios' => array('401' => $this->setLocalization('iOS')),
             'android' => array('301' => $this->setLocalization('Android')),
             'smarttv' => array('501' => $this->setLocalization('SmartTV'))

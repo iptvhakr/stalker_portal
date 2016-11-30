@@ -189,12 +189,12 @@
         "icon2": "pull-right fa fa-chevron-left",
         "action": {
             "1": {
-                "name": _("Stalker applications"),
+                "name": _("Stalker Classic apps"),
                 "alias": "application-list",
                 "icon": ""
             },
             "2": {
-                "name": _("Applications of Stalker 5x"),
+                "name": _("Smart Launcher apps"),
                 "alias": "smart-application-list",
                 "icon": ""
             }
