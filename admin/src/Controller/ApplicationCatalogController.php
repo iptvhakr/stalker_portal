@@ -1133,36 +1133,71 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         $response = array('action' => '');
         $error = $this->setLocalization('Failed');
 
-        try{
-            $apps = new \SmartLauncherAppsManager($this->app['language']);
-            $error = '';
-
-            $storage = new \Upload\Storage\FileSystem('/tmp', TRUE);
-            $file = new \Upload\File('files', $storage);
-            // Success!
-            $file->upload();
-
-            $json_str = file_get_contents($file->getPath() . '/' .$file->getNameWithExtension());
-            @unlink($file->getPath() . '/' .$file->getNameWithExtension());
-
-            ignore_user_abort(TRUE);
-            set_time_limit(0);
-            $apps->restoreFromSnapshot($json_str);
-
-            $response['msg'] = $this->setLocalization('Loaded');
-            $response = array('action' => 'manageList');
-        } catch (\SmartLauncherAppsManagerException $e) {
-            $error = $e->getMessage();
-        }  catch (\Exception $e) {
-            $data['msg'] = $error = $e->getMessage();
-            if (!empty($file)) {
-                $error .= ' ' . $file->getErrors();
+        if (empty($this->data['install_path']) || empty($this->data['install_file'])) {
+            try{
+                $storage = new \Upload\Storage\FileSystem('/tmp', TRUE);
+                $file = new \Upload\File('files', $storage);
+                // Success!
+                $file->upload();
+                $response['install_path'] = $file->getPath();
+                $response['install_file'] = $file->getNameWithExtension();
+                $response['msg'] = $this->setLocalization('Loaded');
+                $error = '';
+                $response['action'] = 'setUploadMessage';
+            } catch (\Exception $e) {
+                $response['msg'] = $error = $e->getMessage();
+                if (!empty($file)) {
+                    $error .= ' ' . $file->getErrors();
+                }
+                $response['msg'] = $error;
             }
-            $data['msg'] = $error;
+        } else {
+            try {
+                $json_str = file_get_contents($this->data['install_path'] . '/' . $this->data['install_file']);
+                @unlink($this->data['install_path'] . '/' . $this->data['install_file']);
+                ignore_user_abort(TRUE);
+                set_time_limit(0);
+                $this->beginNotifications();
+                $apps = new \SmartLauncherAppsManager($this->app['language']);
+                $apps->setNotificationCallback(function($msg){
+                    error_reporting(-1);
+                    ini_set('display_errors','On');
+                    ini_set('output_buffering', 'Off');
+                    ini_set('output_handler', '');
+                    ini_set('implicit_flush', 'On');
+                    ob_implicit_flush(true);
+                    while(ob_get_level()){
+                        ob_end_clean();
+                    }
+                    ob_start();
+                    echo '<script type="text/javascript"> var x = ' . microtime(TRUE) . ';</script>
+                    ';
+                    echo '<script  type="text/javascript"> window.parent.deliver("setUploadMessage","' . $msg . '"); </script>
+                    ';
+                    ob_flush();
+                });
+
+                $apps->restoreFromSnapshot($json_str);
+                $error = '';
+                $response['action'] = '';
+                $response['msg'] = $this->setLocalization('Loaded');
+            } catch (\SmartLauncherAppsManagerConflictException $e) {
+                $response['msg'] = $error = $e->getMessage();
+                foreach ($e->getConflicts() as $row) {
+                    $error .= "<br>" . (!empty($row['target']) ? "$row[target] with " : '') . " $row[alias] $row[current_version]";
+                }
+            } catch (\SmartLauncherAppsManagerException $e) {
+                $response['msg'] = $error = $e->getMessage();
+            }
         }
 
         $response = $this->generateAjaxResponse($response);
         $response = json_encode($response);
+        if (!empty($this->data['install_path']) && !empty($this->data['install_file'])) {
+            $this->endNotification($response, $error, "setUploadMessage", "manageList");
+            exit;
+        }
+
         return new Response($response, (empty($error) ? 200 : 500));
     }
 

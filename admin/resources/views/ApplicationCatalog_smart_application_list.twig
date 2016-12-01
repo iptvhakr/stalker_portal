@@ -335,7 +335,7 @@
                     e.preventDefault();
                     $("#modalbox .devoops-modal-header span").text("{{ 'Uploading of list of installed applications'|trans }}");
                     $("#modalbox .devoops-modal-inner").html($("#modal_fileupload").html());
-                    $("#modalbox .devoops-modal-inner").append("<div class='upload_processing'></div>");
+                    $("#modalbox .devoops-modal-inner").append("<div id='upload_processing' class='upload_processing'><span></span></div>");
 
                     $("#modalbox .devoops-modal-bottom").html($("#modal_fileupload_buttons").html());
                     loadFileUploadScripts(function(){});
@@ -349,7 +349,7 @@
                     e.preventDefault();
                     if (fileUploaderList && fileUploaderList.length) {
                         $("#modalbox").data('complete', 0);
-                        $("#modalbox .upload_processing").show();
+                        $("#upload_processing").show();
                         fileUploaderList[0].submit();
                         $("#modalbox button").attr('disabled', 'disabled').addClass('disabled');
                     }
@@ -399,6 +399,11 @@
             $('#modalbox .devoops-modal-inner span').html(msg);
         };
 
+        var setUploadMessage = function(data){
+            msg =(data instanceof Object && data.msg) ? data.msg : data;
+            $('#upload_processing span').html(msg);
+        };
+
         function closeModalBox() {
             $("#modalbox").hide();
             $('#modalbox').find('.modal-header-name span').removeClass('txt-danger').empty();
@@ -408,7 +413,7 @@
 
         function showModalBox() {
             $('#modalbox').find('.modal-header-name span').removeClass('txt-danger').text('{{ 'Wait'|trans }}...');
-            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Request is being processed'|trans }}...</span>');
+            $('#modalbox').find('.devoops-modal-inner').html('<span style="margin: 10px 20px;">{{ 'Request is being processed'|trans }}...</span>');
             $('#modalbox').find('.devoops-modal-bottom').empty();
             $("#modalbox").show();
         }
@@ -446,9 +451,6 @@
 
         function buildModalByAlias(data){
             $("#modalbox").hide();
-            conf.form = "#" + $("#modalbox").find('form').attr('id');
-            $.validate();
-            $(conf.form).get(0).reset();
             $("#modalbox").data('complete', 1);
             if (data && data.data && data.data.length == 1) {
                 var info = data.data[0];
@@ -755,8 +757,8 @@
                 acceptFileTypes: /(\.|\/)(json)$/i,
                 maxNumberOfFiles: 1
             }).bind('fileuploaddone', function (e, data) {
-                $("#modalbox .upload_processing").hide();
-                $("#modalbox button").removeAttr('disabled').removeClass('disabled');
+                /*$("#upload_processing").hide();*/
+                /*$("#modalbox button").removeAttr('disabled').removeClass('disabled');*/
                 var response;
                 if (data && data.jqXHR && data.jqXHR.status && data.jqXHR.status == 200 && data.jqXHR.responseJSON) {
                     response = data.jqXHR.responseJSON;
@@ -764,15 +766,24 @@
                     JSErrorModalBox();
                     return false;
                 }
+
                 if (response.success) {
                     ajaxSuccess(response, false);
                     fileUploaderList.pop();
                     $(e.currentTarget).next('.fileupload-message').text('');
+                    var sendData = {
+                        install_path: response.install_path,
+                        install_file: response.install_file
+                    };
+                    var timer = setInterval(function(){
+                            clearInterval(timer);
+                            createIFrame('cometFrame', url + '?v=' + $.random(10000000) + "&" + $.param(sendData));
+                    }, 10);
                 }
                 return false;
             }).bind('fileuploadfail', function (e, data) {
                 $("#modalbox button").removeAttr('disabled').removeClass('disabled');
-                $("#modalbox .upload_processing").hide();
+                $("#upload_processing").hide();
                 if (data && data.jqXHR && data.jqXHR.status && data.jqXHR.status == 200 && data.jqXHR.responseJSON) {
                     JSErrorModalBox(JSON.parse(data.jqXHR.responseJSON));
                 } else {
