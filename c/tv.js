@@ -1527,7 +1527,12 @@
                     if (this.parent.data_items[this.parent.cur_row].type == 'dvb'){
                         this.fill(stb.epg_loader.get_curr_and_next(this.parent.data_items[this.parent.cur_row].id, false, 5));
                     }else{
-                        stb.load(
+
+                        // todo: what if epg less then 5 items?
+
+                        this.fill(stb.epg_loader.get_curr_and_next(this.parent.data_items[this.parent.cur_row].id, null, 5));
+
+                        /*stb.load(
                             {
                                 "type"   : "itv",
                                 "action" : "get_short_epg",
@@ -1541,7 +1546,7 @@
                             },
 
                             this
-                        )
+                        )*/
                     }
                 }
             },
