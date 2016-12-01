@@ -621,7 +621,7 @@ function get_screen_name($addr){
 }
 
 $tv_archive = new TvArchive();
-$storages = Mysql::getInstance()->from('storages')->where(array('status' => 1, 'for_records' => 1, 'stream_server_type' => NULL))->get()->all();
+$storages = Mysql::getInstance()->from('storages')->where(array('status' => 1, 'for_records' => 1))->where(array(' stream_server_type' => NULL, 'stream_server_type' => ''), 'OR ')->get()->all();
 
 $stream_servers = StreamServer::getAll();
 
