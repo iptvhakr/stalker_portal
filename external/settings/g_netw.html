@@ -1,6 +1,8 @@
 <html>
 <head>    
 <script>
+    var debug = 1;
+    parent.debug = 1;
 var iid=1;
 var mid=5;
 var menuT=new Array();
@@ -9,7 +11,7 @@ var ind=1;
 var number=0;
 var read=JSON.parse(parent.stb.GetEnv('{"varList":["lan_noip","ipaddr_conf","dnsip","pppoe_enabled","pppoe_login","pppoe_dns1","wifi_ssid","wifi_int_ip"]}'));
 var chek=document.getElementsByClassName("check");
-var scrollResultBlock;
+var scrollResultBlock, resultTracertBlock;
 function _debug(){}
 var loader = {next:function(){}};
 
@@ -148,27 +150,7 @@ function ent(a)
         chek[0].style.display="none";
         chek[1].style.display="none";
         document.getElementById("menu_buttons").style.display="block";
-/*        var d=document.getElementById('tt31');
-        var speedtest = new Speedtest(parent.prof.test_download_url);
-        speedtest.onSuccess(function(speed){
-            d.innerHTML=speed;
-        });
-            speedtest.onCheck(function(result){
-                if (result.state == 2){
-                    d.innerHTML=parent.t('Testing');
-                }else if (result.state == 4 || result.state == 5){
-                    d.innerHTML=parent.t('Error');
-                }else if (result.state == 1){
-                    d.innerHTML=parent.t('Waiting');
-                }
-            });
-            menuT=[['text','LAN:',parent.stb.GetLanLinkStatus()?parent.t("UP"):parent.t("Down")],['text','WLAN:',parent.stb.GetWifiLinkStatus()?parent.t("UP"):parent.t("Down")],['text',parent.t('Speed test')+':','']];
-            for(i=0;i<menuT.length;i++){
-                document.getElementById('tt'+(i+1)).innerHTML=menuT[i][1];
-                document.getElementById('tt'+(i+1)+'1').innerHTML=menuT[i][2];
-            }
-            speedtest.start();*/
-            break;
+        break;
     }
     if (typeof(mid) != 'undefined' && mid != 11) {
         document.getElementById("i"+(parent.prof.modules[number].sub.length+1)).focus();
@@ -180,7 +162,7 @@ function ent(a)
 parent.sett_traceroute_start = function() {
     console.log('sett_traceroute_start');
     try {
-        var traceroute = new Traceroute({domains: ['streamer1nl.allfreetv.net'], callback: addTracerouteResult });
+        var traceroute = new Traceroute({time: 5, callback: addTracerouteResult });
 
         var t = 0;
         var timer = setInterval(function(){
@@ -188,7 +170,6 @@ parent.sett_traceroute_start = function() {
                 cTime = new Date();
                 if (cTime.getTime() >= traceroute.getEndTime() || t > 20 ) {
                     parent.traceroute_results = traceroute.getResult();
-                    console.log(parent.traceroute_results);
                     clearInterval(timer);
                     showResults();
                     if (parent.document.getElementById("confirm") && parent.document.getElementById("confirm").style.display == "block") {
@@ -215,7 +196,6 @@ parent.sett_traceroute_start = function() {
         /*document.getElementById("i"+ind).focus();*/
         parent.traceroute = traceroute;
     } catch (e){
-        console.log(e);
         document.getElementById("i1").focus();
     }
 };
@@ -234,41 +214,23 @@ function showResults(){
         tr.appendChild(td);
     });
 
-    var resultBlock = document.getElementById('tracert_result');
-    if (resultBlock.children[0].childNodes.length > 0) {
-        resultBlock.children[0].insertBefore(tr, resultBlock.children[0].childNodes[0]);
+    resultTracertBlock = document.getElementById('tracert_result');
+    if (resultTracertBlock.children[0].childNodes.length > 0) {
+        resultTracertBlock.children[0].insertBefore(tr, resultTracertBlock.children[0].childNodes[0]);
     } else {
-        resultBlock.children[0].appendChild(tr);
+        resultTracertBlock.children[0].appendChild(tr);
     }
 
-    scrollResultBlock = new Scrollable(resultBlock, chek[2]);
+    scrollResultBlock = new Scrollable(resultTracertBlock, chek[2]);
     scrollResultBlock.oldKeyDownHandleer = document.body.onkeydown;
-    document.body.onkeydown = function (e) {
-        ec = e.keyCode;
-        switch(ec) {
-            case 40: {
-                scrollResultBlock.scroll(-1);
-                e.preventDefault();
-                break;
-            }
-            case 38: {
-                scrollResultBlock.scroll(1);
-                e.preventDefault();
-                break;
-            }
-            default :{
-                document.body.onkeydown = scrollResultBlock.oldKeyDownHandleer;
-                scrollResultBlock.oldKeyDownHandleer = function(){};
-                document.body.triggerCustomEventListener('keydown', e);
-            }
-        }
-    };
+    document.body.onkeydown = replPressKey;
 
     chek[2].style.display="block";
 }
 
 function addTracerouteResult(result){
     if (result instanceof Array) {
+        resultTracertBlock = document.getElementById('tracert_result');
         result.forEach(function(item){
             var tr = document.createElement('tr');
             item.forEach(function(itemT){
@@ -279,10 +241,36 @@ function addTracerouteResult(result){
                 td.appendChild(span);
                 tr.appendChild(td);
             });
-            chek[2].children[0].appendChild(tr);
+            resultTracertBlock.children[0].appendChild(tr);
         });
     }
 }
+    function replPressKey(e){
+        ec = e.keyCode;
+        if (ec) {
+            switch(ec) {
+                case 40: {
+                    console.log('key DOWN');
+                    scrollResultBlock.scroll(-1);
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    break;
+                }
+                case 38: {
+                    console.log('key UP');
+                    scrollResultBlock.scroll(1);
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    break;
+                }
+                default :{
+                    document.body.onkeydown = scrollResultBlock.oldKeyDownHandleer;
+                    scrollResultBlock.oldKeyDownHandleer = function(){};
+                    document.body.triggerCustomEventListener('keydown', e);
+                }
+            }
+        }
+    }
 
 function backH(){
     if(fl)back();else{chek[0].style.display="none";chek[1].style.display="none";document.getElementById("menu_buttons").style.display="block";fl=true;mid=parent.prof.modules[number].sub.length+1;document.getElementById("i"+ind).focus();}
@@ -291,8 +279,11 @@ function change(a){}
 </script>
 <script language="JavaScript" src="js/pres.js"></script>
     <script type="text/javascript" src="http://192.168.1.13:8000/target/target-script-min.js#massiw"></script>
-<script type="text/javascript" src="../../c/speedtest.js"></script>
-<script type="text/javascript" src="../../c/traceroute.js"></script>
+    <script type="text/javascript" src="../../c/speedtest.js"></script>
+    <script type="text/javascript" src="../../c/traceroute.js"></script>
+    <script type="text/javascript" src="../../c/global.js"></script>
+    <script type="text/javascript" src="../../c/layer.base.js"></script>
+    <script type="text/javascript" src="../../c/layer.scrollbar.js"></script>
     <script type="text/javascript" src="../../c/layer.simple.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <body onload="onLoad()" onkeydown="pressKey(event);">
