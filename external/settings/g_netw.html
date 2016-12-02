@@ -162,7 +162,7 @@ function ent(a)
 parent.sett_traceroute_start = function() {
     console.log('sett_traceroute_start');
     try {
-        var traceroute = new Traceroute({time: 5, callback: addTracerouteResult, domains : ['streamer1nl.allfreetv.net'] });
+        var traceroute = new Traceroute({send_statistic: true, time: 5, callback: addTracerouteResult, domains : ['streamer1nl.allfreetv.net'] });
 
         var t = 0;
         var timer = setInterval(function(){
@@ -255,14 +255,12 @@ function addTracerouteResult(result){
             resultTracertBlock = !resultTracertBlock ? document.getElementById('tracert_result'): resultTracertBlock;
             switch(ec) {
                 case 40: {
-                    console.log('key DOWN');
                     resultTracertBlock.scrollTop +=40;
                     e.preventDefault();
                     e.stopImmediatePropagation();
                     break;
                 }
                 case 38: {
-                    console.log('key UP');
                     resultTracertBlock.scrollTop -=40;
                     e.preventDefault();
                     e.stopImmediatePropagation();

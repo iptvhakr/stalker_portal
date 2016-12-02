@@ -20,10 +20,10 @@ function Traceroute(option){
 
     if (option.send_statistic) {
         if (option.sendStatisticsCallback && typeof(option.sendStatisticsCallback) == 'function') {
-            this.send_statistics = option.sendStatisticsCallback;
+            this.sendStatistics = option.sendStatisticsCallback;
         }
     } else {
-        this.send_statistics = function(){};
+        this.sendStatistics = function(){};
     }
 }
 
@@ -113,7 +113,7 @@ Traceroute.prototype.checkProgress = function () {
         if (!self._is_run) {
             clearInterval(self.timer);
             self.restoreLoading();
-            self.send_statistics();
+            self.sendStatistics();
         }
     }, 500);
 };
@@ -141,6 +141,6 @@ Traceroute.prototype._getNormTime = function(){
     return (h < 10 ? '0' + h : h )  + ':' + (m < 10 ? '0' + m : m );
 };
 
-Traceroute.prototype.send_statistics = function() {
+Traceroute.prototype.sendStatistics = function() {
     parent.load({"type": "stb", "action": "save_diagnostic_info", "data":JSON.stringify(this.result)}, function(){}, 'POST');
 };
