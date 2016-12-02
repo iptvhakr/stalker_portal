@@ -146,7 +146,7 @@ function ent(a)
         speedtest.start();
         break;
     case 5:mid=11;
-        parent.confb('<span style="color: red;text-shadow: 1px 1px 1px #000;">' + parent.t('Attention') + '!</span><br/>' + parent.t('Estimated time to complete the test - 10 minutes.<br> You can not interrupt the test before it is completed'), 'i5', "parent.sett_traceroute_start();");
+        parent.confb('<span style="color: red;text-shadow: 1px 1px 1px #000;">' + parent.t('Attention') + '!</span><br/>' + parent.t('Testing can take a long time.<br> You can not interrupt the test before it is completed'), 'i5', "parent.sett_traceroute_start();");
         chek[0].style.display="none";
         chek[1].style.display="none";
         document.getElementById("menu_buttons").style.display="block";
@@ -225,7 +225,7 @@ function showResults(){
     oldKeyDownHandler = document.body.onkeydown;
     document.body.onkeydown = replPressKey;
 
-    document.getElementById('t11').innerText = parent.t('Results of extended diagnostics:');
+    document.getElementById('t11').innerText = parent.t('Results of extended diagnostics') + ':';
     chek[0].style.display="block";
     chek[2].style.display="block";
 }

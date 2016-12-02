@@ -233,5 +233,16 @@ var lang = {
 
     "Units:" : "Одиниці виміру: ",
     "Metric" : "Метричні",
-    "Imperial" : "Імперські"
+    "Imperial" : "Імперські",
+
+    "Extended diagnostics" : "Розширена діагностика",
+    "Attention" : "Увага",
+    "Testing can take a long time.<br> You can not interrupt the test before it is completed" : "Тестування може зайняти багато часу. <br> Ви не можете перервати тест до його завершення",
+    "Perform diagnostics" : "Провести діагностику",
+    "Start" : "Початок",
+    "Estimated time of completion" : "Розрахунковий час завершення",
+    "Results of extended diagnostics" : "Результати розширеної діагностики",
+    "IP Address" : "IP адреса",
+    "Loss" : "Втрат",
+    "Ping" : "Пінг"
 };

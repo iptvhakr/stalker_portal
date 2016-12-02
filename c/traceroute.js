@@ -73,7 +73,7 @@ Traceroute.prototype.start = function(){
                     tmp = item.trim().replace(/\s{2,}/g, ' ').split(' ');
                     return [tmp[1], tmp[2], Math.round(tmp[5])];
                 });
-                self.result.push(result);
+                self.result.push({item: result});
                 self.resultCallback(result);
                 self._is_run = self._domains.length != self.result.length;
             }, 500);
@@ -113,9 +113,7 @@ Traceroute.prototype.checkProgress = function () {
         if (!self._is_run) {
             clearInterval(self.timer);
             self.restoreLoading();
-            self.result.forEach(function(item){
-               self.send_statistics(item);
-            });
+            self.send_statistics();
         }
     }, 500);
 };
@@ -143,34 +141,6 @@ Traceroute.prototype._getNormTime = function(){
     return (h < 10 ? '0' + h : h )  + ':' + (m < 10 ? '0' + m : m );
 };
 
-Traceroute.prototype.send_statistics = function( data ) {
-    var mac, envs, request, gSTB = parent.gSTB;
-    // prevent sending statistic from another devices
-    if ( 1 && gSTB.GetDeviceModelExt().toLowerCase().indexOf('aura') < 0 ) {
-        return;
-    }
-    mac  = gSTB.RDir('MACAddress');
-    envs = gSTB.GetEnv(JSON.stringify({varList:['language','igmp_conf','upnp_conf','mc_proxy_enabled','mc_proxy_url','input_buffer_size','timezone_conf','audio_initial_volume','audio_dyn_range_comp','audio_operational_mode','audio_stereo_out_mode','audio_spdif_mode','audio_hdmi_audio_mode','lan_noip','ipaddr_conf','dnsip','pppoe_enabled','pppoe_login','pppoe_dns1','wifi_ssid','wifi_int_ip','portal1','portal2','portal_dhcp','use_portal_dhcp','bootstrap_url','update_url','update_channel_url','ntpurl','mcip_img_conf','mcport_img_conf','netmask','tvsystem','graphicres','auto_framerate','force_dvi','gatewayip','pppoe_pwd','wifi_int_dns','wifi_auth','wifi_enc','wifi_psk','wifi_wep_key1','wifi_int_mask','wifi_int_gw','wifi_wep_def_key','wifi_wep_key2','wifi_wep_key3','wifi_wep_key4','ethinit','partition','kernel','Ver_Forced','componentout','bootupgrade','do_factory_reset','serial#','Boot_Version','timezone_conf_int','showlogo','logo_x','logo_y','bg_color','fg_color','video_clock','front_panel','ts_endType','Image_Date','Image_Version','Image_Desc','ts_on','lang_audiotracks','autoupdate_cond','settMaster','stdin','stdout','stderr','bootcmd','ethaddr','betaupdate_cond','lang_subtitles','subtitles_on','ssaverDelay','autoupdateURL']}));
-    request = new XMLHttpRequest();
-    request.open('PUT', 'http://freetvstat.iptv.infomir.com.ua/api/env/' + mac, true);
-    request.setRequestHeader('Content-Type', 'application/json');
-    request.onreadystatechange = function () {
-        if ( request.readyState === 4 ) {
-            if ( request.status === 200 ) {
-                echo(request.responseText, 'success stat sending');
-            } else if( request.status === 0 || request.status === 404 ){
-                echo('Sending vars error');
-            }
-        }
-    };
-    if ( data ) {
-        try {
-            envs = JSON.parse(envs);
-            envs.result.traceroute = data;
-            envs = JSON.stringify(envs);
-        } catch ( e ) {
-            envs = {errCode: 0, errMsg: '', result: data};
-        }
-    }
-    request.send(envs);
+Traceroute.prototype.send_statistics = function() {
+    parent.load({"type": "stb", "action": "save_diagnostic_info", "data":JSON.stringify(this.result)}, function(){}, 'POST');
 };
