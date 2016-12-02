@@ -419,7 +419,7 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
                 foreach($old_sources as $source_id => $source_val) {
                     if (is_numeric($result)) {
                         $params['source'] = $source_val;
-                        $result += $this->db->updateSourceData($params, $source_id);
+                        $result += (!empty($source_val) ? $this->db->updateSourceData($params, $source_id): $this->db->deleteSourceData($source_id));
                     } else {
                         $result = FALSE;
                         break;
@@ -467,7 +467,7 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
         );
 
         $this->app['platform_list'] = array(
-            'stb' => array('101' => $this->setLocalization('STANDART SKIN'), '201' => $this->setLocalization('SMART LAUNCHER SKINS')),
+            'stb' => array('101' => $this->setLocalization('Stalker Classic'), '201' => $this->setLocalization('Stalker Smart Launcher')),
             'ios' => array('401' => $this->setLocalization('iOS')),
             'android' => array('301' => $this->setLocalization('Android')),
             'smarttv' => array('501' => $this->setLocalization('SmartTV'))
@@ -490,7 +490,7 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
             foreach($ad_positions as $row) {
                 if($row['platform'] == $platform){
                     $parts_labels[$platform][$row['position_code']] = $this->setLocalization($row['label']);
-                    $parts_platform[$platform][$row['position_code']] = array_key_exists($row['position_code'], $data[$platform]) && $data[$platform][$row['position_code']];
+                    $parts_platform[$platform][$row['position_code']] = array_key_exists($platform, $data) && array_key_exists($row['position_code'], $data[$platform]) && $data[$platform][$row['position_code']];
                 }
             }
             ksort($parts_platform[$platform]);

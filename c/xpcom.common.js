@@ -2077,8 +2077,7 @@ function common_xpcom(){
 
     this.advert = {
 
-        current : {},
-        config : {},
+        campaigns : [],
         ticking_timeout : 0,
 
         start : function (cb) {
@@ -2106,45 +2105,80 @@ function common_xpcom(){
                 function (result) {
                     _debug('on get_ad', result);
 
+                    result = Array.isArray(result) ? result : [];
+
                     stb.key_lock = false;
 
-                    this.current = result;
+                    this.campaigns = result.map(function (item) {
+                        return item['campaign'];
+                    });
 
-                    if (result && result.config) {
-                        this.config = result.config;
-                    }
+                    _debug('this.campaigns', this.campaigns);
 
-                    _debug('this.config', this.config);
+                    var adverts  = result.filter(function (item) {
+                        return item['campaign'].hasOwnProperty('places') && item['campaign']['places'].indexOf(101) != -1;
+                    });
 
-                    if (!this.config || !this.config.hasOwnProperty('places') || this.config['places'].indexOf(101) == -1){
+                    if (!adverts || adverts.length == 0){
                         callback();
                         return;
                     }
 
-                    if (result && result.ad) {
+                    for (var i=0; i<adverts.length; i++){
 
-                        main_menu.hide();
+                        var advert = adverts[i];
 
-                        stb.player.prev_layer = main_menu;
+                        if (i != adverts.length-1){
 
-                        stb.key_lock = true;
+                            callback = (function (ad, cb) {
 
-                        stb.player.play({
-                            'id': 0,
-                            'cmd': 'ffmpeg '+result.ad,
-                            'media_type': 'advert',
-                            'is_advert': true,
-                            'ad_tracking': result.tracking,
-                            'ad_must_watch' : result.ad_must_watch,
-                            'stop_callback': callback
+                                return function () {
+                                    _debug('ad', ad);
+                                    main_menu.hide();
 
-                        });
+                                    stb.player.prev_layer = main_menu;
 
-                        stb.player.ad_indication.show();
+                                    stb.key_lock = true;
 
-                    }else{
-                        callback();
+                                    stb.player.need_show_info = 0;
+
+                                    stb.player.play({
+                                        'id': ad.campaign['id'],
+                                        'ad_id': ad.campaign['id'],
+                                        'cmd': 'ffmpeg ' + ad.ad,
+                                        'media_type': 'advert',
+                                        'is_advert': true,
+                                        'ad_tracking': ad.tracking,
+                                        'ad_must_watch': ad.ad_must_watch,
+                                        'stop_callback': cb
+
+                                    });
+
+                                    stb.player.ad_indication.show();
+                                }
+
+                            })(advert, callback);
+                        }
                     }
+
+                    main_menu.hide();
+
+                    stb.player.prev_layer = main_menu;
+
+                    stb.key_lock = true;
+
+                    stb.player.play({
+                        'id': 0,
+                        'cmd': 'ffmpeg '+adverts[0].ad,
+                        'media_type': 'advert',
+                        'is_advert': true,
+                        'ad_tracking': adverts[0].tracking,
+                        'ad_must_watch' : adverts[0].ad_must_watch,
+                        'stop_callback': callback
+
+                    });
+
+                    stb.player.ad_indication.show();
                 }
             )
         },

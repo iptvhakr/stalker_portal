@@ -10,6 +10,7 @@ use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
 use Stalker\Lib\Core\Config;
 use Stalker\Lib\Core\Middleware;
 use Stalker\Lib\Core\Stb;
+use Symfony\Component\Form\FormError;
 
 class UsersController extends \Controller\BaseStalkerController {
 
@@ -359,6 +360,9 @@ class UsersController extends \Controller\BaseStalkerController {
             $this->user['expire_billing_date'] = str_replace('.', '-', $this->user['expire_billing_date']);
         }
         $this->user['version'] = preg_replace("/(\r\n|\n\r|\r|\n|\s){2,}/i", "$1", stripcslashes($this->user['version']));
+        if (empty($this->user['login']) && !empty($this->user['id'])) {
+            $this->user['login'] = $this->user['id'];
+        }
         $form = $this->buildUserForm($this->user, TRUE);
 
         if ($this->saveUsersData($form, TRUE)) {
@@ -1003,8 +1007,8 @@ class UsersController extends \Controller\BaseStalkerController {
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
 
-    public function check_login() {
-        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['name'])) {
+    public function check_login($local_uses = FALSE) {
+        if ((!$this->isAjax || $this->method != 'POST' || empty($this->postData['login'])) && !$local_uses) {
             $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
@@ -1016,20 +1020,24 @@ class UsersController extends \Controller\BaseStalkerController {
         $data['input_id'] = 'form_login';
         $error = $this->setLocalization('Login already used');
         $params = array(
-            'login' => trim($this->postData['name'])
+            'login' => trim($this->postData['login'])
         );
         if (!empty($this->postData['id'])) {
             $params['id<>'] = $this->postData['id'];
         }
         if ($this->db->checkLogin($params)) {
-            $data['chk_rezult'] = $this->setLocalization('Login already used');
+            $data['chk_rezult'] = !$local_uses ? $this->setLocalization('Login already used'): FALSE;
         } else {
-            $data['chk_rezult'] = $this->setLocalization('Login is available');
+            $data['chk_rezult'] = !$local_uses ? $this->setLocalization('Login is available'): TRUE;
             $error = '';
         }
-        $response = $this->generateAjaxResponse($data, $error);
 
-        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+        $response = $this->generateAjaxResponse($data, $error);
+        if ($this->isAjax && !$local_uses) {
+            return new Response(json_encode($response), (empty($error) ? 200 : 500));
+        } else {
+            return $data;
+        }
     }
 
     public function check_console_name() {
@@ -1991,7 +1999,7 @@ class UsersController extends \Controller\BaseStalkerController {
         $form = $builder->createBuilder('form', $data)
                 ->add('id', 'hidden')
                 ->add('fname', 'text', array('required' => FALSE))
-                ->add('login', 'text', $this->getAddUserFormParam($edit))
+                ->add('login', 'text', array('required' => FALSE))
                 ->add('password', 'password', array('required' => FALSE))
                 ->add('phone', 'text', array('required' => FALSE))
                 ->add('ls', 'text', array('required' => FALSE))
@@ -2101,7 +2109,19 @@ class UsersController extends \Controller\BaseStalkerController {
                 unset($data['password']);
             }
             if ($form->isValid()) {
-                
+
+                if (!empty($data['login'])) {
+                    if (array_key_exists('id', $data)) {
+                        $this->postData['id'] = $data['id'];
+                    }
+                    $this->postData['login'] = $data['login'];
+                    $check_login = $this->check_login(TRUE);
+                    if (!$check_login['chk_rezult']) {
+                        $form->get('login')->addError(new FormError($this->setLocalization('Error') . '! ' . $this->setLocalization('Login already used') . '!'));
+                        return FALSE;
+                    }
+                }
+
                 $stb_groups = new \StbGroup();
                 $member = $stb_groups->getMemberByUid(intval($data['id']));
                 $id = $data['id'];

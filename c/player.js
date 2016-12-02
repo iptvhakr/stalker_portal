@@ -1031,6 +1031,11 @@ player.prototype.event_callback = function(event, params){
                 }
 
                 if (this.cur_media_item.stop_callback){
+
+                    this.ad_indication.hide();
+                    this.ad_skip_indication.hide();
+                    stb.advert.stop_ticking();
+
                     this.cur_media_item.stop_callback();
                     return;
                 }
@@ -1181,9 +1186,6 @@ player.prototype.event_callback = function(event, params){
                                     delete cur_media_item.media_type;
                                     cur_media_item.disable_ad = true;
                                     module && module.vclub && module.vclub.set_ad_ended_time && module.vclub.set_ad_ended_time(this.cur_media_item.ad_id, stb.GetPosTime(), stb.GetMediaLen(), true);
-                                }else if (this.cur_media_item.media_type == 'advert'){
-                                    delete cur_media_item.media_type;
-                                    cur_media_item.disable_ad = true;
                                 }
 
                                 if (cur_media_item.hasOwnProperty('ad_must_watch')){
@@ -1520,8 +1522,13 @@ player.prototype.event_callback = function(event, params){
                     stb.advert.track(this.cur_media_item.ad_tracking['error'])
                 }
             }
-
+            _debug('this.cur_media_item', this.cur_media_item);
             if (this.cur_media_item.stop_callback){
+
+                this.ad_indication.hide();
+                this.ad_skip_indication.hide();
+                stb.advert.stop_ticking();
+
                 this.cur_media_item.stop_callback();
                 return;
             }
@@ -1581,7 +1588,7 @@ player.prototype.event_callback = function(event, params){
 
                 if (this.cur_media_item.media_type != 'vclub_ad' && this.play_continuously && this.cur_media_item.hasOwnProperty('series') && this.cur_media_item.series && this.cur_media_item.series.length > 0){
 
-                    var series_idx = this.cur_media_item.series.indexOf(this.cur_media_item.cur_series);
+                    var series_idx = this.cur_media_item.series.lastIndexOf(this.cur_media_item.cur_series);
 
                     _debug('series_idx before', series_idx);
 
@@ -1640,7 +1647,7 @@ player.prototype.event_callback = function(event, params){
                         }
 
                     }else{
-                        var idx = this.cur_media_item.playlist.indexOf(this.cur_media_item.cmd);
+                        var idx = this.cur_media_item.playlist.lastIndexOf(this.cur_media_item.cmd);
 
                         _debug('playlist idx', idx);
 
@@ -1674,9 +1681,6 @@ player.prototype.event_callback = function(event, params){
                             if (this.cur_media_item.media_type && this.cur_media_item.media_type == 'vclub_ad'){
                                 delete cur_media_item.media_type;
                                 module && module.vclub && module.vclub.set_ad_ended_time && module.vclub.set_ad_ended_time(this.cur_media_item.ad_id, stb.GetPosTime(), stb.GetMediaLen(), true);
-                            }else if (this.cur_media_item.media_type == 'advert'){
-                                delete cur_media_item.media_type;
-                                cur_media_item.disable_ad = true;
                             }
 
                             if (cur_media_item.hasOwnProperty('ad_must_watch')){
@@ -1685,8 +1689,9 @@ player.prototype.event_callback = function(event, params){
 
                             this.play(cur_media_item);
 
-                            break;
                         }
+
+                        break;
                     }
                 }
                 stb.remount_storages(
@@ -2211,11 +2216,11 @@ player.prototype.volume = new function(){
 player.prototype.define_media_type = function(cmd){
     _debug('player.define_media_type', cmd);
 
-    if (cmd.indexOf('://') > 0){
+    if (cmd.indexOf('://') > 0 && !this.cur_media_item.is_advert){
         
         _debug('stb.cur_place', stb.cur_place);
         
-        if ((cmd.indexOf('mmsh://') >=0 || cmd.indexOf('rtsp://') >=0 || cmd.indexOf('rtmp://') >=0 || cmd.indexOf('udp://') >=0 || cmd.indexOf('rtp://') >=0 || cmd.indexOf('http://') >=0 || cmd.indexOf('dvb://') >=0) && !this.active_time_shift && stb.cur_place != 'demo' && stb.cur_place != 'internet' && stb.cur_place != 'epg_simple' && stb.cur_place != 'epg' && stb.cur_place != 'radio' && stb.cur_place != 'vclub' && stb.cur_place != 'karaoke' && stb.cur_place != 'audioclub' && !this.cur_media_item.is_audio && !this.cur_media_item.promo && !this.cur_media_item.radio && !this.cur_media_item.is_advert){
+        if ((cmd.indexOf('mmsh://') >=0 || cmd.indexOf('rtsp://') >=0 || cmd.indexOf('rtmp://') >=0 || cmd.indexOf('udp://') >=0 || cmd.indexOf('rtp://') >=0 || cmd.indexOf('http://') >=0 || cmd.indexOf('dvb://') >=0) && !this.active_time_shift && stb.cur_place != 'demo' && stb.cur_place != 'internet' && stb.cur_place != 'epg_simple' && stb.cur_place != 'epg' && stb.cur_place != 'radio' && stb.cur_place != 'vclub' && stb.cur_place != 'karaoke' && stb.cur_place != 'audioclub' && !this.cur_media_item.is_audio && !this.cur_media_item.promo && !this.cur_media_item.radio){
             this.is_tv = true;
         }else{
             this.is_tv = false;
@@ -2519,7 +2524,7 @@ player.prototype.play = function(item){
             }
         }
 
-    }else if (cmd.indexOf('/usbdisk') > 0 || cmd.indexOf('/USB-') > 0 || cmd.indexOf('/ram/mnt/smb/') > 0 || cmd.indexOf('/av/') > 0 || cmd.indexOf('/UPnP/') > 0 || stb.cur_place == 'media_browser'){
+    }else if (cmd.indexOf('/usbdisk') > 0 || cmd.indexOf('/USB-') > 0 || cmd.indexOf('/ram/mnt/smb/') > 0 || cmd.indexOf('/av/') > 0 || cmd.indexOf('/UPnP/') > 0 || stb.cur_place == 'media_browser' || stb.player.cur_media_item.media_type == 'advert' || stb.player.cur_media_item.media_type == 'vclub_ad'){
 
         this.play_now(cmd);
 
@@ -3865,9 +3870,16 @@ player.prototype.bind = function(){
             }else{
                 this.show_prev_layer();
                 if (this.cur_media_item.hasOwnProperty('ad_tracking')){
+
+                    this.ad_indication.hide();
+                    this.ad_skip_indication.hide();
+                    stb.advert.stop_ticking();
+
                     if (this.cur_media_item.ad_tracking.hasOwnProperty('close')){
                         stb.advert.track(this.cur_media_item.ad_tracking['close'])
                     }
+
+                    this.cur_media_item.stop_callback && this.cur_media_item.stop_callback();
                 }
             }
         }
@@ -4206,16 +4218,23 @@ player.prototype.bind = function(){
             }, 4000);
         }
 
-        if (!this.cur_media_item.playlist){
+        if (this.cur_media_item.media_type == 'advert'){
 
-            if (this.cur_media_item.media_type == 'advert') {
-                this.show_prev_layer();
+            this.ad_indication.hide();
+            this.ad_skip_indication.hide();
+            stb.advert.stop_ticking();
+
+            if (this.cur_media_item.hasOwnProperty('ad_tracking')){
+                if (this.cur_media_item.ad_tracking.hasOwnProperty('close')){
+                    stb.advert.track(this.cur_media_item.ad_tracking['close'])
+                }
             }
 
+            this.cur_media_item.stop_callback && this.cur_media_item.stop_callback();
             return;
         }
 
-        var idx = this.cur_media_item.playlist.indexOf(this.cur_media_item.cmd);
+        var idx = this.cur_media_item.playlist.lastIndexOf(this.cur_media_item.cmd);
 
         _debug('idx', idx);
 
@@ -4262,16 +4281,6 @@ player.prototype.bind = function(){
             delete cur_media_item.media_type;
             cur_media_item.disable_ad = true;
             module && module.vclub && module.vclub.set_ad_ended_time && module.vclub.set_ad_ended_time(this.cur_media_item.ad_id, stb.GetPosTime(), stb.GetMediaLen());
-        }else if (this.cur_media_item.media_type == 'advert'){
-
-            if (cur_media_item.hasOwnProperty('ad_tracking')){
-                if (cur_media_item.ad_tracking.hasOwnProperty('close')){
-                    stb.advert.track(cur_media_item.ad_tracking['close'])
-                }
-            }
-
-            delete cur_media_item.media_type;
-            cur_media_item.disable_ad = true;
         }
 
         this.play(cur_media_item);

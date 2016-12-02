@@ -9,6 +9,7 @@ if (empty($_GET['uid'])){
 
 use Stalker\Lib\Core\Config;
 use Stalker\Lib\Core\Stb;
+use Stalker\Lib\Core\Mysql;
 
 $config = array(
     'options' => array(),
@@ -88,6 +89,16 @@ $themes = $app_manager->getInstalledApps('theme');
 if (!empty($themes)){
 
     $user_theme = isset($user['theme']) ? $user['theme'] : '';
+
+    if (!$user_theme){
+        $default_theme = Mysql::getInstance()->from('settings')->get()->first('default_template');
+
+        if ($default_theme == 'smart_launcher'){
+            $default_theme = $themes[0]['alias'];
+        }
+
+        $user_theme = $default_theme;
+    }
 
     $theme_alias = str_replace('smart_launcher:', '', $user_theme);
 

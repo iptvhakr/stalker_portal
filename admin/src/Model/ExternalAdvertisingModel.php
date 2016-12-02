@@ -70,6 +70,10 @@ class ExternalAdvertisingModel extends \Model\BaseStalkerModel {
         return $this->mysqlInstance->update('ext_adv_sources', $params, $where)->total_rows();
     }
 
+    public function deleteSourceData($id){
+        return $this->mysqlInstance->delete('ext_adv_sources', array('id'=>$id))->total_rows();
+    }
+
     public function insertCompanyData($params){
         return $this->mysqlInstance->insert('ext_adv_campaigns', $params)->insert_id();
     }

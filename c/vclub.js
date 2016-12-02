@@ -1159,41 +1159,110 @@
                                 _debug('player.on_stop');
                                 if (result.hasOwnProperty('cmd')){
                                     player.delete_link(result.cmd);
-                                }else if (result.length && result[1].cmd){
-                                    player.delete_link(result[1].cmd);
+                                }else if (result.length && result[result.length - 1].cmd){
+                                    player.delete_link(result[result.length - 1].cmd);
                                 }
                             }})(stb.player);
 
                             stb.player.prev_layer = self;
                             stb.player.need_show_info = 1;
 
-                            if (result.length && result.length == 2){
-                                stb.player.need_show_info = 0;
+                            var cur_media_item = stb.player.cur_media_item.clone();
 
-                                if (result[1].hasOwnProperty('subtitles')){
+                            if (result.length && result.length >= 2){
 
-                                    stb.player.cur_media_item.subtitles = result[1].subtitles.map(function(item, idx){
-                                        item.pid  = 'external_'+idx;
-                                        item.lang = [item.lang, ''];
-                                        return item;
-                                    });
+                                var movie = result.splice(result.length-1)[0];
+
+                                _debug('movie', movie);
+
+                                var callback = function () {
+
+                                    _debug('movie callback');
+
+                                    self.hide(true);
+
+                                    try{
+                                        stb.Stop();
+                                    }catch(e){
+                                        _debug(e);
+                                    }
+
+                                    _debug('movie', movie);
+                                    _debug('cur_media_item', cur_media_item);
+
+                                    stb.player.cur_media_item = cur_media_item.clone();
+
+                                    if (movie.hasOwnProperty('subtitles')){
+                                        stb.player.cur_media_item.subtitles = movie.subtitles.map(function(item, idx){
+                                            item.pid  = 'external_'+idx;
+                                            item.lang = [item.lang, ''];
+                                            return item;
+                                        });
+                                    }
+
+                                    stb.player.play_now(movie);
+                                };
+
+                                var adverts = result;
+
+                                _debug('adverts', adverts);
+
+                                for (var i=0; i<adverts.length; i++){
+
+                                    var advert = adverts[i];
+
+                                    if (i != adverts.length-1){
+
+                                        callback = (function (ad, cb) {
+
+                                            return function () {
+                                                _debug('ad callback', ad);
+
+                                                self.hide(true);
+
+                                                stb.player.prev_layer = self;
+
+                                                stb.key_lock = true;
+
+                                                stb.player.need_show_info = 0;
+
+                                                stb.player.play({
+                                                    'id': ad.id,
+                                                    'ad_id' : ad.id,
+                                                    'cmd': ad.cmd,
+                                                    'media_type': 'advert',
+                                                    'is_advert': true,
+                                                    'ad_tracking': ad.ad_tracking,
+                                                    'ad_must_watch': ad.ad_must_watch,
+                                                    'stop_callback': cb
+                                                });
+
+                                                stb.player.ad_indication.show();
+                                            }
+
+                                        })(advert, callback);
+                                    }
                                 }
 
-                                stb.player.cur_media_item.cmd = result[0].cmd;
-                                stb.player.cur_media_item.playlist = [result[0].cmd, result[1].cmd];
-                                stb.player.cur_media_item.keep_original_name = true;
-                                stb.player.cur_media_item.ad_must_watch = result[0].ad_must_watch;
-                                stb.player.cur_media_item.show_osd = true;
-                                stb.player.cur_media_item.media_type = result[0].media_type;
-                                stb.player.cur_media_item.ad_id = result[0].ad_id;
-                                stb.player.cur_media_item.is_advert = result[0].is_advert;
-                                stb.player.cur_media_item.ad_tracking = result[0].ad_tracking;
+                                stb.player.prev_layer = self;
 
                                 stb.key_lock = true;
 
-                                stb.player.play_now(result[0]);
+                                stb.player.need_show_info = 0;
+
+                                stb.player.play({
+                                    'id': adverts[0].id,
+                                    'ad_id': adverts[0].id,
+                                    'cmd': adverts[0].cmd,
+                                    'media_type': 'advert',
+                                    'is_advert': true,
+                                    'ad_tracking': adverts[0].ad_tracking,
+                                    'ad_must_watch' : adverts[0].ad_must_watch,
+                                    'stop_callback': callback
+
+                                });
+
                                 stb.player.ad_indication.show();
-                                return;
 
                             }else if (result.hasOwnProperty('subtitles')){
 
@@ -1202,9 +1271,11 @@
                                     item.lang = [item.lang, ''];
                                     return item;
                                 });
+
+                                stb.player.play_now(result);
                             }
 
-                            stb.player.play_now(result);
+                            //stb.player.play_now(result);
                         }else{
                             //callback && callback(result.cmd);
                             self.add_download.call(self, self.data_items[self.cur_row], url);

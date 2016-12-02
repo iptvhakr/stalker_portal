@@ -11,7 +11,7 @@
         <script src="{{app.relativePath}}c/version.js{% if attribute(app, 'current_version') is defined and app['current_version']%}?ver={{ app['current_version'] }}{% endif %}"></script>
         <!-- All functions for this theme + document.ready processing -->
         <script src="{{app.request.baseUrl}}/plugins/form-validator/jquery.form-validator.min.js"></script>
-        <script src="{{app.request.baseUrl}}/js/devoops.js?ver={{ random() }}{% if 0 and attribute(app, 'current_version') is defined and app['current_version']%}?ver={{ app['current_version'] }}{% endif %}"></script>
+        <script src="{{app.request.baseUrl}}/js/devoops.js{% if attribute(app, 'current_version') is defined and app['current_version']%}?ver={{ app['current_version'] }}{% endif %}"></script>
         <script src="{{app.request.baseUrl}}/plugins/multiselect_transfer/jquery.selso.js"></script>
 
         <script src="{{app.request.baseUrl}}/plugins/datatables/jquery.dataTables.js"></script>

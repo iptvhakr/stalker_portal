@@ -819,7 +819,7 @@ class SmartLauncherAppsManager
             $stalker_version = substr($stalker_version, $start, $end-$start);
 
             $metapackage_name = $metapackage;
-            $metapackage .= $metapackage_name.'@'.$stalker_version;
+            $metapackage = $metapackage_name.'@'.$stalker_version;
         }else{
             list($metapackage_name, $stalker_version) = explode('@', $metapackage);
         }
@@ -857,7 +857,7 @@ class SmartLauncherAppsManager
 
         $this->sendToCallback("Installing metapackage ".$metapackage."...");
 
-        $result = $this->addApplication($metapackage_name, true, !is_null($orig_metapackage), $stalker_version);
+        $result = $this->addApplication($metapackage_name, true, !is_null($orig_metapackage), is_null($orig_metapackage) ? $stalker_version : null);
 
         Mysql::getInstance()->delete('launcher_apps', array('url' => $metapackage_name));
 

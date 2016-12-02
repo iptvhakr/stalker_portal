@@ -223,9 +223,12 @@ function perehod(a)
     else document.getElementById('b'+ind).focus();
 }
 
-function load(params, callback){
+function load(params, callback, method){
+
+    method = method || 'GET';
+
    JsHttpRequest.query(
-       'GET '+_GET.ajax_loader,
+       method+' '+_GET.ajax_loader,
 
        params,
 

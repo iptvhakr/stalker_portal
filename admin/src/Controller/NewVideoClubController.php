@@ -2011,8 +2011,8 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
 
     }
 
-    public function get_video_files_list_json(){
-        if (!$this->isAjax) {
+    public function get_video_files_list_json($local_uses = FALSE){
+        if (!$this->isAjax && !$local_uses) {
             $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
@@ -2120,7 +2120,12 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
 
         $response = $this->generateAjaxResponse($data, '');
 
-        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+        if ($this->isAjax && !$local_uses) {
+            $response = $this->generateAjaxResponse($response);
+            return new Response(json_encode($response), (empty($error) ? 200 : 500));
+        } else {
+            return $response;
+        }
     }
 
     public function save_video_files($internal_use = FALSE){
@@ -2182,9 +2187,10 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
             if ($internal_use) {
                 $data['id'] = isset($id) ? $id : $result;
             }
-            if ($clean_old_url){
-                $this->db->updateVideo(array('rtsp_url' => ''), $this->postData['video_id']);
-                $data['btn_old_url_remove'] = 1;
+            $check_files = $this->db->getSeriesFiles(array('V_S_F.video_id' => $this->postData['video_id']), 'COUNT');
+            if ($clean_old_url || !empty($check_files)){
+                $this->db->updateVideo(array('protocol'=>'', 'rtsp_url' => ''), $this->postData['video_id']);
+                $data['btn_old_url_remove'] = (int) $clean_old_url;
             }
             $error = '';
         } else {
@@ -2299,6 +2305,10 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
 
             if ($this->db->getSeriesFiles(array('V_S_F.id' => $this->postData['id'])) && $this->db->updateSeriesFiles(array('accessed' => $this->postData['accessed']), array('id' => $this->postData['id']))) {
                 $error = '';
+                $check_files = $this->db->getSeriesFiles(array('V_S_F.video_id' => $this->postData['video_id']), 'COUNT');
+                if (!empty($check_files)){
+                    $this->db->updateVideo(array('protocol'=>'', 'rtsp_url' => ''), $this->postData['video_id']);
+                }
             } else {
                 $data['msg'] = $error;
             }
@@ -3092,8 +3102,16 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
                             $this->app['error_local'] = $error_local;
                             return FALSE;
                         } else {
-                            if (preg_match("/s\d+e(\d+).*$/i", $data['rtsp_url'], $tmp_arr)) {
-                                $series = range(1, (int)$tmp_arr[1], 1);
+                            if (empty($data['id'])) {
+                                if (preg_match("/s\d+e(\d+).*$/i", $data['rtsp_url'], $tmp_arr)) {
+                                    $series = range(1, (int)$tmp_arr[1], 1);
+                                }
+                            } else {
+                                $this->data['video_id'] = $data['id'];
+                                $check_files = $this->db->getSeriesFiles(array('V_S_F.video_id' => $this->data['video_id']), 'COUNT');
+                                if (!empty($check_files)) {
+                                    $this->db->updateVideo(array('protocol'=>'', 'rtsp_url' => ''), $data['id']);
+                                }
                             }
                         }
                     }
@@ -3109,8 +3127,8 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
                         'censored' => $data['censored'],
                         /*'hd' => $data['hd'],*/
                         'for_sd_stb' => $data['for_sd_stb'],
-                        'protocol' => '',
-                        'rtsp_url' => '',
+                        'protocol' => !empty($data['protocol']) ? $data['protocol']: '',
+                        'rtsp_url' => !empty($data['rtsp_url']) ? $data['rtsp_url']: '',
                         'time' => @$data['duration'],
                         'description' => $data['description'],
                         'genre_id_1' => (!empty($data['genres']) && array_key_exists(0, $data['genres']) ? $data['genres'][0] : 0),

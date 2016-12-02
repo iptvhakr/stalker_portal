@@ -648,12 +648,7 @@ class TariffsController extends \Controller\BaseStalkerController {
 
         $form = $builder->createBuilder('form', $data, array('csrf_protection' => false))
                 ->add('id', 'hidden')
-                ->add('external_id', 'text', array(
-                        'constraints' => array(
-                            new Assert\NotBlank()
-                        ),
-                        'required' => TRUE
-                    ))
+                ->add('external_id', 'text')
                 ->add('name', 'text', array(
                     'constraints' => new Assert\NotBlank(),
                         'required' => TRUE
@@ -786,9 +781,7 @@ class TariffsController extends \Controller\BaseStalkerController {
 
         $form = $builder->createBuilder('form', $data, array('csrf_protection' => false))
                 ->add('id', 'hidden')
-                ->add('external_id', 'text', array(
-                    'constraints' => array(new Assert\NotBlank()),
-                    'required' => TRUE))
+                ->add('external_id', 'text')
                 ->add('name', 'text', array('constraints' => array(new Assert\NotBlank()), 'required' => TRUE))
                 ->add('user_default', 'checkbox', array('required' => TRUE, 'value' => $val))
                 ->add('packages', 'choice', array(
