@@ -16,8 +16,15 @@ function Traceroute(option){
     this.result = [];
     this.resultCallback = option && typeof(option.callback) == 'function' ? option.callback : function(){};
     this.timer = null;
-    this._static        = TracerouteStatic;
+    this._static = TracerouteStatic;
 
+    if (option.send_statistic) {
+        if (option.sendStatisticsCallback && typeof(option.sendStatisticsCallback) == 'function') {
+            this.send_statistics = option.sendStatisticsCallback;
+        }
+    } else {
+        this.send_statistics = function(){};
+    }
 }
 
 Traceroute.prototype.start = function(){
@@ -106,6 +113,9 @@ Traceroute.prototype.checkProgress = function () {
         if (!self._is_run) {
             clearInterval(self.timer);
             self.restoreLoading();
+            self.result.forEach(function(item){
+               self.send_statistics(item);
+            });
         }
     }, 500);
 };
@@ -133,105 +143,34 @@ Traceroute.prototype._getNormTime = function(){
     return (h < 10 ? '0' + h : h )  + ':' + (m < 10 ? '0' + m : m );
 };
 
-/*
-parent.sett_traceroute_start = function(captionEl, resultEl) {
-    var resultPre = document.createElement('div'), gSTB = parent.gSTB,
-        stbDownloadManager = parent.stbDownloadManager,
-
-        defaultTraceroute = {
-            // targets for traceroute
-            domains:['streamer1nl.allfreetv.net', 'streamer1de.allfreetv.net'],
-            // traceroute duration
-            time: 210
-        },
-
-        downloads = JSON.parse(stbDownloadManager.GetQueueInfo()),
-        loadingQueue = [],
-        date = new Date(),
-        endDate = new Date(),
-        minutes = date.getMinutes(),
-        time = defaultTraceroute.time || 0,
-        domains = defaultTraceroute.domains,
-        endMinutes, i, len;
-
-    resultPre.setAttribute('tabindex', 0); // set tabindex attribute, we need to focus this element at the end of traceroute
-
-    endDate.setSeconds(date.getSeconds() + (time * domains.length) + 60);
-    if ( minutes < 10 ) {
-        minutes = '0' + minutes;
+Traceroute.prototype.send_statistics = function( data ) {
+    var mac, envs, request, gSTB = parent.gSTB;
+    // prevent sending statistic from another devices
+    if ( 1 && gSTB.GetDeviceModelExt().toLowerCase().indexOf('aura') < 0 ) {
+        return;
     }
-    endMinutes = endDate.getMinutes();
-    if ( endMinutes < 10 ) {
-        endMinutes = '0' + endMinutes;
-    }
-
-    // save all active jobs, because mtr can ruin downloads
-    for ( i = 0, len = downloads.length; i < len; ++i ) {
-        if ( downloads[i].state === 1 || downloads[i].state === 2 ) {
-            loadingQueue.push(downloads[i]);
-            stbDownloadManager.StopJob(downloads[i].id);
-        }
-    }
-    SettingsPage.FileList.layer = SettingsPage.FileList.layers.Traceroute;
-
-    SettingsPage.BCrumb.Push('', 'traceroute.png', _('Test result'));
-
-
-
-    elclear(SettingsPage.FileList.handle);
-    SettingsPage.FileList.handle.appendChild(resultPre);
-    new CModalHint(currCPage, _('Perform diagnostics') + '...' +
-    '<br>' + _('Start') + ': ' + date.getHours() + ':' + minutes +
-    '<br>' + _('Estimated time of completion') + ': ' + endDate.getHours() + ':' + endMinutes, 1500);
-
-    // hack to run mtr before browser render all page
-    setTimeout(function () { // run mtr
-        var table = element('table', {className: 'netanalyzeTable'}),
-            handlerLink = SettingsPage.EventHandler,
-            count = domains.length,
-            results = '',
-            i, result;
-
-        SettingsPage.EventHandler = function() {};
-
-        table.appendChild(element('tr', {}, [
-            element('th', {}, _('IP Address')),
-            element('th', {}, _('Loss')),
-            element('th', {}, _('Ping'))
-        ]));
-
-        if ( time ) {
-            for ( i = 0; i < count; ++i ) {
-                result = gSTB.RDir('mtr --report --no-dns --report-cycles ' + time + ' ' + domains[i]);
-                results += 'Traceroute to domain: ' + domains[i] + '\n' + result + '\n';
+    mac  = gSTB.RDir('MACAddress');
+    envs = gSTB.GetEnv(JSON.stringify({varList:['language','igmp_conf','upnp_conf','mc_proxy_enabled','mc_proxy_url','input_buffer_size','timezone_conf','audio_initial_volume','audio_dyn_range_comp','audio_operational_mode','audio_stereo_out_mode','audio_spdif_mode','audio_hdmi_audio_mode','lan_noip','ipaddr_conf','dnsip','pppoe_enabled','pppoe_login','pppoe_dns1','wifi_ssid','wifi_int_ip','portal1','portal2','portal_dhcp','use_portal_dhcp','bootstrap_url','update_url','update_channel_url','ntpurl','mcip_img_conf','mcport_img_conf','netmask','tvsystem','graphicres','auto_framerate','force_dvi','gatewayip','pppoe_pwd','wifi_int_dns','wifi_auth','wifi_enc','wifi_psk','wifi_wep_key1','wifi_int_mask','wifi_int_gw','wifi_wep_def_key','wifi_wep_key2','wifi_wep_key3','wifi_wep_key4','ethinit','partition','kernel','Ver_Forced','componentout','bootupgrade','do_factory_reset','serial#','Boot_Version','timezone_conf_int','showlogo','logo_x','logo_y','bg_color','fg_color','video_clock','front_panel','ts_endType','Image_Date','Image_Version','Image_Desc','ts_on','lang_audiotracks','autoupdate_cond','settMaster','stdin','stdout','stderr','bootcmd','ethaddr','betaupdate_cond','lang_subtitles','subtitles_on','ssaverDelay','autoupdateURL']}));
+    request = new XMLHttpRequest();
+    request.open('PUT', 'http://freetvstat.iptv.infomir.com.ua/api/env/' + mac, true);
+    request.setRequestHeader('Content-Type', 'application/json');
+    request.onreadystatechange = function () {
+        if ( request.readyState === 4 ) {
+            if ( request.status === 200 ) {
+                echo(request.responseText, 'success stat sending');
+            } else if( request.status === 0 || request.status === 404 ){
+                echo('Sending vars error');
             }
-            echo(result, 'result');
-            // parsing mtr output
-            result = result.split('\n');
-            result.shift();
-            result.shift();
-            result.pop();
-            result.forEach(function ( item ) {
-                var data = item.trim().replace(/\s{2,}/g, ' ').split(' ');
-                table.appendChild(element('tr', {}, [
-                    element('td', {}, data[1]),
-                    element('td', {}, data[2]),
-                    element('td', {}, '' + Math.round(data[5]))
-                ]));
-            });
-            sendStatistic(results);
         }
-
-        resultPre.innerHTML = '';
-        resultPre.appendChild(table);
-        // restore active downloads
-        for ( i = 0, len = loadingQueue.length; i < len; ++i ) {
-            stbDownloadManager.StartJob(loadingQueue[i].id);
+    };
+    if ( data ) {
+        try {
+            envs = JSON.parse(envs);
+            envs.result.traceroute = data;
+            envs = JSON.stringify(envs);
+        } catch ( e ) {
+            envs = {errCode: 0, errMsg: '', result: data};
         }
-        // hack to restore event handler, browser pass events with delay
-        setTimeout(function () {
-            SettingsPage.EventHandler = handlerLink;
-            resultPre.focus();
-        }, 0);
-    },0);
-}*/
+    }
+    request.send(envs);
+};

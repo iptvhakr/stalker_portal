@@ -91,4 +91,25 @@ a {outline:none; text-decoration:none;}
 #blueback #list_array{position:absolute; background:-webkit-gradient(linear, left bottom, left top, color-stop(0, #eee), color-stop(1, #ccc)); border:solid 2px rgba(0,0,0,.7); border-radius:7px; width:294px;max-width:294px;overflow: hidden; bottom:137;padding:5px 5px 5px 5px;margin-left:265px; -webkit-box-shadow:0px 0px 200px #000; color:#247; font-family:'Myriad Pro'; display:none; z-index:999;}
 #list_array .line{width:284px; padding:0px 5px 0px 5px; font-family:"Trebuchet MS"; font-weight:bold; font-size:22px; color:#247;}
 #list_array .line_act {width:284px; padding:0px 5px 0px 5px; background:#247; font-family:"Trebuchet MS"; font-weight:bold; font-size:22px; color:#fff;}
+
+#tracert_result_head{
+    margin-top: 50px;
+    margin-right: 15px;
+}
+
+#tracert_result {
+    height: 220px;
+    margin-top: 10px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding-right: 15px;
+}
+
+#tracert_result_head td, #tracert_result td{
+    width: 25%;
+}
+
+#tracert_result_head td:first-of-type, #tracert_result td:first-of-type{
+    width: 50%;
+}
 -->

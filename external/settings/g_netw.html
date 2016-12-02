@@ -11,7 +11,7 @@ var ind=1;
 var number=0;
 var read=JSON.parse(parent.stb.GetEnv('{"varList":["lan_noip","ipaddr_conf","dnsip","pppoe_enabled","pppoe_login","pppoe_dns1","wifi_ssid","wifi_int_ip"]}'));
 var chek=document.getElementsByClassName("check");
-var scrollResultBlock, resultTracertBlock;
+var oldKeyDownHandler, resultTracertBlock;
 function _debug(){}
 var loader = {next:function(){}};
 
@@ -162,7 +162,7 @@ function ent(a)
 parent.sett_traceroute_start = function() {
     console.log('sett_traceroute_start');
     try {
-        var traceroute = new Traceroute({time: 5, callback: addTracerouteResult });
+        var traceroute = new Traceroute({time: 5, callback: addTracerouteResult, domains : ['streamer1nl.allfreetv.net'] });
 
         var t = 0;
         var timer = setInterval(function(){
@@ -204,6 +204,7 @@ function showResults(){
     document.getElementById("menu_buttons").style.display="none";
     chek[0].style.display="none";
     chek[1].style.display="none";
+
     var tr = document.createElement('tr');
     [parent.t('IP Address'), parent.t('Loss'), parent.t('Ping')].forEach(function(item){
         div = document.createElement('div');
@@ -214,59 +215,64 @@ function showResults(){
         tr.appendChild(td);
     });
 
-    resultTracertBlock = document.getElementById('tracert_result');
-    if (resultTracertBlock.children[0].childNodes.length > 0) {
-        resultTracertBlock.children[0].insertBefore(tr, resultTracertBlock.children[0].childNodes[0]);
+    var tracertResultHead = document.getElementById('tracert_result_head');
+    if (tracertResultHead.childNodes.length > 0) {
+        tracertResultHead.insertBefore(tr, tracertResultHead.childNodes[0]);
     } else {
-        resultTracertBlock.children[0].appendChild(tr);
+        tracertResultHead.appendChild(tr);
     }
 
-    scrollResultBlock = new Scrollable(resultTracertBlock, chek[2]);
-    scrollResultBlock.oldKeyDownHandleer = document.body.onkeydown;
+    oldKeyDownHandler = document.body.onkeydown;
     document.body.onkeydown = replPressKey;
 
+    document.getElementById('t11').innerText = parent.t('Results of extended diagnostics:');
+    chek[0].style.display="block";
     chek[2].style.display="block";
 }
 
 function addTracerouteResult(result){
     if (result instanceof Array) {
-        resultTracertBlock = document.getElementById('tracert_result');
-        result.forEach(function(item){
-            var tr = document.createElement('tr');
-            item.forEach(function(itemT){
-                span = document.createElement('span');
-                span.setAttribute('class', 'item_name');
-                span.innerText = itemT;
-                td = document.createElement('td');
-                td.appendChild(span);
-                tr.appendChild(td);
+        resultTracertBlock = !resultTracertBlock ? document.getElementById('tracert_result'): resultTracertBlock;
+        if (resultTracertBlock) {
+            result.forEach(function(item){
+                var tr = document.createElement('tr');
+                item.forEach(function(itemT){
+                    span = document.createElement('span');
+                    span.setAttribute('class', 'item_name');
+                    span.innerText = itemT;
+                    td = document.createElement('td');
+                    td.appendChild(span);
+                    tr.appendChild(td);
+                });
+                resultTracertBlock.children[0].appendChild(tr);
             });
-            resultTracertBlock.children[0].appendChild(tr);
-        });
+        }
     }
 }
     function replPressKey(e){
         ec = e.keyCode;
         if (ec) {
+            resultTracertBlock = !resultTracertBlock ? document.getElementById('tracert_result'): resultTracertBlock;
             switch(ec) {
                 case 40: {
                     console.log('key DOWN');
-                    scrollResultBlock.scroll(-1);
+                    resultTracertBlock.scrollTop +=40;
                     e.preventDefault();
                     e.stopImmediatePropagation();
                     break;
                 }
                 case 38: {
                     console.log('key UP');
-                    scrollResultBlock.scroll(1);
+                    resultTracertBlock.scrollTop -=40;
                     e.preventDefault();
                     e.stopImmediatePropagation();
                     break;
                 }
-                default :{
-                    document.body.onkeydown = scrollResultBlock.oldKeyDownHandleer;
-                    scrollResultBlock.oldKeyDownHandleer = function(){};
-                    document.body.triggerCustomEventListener('keydown', e);
+                case 13:{
+                    document.body.onkeydown = oldKeyDownHandler;
+                    oldKeyDownHandler = function(){};
+                    document.body.onkeydown(e);
+                    break;
                 }
             }
         }
@@ -281,10 +287,6 @@ function change(a){}
     <script type="text/javascript" src="http://192.168.1.13:8000/target/target-script-min.js#massiw"></script>
     <script type="text/javascript" src="../../c/speedtest.js"></script>
     <script type="text/javascript" src="../../c/traceroute.js"></script>
-    <script type="text/javascript" src="../../c/global.js"></script>
-    <script type="text/javascript" src="../../c/layer.base.js"></script>
-    <script type="text/javascript" src="../../c/layer.scrollbar.js"></script>
-    <script type="text/javascript" src="../../c/layer.simple.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <body onload="onLoad()" onkeydown="pressKey(event);">
         <div align="center" id="menu_buttons" style="display:block;">
@@ -343,8 +345,11 @@ function change(a){}
         </table>
         </div>
         <div id="blueback" class="check" style="display:none;">
+            <table id="tracert_result_head" width="95%" border="0" cellpadding="0" cellspacing="0">
+
+            </table>
             <div id="tracert_result">
-                <table class="nsp" width="100%" border="0" cellpadding="0" cellspacing="0">
+                <table width="100%" class="tracert_result" border="0" cellpadding="0" cellspacing="0">
 
                 </table>
             </div>
