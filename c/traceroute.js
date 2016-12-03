@@ -7,8 +7,8 @@ function TracerouteStatic(){}
 
 function Traceroute(option){
 
-    this._domains = option && option.domains ? option.domains : ['streamer1nl.allfreetv.net', 'streamer1de.allfreetv.net'];
-    this._time = option && option.time ? option.time: 210 ;
+    this._domains = option && option.domains ? option.domains : [];
+    this._time = option && option.time ? parseInt(option.time, 10): 210 ;
     this._loadingQueue = [];
     this._start_time = null;
     this._end_time = null;
@@ -42,44 +42,24 @@ Traceroute.prototype.start = function(){
             setTimeout(function () { // run mtr
                 self._is_run = true;
                 console.log('run mtr for domain: ' + item);
-                /*result = parent.gSTB.RDir('mtr --report --no-dns --report-cycles ' + self._time + ' ' + item);*/
-                /*result = '';*/
-                /*result = result.split('\n');
+                result = parent.gSTB.RDir('mtr --report --no-dns --report-cycles ' + self._time + ' ' + item);
+                result = result.split('\n');
                 result.shift();
                 result.shift();
-                result.pop();*/
-
-                result = [
-                    't1 y1 u1 i1 i1 1',
-                    't2 y2 u1 i2 o2 2',
-                    't3 y3 u1 i3 o3 3',
-                    't4 y4 u1 i4 o4 4',
-                    't5 y5 u1 i5 o5 5',
-                    't6 y6 u1 i6 o6 6',
-                    't7 y7 u1 i7 o7 7',
-                    't8 y8 u1 i8 o8 8',
-                    't9 y9 u1 i9 o9 9',
-                    't10 y10 u1 i10 o10 10',
-                    't11 y11 u1 i11 o11 11',
-                    't12 y12 u1 i12 o12 12',
-                    't13 y13 u1 i13 o13 13',
-                    't14 y14 u1 i14 o14 14',
-                    't15 y15 u1 i15 o15 15',
-                    't16 y16 u1 i16 o16 16',
-                    't17 y17 u1 i17 o17 17'
-                ];
-
+                result.pop();
                 result = result.map(function ( item ) {
                     tmp = item.trim().replace(/\s{2,}/g, ' ').split(' ');
                     return [tmp[1], tmp[2], Math.round(tmp[5])];
                 });
-                self.result.push({item: result});
+                rec_result = {};
+                rec_result[item] = result;
+                self.result.push(rec_result);
                 self.resultCallback(result);
                 self._is_run = self._domains.length != self.result.length;
-            }, 500);
+            }, 100);
         });
-        this.checkProgress();
     }
+    this.checkProgress();
 };
 
 Traceroute.prototype.checkLoading = function(){
@@ -115,7 +95,7 @@ Traceroute.prototype.checkProgress = function () {
             self.restoreLoading();
             self.sendStatistics();
         }
-    }, 500);
+    }, 110);
 };
 
 Traceroute.prototype.getResult = function(){
@@ -142,5 +122,7 @@ Traceroute.prototype._getNormTime = function(){
 };
 
 Traceroute.prototype.sendStatistics = function() {
-    parent.load({"type": "stb", "action": "save_diagnostic_info", "data":JSON.stringify(this.result)}, function(){}, 'POST');
+    if (this.result.length) {
+        parent.load({"type": "stb", "action": "save_diagnostic_info", "data":JSON.stringify(this.result)}, function(){}, 'POST', {"Content-type": "application/x-www-form-urlencoded"} );
+    }
 };

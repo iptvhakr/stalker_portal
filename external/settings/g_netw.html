@@ -162,11 +162,11 @@ function ent(a)
 parent.sett_traceroute_start = function() {
     console.log('sett_traceroute_start');
     try {
-        var traceroute = new Traceroute({send_statistic: true, time: 5, callback: addTracerouteResult, domains : ['streamer1nl.allfreetv.net'] });
+        var traceroute = new Traceroute({send_statistic: true, time: parent.prof.mtr_report_cycles, callback: addTracerouteResult, domains : parent.prof.mtr_hostnames });
 
         var t = 0;
         var timer = setInterval(function(){
-            if (t > 20 || (!traceroute._is_run && traceroute.getStartTime())) {
+            if (t > 100 || (!traceroute._is_run && traceroute.getStartTime())) {
                 cTime = new Date();
                 if (cTime.getTime() >= traceroute.getEndTime() || t > 20 ) {
                     parent.traceroute_results = traceroute.getResult();
@@ -192,7 +192,7 @@ parent.sett_traceroute_start = function() {
                 }
             }
             t++;
-        }, 550);
+        }, 300);
         /*document.getElementById("i"+ind).focus();*/
         parent.traceroute = traceroute;
     } catch (e){

@@ -255,7 +255,7 @@ var lang = {
 
     "Extended diagnostics" : "Расширенная диагностика",
     "Attention" : "Внимание",
-    "Testing can take a long time.<br> You can not interrupt the test before it is completed" : "Тестирование может занять много времени. <br> Вы не можете прервать тест до его завершения",
+    "Testing can take a long time.<br> You can not interrupt the test before it is completed" : "Тестирование может занять продолжительное время. <br> Вы не можете прервать тест до его завершения",
     "Perform diagnostics" : "Провести диагностику",
     "Start" : "Начало",
     "Estimated time of completion" : "Расчетное время завершения",
