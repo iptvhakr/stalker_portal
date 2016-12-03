@@ -382,6 +382,28 @@ class UsersController extends \Controller\BaseStalkerController {
 
         $this->app['state'] = (int) $this->user['state'];
 
+        $tracert = $this->db->getTracertStats($this->user['id']);
+        if (!empty($tracert)) {
+            $tmp = json_decode($tracert['info'], TRUE);
+            $tracert['info'] = array();
+            while(list($key, $item) = each($tmp)) {
+                list($domain, $stat) = each($item);
+                if (!array_key_exists($domain, $tracert['info'])) {
+                    $tracert['info'][$domain] = array_map(function($val){
+                        $val[1] = trim($val[1], '%');
+                        return array_combine(array('ip', 'loss', 'ping'), $val);
+                    }, $stat) ;
+                }
+            }
+
+            $this->app['tracertStats'] = $tracert;
+
+            $tracert_attr = $this->getUsersTracertStatDropdownAttribute();
+            $this->checkDropdownAttribute($tracert_attr);
+            $this->app['tracert_attr'] = $tracert_attr;
+
+        }
+
         if (Config::getSafe('enable_internal_billing', 'false')) {
             $this->app['enableBilling'] = TRUE;
         }
@@ -2402,6 +2424,15 @@ class UsersController extends \Controller\BaseStalkerController {
             array('name' => 'mac',              'title' => $this->setLocalization('MAC'),   'checked' => TRUE),
             array('name' => 'status',           'title' => $this->setLocalization('Status'),'checked' => TRUE),
             array('name' => 'last_change_status','title' => $this->setLocalization('Time'), 'checked' => TRUE)
+        );
+        return $attribute;
+    }
+
+    private function getUsersTracertStatDropdownAttribute() {
+        $attribute = array(
+            array('name' => 'ip',   'title' => $this->setLocalization('IP Address'),    'checked' => TRUE),
+            array('name' => 'loss', 'title' => $this->setLocalization('Loss') . ' %',   'checked' => TRUE),
+            array('name' => 'ping', 'title' => $this->setLocalization('Ping'),          'checked' => TRUE)
         );
         return $attribute;
     }

@@ -1,4 +1,5 @@
 {% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
 {% set title = ('Users'|trans ~ ': ' ~ (app.userEdit ? ('Edit user'|trans ~ " '"~ app.userName ~ "'"): 'Add user'|trans)) | trans %}
 {% set active_alias = 'users-list' %}
 
@@ -406,6 +407,68 @@
                         </div>
                     </div>
                 {% endif %}
+                {% if attribute(app, 'tracertStats') is defined %}
+                    <div class="box">
+                        <a class="collapse-link">
+                            <div class="box-header">
+                                <div class="box-name">
+                                    <div class="row">
+                                        <div class="col-xs-10 col-sm-6">
+                                            <span>{{ 'Results of extended diagnostics'|trans }}. {{ 'Last update'|trans }}: {{ app['tracertStats']['changed']|date("H:i:s d-m-Y") }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="box-icons">
+                                    <i class="fa fa-chevron-up"></i>
+                                </div>
+                                <div class="no-move"></div>
+                            </div>
+                        </a>
+                        <div class="box-content" id="Additional3">
+                            {% set tNum = 0 %}
+                            {% for key, item in  app['tracertStats']['info'] %}
+                                <div class="col-xs-12 col-sm-6">
+                                    <div class="box">
+                                        <a class="collapse-link">
+                                            <div class="box-header">
+                                                <div class="box-name">
+                                                    <span>{{ 'Domain'|trans }}: {{ key }}</span>
+                                                </div>
+                                                <div class="circle-button box-icons">
+                                                    <i class="fa fa-chevron-up"></i>
+                                                </div>
+                                                <div class="no-move"></div>
+                                            </div>
+                                        </a>
+                                        <div class="box-content">
+                                            <table class="table table-hover table-datatable" id="datatable-{{ tNum }}">
+                                                {% if attribute(app, 'tracert_attr') is defined %}
+                                                    {{ main_macro.get_datatable_head(app['tracert_attr']) }}
+                                                {% endif %}
+                                                <tbody>
+                                                {%  autoescape false %}
+                                                {% for val in item %}
+                                                    <tr>
+                                                        {% for a_item in app['tracert_attr'] %}
+                                                            {% if not (a_item.name == 'all') %}
+                                                        <td>{{ val[a_item.name] }}</td>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </tr>
+                                                {% endfor %}
+                                                {% endautoescape %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% set tNum = tNum + 1 %}
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                {% endif %}
+
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     <div class="box">
                         <div class="box-content">
@@ -516,6 +579,27 @@
             {% endif %}
         }
 
+        function TestTable1() {
+            $('.table-datatable').dataTable({
+                "processing": false,
+                "serverSide": false,
+                "ajax": null,
+                "language": {
+                    "url": "{{ app.datatable_lang_file }}"
+                },
+                {% if attribute(app, 'tracert_attr') is defined %}
+                {{ main_macro.get_datatable_column(app['tracert_attr']) }}
+                {% endif %}
+                "bFilter": false,
+                "bPaginate": false,
+                "bInfo": false,
+                "aoColumnDefs": [
+                    {"searchable": false},
+                    {"orderable": false, "targets": [ 0 ]}
+                ]
+            });
+        }
+
         function yelp() {
             $(document).ready(function () {
 
@@ -524,6 +608,7 @@
                 $('[data-toggle="tooltip"]').tooltip();
                 
                 LoadSelect2Script(DemoSelect2);
+                LoadDataTablesScripts(TestTable1);
 
                 {% if attribute(app, 'enableBilling') is defined and app.enableBilling %}
                 $("#form_expire_billing_date").datepicker({

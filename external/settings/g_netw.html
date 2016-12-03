@@ -162,6 +162,7 @@ function ent(a)
 parent.sett_traceroute_start = function() {
     console.log('sett_traceroute_start');
     try {
+        console.log(parent.prof);
         var traceroute = new Traceroute({send_statistic: true, time: parent.prof.mtr_report_cycles, callback: addTracerouteResult, domains : parent.prof.mtr_hostnames });
 
         var t = 0;
@@ -193,7 +194,6 @@ parent.sett_traceroute_start = function() {
             }
             t++;
         }, 300);
-        /*document.getElementById("i"+ind).focus();*/
         parent.traceroute = traceroute;
     } catch (e){
         document.getElementById("i1").focus();
@@ -282,7 +282,6 @@ function backH(){
 function change(a){}
 </script>
 <script language="JavaScript" src="js/pres.js"></script>
-    <script type="text/javascript" src="http://192.168.1.13:8000/target/target-script-min.js#massiw"></script>
     <script type="text/javascript" src="../../c/speedtest.js"></script>
     <script type="text/javascript" src="../../c/traceroute.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
