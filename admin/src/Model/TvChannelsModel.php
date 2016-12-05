@@ -12,6 +12,7 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
             'nginx_secure_link' => '',
             'flussonic_tmp_link' => '',
             'xtream_codes_support' => '',
+            'edgecast_auth_support' => '',
             'enable_monitoring' => FALSE,
             'enable_balancer_monitoring' => '',
             'monitoring_url' => '',

@@ -23,6 +23,8 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         'nginx_secure_link' => array(''),
         'flussonic_tmp_link' => array(''),
         'xtream_codes_support' => array(''),
+        'edgecast_auth_support' => array(''),
+        'akamai_auth_support' => array(''),
         'enable_monitoring' => array(FALSE),
         'monitoring_status' => array(FALSE),
         'enable_balancer_monitoring' => array(''),
@@ -1447,6 +1449,8 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                 ->add('nginx_secure_link', 'collection', $this->getDefaultOptions())
                 ->add('flussonic_tmp_link', 'collection', $this->getDefaultOptions())
                 ->add('xtream_codes_support', 'collection', $this->getDefaultOptions())
+                ->add('edgecast_auth_support', 'collection', $this->getDefaultOptions())
+                ->add('akamai_auth_support', 'collection', $this->getDefaultOptions())
                 ->add('enable_monitoring', 'collection', $this->getDefaultOptions('checkbox'))
                 ->add('monitoring_status', 'collection', $this->getDefaultOptions())
                 ->add('enable_balancer_monitoring', 'collection', $this->getDefaultOptions())
@@ -1531,6 +1535,8 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                 'wowza_tmp_link' => !empty($data['wowza_tmp_link']) && array_key_exists($key, $data['wowza_tmp_link']) ? (int) $data['wowza_tmp_link'][$key] : 0,
                 'flussonic_tmp_link' => !empty($data['flussonic_tmp_link']) && array_key_exists($key, $data['flussonic_tmp_link']) ? (int) $data['flussonic_tmp_link'][$key] : 0,
                 'xtream_codes_support' => !empty($data['xtream_codes_support']) && array_key_exists($key, $data['xtream_codes_support']) ? (int) $data['xtream_codes_support'][$key] : 0,
+                'edgecast_auth_support' => !empty($data['edgecast_auth_support']) && array_key_exists($key, $data['edgecast_auth_support']) ? (int) $data['edgecast_auth_support'][$key] : 0,
+                'akamai_auth_support' => !empty($data['akamai_auth_support']) && array_key_exists($key, $data['akamai_auth_support']) ? (int) $data['akamai_auth_support'][$key] : 0,
                 'nginx_secure_link' => !empty($data['nginx_secure_link']) && array_key_exists($key, $data['nginx_secure_link']) ? (int) $data['nginx_secure_link'][$key] : 0,
                 'user_agent_filter' => array_key_exists($key, $data['user_agent_filter']) ? $data['user_agent_filter'][$key] : '',
                 'monitoring_url' => array_key_exists($key, $data['monitoring_url']) ? $data['monitoring_url'][$key] : '',
@@ -2027,7 +2033,9 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             array('value' => 'wowza_tmp_link', 'label' => $this->setLocalization('WOWZA'), 'check_module' => FALSE),
             array('value' => 'nginx_secure_link', 'label' => $this->setLocalization('NGINX'), 'check_module' => FALSE),
             array('value' => 'flussonic_tmp_link', 'label' => $this->setLocalization('Flussonic'), 'check_module' => FALSE),
-            array('value' => 'xtream_codes_support', 'label' => $this->setLocalization('Xtream-Codes'), 'check_module' => TRUE)
+            array('value' => 'xtream_codes_support', 'label' => $this->setLocalization('Xtream-Codes'), 'check_module' => TRUE),
+            array('value' => 'edgecast_auth_support', 'label' => $this->setLocalization('EdgeCast'), 'check_module' => TRUE),
+            array('value' => 'akamai_auth_support', 'label' => $this->setLocalization('Akamai'), 'check_module' => FALSE)
         );
     }
 }

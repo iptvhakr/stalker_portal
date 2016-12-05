@@ -182,6 +182,8 @@
                                                             {{ main_macro.input_hidden(app['form']['nginx_secure_link'], 'nginx_secure_link', key, 0) }}
                                                             {{ main_macro.input_hidden(app['form']['flussonic_tmp_link'], 'flussonic_tmp_link', key, 0) }}
                                                             {{ main_macro.input_hidden(app['form']['xtream_codes_support'], 'xtream_codes_support', key, 0) }}
+                                                            {{ main_macro.input_hidden(app['form']['edgecast_auth_support'], 'edgecast_auth_support', key, 0) }}
+                                                            {{ main_macro.input_hidden(app['form']['akamai_auth_support'], 'akamai_auth_support', key, 0) }}
                                                         </div>
                                                     </td>
                                                     <td>
@@ -260,6 +262,8 @@
                                                 <input type="hidden" disabled="disabled" name="form[nginx_secure_link][0]" id="form_nginx_secure_link_0">
                                                 <input type="hidden" disabled="disabled" name="form[flussonic_tmp_link][0]" id="form_flussonic_tmp_link_0">
                                                 <input type="hidden" disabled="disabled" name="form[xtream_codes_support][0]" id="xtream_codes_support_0">
+                                                <input type="hidden" disabled="disabled" name="form[edgecast_auth_support][0]" id="edgecast_auth_support_0">
+                                                <input type="hidden" disabled="disabled" name="form[akamai_auth_support][0]" id="akamai_auth_support_0">
                                             </div>
                                         </td>
                                         <td>
@@ -878,7 +882,13 @@
             }
         };
 
-        var linkTypeFields = ['use_http_tmp_link', 'wowza_tmp_link', 'nginx_secure_link', 'flussonic_tmp_link', 'xtream_codes_support'];
+        var linkTypeFields = [
+            {% if attribute(app, 'httpTmpLink') is defined %}
+            {% for row in app['httpTmpLink'] %}
+            '{{ row.value }}'{% if not loop.last %},{% endif %}
+            {% endfor %}
+            {% endif %}
+        ];
 
         function DemoSelect2() {
             $('#form_tv_genre_id').select2(select2Opt);
