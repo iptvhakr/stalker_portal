@@ -16,7 +16,7 @@ class LoginController extends \Controller\BaseStalkerController {
         $error = FALSE;
         if ($this->method == 'POST' && isset($this->postData['username']) && isset($this->postData['password'])) {
             if (\Admin::checkAuthorization($this->postData['username'], $this->postData['password'])){
-                return $this->app->redirect($this->workURL);
+                return $this->app->redirect(!empty($this->redirect)? $this->redirect: $this->workURL);
             } else {
                 $error = $this->setLocalization('Incorrect Username or Password');
             }
