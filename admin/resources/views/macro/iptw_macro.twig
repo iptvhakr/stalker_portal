@@ -258,7 +258,7 @@
 
     {% macro get_datatable_column(dropdownAttribute) %}
         "columns": [
-        {% for key, item in app.dropdownAttribute %}
+        {% for key, item in dropdownAttribute %}
             {% if 'all' != item.name %}
             {"data": "{{ item.name }}" {% if not(item.checked) %}, visible: false, className: 'none'{% endif %}}{% if not loop.last %},{% endif %}
             {% endif %}

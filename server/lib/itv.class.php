@@ -159,6 +159,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv {
                 $channel['nginx_secure_link'] = $link['nginx_secure_link'];
                 $channel['use_load_balancing'] = $link['use_load_balancing'];
                 $channel['xtream_codes_support'] = $link['xtream_codes_support'];
+                $channel['nimble_auth_support'] = $link['nimble_auth_support'];
                 $channel['edgecast_auth_support'] = $link['edgecast_auth_support'];
                 $channel['akamai_auth_support'] = $link['akamai_auth_support'];
             }
@@ -268,13 +269,18 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv {
                 } else {
                     $channel['cmd'] = $channel['cmd'] . (strpos($channel['cmd'], '?') ? '&' : '?') . 'token=' . $key;
                 }
-            } else if ($channel['nginx_secure_link']) { // http://wiki.nginx.org/HttpSecureLinkModule
+            } else if ($channel['nginx_secure_link']){ // http://wiki.nginx.org/HttpSecureLinkModule
 
                 $channel['cmd'] = self::getNginxSecureLink($channel['cmd']);
 
-            } else {
+            } else if ($channel['nimble_auth_support']){
 
-                if (strpos($channel['cmd'], 'rtp://') !== false || strpos($channel['cmd'], 'udp://') !== false) {
+                $channel['cmd'] .= (strpos($channel['cmd'], '?') !== FALSE ? '&' : '?');
+                $channel['cmd'] .= preg_match('/https?\:\/\//i', $channel['cmd']) ? self::getNimbleHttpAuthToken($channel['cmd']) : self::getNimbleRtspAuthToken($channel['cmd']);
+
+            } else{
+
+                if (strpos($channel['cmd'], 'rtp://') !== false || strpos($channel['cmd'], 'udp://') !== false){
                     return $channel;
                 }
 
@@ -1961,6 +1967,52 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv {
         } else {
             throw new ItvLinkException('link_fault');
         }
+    }
+
+    public static function getNimbleRtspAuthToken($initial_url, $token_type = 'NIMBLE_TV_VALID_MINUTES') {
+
+        $today = gmdate("n/j/Y g:i:s A");
+        $validminutes = Config::get($token_type);
+
+        if (($pos = strpos($initial_url, '?'))) {
+            $initial_url = substr($initial_url, 0, $pos);
+        }
+        $tmp_arr = explode('/', trim($initial_url, '/'));
+        $video_url = '/' . array_pop($tmp_arr);
+
+        $str2hash = Stb::getInstance()->ip . Config::get('NIMBLE_KEY') . $today . $validminutes;
+
+        $md5raw = md5($str2hash, true);
+
+        $base64hash = base64_encode($md5raw);
+
+        $urlsignature = "server_time=" . $today ."&hash_value=" . $base64hash. "&validminutes=$validminutes";
+
+        $base64urlsignature = base64_encode($urlsignature);
+
+        return "wmsAuthSign=$base64urlsignature" . $video_url;
+    }
+
+    public static function getNimbleHttpAuthToken($initial_url, $token_type = 'NIMBLE_TV_VALID_MINUTES') {
+
+        $today = gmdate("n/j/Y g:i:s A");
+        $validminutes = Config::get($token_type);
+
+        if (($pos = strpos($initial_url, '?'))) {
+            $initial_url = substr($initial_url, 0, $pos);
+        }
+
+//Part of the stream name which is being use in signature
+        $tmp_arr = explode('/', trim($initial_url, '/'));
+
+        $signed_stream = count($tmp_arr) > 3 ? $tmp_arr[count($tmp_arr) - 3] . '/' . $tmp_arr[count($tmp_arr) - 2] : '';
+
+        $str2hash = Stb::getInstance()->ip . Config::get('NIMBLE_KEY') . $today . $validminutes . $signed_stream;
+        $md5raw = md5($str2hash, true);
+        $base64hash = base64_encode($md5raw);
+        $urlsignature = "server_time=" . $today ."&hash_value=" . $base64hash. "&validminutes=$validminutes" . "&strm_len=" . strlen($signed_stream);
+        $base64urlsignature = base64_encode($urlsignature);
+        return "wmsAuthSign=$base64urlsignature";
     }
 
     public static function getEdgeCastAuthToken($token_type = 'EDGECAST_TV_SECURITY_TOKEN_TTL') {

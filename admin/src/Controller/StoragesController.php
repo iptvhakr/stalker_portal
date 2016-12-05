@@ -288,6 +288,7 @@ class StoragesController extends \Controller\BaseStalkerController {
 
             $storage[0]['flussonic_dvr'] = (int)(!empty($storage[0]['flussonic_dvr']) && $storage[0]['flussonic_dvr'] != 'off' && !empty($storage[0]['for_records']));
             $storage[0]['wowza_dvr'] = (int)(!empty($storage[0]['wowza_dvr']) && $storage[0]['wowza_dvr'] != 'off' && !empty($storage[0]['for_records']));
+            $storage[0]['nimble_dvr'] = (int)(!empty($storage[0]['nimble_dvr']) && $storage[0]['nimble_dvr'] != 'off' && !empty($storage[0]['for_records']));
             $storage[0]['fake_tv_archive'] = (int)(!empty($storage[0]['fake_tv_archive']) && $storage[0]['fake_tv_archive'] != 'off' && !empty($storage[0]['for_records']));
 
             $result = call_user_func_array(array($this->db, $operation), $storage);
