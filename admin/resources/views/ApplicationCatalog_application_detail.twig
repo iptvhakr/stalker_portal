@@ -94,6 +94,18 @@
         }
 
         function TestTable1() {
+
+            $.ajax({
+                url: "{{app.request.baseUrl}}/plugins/datatables/dataTables.sortingDateDE.js",
+                dataType: "script",
+                cache: true
+            });
+            $.ajax({
+                url: "{{app.request.baseUrl}}/plugins/datatables/dataTables.sortingFormattedVersions.js",
+                dataType: "script",
+                cache: true
+            });
+
             $('#datatable-1').on('xhr.dt', function (e, settings, json) {
                 var status = json.info.status;
                 if (typeof (json.data) == 'object') {
@@ -173,10 +185,13 @@
                 "bFilter": true,
                 "bPaginate": true,
                 "bInfo": false,
+                "order": [[ 0, "desc" ]],
                 "columnDefs": [
                     {className: "action-menu", "targets": [-1]},
                     {"searchable": false, "targets": [-1]},
-                    {"sortable": false, "targets": [-1]}
+                    {"sortable": false, "targets": [-1]},
+                    { "type": 'formatted-version', targets: [0] },
+                    { "type": 'de_date', targets: [1] }
                 ]
             });
         }

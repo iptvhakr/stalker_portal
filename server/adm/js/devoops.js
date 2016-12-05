@@ -993,3 +993,12 @@ function checkDataError(obj){
         JSErrorModalBox({msg: obj.chk_rezult});
     }
 }
+
+jQuery.fn.getEvents = function() {
+    if (typeof(jQuery._data) == 'function') {
+        return jQuery._data(this.get(0), 'events') || {};
+    } else if (typeof(this.data) == 'function') { // jQuery version < 1.7.?
+        return this.data('events') || {};
+    }
+    return {};
+};
