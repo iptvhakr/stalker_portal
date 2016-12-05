@@ -46,6 +46,8 @@ interface Stb
 
     public function setPlasmaSaving();
 
+    public function saveDiagnosticInfo();
+
     public function setTimeshiftSettings();
 
     public function setHdmiReaction();
