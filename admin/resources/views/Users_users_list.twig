@@ -461,6 +461,10 @@
                             json.data[i].ip = "<span class='countries-flag-container'><span class='pull-left'>" + json.data[i].ip + "</span>&nbsp;<span class='flag-wrapper pull-right'><span class='img-thumbnail flag flag-icon-background flag-icon-"+json.data[i].country+"'>&nbsp;</span></span></span>";
                         }
 
+                        if (json.data[i].ip_link) {
+                            json.data[i].ip = "<a href='"+ json.data[i].ip_link +"' target='_blanc'>" + json.data[i].ip +"</a>";
+                        }
+
                         date = json.data[i]['last_change_status'];
                         if (date > 0) {
                             date = new Date(date * 1000);
