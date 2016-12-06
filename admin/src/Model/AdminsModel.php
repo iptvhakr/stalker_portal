@@ -10,7 +10,6 @@ class AdminsModel extends \Model\BaseStalkerModel {
     
     public function getAdminsTotalRows($where = array(), $like = array()) {
         $params = array(
-            /*'select' => array("*"),*/
             'where' => $where,
             'like' => array(),
             'order' => array()
