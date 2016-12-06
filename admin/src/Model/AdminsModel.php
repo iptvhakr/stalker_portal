@@ -5,6 +5,7 @@ namespace Model;
 class AdminsModel extends \Model\BaseStalkerModel {
 
     public function __construct() {
+
         parent::__construct();
     }
     
