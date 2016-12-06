@@ -195,11 +195,11 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label uniseries">{{ 'Year'|trans }}<span class="icon-required">*</span></label>
-                                <label class="col-sm-2 control-label ">{{ 'Period of showing '|trans }}<span class="icon-required">*</span></label>
+                                <label class="col-sm-2 control-label uniseries">{{ 'Year'|trans }}</label>
+                                <label class="col-sm-2 control-label ">{{ 'Period of showing '|trans }}</label>
                                 <div class="col-xs-8 col-sm-7">
                                     <div class=" col-xs-9 col-sm-11">
-                                        {{ form_widget(app['form'].year, {'attr': {'class': 'form-control pull-left', 'data-validation':'compare_number', 'data-validation-compare-element': '#form_year_end', 'data-validation-compare-operation': '<=', 'data-validation-regexp' : '^\\d{4}$'}}) }}
+                                        {{ form_widget(app['form'].year, {'attr': {'class': 'form-control pull-left', 'data-validation':'compare_number', 'data-validation-compare-element': '#form_year_end', 'data-validation-compare-operation': '<=', 'data-validation-regexp' : '^\\d{4}$', 'data-validation-optional' : 'true'}}) }}
                                         {{ form_widget(app['form'].year_end, {'attr': {'class': 'form-control  pull-left add-video-year', 'data-validation' : 'compare_number', 'data-validation-compare-element': '#form_year', 'data-validation-compare-operation': '>=' , 'data-validation-regexp' : '^(?:\\d{4})$', 'data-validation-optional' : 'true', 'disabled': 'disabled' }}) }}
                                         <div class="bg-danger">
                                             {{ form_errors(app['form'].year) }}
@@ -215,11 +215,11 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label uniseries">{{ 'Length'|trans }}<span class="icon-required">*</span></label>
-                                <label class="col-sm-2 control-label ">{{ 'Approximate duration'|trans }}<span class="icon-required">*</span></label>
+                                <label class="col-sm-2 control-label uniseries">{{ 'Length'|trans }}</label>
+                                <label class="col-sm-2 control-label ">{{ 'Approximate duration'|trans }}</label>
                                 <div class="col-xs-8 col-sm-7">
                                     <div class=" col-xs-9 col-sm-11">
-                                        {{ form_widget(app['form'].duration, {'attr': {'class': 'form-control', 'data-validation':'number'}}) }}
+                                        {{ form_widget(app['form'].duration, {'attr': {'class': 'form-control', 'data-validation':'number', 'data-validation-optional' : 'true'}}) }}
                                         <div class="bg-danger">
                                             {{ form_errors(app['form'].duration) }}
                                         </div>
@@ -231,10 +231,10 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label ">{{ 'Country'|trans }}<span class="icon-required">*</span></label>
+                                <label class="col-sm-2 control-label ">{{ 'Country'|trans }}</label>
                                 <div class="col-xs-8 col-sm-7">
                                     <div class=" col-xs-9 col-sm-11">
-                                        {{ form_widget(app['form'].country, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
+                                        {{ form_widget(app['form'].country, {'attr': {'class': 'form-control'}}) }}
                                         <div class="bg-danger">
                                             {{ form_errors(app['form'].country) }}
                                         </div>
@@ -242,10 +242,10 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label ">{{ 'Director'|trans }}<span class="icon-required">*</span></label>
+                                <label class="col-sm-2 control-label ">{{ 'Director'|trans }}</label>
                                 <div class="col-xs-8 col-sm-7">
                                     <div class=" col-xs-9 col-sm-11">
-                                        {{ form_widget(app['form'].director, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
+                                        {{ form_widget(app['form'].director, {'attr': {'class': 'form-control'}}) }}
                                         <div class="bg-danger">
                                             {{ form_errors(app['form'].director) }}
                                         </div>
@@ -253,10 +253,10 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label ">{{ 'Actors'|trans }}<span class="icon-required">*</span></label>
+                                <label class="col-sm-2 control-label ">{{ 'Actors'|trans }}</label>
                                 <div class="col-xs-8 col-sm-7">
                                     <div class=" col-xs-9 col-sm-11">
-                                        {{ form_widget(app['form'].actors, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
+                                        {{ form_widget(app['form'].actors, {'attr': {'class': 'form-control'}}) }}
                                         <div class="bg-danger">
                                             {{ form_errors(app['form'].actors) }}
                                         </div>
@@ -264,10 +264,10 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label ">{{ 'Movie description'|trans }}<span class="icon-required">*</span>:</label>
+                                <label class="col-sm-2 control-label ">{{ 'Movie description'|trans }}</label>
                                 <div class="col-xs-8 col-sm-7">
                                     <div class=" col-xs-9 col-sm-11">
-                                        {{ form_widget(app['form'].description, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
+                                        {{ form_widget(app['form'].description, {'attr': {'class': 'form-control'}}) }}
                                         <div class="bg-danger">
                                             {{ form_errors(app['form'].description) }}
                                         </div>
@@ -419,7 +419,7 @@
             showHelpOnFocus : true,
             validateHiddenInputs: true,
             ignore: ['.ignore'],
-            modules: 'jsconf, date',
+            modules: 'jsconf, date, security',
             errorClass: "myErrorClass",
             onSuccess: function () {
                 if (this.form == '#form_') {
