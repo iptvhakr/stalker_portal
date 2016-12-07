@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 {{ main_macro.get_filter('category_id', 'Category'|trans, 'id', 'category_name', app['allCategories'], 2) }}
-                <a href="#" class="btn btn-success pull-right" id="add_video_genres">{{ 'Add genre'|trans }}</a>
+                <a href="#" class="btn btn-success pull-right no_context_menu" id="add_video_genres">{{ 'Add genre'|trans }}</a>
             </div>
         </div>
 
@@ -48,17 +48,17 @@
                         var id = json.data[i].id;
                         var movie_in_genre = parseInt(json.data[i].movie_in_genre, 10);
                         json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
-                                                        <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                                        <a href='#' class='dropdown-toggle no_context_menu' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\
                                                         <ul class='dropdown-menu pull-right'>\n\
                                                             <li>\n\
-                                                                <a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/video-genres-list-json' class='main_ajax' data-id='" + id + "' id='edit_video_genres_" + id + "'>\n\
+                                                                <a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/video-genres-list-json' class='main_ajax no_context_menu' data-id='" + id + "' id='edit_video_genres_" + id + "'>\n\
                                                                     <span>{{ 'Edit'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' " + (movie_in_genre ? "disabled='disabled'" : "") + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-video-genres' data-genresid='" + id + "'>\n\
+                                                                <a class='main_ajax no_context_menu' " + (movie_in_genre ? "disabled='disabled'" : "") + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-video-genres' data-genresid='" + id + "'>\n\
                                                                     <span>{{ 'Delete'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
@@ -66,7 +66,7 @@
                                                     </div>";
                         var title = json.data[i].title;
 
-                        json.data[i].title = "<a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/video-genres-list-json' class='main_ajax' data-id='" + id + "' id='edit_video_genres_" + id + "'>" + title + "</a>";
+                        json.data[i].title = "<a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/video-genres-list-json' class='main_ajax no_context_menu' data-id='" + id + "' id='edit_video_genres_" + id + "'>" + title + "</a>";
                     }
                 }
             }).dataTable({

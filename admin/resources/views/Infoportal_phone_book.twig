@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 {{ main_macro.get_filter_button_bar('service', 'id', 'title', app['allServices']) }}
-                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/add-phone-book-item" class="btn btn-success pull-right" id="add_phone_book_item">{{ 'Add'|trans }}</a>
+                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/add-phone-book-item" class="btn btn-success pull-right no_context_menu" id="add_phone_book_item">{{ 'Add'|trans }}</a>
             </div>
         </div>
 
@@ -143,23 +143,23 @@
                         var id = json.data[i].id;
                         var title = json.data[i].title;
                         json.data[i].operations = "<div class='col-xs-3 col-sm-8' >\n\
-                                                        <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                                        <a href='#' class='dropdown-toggle no_context_menu' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\
                                                         <ul class='dropdown-menu pull-right'>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/phone-book-list-json' data-id='" + id + "' data-phoneboocksource='{{ app['filters']['service'] }}'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/phone-book-list-json' data-id='" + id + "' data-phoneboocksource='{{ app['filters']['service'] }}'>\n\
                                                                     <span>{{ 'Edit'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-phone-book-item' data-id='" + id + "' data-phoneboocksource='{{ app['filters']['service'] }}'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-phone-book-item' data-id='" + id + "' data-phoneboocksource='{{ app['filters']['service'] }}'>\n\
                                                                     <span> {{ 'Delete'|trans }} </span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                         </ul>\n\
                                                     </div>";
-                        json.data[i].title = '<a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/phone-book-list-json" data-id="' + id + '" data-phoneboocksource="{{ app['filters']['service'] }}">' + title + '</a>';
+                        json.data[i].title = '<a class="main_ajax no_context_menu" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/phone-book-list-json" data-id="' + id + '" data-phoneboocksource="{{ app['filters']['service'] }}">' + title + '</a>';
 
                     }
                 }

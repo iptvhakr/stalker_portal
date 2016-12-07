@@ -67,17 +67,17 @@
                         
                         json.data[i].operations = "<div class='col-xs-3 col-sm-8'>";
                         if (state == '0' || state == '3') {
-                            json.data[i].operations +="<a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                            json.data[i].operations +="<a href='#' class='dropdown-toggle no_context_menu' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\
                                                         <ul class='dropdown-menu pull-right'>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/task-state-change' data-taskid='" + id + "' data-apply='ended'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/task-state-change' data-taskid='" + id + "' data-apply='ended'>\n\
                                                                     <span>{{ 'Done'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/task-state-change' data-taskid='" + id + "' data-apply='rejected'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/task-state-change' data-taskid='" + id + "' data-apply='rejected'>\n\
                                                                     <span>{{ 'Reject'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\

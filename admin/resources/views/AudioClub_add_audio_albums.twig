@@ -104,7 +104,7 @@
 								<div class=" col-xs-10 col-sm-4 pull-right" id="cover_container">
                                     {{form_widget(app['form'].cover) }}
                                     <img class="img-rounded channel-logo" src="{% if app['form'].cover.vars.value%}{{app.workHost}}{{app['curr_cover_dir']}}{{app['form'].cover.vars.value}}?ver=000000{% endif %}" alt="" style="max-width: 100%;">
-                                    <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/delete-cover" data-cover_id="{% if app['form'].id.vars.value %}{{app['form'].id.vars.value}}{% endif %}"><span class="txt-primary">{{ 'Delete cover'|trans }}</span></a>
+                                    <a class="no_context_menu" href="{{app.request.baseUrl}}/{{app.controller_alias}}/delete-cover" data-cover_id="{% if app['form'].id.vars.value %}{{app['form'].id.vars.value}}{% endif %}"><span class="txt-primary">{{ 'Delete cover'|trans }}</span></a>
                                 </div>
                             </div>
                         </div>
@@ -150,7 +150,7 @@
                     <div class="box-content" id="iptv_list">
                         <div class="row3">
                             <div class="col-xs-8 col-sm-12">
-                                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-audio-track" id="add_track" class="btn btn-success pull-right">{{ 'Add track'|trans }}</a>
+                                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-audio-track" id="add_track" class="btn btn-success pull-right no_context_menu">{{ 'Add track'|trans }}</a>
                             </div>
                         </div>
                         <div class="row">
@@ -355,22 +355,22 @@
                         var id = json.data[i].id;
                         var status = json.data[i].status;
                         json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
-                                                        <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                                        <a href='#' class='dropdown-toggle no_context_menu' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\
                                                         <ul class='dropdown-menu pull-right'>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/audio-albums-composition-list-json' data-trackid='" + id + "'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/audio-albums-composition-list-json' data-trackid='" + id + "'>\n\
                                                                     <span>{{ 'Edit'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-audio-album-track' data-trackid='" + id + "' data-trackstatus='" + status + "'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-audio-album-track' data-trackid='" + id + "' data-trackstatus='" + status + "'>\n\
                                                                     <span>" + (status != 0 ? "{{ 'Unpublish'|trans }}" : "{{ 'Publish'|trans }}") + "</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-audio-album-track' data-trackid='" + id + "'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-audio-album-track' data-trackid='" + id + "'>\n\
                                                                     <span>{{ 'Delete'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
@@ -380,7 +380,7 @@
 
                         var name = json.data[i].name;
 
-                        json.data[i].name = '<a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/audio-albums-composition-list-json" data-trackid="' + id + '" >' + name + '</a>';
+                        json.data[i].name = '<a class="main_ajax no_context_menu" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/audio-albums-composition-list-json" data-trackid="' + id + '" >' + name + '</a>';
                     }
                 }
             }).dataTable({

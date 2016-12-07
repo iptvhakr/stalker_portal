@@ -55,12 +55,12 @@
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-video-ads-status" data-adsstatus="'+(status ? 0: 1)+'" data-adsid="'+id+'">\n\
+                                                                <a class="main_ajax no_context_menu" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-video-ads-status" data-adsstatus="'+(status ? 0: 1)+'" data-adsid="'+id+'">\n\
                                                                     <span>'+(status ? "{{ 'Unpublish'|trans }}": "{{ 'Publish'|trans }}")+'</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-video-ads" data-adsid="'+id+'">\n\
+                                                                <a class="main_ajax no_context_menu" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-video-ads" data-adsid="'+id+'">\n\
                                                                     <span>{{ 'Delete'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\

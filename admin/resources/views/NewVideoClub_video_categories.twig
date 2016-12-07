@@ -7,7 +7,7 @@
     <div id="iptv_list">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-video-categories" class="btn btn-success pull-right" id="add_video_categories">{{ 'Add category'|trans }}</a>
+                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-video-categories" class="btn btn-success pull-right no_context_menu" id="add_video_categories">{{ 'Add category'|trans }}</a>
             </div>
         </div>
 
@@ -45,17 +45,17 @@
                         var movie_in_category = parseInt(json.data[i].movie_in_category, 10);
                         var censored = json.data[i].censored;
                         json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
-                                                        <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                                        <a href='#' class='dropdown-toggle no_context_menu' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\
                                                         <ul class='dropdown-menu pull-right'>\n\
                                                             <li>\n\
-                                                                <a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-video-categories' data-categoriesid='" + id + "' data-cat-censored='" + censored + "' id='edit_video_categories_" + id + "'>\n\
+                                                                <a class='no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-video-categories' data-categoriesid='" + id + "' data-cat-censored='" + censored + "' id='edit_video_categories_" + id + "'>\n\
                                                                     <span>{{ 'Edit'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' " + (genre_in_category || movie_in_category ? "disabled='disabled'" : "") + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-video-categories' data-categoriesid='" + id + "' data-curr_pos='" + num + "'>\n\
+                                                                <a class='main_ajax no_context_menu' " + (genre_in_category || movie_in_category ? "disabled='disabled'" : "") + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-video-categories' data-categoriesid='" + id + "' data-curr_pos='" + num + "'>\n\
                                                                     <span>{{ 'Delete'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
@@ -65,7 +65,7 @@
 
                         json.data[i].censored = censored ? "{{ 'Yes'|trans }}": "{{ 'No'|trans }}";
 
-                        json.data[i].category_name = "<a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-video-categories' data-categoriesid='" + id + "' data-cat-censored='" + censored + "' id='edit_video_categories_" + id + "' >" + category_name + "</a>";
+                        json.data[i].category_name = "<a class='no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-video-categories' data-categoriesid='" + id + "' data-cat-censored='" + censored + "' id='edit_video_categories_" + id + "' >" + category_name + "</a>";
                     }
                 }
             }).dataTable({

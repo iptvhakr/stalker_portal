@@ -7,13 +7,13 @@
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class=" pull-right">
-                    <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/add-storage" class="btn btn-success pull-right" id="add_storage">{{ 'Add storage'|trans }}</a>
+                    <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/add-storage" class="btn btn-success pull-right no_context_menu" id="add_storage">{{ 'Add storage'|trans }}</a>
                 </div>
                 <div class="pull-right">
-                    <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/reset-cache" class="btn btn-default  pull-right main_ajax" data-id="all">{{ 'Clean the cache'|trans }}</a>
+                    <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/reset-cache" class="btn btn-default  pull-right main_ajax no_context_menu" data-id="all">{{ 'Clean the cache'|trans }}</a>
                 </div>
                 <div class="pull-right">
-                    <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/refresh-cache" class="btn btn-default pull-right main_ajax" data-id="all">{{ 'Update the cache'|trans }}</a>
+                    <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/refresh-cache" class="btn btn-default pull-right main_ajax no_context_menu" data-id="all">{{ 'Update the cache'|trans }}</a>
                 </div>
             </div>
         </div>
@@ -399,27 +399,27 @@
                         var id = json.data[i].id;
 
                         json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
-                                                        <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                                        <a href='#' class='dropdown-toggle no_context_menu' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\
                                                         <ul class='dropdown-menu pull-right'>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-storages-status' data-id='"+ id +"' data-status='"+ json.data[i].status +"'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-storages-status' data-id='"+ id +"' data-status='"+ json.data[i].status +"'>\n\
                                                                     <span>" + (json.data[i].status == 1? "{{ 'Switch off'|trans }}": "{{ 'Switch on'|trans }}") + "</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/reset-cache' data-id='"+ id +"'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/reset-cache' data-id='"+ id +"'>\n\
                                                                     <span>{{ 'Clean the cache'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-storage' data-id='"+ id +"'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-storage' data-id='"+ id +"'>\n\
                                                                     <span>{{ 'Edit'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-storage' data-id='" + id + "'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-storage' data-id='" + id + "'>\n\
                                                                     <span> {{ 'Delete'|trans }} </span>\n\
                                                                 </a>\n\
                                                             </li>\n\
@@ -430,7 +430,7 @@
                         } else {
                             json.data[i].status = '<span>{{ 'status off'|trans }}</span>';
                         }
-                        json.data[i].storage_name = "<a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-storage' data-id='"+ id +"'><span>"+json.data[i].storage_name+"</span></a>";
+                        json.data[i].storage_name = "<a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-storage' data-id='"+ id +"'><span>"+json.data[i].storage_name+"</span></a>";
                     }
                 }
             }).dataTable({

@@ -7,7 +7,7 @@
     <div id="iptv_list">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-tv-genres" class="btn btn-success pull-right" id="add_tv_genres">{{ 'Add genre'|trans }}</a>
+                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-tv-genres" class="btn btn-success pull-right no_context_menu" id="add_tv_genres">{{ 'Add genre'|trans }}</a>
             </div>
         </div>
 
@@ -42,17 +42,17 @@
                         var id = json.data[i].id;
                         var censored = json.data[i].censored;
                         json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
-                                                        <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                                        <a href='#' class='dropdown-toggle no_context_menu' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\
                                                         <ul class='dropdown-menu pull-right'>\n\
                                                             <li>\n\
-                                                                <a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-tv-genres' data-genre-censored='" + censored + "' data-genresid='" + id + "' id='edit_tv_genres_" + id + "'>\n\
+                                                                <a class='no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-tv-genres' data-genre-censored='" + censored + "' data-genresid='" + id + "' id='edit_tv_genres_" + id + "'>\n\
                                                                     <span>{{ 'Edit'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-tv-genres' data-genresid='" + id + "'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-tv-genres' data-genresid='" + id + "'>\n\
                                                                     <span>{{ 'Delete'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
@@ -62,7 +62,7 @@
 
                         json.data[i].censored = censored ? "{{ 'Yes'|trans }}": "{{ 'No'|trans }}";
 
-                        json.data[i].title = "<a  href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-tv-genres' data-genre-censored='" + censored + "' data-genresid='" + id + "' id='edit_tv_genres_" + id + "' >" + title + "</a>";
+                        json.data[i].title = "<a class='no_context_menu'  href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-tv-genres' data-genre-censored='" + censored + "' data-genresid='" + id + "' id='edit_tv_genres_" + id + "' >" + title + "</a>";
                     }
                 }
             }).dataTable({

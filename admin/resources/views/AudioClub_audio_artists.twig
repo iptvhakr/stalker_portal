@@ -7,7 +7,7 @@
     <div id="iptv_list">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-audio-artists" class="btn btn-success pull-right" id="add_audio_artists">{{ 'Add artist'|trans }}</a>
+                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-audio-artists" class="btn btn-success pull-right no_context_menu" id="add_audio_artists">{{ 'Add artist'|trans }}</a>
             </div>
         </div>
         <div class="row">
@@ -41,24 +41,24 @@
                         var id = json.data[i].id;
                         var albums_count = json.data[i].albums_count;
                         json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
-                                                        <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                                        <a href='#' class='dropdown-toggle no_context_menu' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\
                                                         <ul class='dropdown-menu pull-right'>\n\
                                                             <li>\n\
-                                                                <a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-audio-artists' data-artistsid='" + id + "' id='edit_audio_artists_" + id + "'>\n\
+                                                                <a class='no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-audio-artists' data-artistsid='" + id + "' id='edit_audio_artists_" + id + "'>\n\
                                                                     <span>{{ 'Edit'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a " + (albums_count != "0" ? "disabled='disabled' warning_msg='{{ 'First, remove all the albums of this performer'|trans }}'" : "") + " href='#' class='remove-audio-artists' data-artistsid='" + id + "'>\n\
+                                                                <a " + (albums_count != "0" ? "disabled='disabled' warning_msg='{{ 'First, remove all the albums of this performer'|trans }}'" : "") + " href='#' class='remove-audio-artists no_context_menu' data-artistsid='" + id + "'>\n\
                                                                     <span>{{ 'Delete'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                         </ul>\n\
                                                     </div>";
                         var name = json.data[i].name;
-                        json.data[i].name = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-audio-artists" data-artistsid="' + id + '" id="edit_audio_artists_' + id + '">' + name + '</a>';
+                        json.data[i].name = '<a class="no_context_menu" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-audio-artists" data-artistsid="' + id + '" id="edit_audio_artists_' + id + '">' + name + '</a>';
                     }
                 }
             }).dataTable({
@@ -235,7 +235,7 @@
 
     <script type="text/template" id="modal_del_buttons">
         <div class="pull-right no-padding">
-            <a id="del_artist_btn" type="button" class="main_ajax btn btn-danger pull-right" href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-audio-artists'>{{ 'Delete'|trans }}</a>
+            <a id="del_artist_btn" type="button" class="main_ajax btn btn-danger pull-right no_context_menu" href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-audio-artists'>{{ 'Delete'|trans }}</a>
             <button type="reset" id="del_artist_button" class="btn btn-success pull-right">{{ 'Cancel'|trans }}</button>
         </div>
     </script>

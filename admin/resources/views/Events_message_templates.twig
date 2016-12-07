@@ -8,7 +8,7 @@
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 {{ main_macro.get_filter('admin_id', 'Author'|trans, 'id', 'login', app['allAdmins'], 2) }}
                 <div class="pull-right">
-                    <a href="#" class="btn btn-success pull-right" id="msg_tpl_create">{{ 'Create new message template'|trans }}</a>
+                    <a href="#" class="btn btn-success pull-right no_context_menu" id="msg_tpl_create">{{ 'Create new message template'|trans }}</a>
                 </div>
             </div>
         </div>
@@ -70,8 +70,8 @@
                     for (var i in json.data) {
                         var id = json.data[i].id;
 
-                        json.data[i].login = '<a href="#">' + json.data[i].login + '</a>';
-                        json.data[i].title = '<a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/message-templates-list-json" data-id="'+ id +'">' + json.data[i].title + '</a>';
+                        json.data[i].login = '<a href="#" class="no_context_menu">' + json.data[i].login + '</a>';
+                        json.data[i].title = '<a class="main_ajax no_context_menu" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/message-templates-list-json" data-id="'+ id +'">' + json.data[i].title + '</a>';
 
                         if (json.data[i]['created'] != 0) {
                             var dateOn = new Date(json.data[i]['created']);
@@ -83,17 +83,17 @@
                         }
 
                         json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
-                                                        <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                                        <a href='#' class='dropdown-toggle no_context_menu' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\
                                                         <ul class='dropdown-menu pull-right'>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/message-templates-list-json' data-id='"+ id +"'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/message-templates-list-json' data-id='"+ id +"'>\n\
                                                                     <span> {{ 'Edit'|trans }} </span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-template' data-id='" + id + "'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-template' data-id='" + id + "'>\n\
                                                                     <span> {{ 'Delete'|trans }} </span>\n\
                                                                 </a>\n\
                                                             </li>\n\

@@ -8,7 +8,7 @@
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 {{ main_macro.get_filter('protocol', 'Protocol'|trans, 'id', 'title', app['allProtocols'], 3) }}
                 {{ main_macro.get_filter('status', 'State'|trans, 'id', 'title', app['allStatus'], 3) }}
-                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-karaoke" class="btn btn-success pull-right" id="add_karaoke">{{ 'Add composition'|trans }}</a>
+                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-karaoke" class="btn btn-success pull-right no_context_menu" id="add_karaoke">{{ 'Add composition'|trans }}</a>
             </div>
         </div>
 
@@ -185,35 +185,35 @@
                         var accessed = json.data[i].accessed;
                         var done  = json.data[i].done;
                         var name = json.data[i].name;
-                        json.data[i].rtsp_url = json.data[i].protocol != 'custom'? "<a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/check-karaoke-source' data-karaokeid='" + id + "'>{{ 'in storage'|trans }}</a>": (json.data[i].rtsp_url.length > 0 ? json.data[i].rtsp_url.slice(0, 30)+'...':'');
+                        json.data[i].rtsp_url = json.data[i].protocol != 'custom'? "<a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/check-karaoke-source' data-karaokeid='" + id + "'>{{ 'in storage'|trans }}</a>": (json.data[i].rtsp_url.length > 0 ? json.data[i].rtsp_url.slice(0, 30)+'...':'');
 
                         json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
-                                                        <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                                        <a href='#' class='dropdown-toggle no_context_menu' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\
                                                         <ul class='dropdown-menu pull-right'>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/karaoke-list-json' data-karaokeid='" + id + "'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/karaoke-list-json' data-karaokeid='" + id + "'>\n\
                                                                     <span>{{ 'Edit'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a " + ( status == 0 && accessed == 0 ?"disabled='disabled'":"") + " class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-karaoke-accessed' data-karaokeid='" + id + "' data-accessed='" + accessed + "'>\n\
+                                                                <a " + ( status == 0 && accessed == 0 ?"disabled='disabled'":"") + " class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-karaoke-accessed' data-karaokeid='" + id + "' data-accessed='" + accessed + "'>\n\
                                                                     <span>" + ( accessed == 0 ?"{{ 'Publish'|trans }}":"{{ 'Unpublish'|trans }}") + "</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/check-karaoke-source' data-karaokeid='" + id + "'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/check-karaoke-source' data-karaokeid='" + id + "'>\n\
                                                                     <span>{{ 'Check file'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-karaoke-done' data-karaokeid='" + id + "' data-done='" + done + "'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-karaoke-done' data-karaokeid='" + id + "' data-done='" + done + "'>\n\
                                                                     <span>" + ( done != 0 ? "{{ 'Cancel performing of the task'|trans }}" : "{{ 'Confirm performing of the task'|trans }}") + "</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-karaoke' data-karaokeid='" + id + "'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-karaoke' data-karaokeid='" + id + "'>\n\
                                                                     <span>{{ 'Delete'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
@@ -224,7 +224,7 @@
                         if (parseInt(status, 10) == 0) {
                             json.data[i].accessed += "<br><span class=''>{{ 'Error'|trans }}</span>"
                         }
-                        json.data[i].name = '<a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/karaoke-list-json" data-karaokeid="' + id + '">' + name + '</a>';
+                        json.data[i].name = '<a class="main_ajax no_context_menu" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/karaoke-list-json" data-karaokeid="' + id + '">' + name + '</a>';
                         json.data[i].done = done != 0 ? '<span class="">{{ 'Completed'|trans }}</span>' : '<span class="">{{ 'Do not completed'|trans }}</span>';
 
                         date = json.data[i]['added'];

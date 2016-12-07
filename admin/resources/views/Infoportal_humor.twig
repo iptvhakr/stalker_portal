@@ -6,7 +6,7 @@
     <div id="iptv_list">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/add-humor-item" class="btn btn-success pull-right" id="add_humor_item">{{ 'Add'|trans }}</a>
+                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/add-humor-item" class="btn btn-success pull-right no_context_menu" id="add_humor_item">{{ 'Add'|trans }}</a>
             </div>
         </div>
         <div class="row">
@@ -125,17 +125,17 @@
 
                         json.data[i].anec_body = json.data[i].anec_body.substr(0, 50) + (json.data[i].anec_body.length > 50 ? '...': '');
                         json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
-                                                        <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                                        <a href='#' class='dropdown-toggle no_context_menu' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\
                                                         <ul class='dropdown-menu pull-right'>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/humor-list-json' data-id='" + id + "'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/humor-list-json' data-id='" + id + "'>\n\
                                                                     <span>{{ 'Edit'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-humor-item' data-id='" + id + "'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-humor-item' data-id='" + id + "'>\n\
                                                                     <span> {{ 'Delete'|trans }} </span>\n\
                                                                 </a>\n\
                                                             </li>\n\

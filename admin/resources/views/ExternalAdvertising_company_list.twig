@@ -108,7 +108,7 @@
             item.name = "<a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/company-edit?id=" + item.id + "'>" + item.name + "</a>";
 
             item.operations = "<div class='col-xs-3 col-sm-8'>\n\
-                                    <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                    <a href='#' class='dropdown-toggle no_context_menu' data-toggle='dropdown'>\n\
                                         <i class='pull-right fa fa-cog'></i>\n\
                                     </a>\n\
                                     <ul class='dropdown-menu pull-right'>\n\
@@ -118,12 +118,12 @@
                                             </a>\n\
                                         </li>\n\
                                         <li>\n\
-                                            <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-company-state' data-id='" + item.id + "' data-status='" + item.status + "'>\n\
+                                            <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-company-state' data-id='" + item.id + "' data-status='" + item.status + "'>\n\
                                                 <span>" + (item.status != 0 ? "{{ 'Deactivate'|trans }}" : "{{ 'Activate'|trans }}") + "</span>\n\
                                             </a>\n\
                                         </li>\n\
                                         <li>\n\
-                                            <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/delete-company' data-id='" + item.id + "'>\n\
+                                            <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/delete-company' data-id='" + item.id + "'>\n\
                                                 <span>{{ 'Delete'|trans }}</span>\n\
                                             </a>\n\
                                         </li>\n\

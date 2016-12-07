@@ -10,7 +10,7 @@
                 {{ main_macro.get_filter('type', 'Type'|trans, 'id', 'title', app['scheduleType'], 5, 9) }}
                 {{ main_macro.get_filter('state', 'State'|trans, 'id', 'title', app['scheduleState'], 5, 9) }}
 
-                <a id="add_events" href="#" class="btn btn-success pull-right">{{ 'Add'|trans }}</a>
+                <a id="add_events" href="#" class="btn btn-success pull-right no_context_menu">{{ 'Add'|trans }}</a>
 
             </div>
         </div>
@@ -48,7 +48,7 @@
 
                         var state = json.data[i].state;
 
-                        json.data[i].recipient = '<a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/event-scheduler-list-json" data-id="' + json.data[i].id  + '">'+ json.data[i].recipient +'</a>';
+                        json.data[i].recipient = '<a class="main_ajax no_context_menu" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/event-scheduler-list-json" data-id="' + json.data[i].id  + '">'+ json.data[i].recipient +'</a>';
 
                         json.data[i].periodic = json.data[i].periodic == '0' ? '{{ 'One-time event'|trans }}' : '{{ 'For a period'|trans }}';
                         json.data[i].state = json.data[i].state != '0' ? '{{ 'Scheduled'|trans }}' : '{{ 'Stopped'|trans }}';
@@ -82,17 +82,17 @@
                                                         </a>\n\
                                                         <ul class="dropdown-menu pull-right">\n\
                                                             <li>\n\
-                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/event-scheduler-list-json" data-id="' + json.data[i].id  + '">\n\
+                                                                <a class="main_ajax no_context_menu" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/event-scheduler-list-json" data-id="' + json.data[i].id  + '">\n\
                                                                     <span>{{ 'Edit'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/scheduler-toggle-state" data-id="' + json.data[i].id  + '" data-state="' + state  + '">\n\
+                                                                <a class="main_ajax no_context_menu" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/scheduler-toggle-state" data-id="' + json.data[i].id  + '" data-state="' + state  + '">\n\
                                                                     <span>' + ( state != '0' ? "{{ 'Stop it'|trans }}": "{{ 'Start it'|trans }}") + '</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/scheduler-remove" data-id="' + json.data[i].id  + '">\n\
+                                                                <a class="main_ajax no_context_menu" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/scheduler-remove" data-id="' + json.data[i].id  + '">\n\
                                                                     <span>{{ 'Delete'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\

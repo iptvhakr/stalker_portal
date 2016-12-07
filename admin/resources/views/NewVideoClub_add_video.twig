@@ -323,7 +323,7 @@
                                         <input type="file" name="files" style="opacity: 0;" multiple>
                                     </div>
                                     <img class="img-rounded channel-logo" src="{% if app['form'].cover_id.vars.value %}{{ app['curr_cover_dir'] }}/{{ app['form'].cover_id.vars.value }}{{ app['cover_ext'] }}{% elseif app['form'].cover_big.vars.value %}{{ app['form'].cover_big.vars.value }}{% endif %}" alt="" style="width: 100%;">
-                                    <a id="delete_cover" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/delete-cover" data-cover_id="{% if app['form'].cover_id.vars.value %}{{ app['form'].cover_id.vars.value }}{% endif %}">
+                                    <a id="delete_cover" class="no_context_menu" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/delete-cover" data-cover_id="{% if app['form'].cover_id.vars.value %}{{ app['form'].cover_id.vars.value }}{% endif %}">
                                         <span class="txt-primary">{{ 'Delete cover'|trans }}</span>
                                     </a>
                                 </div>
@@ -1734,25 +1734,25 @@
                             json.data[i].languages = json.data[i].languages.join(", ");
 
                             json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
-                                                        <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                                        <a href='#' class='dropdown-toggle no_context_menu' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\
                                                         <ul class='dropdown-menu pull-right'>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-one-video-file-json' data-id='" + id + "' data-video_id='" + video_id + "' data-season_id='" + season_id + "' data-series_id='" + series_id + "' data-season_number='" + season_number + "' data-series_number='" + series_number + "' data-file_name='" + file_name + "'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-one-video-file-json' data-id='" + id + "' data-video_id='" + video_id + "' data-season_id='" + season_id + "' data-series_id='" + series_id + "' data-season_number='" + season_number + "' data-series_number='" + series_number + "' data-file_name='" + file_name + "'>\n\
                                                                     <span>{{ 'Edit'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>";
                             if (id != 0 ) {
                                 json.data[i].operations += "<li>\n\
-                                                                <a class='main_ajax' " + (id == 0 ? "disabled='disabled'" : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-video-accessed' data-accessed='" + (accessed != 0 ? 0 : 1) + "' data-id='" + id + "' data-video_id='" + video_id + "'  data-season_id='" + season_id + "' data-series_id='" + series_id + "'>\n\
+                                                                <a class='main_ajax no_context_menu' " + (id == 0 ? "disabled='disabled'" : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-video-accessed' data-accessed='" + (accessed != 0 ? 0 : 1) + "' data-id='" + id + "' data-video_id='" + video_id + "'  data-season_id='" + season_id + "' data-series_id='" + series_id + "'>\n\
                                                                     <span>" + ( accessed == "1" ? "{{ 'Unpublish'|trans }}" : "{{ 'Publish'|trans }}") + "</span>\n\
                                                                 </a>\n\
                                                             </li>";
                             }
                             if (id != 0 ) {
                                 json.data[i].operations += "<li>\n\
-                                                                <a class='main_ajax' " + (id == 0 ? "disabled='disabled'" : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-video-data' data-id='" + id + "' data-video_id='" + video_id + "' data-season_id='" + season_id + "' data-series_id='" + series_id + "'>\n\
+                                                                <a class='main_ajax no_context_menu' " + (id == 0 ? "disabled='disabled'" : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-video-data' data-id='" + id + "' data-video_id='" + video_id + "' data-season_id='" + season_id + "' data-series_id='" + series_id + "'>\n\
                                                                     <span>{{ 'Remove'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>";

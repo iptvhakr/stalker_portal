@@ -567,7 +567,12 @@ $(document).ready(function () {
         $('#modalbox_clone').find('.devoops-modal-bottom').empty();
         return false;
     });
-    
+
+    $(document).on( "contextmenu", "a.no_context_menu", function(e){
+        e.stopPropagation();
+        e.preventDefault();
+    });
+
 });
 
 function getURLFilterString(obj, href){

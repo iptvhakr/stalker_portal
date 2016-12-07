@@ -8,13 +8,13 @@
         <div class="row">
            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="pull-right">
-                    <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-epg-item" class="btn btn-success  pull-right" id="add_epg_item">{{ 'Add EPG'|trans }}</a>
+                    <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-epg-item" class="btn btn-success  pull-right no_context_menu" id="add_epg_item">{{ 'Add EPG'|trans }}</a>
                 </div>
                 <div class="pull-right">
-                    <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/update-epg" class="btn btn-default pull-right main_ajax" data-id="all">{{ 'Update EPG'|trans }}</a>
+                    <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/update-epg" class="btn btn-default pull-right main_ajax no_context_menu" data-id="all">{{ 'Update EPG'|trans }}</a>
                 </div>
                 <div class="pull-right">
-                    <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/update-epg" class="btn btn-default pull-right main_ajax" data-id="all" data-force="1">{{ 'Force update of EPG'|trans }}</a>
+                    <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/update-epg" class="btn btn-default pull-right main_ajax no_context_menu" data-id="all" data-force="1">{{ 'Force update of EPG'|trans }}</a>
                 </div>
             </div>
         </div>
@@ -182,22 +182,22 @@
                         var status = json.data[i].status;
                         json.data[i].status = (status == 1 ?"<span class='txt-success'>{{ 'Published'|trans }}</span>":"<span>{{ 'Unpublished'|trans }}</span>");
                         json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
-                                                        <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                                        <a href='#' class='dropdown-toggle no_context_menu' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\
                                                         <ul class='dropdown-menu pull-right'>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/epg-list-json' data-id='" + id + "'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/epg-list-json' data-id='" + id + "'>\n\
                                                                     <span>{{ 'Edit'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-epg-item-status' data-id='" + id + "' data-status='" + status + "'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-epg-item-status' data-id='" + id + "' data-status='" + status + "'>\n\
                                                                     <span>" + (status == 1? '<span>{{ 'Unpublish'|trans }}</span>':'<span>{{ 'Publish'|trans }}</span>') + "</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-epg-item' data-id='" + id + "'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-epg-item' data-id='" + id + "'>\n\
                                                                     <span> {{ 'Delete'|trans }} </span>\n\
                                                                 </a>\n\
                                                             </li>\n\

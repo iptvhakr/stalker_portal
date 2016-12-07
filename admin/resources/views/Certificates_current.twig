@@ -184,7 +184,7 @@
             var status = item.status;
             item.status = status_set[item.status];
             if (item.awaiting) {
-                item.status = "<a class='main_ajax txt-success' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/certificate-install' data-id='" + item.id + "'>{{ 'Install'|trans }}</a>";
+                item.status = "<a class='main_ajax txt-success no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/certificate-install' data-id='" + item.id + "'>{{ 'Install'|trans }}</a>";
             } else if ( status == 5 ) {
                 item.status += "<br><a class='txt-danger' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/certificate-request?id=" + item.id + "'>{{ 'Сertificate request'|trans }}</a>";
             }

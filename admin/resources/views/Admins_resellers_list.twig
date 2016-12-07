@@ -6,7 +6,7 @@
     <div id="iptv_list">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-reseller" class="btn btn-success pull-right" id="add_reseller">{{ 'Add reseller'|trans }}</a>
+                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-reseller" class="btn btn-success pull-right no_context_menu" id="add_reseller">{{ 'Add reseller'|trans }}</a>
             </div>
         </div>
         
@@ -109,28 +109,28 @@
                         var id = json.data[i].id;
                         var name = json.data[i].name;
                         json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
-                                                        <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                                        <a href='#' class='dropdown-toggle no_context_menu' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\
                                                         <ul class='dropdown-menu pull-right'>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-users-to-reseller' data-id='" + id +"'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-users-to-reseller' data-id='" + id +"'>\n\
                                                                     <span>{{ 'Move all users to another reseller'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                         ";
                         if (id !== '-') {
                             json.data[i].operations += "<li>\n\
-                                                            <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/resellers-list-json' data-id='" + id + "'>\n\
+                                                            <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/resellers-list-json' data-id='" + id + "'>\n\
                                                                     <span>{{ 'Edit'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/resellers-delete' data-id='" + id + "'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/resellers-delete' data-id='" + id + "'>\n\
                                                                     <span> {{ 'Delete'|trans }} </span>\n\
                                                                 </a>\n\
                                                             </li>";
-                            json.data[i].name = '<a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/resellers-list-json" data-id="' + id + '">' + name + '</a>';
+                            json.data[i].name = '<a class="main_ajax no_context_menu" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/resellers-list-json" data-id="' + id + '">' + name + '</a>';
                         }
                         json.data[i].operations += "</ul>\n\
                                                     </div>";

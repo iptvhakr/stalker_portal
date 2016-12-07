@@ -7,7 +7,7 @@
     <div id="iptv_list">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-audio-languages" class="btn btn-success pull-right" id="add_audio_languages">{{ 'Add language'|trans }}</a>
+                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-audio-languages" class="btn btn-success pull-right no_context_menu" id="add_audio_languages">{{ 'Add language'|trans }}</a>
             </div>
         </div>
 
@@ -43,17 +43,17 @@
                         var id = json.data[i].id;
                         var track_count = json.data[i].track_count;
                         json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
-                                                        <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                                        <a href='#' class='dropdown-toggle no_context_menu' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\
                                                         <ul class='dropdown-menu pull-right'>\n\
                                                             <li>\n\
-                                                                <a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-audio-languages' data-languagesid='" + id + "' id='edit_audio_languages_" + id + "'>\n\
+                                                                <a class='no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-audio-languages' data-languagesid='" + id + "' id='edit_audio_languages_" + id + "'>\n\
                                                                     <span>{{ 'Edit'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class='remove-audio-languages' " + (track_count != "0" ? "disabled='disabled' warning_msg='{{ 'First, delete or modify all the tracks in this language'|trans }}'" : "") + " data-languagesid='" + id + "'>\n\
+                                                                <a class='remove-audio-languages no_context_menu' " + (track_count != "0" ? "disabled='disabled' warning_msg='{{ 'First, delete or modify all the tracks in this language'|trans }}'" : "") + " data-languagesid='" + id + "'>\n\
                                                                     <span>{{ 'Delete'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
@@ -61,7 +61,7 @@
                                                     </div>";
                         var name = json.data[i].name;
 
-                        json.data[i].name = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-audio-languages" data-languagesid="' + id + '" id="edit_audio_languages_' + id + '">' + name + '</a>';
+                        json.data[i].name = '<a class="no_context_menu" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-audio-languages" data-languagesid="' + id + '" id="edit_audio_languages_' + id + '">' + name + '</a>';
                     }
                 }
             }).dataTable({
@@ -237,7 +237,7 @@
 
     <script type="text/template" id="modal_del_buttons">
         <div class="pull-right no-padding">
-            <a id="del_language_btn" type="button" class="main_ajax btn btn-danger pull-right" href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-audio-languages'>{{ 'Delete'|trans }}</a>
+            <a id="del_language_btn" type="button" class="main_ajax btn btn-danger pull-right no_context_menu" href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-audio-languages'>{{ 'Delete'|trans }}</a>
             <button type="reset" id="del_language_button" class="btn btn-success pull-right">{{ 'Cancel'|trans }}</button>
         </div>
     </script>
