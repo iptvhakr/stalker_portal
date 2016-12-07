@@ -12,6 +12,9 @@ use Stalker\Lib\Core\Cache;
 
 class Karaoke extends AjaxResponse implements \Stalker\Lib\StbApi\Karaoke
 {
+
+    public $fav_karaoke = FALSE;
+
     private static $instance = NULL;
     
     public static function getInstance(){
@@ -119,7 +122,13 @@ class Karaoke extends AjaxResponse implements \Stalker\Lib\StbApi\Karaoke
     }
     
     public function getOrderedList(){
-     
+
+        if ($this->getFav($this->stb->id) !== FALSE) {
+            $fav_str = implode(",", $this->fav_karaoke);
+        } else {
+            $fav_str = 'null';
+        }
+
         $result = $this->getData();
         
         if (@$_REQUEST['sortby']){
@@ -129,21 +138,31 @@ class Karaoke extends AjaxResponse implements \Stalker\Lib\StbApi\Karaoke
                 $result = $result->orderby('karaoke.name');
             }elseif ($sortby == 'singer'){
                 $result = $result->orderby('karaoke.singer');
+            } elseif ($sortby == 'fav'){
+                $result = $result->orderby('field(id,'.$fav_str.')');
             }
             
         }else{
             $result = $result->orderby('karaoke.singer');
         }
-        
+
+        if (@$_REQUEST['fav']){
+            $result = $result->in('karaoke.id', ($this->fav_karaoke !== FALSE ? $this->fav_karaoke: array()));
+        }
+
         $this->setResponseData($result);
         
         return $this->getResponse('prepareData');
     }
     
     public function prepareData(){
-        
+
+        $fav_ids = $this->getFavIds();
+
         for ($i = 0; $i < count($this->response['data']); $i++){
-            
+
+            $this->response['data'][$i]['fav'] = ((int)in_array($this->response['data'][$i]['id'], $fav_ids));
+
             if (empty($this->response['data'][$i]['rtsp_url'])){
                 $this->response['data'][$i]['cmd'] = '/media/'.$this->response['data'][$i]['id'].'.mpg';
             }else{
@@ -180,6 +199,121 @@ class Karaoke extends AjaxResponse implements \Stalker\Lib\StbApi\Karaoke
             ->join('karaoke_genre', 'karaoke.genre_id', 'karaoke_genre.id', 'LEFT')
             ->where(array('status' => 1, 'accessed' => 1));
     }
+
+    public function setFav($uid = null){
+
+        if (!$uid){
+            $uid = $this->stb->id;
+        }
+
+        $fav_karaoke = @$_REQUEST['fav_karaoke'];
+
+        if (empty($fav_karaoke)){
+            $fav_karaoke = array();
+        }else{
+            $fav_karaoke = explode(",", $fav_karaoke);
+        }
+
+        if (is_array($fav_karaoke)){
+            return $this->saveFav(array_unique($fav_karaoke), $uid);
+        }
+
+        return true;
+    }
+
+    public function getAllFavKaraoke(){
+        if ($this->getFav() !== FALSE && !empty($this->fav_karaoke)) {
+            $fav_str = implode(",", $this->fav_karaoke);
+        } else {
+            $fav_str = 'null';
+        }
+        $fav_karaoke = $this->db
+            ->from('karaoke')
+            ->in('id', ($this->fav_karaoke !== FALSE? $this->fav_karaoke: array()))
+            ->where(array('status' => 1))
+            ->orderby('field(id,'.$fav_str.')');
+        $this->setResponseData($fav_karaoke);
+
+        return $this->getResponse('prepareData');
+    }
+
+    public function getFavIds(){
+
+        if ($this->getFav() !== FALSE && !empty($this->fav_karaoke)) {
+            $fav_str = implode(",", $this->fav_karaoke);
+        } else {
+            $fav_str = 'null';
+        }
+
+        $fav_ids = $this->db
+            ->from('karaoke')
+            ->in('id', ($this->fav_karaoke !== FALSE? $this->fav_karaoke: array()))
+            ->where(array('status' => 1))
+            ->orderby('field(id,'.$fav_str.')')
+            ->get()
+            ->all('id');
+
+        return $fav_ids;
+    }
+
+    public function getFav($uid = null){
+
+        if (!$uid){
+            $uid = $this->stb->id;
+        }
+
+        if ($this->fav_karaoke === FALSE) {
+            $fav_karaoke_ids_arr = $this->db
+                ->select('fav_karaoke')
+                ->from('fav_karaoke')
+                ->where(array('uid' => intval($uid)))
+                ->use_caching(array('fav_karaoke.uid='.intval($uid)))
+                ->get()
+                ->first('fav_karaoke');
+
+            if (!empty($fav_karaoke_ids_arr)) {
+                $this->fav_karaoke = (is_string($fav_karaoke_ids_arr) ? unserialize($fav_karaoke_ids_arr): FALSE);
+            }
+        }
+
+        return $this->fav_karaoke;
+    }
+
+    public function saveFav(array $fav_array, $uid){
+
+        if (empty($uid)){
+            return false;
+        }
+
+        $fav_ch_str  = serialize($fav_array);
+
+        if (empty($this->fav_karaoke)) {
+            $this->getFav($uid);
+        }
+
+        if ($this->fav_karaoke === FALSE){
+            return $this->db
+                ->use_caching(array('fav_karaoke.uid='.intval($uid)))
+                ->insert('fav_karaoke',
+                    array(
+                        'uid'     => (int) $uid,
+                        'fav_karaoke'  => $fav_ch_str,
+                        'addtime' => 'NOW()'
+                    ))->insert_id();
+        } else {
+            return $this->db
+                ->use_caching(array('fav_karaoke.uid='.intval($uid)))
+                ->update('fav_karaoke',
+                    array(
+                        'fav_karaoke'  => $fav_ch_str,
+                        'edittime' => 'NOW()'
+                    ),
+                    array('uid' => (int) $uid))->result();
+        }
+    }
+
+    public function setFavStatus(){}
+
 }
 
 ?>

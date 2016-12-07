@@ -11,12 +11,12 @@
                 {{ main_macro.get_filter('sended', 'Delivery status'|trans, 'id', 'title', app['sendedStatus'], 5, 9) }}
                 {{ main_macro.get_filter('ended', 'Receipt status'|trans, 'id', 'title', app['receivingStatus'], 5, 9) }}
 
-                <a id="add_events" href="#" class="btn btn-success pull-right">{{ 'Create new event'|trans }}</a>
+                <a id="add_events" href="#" class="btn btn-success pull-right no_context_menu">{{ 'Create new event'|trans }}</a>
 
                 {% if attribute(app, 'currentUser') is defined %}
-                    <a id="clean_events" href="#" class="btn btn-danger pull-right" data-uid="{{ app.currentUser.uid }}">{{ 'Clean'|trans }}</a>
+                    <a id="clean_events" href="#" class="btn btn-danger pull-right no_context_menu" data-uid="{{ app.currentUser.uid }}">{{ 'Clean'|trans }}</a>
                 {% else %}
-                    <a id="clean_events" href="#" class="btn btn-danger pull-right" data-uid="all">{{ 'Clean all'|trans }}</a>
+                    <a id="clean_events" href="#" class="btn btn-danger pull-right no_context_menu" data-uid="all">{{ 'Clean all'|trans }}</a>
                 {% endif %}
             </div>
         </div>

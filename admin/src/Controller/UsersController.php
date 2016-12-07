@@ -382,6 +382,28 @@ class UsersController extends \Controller\BaseStalkerController {
 
         $this->app['state'] = (int) $this->user['state'];
 
+        $tracert = $this->db->getTracertStats($this->user['id']);
+        if (!empty($tracert)) {
+            $tmp = json_decode($tracert['info'], TRUE);
+            $tracert['info'] = array();
+            while(list($key, $item) = each($tmp)) {
+                list($domain, $stat) = each($item);
+                if (!array_key_exists($domain, $tracert['info'])) {
+                    $tracert['info'][$domain] = array_map(function($val){
+                        $val[1] = trim($val[1], '%');
+                        return array_combine(array('ip', 'loss', 'ping'), $val);
+                    }, $stat) ;
+                }
+            }
+
+            $this->app['tracertStats'] = $tracert;
+
+            $tracert_attr = $this->getUsersTracertStatDropdownAttribute();
+            $this->checkDropdownAttribute($tracert_attr);
+            $this->app['tracert_attr'] = $tracert_attr;
+
+        }
+
         if (Config::getSafe('enable_internal_billing', 'false')) {
             $this->app['enableBilling'] = TRUE;
         }
@@ -645,7 +667,22 @@ class UsersController extends \Controller\BaseStalkerController {
             $countries[$row['iso2']] = $row[$country_field_name];
         }
 
-        $response['data'] = array_map(function($val) use ($reseller_empty_name, $countries) {
+        $geo_ip_lookup = Config::getSafe("geo_ip_lookup_service", "");
+
+        $check_local_ip = array(
+            function($ip_ar){
+                return $ip_ar[0] == 127;
+            },
+            function($ip_ar){
+                return $ip_ar[0] == 192 && $ip_ar[1] == 168;
+            },
+            function($ip_ar){
+                return $ip_ar[0] == 10;
+            }, function($ip_ar){
+                return $ip_ar[0] == 172 && (16 <= $ip_ar[1] && $ip_ar[1]<=31);
+            });
+
+        $response['data'] = array_map(function($val) use ($reseller_empty_name, $countries, $geo_ip_lookup, $check_local_ip) {
             $val['last_active'] = (int)$val['last_active']; 
             $val['last_change_status'] = (int) strtotime($val['last_change_status']);
             $val['last_change_status'] = $val['last_change_status'] > 0 ? $val['last_change_status']: 0;
@@ -661,6 +698,14 @@ class UsersController extends \Controller\BaseStalkerController {
             } else {
                 $val['country_name'] = $val['country'] = '';
             }
+            $val['ip_link'] = '';
+            if (!empty($geo_ip_lookup) && !empty($val['ip'])) {
+                $ip_ar =  array_map(function($d){return (int)$d;}, explode('.', $val['ip']));
+                if (0 == array_sum(array_map(function($func) use ($ip_ar){ return (int)$func($ip_ar);}, $check_local_ip))) {
+                    $val['ip_link'] = str_replace('$user_ip', $val['ip'], $geo_ip_lookup);
+                }
+            }
+
             $val['RowOrder'] = "dTRow_" . $val['id'];
             return $val;
         }, $this->db->getUsersList($query_param));
@@ -2402,6 +2447,15 @@ class UsersController extends \Controller\BaseStalkerController {
             array('name' => 'mac',              'title' => $this->setLocalization('MAC'),   'checked' => TRUE),
             array('name' => 'status',           'title' => $this->setLocalization('Status'),'checked' => TRUE),
             array('name' => 'last_change_status','title' => $this->setLocalization('Time'), 'checked' => TRUE)
+        );
+        return $attribute;
+    }
+
+    private function getUsersTracertStatDropdownAttribute() {
+        $attribute = array(
+            array('name' => 'ip',   'title' => $this->setLocalization('IP Address'),    'checked' => TRUE),
+            array('name' => 'loss', 'title' => $this->setLocalization('Loss') . ' %',   'checked' => TRUE),
+            array('name' => 'ping', 'title' => $this->setLocalization('Ping'),          'checked' => TRUE)
         );
         return $attribute;
     }

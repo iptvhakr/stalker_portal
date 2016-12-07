@@ -6,7 +6,7 @@
     <div id="iptv_list">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-admins-group" class="btn btn-success pull-right" id="add_group">{{ 'Add group'|trans }}</a>
+                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-admins-group" class="btn btn-success pull-right no_context_menu" id="add_group">{{ 'Add group'|trans }}</a>
             </div>
         </div>
         
@@ -112,27 +112,27 @@
                         {% endif %}
 
                         json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
-                                                        <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                                        <a href='#' class='dropdown-toggle no_context_menu' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\
                                                         <ul class='dropdown-menu pull-right'>";
                         {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
                         json.data[i].operations         += "<li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-admin-group-to-reseller' data-id='"+id+"' data-reseller_id='"+reseller_id+"'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-admin-group-to-reseller' data-id='"+id+"' data-reseller_id='"+reseller_id+"'>\n\
                                                                     <span>{{ 'Change reseller for current group of admin'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>";
-                        json.data[i].reseller_name = '<a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-admin-group-to-reseller" data-id="'+id+'" data-reseller_id="'+reseller_id+'">'+reseller_name+'</a>';
+                        json.data[i].reseller_name = '<a class="main_ajax no_context_menu" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-admin-group-to-reseller" data-id="'+id+'" data-reseller_id="'+reseller_id+'">'+reseller_name+'</a>';
                         {% endif %}
                         {% if attribute(app,'userlogin') is defined and app.userlogin == 'admin' %}
                         json.data[i].operations         += "<li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-all-admin-to-group' data-group_id='" + id + "'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-all-admin-to-group' data-group_id='" + id + "'>\n\
                                                                     <span>{{ 'Move all admins to another group'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>";
                         {% endif %}
                         json.data[i].operations         += "<li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/admins-groups-list-json' data-id='" + id + "'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/admins-groups-list-json' data-id='" + id + "'>\n\
                                                                     <span>{{ 'Edit'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
@@ -142,7 +142,7 @@
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-admins-group' data-id='" + id + "'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-admins-group' data-id='" + id + "'>\n\
                                                                     <span> {{ 'Delete'|trans }} </span>\n\
                                                                 </a>\n\
                                                             </li>\n\

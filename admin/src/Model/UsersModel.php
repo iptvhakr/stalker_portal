@@ -435,4 +435,8 @@ class UsersModel extends \Model\BaseStalkerModel {
         return $this->mysqlInstance->from("users")->like(array('version' => "%$param%"), ' OR ')->orderby('version')->get()->all('version');
     }
 
+    public function getTracertStats($id){
+        return $this->mysqlInstance->from('diagnostic_info')->where(array('uid' => $id))->get()->first();
+    }
+
 }

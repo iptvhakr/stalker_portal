@@ -13,7 +13,7 @@
                 {{ main_macro.get_filter('status_id', 'Status'|trans, 'id', 'title', app['allStatus'], 2) }}
                 {{ main_macro.get_filter('monitoring_status', 'Monitoring status'|trans, 'id', 'title', app['allMonitoringStatus'], 2) }}
                 <a href="{{app.request.baseUrl}}/{{ app.controller_alias }}/add-channel" class="btn btn-success pull-right">{{ 'Add a channel'|trans }}</a>
-                <a href="{{app.request.baseUrl}}/{{ app.controller_alias }}/restart-all-archives" class="btn btn-success pull-right" id="restart_archives_button">{{ 'Restart all TV archives'|trans }}</a>
+                <a href="{{app.request.baseUrl}}/{{ app.controller_alias }}/restart-all-archives" class="btn btn-success pull-right no_context_menu" id="restart_archives_button">{{ 'Restart all TV archives'|trans }}</a>
             </div>
         </div>
 
@@ -148,22 +148,22 @@
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-channel" data-id="' + json.data[i].id  + '">\n\
+                                                                <a class="main_ajax no_context_menu" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-channel" data-id="' + json.data[i].id  + '">\n\
                                                                     <span>{{ 'Delete'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/' + (status ? 'disable' : 'enable') + '-channel" data-id="' + json.data[i].id  + '">\n\
+                                                                <a class="main_ajax no_context_menu" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/' + (status ? 'disable' : 'enable') + '-channel" data-id="' + json.data[i].id  + '">\n\
                                                                     <span>' + (status ? "{{ 'Unpublish'|trans }}" : "{{ 'Publish'|trans }}") + '</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class="main_ajax" ' + (claimsCount ? '': 'disabled="disabled"') + ' href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/itv-reset-claims" data-media_id="' + json.data[i].id  + '" data-media_type="' + json.data[i].media_type  + '">\n\
+                                                                <a class="main_ajax no_context_menu" ' + (claimsCount ? '': 'disabled="disabled"') + ' href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/itv-reset-claims" data-media_id="' + json.data[i].id  + '" data-media_type="' + json.data[i].media_type  + '">\n\
                                                                     <span>{{ 'Reset media-claims'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-channel-epg-item" data-id="' + json.data[i].id  + '">\n\
+                                                                <a class="main_ajax no_context_menu" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-channel-epg-item" data-id="' + json.data[i].id  + '">\n\
                                                                     <span>{{ 'Manage EPG'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\

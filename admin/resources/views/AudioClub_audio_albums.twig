@@ -45,7 +45,7 @@
                         var status = json.data[i].status;
 
                         json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
-                                                        <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                                        <a href='#' class='dropdown-toggle no_context_menu' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\
                                                         <ul class='dropdown-menu pull-right'>\n\
@@ -55,12 +55,12 @@
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-audio-albums' data-albumsid='" + id + "' data-albumsstatus='" + status + "'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-audio-albums' data-albumsid='" + id + "' data-albumsstatus='" + status + "'>\n\
                                                                     <span>" + (status != 0 ? "{{ 'Unpublish'|trans }}" : "{{ 'Publish'|trans }}") + "</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class='remove-audio-albums'  data-albumsid='" + id + "'>\n\
+                                                                <a class='remove-audio-albums no_context_menu'  data-albumsid='" + id + "'>\n\
                                                                     <span>{{ 'Delete'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
@@ -156,7 +156,7 @@
 
     <script type="text/template" id="modal_del_buttons">
         <div class="pull-right no-padding">
-            <a id="del_album_btn" type="button" class="main_ajax btn btn-danger pull-right" href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-audio-albums'>{{ 'Delete'|trans }}</a>
+            <a id="del_album_btn" type="button" class="main_ajax btn btn-danger pull-right no_context_menu" href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-audio-albums'>{{ 'Delete'|trans }}</a>
             <button type="reset" id="del_album_button" class="btn btn-success pull-right">{{ 'Cancel'|trans }}</button>
         </div>
     </script>

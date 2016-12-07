@@ -6,14 +6,27 @@
     <div id="iptv_list">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="btn-group pull-right">
-                    <a href="#" class="btn btn-success dropdown-toggle" data-toggle="dropdown">{{ 'Clean claims'|trans }} <span class="fa fa-caret-down"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a class="main_ajax" data-media_type="vclub" href="{{app.request.baseUrl}}/{{app.controller_alias}}/stat-claims-clean">{{ 'Video club'|trans }}</a></li>
-                        <li><a class="main_ajax" data-media_type="itv" href="{{app.request.baseUrl}}/{{app.controller_alias}}/stat-claims-clean">{{ 'TV'|trans }}</a></li>
-                        <li><a class="main_ajax" data-media_type="karaoke" href="{{app.request.baseUrl}}/{{app.controller_alias}}/stat-claims-clean">{{ 'Karaoke'|trans }}</a></li>
-                        <li><a class="main_ajax" data-media_type="epg" href="{{app.request.baseUrl}}/{{app.controller_alias}}/stat-claims-clean">{{ 'EPG'|trans }}</a></li>
-                        <li><a class="main_ajax" data-media_type="all" href="{{app.request.baseUrl}}/{{app.controller_alias}}/stat-claims-clean">{{ 'All'|trans }}</a></li>
+                <div class="dropdown filter black pull-right">
+                    <a data-toggle="dropdown" class="dropdown-toggle btn-success no_context_menu" href="#">
+                        <span>{{ 'Clean claims'|trans }}</span>
+                        <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu" style="">
+                        <li>
+                            <a class="main_ajax btn btn-success no_context_menu" data-media_type="vclub" href="{{app.request.baseUrl}}/{{app.controller_alias}}/stat-claims-clean">{{ 'Video club'|trans }}</a>
+                        </li>
+                        <li>
+                            <a class="main_ajax btn btn-success no_context_menu" data-media_type="itv" href="{{app.request.baseUrl}}/{{app.controller_alias}}/stat-claims-clean">{{ 'TV'|trans }}</a>
+                        </li>
+                        <li>
+                            <a class="main_ajax btn btn-success no_context_menu" data-media_type="karaoke" href="{{app.request.baseUrl}}/{{app.controller_alias}}/stat-claims-clean">{{ 'Karaoke'|trans }}</a>
+                        </li>
+                        <li>
+                            <a class="main_ajax btn btn-success no_context_menu" data-media_type="epg" href="{{app.request.baseUrl}}/{{app.controller_alias}}/stat-claims-clean">{{ 'EPG'|trans }}</a>
+                        </li>
+                        <li>
+                            <a class="main_ajax btn btn-success no_context_menu" data-media_type="all" href="{{app.request.baseUrl}}/{{app.controller_alias}}/stat-claims-clean">{{ 'All'|trans }}</a>
+                        </li>
                     </ul>
                 </div>
                 <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/stat-claims-logs" class="btn btn-default pull-right" id="add_audio_years">{{ 'Complaints log'|trans }}</a>

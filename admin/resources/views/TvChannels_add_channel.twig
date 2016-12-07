@@ -102,7 +102,7 @@
                                 {{form_widget(app['form'].logo) }}
                                 <img class="channel-logo" src="{% if app['form'].logo.vars.value %}{{ app.baseHost }}{{app['form'].logo.vars.value }}?{{ random(100000) }}{% endif %}" alt="" style="max-width: 100%;">
                                 <div class="col-xs-2 col-sm-1 no-padding" id="deletelogolink">
-                                    <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/delete-logo" data-logo_id="{% if app['form'].id.vars.value %}{{app['form'].id.vars.value}}{% endif %}"><span class="txt-primary">{{ 'Delete logo'|trans }}</span></a>
+                                    <a class="no_context_menu" href="{{app.request.baseUrl}}/{{app.controller_alias}}/delete-logo" data-logo_id="{% if app['form'].id.vars.value %}{{app['form'].id.vars.value}}{% endif %}"><span class="txt-primary">{{ 'Delete logo'|trans }}</span></a>
                                 </div>
                             </div>
 
@@ -178,10 +178,13 @@
                                                     <td>
                                                         <div class="col-sm-12">
                                                             {{ main_macro.input_checkbox(app['form']['use_http_tmp_link'], 'use_http_tmp_link', key) }}
-                                                            {{ main_macro.input_hidden(app['form']['wowza_tmp_link'], 'wowza_tmp_link', key, 0) }}
-                                                            {{ main_macro.input_hidden(app['form']['nginx_secure_link'], 'nginx_secure_link', key, 0) }}
-                                                            {{ main_macro.input_hidden(app['form']['flussonic_tmp_link'], 'flussonic_tmp_link', key, 0) }}
-                                                            {{ main_macro.input_hidden(app['form']['xtream_codes_support'], 'xtream_codes_support', key, 0) }}
+                                                            {% if attribute(app, 'httpTmpLink') is defined and app['httpTmpLink'] %}
+                                                                {% for row in app['httpTmpLink'] %}
+                                                                    {% if not(row.value == 'use_http_tmp_link') %}
+                                                                        {{ main_macro.input_hidden(app['form'][row.value], row.value, key, 0) }}
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            {% endif %}
                                                         </div>
                                                     </td>
                                                     <td>
@@ -256,10 +259,13 @@
                                                         <div class="toggle-switch-switch"></div>
                                                     </label>
                                                 </div>
-                                                <input type="hidden" disabled="disabled" name="form[wowza_tmp_link][0]" id="form_wowza_tmp_link_0">
-                                                <input type="hidden" disabled="disabled" name="form[nginx_secure_link][0]" id="form_nginx_secure_link_0">
-                                                <input type="hidden" disabled="disabled" name="form[flussonic_tmp_link][0]" id="form_flussonic_tmp_link_0">
-                                                <input type="hidden" disabled="disabled" name="form[xtream_codes_support][0]" id="xtream_codes_support_0">
+                                                {% if attribute(app, 'httpTmpLink') is defined and app['httpTmpLink'] %}
+                                                    {% for row in app['httpTmpLink'] %}
+                                                        {% if not(row.value == 'use_http_tmp_link') %}
+                                                        <input type="hidden" disabled="disabled" name="form[{{ row.value }}][0]" id="form_{{ row.value }}_0">
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endif %}
                                             </div>
                                         </td>
                                         <td>
@@ -363,7 +369,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class=" col-xs-10 col-sm-3" id="wowza_dvr">
+                            <div class=" col-xs-10 col-md-1 no-padding" id="wowza_dvr">
                                 <label class="col-sm-8 control-label">{{ 'Wowza DVR'|trans }}</label>
                                 <div class="checkbox">
                                     <label>
@@ -375,7 +381,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class=" col-xs-10 col-sm-3" id="flussonic_dvr">
+                            <div class=" col-xs-10 col-md-2" id="flussonic_dvr">
                                 <label class="col-sm-8 control-label">{{ 'Flussonic DVR'|trans }}</label>
                                 <div class="checkbox">
                                     <label>
@@ -384,6 +390,18 @@
                                     </label>
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].flussonic_dvr) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class=" col-xs-10 col-md-1 no-padding" id="nimble_dvr">
+                                <label class="col-sm-8 control-label">{{ 'Nimble DVR'|trans }}</label>
+                                <div class="checkbox">
+                                    <label>
+                                        {{ form_widget(app['form'].nimble_dvr) }}
+                                        <i class="fa fa-square-o small"></i>
+                                    </label>
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].nimble_dvr) }}
                                     </div>
                                 </div>
                             </div>
@@ -404,6 +422,10 @@
                                 {{ form_widget(app['form'].flussonic_storage_names, {'attr': {'class': 'populate placeholder'}}) }}
                                 <div class="bg-danger">
                                     {{ form_errors(app['form'].flussonic_storage_names) }}
+                                </div>
+                                {{ form_widget(app['form'].nimble_storage_names, {'attr': {'class': 'populate placeholder'}}) }}
+                                <div class="bg-danger">
+                                    {{ form_errors(app['form'].nimble_storage_names) }}
                                 </div>
                             </div>
                         </div>
@@ -878,7 +900,13 @@
             }
         };
 
-        var linkTypeFields = ['use_http_tmp_link', 'wowza_tmp_link', 'nginx_secure_link', 'flussonic_tmp_link', 'xtream_codes_support'];
+        var linkTypeFields = [
+                {% if attribute(app, 'httpTmpLink') is defined and app['httpTmpLink'] %}
+                {% for row in app['httpTmpLink'] %}
+                '{{ row.value }}'{% if not loop.last %},{% endif %}
+                {% endfor %}
+                {% endif %}
+            ];
 
         function DemoSelect2() {
             $('#form_tv_genre_id').select2(select2Opt);
@@ -890,6 +918,7 @@
             $('#form_storage_names').select2(select2Opt);
             $('#form_flussonic_storage_names').select2(select2Opt);
             $('#form_wowza_storage_names').select2(select2Opt);
+            $('#form_nimble_storage_names').select2(select2Opt);
             $("#form_enable_tv_archive, #form_allow_pvr").each(function () {
                 checkEnableChkBox($(this).attr('id'));
             });
@@ -946,10 +975,10 @@
                     checkEnableChkBox($(this).attr('id'));
                 });
 
-                $("#form_wowza_dvr, #form_flussonic_dvr").on('change, click', function () {
+                $("input[id$='_dvr']").on('change, click', function () {
                     var _this = $(this);
                     if (_this.is(':visible') && _this.is(':checked')) {
-                        $("#" + (_this.attr('id') == 'form_wowza_dvr' ? 'form_flussonic_dvr': 'form_wowza_dvr')).prop("checked", false).removeAttr('checked');
+                        $("input[id$='_dvr']").filter("[id!='"+$(this).attr('id')+"']").prop("checked", false).removeAttr('checked');
                         toggleChkSelect(_this.attr('id'));
                     } else {
                         toggleChkSelect('form_enable_tv_archive');
@@ -1337,7 +1366,8 @@
             var relations = {
                 'form_enable_tv_archive': 'form_storage_names',
                 'form_wowza_dvr': 'form_wowza_storage_names',
-                'form_flussonic_dvr': 'form_flussonic_storage_names'
+                'form_flussonic_dvr': 'form_flussonic_storage_names',
+                'form_nimble_dvr': 'form_nimble_storage_names'
             };
             $.each(relations, function(key, val){
                 var currObj = $("#" + val);
@@ -1362,11 +1392,11 @@
             }
             if (_this.attr('id') == 'form_enable_tv_archive') {
                 if (_this.prop("checked")) {
-                    $("#wowza_dvr, #flussonic_dvr").show('fast').find('input').prop("disabled", false).removeAttr('disabled');
-                    var checkID = $("#form_wowza_dvr, #form_flussonic_dvr").filter(':checked').attr('id');
+                    $("div[id$='_dvr']").show('fast').find('input').prop("disabled", false).removeAttr('disabled');
+                    var checkID = $("input[id$='_dvr']").filter(':checked').attr('id');
                     toggleChkSelect(checkID ? checkID: 'form_enable_tv_archive');
                 } else {
-                    $("#wowza_dvr, #flussonic_dvr").hide('fast').find('input').prop("disabled", 'disabled').attr('disabled', 'disabled').prop("checked", false).removeAttr('checked');
+                    $("div[id$='_dvr']").hide('fast').find('input').prop("disabled", 'disabled').attr('disabled', 'disabled').prop("checked", false).removeAttr('checked');
                     toggleChkSelect('');
                 }
             }

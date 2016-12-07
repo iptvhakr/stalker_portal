@@ -57,18 +57,18 @@
                             }
                         }
 
-                        json.data[i].login = '<a href="#">' + json.data[i].login + '</a>';
+                        json.data[i].login = '<a href="#" class="no_context_menu">' + json.data[i].login + '</a>';
                         json.data[i].title = '<a href="{{ app.request.baseUrl }}/users/users-list?filter_set='+ id +'">' + json.data[i].title + '</a>';
                         json.data[i].for_all = (json.data[i].for_all ? "{{ 'For all'|trans }}": "{{ 'Only for'|trans }} " + login);
                         json.data[i].favorites = (favorites ? '<span class="txt txt-danger"><i class="fa fa-star"></i></span>': '');
 
                         json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
-                                                        <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                                        <a href='#' class='dropdown-toggle no_context_menu' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\
                                                         <ul class='dropdown-menu pull-right'>\n\
                                                             <li>\n\
-                                                                <a class='add_events' href='#' data-filter_set='"+ id +"'>\n\
+                                                                <a class='add_events no_context_menu' href='#' data-filter_set='"+ id +"'>\n\
                                                                     <span>{{ 'Add event'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
@@ -78,12 +78,12 @@
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-filter-favorite' data-id='"+ id +"' data-favorite='" + favorites + "'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-filter-favorite' data-id='"+ id +"' data-favorite='" + favorites + "'>\n\
                                                                     <span>" + (favorites? '{{ "Remove from favorites"|trans }}': '{{ 'Add to favorites'|trans }}') + "</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-filter' data-id='" + id + "'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-filter' data-id='" + id + "'>\n\
                                                                     <span> {{ 'Delete'|trans }} </span>\n\
                                                                 </a>\n\
                                                             </li>\n\

@@ -103,6 +103,18 @@
         }
 
         function TestTable1() {
+
+            $.ajax({
+                url: "{{app.request.baseUrl}}/plugins/datatables/dataTables.sortingDateDE.js",
+                dataType: "script",
+                cache: true
+            });
+            $.ajax({
+                url: "{{app.request.baseUrl}}/plugins/datatables/dataTables.sortingFormattedVersions.js",
+                dataType: "script",
+                cache: true
+            });
+
             $('#datatable-1').on('xhr.dt', function (e, settings, json) {
                 var status = json.info.status;
                 if (typeof (json.data) == 'object') {
@@ -140,14 +152,14 @@
                         }
 
                         json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
-                                                        <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                                        <a href='#' class='dropdown-toggle no_context_menu' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\
                                                         <ul class='dropdown-menu pull-right'>";
                         if (item.current) { //
                             json.data[i].operations += "\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-version-list-json' data-id='" + id + "' data-version='" + item.version + "'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-version-list-json' data-id='" + id + "' data-version='" + item.version + "'>\n\
                                                                     <span> {{ 'More details'|trans }} </span>\n\
                                                                 </a>\n\
                                                             </li>";
@@ -155,21 +167,21 @@
                         if (!item.installed) {
                             json.data[i].operations +=      "\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' " + (is_conflicts ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-version-install' data-id='" + id + "' data-version='" + item.version + "'>\n\
+                                                                <a class='main_ajax no_context_menu' " + (is_conflicts ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-version-install' data-id='" + id + "' data-version='" + item.version + "'>\n\
                                                                     <span> " + "{{ 'Install'|trans }}" + " </span>\n\
                                                                 </a>\n\
                                                             </li>";
                         } else {
                             json.data[i].operations +=      "\n\
                                                             <li>\n\
-                                                                <a id='toggle_link_"+ id +"' class='main_ajax' " + (is_conflicts && (status != '1' || !current) ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-toggle-state' data-id='" + id + "' " + ( current ? " data-status='" + (status == '1' ? '0': '1') + "'" : " data-current_version='" + item.version + "' data-status='1'") + ">\n\
+                                                                <a id='toggle_link_"+ id +"' class='main_ajax no_context_menu' " + (is_conflicts && (status != '1' || !current) ? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-toggle-state' data-id='" + id + "' " + ( current ? " data-status='" + (status == '1' ? '0': '1') + "'" : " data-current_version='" + item.version + "' data-status='1'") + ">\n\
                                                                     <span> " + (status != '1' || !current ? "{{ 'Activate'|trans }}" : "{{ 'Deactivate'|trans }}") + " </span>\n\
                                                                 </a>\n\
                                                             </li>";
                         }
                         json.data[i].operations +=          "\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' " + (!item.installed || current? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-version-delete' data-id='" + id + "' data-version='" + item.version + "'>\n\
+                                                                <a class='main_ajax no_context_menu' " + (!item.installed || current? 'disabled="disabled"' : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/smart-application-version-delete' data-id='" + id + "' data-version='" + item.version + "'>\n\
                                                                     <span> {{ 'Delete'|trans }} </span>\n\
                                                                 </a>\n\
                                                             </li>\n\
@@ -196,10 +208,13 @@
                 "bFilter": true,
                 "bPaginate": true,
                 "bInfo": false,
+                "order": [[ 0, "desc" ]],
                 "columnDefs": [
                     {className: "action-menu", "targets": [-1]},
                     {"searchable": false, "targets": [-1]},
-                    {"sortable": false, "targets": [-1]}
+                    {"sortable": false, "targets": [-1]},
+                    { "type": 'formatted-version', targets: [0] },
+                    { "type": 'de_date', targets: [1] }
                 ]
             });
         }

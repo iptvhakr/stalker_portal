@@ -108,7 +108,7 @@
                         var tasks = json.data[i].tasks;
 
 						json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
-                                                        <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                                        <a href='#' class='dropdown-toggle no_context_menu' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\
                                                         <ul class='dropdown-menu pull-right'>\n\
@@ -118,12 +118,12 @@
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/" + (accessed!=0 ?"disable":"enable")+"-video' data-videoid='"+id+"'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/" + (accessed!=0 ?"disable":"enable")+"-video' data-videoid='"+id+"'>\n\
                                                                     <span>" + ( accessed ? "{{ 'Unpublish'|trans }}": "{{ 'Publish'|trans }}") + "</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/create-tasks' data-videoid='"+id+"'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/create-tasks' data-videoid='"+id+"'>\n\
                                                                     <span>{{ 'Create task'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
@@ -133,7 +133,7 @@
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-video' data-videoid='"+id+"'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-video' data-videoid='"+id+"'>\n\
                                                                     <span>{{ 'Remove'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
@@ -151,7 +151,7 @@
 
                         json.data[i].name = ("<a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-video?id=" + id + "' data-fieldname='name'>" + json.data[i].name + "</a>");
 
-                        json.data[i].path = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/video-info" class="main_ajax" data-videoid="'+id+'">' + path + '</a>';
+                        json.data[i].path = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/video-info" class="main_ajax no_context_menu" data-videoid="'+id+'">' + path + '</a>';
                         
                         var taskStr = '';
                         var msgClass = '';
@@ -314,7 +314,7 @@
             table.append('<tr><td>{{ 'Server'|trans }}</td><td>{{ 'Catalogue'|trans }}</td><td>{{ 'Episodes'|trans }}</td><td>&nbsp;</td></tr>');
             $.each(baseInfo, function(index, value){
                 var trStr = '<tr><td>'+ value.storage_name +'</td><td>'+ value.path +'</td><td>'+ value.series +'</td>';
-                    trStr += '<td><a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-md5">{{ 'Calculate MD5 checksum'|trans }}</a></td></tr>';
+                    trStr += '<td><a class="main_ajax no_context_menu" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-md5">{{ 'Calculate MD5 checksum'|trans }}</a></td></tr>';
                 table.append(trStr);
                 table.find('a').data('storage_name', value.storage_name);
                 table.find('a').data('media_name', value.path);

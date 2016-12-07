@@ -195,11 +195,11 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label uniseries">{{ 'Year'|trans }}<span class="icon-required">*</span></label>
-                                <label class="col-sm-2 control-label ">{{ 'Period of showing '|trans }}<span class="icon-required">*</span></label>
+                                <label class="col-sm-2 control-label uniseries">{{ 'Year'|trans }}</label>
+                                <label class="col-sm-2 control-label ">{{ 'Period of showing '|trans }}</label>
                                 <div class="col-xs-8 col-sm-7">
                                     <div class=" col-xs-9 col-sm-11">
-                                        {{ form_widget(app['form'].year, {'attr': {'class': 'form-control pull-left', 'data-validation':'compare_number', 'data-validation-compare-element': '#form_year_end', 'data-validation-compare-operation': '<=', 'data-validation-regexp' : '^\\d{4}$'}}) }}
+                                        {{ form_widget(app['form'].year, {'attr': {'class': 'form-control pull-left', 'data-validation':'compare_number', 'data-validation-compare-element': '#form_year_end', 'data-validation-compare-operation': '<=', 'data-validation-regexp' : '^\\d{4}$', 'data-validation-optional' : 'true'}}) }}
                                         {{ form_widget(app['form'].year_end, {'attr': {'class': 'form-control  pull-left add-video-year', 'data-validation' : 'compare_number', 'data-validation-compare-element': '#form_year', 'data-validation-compare-operation': '>=' , 'data-validation-regexp' : '^(?:\\d{4})$', 'data-validation-optional' : 'true', 'disabled': 'disabled' }}) }}
                                         <div class="bg-danger">
                                             {{ form_errors(app['form'].year) }}
@@ -215,11 +215,11 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label uniseries">{{ 'Length'|trans }}<span class="icon-required">*</span></label>
-                                <label class="col-sm-2 control-label ">{{ 'Approximate duration'|trans }}<span class="icon-required">*</span></label>
+                                <label class="col-sm-2 control-label uniseries">{{ 'Length'|trans }}</label>
+                                <label class="col-sm-2 control-label ">{{ 'Approximate duration'|trans }}</label>
                                 <div class="col-xs-8 col-sm-7">
                                     <div class=" col-xs-9 col-sm-11">
-                                        {{ form_widget(app['form'].duration, {'attr': {'class': 'form-control', 'data-validation':'number'}}) }}
+                                        {{ form_widget(app['form'].duration, {'attr': {'class': 'form-control', 'data-validation':'number', 'data-validation-optional' : 'true'}}) }}
                                         <div class="bg-danger">
                                             {{ form_errors(app['form'].duration) }}
                                         </div>
@@ -231,10 +231,10 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label ">{{ 'Country'|trans }}<span class="icon-required">*</span></label>
+                                <label class="col-sm-2 control-label ">{{ 'Country'|trans }}</label>
                                 <div class="col-xs-8 col-sm-7">
                                     <div class=" col-xs-9 col-sm-11">
-                                        {{ form_widget(app['form'].country, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
+                                        {{ form_widget(app['form'].country, {'attr': {'class': 'form-control'}}) }}
                                         <div class="bg-danger">
                                             {{ form_errors(app['form'].country) }}
                                         </div>
@@ -242,10 +242,10 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label ">{{ 'Director'|trans }}<span class="icon-required">*</span></label>
+                                <label class="col-sm-2 control-label ">{{ 'Director'|trans }}</label>
                                 <div class="col-xs-8 col-sm-7">
                                     <div class=" col-xs-9 col-sm-11">
-                                        {{ form_widget(app['form'].director, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
+                                        {{ form_widget(app['form'].director, {'attr': {'class': 'form-control'}}) }}
                                         <div class="bg-danger">
                                             {{ form_errors(app['form'].director) }}
                                         </div>
@@ -253,10 +253,10 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label ">{{ 'Actors'|trans }}<span class="icon-required">*</span></label>
+                                <label class="col-sm-2 control-label ">{{ 'Actors'|trans }}</label>
                                 <div class="col-xs-8 col-sm-7">
                                     <div class=" col-xs-9 col-sm-11">
-                                        {{ form_widget(app['form'].actors, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
+                                        {{ form_widget(app['form'].actors, {'attr': {'class': 'form-control'}}) }}
                                         <div class="bg-danger">
                                             {{ form_errors(app['form'].actors) }}
                                         </div>
@@ -264,10 +264,10 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label ">{{ 'Movie description'|trans }}<span class="icon-required">*</span>:</label>
+                                <label class="col-sm-2 control-label ">{{ 'Movie description'|trans }}</label>
                                 <div class="col-xs-8 col-sm-7">
                                     <div class=" col-xs-9 col-sm-11">
-                                        {{ form_widget(app['form'].description, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
+                                        {{ form_widget(app['form'].description, {'attr': {'class': 'form-control'}}) }}
                                         <div class="bg-danger">
                                             {{ form_errors(app['form'].description) }}
                                         </div>
@@ -323,7 +323,7 @@
                                         <input type="file" name="files" style="opacity: 0;" multiple>
                                     </div>
                                     <img class="img-rounded channel-logo" src="{% if app['form'].cover_id.vars.value %}{{ app['curr_cover_dir'] }}/{{ app['form'].cover_id.vars.value }}{{ app['cover_ext'] }}{% elseif app['form'].cover_big.vars.value %}{{ app['form'].cover_big.vars.value }}{% endif %}" alt="" style="width: 100%;">
-                                    <a id="delete_cover" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/delete-cover" data-cover_id="{% if app['form'].cover_id.vars.value %}{{ app['form'].cover_id.vars.value }}{% endif %}">
+                                    <a id="delete_cover" class="no_context_menu" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/delete-cover" data-cover_id="{% if app['form'].cover_id.vars.value %}{{ app['form'].cover_id.vars.value }}{% endif %}">
                                         <span class="txt-primary">{{ 'Delete cover'|trans }}</span>
                                     </a>
                                 </div>
@@ -353,6 +353,17 @@
                                     </ul>
                                 </div>
                                 {% endif %}
+                                <div class=" col-xs-6 col-sm-6 col-sm-offset-2 no-padding">
+                                    <span class="txt-default">
+                                        {{ 'Available formats - jpg, jpeg, png. Maximum file size - 1MB.'|trans }}
+                                    </span>
+                                    <span class="txt-default">
+                                        {{ 'For cover recommended portrait orientation picture (aspect ratio 3:4).'|trans }}
+                                    </span>
+                                    <span class="txt-default">
+                                        {{ 'For screenshots recommended landscape orientation picture (aspect ratio 4:3)'|trans }}
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -408,7 +419,7 @@
             showHelpOnFocus : true,
             validateHiddenInputs: true,
             ignore: ['.ignore'],
-            modules: 'jsconf, date',
+            modules: 'jsconf, date, security',
             errorClass: "myErrorClass",
             onSuccess: function () {
                 if (this.form == '#form_') {
@@ -481,14 +492,17 @@
             }
         };
 
-        var  select2Opt = select2OptMS = select2OptPH = {minimumResultsForSearch: -1, dropdownAutoWidth: false, width: '100%', allowDuplicates: false};
+        var  select2Opt = select2OptMS = select2OptPH = {minimumResultsForSearch: -1, dropdownAutoWidth: false, width: '100%', allowDuplicates: true};
         var  select2OptMS = select2Opt, select2OptPH = select2Opt;
         select2OptMS.maximumSelectionSize = 4;
+        select2OptMS.minimumResultsForSearch = 1;
         select2OptPH.placeholder = {
             id: "-1",
             text: "",
             selected: 'selected'
         };
+
+        var s2Opts;
 
         function DemoSelect2() {
                 checkCatGenreList('#form_category_id', '#form_cat_genre_id');
@@ -499,8 +513,23 @@
                 $('#form_age').select2(select2Opt);
         }
 
+        function matchStart (term, text) {
+            $("#fileLangCloneList").find('input').val(term);
+            return text.toUpperCase().indexOf(term.toUpperCase()) != -1;
+        }
+
+        function changeLangBlockHeight(){
+            if ($("#fileLangCloneList").height() >= $('#file_languages').next().height()) {
+                $("#fileLangCloneList").parent().css({paddingTop: $("#fileLangCloneList").height() - $('#file_languages').next().height() + 'px'});
+            } else {
+                $("#fileLangCloneList").find('.select2-selection').css({minHeight: $('#file_languages').next().height() + 'px'});
+                $("#fileLangCloneList").parent().css({paddingTop: 0});
+            }
+        }
+
         function setFileLanguagesSelect(){
-            var file_languages = $('#file_languages').select2(select2Opt);
+            var file_languages  = $('#file_languages').select2(s2Opts);
+
             if ($('#fileLangCloneList').length) {
                 $('#fileLangCloneList').remove();
             }
@@ -509,8 +538,10 @@
             var cloneList = fileLangList.clone(true, true);
             cloneList.insertAfter(fileLangList);
 
-            cloneList.attr('id', 'fileLangCloneList').css({width: '92%', top: 0, left: 10, position: 'absolute'});
-            file_languages.next().css({visibility: 'hidden'});
+            cloneList.attr('id', 'fileLangCloneList').css({width: '93%', top: 0, left: 10, position: 'absolute'});
+            /*file_languages.next().css({visibility: 'hidden'});*/
+            cloneList.find('input').css({minWidth: '10px'});
+
 
             cloneList.on('select2:selecting', function(e){
                 e.stopPropagation();
@@ -522,6 +553,32 @@
                 e.preventDefault();
                 return false;
             });
+
+            fileLangList.find('li, li *').on('input keyup change', function(){
+                var oInput = fileLangList.find('input');
+                var inputWidth = cloneList.find('input').outerWidth();
+                var calcWidth = oInput.val().length * 10;
+                if (inputWidth < calcWidth) {
+                    inputWidth = calcWidth;
+                }
+                cloneList.find('input').css('width', inputWidth).val(oInput.val());
+            });
+
+            function getInputWidth(){
+                var containerWidth = cloneList.find('ul').innerWidth();
+                var rowWidth = 0;
+                cloneList.find('ul').children().each(function(){
+                    if (!$(this).hasClass('select2-search--inline')) {
+                        var oWidth = $(this).outerWidth() + 10;
+                        rowWidth += oWidth;
+                        if (rowWidth >= containerWidth) {
+                            rowWidth = oWidth;
+                        }
+                    }
+                });
+                var inputWith = containerWidth - rowWidth - 20;
+                return inputWith < 20 ?  'auto': inputWith;
+            }
 
             file_languages.on('select2:selecting', function(e){
                 var lastTimestamp = $("#fileLangCloneList").data('last-timestamp');
@@ -539,11 +596,9 @@
             });
 
             file_languages.on('select2:select', function(e){
-                if ($("#fileLangCloneList").height() >= $('#file_languages').next().height()) {
-                    $(this).parent().css({paddingTop: $("#fileLangCloneList").height() - $('#file_languages').next().height() + 'px'});
-                } else {
-                    $("#fileLangCloneList").find('.select2-selection').css({minHeight: $('#file_languages').next().height() + 'px'})
-                }
+                changeLangBlockHeight();
+                fileLangList.find('input').val('');
+                cloneList.find('input').css({width: getInputWidth()}).val('');
             });
 
             $("#file_languages, #fileLangCloneList").on('select2:closing', function(e){
@@ -553,9 +608,12 @@
                 } else {
                     conf.onError();
                 }
+                fileLangList.find('input').val('');
+                cloneList.find('input').css({width: getInputWidth()}).val('');
+                changeLangBlockHeight();
             });
 
-            $("#fileLangCloneList ul").on('mouseup mousedown select2:selecting select2:opening keyup keydown input query', 'li, li *', function(e){
+            $("#fileLangCloneList ul").on('mouseup mousedown select2:selecting select2:opening keyup keydown input', 'li, li *', function(e){
                 e.stopPropagation();
                 e.preventDefault();
                 return false;
@@ -571,11 +629,7 @@
                     langData.push($(this).data('val'));
                 });
                 $('#file_languages').val(langData).trigger('change.select2');
-                if ($("#fileLangCloneList").height() >= $('#file_languages').next().height()) {
-                    $("#fileLangCloneList").parent().css({paddingTop: $("#fileLangCloneList").height() - $('#file_languages').next().height() + 'px'});
-                } else {
-                    $("#fileLangCloneList").find('.select2-selection').css({minHeight: $('#file_languages').next().height() + 'px'})
-                }
+                changeLangBlockHeight();
                 $('#file_languages').data().select2.trigger('close');
                 return false;
             });
@@ -720,6 +774,14 @@
 
         function yelp() {
             $(document).ready(function () {
+
+                $.fn.select2.amd.require([
+                    "select2/core",
+                    "select2/utils",
+                    "select2/compat/matcher"
+                ], function (Select2, Utils, oldMatcher) {
+                    s2Opts = $.extend(select2OptMS, {matcher: oldMatcher(matchStart)});
+                });
 
                 $.getJSON("{{ app.datatable_lang_file }}", function(data){
                     dataTableLang = data;
@@ -1672,25 +1734,25 @@
                             json.data[i].languages = json.data[i].languages.join(", ");
 
                             json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
-                                                        <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                                        <a href='#' class='dropdown-toggle no_context_menu' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\
                                                         <ul class='dropdown-menu pull-right'>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-one-video-file-json' data-id='" + id + "' data-video_id='" + video_id + "' data-season_id='" + season_id + "' data-series_id='" + series_id + "' data-season_number='" + season_number + "' data-series_number='" + series_number + "' data-file_name='" + file_name + "'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-one-video-file-json' data-id='" + id + "' data-video_id='" + video_id + "' data-season_id='" + season_id + "' data-series_id='" + series_id + "' data-season_number='" + season_number + "' data-series_number='" + series_number + "' data-file_name='" + file_name + "'>\n\
                                                                     <span>{{ 'Edit'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>";
                             if (id != 0 ) {
                                 json.data[i].operations += "<li>\n\
-                                                                <a class='main_ajax' " + (id == 0 ? "disabled='disabled'" : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-video-accessed' data-accessed='" + (accessed != 0 ? 0 : 1) + "' data-id='" + id + "' data-video_id='" + video_id + "'  data-season_id='" + season_id + "' data-series_id='" + series_id + "'>\n\
+                                                                <a class='main_ajax no_context_menu' " + (id == 0 ? "disabled='disabled'" : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-video-accessed' data-accessed='" + (accessed != 0 ? 0 : 1) + "' data-id='" + id + "' data-video_id='" + video_id + "'  data-season_id='" + season_id + "' data-series_id='" + series_id + "'>\n\
                                                                     <span>" + ( accessed == "1" ? "{{ 'Unpublish'|trans }}" : "{{ 'Publish'|trans }}") + "</span>\n\
                                                                 </a>\n\
                                                             </li>";
                             }
                             if (id != 0 ) {
                                 json.data[i].operations += "<li>\n\
-                                                                <a class='main_ajax' " + (id == 0 ? "disabled='disabled'" : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-video-data' data-id='" + id + "' data-video_id='" + video_id + "' data-season_id='" + season_id + "' data-series_id='" + series_id + "'>\n\
+                                                                <a class='main_ajax no_context_menu' " + (id == 0 ? "disabled='disabled'" : '') + " href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-video-data' data-id='" + id + "' data-video_id='" + video_id + "' data-season_id='" + season_id + "' data-series_id='" + series_id + "'>\n\
                                                                     <span>{{ 'Remove'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>";
@@ -2195,6 +2257,9 @@
                                         <option value="flussonic">Flussonic</option>
                                         <option value="nginx">Nginx secire link</option>
                                         <option value="wowza">Wowza</option>
+                                        <option value="edgecast_auth">EdgeCast auth</option>
+                                        <option value="akamai_auth">Akamai</option>
+                                        <option value="nimble">Nimble</option>
                                     </select>
                                 </span>
                             </div>

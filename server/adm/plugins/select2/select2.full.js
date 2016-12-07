@@ -3067,7 +3067,7 @@ S2.define('select2/data/select',[
   SelectAdapter.prototype.unselect = function (data) {
     var self = this;
 
-    if (!this.$element.prop('multiple')) {
+    if (!this.$element.prop('multiple') || !data) {
       return;
     }
 

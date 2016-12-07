@@ -27,8 +27,8 @@
                 </div>
                 <a id="add_button" href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-users" class="btn btn-success pull-right" {% if not app.resellerUserLimit %}style="display: none;"{% endif %}>{{ 'Add user'|trans }}</a>
                 <span id="limit_message" class="btn btn-default pull-right" {% if app.resellerUserLimit %}style="display: none;"{% endif %}>{{ 'Limit of number of the users has been reached'|trans }}</span>
-                <a id="form_filter_button" href="{{app.request.baseUrl}}/{{app.controller_alias}}/save-filter" class="btn btn-success green pull-right" data-filter_set_id="{% if attribute(app, 'filter_set') is defined %}{{ app.filter_set.id }}{% endif %}">{{ 'Save filter'|trans }}</a>
-                <a id="apply_filter_button" href="#" class="btn btn-default pull-right">{{ 'Apply filter'|trans }}</a>
+                <a id="form_filter_button" href="{{app.request.baseUrl}}/{{app.controller_alias}}/save-filter" class="btn btn-success green pull-right no_context_menu" data-filter_set_id="{% if attribute(app, 'filter_set') is defined %}{{ app.filter_set.id }}{% endif %}">{{ 'Save filter'|trans }}</a>
+                <a id="apply_filter_button" href="#" class="btn btn-default pull-right no_context_menu">{{ 'Apply filter'|trans }}</a>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="filter_block">
                 {% if attribute(app, 'filters_set') is defined %}
@@ -401,7 +401,7 @@
 
                         json.data[i].now_playing_type = (typeof (mediaTypeName[json.data[i].now_playing_type]) != 'undefined' ? mediaTypeName[json.data[i].now_playing_type]: '--');
                         json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
-                                                        <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                                        <a href='#' class='dropdown-toggle no_context_menu' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\
                                                         <ul class='dropdown-menu pull-right'>\n\
@@ -416,38 +416,38 @@
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/send-message' data-userid='" + id + "'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/send-message' data-userid='" + id + "'>\n\
                                                                     <span>{{ 'Send message'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-user' data-userid='" + id + "' data-userstatus='" + status + "'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-user' data-userid='" + id + "' data-userstatus='" + status + "'>\n\
                                                                     <span>" + (status == 0 ? "{{ 'Turn off'|trans }}" : "{{ 'Turn on'|trans }}") + "</span>\n\
                                                                 </a>\n\
                                                             </li>";
                                                             {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
                         json.data[i].operations +=          "<li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-user-to-reseller' data-id='" + id + "' data-reseller_id='" + reseller_id + "'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-user-to-reseller' data-id='" + id + "' data-reseller_id='" + reseller_id + "'>\n\
                                                                     <span>{{ 'Change reseller for current user'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>";
                                                             {% endif %}
                                                             {% if attribute(app, 'enableBilling') is defined and app.enableBilling %}
                         json.data[i].operations +=          "<li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/set-expire-billing-date' data-userid='" + id + "' data-setaction='set'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/set-expire-billing-date' data-userid='" + id + "' data-setaction='set'>\n\
                                                                     <span>{{ 'Set expires billing date'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>";
                                                             if (expire_billing_date > 0) {
                         json.data[i].operations +=          "<li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/set-expire-billing-date' data-userid='" + id + "' data-setaction='unset'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/set-expire-billing-date' data-userid='" + id + "' data-setaction='unset'>\n\
                                                                     <span>{{ 'Unset expires billing date'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>";
                                                             }
                                                             {% endif %}
                         json.data[i].operations +=          "<li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-user' data-userid='" + id + "'>\n\
+                                                                <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-user' data-userid='" + id + "'>\n\
                                                                     <span>{{ 'Delete'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
@@ -459,6 +459,10 @@
 
                         if (json.data[i].country) {
                             json.data[i].ip = "<span class='countries-flag-container'><span class='pull-left'>" + json.data[i].ip + "</span>&nbsp;<span class='flag-wrapper pull-right'><span class='img-thumbnail flag flag-icon-background flag-icon-"+json.data[i].country+"'>&nbsp;</span></span></span>";
+                        }
+
+                        if (json.data[i].ip_link) {
+                            json.data[i].ip = "<a href='"+ json.data[i].ip_link +"' target='_blanc'>" + json.data[i].ip +"</a>";
                         }
 
                         date = json.data[i]['last_change_status'];
@@ -487,7 +491,7 @@
 
                         json.data[i].mac = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-users?id='+ id +'" >'+ mac +'</a>';
                         {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
-                        json.data[i].reseller_name = '<a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-user-to-reseller" data-id="' + id + '" data-reseller_id="' + reseller_id + '">'+ reseller_name +'</a>';
+                        json.data[i].reseller_name = '<a class="main_ajax no_context_menu" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-user-to-reseller" data-id="' + id + '" data-reseller_id="' + reseller_id + '">'+ reseller_name +'</a>';
                         {% endif %}
                     }
                 }

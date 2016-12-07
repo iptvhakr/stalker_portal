@@ -6,7 +6,7 @@
     <div id="iptv_list">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-console-group" class="btn btn-success pull-right" id="add_console_group">{{ 'Add group'|trans }}</a>
+                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-console-group" class="btn btn-success pull-right no_context_menu" id="add_console_group">{{ 'Add group'|trans }}</a>
             </div>
         </div>
         <div class="row">
@@ -201,25 +201,25 @@
         ceils.name = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/users-groups-consoles-list?id='+data.id+'">'+data.name+'</a>';
         var reseller_id = '' + (typeof (data.reseller_id) != 'undefined' ? data.reseller_id: '-') + '';
         ceils.users_count  = data.users_count;
-        ceils.reseller_name = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-user-group-to-reseller" data-consolegroupid="'+data.id+'" data-reseller_id="'+reseller_id+'">' + resellers[reseller_id] + '</a>';
+        ceils.reseller_name = '<a class="no_context_menu" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-user-group-to-reseller" data-consolegroupid="'+data.id+'" data-reseller_id="'+reseller_id+'">' + resellers[reseller_id] + '</a>';
         ceils.operations = "<div class='col-xs-3 col-sm-8'>\n\
-                                <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                <a href='#' class='dropdown-toggle no_context_menu' data-toggle='dropdown'>\n\
                                     <i class='pull-right fa fa-cog'></i>\n\
                                 </a>\n\
                                 <ul class='dropdown-menu pull-right'>\n\
                                     <li>\n\
-                                        <a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-console-group'  id='edit_console_group_"+data.id+"' data-consolegroupid='" + data.id + "' data-consolegroupname='" + data.name + "'>\n\
+                                        <a class='no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-console-group'  id='edit_console_group_"+data.id+"' data-consolegroupid='" + data.id + "' data-consolegroupname='" + data.name + "'>\n\
                                             <span>{{ 'Edit'|trans }}</span>\n\
                                         </a>\n\
                                     </li>\n\
                                     <li>\n\
-                                        <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-console-group' data-consolegroupid='" + data.id + "'>\n\
+                                        <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-console-group' data-consolegroupid='" + data.id + "'>\n\
                                             <span>{{ 'Delete'|trans }}</span>\n\
                                         </a>\n\
                                     </li>";
         {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
         ceils.operations        += "<li>\n\
-                                        <a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-user-group-to-reseller' data-consolegroupid='" + data.id + "' data-reseller_id='"+reseller_id+"'>\n\
+                                        <a class='no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-user-group-to-reseller' data-consolegroupid='" + data.id + "' data-reseller_id='"+reseller_id+"'>\n\
                                             <span>{{ 'Change reseller for current group'|trans }}</span>\n\
                                         </a>\n\
                                     </li>\n\

@@ -42,6 +42,7 @@ class BaseStalkerController {
     );
     protected $sidebar_cache_time;
     protected $language_codes_en = array();
+    protected $redirect = FALSE;
 
     public function __construct(Application $app, $modelName = '') {
         $this->app = $app;
@@ -61,6 +62,7 @@ class BaseStalkerController {
         $this->setRequestMethod();
         $this->setAjaxFlag();
         $this->getData();
+        $this->checkLastLocation();
 
         $modelName = "Model\\" . (empty($modelName) ? 'BaseStalker' : str_replace(array("\\", "Controller"), '', $modelName)) . 'Model';
         $this->db = FALSE;
@@ -231,7 +233,7 @@ class BaseStalkerController {
     }
 
     protected function checkAuth() {
-        if (empty($this->app['controller_alias']) || ($this->app['action_alias'] != 'register' && $this->app['action_alias'] != 'login')) {
+        if (empty($this->app['controller_alias']) || ($this->app['controller_alias'] != 'register' && $this->app['controller_alias'] != 'login')) {
             if (!$this->admin->isAuthorized()) {
                 if ($this->isAjax) {
                     $response = $this->generateAjaxResponse(array(), $this->setLocalization('Need authorization'));
@@ -621,6 +623,28 @@ class BaseStalkerController {
             if (is_dir($dir) && is_file($cached_file_name)) {
                 $this->app[$menu_name] = unserialize(file_get_contents($cached_file_name));
                 return !empty($this->app[$menu_name]);
+            }
+        }
+        return FALSE;
+    }
+
+    public function checkLastLocation(){
+        if (!$this->isAjax) {
+            if ($this->app['controller_alias'] != 'login' && $this->app['controller_alias'] != 'logout' && $this->app['action_alias'] != 'auth-user-logout') {
+                $location_path = $this->app['controller_alias'];
+                if (!empty($this->app['action_alias'])){
+                    $location_path .= ('/' . $this->app['action_alias']);
+                }
+                if (!empty($this->data)) {
+                    $location_path .= '?' . $this->request->getQueryString();
+                }
+                setcookie('last_location', '', time() - 3600);
+                setcookie('last_location', trim($this->workURL, "/") . "/$location_path", time()+60*60*24, "/");
+            } else {
+                $refferer = end(explode('/', $this->refferer));
+                if ($refferer == 'login') {
+                    $this->redirect = $this->request->cookies->get("last_location");
+                }
             }
         }
         return FALSE;
