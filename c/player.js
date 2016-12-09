@@ -231,8 +231,16 @@ player.prototype.init = function(){
                     stb.user.sec_subtitle_lang = stb.profile.sec_subtitle_lang = params.sec_subtitle_lang;
                 }
 
-                if (params.hasOwnProperty("pri_subtitle_lang") && params.hasOwnProperty("sec_subtitle_lang")){
-                    stb.player.set_subtitle_langs(stb.user.pri_subtitle_lang, stb.user.sec_subtitle_lang);
+                if (params.hasOwnProperty("subtitle_size")){
+                    stb.user.subtitle_size = stb.profile.subtitle_size = params.subtitle_size;
+                }
+
+                if (params.hasOwnProperty("subtitle_color")){
+                    stb.user.subtitle_color = stb.profile.subtitle_color = params.subtitle_color;
+                }
+
+                if (params.hasOwnProperty("pri_subtitle_lang") && params.hasOwnProperty("sec_subtitle_lang") && params.hasOwnProperty("subtitle_size") && params.hasOwnProperty("subtitle_color")){
+                    stb.player.set_subtitle_langs(stb.user.pri_subtitle_lang, stb.user.sec_subtitle_lang, stb.user.subtitle_size, stb.user.subtitle_color);
                 }
 
                 if (params.hasOwnProperty("play_in_preview_by_ok")){
@@ -347,8 +355,8 @@ player.prototype.set_audio_langs = function(pri_lang, sec_lang){
     }
 };
 
-player.prototype.set_subtitle_langs = function(pri_lang, sec_lang){
-    _debug('player.set_subtitle_langs', pri_lang, sec_lang);
+player.prototype.set_subtitle_langs = function(pri_lang, sec_lang, size, color){
+    _debug('player.set_subtitle_langs', pri_lang, sec_lang, size, color);
 
     pri_lang = pri_lang || "";
     sec_lang = sec_lang || "";
@@ -371,6 +379,9 @@ player.prototype.set_subtitle_langs = function(pri_lang, sec_lang){
             stb.profile['always_enabled_subtitles'] = 1;
             stb.SetSubtitleLangs(pri_lang, sec_lang);
         }
+
+        stb.SetSubtitlesSize(size);
+        stb.SetSubtitlesColor(color);
     }catch(e){
         _debug(e);
     }

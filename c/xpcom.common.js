@@ -1222,7 +1222,9 @@ function common_xpcom(){
 
                 this.player.set_subtitle_langs(
                     this.user['pri_subtitle_lang'],
-                    this.user['sec_subtitle_lang']
+                    this.user['sec_subtitle_lang'],
+                    this.user['subtitle_size'],
+                    this.user['subtitle_color']
                 );
 
                 this.stb_lang = this.user.stb_lang;
