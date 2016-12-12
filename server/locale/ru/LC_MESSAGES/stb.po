@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-12-06 10:21+0300\n"
-"PO-Revision-Date: 2016-12-06 10:21+0300\n"
+"PO-Revision-Date: 2016-12-12 13:18+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -13702,7 +13702,7 @@ msgid ""
 "If you have already been through the registration procedure in Video Ad "
 "system, you should not fill this form again"
 msgstr ""
-"Если вы уже проходили процедуру регистрации в системе Video Ad, то вам не "
+"Если вы уже проходили процедуру регистрации в системе Реклама, то вам не "
 "требуется заново заполнять форму"
 
 #: /tmp/cache/58467518cd1f8/1f/1fcba70e0bc7cad1d986bbd75d75c5faa834456aac4e2bb4a79c3e4990b335a7.php:270
@@ -14003,7 +14003,7 @@ msgstr "Ссылка на видео"
 
 #: /tmp/cache/58467518cd1f8/b0/b07b164fb6235b64e7c467b15276556d12c630d0c01696b3c875a8ddba1e62e1.php:52
 msgid "Video Ad - monetization of your audience."
-msgstr "Video Ad — монетизация вашей аудитории."
+msgstr "Реклама — монетизация вашей аудитории."
 
 #: /tmp/cache/58467518cd1f8/30/30467eb3f750c3f66ab7820641d0b324cd9dd5032063272d18114b317e5a5883.php:462
 msgid "What are the certificates?"
