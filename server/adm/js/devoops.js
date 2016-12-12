@@ -925,6 +925,12 @@ function updateTableRow(obj){
         if (dTRow) {
             var oTable = dTRow.closest('table').dataTable();
             oTable.fnUpdateCurrentRow(dTRow, obj);
+            var curOption = {
+                ddMenuMaxHeight: 0,
+                ddMenuHeight: 0,
+                trParentOffset: 0
+            };
+            checkMenuItemPosition(dTRow, curOption);
         }
     } catch (e){
         console.log(e);

@@ -141,6 +141,12 @@
                         var _this = this;
                         setTimeout(function(){
                             ajaxPostSend(_this.DataTable().ajax.url(), {id: data.id, curr_row: index}, false, false, true);
+                            var curOption = {
+                                ddMenuMaxHeight: 0,
+                                ddMenuHeight: 0,
+                                trParentOffset: 0
+                            };
+                            checkMenuItemPosition(row, curOption);
                         }, 200);
                     }
                 }
@@ -619,6 +625,12 @@
                 newData.rerendered = true;
                 $('#datatable-1').DataTable().row( data.curr_row ).invalidate(newData);
                 $('#datatable-1').dataTable().fnUpdate(newData, data.curr_row, null, false, false);
+                var curOption = {
+                    ddMenuMaxHeight: 0,
+                    ddMenuHeight: 0,
+                    trParentOffset: 0
+                };
+                checkMenuItemPosition("#" + newData.RowOrder.replace("#", ''), curOption);
             }
         };
 
