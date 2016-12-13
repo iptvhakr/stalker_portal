@@ -439,4 +439,15 @@ class UsersModel extends \Model\BaseStalkerModel {
         return $this->mysqlInstance->from('diagnostic_info')->where(array('uid' => $id))->get()->first();
     }
 
+    public function getSupportInfoByLang($lang){
+        return $this->mysqlInstance->from('support_info')->where(array('lang' => (string)$lang))->get()->first();
+    }
+
+    public function insertSupportInfo($params){
+        return $this->mysqlInstance->insert('support_info', $params)->total_rows();
+    }
+
+    public function updateSupportInfo($where = array(), $params){
+        return $this->mysqlInstance->update('support_info', $params, $where)->total_rows();
+    }
 }

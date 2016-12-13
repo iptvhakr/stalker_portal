@@ -493,6 +493,26 @@ class UsersController extends \Controller\BaseStalkerController {
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
+    public function support_info(){
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $this->app['support_langs'] = array_map(function($row){
+            return substr($row, 0, 2);
+        }, $this->app['allowed_locales']);
+
+        $def_lang_info = $this->db->getSupportInfoByLang($this->app["language"]);
+
+        if (empty($def_lang_info)) {
+            $def_lang_info = array('lang' => $this->app["language"], 'content' => '');
+        }
+
+        $this->app['def_lang_info'] = $def_lang_info;
+
+        return $this->app['twig']->render($this->getTemplateName(__METHOD__));
+    }
+
     //----------------------- ajax method --------------------------------------
 
     public function users_list_json($local_uses = FALSE){
@@ -1894,6 +1914,72 @@ class UsersController extends \Controller\BaseStalkerController {
             $error = '';
         } else {
             $error = $this->setLocalization('Write database error');
+        }
+
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function get_support_content(){
+        if (!$this->isAjax) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array(
+            'action' => 'setSupportContent',
+            'data' => array()
+        );
+
+        $error = $this->setLocalization('Error');
+
+        if (!empty($this->postData['lang'])) {
+            $data['data'] = $this->db->getSupportInfoByLang($this->postData['lang']);
+            $error = '';
+        }
+
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function save_support_content(){
+        if (!$this->isAjax) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array(
+            'action' => ''
+        );
+
+        $error = $this->setLocalization('Error');
+
+        $support_info_data = array_intersect_key($this->postData, array_flip($this->getFieldFromArray($this->db->getTableFields('support_info'), 'Field')));
+
+        $db_data = $this->db->getSupportInfoByLang($this->postData['lang']);
+
+        if (empty($db_data)) {
+            $operation = 'insert';
+            $params = array($support_info_data);
+        } else {
+            $operation = 'update';
+            $params = array(array('id' => $db_data['id']), $support_info_data);
+        }
+        $result = call_user_func_array(array($this->db, $operation . 'SupportInfo'), $params);
+
+        if (is_numeric($result)) {
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
+            $error = '';
         }
 
         $response = $this->generateAjaxResponse($data, $error);
