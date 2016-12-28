@@ -36,35 +36,18 @@ $.extend(true, $.fn.dataTable.defaults, {
             $(paginateRow).css("display", "none");
         }
         if (oSettings.fnRecordsDisplay() && oSettings.aoData && oSettings.aoData.length) {
-            var tableHeight = oSettings.oInstance.height();
-            var ddMenuMaxHeight = 0, ddMenuHeight = 0, trParentOffset = 0, ddMenuItem;
+            var curOption = {
+                tableHeight: oSettings.oInstance.height(),
+                ddMenuMaxHeight: 0,
+                ddMenuHeight: 0,
+                trParentOffset: 0
+            };
             $(oSettings.nTable).children("tbody").find('tr').each(function(){
-                ddMenuItem = $(this).find('td:last-of-type').find(".dropdown-menu");
-                if (!ddMenuItem.length) {
-                    console.log("ddMenu not found");
-                    return false;
-                }
-                ddMenuItem.closest('dropup').removeClass('dropup');
-                trParentOffset = $(this).position();
-                trParentOffset = trParentOffset.top;
-                ddMenuHeight = ddMenuItem.height() + 10;
-
-                if (ddMenuHeight > ddMenuMaxHeight){
-                    ddMenuMaxHeight = ddMenuHeight ;
-                }
-
-                if (ddMenuHeight > tableHeight) {
-                    return true;
-                }
-
-                if ((trParentOffset > ddMenuHeight) && (trParentOffset + ddMenuHeight - 30) > tableHeight ) {
-                    ddMenuItem.closest('div').addClass('dropup');
-                }
-
+                return checkMenuItemPosition(this, curOption);
             });
 
-            if (((tableHeight - trParentOffset) - ddMenuMaxHeight) < 30) {
-                $(oSettings.nTableWrapper).css('minHeight', ddMenuMaxHeight + tableHeight + 30);
+            if (((curOption.tableHeight - curOption.trParentOffset) - curOption.ddMenuMaxHeight) < 30) {
+                $(oSettings.nTableWrapper).css('minHeight', curOption.ddMenuMaxHeight + curOption.tableHeight + 30);
             }
         }
         var oSearch = oSettings.oSearch? oSettings.oSearch: oSettings.oPreviousSearch;
@@ -243,7 +226,13 @@ $.fn.dataTableExt.oApi.fnUpdateCurrentRow = function ( oSettings, row, data ){
         newData.rerendered = true;
         oSettings.oInstance.dataTable().fnUpdate(newData, row, null, false, false);
     }
-
+    var curOption = {
+        tableHeight: oSettings.oInstance.height(),
+        ddMenuMaxHeight: 0,
+        ddMenuHeight: 0,
+        trParentOffset: 0
+    };
+    checkMenuItemPosition(row, curOption);
 };
 
 $.fn.dataTableExt.oApi.fnRemoveCurrentRow = function ( oSettings, row ){
@@ -259,7 +248,15 @@ $.fn.dataTableExt.oApi.fnRemoveCurrentRow = function ( oSettings, row ){
             oSettings.oInstance.DataTable().page(oSettings._iDisplayStart >= oSettings._iDisplayLength ? 'previous': 'next').draw(false);
         } else {
             oSettings.oInstance.DataTable().ajax.reload();
+            return;
         }
+        var curOption = {
+            tableHeight: oSettings.oInstance.height(),
+            ddMenuMaxHeight: 0,
+            ddMenuHeight: 0,
+            trParentOffset: 0
+        };
+        checkMenuItemPosition(oSettings.oInstance.DataTable().row( oSettings.oInstance.DataTable().rows().length ), curOption);
     }
 };
 
@@ -425,4 +422,33 @@ function dataTableDataPrepare(data) {
         data[i] = params[i];
     }
     return data;
+}
+
+function checkMenuItemPosition(tRow, curOption){
+
+    var ddMenuItem = $(tRow).find('td:last-of-type').find(".dropdown-menu");
+    if (!ddMenuItem.length) {
+        console.log("ddMenu not found");
+        return false;
+    }
+    ddMenuItem.closest('dropup').removeClass('dropup');
+    var trParentOffset = $(tRow).position();
+    trParentOffset = trParentOffset.top;
+    curOption.ddMenuHeight = ddMenuItem.height() + 10;
+
+    if (curOption.ddMenuHeight > curOption.ddMenuMaxHeight){
+        curOption.ddMenuMaxHeight = curOption.ddMenuHeight ;
+    }
+
+    if (!curOption.tableHeight) {
+        curOption.tableHeight = $(tRow).closest('table').height();
+    }
+
+    if (curOption.ddMenuHeight > curOption.tableHeight) {
+        return true;
+    }
+
+    if ((trParentOffset > curOption.ddMenuHeight) && (trParentOffset + curOption.ddMenuHeight - 30) > curOption.tableHeight ) {
+        ddMenuItem.closest('div').addClass('dropup');
+    }
 }

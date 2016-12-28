@@ -608,8 +608,10 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $epg = (!empty($this->postData['epg_body'])? $this->postData['epg_body']: '');
         $epg = preg_split("/\n/", stripslashes(trim($epg)));
 
+        $date_o = \DateTime::createFromFormat('Y-m-d H:i:s', $date.' 00:00:00');
+
         for ($i=0; $i<count($epg); $i++){
-            $curr_row = $this->get_epg_row($date, $epg, $i);
+            $curr_row = $this->get_epg_row($date_o, $epg, $i);
             $curr_row['ch_id'] = $ch_id;
             $curr_row['real_id'] = $ch_id . '_' . strtotime($curr_row['time']);
             $senddata['inserted'] += $this->db->insertEPGForChannel($curr_row);
@@ -1818,7 +1820,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
 
     }
 
-    private function get_epg_row($date, $epg_lines, $line_num = 0){
+    private function get_epg_row(&$date, $epg_lines, $line_num = 0){
 
         $epg_line = @trim($epg_lines[$line_num]);
 
@@ -1828,7 +1830,9 @@ class TvChannelsController extends \Controller\BaseStalkerController {
 
             $result = array();
 
-            $time = $date.' '.$tmp_line[1].':'.$tmp_line[2].':00';
+            $date->setTime((int)$tmp_line[1], (int) $tmp_line[2], 0);
+
+            $time = $date->format('Y-m-d H:i:s');
 
             $result['time'] = $time;
 
@@ -1844,8 +1848,11 @@ class TvChannelsController extends \Controller\BaseStalkerController {
 
                 $result['duration'] = strtotime($time_to) - strtotime($time);
             }else{
-                $result['time_to'] = 0;
-                $result['duration'] = 0;
+                $next_day = \DateTime::createFromFormat('Y-m-d H:i:s', $date->format('Y-m-d H:i:s'));
+                $next_day->setTime(0, 0, 0);
+                $next_day->modify('+1 day');
+                $result['time_to'] = $next_day->format('Y-m-d H:i:s');
+                $result['duration'] = $next_day->getTimestamp() - $date->getTimestamp();
             }
 
             return $result;
