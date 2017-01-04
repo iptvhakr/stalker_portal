@@ -3573,7 +3573,7 @@ player.prototype.send_last_tv_id = function(id, censored){
         return;
     }
 
-    this.last_tv_id = id;
+    this.last_tv_id = stb.user.last_itv_id = id;
 
     stb.load(
 
