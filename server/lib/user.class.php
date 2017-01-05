@@ -281,6 +281,51 @@ class User implements \Stalker\Lib\StbApi\User
         return $not_ended;
     }
 
+    public function getMovieSeasonsWatchedStatus($seasons_ids){
+
+        $watched_status_raw = Mysql::getInstance()->from('user_played_movies')
+            ->where(array(
+                'uid' => $this->id,
+            ))
+            ->in('season_id', $seasons_ids)
+            ->get()->all();
+
+        if (empty($watched_status_raw)){
+            return array();
+        }
+
+        $watched_status = array();
+
+        foreach ($watched_status_raw as $item){
+            $watched_status[$item['season_id']] = $item;
+        }
+
+        return $watched_status;
+    }
+
+    public function getMovieFilesWatchedStatus($movies_ids){
+
+        $watched_status_raw = Mysql::getInstance()->from('user_played_movies')
+            ->where(array(
+                'uid'        => $this->id,
+                'file_id!='  => 0,
+            ))
+            ->in('video_id', $movies_ids)
+            ->get()->all();
+
+        if (empty($watched_status_raw)){
+            return array();
+        }
+
+        $watched_status = array();
+
+        foreach ($watched_status_raw as $item){
+            $watched_status[$item['file_id']] = $item;
+        }
+
+        return $watched_status;
+    }
+
     public function setNotEndedVideo($video_id, $end_time, $episode = 0){
 
         $not_ended = Mysql::getInstance()->from('vclub_not_ended')
