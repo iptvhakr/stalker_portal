@@ -1339,10 +1339,15 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv {
 
         $epg = new Epg();
 
-        return $epg->getCurProgramAndFiveNext($ch_id);
+        if ($_REQUEST['size']){
+            return $epg->getCurProgramAndFewNext($ch_id, intval($_REQUEST['size']));
+        }else{
+            return $epg->getCurProgramAndFiveNext($ch_id);
+        }
+
     }
 
-    public function getByIds($ids = array()) {
+    public function getByIds($ids = array()){
 
         //Mysql::$debug = true;
 

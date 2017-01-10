@@ -1916,7 +1916,7 @@ function common_xpcom(){
                                     result.push(this.epg[ch_id][i+1+j]);
                                 }
                             }
-                            return result;
+                            break;
                         }else{
                             if (typeof(this.epg[ch_id][i-1]) == 'object'){
                                 result.push(this.epg[ch_id][i-1]);
@@ -1930,14 +1930,22 @@ function common_xpcom(){
                                 result.push(this.epg[ch_id][i]);
                             }
 
-                            return result;
+                            break;
                         }
                     }
                 }
             }catch(e){
                 _debug(e);
             }
-            return [];
+
+            if (length > 2 && module.epg_reminder && Array.isArray(module.epg_reminder.memos)){
+                for (i=0; i<result.length; i++){
+                    result[i]['mark_memo'] = module.epg_reminder.memos.getIdxByVal('tv_program_id', result[i]['id']) != null ? 1 : 0
+                }
+
+            }
+
+            return result;
         },
 
         get_epg : function(ch_id){
