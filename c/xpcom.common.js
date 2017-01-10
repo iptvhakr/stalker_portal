@@ -1865,8 +1865,6 @@ function common_xpcom(){
             _debug('epg_loader.set_epg', data);
             this.epg = data || [];
             _debug('typeof(this.epg)', typeof(this.epg));
-
-            //todo: set timeouts for all channels to pull epg when it less or equal 5 items
         },
 
         get_curr_and_next : function(ch_id, from_ts, length){
@@ -1928,7 +1926,6 @@ function common_xpcom(){
             }
 
             if (length > 2 && module.epg_reminder && Array.isArray(module.epg_reminder.memos)){
-
                 for (i=0; i<result.length; i++){
                     result[i]['mark_memo'] = module.epg_reminder.memos.getIdxByVal('tv_program_id', result[i]['id']) != null ? 1 : 0
                 }

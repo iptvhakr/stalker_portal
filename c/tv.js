@@ -1528,25 +1528,45 @@
                         this.fill(stb.epg_loader.get_curr_and_next(this.parent.data_items[this.parent.cur_row].id, false, 5));
                     }else{
 
-                        // todo: what if epg less then 5 items?
+                        var epg = stb.epg_loader.get_curr_and_next(this.parent.data_items[this.parent.cur_row].id, null, 5);
 
-                        this.fill(stb.epg_loader.get_curr_and_next(this.parent.data_items[this.parent.cur_row].id, null, 5));
+                        _debug('epg', epg);
 
-                        /*stb.load(
-                            {
-                                "type"   : "itv",
-                                "action" : "get_short_epg",
-                                "ch_id"  : this.parent.data_items[this.parent.cur_row].id
-                            },
+                        var ch_id = this.parent.data_items[this.parent.cur_row].id;
 
-                            function(result){
-                                _debug('tv.short_epg_loader.load callback');
+                        _debug('ch_id', ch_id);
 
-                                this.fill(result);
-                            },
+                        if (Array.isArray(epg) && epg.length < 5){
 
-                            this
-                        )*/
+                            stb.load(
+                                {
+                                    "type"   : "itv",
+                                    "action" : "get_short_epg",
+                                    "ch_id"  : ch_id,
+                                    "size"   : 10
+                                },
+
+                                function(result){
+                                    _debug('tv.short_epg_loader.load callback');
+
+                                    if (result && Array.isArray(result)){
+
+                                        stb.epg_loader.epg[ch_id] = epg = result;
+
+                                        epg.splice(5);
+                                    }else{
+                                        epg = [];
+                                    }
+
+                                    this.fill(epg);
+
+                                },
+
+                                this
+                            )
+                        }else{
+                            this.fill(epg);
+                        }
                     }
                 }
             },
