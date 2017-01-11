@@ -2,6 +2,8 @@
 
 namespace Model;
 
+use Stalker\Lib\Core\Mysql;
+
 class NewVideoClubModel extends \Model\BaseStalkerModel {
 
     public function __construct() {
@@ -532,10 +534,74 @@ class NewVideoClubModel extends \Model\BaseStalkerModel {
     }
 
     public function insertSeriesFiles($data){
-        return $this->mysqlInstance->insert('video_series_files', $data)->insert_id();
+
+        $file_id = $this->mysqlInstance->insert('video_series_files', $data)->insert_id();
+
+        if (isset($data['accessed']) && $data['accessed'] == 1 && $file_id){
+
+            $file = Mysql::getInstance()->from('video_series_files')->where(array('id' => $file_id))->get()->first();
+
+            if ($file){
+                if ($file['series_id']){
+                    //delete watched flags for season
+                    $season_id = Mysql::getInstance()->from('video_season_series')->where(array('id' => $file['series_id']))->get()->first('id');
+
+                    if ($season_id){
+                        Mysql::getInstance()->delete('user_played_movies', array(
+                            'video_id'   => $file['video_id'],
+                            'season_id'  => $season_id,
+                            'episode_id' => 0,
+                            'file_id'    => 0,
+                            'watched'    => 1
+                        ));
+                    }
+                }
+
+                //delete watched flags for movie
+                Mysql::getInstance()->delete('user_played_movies', array(
+                    'video_id'   => $file['video_id'],
+                    'season_id'  => 0,
+                    'episode_id' => 0,
+                    'file_id'    => 0,
+                    'watched'    => 1
+                ));
+            }
+        }
+
+        return $file_id;
     }
 
     public function updateSeriesFiles($data, $where){
+        if (isset($data['accessed']) && $data['accessed'] == 1 && isset($where['id'])){
+
+            $file = Mysql::getInstance()->from('video_series_files')->where(array('id' => $where['id']))->get()->first();
+
+            if ($file){
+                if ($file['series_id']){
+                    //delete watched flags for season
+                    $season_id = Mysql::getInstance()->from('video_season_series')->where(array('id' => $file['series_id']))->get()->first('id');
+
+                    if ($season_id){
+                        Mysql::getInstance()->delete('user_played_movies', array(
+                            'video_id'   => $file['video_id'],
+                            'season_id'  => $season_id,
+                            'episode_id' => 0,
+                            'file_id'    => 0,
+                            'watched'    => 1
+                        ));
+                    }
+                }
+
+                //delete watched flags for movie
+                Mysql::getInstance()->delete('user_played_movies', array(
+                    'video_id'   => $file['video_id'],
+                    'season_id'  => 0,
+                    'episode_id' => 0,
+                    'file_id'    => 0,
+                    'watched'    => 1
+                ));
+            }
+        }
         return $this->mysqlInstance->update('video_series_files', $data, $where)->total_rows();
     }
 
