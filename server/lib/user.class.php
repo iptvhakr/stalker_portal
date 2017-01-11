@@ -235,13 +235,12 @@ class User implements \Stalker\Lib\StbApi\User
 
         $not_ended_raw = Mysql::getInstance()->from('user_played_movies')
             ->where(array(
-                'uid'        => $this->id,
-                'season_id'  => 0,
-                'episode_id' => 0,
-                'file_id'    => 0,
-                'watched'    => 0
+                'uid'            => $this->id,
+                'file_id!='      => 0,
+                'watched'        => 0,
+                'watched_time!=' => 0
 
-            ))->get()->all();
+            ))->groupby('video_id')->get()->all();
 
         if (empty($not_ended_raw)){
             return array();
