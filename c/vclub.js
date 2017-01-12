@@ -1232,8 +1232,8 @@
                                                     'cmd': ad.cmd,
                                                     'media_type': 'advert',
                                                     'is_advert': true,
-                                                    'ad_tracking': ad.ad_tracking,
-                                                    'ad_must_watch': ad.ad_must_watch,
+                                                    'ad_tracking': ad.ad_tracking || {},
+                                                    'ad_must_watch': ad.ad_must_watch || 0,
                                                     'stop_callback': cb
                                                 });
 
@@ -1256,8 +1256,8 @@
                                     'cmd': adverts[0].cmd,
                                     'media_type': 'advert',
                                     'is_advert': true,
-                                    'ad_tracking': adverts[0].ad_tracking,
-                                    'ad_must_watch' : adverts[0].ad_must_watch,
+                                    'ad_tracking': adverts[0].ad_tracking || {},
+                                    'ad_must_watch' : adverts[0].ad_must_watch || 0,
                                     'stop_callback': callback
 
                                 });

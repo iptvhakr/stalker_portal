@@ -185,7 +185,9 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
 
                 if (!empty($picked_ad)){
 
-                    $link['cmd'] = $_REQUEST['cmd'];
+                    if (isset($file) && $file['protocol'] != 'custom'){
+                        $link['cmd'] = $_REQUEST['cmd'];
+                    }
 
                         $link = array(
                             array(
