@@ -1638,7 +1638,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv {
         $disable_channel_filter_for_macs = Config::getSafe('disable_channel_filter_for_macs', array());
 
         $mac = Stb::getInstance()->mac;
-var_dump($user_agent);
+
         $user_channel_links = array_filter($channel_links, function ($link) use ($user_agent, $disable_channel_filter_for_macs, $mac) {
             return in_array($mac, $disable_channel_filter_for_macs) || $link['user_agent_filter'] != '' && preg_match("/" . $link['user_agent_filter'] . "/", $user_agent);
         });
