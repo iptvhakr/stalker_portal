@@ -133,6 +133,18 @@ class User implements \Stalker\Lib\StbApi\User
         return $this->profile['serial_number'] = $serial_number;
     }
 
+    public function setClientType($client_type){
+
+        if ($this->profile['client_type'] != $client_type){
+            Mysql::getInstance()->update('users',
+                array(
+                    'client_type' => $client_type
+                ),
+                array('id' => $this->id)
+            );
+        }
+    }
+
     public function resetAccessToken($token = ''){
 
         return Mysql::getInstance()->update('users',
