@@ -191,13 +191,13 @@ class Video
                     $list[$i]['genres_ids'][] = (int) $list[$i]['cat_genre_id_'.$j];
             }
 
-            $list[$i]['cover'] = $this->getCoverUrl($list[$i]['id']);
+            $list[$i]['cover'] = self::getCoverUrl($list[$i]['id']);
         }
 
         return $list;
     }
 
-    private function getCoverUrl($video_id){
+    public static function getCoverUrl($video_id){
 
         $cover = Mysql::getInstance()->from('screenshots')->where(array('media_id' => intval($video_id)))->get()->first();
 

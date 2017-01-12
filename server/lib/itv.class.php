@@ -412,7 +412,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv {
 
     public function getLastId() {
 
-        $last_id_arr = $this->db->from('last_id')->where(array('ident' => $this->stb->mac))->get()->first();
+        $last_id_arr = $this->db->from('last_id')->where(array('uid' => $this->stb->id))->get()->first();
 
         if (!empty($last_id_arr) && key_exists('last_id', $last_id_arr)) {
             return $last_id_arr['last_id'];
@@ -427,10 +427,10 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv {
             $id = intval($_REQUEST['id']);
         }
 
-        $last_id_arr = $this->db->from('last_id')->where(array('ident' => $this->stb->mac))->get()->first();
+        $last_id_arr = $this->db->from('last_id')->where(array('uid' => $this->stb->id))->get()->first();
 
         if (!empty($last_id_arr) && key_exists('last_id', $last_id_arr)) {
-            $this->db->update('last_id', array('last_id' => $id), array('ident' => $this->stb->mac));
+            $this->db->update('last_id', array('last_id' => $id), array('id' => $last_id_arr['id']));
         } else {
             $this->db->insert('last_id', array(
                 'last_id' => $id,
