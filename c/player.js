@@ -1097,7 +1097,7 @@ player.prototype.event_callback = function(event, params){
                     }
                 }else{
 
-                    if (this.cur_media_item.media_type != 'vclub_ad' && this.play_continuously && this.cur_media_item.hasOwnProperty('series') && this.cur_media_item.series && this.cur_media_item.series.length > 0){
+                    if (this.cur_media_item.media_type != 'vclub_ad' && this.cur_media_item.media_type != 'advert' && this.play_continuously && this.cur_media_item.hasOwnProperty('series') && this.cur_media_item.series && this.cur_media_item.series.length > 0){
 
                         _debug('this.cur_media_item.cur_series before', this.cur_media_item.cur_series);
                         _debug('this.cur_media_item.series.length', this.cur_media_item.series.length);
@@ -1597,7 +1597,7 @@ player.prototype.event_callback = function(event, params){
 
             }else{
 
-                if (this.cur_media_item.media_type != 'vclub_ad' && this.play_continuously && this.cur_media_item.hasOwnProperty('series') && this.cur_media_item.series && this.cur_media_item.series.length > 0){
+                if (this.cur_media_item.media_type != 'advert' && this.play_continuously && this.cur_media_item.hasOwnProperty('series') && this.cur_media_item.series && this.cur_media_item.series.length > 0){
 
                     var series_idx = this.cur_media_item.series.lastIndexOf(this.cur_media_item.cur_series);
 
@@ -1689,7 +1689,7 @@ player.prototype.event_callback = function(event, params){
                                 this.need_show_info = 1;
                             }
 
-                            if (this.cur_media_item.media_type && this.cur_media_item.media_type == 'vclub_ad'){
+                            if (this.cur_media_item.media_type && this.cur_media_item.media_type == 'advert'){
                                 delete cur_media_item.media_type;
                                 module && module.vclub && module.vclub.set_ad_ended_time && module.vclub.set_ad_ended_time(this.cur_media_item.ad_id, stb.GetPosTime(), stb.GetMediaLen(), true);
                             }
@@ -4236,7 +4236,7 @@ player.prototype.bind = function(){
             }, 4000);
         }
 
-        if (this.cur_media_item.media_type == 'advert'){
+        if (this.cur_media_item.media_type == 'advert' || this.cur_media_item.media_type == 'vclub_ad'){
 
             this.ad_indication.hide();
             this.ad_skip_indication.hide();

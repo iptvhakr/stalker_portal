@@ -1191,6 +1191,7 @@
                                     _debug('cur_media_item', cur_media_item);
 
                                     stb.player.cur_media_item = cur_media_item.clone();
+                                    stb.player.cur_media_item.disable_ad = true;
 
                                     if (movie.hasOwnProperty('subtitles')){
                                         stb.player.cur_media_item.subtitles = movie.subtitles.map(function(item, idx){
@@ -1200,7 +1201,7 @@
                                         });
                                     }
 
-                                    stb.player.play_now(movie);
+                                    stb.player.play(stb.player.cur_media_item);
                                 };
 
                                 var adverts = result;
@@ -1230,7 +1231,7 @@
                                                     'id': ad.id,
                                                     'ad_id' : ad.id,
                                                     'cmd': ad.cmd,
-                                                    'media_type': 'advert',
+                                                    'media_type': ad.media_type || '',
                                                     'is_advert': true,
                                                     'ad_tracking': ad.ad_tracking || {},
                                                     'ad_must_watch': ad.ad_must_watch || 0,
@@ -1254,7 +1255,7 @@
                                     'id': adverts[0].id,
                                     'ad_id': adverts[0].id,
                                     'cmd': adverts[0].cmd,
-                                    'media_type': 'advert',
+                                    'media_type': adverts[0].media_type || '',
                                     'is_advert': true,
                                     'ad_tracking': adverts[0].ad_tracking || {},
                                     'ad_must_watch' : adverts[0].ad_must_watch || 0,
