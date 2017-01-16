@@ -28,6 +28,10 @@ class Radio extends AjaxResponse implements \Stalker\Lib\StbApi\Radio
     public function __construct(){
         parent::__construct();
     }
+
+    public static function getById($id){
+        return Mysql::getInstance()->from('radio')->where(array('status' => 1, 'id' => $id))->get()->first();
+    }
     
     private function getData(){
         

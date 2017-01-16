@@ -133,6 +133,18 @@ class User implements \Stalker\Lib\StbApi\User
         return $this->profile['serial_number'] = $serial_number;
     }
 
+    public function setClientType($client_type){
+
+        if ($this->profile['client_type'] != $client_type){
+            Mysql::getInstance()->update('users',
+                array(
+                    'client_type' => $client_type
+                ),
+                array('id' => $this->id)
+            );
+        }
+    }
+
     public function resetAccessToken($token = ''){
 
         return Mysql::getInstance()->update('users',
@@ -233,7 +245,14 @@ class User implements \Stalker\Lib\StbApi\User
 
     public function getNotEndedVideo(){
 
-        $not_ended_raw = Mysql::getInstance()->from('vclub_not_ended')->where(array('uid' => $this->id))->get()->all();
+        $not_ended_raw = Mysql::getInstance()->from('user_played_movies')
+            ->where(array(
+                'uid'            => $this->id,
+                'file_id!='      => 0,
+                'watched'        => 0,
+                'watched_time!=' => 0
+
+            ))->groupby('video_id')->get()->all();
 
         if (empty($not_ended_raw)){
             return array();
@@ -246,6 +265,76 @@ class User implements \Stalker\Lib\StbApi\User
         }
 
         return $not_ended;
+    }
+
+    public function getWatchedVideo(){
+
+        $not_ended_raw = Mysql::getInstance()->from('user_played_movies')
+            ->where(array(
+                'uid'        => $this->id,
+                'season_id'  => 0,
+                'episode_id' => 0,
+                'file_id'    => 0,
+                'watched'    => 1
+            
+            ))->get()->all();
+
+        if (empty($not_ended_raw)){
+            return array();
+        }
+
+        $not_ended = array();
+
+        foreach ($not_ended_raw as $item){
+            $not_ended[$item['video_id']] = $item;
+        }
+
+        return $not_ended;
+    }
+
+    public function getMovieSeasonsWatchedStatus($seasons_ids){
+
+        $watched_status_raw = Mysql::getInstance()->from('user_played_movies')
+            ->where(array(
+                'uid' => $this->id,
+            ))
+            ->in('season_id', $seasons_ids)
+            ->get()->all();
+
+        if (empty($watched_status_raw)){
+            return array();
+        }
+
+        $watched_status = array();
+
+        foreach ($watched_status_raw as $item){
+            $watched_status[$item['season_id']] = $item;
+        }
+
+        return $watched_status;
+    }
+
+    public function getMovieFilesWatchedStatus($movies_ids){
+
+        $watched_status_raw = Mysql::getInstance()->from('user_played_movies')
+            ->where(array(
+                'uid'        => $this->id,
+                'file_id!='  => 0,
+            ))
+            ->in('video_id', $movies_ids)
+            ->get()->all();
+
+        if (empty($watched_status_raw)){
+            return array();
+        }
+
+        $watched_status = array();
+
+        foreach ($watched_status_raw as $item){
+            $watched_status[$item['file_id']] = $item;
+        }
+
+        return $watched_status;
     }
 
     public function setNotEndedVideo($video_id, $end_time, $episode = 0){

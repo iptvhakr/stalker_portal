@@ -520,7 +520,7 @@ class Epg implements \Stalker\Lib\StbApi\Epg
 
         $epg = $this->db->from('epg')
             /// Mysql time format, see https://dev.mysql.com/doc/refman/5.5/en/date-and-time-functions.html#function_date-format
-            ->select('epg.*, UNIX_TIMESTAMP(epg.time) as start_timestamp, UNIX_TIMESTAMP(epg.time_to) as stop_timestamp, TIME_FORMAT(epg.time,"'._('%H:%i').'") as t_time, TIME_FORMAT(epg.time_to,"%H:%i") as t_time_to')
+            ->select('epg.*, UNIX_TIMESTAMP(epg.time) as start_timestamp, UNIX_TIMESTAMP(epg.time_to) as stop_timestamp, TIME_FORMAT(epg.time,"'._('%H:%i').'") as t_time, TIME_FORMAT(epg.time_to,"'._('%H:%i').'") as t_time_to')
             ->where(
                 array(
                     'epg.ch_id' => $ch_id,

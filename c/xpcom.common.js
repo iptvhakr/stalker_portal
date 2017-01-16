@@ -1222,7 +1222,9 @@ function common_xpcom(){
 
                 this.player.set_subtitle_langs(
                     this.user['pri_subtitle_lang'],
-                    this.user['sec_subtitle_lang']
+                    this.user['sec_subtitle_lang'],
+                    this.user['subtitle_size'],
+                    this.user['subtitle_color']
                 );
 
                 this.stb_lang = this.user.stb_lang;
@@ -1648,16 +1650,27 @@ function common_xpcom(){
 
                 this.player.channels = result.data || [];
 
+                _debug('this.player.is_tv', this.player.is_tv);
+
+                _debug('this.player.cur_media_item', this.player.cur_media_item);
+                _debug('this.player.cur_tv_item', this.player.cur_tv_item);
+
                 if (this.player.is_tv){
 
                     var ch_idx = this.player.channels.getIdxByVal('id', this.player.cur_media_item.id);
 
+                    _debug('ch_idx', ch_idx);
+
                     if (ch_idx !== null){
                         this.player.cur_media_item = this.player.cur_tv_item = this.player.channels[ch_idx];
+
+                        _debug('this.player.cur_tv_item', this.player.cur_tv_item);
 
                         if (this.player.cur_tv_item.lock != '1'){
                             this.player.last_not_locked_tv_item = this.player.cur_tv_item;
                         }
+
+                        _debug('this.player.on', this.player.on);
 
                         if (this.player.on){
                             this.player.play(this.player.cur_tv_item);
@@ -1903,7 +1916,7 @@ function common_xpcom(){
                                     result.push(this.epg[ch_id][i+1+j]);
                                 }
                             }
-                            return result;
+                            break;
                         }else{
                             if (typeof(this.epg[ch_id][i-1]) == 'object'){
                                 result.push(this.epg[ch_id][i-1]);
@@ -1917,14 +1930,22 @@ function common_xpcom(){
                                 result.push(this.epg[ch_id][i]);
                             }
 
-                            return result;
+                            break;
                         }
                     }
                 }
             }catch(e){
                 _debug(e);
             }
-            return [];
+
+            if (length > 2 && module.epg_reminder && Array.isArray(module.epg_reminder.memos)){
+                for (i=0; i<result.length; i++){
+                    result[i]['mark_memo'] = module.epg_reminder.memos.getIdxByVal('tv_program_id', result[i]['id']) != null ? 1 : 0
+                }
+
+            }
+
+            return result;
         },
 
         get_epg : function(ch_id){

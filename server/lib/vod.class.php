@@ -185,7 +185,9 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
 
                 if (!empty($picked_ad)){
 
-                    $link['cmd'] = $_REQUEST['cmd'];
+                    if (isset($file) && $file['protocol'] != 'custom'){
+                        $link['cmd'] = $_REQUEST['cmd'];
+                    }
 
                         $link = array(
                             array(
@@ -532,29 +534,30 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
 
         }
 
-        $played_video = $this->db->from('stb_played_video')
-            ->where(array(
-            'uid' => $this->stb->id,
-            'video_id' => $video_id
-        ))
-            ->get()
-            ->all();
+        $played_video = $this->db->from('user_played_movies')->where(array(
+                'uid'      => $this->stb->id,
+                'video_id' => $video_id
+            ))->get()->all();
 
         if (empty($played_video)) {
 
-            $this->db->insert('stb_played_video',
+            $this->db->insert('user_played_movies',
                 array(
-                    'uid' => $this->stb->id,
+                    'uid'      => $this->stb->id,
                     'video_id' => $video_id,
+                    'ended'    => 1,
                     'playtime' => 'NOW()'
                 ));
 
         } else {
 
-            $this->db->update('stb_played_video',
-                array('playtime' => 'NOW()'),
+            $this->db->update('user_played_movies',
                 array(
-                    'uid' => $this->stb->id,
+                    'playtime' => 'NOW()',
+                    'ended'    => 1
+                ),
+                array(
+                    'uid'      => $this->stb->id,
                     'video_id' => $video_id
                 ));
 

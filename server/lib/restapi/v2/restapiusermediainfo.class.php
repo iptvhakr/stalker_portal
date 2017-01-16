@@ -4,6 +4,7 @@ namespace Stalker\Lib\RESTAPI\v2;
 
 use Stalker\Lib\Core\Mysql;
 use Stalker\Lib\Core\Cache;
+use Stalker\Lib\Core\Config;
 
 class RESTApiUserMediaInfo extends RESTApiController
 {
@@ -90,13 +91,16 @@ class RESTApiUserMediaInfo extends RESTApiController
             $now_playing_content = $media[$this->types_map[$type]['title_field']];
         }
 
-        Mysql::getInstance()->insert('user_log', array(
-            'uid'    => $parent_id,
-            'action' => 'play',
-            'param'  => $now_playing_content,
-            'time'   => 'NOW()',
-            'type'   => $this->types_map[$type]['code']
-        ));
+        if (!Config::getSafe('disable_user_log', false)) {
+
+            Mysql::getInstance()->insert('user_log', array(
+                'uid'    => $parent_id,
+                'action' => 'play',
+                'param'  => $now_playing_content,
+                'time'   => 'NOW()',
+                'type'   => $this->types_map[$type]['code']
+            ));
+        }
 
         return Mysql::getInstance()->update('users',
             array(
@@ -116,11 +120,13 @@ class RESTApiUserMediaInfo extends RESTApiController
 
         $user = Mysql::getInstance()->from('users')->where(array('id' => $parent_id))->get()->first();
 
-        Mysql::getInstance()->insert('user_log', array(
-            'uid'    => $parent_id,
-            'action' => 'stop',
-            'time'   => 'NOW()'
-        ));
+        if (!Config::getSafe('disable_user_log', false)) {
+            Mysql::getInstance()->insert('user_log', array(
+                'uid'    => $parent_id,
+                'action' => 'stop',
+                'time'   => 'NOW()'
+            ));
+        }
 
         if (!empty($user['now_playing_link_id'])){
             switch ($user['now_playing_type']){
