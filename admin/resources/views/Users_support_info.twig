@@ -1,0 +1,94 @@
+{% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
+{% set title = ('Users'|trans ~ ': ' ~ 'Support info'|trans) | trans %}
+
+{% block content %}
+    <div id="add_channel">
+        <form id="support_info_form" class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/save-support-info">
+            <div class="row row_no_padding">
+                <div class="box">
+                    <div class="box-content">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label ">{{ 'Language'|trans }}</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-10">
+                                        <select id="form_lang" name="form[lang]" class="form-control">
+                                        {% for key, val in app['support_langs'] %}
+                                            <option value="{{ val }}" {% if val == app["language"] %}selected="selected"{% endif %}>{{ key }}</option>
+                                        {% endfor %}
+                                        </select>
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">{{ 'Choose language for support info'|trans }}</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label ">{{ 'Support info'|trans }}</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-10">
+                                        <textarea id="form_content" name="form[content]" class="form-control" rows="10">{{ app['def_lang_info']['content'] }}</textarea>
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">{{ 'Allowed to use html-tags'|trans }}</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label ">&nbsp;</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class="col-xs-10 col-sm-10">
+                                        <button type="submit" id="form_save" name="form[save]" class="btn btn-success green pull-right">{{ 'Save'|trans }}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script type="text/javascript" defer>
+
+        var select2Opt = {minimumResultsForSearch: -1, dropdownAutoWidth: false, width: '100%'};
+
+        function DemoSelect2() {
+            $("#form_lang").select2(select2Opt);
+        }
+
+        function yelp() {
+            $(document).ready(function () {
+
+                LoadSelect2Script(DemoSelect2);
+
+                $(document).on('submit', '#support_info_form', function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+
+                    var  sendData = {
+                        lang: $('#form_lang').val(),
+                        content: $.trim($('#form_content').val())
+                    };
+
+                    ajaxPostSend("{{ app.request.baseUrl }}/{{ app.controller_alias }}/save-support-content", sendData, false, false);
+                });
+
+                $(document).on('change', '#form_lang', function(e){
+
+                    ajaxPostSend("{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-support-content", {'lang' : $(this).val()}, false, false);
+
+                });
+
+
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", yelp, false);
+
+        var setSupportContent = function(data){
+            $("#form_content").val((data && data.data && data.data.content) ? data.data.content: '');
+        }
+    </script>
+
+{% endblock %}

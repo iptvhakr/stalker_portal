@@ -468,6 +468,9 @@ _('Logs of activity STB');
 _('Logs of activity STB by page + filters');
 _('Report on changing of state STB');
 _('Report on changing of state STB by page + filters');
+_('Form adding support info');
+_('Obtaining support info for the specified language');
+_('Saving support info for the specified language');
 
 _('List of movies');
 _('List of movies by page + filters');

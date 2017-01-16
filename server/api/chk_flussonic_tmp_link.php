@@ -14,7 +14,7 @@ if (!$uid){
 }else{
     header("X-AuthDuration: 36000");
     header("X-Unique: true");
-    header("X-Max-Sessions: 1");
+    header("X-Max-Sessions: ".\Stalker\Lib\Core\Config::getSafe('max_local_recordings', 10));
     header("X-UserId: ".$uid);
     header($_SERVER["SERVER_PROTOCOL"]." 200 OK");
 }

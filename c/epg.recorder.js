@@ -153,9 +153,9 @@
                         return;
                     }
 
-                    if (result){
+                    if (result.data){
                         this.show_mark(program_id);
-                        epg_item.rec_id = result;
+                        epg_item.rec_id = result.data;
                     }else{
                         stb.notice.show(word['recorder_server_error']);
                     }

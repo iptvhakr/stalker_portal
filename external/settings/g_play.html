@@ -322,11 +322,38 @@
             }
         ];
 
+        var sizeList = [
+            18, parent.t('Small'),
+            20, parent.t('Normal'),
+            23, parent.t('Large'),
+            26, parent.t('Huge')
+        ];
+
+        var colorList = [
+            0xFFFFFF, parent.t('White'),
+            0x000000, parent.t('Black'),
+            0xFF0000, parent.t('Red'),
+            0x0000FF, parent.t('Blue'),
+            0x00FF00, parent.t('Green'),
+            0xFFFF00, parent.t('Yellow'),
+            0x00FFFF, parent.t('Cyan'),
+            0xFF00FF, parent.t('Magenta'),
+            0xC0C0C0, parent.t('Silver'),
+            0x808080, parent.t('Gray'),
+            0x800000, parent.t('Maroon'),
+            0x808000, parent.t('Olive'),
+            0x800080, parent.t('Purple'),
+            0x008080, parent.t('Teal'),
+            0x000080, parent.t('Navy')
+        ];
+
         var menuT = [
             ['select', parent.t('Primary audio language:')],
             ['select', parent.t('Secondary audio language:')],
             ['select', parent.t('Primary subtitle language:')],
-            ['select', parent.t('Secondary subtitle language:')]
+            ['select', parent.t('Secondary subtitle language:')],
+            ['select', parent.t('Subtitle size:')],
+            ['select', parent.t('Subtitle color:')]
         ];
 
         var options = [];
@@ -344,13 +371,18 @@
         menuT[2] = menuT[2].concat(options);
         menuT[3] = menuT[3].concat(options);
 
+        menuT[4] = menuT[4].concat(sizeList);
+        menuT[5] = menuT[5].concat(colorList);
+
         var mid = menuT.length + 2;
-        var pread = [0,1,2,3];
+        var pread = [0,1,2,3,4,5];
         var read = {result:[
             parent.prof.pri_audio_lang    || parent._GET['pri_audio_lang'],
             parent.prof.sec_audio_lang    || parent._GET['sec_audio_lang'],
             parent.prof.pri_subtitle_lang || parent._GET['pri_subtitle_lang'],
-            parent.prof.sec_subtitle_lang || parent._GET['sec_subtitle_lang']
+            parent.prof.sec_subtitle_lang || parent._GET['sec_subtitle_lang'],
+            parent.prof.subtitle_size     || parent._GET['subtitle_size']      || 20,
+            parent.prof.subtitle_color    || parent._GET['subtitle_color']     || 0xFFFFFF
         ]};
 
         function onLoad() {
@@ -358,8 +390,8 @@
             init();
             parent.cont.focus();
             document.getElementById("i1").focus();
-            document.getElementById("i5").value = parent.t('OK');
-            document.getElementById("i6").value = parent.t('Cancel');
+            document.getElementById("i7").value = parent.t('OK');
+            document.getElementById("i8").value = parent.t('Cancel');
         }
 
         function submit() {
@@ -368,13 +400,17 @@
                 pri_audio_lang    : document.getElementById("i1").value,
                 sec_audio_lang    : document.getElementById("i2").value,
                 pri_subtitle_lang : document.getElementById("i3").value,
-                sec_subtitle_lang : document.getElementById("i4").value
+                sec_subtitle_lang : document.getElementById("i4").value,
+                subtitle_size     : document.getElementById("i5").value,
+                subtitle_color    : document.getElementById("i6").value
             };
 
             parent._GET['pri_audio_lang']    = parent.prof.pri_audio_lang    = save_data['pri_audio_lang'];
             parent._GET['sec_audio_lang']    = parent.prof.sec_audio_lang    = save_data['sec_audio_lang'];
             parent._GET['pri_subtitle_lang'] = parent.prof.pri_subtitle_lang = save_data['pri_subtitle_lang'];
             parent._GET['sec_subtitle_lang'] = parent.prof.sec_subtitle_lang = save_data['sec_subtitle_lang'];
+            parent._GET['subtitle_size']     = parent.prof.subtitle_size     = save_data['subtitle_size'];
+            parent._GET['subtitle_color']    = parent.prof.subtitle_color    = save_data['subtitle_color'];
 
             save_data.type   = "stb";
             save_data.action = "set_lang_priority";
@@ -409,7 +445,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <body onload="onLoad()" onkeydown="pressKey(event);">
 <div id="blueback">
-    <table class="nsp" width="100%" border="0" cellpadding="0" cellspacing="0">
+    <table class="nsp2" width="100%" border="0" cellpadding="0" cellspacing="0">
         <tr>
             <td align="right"><span id="t1"></span>
             <td>
@@ -434,12 +470,24 @@
                 <div class="sub_select"><select id="i4"></select></div>
             </td>
         </tr>
+        <tr>
+            <td align="right"><span id="t5"></span>
+            <td>
+                <div class="sub_select"><select id="i5"></select></div>
+            </td>
+        </tr>
+        <tr>
+            <td align="right"><span id="t6"></span>
+            <td>
+                <div class="sub_select"><select id="i6"></select></div>
+            </td>
+        </tr>
     </table>
 
 </div>
 <div id="footer">
-    <input id="i6" type="button" value="" onClick="back();"/>
-    <input id="i5" type="button" value="" onClick="submit();"/>
+    <input id="i8" type="button" value="" onClick="back();"/>
+    <input id="i7" type="button" value="" onClick="submit();"/>
 </div>
 </body>
 </html>

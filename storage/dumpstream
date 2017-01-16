@@ -91,6 +91,7 @@ def main():
                     f.close()
                 if args.callback_url:
                     async_open_url(args.callback_url, {'action': 'ended'})
+                    time.sleep(5)
                 sys.exit()
 
             if not f:

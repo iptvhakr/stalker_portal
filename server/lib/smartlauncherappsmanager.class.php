@@ -579,6 +579,10 @@ class SmartLauncherAppsManager
                     .($app['type'] == 'plugin' ? 'plugins/' : '')
                     .$dep_app['alias']);
 
+                if (!$dep_app_path){
+                    throw new SmartLauncherAppsManagerException('Unable to find app path '.$dep_app['alias'].' path');
+                }
+
                 $files = array_diff(scandir($dep_app_path), array('.','..'));
 
                 $max_version = null;

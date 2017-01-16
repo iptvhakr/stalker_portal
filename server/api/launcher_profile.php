@@ -105,15 +105,19 @@ if (!empty($themes)){
     if ($user_theme != 'smart_launcher' && $theme_alias){
         foreach ($themes as $theme){
             if ($theme['alias'] == $theme_alias){
-                $config['themes'][$theme['alias']] = '../../../'.$theme['alias'].'/'.$theme['current_version'].'/';
+                $config['themes'][$theme['alias']] = $theme['current_version'];
             }
         }
     }
 
     if (empty($config['themes'])){
         $theme = reset($themes);
-        $config['themes'][$theme['alias']] = '../../../'.$theme['alias'].'/'.$theme['current_version'].'/';
+        $config['themes'][$theme['alias']] = $theme['current_version'];
     }
+}
+
+foreach ($themes as $theme){
+    $config['themes'][$theme['alias']] = $theme['current_version'];
 }
 
 $user_apps = array();
