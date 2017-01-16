@@ -178,6 +178,11 @@
                 "name": _("Report"),
                 "alias": "users-consoles-report",
                 "icon": ""
+            },
+            "5": {
+                "name": _("Support info"),
+                "alias": "support-info",
+                "icon": ""
             }
         }
     },
