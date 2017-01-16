@@ -53,6 +53,7 @@ class BaseStalkerController {
             $this->app['request']->getSession()->save();
         }
         $this->app['request']->getSession()->start();
+        \Admin::checkLanguage($app['language']);
         $this->admin = \Admin::getInstance();
 
         $this->app['userlogin'] = $this->admin->getLogin();

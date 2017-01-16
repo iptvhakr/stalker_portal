@@ -56,6 +56,10 @@ class Admin
         return $this->profile['opinion_form_flag'];
     }
 
+    public function getAdminLanguage(){
+        return $this->profile['language'];
+    }
+
     public static function checkAuthorization($login, $pass) {
 
         $admin = Mysql::getInstance()
@@ -93,6 +97,13 @@ class Admin
         if (!$admin->isAuthorized()){
             header("Location: login.php");
             exit();
+        }
+    }
+
+    public static function checkLanguage($language){
+        if ($language && self::getInstance()->getAdminLanguage() !== $language) {
+            Mysql::getInstance()->update('administrators', array('language' => $language), array('id' => self::getInstance()->getId()));
+            self::getInstance()->profile['language'] = $language;
         }
     }
 
