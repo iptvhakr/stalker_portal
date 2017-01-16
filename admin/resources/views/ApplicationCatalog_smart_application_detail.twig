@@ -221,7 +221,7 @@
 
         function yelp() {
             $(document).ready(function () {
-                {% if attribute(app, 'app_info') is defined and not(app.app_info.info.type == 'app')%}
+                {% if attribute(app, 'app_info') is defined and app.app_info.info|length > 0 and not(app.app_info.info.type == 'app')%}
                 $("#iptv_list").on('click', '#app_status, a.main_ajax[href$="smart-application-toggle-state"]', function(e){
                     e.stopPropagation();
                     e.stopImmediatePropagation();
@@ -459,7 +459,7 @@
             var sendData = $(obj).data();
             if ($(obj).get(0).tagName.toLocaleLowerCase() == 'input') {
                 sendData['status'] = $(obj).is(':checked');
-                sendData['id'] = {{ app.app_info.info.id }};
+                sendData['id'] = {{ (attribute(app, 'app_info') is defined and app.app_info.info|length > 0 and attribute(app.app_info.info, 'id') is defined) ? app.app_info.info.id : false }};
             }
 
             if (sendData['status'] || !getInfo) {

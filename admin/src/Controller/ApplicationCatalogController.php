@@ -126,7 +126,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         }
 
         if (empty($this->data['id'])) {
-            return $this->app->redirect($this->workURL . '/application-catalog');
+            return $this->app->redirect($this->workURL . '/' . $this->app['controller_alias']. '/application-list');
         }
 
         $attribute = $this->getApplicationDetailDropdownAttribute();
@@ -146,7 +146,7 @@ class ApplicationCatalogController extends \Controller\BaseStalkerController {
         }
 
         if (empty($this->data['id'])) {
-            return $this->app->redirect($this->workURL . '/smart-application-catalog');
+            return $this->app->redirect($this->workURL . '/' . $this->app['controller_alias'] . '/smart-application-list');
         }
 
         $attribute = $this->getSmartApplicationDetailDropdownAttribute();
