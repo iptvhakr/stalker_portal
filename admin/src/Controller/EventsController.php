@@ -938,7 +938,8 @@ class EventsController extends \Controller\BaseStalkerController {
             'reboot_after_ok' => 'S_E.reboot_after_ok as `reboot_after_ok`',
             'param1' => 'S_E.param1 as `param1`',
             'ttl' => 'S_E.ttl as `ttl`',
-            'last_run' => 'S_E.last_run as `last_run`'
+            'last_run' => 'S_E.last_run as `last_run`',
+            'channel' => 'S_E.channel as `channel`'
         );
     }
 
