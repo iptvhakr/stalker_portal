@@ -200,10 +200,21 @@
                             $("#" + $(this).val() + "_part").show();
                         }
                     });
-                })
+                });
+                setSelectWarning($('#form_stb_205'));
+                $(document).on('change', '#form_stb_205', function(e){
+                    setSelectWarning($(this));
+                });
             });
         }
         document.addEventListener("DOMContentLoaded", yelp, false);
 
+        function setSelectWarning(selectObj){
+            if (selectObj.val()) {
+                $('label[for="' + selectObj.attr('id') + '"]').closest('div').after("<label class='txt-danger col-sm-offset-1 control-label'>{{ 'Attention! advertising block will be played instead of the content.' | trans }}</label>");
+            } else {
+                $('label[for="' + selectObj.attr('id') + '"]').closest('div').next('label').remove();
+            }
+        }
     </script>
 {% endblock %}

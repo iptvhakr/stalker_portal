@@ -534,7 +534,8 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
                     'required' => FALSE,
                     'label' => $parts_labels[$p_key],
                     'choices'  => $block_val,
-                    'placeholder' => $this->setLocalization('off')
+                    'placeholder' => $this->setLocalization('off'),
+                    'label_attr' => array('class' => 'control-label')
                 ),
                 'required' => FALSE,
                 'allow_add' => TRUE,
