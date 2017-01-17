@@ -96,8 +96,10 @@
                                     {% if attribute(label_part, key) is defined %}
                                 <label class="col-sm-12 text-left"><strong>{{ label_part[key] }}</strong></label>
                                     {% endif %}
-                                    <div class=" col-xs-10 col-sm-8" {% if key == 103 %}style="display: none;"{% endif %}>
-                                        {{ form_widget(addPositionField) }}
+                                    <div class=" col-xs-7 input-group" {% if key == 103 %}style="display: none;"{% endif %}>
+                                        <div class="col-xs-2">
+                                        {{ form_widget(addPositionField, {'attr': {'class': 'populate placeholder'} }) }}
+                                        </div>
                                         {{ form_label(addPositionField, addPositionField.vars.label[key]) }}
                                     </div>
                                     <div>
@@ -155,6 +157,11 @@
             validateHiddenInputs: true,
             modules: 'jsconf',
             onSuccess: function () {
+                $('div[id$="_part"]').each(function(){
+                    if (!$(this).is(':visible')) {
+                        $(this).find('option').removeAttr('selected');
+                    }
+                });
                 $(conf.form).get(0).submit();
                 return true;
             },

@@ -134,7 +134,7 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
         $data[$data['platform']] = array();
         $is_positions = $this->db->getAdPositions($data['id']);
         if (!empty($is_positions)) {
-            $data[$data['platform']] = array_combine(array_values($is_positions), array_fill(0, count($is_positions), TRUE));
+            $data[$data['platform']] = array_combine($this->getFieldFromArray($is_positions, 'position_code'), $this->getFieldFromArray($is_positions, 'blocks'));
         }
 
         $form = $this->buildCompanyForm($data);
@@ -490,7 +490,7 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
             foreach($ad_positions as $row) {
                 if($row['platform'] == $platform){
                     $parts_labels[$platform][$row['position_code']] = $this->setLocalization($row['label']);
-                    $parts_platform[$platform][$row['position_code']] = array_key_exists($platform, $data) && array_key_exists($row['position_code'], $data[$platform]) && $data[$platform][$row['position_code']];
+                    $parts_platform[$platform][$row['position_code']] = array_key_exists($platform, $data) && array_key_exists($row['position_code'], $data[$platform]) && $data[$platform][$row['position_code']] ? $data[$platform][$row['position_code']] : '';
                 }
             }
             ksort($parts_platform[$platform]);
@@ -525,52 +525,23 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
                     'attr' => array('readonly' => $show, 'disabled' => $show, 'class' => 'form-control'),
                 )
             )
-            ->add('save', 'submit')
-            ->add('stb', 'collection', array(
-                'type' => 'checkbox',
+            ->add('save', 'submit');
+        $block_val = array_combine(range(1, 5), range(1, 5));
+        foreach($platforms as $p_key => $p_label){
+            $form->add($p_key, 'collection', array(
+                'type' => 'choice',
                 'options' => array(
                     'required' => FALSE,
-                    'label' => $parts_labels['stb']
-                ),
-                'required' => FALSE,
-                'allow_add' => TRUE,
-                'allow_delete' => TRUE,
-                'prototype' => FALSE
-            ))
-            ->add('ios', 'collection', array(
-                'type' => 'checkbox',
-                'options' => array(
-                    'required' => FALSE,
-                    'label' => $parts_labels['ios']
-                ),
-                'required' => FALSE,
-                'allow_add' => TRUE,
-                'allow_delete' => TRUE,
-                'prototype' => FALSE
-            ))
-            ->add('android', 'collection', array(
-                'type' => 'checkbox',
-                'options' => array(
-                    'required' => FALSE,
-                    'label' => $parts_labels['android']
-                ),
-                'required' => FALSE,
-                'allow_add' => TRUE,
-                'allow_delete' => TRUE,
-                'prototype' => FALSE
-            ))
-            ->add('smarttv', 'collection', array(
-                'type' => 'checkbox',
-                'options' => array(
-                    'required' => FALSE,
-                    'label' => $parts_labels['smarttv']
+                    'label' => $parts_labels[$p_key],
+                    'choices'  => $block_val,
+                    'placeholder' => $this->setLocalization('off')
                 ),
                 'required' => FALSE,
                 'allow_add' => TRUE,
                 'allow_delete' => TRUE,
                 'prototype' => FALSE
             ));
-
+        }
         return $form->getForm();
     }
 
@@ -582,15 +553,18 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
                 $get_positions = array();
                 foreach( array( 'stb', 'ios', 'android', 'smarttv') as $platform){
                     if (array_key_exists($platform, $data)) {
-                        $get_positions = array_merge($get_positions, array_keys($data[$platform]));
+                        $get_positions += $data[$platform];
                     }
                 }
 
+                $get_positions = array_filter($get_positions);
+
                 if (!empty($data['id'])) {
                     $is_positions = $this->db->getAdPositions($data['id']);
+                    $is_positions = $this->getFieldFromArray($is_positions, 'position_code');
                     if (!empty($is_positions)) {
-                        $del_position = array_diff($is_positions, $get_positions);
-                        $get_positions = array_diff($get_positions, $is_positions);
+                        $del_position = array_diff($is_positions, array_keys($get_positions));
+                        $get_positions = array_diff($get_positions, array_values($is_positions));
                         if (!empty($del_position)){
                             $this->db->delAdPositions($data['id'], $del_position);
                         }
