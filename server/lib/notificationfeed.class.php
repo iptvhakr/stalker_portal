@@ -33,9 +33,13 @@ class NotificationFeed
 
     public function sync() {
 
-        //todo: language
+        $language = Mysql::getInstance()->from('administrators')->where(array('login' => 'admin'))->get()->first('language');
 
-        $feed_url = $this->feed_url.(strpos($this->feed_url, '?') ? '&' : '?').'lang=en';
+        if (!$language){
+            $language = 'en';
+        }
+
+        $feed_url = $this->feed_url.(strpos($this->feed_url, '?') ? '&' : '?').'lang='.$language;
 
         $content = file_get_contents($feed_url);
 
