@@ -2137,7 +2137,7 @@ function common_xpcom(){
                     _debug('this.campaigns', this.campaigns);
 
                     var adverts  = result.filter(function (item) {
-                        return item['campaign'].hasOwnProperty('places') && item['campaign']['places'].indexOf(101) != -1;
+                        return item['campaign'].hasOwnProperty('places') && item['campaign']['places'] && item['campaign']['places'][101];
                     });
 
                     if (!adverts || adverts.length == 0){
