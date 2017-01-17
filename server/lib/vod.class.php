@@ -150,7 +150,7 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
         $vclub_ad = new VclubAdvertising();
 
         $advertising = new Advertising();
-        $campaigns = $advertising->getAds(Stb::getInstance()->id);
+        $campaigns = $advertising->getAds(Stb::getInstance()->id, 102);
 
         if (!$disable_ad && empty($link['error'])){
 
@@ -162,7 +162,7 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
 
                 foreach ($campaigns as $campaign){
 
-                    if (!empty($campaign['campaign']['places']) && in_array(102, $campaign['campaign']['places'])){
+                    if (!empty($campaign['campaign']['places'][102])){
                         $playlist[] = array(
                             'id'            => $campaign['campaign']['id'],
                             'media_type'    => 'advert',
