@@ -8,6 +8,25 @@ class NotificationFeed
 
     /**
      * @param bool $only_not_read
+     * @return integer
+     */
+    public function getCount($only_not_read = true){
+
+        $items = Mysql::getInstance()->from('notification_feed')
+            ->where(array(
+                'delay_finished_time<=' => date(Mysql::DATETIME_FORMAT)
+            ))
+            ->count();
+
+        if ($only_not_read){
+            $items->where(array('read' => 0));
+        }
+
+        return (int)$items->get()->counter();
+    }
+
+    /**
+     * @param bool $only_not_read
      * @return NotificationFeedItem[]
      */
     public function getItems($only_not_read = true){
