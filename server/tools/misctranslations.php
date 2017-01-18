@@ -881,3 +881,5 @@ _('During movie playback in Video Club');
 _('Before starting TV section');
 _('Before starting Video Club section');
 _('Before starting Radio section');
+_('Before starting the TV channel');
+_('During a TV channel playback');

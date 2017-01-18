@@ -2578,7 +2578,7 @@ class UsersController extends \Controller\BaseStalkerController {
             ),
             array(
                 "id" => "cut_off",
-                "title" => $this->setLocalization('Turn off')
+                "title" => $this->setLocalization('Switch off')
             ),
             array(
                 "id" => "update_image",
@@ -2604,7 +2604,7 @@ class UsersController extends \Controller\BaseStalkerController {
             ),
             array(
                 "id" => "cut_on",
-                "title" => $this->setLocalization('Turn on')
+                "title" => $this->setLocalization('Switch on')
             ),
             array(
                 "id" => "show_menu",

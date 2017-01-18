@@ -185,7 +185,7 @@
                                             <option value="play_channel">{{ 'Playback channel'|trans }}</option>
                                             <option value="play_radio_channel">{{ 'Playback radio channel'|trans }}</option>
                                             <option value="mount_all_storages">{{ 'Mount all storages'|trans }}</option>
-                                            <option value="cut_off">{{ 'Turn off'|trans }}</option>
+                                            <option value="cut_off">{{ 'Switch off'|trans }}</option>
                                             <option value="update_image">{{ 'Image update'|trans }}</option>
                                         </select>
                                     </div>
@@ -422,7 +422,7 @@
                                                             </li>\n\
                                                             <li>\n\
                                                                 <a class='main_ajax no_context_menu' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-user' data-userid='" + id + "' data-userstatus='" + status + "'>\n\
-                                                                    <span>" + (status == 0 ? "{{ 'Turn off'|trans }}" : "{{ 'Turn on'|trans }}") + "</span>\n\
+                                                                    <span>" + (status == 0 ? "{{ 'Switch off'|trans }}" : "{{ 'Switch on'|trans }}") + "</span>\n\
                                                                 </a>\n\
                                                             </li>";
                                                             {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
