@@ -396,6 +396,8 @@ class SmartLauncherAppsManager
      */
     public function deleteApp($app_id, $version = null){
 
+        Cache::getInstance()->del($app_id.'_launcher_app_info');
+
         $app = Mysql::getInstance()->from('launcher_apps')->where(array('id' => $app_id))->get()->first();
 
         if (empty($app['alias']) || empty($app['current_version'])){
