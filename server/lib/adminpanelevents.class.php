@@ -163,7 +163,7 @@ class AdminPanelEvents extends SysEvent {
         if (!is_array($this->user_list)) {
             $this->user_list = array($this->user_list);
         }
-        Mysql::getInstance()->where( "id in (" . implode(",", $this->user_list) . ")")->update('users',  array("status" => 1, "last_change_status" => "NOW()" ));
+        Mysql::getInstance()->where( array("id in (" . implode(",", $this->user_list) . ") and 1" => 1))->update('users',  array("status" => 1, "last_change_status" => "NOW()" ));
         $this->sendCutOff();
         return TRUE;
     }

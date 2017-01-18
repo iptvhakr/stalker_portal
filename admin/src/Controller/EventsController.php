@@ -12,7 +12,6 @@ use Stalker\Lib\Core\Config;
 
 class EventsController extends \Controller\BaseStalkerController {
 
-    protected $formEvent = array();
     protected $hiddenEvent = array();
     protected $sendedStatus = array();
     protected $receivingStatus = array();
@@ -22,26 +21,6 @@ class EventsController extends \Controller\BaseStalkerController {
 
     public function __construct(Application $app) {
         parent::__construct($app, __CLASS__);
-        $this->formEvent = array(
-            array("id" => "send_msg",           "title" => $this->setLocalization('Sending a message') ),
-            array("id" => "reboot",             "title" => $this->setLocalization('Reboot') ),
-            array("id" => "reload_portal",      "title" => $this->setLocalization('Restart the portal') ),
-            array("id" => "update_channels",    "title" => $this->setLocalization('Update channel list') ),
-            array("id" => "play_channel",       "title" => $this->setLocalization('Playback channel') ),
-            array("id" => "play_radio_channel", "title" => $this->setLocalization('Playback radio channel') ),
-            array("id" => "mount_all_storages", "title" => $this->setLocalization('Mount all storages') ),
-            array("id" => "cut_off",            "title" => $this->setLocalization('Turn off') ),
-            array("id" => "update_image",       "title" => $this->setLocalization('Image update') )
-        );
-        $this->hiddenEvent = array(
-            /*array("id" => "send_msg_with_video",        "title" => $this->setLocalization('Sending a message with video') ),*/
-            array("id" => "update_epg",                 "title" => $this->setLocalization('EPG update') ),
-            array("id" => "update_subscription",        "title" => $this->setLocalization('Subscribe update') ),
-            array("id" => "update_modules",             "title" => $this->setLocalization('Modules update') ),
-            array("id" => "cut_on",                     "title" => $this->setLocalization('Turn on') ),
-            array("id" => "show_menu",                  "title" => $this->setLocalization('Show menu') ),
-            array("id" => "additional_services_status", "title" => $this->setLocalization('Status additional service') )
-        );
 
         $this->sendedStatus = array(
             array("id" => 1 , "title" => $this->setLocalization('Not delivered')),
@@ -135,8 +114,8 @@ class EventsController extends \Controller\BaseStalkerController {
                 'uid' => (!empty($this->data['uid'])? $this->data['uid']: $currentUser['id'])
             );
         }
-        $this->app['formEvent'] = $this->formEvent;
-        $this->app['allEvent'] = array_merge($this->formEvent, $this->hiddenEvent);
+        $this->app['formEvent'] = $this->getFormEvent();
+        $this->app['allEvent'] = array_merge($this->getFormEvent(), $this->getHiddenEvent());
         $this->app['sendedStatus'] = $this->sendedStatus;
         $this->app['receivingStatus'] = $this->receivingStatus;
         $this->app['consoleGroup'] = $this->db->getConsoleGroup();
@@ -186,7 +165,7 @@ class EventsController extends \Controller\BaseStalkerController {
         $this->app['scheduleType'] = $this->scheduleType;
         $this->app['scheduleState'] = $this->scheduleState;
         $this->app['consoleGroup'] = $this->db->getConsoleGroup();
-        $this->app['formEvent'] = $this->formEvent;
+        $this->app['formEvent'] = $this->getFormEvent(TRUE);
         $this->app['allFilters'] = $this->getAllFilters();
         $this->app['repeatingInterval'] = $this->repeatingInterval;
         $this->app['monthNames'] = $this->monthNames;
@@ -267,10 +246,10 @@ class EventsController extends \Controller\BaseStalkerController {
             return $row;
         }, $this->db->getEventsList($query_param));
 
-        $allevents = $this->formEvent;
+        $allevents = $this->getFormEvent();
         $allevents = array_combine($this->getFieldFromArray($allevents, 'id'), $this->getFieldFromArray($allevents, 'title'));
 
-        $hiddenevents = $this->hiddenEvent;
+        $hiddenevents = $this->getHiddenEvent();
         $hiddenevents = array_combine($this->getFieldFromArray($hiddenevents, 'id'), $this->getFieldFromArray($hiddenevents, 'title'));
 
         $events = array_merge($allevents, $hiddenevents);
@@ -599,7 +578,7 @@ class EventsController extends \Controller\BaseStalkerController {
         $deferred = $this->setLocalization('deferred');
         $unlimited = $this->setLocalization('unlimited');
         $not_run = $this->setLocalization('do not yet running');
-        $all_event = array_merge($this->formEvent, $this->hiddenEvent);
+        $all_event = array_merge($this->getFormEvent(), $this->getHiddenEvent());
         $all_event = array_combine($this->getFieldFromArray($all_event, 'id'), $this->getFieldFromArray($all_event, 'title'));
         $all_recipients = array(
             'to_all' => $this->setLocalization('All'),
@@ -991,4 +970,33 @@ class EventsController extends \Controller\BaseStalkerController {
         return json_encode(array($data['user_list_type'] => array('filter_set' => $data['filter_set'])));
     }
 
+    private function getFormEvent($without_mount = FALSE) {
+        $return = array(
+            array("id" => "send_msg",           "title" => $this->setLocalization('Sending a message') ),
+            array("id" => "reboot",             "title" => $this->setLocalization('Reboot') ),
+            array("id" => "reload_portal",      "title" => $this->setLocalization('Restart the portal') ),
+            array("id" => "update_channels",    "title" => $this->setLocalization('Update channel list') ),
+            array("id" => "play_channel",       "title" => $this->setLocalization('Playback channel') ),
+            array("id" => "play_radio_channel", "title" => $this->setLocalization('Playback radio channel') ),
+        );
+        if (!$without_mount) {
+            $return[] = array("id" => "mount_all_storages", "title" => $this->setLocalization('Mount all storages') );
+        }
+
+        $return[] = array("id" => "cut_off",            "title" => $this->setLocalization('Switch off') );
+        $return[] = array("id" => "update_image",       "title" => $this->setLocalization('Image update') );
+        return $return;
+    }
+
+    private function getHiddenEvent(){
+        return array(
+            /*array("id" => "send_msg_with_video",        "title" => $this->setLocalization('Sending a message with video') ),*/
+            array("id" => "update_epg",                 "title" => $this->setLocalization('EPG update') ),
+            array("id" => "update_subscription",        "title" => $this->setLocalization('Subscribe update') ),
+            array("id" => "update_modules",             "title" => $this->setLocalization('Modules update') ),
+            array("id" => "cut_on",                     "title" => $this->setLocalization('Switch on') ),
+            array("id" => "show_menu",                  "title" => $this->setLocalization('Show menu') ),
+            array("id" => "additional_services_status", "title" => $this->setLocalization('Status additional service') )
+        );
+    }
 }
