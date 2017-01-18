@@ -2487,14 +2487,6 @@ player.prototype.play = function(item){
                 stb.player.on_create_link = function(result){
                     _debug('player.on_create_link', result);
 
-                    /*if (result.error == 'limit'){
-                        stb.notice.show(word['player_limit_notice']);
-                    }else if(result.error == 'nothing_to_play'){
-                        stb.notice.show(word['player_file_missing']);
-                    }else if(result.error == 'link_fault'){
-                        stb.notice.show(word['player_server_error']);
-                    }else{*/
-
                     if (result.error){
                         self.cur_media_item.error = result.error;
                         module.tv.preview_msg.innerHTML = get_word('error_channel_'+result.error);
@@ -2505,11 +2497,11 @@ player.prototype.play = function(item){
                     if (result.cmd && result.cmd.search(/%mac%/ig) !== -1) {
                         result.cmd = result.cmd.replace(/%mac%/ig, stb.profile.mac);
                     }
-                    stb.player.play_now(result);
-                    //}
+
+                    module.tv.handle_advert(result, item);
                 };
 
-                this.create_link('itv', cmd, 0);
+                this.create_link('itv', cmd, 0, false, item.disable_ad, false, stb.user['force_ch_link_check']);
             }else{
                 if (cmd && cmd.search(/%mac%/ig) !== -1) {
                     cmd = cmd.replace(/%mac%/ig, stb.profile.mac);
@@ -2578,11 +2570,11 @@ player.prototype.play = function(item){
     }
 };
 
-player.prototype.create_link = function(type, uri, series_number, forced_storage, disable_ad, download){
+player.prototype.create_link = function(type, uri, series_number, forced_storage, disable_ad, download, force_ch_link_check){
 
     series_number = series_number || "";
 
-    _debug('player.create_link', type, uri, series_number, forced_storage, disable_ad, download);
+    _debug('player.create_link', type, uri, series_number, forced_storage, disable_ad, download, force_ch_link_check);
 
     stb.load(
 
@@ -2593,7 +2585,8 @@ player.prototype.create_link = function(type, uri, series_number, forced_storage
             "series" : series_number,
             "forced_storage" : forced_storage,
             "disable_ad" : disable_ad || false,
-            "download" : download || false
+            "download" : download || false,
+            "force_ch_link_check" : force_ch_link_check || false
 
         },
 

@@ -1170,7 +1170,18 @@ function common_xpcom(){
 
                 this.profile['ts_enable_icon'] = parseInt(this.profile['ts_enable_icon'], 10);
 
-                stb.advert.config = this.user['config'] || {};
+                stb.advert.config = this.user['advert'] || [];
+
+                if (stb.advert.config){
+                    for (var i=0; i<stb.advert.config.length; i++){
+                        if (stb.advert.config[i]['places'][104]){
+                            stb.user['force_ch_link_check'] = true;
+                            break;
+                        }
+                    }
+                }
+
+                _debug('stb.user[force_ch_link_check]', stb.user['force_ch_link_check']);
 
                 if (!this.user['update_url']){
                     try{
@@ -1640,7 +1651,8 @@ function common_xpcom(){
 
             {
                 'type'  : 'itv',
-                'action': 'get_all_channels'
+                'action': 'get_all_channels',
+                'force_ch_link_check': stb.user['force_ch_link_check']
             },
 
             function(result){
@@ -1693,7 +1705,8 @@ function common_xpcom(){
             {
                 'type'  : 'itv',
                 'action': 'get_all_fav_channels',
-                'fav'   : 1
+                'fav'   : 1,
+                'force_ch_link_check' : stb.user['force_ch_link_check']
             },
 
             function(result){
@@ -1716,7 +1729,8 @@ function common_xpcom(){
 
             {
                 'type'   : 'itv',
-                'action' : 'get_fav_ids'
+                'action' : 'get_fav_ids',
+                'force_ch_link_check' : stb.user['force_ch_link_check']
             },
 
             function(result){

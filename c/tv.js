@@ -76,6 +76,7 @@
             }
             
             this.load_params['genre'] = genre.id;
+            this.load_params['force_ch_link_check']=  stb.user['force_ch_link_check'];
 
             this.genre = genre;
 
@@ -1034,6 +1035,97 @@
             }
         };
 
+        this.handle_advert = function (items, current_item) {
+            _debug('tv.handle_advert', items, current_item);
+
+            var preview = this.on && this.cur_view == 'short';
+
+            _debug('preview', preview);
+
+            var self = this;
+
+            if (Array.isArray(items)){
+
+                var adverts = items;
+
+                var callback = function () {
+                    _debug('tv callback');
+
+                    var item = current_item.clone();
+                    item.disable_ad = true;
+
+                    self._play_now(item);
+                };
+
+                for (var i=0; i<adverts.length; i++){
+
+                    var advert = adverts[i];
+
+                    if (i != adverts.length-1){
+
+                        callback = (function (ad, cb) {
+
+                            return function () {
+                                _debug('ad callback', ad);
+
+                                if (!preview){
+                                    self.hide(true);
+
+                                    stb.player.prev_layer = self;
+                                }
+
+                                stb.key_lock = true;
+
+                                stb.player.need_show_info = 0;
+
+                                stb.player.play({
+                                    'id': ad.id,
+                                    'ad_id' : ad.id,
+                                    'cmd': ad.cmd,
+                                    'media_type': ad.media_type || '',
+                                    'is_advert': true,
+                                    'ad_tracking': ad.ad_tracking || {},
+                                    'ad_must_watch': ad.ad_must_watch || 0,
+                                    'stop_callback': cb
+                                });
+
+                                stb.player.ad_indication.show();
+                            }
+
+                        })(advert, callback);
+                    }
+                }
+
+                if (!preview){
+                    self.hide(true);
+
+                    stb.player.prev_layer = self;
+                }
+
+                stb.key_lock = true;
+
+                stb.player.need_show_info = 0;
+
+                stb.player.play({
+                    'id': adverts[0].id,
+                    'ad_id': adverts[0].id,
+                    'cmd': adverts[0].cmd,
+                    'media_type': adverts[0].media_type || '',
+                    'is_advert': true,
+                    'ad_tracking': adverts[0].ad_tracking || {},
+                    'ad_must_watch' : adverts[0].ad_must_watch || 0,
+                    'stop_callback': callback
+
+                });
+
+                stb.player.ad_indication.show();
+
+            }else{
+                stb.player.play_now(items);
+            }
+
+        };
+
         this._play_now = function(item){
             _debug('tv._play_now', item);
 
@@ -1053,15 +1145,7 @@
                     }else if(result.error == 'link_fault'){
                         stb.notice.show(word['player_server_error']);
                     }else{
-                        //if (self.info.on){
-                        //    self.info.hide();
-                        //}
-
-                        //self.hide(true);
-
-                        //stb.player.prev_layer = self;
-                        //stb.player.need_show_info = 1;
-                        stb.player.play_now(result);
+                        this.handle_advert(result, item);
                     }
                 }
             }

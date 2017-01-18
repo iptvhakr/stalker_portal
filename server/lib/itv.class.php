@@ -4,6 +4,7 @@ use Stalker\Lib\Core\Config;
 use Stalker\Lib\Core\Mysql;
 use Stalker\Lib\Core\Cache;
 use Stalker\Lib\Core\Stb;
+use Stalker\Lib\Core\Advertising;
 
 /**
  * Main ITV class.
@@ -67,6 +68,48 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv {
      */
     public function createLink() {
 
+        $disable_ad = $_REQUEST['disable_ad'];
+
+        $force_ch_link_check = isset($_REQUEST['force_ch_link_check']) ? $_REQUEST['force_ch_link_check'] : false;
+
+        if (Config::get('enable_tariff_plans')){
+            $user = User::getInstance(Stb::getInstance()->id);
+
+            $options = $user->getServicesByType('option');
+
+            if (array_search('disable_ad', $options) !== false){
+                $disable_ad = true;
+            }
+        }
+
+        if (!$disable_ad){
+            $advertising = new Advertising();
+            $campaigns = $advertising->getAds(Stb::getInstance()->id, 104);
+        }
+
+        $playlist = array();
+
+        if (isset($campaigns) && is_array($campaigns) && count($campaigns) > 0){
+
+            foreach ($campaigns as $campaign){
+
+                if (!empty($campaign['campaign']['places'][104])){
+                    $playlist[] = array(
+                        'id'            => $campaign['campaign']['id'],
+                        'media_type'    => 'advert',
+                        'cmd'           => 'ffmpeg '.$campaign['ad'],
+                        'is_advert'     => true,
+                        'ad_tracking'   => $campaign['tracking'],
+                        'ad_must_watch' => 25
+                    );
+                }
+            }
+        }
+
+        if (count($playlist)){
+            return $playlist;
+        }
+
         $cmd = '';
         $streamer_id = 0;
         $link_id = 0;
@@ -91,9 +134,9 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv {
             if (!empty($link)) {
                 $link_id = $link['id'];
 
-                if ($link['status'] == 0 || Config::getSafe('force_ch_link_check', false) || !empty($_REQUEST['for_pvr']) && strpos($link['url'], '.m3u8')) {
+                if ($link['status'] == 0 || Config::getSafe('force_ch_link_check', false) || $force_ch_link_check || !empty($_REQUEST['for_pvr']) && strpos($link['url'], '.m3u8')) {
 
-                    $alternative_links = self::getUrlsForChannel($ch_id, !empty($_REQUEST['for_pvr']));
+                    $alternative_links = self::getUrlsForChannel($ch_id, !empty($_REQUEST['for_pvr']), $force_ch_link_check);
 
                     if (empty($alternative_links)) {
                         throw new ItvLinkException('nothing_to_play');
@@ -997,6 +1040,8 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv {
         $censored_exclude_list = $this->getCensoredExcludeList();
         $dvb_channels = $this->getDvbChannels();
 
+        $force_ch_link_check = isset($_REQUEST['force_ch_link_check']) ? $_REQUEST['force_ch_link_check'] : false;
+
         //var_dump('!!!!!!!!!!!!!!!!', $censored_list, $censored_exclude_list, $this->include_censored);
 
         $epg = new Epg();
@@ -1149,7 +1194,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv {
 
             $this->response['data'][$i]['open'] = 1;
 
-            if ($this->response['data'][$i]['use_http_tmp_link'] || Config::getSafe('force_ch_link_check', false)) {
+            if ($this->response['data'][$i]['use_http_tmp_link'] || Config::getSafe('force_ch_link_check', false) || $force_ch_link_check) {
                 $this->response['data'][$i]['cmd'] = 'ffrt http://' . Config::get('stream_proxy') . '/ch/' . $this->response['data'][$i]['id'];
             }
 
@@ -1184,7 +1229,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv {
 
         $cur_programs = $epg->getCurProgramsMap($ch_ids);
 
-        $urls_map = $this->getUrlsMapForChannels($ch_ids);
+        $urls_map = $this->getUrlsMapForChannels($ch_ids, $force_ch_link_check);
 
         for ($i = 0; $i < count($this->response['data']); $i++) {
 
@@ -1569,7 +1614,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv {
         return Mysql::getInstance()->select('id, CONCAT_WS(". ", cast(number as char), name) as name')->from('itv')->orderby('number')->get()->all();
     }
 
-    public function getUrlsMapForChannels($ch_ids) {
+    public function getUrlsMapForChannels($ch_ids, $force_ch_link_check = false) {
 
         $user_agent = Stb::getInstance()->getUserAgent();
 
@@ -1579,9 +1624,9 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv {
 
         $mac = Stb::getInstance()->mac;
 
-        $user_channel_links = array_map(function ($link) {
+        $user_channel_links = array_map(function ($link) use ($force_ch_link_check){
 
-            if ($link['use_http_tmp_link'] == 1 || $link['use_load_balancing'] == 1 || Config::getSafe('force_ch_link_check', false)) {
+            if ($link['use_http_tmp_link'] == 1 || $link['use_load_balancing'] == 1 || Config::getSafe('force_ch_link_check', false) || $force_ch_link_check) {
                 if (preg_match("/(\w+)\s+http:/", $link['url'], $match)) {
                     $solution = $match[1];
                 } else {
@@ -1626,7 +1671,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv {
         return $grouped_links;
     }
 
-    public static function getUrlsForChannel($ch_id, $for_pvr = false) {
+    public static function getUrlsForChannel($ch_id, $for_pvr = false, $force_ch_link_check = false) {
 
         $user_agent = Stb::getInstance()->getUserAgent();
 
@@ -1655,9 +1700,9 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv {
             });
         }
 
-        $user_channel_links = array_map(function ($link) {
+        $user_channel_links = array_map(function ($link) use ($force_ch_link_check) {
 
-            if ($link['use_http_tmp_link'] == 1 || $link['use_load_balancing'] == 1 || Config::getSafe('force_ch_link_check', false)) {
+            if ($link['use_http_tmp_link'] == 1 || $link['use_load_balancing'] == 1 || Config::getSafe('force_ch_link_check', false) || $force_ch_link_check) {
                 if (preg_match("/(\w+)\s+http:/", $link['url'], $match)) {
                     $solution = $match[1];
                 } else {
