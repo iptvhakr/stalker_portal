@@ -2816,7 +2816,7 @@ player.prototype.stop = function(){
         if (this.cur_media_item.media_type == 'vclub_ad'){
             module && module.vclub && module.vclub.set_ad_ended_time && module.vclub.set_ad_ended_time(this.cur_media_item.ad_id, end_time, stb.GetMediaLen());
         }else if (this.cur_media_item.media_type != 'advert'){
-            module && module.vclub && module.vclub.set_not_ended && module.vclub.set_not_ended(this.cur_media_item.id, cur_series, end_time);
+            this.cur_media_item.video_id && module && module.vclub && module.vclub.set_not_ended && module.vclub.set_not_ended(this.cur_media_item.video_id, cur_series, end_time, this.cur_media_item.id);
         }
     }
 
@@ -2825,7 +2825,7 @@ player.prototype.stop = function(){
         if (this.cur_media_item.media_type == 'vclub_ad'){
             module && module.vclub && module.vclub.set_ad_ended_time && module.vclub.set_ad_ended_time(this.cur_media_item.ad_id, end_time, stb.GetMediaLen());
         }else if (this.cur_media_item.media_type != 'advert'){
-            module && module.vclub && module.vclub.set_ended && module.vclub.set_ended(this.cur_media_item.id);
+            this.cur_media_item.video_id && module && module.vclub && module.vclub.set_ended && module.vclub.set_ended(this.cur_media_item.video_id);
         }
     }
 

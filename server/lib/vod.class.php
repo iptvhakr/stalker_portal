@@ -763,6 +763,7 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
         $video_id = intval($_REQUEST['video_id']);
         $series = intval($_REQUEST['series']);
         $end_time = intval($_REQUEST['end_time']);
+        $file_id = intval($_REQUEST['file_id']);
 
         /*$not_ended = $this->db->getFirstData('vclub_not_ended',
         array(
@@ -786,6 +787,7 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
                     'video_id' => $video_id,
                     'series' => $series,
                     'end_time' => $end_time,
+                    'file_id' => $file_id,
                     'added' => 'NOW()'
                 ));
 
@@ -795,6 +797,7 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
                 array(
                     'series' => $series,
                     'end_time' => $end_time,
+                    'file_id' => $file_id,
                     'added' => 'NOW()'
                 ),
                 array(
@@ -1189,7 +1192,7 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
 
         if (@$_REQUEST['not_ended']) {
             $result = $result->from('vclub_not_ended')
-                ->select('vclub_not_ended.series as cur_series, vclub_not_ended.end_time as position')
+                ->select('vclub_not_ended.series as cur_series, vclub_not_ended.end_time as position, vclub_not_ended.file_id as not_ended_file_id')
                 ->where('video.id=vclub_not_ended.video_id', 'AND ', null, -1)
                 /*->where(array('vclub_not_ended.uid' => $this->stb->id));*/
                 ->in('vclub_not_ended.uid',  $ids_on_ls);

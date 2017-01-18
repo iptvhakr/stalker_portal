@@ -642,6 +642,10 @@
                     item['cur_season'] = this.current_movie['cur_season'];
                     item['cur_series'] = this.current_movie['cur_series'];
                 }
+
+                if (item.is_file && this.current_movie['not_ended_file_id'] == item['id']){
+                    item['position'] = this.current_movie['position'] || 0;
+                }
             }
 
             if (!item.is_movie){
@@ -1386,8 +1390,8 @@
             );
         };
         
-        this.set_not_ended = function(video_id, series, end_time){
-            _debug('vclub.set_not_ended', video_id, series, end_time);
+        this.set_not_ended = function(video_id, series, end_time, file_id){
+            _debug('vclub.set_not_ended', video_id, series, end_time, file_id);
 
             if (this.load_params.not_ended && empty(this.data_items[this.cur_row].series)){
                 this.data_items[this.cur_row].position = end_time;
@@ -1399,7 +1403,8 @@
                     "action"   : "set_not_ended",
                     "video_id" : video_id,
                     "series"   : series,
-                    "end_time" : end_time
+                    "end_time" : end_time,
+                    "file_id"  : file_id
                 },
 
                 function(result){
@@ -1411,7 +1416,7 @@
         };
 
         this.set_ended = function(video_id){
-            _debug('vclub.set_not_ended', video_id);
+            _debug('vclub.set_ended', video_id);
 
             stb.load(
                 {
