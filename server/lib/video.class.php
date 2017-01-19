@@ -240,4 +240,21 @@ class Video
 
         return Mysql::getInstance()->select('id, name')->from('video')->orderby('name')->get()->all();
     }
+
+    public static function isNotEndedHistoryEnabled(){
+        return Mysql::getInstance()->from('watched_settings')->get()->first('enable_not_ended') == 1;
+    }
+
+    public static function isWatchedHistoryEnabled(){
+        return Mysql::getInstance()->from('watched_settings')->get()->first('enable_watched') == 1;
+    }
+
+    /**
+     * History size in days
+     *
+     * @return int
+     */
+    public static function getWatchedHistorySize(){
+        return (int) Mysql::getInstance()->from('watched_settings')->get()->first('not_ended_history_size');
+    }
 }

@@ -15,6 +15,41 @@ if ($from_id){
     Mysql::getInstance()->delete('vclub_not_ended', array('id<' => $from_id));
 }
 
+if (Video::isNotEndedHistoryEnabled()){
+
+    $from_id = Mysql::getInstance()
+        ->select('max(id) as max_id')
+        ->from('user_played_movies')
+        ->where(array(
+                'watched'   => 0,
+                'playtime<' => date(Mysql::DATETIME_FORMAT, time()-1209600
+            )))
+        ->get()
+        ->first('max_id');
+
+    if ($from_id){
+        Mysql::getInstance()->delete('user_played_movies', array('id<' => $from_id, 'watched' => 0));
+    }
+}
+
+if (Video::isWatchedHistoryEnabled() && Video::getWatchedHistorySize()) {
+    
+    $history_size = Video::getWatchedHistorySize() * 24 * 60 * 60;
+    
+    $from_id = Mysql::getInstance()
+        ->select('max(id) as max_id')
+        ->from('user_played_movies')
+        ->where(array(
+                'watched'   => 1,
+                'playtime<' => date(Mysql::DATETIME_FORMAT, time()-$history_size
+            )))
+        ->get()
+        ->first('max_id');
+
+    if ($from_id){
+        Mysql::getInstance()->delete('user_played_movies', array('id<' => $from_id, 'watched' => 1));
+    }
+}
 
 $from_id = Mysql::getInstance()
     ->select('max(id) as max_id')
