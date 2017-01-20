@@ -1561,11 +1561,11 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv {
 
         if ($uid) {
             $user_channels = $this->getAllUserChannelsIdsByUid($uid);
-            return Mysql::getInstance()->from('itv')->where(array('status' => 1))->in('id', $user_channels)->orderby('number');
+            return Mysql::getInstance()->from('itv')->where(array('status' => 1))->in('itv.id', $user_channels)->orderby('number');
         }
 
 
-        return Mysql::getInstance()->from('itv')->where(array('status' => 1))->orderby('number');
+        return Mysql::getInstance()->from('itv')->where(array('itv.status' => 1))->orderby('number');
     }
 
     public static function getLogoPathsById($id) {
