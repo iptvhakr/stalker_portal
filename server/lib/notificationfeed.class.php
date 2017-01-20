@@ -93,12 +93,12 @@ class NotificationFeed
     }
 
     /**
-     * @param $id
+     * @param $guid
      * @return bool|NotificationFeedItem
      */
-    public function getItemById($id){
+    public function getItemByGUId($guid){
 
-        $item = Mysql::getInstance()->from('notification_feed')->where(array('id' => $id))->get()->first();
+        $item = Mysql::getInstance()->from('notification_feed')->where(array('guid' => $guid))->get()->first();
 
         if (!$item){
             return false;
