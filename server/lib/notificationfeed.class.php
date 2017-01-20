@@ -91,6 +91,21 @@ class NotificationFeed
 
         return $result;
     }
+
+    /**
+     * @param $id
+     * @return bool|NotificationFeedItem
+     */
+    public function getItemById($id){
+
+        $item = Mysql::getInstance()->from('notification_feed')->where(array('id' => $id))->get()->first();
+
+        if (!$item){
+            return false;
+        }
+
+        return new NotificationFeedItem($item);
+    }
 }
 
 class NotificationFeedItem{
