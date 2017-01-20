@@ -19,7 +19,7 @@ class NotificationFeed
             ->count();
 
         if ($only_not_read){
-            $items->where(array('read' => 0));
+            $items->where(array('`read`' => 0));
         }
 
         return (int)$items->get()->counter();
@@ -38,7 +38,7 @@ class NotificationFeed
             ->orderby('pub_date DESC, guid', 'DESC');
 
         if ($only_not_read){
-            $items->where(array('read' => 0));
+            $items->where(array('`read`' => 0));
         }
 
         $items = $items->get()->all();
@@ -121,6 +121,10 @@ class NotificationFeedItem{
 
     public function __construct($item) {
 
+        if (isset($item['id'])){
+            $this->_id = (int)$item['id'];
+        }
+
         if (isset($item['title'])){
             $this->title = $item['title'];
         }
@@ -175,7 +179,7 @@ class NotificationFeedItem{
                     'category' => $this->category,
                     'pub_date' => $this->pub_date,
                     'guid' => $this->guid,
-                    'read' => $this->read,
+                    '`read`' => $this->read,
                     'added' => 'NOW()'
                 ))->insert_id();
 
@@ -263,7 +267,7 @@ class NotificationFeedItem{
         $this->read = $read;
 
         return Mysql::getInstance()->update('notification_feed',
-            array('read' => $this->read),
+            array('`read`' => $this->read),
             array('id' => $this->_id))
             ->result();
     }
@@ -279,7 +283,7 @@ class NotificationFeedItem{
         return Mysql::getInstance()->update('notification_feed',
             array(
                 'delay_finished_time' => date(Mysql::DATETIME_FORMAT, time() + $minutes * 60),
-                'read' => 0,
+                '`read`' => 0,
                 ),
             array('id' => $this->_id))
             ->result();
