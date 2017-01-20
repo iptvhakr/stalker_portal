@@ -264,13 +264,101 @@ margin-bottom:5px;
 #top-panel {
   line-height: 50px;
   height: 50px;
-
-
 }
 
 #top-panel *{
   color: #FFFFFF;
     
+}
+
+#index_note_list + ul{
+    margin-top: 10px;
+    left: -420%;
+    min-width: 700%;
+    max-height: 600px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+#index_note_list + ul * {
+    color: #525252;
+    line-height: 1.428571429;
+}
+
+#index_note_list::before, #index_note_list::after {
+    content: '';
+    position: absolute;
+    right: 30%;
+    bottom: -10px;
+    border: 10px solid transparent;
+    border-bottom: 10px solid #ccc;
+    border-bottom: 10px solid rgba(0, 0, 0, .15);
+    background: none;
+    z-index: 1001;
+    display: none;
+}
+#index_note_list::after {
+    border-bottom: 10px solid white;
+    bottom: -11px;
+}
+
+.dropdown.open #index_note_list::before, .dropdown.open #index_note_list::after {
+    display: block;
+}
+
+#index_note_list  + ul .box{
+    border: 1px solid #d8d8d8;
+    border-radius: 3px;
+    box-shadow: 0 0 4px #d8d8d8;
+    margin-bottom: 3px;
+    margin-top: 3px;
+    overflow: hidden;
+    padding: 2px;
+}
+
+#index_note_list  + ul .box:hover{
+    border-color: #b8b8b8;
+    box-shadow: 0 0 4px #d8d8d8, 0 0 2px 1px #d8d8d8 inset;
+}
+
+#index_note_list  + ul .box-content{
+    overflow: hidden;
+    padding: 13px 0;
+}
+
+#index_note_list  + ul .box-content a{
+    color: #155DCA;
+}
+
+#index_note_list  + ul .box-content a:hover, #index_note_list  + ul .box-content a:focus{
+    color: #2a6496;
+}
+
+#index_note_list + ul .category-icon{
+    background: 17px 15px no-repeat transparent;
+}
+
+#index_note_list + ul .category-icon.new_version{
+    background-image: url(../img/update-icon.png);
+}
+
+#index_note_list + ul .category-icon.notice{
+    background-image: url(../img/notification-icon.png);
+}
+
+#index_note_list + ul .category-icon.questions{
+    background-image: url(../img/quiz-icon.png);
+}
+
+.noti-feed-title{
+    margin-left: 20px;
+}
+
+#index_note_list + ul a.close-link{
+    position: absolute;
+    right: 10px;
+    top: -10px;
+    cursor: pointer;
 }
 
 #main {
@@ -851,6 +939,10 @@ text-decoration:none;
 
 }
 .page-head-elements .badge {position:absolute; top:5px;}
+
+.page-head-elements .badge.red{
+    background: #D50101;
+}
 
  .page-head-elements > li > a:hover {
   background: #314151;

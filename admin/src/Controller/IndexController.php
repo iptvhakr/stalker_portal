@@ -377,5 +377,97 @@ class IndexController extends \Controller\BaseStalkerController {
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
+
+    public function note_list(){
+        if (!$this->isAjax) {
+            $this->app->abort(404, 'Page not found');
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array(
+            'data' => array()
+        );
+
+        $error = '';
+
+        try{
+            $feed = new \NotificationFeed();
+            $feed_items = $feed->getItems();
+            $fields = array('title', 'description', 'category', 'pub_date', 'read', 'link');
+            $item = array();
+            foreach ($feed_items as $feed_item) {
+                foreach($fields as $field){
+                    $command = 'get' .str_replace(' ', '', ucwords(str_replace('_', ' ', $field)));
+                    $item[$field] = $feed_item->$command();
+                }
+                $item['guid'] = $feed_item->getGUId();
+                $data['data'][] = $item;
+            }
+        } catch (\Exception $e) {
+            $error = $e->getMessage();
+        }
+
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function note_list_set_readed(){
+        if (!$this->isAjax || empty($this->postData['feed_item_id'])) {
+            $this->app->abort(404, 'Page not found');
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array(
+            'data' => array()
+        );
+
+        $error = '';
+
+        try{
+            $feed = new \NotificationFeed();
+            $data['data'] = $feed->getItemByGUId($this->postData['feed_item_id'])->setRead(1);
+        } catch (\Exception $e) {
+            $error = $e->getMessage();
+        }
+
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function note_list_set_remind(){
+        if (!$this->isAjax || empty($this->postData['feeditemid'])) {
+            $this->app->abort(404, 'Page not found');
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array(
+            'data' => array()
+        );
+
+        $error = '';
+
+        try{
+            $feed = new \NotificationFeed();
+            $data['data'] = $feed->getItemByGUId($this->postData['feeditemid'])->setDelay(60 * 24);
+        } catch (\Exception $e) {
+            $error = $e->getMessage();
+        }
+
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
     //------------------------ service method ----------------------------------
 }
