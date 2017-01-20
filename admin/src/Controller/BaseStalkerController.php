@@ -53,8 +53,8 @@ class BaseStalkerController {
             $this->app['request']->getSession()->save();
         }
         $this->app['request']->getSession()->start();
-        \Admin::checkLanguage($app['language']);
         $this->admin = \Admin::getInstance();
+        \Admin::checkLanguage($app['language']);
 
         $this->app['userlogin'] = $this->admin->getLogin();
 
@@ -113,6 +113,28 @@ class BaseStalkerController {
             }
             $this->setSideBarMenu();
             $this->setTopBarMenu();
+            if ($this->app['userlogin'] == 'admin') {
+
+                $tmp = array (
+                    "name" => $this->setLocalization("Notifications"),
+                    "self_parent_alias" => "index",
+                    "alias"=> "note-list",
+                    "icon"=> "fa fa-bell"
+                );
+
+                $feed = new \NotificationFeed();
+                $this->app['feedItemsCount'] = $feed->getCount();
+
+                if (!empty($this->app['feedItemsCount'])) {
+                    $tmp['add_params'] = '<span class="hidden-xs badge red">' . $this->app['feedItemsCount'] . '</span>';
+                } else {
+                    $tmp['add_params'] = '<span class="hidden-xs badge">0</span>';
+                }
+                $top_bar = $this->app['top_bar'];
+                $top_bar[1]['action'][0] = $tmp;
+                ksort($top_bar[1]['action']);
+                $this->app['top_bar'] = $top_bar;
+            }
             $this->setBreadcrumbs();
             $this->app['request']->getSession()->set('cached_lang', $this->app['language']);
         }

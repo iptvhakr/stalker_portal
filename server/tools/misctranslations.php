@@ -322,6 +322,9 @@ _('Start page');
 _('Saving settings drop-down menu user');
 _('Checking state of flag of opinion form');
 _('Setting state of flag of opinion form');
+_('Get list of feed news');
+_('Set "readed" flag for item of feed news');
+_('Set remind date for item of feed news');
 
 _('Info portal');
 _('Phone book by page + filters');

@@ -12,7 +12,6 @@ use Stalker\Lib\Core\Config;
 
 class EventsController extends \Controller\BaseStalkerController {
 
-    protected $hiddenEvent = array();
     protected $sendedStatus = array();
     protected $receivingStatus = array();
     protected $scheduleType = array();

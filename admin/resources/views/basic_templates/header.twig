@@ -49,7 +49,8 @@
 										{% else %}
 											{% set parent_alias = '' %}
 										{% endif %}
-										<a href="{{ app.request.baseUrl }}/{{ parent_alias ? (parent_alias ~ '/') | trans}}{{ item_action.alias ? item_action.alias }}">
+                                        {% set item_dom_id = (((parent_alias ? (parent_alias ~ '_') | trans) ~ (item_action.alias ? item_action.alias)) |trans)|replace({'-': '_'}) %}
+										<a id="{{ item_dom_id }}" href="{{ app.request.baseUrl }}/{{ parent_alias ? (parent_alias ~ '/') | trans}}{{ item_action.alias ? item_action.alias }}">
 										{% if item_action.icon %}
 											<i class="{{ item_action.icon }}"></i> 
 										{% endif %}

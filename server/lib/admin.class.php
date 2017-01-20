@@ -101,7 +101,7 @@ class Admin
     }
 
     public static function checkLanguage($language){
-        if ($language && self::getInstance()->getAdminLanguage() !== $language) {
+        if ($language && self::getInstance()->getAdminLanguage() !== $language && self::getInstance()->getId()) {
             Mysql::getInstance()->update('administrators', array('language' => $language), array('id' => self::getInstance()->getId()));
             self::getInstance()->profile['language'] = $language;
         }

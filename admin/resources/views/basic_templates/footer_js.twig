@@ -41,6 +41,7 @@
         <script src="{{app.request.baseUrl}}/plugins/flot/jquery.flot.js"></script>
         <script src="{{app.request.baseUrl}}/plugins/flot/jquery.flot.time.js"></script>
         <script src="{{app.request.baseUrl}}/plugins/flot/jquery.flot.navigate.js"></script>
+        <script src="{{app.request.baseUrl}}/plugins/notiFeed/notiFeed.js"></script>
 
 <footer>
     <div class="text">
@@ -224,6 +225,23 @@
                 localStorage.removeItem('opinionCheck');
             });
 
+
+            var notiFeedObj = $("#index_note_list").parent('li').notiFeed({
+                title: "{{ 'Notifications'|trans }}",
+                linkText: "{{ 'Read more'|trans }}",
+                emptyListText: "{{ 'No new notifications'|trans }}",
+                openFeedItemCallback: function(feedItemId){
+                    JScloseModalBox();
+                    $("#modalbox .modal-header-name span").text(notiFeedObj.feedList[feedItemId].title);
+                    $("#modalbox .devoops-modal-inner").html("<div class='col-xs-12'>" + notiFeedObj.feedList[feedItemId].description + "</div>");
+                    $("#modalbox .devoops-modal-bottom").html("<div class='col-xs-12'>" +
+                    '<a id="feed_remind" href="' + notiFeedObj.defaults.set_remind_link + '" class="btn btn-default col-sm-3 col-sm-offset-1 no-padding-left no-padding-right main_ajax pull-right" data-feeditemid="'+ feedItemId +'">{{ 'Remind me later'|trans }}</a>'+
+                    '<button type="reset" id="feed_close" class="btn btn-default col-sm-3 col-sm-offset-1 no-padding-left no-padding-right pull-right">{{ 'Close'|trans }}</button>'+
+                    "</div>");
+                    $("#modalbox").show();
+                    notiFeedObj.setReadedItem(feedItemId);
+                }
+            });
             {% endif %}
         });
 
