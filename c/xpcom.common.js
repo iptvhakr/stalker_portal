@@ -1052,7 +1052,9 @@ function common_xpcom(){
             stb.ExecAction('reboot');
         }
 
-        gSTB.StandByMode = 1; // always active stand-by
+        if (typeof (gSTB) != 'undefined') {
+            gSTB.StandByMode = 1; // always active stand-by
+        }
 
         screensaver.init();
 
