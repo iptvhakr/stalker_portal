@@ -26,10 +26,17 @@ if (!$app['installed']){
 
 header('Content-Type: application/x-javascript');
 
-$user_theme = Mysql::getInstance()->from('users')->where(array('mac' => $_GET['mac']))->get()->first('theme');
-$user_theme = empty($user_theme) || !array_key_exists($user_theme, Middleware::getThemes())
+$user = Mysql::getInstance()->from('users')->where(array('mac' => $_GET['mac']))->get()->first();
+
+$disabled_for_mag200_apps = array('youtube.com', 'zoomby', 'megogo', 'olltv');
+
+if ($user && $user['stb_type'] == 'MAG200' && in_array(strtolower($app['name']), $disabled_for_mag200_apps) !== false){
+    exit;
+}
+
+$user_theme = empty($user['theme']) || !array_key_exists($user['theme'], Middleware::getThemes())
     ? Mysql::getInstance()->from('settings')->get()->first('default_template')
-    : $user_theme;
+    : $user['theme'];
 
 $icon = $app['app_url'].'/img/{0}/'.$app['icons'].'/'.($user_theme == 'default' ? '2010' : '2014').'.png'
 ?>

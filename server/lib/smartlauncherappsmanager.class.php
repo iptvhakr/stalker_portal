@@ -830,6 +830,11 @@ class SmartLauncherAppsManager
             list($metapackage_name, $stalker_version) = explode('@', $metapackage);
         }
 
+        if ($stalker_version){
+            $exploded_version = explode('-', $stalker_version);
+            $stalker_version = $exploded_version[0];
+        }
+
         $npm = Npm::getInstance();
 
         if (is_null($orig_metapackage)) {
@@ -838,6 +843,27 @@ class SmartLauncherAppsManager
 
             if (!$info) {
                 return false;
+            }
+
+            if (isset($info['versions']) && is_string($info['versions'])){
+                $info['versions'] = array($info['versions']);
+            }
+
+            $this_release_versions = array();
+
+            if ($stalker_version && $info['versions']){
+                foreach ($info['versions'] as $version){
+                    if (strpos($version, $stalker_version.'-r') === 0){
+                        $version_weight = (int) str_replace($stalker_version.'-r', '', $version);
+                        $this_release_versions[$version_weight] = $version;
+                    }elseif (strpos($version, $stalker_version) === 0){
+                        $this_release_versions[0] = $version;
+                    }
+                }
+            }
+
+            if ($this_release_versions){
+                $stalker_version = $this_release_versions[max(array_keys($this_release_versions))];
             }
         }
 
