@@ -507,6 +507,9 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
             ->add('source', 'choice', array(
                     'choices' => $sources,
                     'required' => TRUE,
+                    'constraints' => array(
+                        new Assert\Choice(array('choices' => array_keys($sources)))
+                    ),
                     'attr' => array('readonly' => $show, 'disabled' => $show, 'class' => 'populate placeholder', 'data-validation' => 'required'),
                     'data' => (empty($data['source']) ? '': $data['source']),
                 )
@@ -625,6 +628,7 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
         return array(
             "id" => "E_A_C.`id` as `id`",
             "name" => "E_A_C.`name` as `name`",
+            "source" => "E_A_C.`source` as `source`",
             "platform" => "E_A_C.`platform` as `platform`",
             "status" => "E_A_C.`status` as `status`"
         );
