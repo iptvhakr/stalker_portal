@@ -100,7 +100,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv {
                         'cmd'           => 'ffmpeg '.$campaign['ad'],
                         'is_advert'     => true,
                         'ad_tracking'   => $campaign['tracking'],
-                        'ad_must_watch' => 25
+                        'ad_must_watch' => 100
                     );
                 }
             }
