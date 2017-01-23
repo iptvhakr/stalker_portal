@@ -103,7 +103,7 @@
                                </div>
 								<div class=" col-xs-10 col-sm-4 pull-right" id="cover_container">
                                     {{form_widget(app['form'].cover) }}
-                                    <img class="img-rounded channel-logo" src="{% if app['form'].cover.vars.value%}{{app.workHost}}{{app['curr_cover_dir']}}{{app['form'].cover.vars.value}}?ver=000000{% endif %}" alt="" style="max-width: 100%;">
+                                    <img class="img-rounded channel-logo" src="{% if app['form'].cover.vars.value%}{{app.workHost}}{{app['curr_cover_dir']}}{{app['form'].cover.vars.value}}?ver={{ random(1000000) }}{% endif %}" alt="" style="max-width: 100%;">
                                     <a class="no_context_menu" href="{{app.request.baseUrl}}/{{app.controller_alias}}/delete-cover" data-cover_id="{% if app['form'].id.vars.value %}{{app['form'].id.vars.value}}{% endif %}"><span class="txt-primary">{{ 'Delete cover'|trans }}</span></a>
                                 </div>
                             </div>
