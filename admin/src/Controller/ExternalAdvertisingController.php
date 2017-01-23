@@ -565,16 +565,24 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
 
                 if (!empty($data['id'])) {
                     $is_positions = $this->db->getAdPositions($data['id']);
-                    $is_positions = $this->getFieldFromArray($is_positions, 'position_code');
                     if (!empty($is_positions)) {
-                        $del_position = array_diff($is_positions, array_keys($get_positions));
-                        $get_positions = array_diff($get_positions, array_values($is_positions));
+                        $del_position = array();
+                        if (!empty($get_positions)) {
+                            while(list($num, $row) = each($is_positions)){
+                                if (!array_key_exists($row['position_code'], $get_positions) || $get_positions[$row['position_code']] != $row['blocks']) {
+                                    $del_position[] = $row['position_code'];
+                                } else {
+                                    unset($get_positions[$row['position_code']]);
+                                }
+                            }
+                        } else {
+                            $del_position = $this->getFieldFromArray($is_positions, 'position_code');
+                        }
                         if (!empty($del_position)){
                             $this->db->delAdPositions($data['id'], $del_position);
                         }
                     }
                 }
-
 
                 $curr_fields = $this->db->getTableFields('ext_adv_campaigns');
                 $curr_fields = $this->getFieldFromArray($curr_fields, 'Field');
