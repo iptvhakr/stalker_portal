@@ -518,6 +518,10 @@ _('Change the order of categories');
 _('List of video genres');
 _('List of video genres by page + filters');
 _('Validation of number of the video-category');
+_('Get current setting of viewed');
+_('Set new setting for viewed');
+_('movie');
+_('serial');
 
 _('admin');
 _('List of tv genres');

@@ -720,6 +720,8 @@ class EventsController extends \Controller\BaseStalkerController {
                 $data = array_merge_recursive($data, $this->event_scheduler_list_json(TRUE));
                 $data['action'] = 'updateTableRow';
                 $data['id'] = $id;
+            } else {
+                $data['msg'] = '';
             }
         }
 

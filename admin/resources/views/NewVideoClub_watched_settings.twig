@@ -1,0 +1,76 @@
+{% extends 'layout.twig' %}
+{% set title = ('Advertising'|trans ~ ': ' ~ 'Campaign'|trans) | trans %}
+
+{% block content %}
+
+    <div id="add_channel" style="padding-top: 0">
+        {{ form_start(app['form'], {'method': 'POST', 'action': (app.request.baseUrl ~ '/' ~ app.controller_alias  ~ '/' ~ app.action_alias) | trans, 'attr': {'class': 'form-horizontal', 'role': 'form', 'id': 'form_'}}) }}
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="box">
+                    <div class="box-content">
+                        <div class="col-xs-10 col-sm-6">
+                            <div class="form-group">
+                                <h4>{{ form_label(app['form'].history_option) }}</h4>
+                                <hr style="margin-top: 0;">
+                                {% for choiceFormView in app['form'].history_option %}
+                                    <div class="radio">
+                                        <label>
+                                            {{ form_widget(choiceFormView) }}
+                                            {{ choiceFormView.vars.label }}
+                                            <i class="fa fa-circle-o small"></i>
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="col-sm-12"></div>
+                        <div class="col-xs-10 col-sm-6">
+                            <div class="form-group">
+                                <h4>{{ form_label(app['form'].not_ended_history_size) }}</h4>
+                                <hr style="margin-top: 0;">
+                                {% for choiceFormView in app['form'].not_ended_history_size %}
+                                    <div class="radio">
+                                        <label>
+                                            {{ form_widget(choiceFormView) }}
+                                            {{ choiceFormView.vars.label }}
+                                            <i class="fa fa-circle-o small"></i>
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="col-sm-12"></div>
+                        <div class="col-xs-10 col-sm-6">
+                            <div class="form-group">
+                                {{ form_widget(app['form'].save, { 'label': 'Save'|trans , attr: {'class': 'btn btn-success green'}}) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="display: none;">
+            {{ form_rest(app['form']) }}
+        </div>
+        {{ form_end(app['form']) }}
+    </div>
+    <script type="text/javascript" defer>
+
+        function yelp() {
+            $(document).ready(function () {
+
+                $("#form_save").on('click', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+
+                    ajaxPostSend('{{ (app.request.baseUrl ~ '/' ~ app.controller_alias  ~ '/watched-settings-save') | trans }}', $("#form_").serializeArray());
+
+                    return false;
+                });
+            });
+        }
+        document.addEventListener("DOMContentLoaded", yelp, false);
+
+    </script>
+{% endblock %}

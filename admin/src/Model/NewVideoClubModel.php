@@ -397,13 +397,19 @@ class NewVideoClubModel extends \Model\BaseStalkerModel {
     }
     
     public function saveScreenshotData($data) {
-        return $this->mysqlInstance->insert('screenshots', array(
-            'name' => $data['name'],
+        $ext = end(explode('.', $data['name']));
+        $insert_id = $this->mysqlInstance->insert('screenshots', array(
+            'name' => (!empty($data['video_episodes']) ? '_' . $data['video_episodes']: '') . ".$ext",
             'size' => $data['size'],
             'type' => $data['type'],
             'media_id' => $data['media_id'],
             'video_episodes' => (isset($data['video_episodes']) ? $data['video_episodes']: 0)
         ))->insert_id();
+        if (!empty($insert_id)) {
+            $this->mysqlInstance->query("UPDATE `screenshots` SET `name` = CONCAT_WS('', `id`, `name`) WHERE `id` = '$insert_id'");
+        }
+
+        return $insert_id;
     }
     
     public function removeScreenshotData($param) {
@@ -666,5 +672,9 @@ class NewVideoClubModel extends \Model\BaseStalkerModel {
         }
 
         return $this->mysqlInstance->get()->all();
+    }
+
+    public function saveWatchedSettings($params){
+        return $this->mysqlInstance->update('watched_settings', $params)->total_rows();
     }
 }

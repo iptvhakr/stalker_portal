@@ -73,6 +73,11 @@
                 "name": _("Genres"),
                 "alias": "video-genres",
                 "icon": ""
+            },
+            "8": {
+                "name": _("Watched"),
+                "alias": "watched-settings",
+                "icon": ""
             }
         }
     },
