@@ -381,6 +381,18 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
+
+    public function watched_settings(){
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = $this->db->getAllFromTable('watched_settings', 'id');
+        $data = !empty($data) ? $data[0] : array();
+        $this->app['form'] = $this->buildWatchedSettingsForm($data)->createView();
+
+        return $this->app['twig']->render($this->getTemplateName(__METHOD__));
+    }
     
     //----------------------- ajax method --------------------------------------
     
@@ -2791,6 +2803,44 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         return !$local_use ? new Response(json_encode($response), (empty($error) ? 200 : 500)): $response;
     }
 
+    public function watched_settings_save() {
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData)) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+        $data = array();
+        $data['action'] = 'JSSuccessModalBox';
+
+        $error = '!';
+
+        $input_data = explode('_', $this->postData['form']['history_option']);
+        $input_data[] = $this->postData['form']['not_ended_history_size'];
+        $params = array_combine(array('enable_not_ended', 'enable_watched', 'not_ended_history_size'), $input_data);
+        $data['data'] = $params;
+
+        try{
+            $result = $this->db->saveWatchedSettings($params);
+            $error = '';
+        } catch (\Exception $e) {
+            $error = $this->setLocalization('DB error');
+            $result = FALSE;
+        }
+
+        if (is_numeric($result)) {
+            if ($result === 0) {
+                $data['nothing_to_do'] = TRUE;
+            }
+        }
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+
+
     //------------------------ service method ----------------------------------
 
     private function getVideoListFilters()
@@ -3669,5 +3719,52 @@ class NewVideoClubController extends \Controller\BaseStalkerController {
         }
 
         return (bool) $this->db->getSeriesFiles($params, 'COUNT');
+    }
+
+    private function buildWatchedSettingsForm($data = array()) {
+
+        $builder = $this->app['form.factory'];
+
+        $history_option = array(
+            '1_1' => $this->setLocalization("Yes"),
+            '0_0' => $this->setLocalization("No"),
+            '0_1' => $this->setLocalization("Only not ended")
+        );
+
+        $add_label_str = ' (' . implode(', ', $this->setLocalization(array('movie', 'episode', 'serial', 'quality' ))) . ')';
+
+        $not_ended_history_size = array(
+            0 => $this->setLocalization("All history"),
+            365 => $this->setLocalization("1 year") . $add_label_str,
+            180 => $this->setLocalization("6 months") . $add_label_str,
+            90 => $this->setLocalization("3 months") . $add_label_str,
+            30 => $this->setLocalization("1 month") . $add_label_str,
+        );
+
+        if (!empty($data)) {
+            $data['history_option'] = $data['enable_not_ended'] . '_' . $data['enable_watched'];
+            unset($data['enable_not_ended']);
+            unset($data['enable_watched']);
+            unset($data['id']);
+        }
+
+        $form = $builder->createBuilder('form', $data);
+        $form->add('history_option', 'choice', array(
+            'choices'   => $history_option,
+            'attr' => array('class' => 'radio'),
+            'label' => $this->setLocalization('Save viewing history'),
+            'expanded' => TRUE,
+            'multiple' => FALSE,
+            'required' => TRUE
+        ))->add('not_ended_history_size', 'choice', array(
+            'choices'   => $not_ended_history_size,
+            'attr' => array('class' => 'radio'),
+            'label' => $this->setLocalization('History size'),
+            'expanded' => TRUE,
+            'multiple' => FALSE,
+            'required' => TRUE
+        ))->add('save', 'submit');
+
+        return $form->getForm();
     }
 }

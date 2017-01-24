@@ -673,4 +673,8 @@ class NewVideoClubModel extends \Model\BaseStalkerModel {
 
         return $this->mysqlInstance->get()->all();
     }
+
+    public function saveWatchedSettings($params){
+        return $this->mysqlInstance->update('watched_settings', $params)->total_rows();
+    }
 }
