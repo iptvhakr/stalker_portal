@@ -72,7 +72,12 @@
         this.recalculate_preview_mode = function () {
             _debug('tv.recalculate_preview_mode');
 
-            stb.video_mode = stb.RDir('vmode');
+            try{
+                stb.video_mode = stb.RDir('vmode');
+            }catch(e){
+                _debug(e)
+            }
+
             _debug('stb.video_mode', stb.video_mode);
 
             _debug('parseInt(stb.video_mode)', parseInt(stb.video_mode));
@@ -1440,10 +1445,12 @@
             _debug('tv.init_quick_ch_switch');
             
             this.quick_ch_switch.dom_obj = create_block_element('quick_ch_switch tv_preview_quick_ch_switch');
-            
-            //this.quick_ch_switch.dom_obj.moveY(300);
-            
+
             this.quick_ch_switch.input = create_block_element('quick_ch_input', this.quick_ch_switch.dom_obj);
+
+            if (['MAG351', 'MAG256', 'MAG257'].indexOf(stb.type) != -1){
+                this.quick_ch_switch.input.style.marginTop = '5px';
+            }
             
             this.quick_ch_switch.dom_obj.hide();
         };
