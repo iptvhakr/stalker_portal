@@ -1765,6 +1765,8 @@ player.prototype.event_callback = function(event, params){
                 break;
             }
 
+            module && module.tv && module.tv.recalculate_preview_mode();
+
             window.clearTimeout(this.hdmi_reaction_timer);
 
             _debug('stb.profile[hdmi_event_reaction]', stb.profile['hdmi_event_reaction']);

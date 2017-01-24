@@ -648,6 +648,7 @@ function common_xpcom(){
         this.set_cookie('stb_lang', this.stb_lang);
         this.set_cookie('timezone', this.timezone);
 
+        _debug('this.video_mode:', this.video_mode);
         _debug('this.mac:', this.mac);
         _debug('this.serial_number:', this.serial_number);
         _debug('this.stb_lang:', this.stb_lang);
@@ -1052,8 +1053,10 @@ function common_xpcom(){
             stb.ExecAction('reboot');
         }
 
-        if (typeof (gSTB) != 'undefined') {
+        try{
             gSTB.StandByMode = 1; // always active stand-by
+        }catch(e){
+            _debug(e);
         }
 
         screensaver.init();

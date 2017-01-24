@@ -22,24 +22,6 @@
             {"mode" : 1080, "xsize" : 854, "ysize" : 480, "x" : 933, "y" : 139},
             {"mode" : 480,  "xsize" : 300, "ysize" : 240, "x" : 350, "y" : 63}
         ];
-
-        _debug('parseInt(stb.video_mode)', parseInt(stb.video_mode));
-        _debug('stb.graphic_mode', stb.graphic_mode);
-
-        if (stb.graphic_mode == 1080){
-            this.preview_pos = this.preview_pos_map[this.preview_pos_map.getIdxByVal("mode", parseInt(stb.video_mode))];
-
-            this.preview_pos.xsize = this.preview_pos.xsize*0.667;
-            this.preview_pos.ysize = this.preview_pos.ysize*0.667;
-
-            this.preview_pos.x = 945;
-            this.preview_pos.y = 274;
-
-        }else{
-            this.preview_pos = this.preview_pos_map[this.preview_pos_map.getIdxByVal("mode", parseInt(stb.video_mode))];
-        }
-
-        //this.preview_pos = this.preview_pos_map[this.preview_pos_map.getIdxByVal("mode", parseInt(stb.video_mode))];
         
         this.superclass = ListLayer.prototype;
         
@@ -87,6 +69,29 @@
             this.show();
         };
 
+        this.recalculate_preview_mode = function () {
+            _debug('tv.recalculate_preview_mode');
+
+            stb.video_mode = stb.RDir('vmode');
+            _debug('stb.video_mode', stb.video_mode);
+
+            _debug('parseInt(stb.video_mode)', parseInt(stb.video_mode));
+            _debug('stb.graphic_mode', stb.graphic_mode);
+
+            if (stb.graphic_mode == 1080){
+                this.preview_pos = this.preview_pos_map[this.preview_pos_map.getIdxByVal("mode", parseInt(stb.video_mode))];
+
+                this.preview_pos.xsize = this.preview_pos.xsize*0.667;
+                this.preview_pos.ysize = this.preview_pos.ysize*0.667;
+
+                this.preview_pos.x = 945;
+                this.preview_pos.y = 274;
+
+            }else{
+                this.preview_pos = this.preview_pos_map[this.preview_pos_map.getIdxByVal("mode", parseInt(stb.video_mode))];
+            }
+        };
+
         this.init = function(){
             this.superclass.init.call(this);
 
@@ -99,6 +104,8 @@
             }
 
             this.init_aspects();
+
+            this.recalculate_preview_mode();
 
             var scope = this;
 
