@@ -38,7 +38,12 @@ $user_theme = empty($user['theme']) || !array_key_exists($user['theme'], Middlew
     ? Mysql::getInstance()->from('settings')->get()->first('default_template')
     : $user['theme'];
 
-$icon = $app['app_url'].'/img/{0}/'.$app['icons'].'/'.($user_theme == 'default' ? '2010' : '2014').'.png'
+$icon = $app['app_url'].'/img/{0}/'.$app['icons'].'/'.($user_theme == 'default' ? '2010' : '2014').'.png';
+
+if ($app['options'] && $options = json_decode($app['options'], true)){
+    $app['app_url'] .= (strpos($app['app_url'], '?') ? '&' : '?').http_build_query($options);
+}
+
 ?>
 /**
 * Redirection to <?= $app['name'] ?> module.
@@ -49,27 +54,30 @@ main_menu.add('<?= $app['name'] ?>', [], '<?= $icon ?>', function(){
 
 var params = '';
 
+var url = '<?= $app['app_url']?>';
+
 if (stb.user['web_proxy_host']){
-params += '?proxy=http://';
-if (stb.user['web_proxy_user']){
-params += stb.user['web_proxy_user']+':'+stb.user['web_proxy_pass']+'@';
-}
-params += stb.user['web_proxy_host']+':' +stb.user['web_proxy_port'];
+    params += (url.indexOf('?') == -1 ? '?' : '&')+'proxy=http://';
+    if (stb.user['web_proxy_user']){
+        params += stb.user['web_proxy_user']+':'+stb.user['web_proxy_pass']+'@';
+    }
+    params += stb.user['web_proxy_host']+':' +stb.user['web_proxy_port'];
 }
 
 stb.setFrontPanel('.');
 
-if (!params){
-params += '?';
+if (!params && url.indexOf('?') == -1){
+    params += '?';
 }else{
-params += '&';
+    params += '&';
 }
 
 params = stb.add_referrer(params, this.module.layer_name);
 
-_debug('url', '<?= $app['app_url'] ?>'+params);
+_debug('url', url+params);
 
-window.location = '<?= $app['app_url'] ?>'+params;
+window.location = url+params;
+
 }, {layer_name : "external_<?= $app['alias'] ?>"});
 
 loader.next();

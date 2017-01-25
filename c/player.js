@@ -353,6 +353,10 @@ player.prototype.set_audio_langs = function(pri_lang, sec_lang){
     }catch(e){
         _debug(e);
     }
+
+    if (['MAG351', 'MAG256', 'MAG257'].indexOf(stb.type) != -1){
+        this.quick_ch_switch.input.style.marginTop = '5px';
+    }
 };
 
 player.prototype.set_subtitle_langs = function(pri_lang, sec_lang, size, color){
