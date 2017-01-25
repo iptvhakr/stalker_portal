@@ -147,8 +147,26 @@
     </div>
     <script type="text/javascript" defer>
 
+        var conf = {
+            form: '#form_',
+            lang : '{{ app.language }}',
+            showHelpOnFocus : true,
+            validateHiddenInputs: true,
+            modules: 'jsconf',
+            onSuccess: function () {
+                $(conf.form).get(0).submit();
+                return true;
+            },
+            onError: function () {
+                return false;
+            }
+        };
+
         function yelp() {
             $(document).ready(function () {
+
+                $.validate(conf);
+
                 $('#add_new_source').click(function(e) {
                     e.preventDefault();
                     e.preventDefault();
@@ -160,6 +178,18 @@
                     itemContainer.find('label').text("{{ 'source'|trans }} # " + ($('input[id^="form_"][type="text"]').length + 1));
                     itemContainer.insertAfter($(this).closest('.form-group'));
                     $(this).closest(".add_new_source_container").remove();
+                    return false;
+                });
+
+                $("#form_save").on('click', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+
+                    if ($(conf.form).isValid({}, conf, true)) {
+                        conf.onSuccess();
+                    } else {
+                        conf.onError();
+                    }
                     return false;
                 });
             });

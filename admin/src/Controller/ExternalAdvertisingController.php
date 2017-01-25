@@ -378,14 +378,14 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
             $form->add('source', 'collection', array(
                 'entry_type'   => 'text',
                 'entry_options'  => array(
-                    'attr'      => array('class' => 'form-control', 'data-validation' => 'required')
+                    'attr'      => array('class' => 'form-control', 'data-validation' => 'number')
                 )
             ));
         }
         $form->add('new_source', 'collection', array(
             'entry_type'   => 'text',
             'entry_options'  => array(
-                'attr' => array('class' => 'form-control')
+                'attr' => array('class' => 'form-control', 'data-validation' => 'number', 'data-validation-optional' => "true")
             ),
             'required' => FALSE,
             'allow_add' => TRUE
