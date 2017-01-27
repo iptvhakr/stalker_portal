@@ -300,6 +300,8 @@ class User implements \Stalker\Lib\StbApi\User
         $watched_status_raw = Mysql::getInstance()->from('user_played_movies')
             ->where(array(
                 'uid' => $this->id,
+                'episode_id' => 0,
+                'file_id' => 0
             ))
             ->in('season_id', $seasons_ids)
             ->get()->all();
