@@ -169,7 +169,7 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
                             'cmd'           => 'ffmpeg '.$campaign['ad'],
                             'is_advert'     => true,
                             'ad_tracking'   => $campaign['tracking'],
-                            'ad_must_watch' => 25
+                            'ad_must_watch' => $campaign['skip_after'] == 0 ? 'all' :  $campaign['skip_after'].'s'
                         );
                     }
                 }

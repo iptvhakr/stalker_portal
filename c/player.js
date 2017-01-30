@@ -1435,7 +1435,12 @@ player.prototype.event_callback = function(event, params){
 
                 if (this.cur_media_item.hasOwnProperty('ad_must_watch') && this.cur_media_item.ad_must_watch != 'all'){
 
-                    var lock_time = this.cur_media_length * this.cur_media_item.ad_must_watch / 100;
+                    if (this.cur_media_item.ad_must_watch.indexOf('s') > 0){ // time in seconds
+                        var lock_time = parseInt(this.cur_media_item.ad_must_watch, 10);
+                        lock_time = this.cur_media_length < lock_time ? this.cur_media_length : lock_time;
+                    }else{
+                        lock_time = this.cur_media_length * this.cur_media_item.ad_must_watch / 100;
+                    }
 
                     _debug('lock_time', lock_time);
 
