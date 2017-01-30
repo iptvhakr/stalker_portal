@@ -248,7 +248,7 @@ class User implements \Stalker\Lib\StbApi\User
         $not_ended_raw = Mysql::getInstance()
             ->select('u1.*')
             ->from('user_played_movies u1')
-            ->join('user_played_movies u2', 'u1.id', 'u2.id AND u1.playtime<u2.playtime', 'LEFT')
+            ->join('user_played_movies u2', 'u1.video_id', 'u2.video_id AND u1.playtime<u2.playtime', 'LEFT')
             ->where(array(
                 'u1.uid'            => $this->id,
                 'u1.file_id!='      => 0,
@@ -277,8 +277,7 @@ class User implements \Stalker\Lib\StbApi\User
                 'uid'        => $this->id,
                 'season_id'  => 0,
                 'episode_id' => 0,
-                'file_id'    => 0,
-                'watched'    => 1
+                'file_id'    => 0
             
             ))->get()->all();
 
