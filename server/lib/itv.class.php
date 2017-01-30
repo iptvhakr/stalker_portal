@@ -77,7 +77,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv {
 
             $options = $user->getServicesByType('option');
 
-            if (array_search('disable_ad', $options) !== false){
+            if ($options && array_search('disable_ad', $options) !== false){
                 $disable_ad = true;
             }
         }

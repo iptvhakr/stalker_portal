@@ -545,7 +545,7 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
                 array(
                     'uid'      => $this->stb->id,
                     'video_id' => $video_id,
-                    'ended'    => 1,
+                    'watched'  => 1,
                     'playtime' => 'NOW()'
                 ));
 
@@ -554,7 +554,7 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
             $this->db->update('user_played_movies',
                 array(
                     'playtime' => 'NOW()',
-                    'ended'    => 1
+                    'watched'  => 1
                 ),
                 array(
                     'uid'      => $this->stb->id,
