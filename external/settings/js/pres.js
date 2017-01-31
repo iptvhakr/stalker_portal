@@ -17,6 +17,16 @@ if(!block)switch(ec)
     case 39:change(1);if(fln&&iid<=mid-2)if(menuT[iid-1][0]=='dn')e.preventDefault();break;
     case 80:if(fusb){flesh.length=0;load();}break;
     case 81:if(fusb){flesh.length=0;load();}break;
+    case 85: // power button
+        var power_off = parent.stb.GetStandByStatus();
+        if (power_off){
+            power_off = false;
+            parent.stb.StandBy(0);
+        }else{
+            power_off = true;
+            parent.stb.StandBy(1);
+        }
+        break;
     }
 else e.preventDefault();
 }

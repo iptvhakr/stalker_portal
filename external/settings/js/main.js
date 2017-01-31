@@ -212,6 +212,16 @@ switch(ec)
     case 38:perehod(-1);break;
     case 37:perehod(-1);break;
     case 39:perehod(1);break;
+    case 85: // power button
+        var power_off = parent.stb.GetStandByStatus();
+        if (power_off){
+            power_off = false;
+            parent.stb.StandBy(0);
+        }else{
+            power_off = true;
+            parent.stb.StandBy(1);
+        }
+        break;
     }
 }
 

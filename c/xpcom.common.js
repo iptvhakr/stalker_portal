@@ -1529,6 +1529,10 @@ function common_xpcom(){
     this.switchPower = function(){
         _debug('stb.switchPower()');
 
+        if (stb.GetStandByStatus){
+            this.power_off = stb.GetStandByStatus();
+        }
+
         if(this.power_off){
             //this.StandBy(0);
             this.power_off = false;
@@ -2135,6 +2139,7 @@ function common_xpcom(){
                 }catch(e){
                     _debug(e);
                 }
+                stb.player.on = false;
                 main_menu.show();
 
                 cb();
