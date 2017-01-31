@@ -143,11 +143,11 @@ class ExternalAdvertisingModel extends \Model\BaseStalkerModel {
         return $this->mysqlInstance->delete('ext_adv_campaigns_position', array('campaigns_id' => $id, 'position_code in (' . implode(', ', $positions) . ') and 1' => 1))->total_rows();
     }
 
-    public function addAdPositions($id, $positions = array()){
+    public function addAdPositions($id, $positions = array(), $skip = array()){
         $insert = array();
         reset($positions);
         while(list($key, $val) = each($positions)){
-            $insert[] = array('campaigns_id' => $id, 'position_code' => $key, 'blocks' => $val);
+            $insert[] = array('campaigns_id' => $id, 'position_code' => $key, 'blocks' => $val, 'skip_after' => !empty($skip[$key]) ? (int)$skip[$key]: 0);
         }
 
         return $this->mysqlInstance->insert('ext_adv_campaigns_position', array_values($insert))->total_rows();

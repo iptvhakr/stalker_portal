@@ -3,7 +3,7 @@
 
 {% block content %}
 
-    <div id="add_channel">
+    <div>
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="box">
@@ -88,32 +88,86 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">{{ 'Ad position'|trans }}</label>
+                            <label class="col-sm-2 control-label">{{ 'Settings'|trans }}<span class="icon-required">*</span></label>
                             <div class="col-xs-10 col-sm-8" style="margin-top: 8px;">
-                        {% for platform_part, label_part in app['platform_list'] %}
-                            <div id="{{ platform_part }}_part" {% if platform_part != app['form'].platform.vars.value %}style="display: none;"{% endif %}>
-                                {% for key, addPositionField in app['form'][platform_part] %}
-                                    {% if attribute(label_part, key) is defined %}
-                                <label class="col-sm-12 text-left"><strong>{{ label_part[key] }}</strong></label>
-                                    {% endif %}
-                                    <div class=" col-xs-7 input-group" {% if key == 103 %}style="display: none;"{% endif %}>
-                                        <div class="col-xs-2">
-                                        {{ form_widget(addPositionField, {'attr': {'class': 'populate placeholder'} }) }}
-                                        </div>
-                                        {{ form_label(addPositionField, addPositionField.vars.label[key]) }}
-                                    </div>
-                                    <div>
-                                        <div class="bg-danger">
-                                            {{ form_errors(addPositionField) }}
-                                        </div>
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        {% endfor %}
+                                <table class="table ext_ad_table table-striped table-bordered table-hover table-heading">
+                                    <thead>
+                                        <tr role="row">
+                                            <th width="15%"><div class="col-sm-12"><strong>{{ 'System'|trans }}</strong></div></th>
+                                            <th width="10%"><div class="col-sm-12"><strong>{{ 'Enable'|trans }}</strong></div></th>
+                                            <th width="40%"><div class="col-sm-12"><strong>{{ 'Ad position'|trans }}</strong></div></th>
+                                            <th width="12%"><div class="col-sm-12"><strong>{{ 'Ad blocks'|trans }}</strong></div></th>
+                                            <th width="23%"><div class="col-sm-12"><strong>{{ '"Skip" button (after 7 sec)'|trans }}</strong></div></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% set prefix = '' %}
+                                    {% for platform_part, label_part in app['platform_list'] %}
+                                        {% for code, label_part_part in label_part %}
+                                            <tr id="{{ platform_part }}_part_{{ code }}" {% if platform_part != app['form'].platform.vars.value %}style="display: none;"{% endif %}>
+                                                {% set prefix = label_part_part.prefix %}
+                                                <td>
+                                                    <div class="col-sm-12">
+                                                        <strong>{{ label_part[code].label }}</strong>
+                                                    </div>
+                                                    <div class="col-sm-12"></div>
+                                                </td>
+                                                <td>
+                                                    {% for key, addPositionField in app['form'][platform_part] if (key ~ '' | trans)|slice(0, 1) == prefix %}
+                                                    <div class="col-sm-12">
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input data-code="{{ key }}" type="checkbox" {% if addPositionField.vars.value %}checked="checked"{% endif %} >
+                                                                <i class="fa fa-square-o small"></i>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12"></div>
+                                                    {% endfor %}
+                                                </td>
+                                                <td>
+                                                    {% for key, addPositionField in app['form'][platform_part] if (key ~ '' | trans)|slice(0, 1) == prefix %}
+                                                    <div class="col-sm-12">
+                                                        {{ form_label(addPositionField, addPositionField.vars.label[key], {'label_attr': {'data-codereff': key}}) }}
+                                                    </div>
+                                                    <div class="col-sm-12">
+                                                        {% if key == '205' %}
+                                                        <label class='txt-danger' id="warning_label" {% if not(addPositionField.vars.value) %}style="visibility: hidden;" {% endif %} >{{ 'Attention! advertising block will be played instead of the content.' | trans }}</label>
+                                                        {% endif %}
+                                                    </div>
+                                                    {% endfor %}
+                                                </td>
+                                                <td>
+                                                    {% for key, addPositionField in app['form'][platform_part] if (key ~ '' | trans)|slice(0, 1) == prefix  %}
+                                                        <div class="col-sm-12">
+                                                        {{ form_widget(addPositionField, {'attr': {'class': 'populate placeholder', 'data-codereff': key } }) }}
+                                                        </div>
+                                                        <div class="col-sm-12"></div>
+                                                    {% endfor %}
+                                                </td>
+                                                <td>
+                                                    {% set  platform_part_skip = (platform_part ~ '_skip') | trans %}
+                                                    {% for key, addPositionField in app['form'][platform_part_skip] if (key ~ '' | trans)|slice(0, 1) == prefix %}
+                                                    <div class="col-sm-12">
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                {{ form_widget(addPositionField, { 'attr': {'data-codereff': key, 'value': 7 } }) }}
+                                                                <i class="fa fa-square-o small"></i>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12"></div>
+                                                    {% endfor %}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label ">{{ 'Status'|trans }}</label>
+                            <label class="col-sm-2 control-label">{{ 'Activate the campaign'|trans }}</label>
                             <div class="col-xs-10 col-sm-8">
                                 <div class=" col-xs-10 col-sm-5">
                                     <span class="col-xs-12 col-sm-12 no-padding">
@@ -157,13 +211,15 @@
             validateHiddenInputs: true,
             modules: 'jsconf',
             onSuccess: function () {
-                $('div[id$="_part"]').each(function(){
+                $('tr[id*="_part_"]').each(function(){
                     if (!$(this).is(':visible')) {
                         $(this).find('option').removeAttr('selected');
+                        $(this).find('[data-code]').prop('checked', false);
                     }
                 });
+
                 $(conf.form).get(0).submit();
-                return true;
+                return false;
             },
             onError: function () {
                 return false;
@@ -194,27 +250,45 @@
                 $(document).on('change', "#form_platform", function(e){
                     var selectedVal = $(this).val();
                     $(this).find("option").each(function(){
+                        var trId = '[id^="' + $(this).val() + '_part"]';
                         if($(this).val() != selectedVal) {
-                            $("#" + $(this).val() + "_part").hide().find("input[type='checkbox']").prop("checked", false).removeAttr("checked");
+                            $(trId).hide().find("input:checkbox[data-code]").prop("checked", false).removeAttr("checked");
+                            setDisabledRows($(trId).hide().find("input:checkbox[data-code]"));
                         } else {
-                            $("#" + $(this).val() + "_part").show();
+                            $(trId).show();
                         }
                     });
                 });
-                setSelectWarning($('#form_stb_205'));
-                $(document).on('change', '#form_stb_205', function(e){
+                setSelectWarning($('input:checkbox[data-code="205"]'));
+                $(document).on('change', 'input:checkbox[data-code="205"]', function(e){
                     setSelectWarning($(this));
+                });
+                setDisabledRows($('input:checkbox[data-code]'));
+                $(document).on('change', 'input:checkbox[data-code]', function(e){
+                    setDisabledRows($(this));
                 });
             });
         }
         document.addEventListener("DOMContentLoaded", yelp, false);
 
         function setSelectWarning(selectObj){
-            if (selectObj.val()) {
-                $('label[for="' + selectObj.attr('id') + '"]').closest('div').after("<label class='txt-danger col-sm-offset-1 control-label'>{{ 'Attention! advertising block will be played instead of the content.' | trans }}</label>");
-            } else {
-                $('label[for="' + selectObj.attr('id') + '"]').closest('div').next('label').remove();
-            }
+            $("#warning_label").css({visibility: $(selectObj).is(":checked") ? 'visible' : 'hidden'});
+        }
+
+        function setDisabledRows(objList){
+            objList.each(function(){
+                var codeReff = $(this).data('code');
+                var reffObj = $(this).closest('tr').find('[data-codereff="'+ codeReff +'"]');
+                reffObj[(!$(this).is(":checked")? 'add': 'remove')+'Class']('disabled')
+                        .closest('label')[(!$(this).is(":checked")? 'add': 'remove')+'Class']('disabled')
+                        .closest('div')[(!$(this).is(":checked")? 'add': 'remove')+'Class']('disabled_opacity');
+                reffObj.prop('disabled', !$(this).is(":checked"));
+                if ($(this).is(":checked")) {
+                    reffObj.removeAttr('disabled');
+                } else {
+                    reffObj.attr('disabled', 'disabled');
+                }
+            });
         }
     </script>
 {% endblock %}
