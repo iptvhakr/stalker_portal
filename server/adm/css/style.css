@@ -1290,6 +1290,7 @@ a.disabled, a.disabled:focus, a.disabled:hover, a.disabled:active, a.disabled.ac
 
 .ext_ad_table > tbody > tr label{
     font-weight: normal;
+    text-align: left !important;
 }
 
 #cmd_data, #tariff_plan_table{display:inline-table;}
