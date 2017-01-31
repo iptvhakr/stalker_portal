@@ -2307,8 +2307,8 @@ class UsersController extends \Controller\BaseStalkerController {
                     $event->sendMsgAndReboot($user->getLocalizedText('Tariff plan is changed, please restart your STB'));
                 }
 
-                if (!empty($this->postData['tariff_plan_packages'])) {
-                    $this->changeUserPlanPackages($id, $this->postData['tariff_plan_packages']);
+                if (Config::get('enable_tariff_plans')) {
+                    $this->changeUserPlanPackages($id, !empty($this->postData['tariff_plan_packages']) ? $this->postData['tariff_plan_packages']: array());
                 }
                 return TRUE;
             }
