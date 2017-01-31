@@ -24,8 +24,10 @@
                 ['select', parent.t('HDMI event reaction:'), 0, parent.t("Ignore"), 1, parent.t("Immediately"), 60, parent.t("Delay 1 minute"), 300, parent.t("Delay 5 minute"), 600, parent.t("Delay 10 minutes")]
             ];
 
-            if (['mag254', 'mag255',  'mag256',  'mag257',  'mag270',  'mag275',  'mag350',  'mag351', 'mag352'].indexOf(model.toLowerCase()) != -1){
+            if (['mag254', 'mag255', 'mag256', 'mag257', 'mag270', 'mag275', 'mag350',  'mag351', 'mag352'].indexOf(model.toLowerCase()) != -1){
                 menuT[0] = ['select', parent.t('Video output mode:'), "Auto", "Auto", "PAL", "PAL", "576-50", "576-50", "720p-50", "720p-50", "1080i-50", "1080i-50", "1080p-50", "1080p-50", "NTSC", "NTSC", "720p-60", "720p-60", "1080i-60", "1080i-60", "1080p-60", "1080p-60"];
+            }else if (['mag256', 'mag257'].indexOf(model.toLowerCase()) != -1){
+                menuT[0] = ['select', parent.t('Video output mode:'), "Auto", "Auto", "PAL", "PAL", "720p-50", "720p-50", "1080i-50", "1080i-50", "1080p-50", "1080p-50", "NTSC", "NTSC", "720p-60", "720p-60", "1080i-60", "1080i-60", "1080p-60", "1080p-60"];
             }
         }
         var mid = menuT.length + 2;

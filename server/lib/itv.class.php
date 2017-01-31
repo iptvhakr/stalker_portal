@@ -77,7 +77,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv {
 
             $options = $user->getServicesByType('option');
 
-            if (array_search('disable_ad', $options) !== false){
+            if ($options && array_search('disable_ad', $options) !== false){
                 $disable_ad = true;
             }
         }
@@ -100,7 +100,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv {
                         'cmd'           => 'ffmpeg '.$campaign['ad'],
                         'is_advert'     => true,
                         'ad_tracking'   => $campaign['tracking'],
-                        'ad_must_watch' => 100
+                        'ad_must_watch' => $campaign['skip_after'] == 0 ? 'all' :  $campaign['skip_after'].'s'
                     );
                 }
             }

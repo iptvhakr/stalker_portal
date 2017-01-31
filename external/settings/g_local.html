@@ -131,6 +131,16 @@ if(!block)switch(ec)
     case 38:if(iid<=mid)perehod_set(-1);fc=true;e.preventDefault();if(fln)ni=1;break;
     case 37:change(-1);if(fln&&iid<=mid-2)if(menuT[iid-1][0]=='dn')e.preventDefault();break;
     case 39:change(1);if(fln&&iid<=mid-2)if(menuT[iid-1][0]=='dn')e.preventDefault();break;
+    case 85: // power button
+        var power_off = parent.stb.GetStandByStatus();
+        if (power_off){
+            power_off = false;
+            parent.stb.StandBy(0);
+        }else{
+            power_off = true;
+            parent.stb.StandBy(1);
+        }
+        break;
     }
 else switch(ec)
     {
@@ -141,6 +151,16 @@ else switch(ec)
     case 38:cityGo(-1);e.preventDefault();break;//vverh
     case 37:break;//levo
     case 39:break;//pravo
+    case 85: // power button
+        power_off = parent.stb.GetStandByStatus();
+        if (power_off){
+            power_off = false;
+            parent.stb.StandBy(0);
+        }else{
+            power_off = true;
+            parent.stb.StandBy(1);
+        }
+        break;
     }
 }
 

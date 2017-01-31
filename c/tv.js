@@ -95,6 +95,14 @@
             }else{
                 this.preview_pos = this.preview_pos_map[this.preview_pos_map.getIdxByVal("mode", parseInt(stb.video_mode))];
             }
+
+            if (stb.player.on && stb.player.is_tv && this.on == false){
+                _debug('stb.SetPIG');
+                stb.SetPIG(1, -1, -1, -1);
+            }else if (this.on && this.cur_view == 'short') {
+                _debug('stb.SetViewport');
+                stb.SetViewport(this.preview_pos.xsize, this.preview_pos.ysize, this.preview_pos.x, this.preview_pos.y)
+            }
         };
 
         this.init = function(){

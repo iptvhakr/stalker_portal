@@ -245,14 +245,17 @@ class User implements \Stalker\Lib\StbApi\User
 
     public function getNotEndedVideo(){
 
-        $not_ended_raw = Mysql::getInstance()->from('user_played_movies')
+        $not_ended_raw = Mysql::getInstance()
+            ->select('u1.*')
+            ->from('user_played_movies u1')
+            ->join('user_played_movies u2', 'u1.video_id', 'u2.video_id AND u1.playtime<u2.playtime', 'LEFT')
             ->where(array(
-                'uid'            => $this->id,
-                'file_id!='      => 0,
-                'watched'        => 0,
-                'watched_time!=' => 0
+                'u1.uid'            => $this->id,
+                'u1.file_id!='      => 0,
+                'u1.watched_time!=' => 0,
+                'u2.id' => null
 
-            ))->groupby('video_id')->get()->all();
+            ))->get()->all();
 
         if (empty($not_ended_raw)){
             return array();
@@ -274,8 +277,7 @@ class User implements \Stalker\Lib\StbApi\User
                 'uid'        => $this->id,
                 'season_id'  => 0,
                 'episode_id' => 0,
-                'file_id'    => 0,
-                'watched'    => 1
+                'file_id'    => 0
             
             ))->get()->all();
 
@@ -297,6 +299,8 @@ class User implements \Stalker\Lib\StbApi\User
         $watched_status_raw = Mysql::getInstance()->from('user_played_movies')
             ->where(array(
                 'uid' => $this->id,
+                'episode_id' => 0,
+                'file_id' => 0
             ))
             ->in('season_id', $seasons_ids)
             ->get()->all();

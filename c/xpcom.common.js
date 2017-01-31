@@ -1401,6 +1401,12 @@ function common_xpcom(){
 
         _debug('this.user[display_menu_after_loading]', this.user['display_menu_after_loading']);
 
+        if (this.GetHDMIConnectionState){
+            this.hdmi_on = this.GetHDMIConnectionState() == 2;
+        }
+
+        _debug('this.hdmi_on', this.hdmi_on);
+
         this.key_lock = false;
 
         if (single_module.length > 0 && module[single_module[0]]){
@@ -1522,6 +1528,10 @@ function common_xpcom(){
 
     this.switchPower = function(){
         _debug('stb.switchPower()');
+
+        if (stb.GetStandByStatus){
+            this.power_off = stb.GetStandByStatus();
+        }
 
         if(this.power_off){
             //this.StandBy(0);
@@ -2129,6 +2139,7 @@ function common_xpcom(){
                 }catch(e){
                     _debug(e);
                 }
+                stb.player.on = false;
                 main_menu.show();
 
                 cb();
