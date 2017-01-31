@@ -999,6 +999,9 @@ td.beauty-hover {
 .action-menu {width:20px !important;}
 .ddd {float:right;margin-right:10px;width:20px;}
 .table-hover > tbody > tr > td:first-child  {border-left:1px solid #FFF;}
+.ext_ad_table.table-hover > tbody > tr > td:first-child{
+    border: 1px solid #ddd;
+}
 .table-hover > tbody > tr:hover > td:first-child {border-left:1px solid #FFCD1C;}
 .DTTT.btn-group {
   position: absolute;
@@ -1258,10 +1261,37 @@ a.disabled, a.disabled:focus, a.disabled:hover, a.disabled:active, a.disabled.ac
   border-color: rgba(0, 0, 0, 0.3);
   
 }
-.table > thead > tr > th  { border-bottom: 1px solid #E3E3E3 !important;
-color: #5F5F5F !important;     height: 34px; padding: 4px 1px 4px 12px !important;
+.table > thead > tr > th  {
+    border-bottom: 1px solid #E3E3E3 !important;
+    color: #5F5F5F !important;
+    height: 34px;
+    padding: 4px 1px 4px 12px !important;
 }
 .table{display:none;}
+
+.table.ext_ad_table{
+    display: table;
+    margin-left: 10px;
+}
+
+.ext_ad_table.table-heading thead tr{
+    background-color: #DEDDDD;
+}
+
+.ext_ad_table.table > thead > tr > th  {
+    border-bottom-color: #C9C9C9 !important;
+    padding: 8px !important;
+    white-space: nowrap;
+}
+
+.ext_ad_table.table-striped > tbody > tr:nth-child(2n+1) > td{
+    background-color: #ffffff;
+}
+
+.ext_ad_table > tbody > tr label{
+    font-weight: normal;
+}
+
 #cmd_data, #tariff_plan_table{display:inline-table;}
 .dataTables_wrapper .table {display:inline-table;}
 
@@ -3467,7 +3497,7 @@ span.serial + span{
     border-radius: inherit !important;
 }
 
-#iptv_list .green, #add_channel .green, #modalbox .green {
+#iptv_list .green, #add_channel .green, #modalbox .green , .btn-success.green{
     background-color: #0F9C16 !important;
     color: #ffffff !important;
     border-color: rgba(0, 0, 0, 0.3);
