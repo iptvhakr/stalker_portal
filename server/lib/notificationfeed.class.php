@@ -179,7 +179,7 @@ class NotificationFeedItem{
                     'category' => $this->category,
                     'pub_date' => $this->pub_date,
                     'guid' => $this->guid,
-                    '`read`' => $this->read,
+                    'read' => $this->read,
                     'added' => 'NOW()'
                 ))->insert_id();
 
