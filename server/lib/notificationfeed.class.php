@@ -4,7 +4,7 @@ use \Stalker\Lib\Core\Mysql;
 
 class NotificationFeed
 {
-    private $feed_url = 'http://192.168.1.13/stalker-master/public_html/feed'; //todo: change
+    private $feed_url = 'https://not.ministra.com/feed';
 
     /**
      * @param bool $only_not_read
@@ -179,7 +179,7 @@ class NotificationFeedItem{
                     'category' => $this->category,
                     'pub_date' => $this->pub_date,
                     'guid' => $this->guid,
-                    '`read`' => $this->read,
+                    'read' => $this->read,
                     'added' => 'NOW()'
                 ))->insert_id();
 

@@ -52,7 +52,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
         $tz = new DateTimeZone(Stb::$server_timezone);
 
         $date = new DateTime(date('r', strtotime($program['time'])));
-        $date->setTimeZone($tz);
+        $date->setTimezone($tz);
 
         if ($overlap_start){
             $date->sub(new DateInterval('PT'.$overlap_start.'S'));
@@ -61,7 +61,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
         $date_now = new DateTime('now', new DateTimeZone(Stb::$server_timezone));
 
         $date_to = new DateTime(date('r', strtotime($program['time_to'])));
-        $date_to->setTimeZone($tz);
+        $date_to->setTimezone($tz);
 
         $dst_diff = $date->format('Z') - $date_now->format('Z');
 
@@ -220,7 +220,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
         $tz = new DateTimeZone(!empty(Stb::$server_timezone) ? Stb::$server_timezone : date_default_timezone_get());
 
         $date = new DateTime(date('r', strtotime($program['time'])));
-        $date->setTimeZone($tz);
+        $date->setTimezone($tz);
 
         // previous part overlap compensation
 
@@ -237,7 +237,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
         $date_now = new DateTime('now', new DateTimeZone(!empty(Stb::$server_timezone) ? Stb::$server_timezone : date_default_timezone_get()));
 
         $date_to = new DateTime(date('r', strtotime($program['time_to'])));
-        $date_to->setTimeZone($tz);
+        $date_to->setTimezone($tz);
 
         $dst_diff = $date->format('Z') - $date_now->format('Z');
 
@@ -451,7 +451,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
         $tz = new DateTimeZone(Stb::$server_timezone);
 
         $date = new DateTime(date('r'));
-        $date->setTimeZone($tz);
+        $date->setTimezone($tz);
 
         $date_now = new DateTime('now', new DateTimeZone(Stb::$server_timezone));
 

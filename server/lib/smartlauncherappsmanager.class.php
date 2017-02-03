@@ -839,7 +839,7 @@ class SmartLauncherAppsManager
 
         if (is_null($orig_metapackage)) {
 
-            $info = $npm->info($metapackage_name, $stalker_version);
+            $info = $npm->info($metapackage_name);
 
             if (!$info) {
                 return false;
