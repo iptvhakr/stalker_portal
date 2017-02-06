@@ -887,11 +887,14 @@ function common_xpcom(){
     this.handshake = function(){
         _debug('stb.handshake');
 
+        var prehash = stb.GetHashVersion1 ? stb.GetHashVersion1(this.type, this.version.substr(0, 56)) : 0;
+
         this.load(
             {
-                "type"   : "stb",
-                "action" : "handshake",
-                "token"  : this.get_saved_access_token() || ''
+                "type"    : "stb",
+                "action"  : "handshake",
+                "token"   : this.get_saved_access_token() || '',
+                "prehash" : prehash
             },
             function(result){
                 _debug('on handshake', result);
@@ -910,18 +913,18 @@ function common_xpcom(){
                     parent.postMessage('access_token:'+this.access_token, '*');
                 }
 
-                this.get_user_profile();
+                this.get_user_profile(false, prehash);
             },
             this
         )
     };
 
-    this.get_user_profile = function(auth_second_step){
-        _debug('this.get_user_profile', auth_second_step);
+    this.get_user_profile = function(auth_second_step, prehash){
+        _debug('this.get_user_profile', auth_second_step, prehash);
 
         var device_id2 = stb.GetUID ? (stb.GetUID(this.access_token) == stb.GetUID(this.access_token, this.access_token) ? '' : stb.GetUID('device_id', this.access_token)) : '';
 
-        var metrics = {mac:this.mac, sn:this.serial_number, type:"stb", model:this.type, uid:device_id2};
+        var metrics = {mac:this.mac, sn:this.serial_number, model:this.type, type:"STB", uid:device_id2, random:this.random};
 
         _debug('metrics', JSON.stringify(metrics));
 
@@ -939,13 +942,15 @@ function common_xpcom(){
                 'video_out'        : (stb.GetHDMIConnectionState ? (stb.GetHDMIConnectionState() == 0 && window.innerHeight <= 576 ? "rca" : "hdmi") : ""),
                 'device_id'        : stb.GetUID ? stb.GetUID() : '',
                 'device_id2'       : device_id2,
-                'signature'        : stb.GetUID ? stb.GetUID(this.access_token) : '',
+                'signature'        : stb.GetUID ? stb.GetUID(this.random) : '',
                 'auth_second_step' : auth_second_step ? 1 : 0,
                 'hw_version'       : this.hw_version,
                 'not_valid_token'  : this.not_valid_token ? 1 : 0,
                 'metrics'          : encodeURIComponent(JSON.stringify(metrics)),
                 'hw_version_2'     : stb.GetHashVersion1 ? stb.GetHashVersion1(JSON.stringify(metrics), this.random) : '',
-                'timestamp'        : Math.round(new Date().getTime()/1000)
+                'timestamp'        : Math.round(new Date().getTime()/1000),
+                'api_signature'    : (function(){var p=0;for(var d in gSTB){if(gSTB.hasOwnProperty(d)){p++}} return p})(),
+                'prehash'          : prehash
             },
 
             function(result){
