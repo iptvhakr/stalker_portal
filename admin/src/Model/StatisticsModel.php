@@ -227,6 +227,11 @@ class StatisticsModel extends \Model\BaseStalkerModel {
                         ->like($param['like'], 'OR')
                         ->groupby('ch_id')
                         ->orderby('counter', 'DESC');
+
+        if (!empty($params['like'])) {
+            $this->mysqlInstance->like($params['like']);
+        }
+
         if (!empty($this->reseller_id)) {
             $this->mysqlInstance->join('users', 'played_tv_archive.uid', 'users.id', 'LEFT')
                                 ->where(array('reseller_id' => $this->reseller_id));
@@ -266,6 +271,11 @@ class StatisticsModel extends \Model\BaseStalkerModel {
                         ->like($param['like'], 'OR')
                         ->groupby('ch_id')
                         ->orderby('counter', 'DESC');
+
+        if (!empty($params['like'])) {
+            $this->mysqlInstance->like($params['like']);
+        }
+
         if (!empty($this->reseller_id)) {
             $this->mysqlInstance->join('users', 'played_timeshift.uid', 'users.id', 'LEFT')
                                 ->where(array('reseller_id' => $this->reseller_id));
@@ -409,6 +419,11 @@ class StatisticsModel extends \Model\BaseStalkerModel {
                         ->where(array(' itv.id IS NOT ' => NULL))
                         ->like($param['like'], 'OR')
                         ->groupby('itv_id');
+
+        if (!empty($params['like'])) {
+            $this->mysqlInstance->like($params['like']);
+        }
+
         if (!empty($param['order'])) {
             $this->mysqlInstance->orderby($param['order']);
         }
