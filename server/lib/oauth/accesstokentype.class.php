@@ -26,6 +26,10 @@ abstract class AccessTokenType
 
     abstract public function checkRequest();
 
+    public function getAlgorithm(){
+        return null;
+    }
+
     public function getSession(){
         return $this->access_handler->getAccessSessionByToken($this->access_token);
     }
