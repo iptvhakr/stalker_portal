@@ -609,14 +609,13 @@ class StatisticsController extends \Controller\BaseStalkerController {
         $like_filter = array();
         $filters = $this->getStatisticsFilters($like_filter);
 
-        $filds_for_select = $this->getFieldFromArray($this->getTvArchiveDropdownAttribute(), 'name');
-        $filds_for_select = array_combine($filds_for_select, $filds_for_select);
-        if (($pos = array_search('name', $filds_for_select)) !== FALSE) {
-            unset($filds_for_select[$pos]);
-            $filds_for_select['name'] = 'itv.`name` as `name`';
-        }
-                
-        $error = "Error";
+        $filds_for_select = array(
+            'itv_id' => 'played_tv_archive.ch_id as `ch_id`',
+            'name' => 'itv.`name` as `name`',
+            'counter' => 'count(`played_tv_archive`.ch_id) as `counter`',
+            'total_duration' => 'SUM(played_tv_archive.length) as `total_duration`'
+        );
+        $error = $this->setLocalization("Error");
         $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
@@ -635,14 +634,6 @@ class StatisticsController extends \Controller\BaseStalkerController {
             $query_param['select'] = array_values($filds_for_select);
         } else {
 //            $query_param['select'][] = 'id';
-        }
-        
-        if (($search = array_search('counter', $query_param['select'])) !== FALSE) {
-            $query_param['select'][$search] = 'count(`ch_id`) as `counter`';
-        }
-        
-        if (($search = array_search('total_duration', $query_param['select'])) !== FALSE) {
-            $query_param['select'][$search] = 'SUM(`length`) as `total_duration`';
         }
 
         if (!empty($query_param['like']) && array_key_exists('counter', $query_param['like'])) {
@@ -692,14 +683,14 @@ class StatisticsController extends \Controller\BaseStalkerController {
         $like_filter = array();
         $filters = $this->getStatisticsFilters($like_filter);
                
-        $filds_for_select = $this->getFieldFromArray($this->getTvArchiveDropdownAttribute(), 'name');
-        $filds_for_select = array_combine($filds_for_select, $filds_for_select);
-        if (($pos = array_search('name', $filds_for_select)) !== FALSE) {
-            unset($filds_for_select[$pos]);
-            $filds_for_select['name'] = 'itv.`name` as `name`';
-        }
-                
-        $error = "Error";
+        $filds_for_select = array(
+            'itv_id' => 'played_timeshift.ch_id as `ch_id`',
+            'name' => 'itv.`name` as `name`',
+            'counter' => 'count(`played_timeshift`.ch_id) as `counter`',
+            'total_duration' => 'SUM(played_timeshift.length) as `total_duration`'
+        );
+
+        $error = $this->setLocalization("Error");
         $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
@@ -719,14 +710,6 @@ class StatisticsController extends \Controller\BaseStalkerController {
             $query_param['select'] = array_values($filds_for_select);
         } else {
 //            $query_param['select'][] = 'id';
-        }
-        
-        if (($search = array_search('counter', $query_param['select'])) !== FALSE) {
-            $query_param['select'][$search] = 'count(`ch_id`) as `counter`';
-        }
-        
-        if (($search = array_search('total_duration', $query_param['select'])) !== FALSE) {
-            $query_param['select'][$search] = 'SUM(`length`) as `total_duration`';
         }
 
         if (!empty($query_param['like']) && array_key_exists('counter', $query_param['like'])) {
@@ -848,14 +831,13 @@ class StatisticsController extends \Controller\BaseStalkerController {
 
         $like_filter = array();
         $filters = $this->getStatisticsFilters($like_filter);
-               
-        $filds_for_select = $this->getFieldFromArray($this->getTvDropdownAttribute(), 'name');
-        $filds_for_select = array_combine($filds_for_select, $filds_for_select);
-        if (($pos = array_search('name', $filds_for_select)) !== FALSE) {
-            unset($filds_for_select[$pos]);
-            $filds_for_select['name'] = 'itv.`name` as `name`';
-        }
-                
+        $filds_for_select = array(
+            'itv_id' => 'played_itv.itv_id as `itv_id`',
+            'number' => 'itv.number as `number`',
+            'name' => 'itv.`name` as `name`',
+            'counter' => 'count(`played_itv`.id) as `counter`'
+        );
+
         $error = $this->setLocalization("Error");
         $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
 
@@ -875,10 +857,6 @@ class StatisticsController extends \Controller\BaseStalkerController {
             $query_param['select'] = array_values($filds_for_select);
         } else {
 //            $query_param['select'][] = 'id';
-        }
-        
-        if (($search = array_search('counter', $query_param['select'])) !== FALSE) {
-            $query_param['select'][$search] = 'count(`played_itv`.id) as `counter`';
         }
 
         if (!empty($query_param['like']) && array_key_exists('counter', $query_param['like'])) {
