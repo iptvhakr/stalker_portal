@@ -3948,8 +3948,22 @@ player.prototype.bind = function(){
     this.move_pos.bind(key.REW, this, -1);
     
     (function(){
-        
-        if (this.info.on && !this.quick_ch_switch.on){
+
+        if (this.cur_media_item.media_type == 'advert' || this.cur_media_item.media_type == 'vclub_ad'){
+
+            this.ad_indication.hide();
+            this.ad_skip_indication.hide();
+            stb.advert.stop_ticking();
+
+            if (this.cur_media_item.hasOwnProperty('ad_tracking')){
+                if (this.cur_media_item.ad_tracking.hasOwnProperty('close')){
+                    stb.advert.track(this.cur_media_item.ad_tracking['close'])
+                }
+            }
+
+            this.cur_media_item.stop_callback && this.cur_media_item.stop_callback();
+            return;
+        }else if (this.info.on && !this.quick_ch_switch.on){
             if(this.is_tv){
                 this.hide_info();
                 module.tv._show();
