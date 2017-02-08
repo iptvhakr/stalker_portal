@@ -196,7 +196,12 @@ class AdminsModel extends \Model\BaseStalkerModel {
     }
 
     public function getResellerMember($table_name, $reseller_id){
-        return $this->mysqlInstance->from($table_name)->where(array('reseller_id'=>$reseller_id))->count()->get()->counter();
+        if(!empty($reseller_id)){
+            $params = array('reseller_id'=>$reseller_id);
+        } else {
+            $params = array('NOT(`reseller_id`) AND 1' => 1, '`reseller_id`' => NULL);
+        }
+        return $this->mysqlInstance->from($table_name)->where($params, 'OR ')->count()->get()->counter();
     }
 
     public function updateResellerMember($table_name, $source_id, $target_id){

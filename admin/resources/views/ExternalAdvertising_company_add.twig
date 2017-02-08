@@ -93,11 +93,11 @@
                                 <table class="table ext_ad_table table-striped table-bordered table-hover table-heading">
                                     <thead>
                                         <tr role="row">
-                                            <th width="15%"><div class="col-sm-12"><strong>{{ 'System'|trans }}</strong></div></th>
-                                            <th width="10%"><div class="col-sm-12"><strong>{{ 'Enable'|trans }}</strong></div></th>
-                                            <th width="40%"><div class="col-sm-12"><strong>{{ 'Ad position'|trans }}</strong></div></th>
-                                            <th width="12%"><div class="col-sm-12"><strong>{{ 'Ad blocks'|trans }}</strong></div></th>
-                                            <th width="23%"><div class="col-sm-12"><strong>{{ '"Skip" button (after 7 sec)'|trans }}</strong></div></th>
+                                            <th width="13%"><strong>{{ 'System'|trans }}</strong></th>
+                                            <th width="9%"><strong>{{ 'Enable'|trans }}</strong></th>
+                                            <th width="50%"><div class="col-sm-12"><strong>{{ 'Ad position'|trans }}</strong></div></th>
+                                            <th width="10%"><strong>{{ 'Ad blocks'|trans }}</strong></th>
+                                            <th width="18%"><strong>{{ '"Skip" button (after 7 sec)'|trans }}</strong></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -113,7 +113,7 @@
                                                     <div class="col-sm-12"></div>
                                                 </td>
                                                 <td>
-                                                    {% for key, addPositionField in app['form'][platform_part] if (key ~ '' | trans)|slice(0, 1) == prefix %}
+                                                    {% for key, addPositionField in app['form'][platform_part] if ((key ~ '' | trans)|slice(0, 1) == prefix and not(key in ['205', '203', '103'])) %}
                                                     <div class="col-sm-12">
                                                         <div class="checkbox">
                                                             <label>
@@ -126,7 +126,7 @@
                                                     {% endfor %}
                                                 </td>
                                                 <td>
-                                                    {% for key, addPositionField in app['form'][platform_part] if (key ~ '' | trans)|slice(0, 1) == prefix %}
+                                                    {% for key, addPositionField in app['form'][platform_part] if ((key ~ '' | trans)|slice(0, 1) == prefix and not(key in ['205', '203', '103'])) %}
                                                     <div class="col-sm-12">
                                                         {{ form_label(addPositionField, addPositionField.vars.label[key], {'label_attr': {'data-codereff': key}}) }}
                                                     </div>
@@ -138,7 +138,7 @@
                                                     {% endfor %}
                                                 </td>
                                                 <td>
-                                                    {% for key, addPositionField in app['form'][platform_part] if (key ~ '' | trans)|slice(0, 1) == prefix  %}
+                                                    {% for key, addPositionField in app['form'][platform_part] if ((key ~ '' | trans)|slice(0, 1) == prefix and not(key in ['205', '203', '103'])) %}
                                                         <div class="col-sm-12">
                                                         {{ form_widget(addPositionField, {'attr': {'class': 'populate placeholder', 'data-codereff': key } }) }}
                                                         </div>
@@ -147,7 +147,7 @@
                                                 </td>
                                                 <td>
                                                     {% set  platform_part_skip = (platform_part ~ '_skip') | trans %}
-                                                    {% for key, addPositionField in app['form'][platform_part_skip] if (key ~ '' | trans)|slice(0, 1) == prefix %}
+                                                    {% for key, addPositionField in app['form'][platform_part_skip] if ((key ~ '' | trans)|slice(0, 1) == prefix and not(key in ['205', '203', '103'])) %}
                                                     <div class="col-sm-12">
                                                         <div class="checkbox">
                                                             <label>

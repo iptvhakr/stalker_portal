@@ -354,6 +354,14 @@ margin-bottom:5px;
     margin-left: 20px;
 }
 
+.noti-feed-desc{
+    margin-bottom: 10px;
+}
+
+.noti-feed-desc *:last-child{
+    margin-bottom: 0;
+}
+
 #index_note_list + ul a.close-link{
     position: absolute;
     right: 10px;

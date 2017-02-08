@@ -10,6 +10,7 @@
                 counterObj: undefined,
                 containerClass: "dropdown-menu",
                 titleClass: "noti-feed-title",
+                descClass: "noti-feed-desc",
                 ajax_link: '',
                 set_readed_link: '',
                 set_remind_link: '',
@@ -124,7 +125,8 @@
                 itemBox.addClass("category-icon " + itemData.category);
                 itemBox = $("<div class='col-xs-10 col-xs-offset-2'></div>").appendTo(itemBox);
                 itemBox.append('<a class="close-link"><i class="fa fa-times"></i></a>').append('<label>' + itemData.title + '</label>');
-                var itemBoxDescr = $('<div>' + itemData.description + '</div>').appendTo(itemBox);
+                var itemBoxDescr = $('<div></div>').appendTo(itemBox);
+                itemBoxDescr.append('<div class="'+ this.defaults.descClass +'">' + itemData.description + '</div>');
                 if (itemData.link) {
                     var self = this;
                     var link = $('<a href="' + itemData.link + '" target="_blank">' + this.defaults.linkText  + '</a>');

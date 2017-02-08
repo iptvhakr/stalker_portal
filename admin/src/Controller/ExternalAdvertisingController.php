@@ -493,6 +493,9 @@ class ExternalAdvertisingController extends \Controller\BaseStalkerController {
             }
             $position_code_prefix = $position_code = '';
             foreach($ad_positions as $row) {
+                if (in_array($row['position_code'], array('205', '203', '103'))) {
+                    continue;
+                }
                 if ($position_code_prefix !== $row['position_code'][0]) {
                     $position_code_prefix = $row['position_code'][0];
                     $position_code = $row['position_code'];
