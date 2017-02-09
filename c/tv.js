@@ -1071,6 +1071,8 @@
                 var callback = function () {
                     _debug('tv callback');
 
+                    stb.key_lock = false;
+
                     var item = current_item.clone();
                     item.disable_ad = true;
 

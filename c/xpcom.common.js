@@ -2139,6 +2139,9 @@ function common_xpcom(){
             _debug('stb.advert.get_ad');
 
             var callback = function () {
+
+                stb.key_lock = false;
+
                 try{
                     stb.Stop();
                 }catch(e){

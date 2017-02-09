@@ -1181,6 +1181,8 @@
 
                                 var callback = function () {
 
+                                    stb.key_lock = false;
+
                                     _debug('movie callback');
 
                                     self.hide(true);
