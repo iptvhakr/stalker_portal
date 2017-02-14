@@ -123,7 +123,7 @@
                 itemBox = $('<div class="box"></div>').appendTo(itemBox);
                 itemBox = $("<div class='box-content'></div>").appendTo(itemBox);
                 itemBox.addClass("category-icon " + itemData.category);
-                itemBox = $("<div class='col-xs-10 col-xs-offset-2'></div>").appendTo(itemBox);
+                itemBox = $("<div class='col-xs-11 col-xs-offset-1'></div>").appendTo(itemBox);
                 itemBox.append('<a class="close-link"><i class="fa fa-times"></i></a>').append('<label>' + itemData.title + '</label>');
                 var itemBoxDescr = $('<div></div>').appendTo(itemBox);
                 itemBoxDescr.append('<div class="'+ this.defaults.descClass +'">' + itemData.description + '</div>');
