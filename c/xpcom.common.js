@@ -949,7 +949,7 @@ function common_xpcom(){
                 'metrics'          : encodeURIComponent(JSON.stringify(metrics)),
                 'hw_version_2'     : stb.GetHashVersion1 ? stb.GetHashVersion1(JSON.stringify(metrics), this.random) : '',
                 'timestamp'        : Math.round(new Date().getTime()/1000),
-                'api_signature'    : (function(){var p=0;for(var d in gSTB){if(gSTB.hasOwnProperty(d)){p++}} return p})(),
+                'api_signature'    : typeof(gSTB) == 'undefined' ? 0 : (function(){var p=0;for(var d in gSTB){if(gSTB.hasOwnProperty(d)){p++}} return p})(),
                 'prehash'          : prehash
             },
 
