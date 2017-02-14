@@ -268,13 +268,13 @@ margin-bottom:5px;
 
 #top-panel *{
   color: #FFFFFF;
-    
 }
 
 #index_note_list + ul{
     margin-top: 10px;
-    left: -420%;
-    min-width: 700%;
+    left: -350px;
+    min-width: 500px;
+    max-width: 500px;
     max-height: 600px;
     overflow-x: hidden;
     overflow-y: auto;
@@ -335,7 +335,7 @@ margin-bottom:5px;
 }
 
 #index_note_list + ul .category-icon{
-    background: 17px 15px no-repeat transparent;
+    background: 10px 15px no-repeat transparent;
 }
 
 #index_note_list + ul .category-icon.new_version{
@@ -360,6 +360,10 @@ margin-bottom:5px;
 
 .noti-feed-desc *:last-child{
     margin-bottom: 0;
+}
+
+.noti-feed-desc img{
+    max-width: 390px;
 }
 
 #index_note_list + ul a.close-link{
