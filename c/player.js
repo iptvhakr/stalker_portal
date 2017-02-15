@@ -1433,6 +1433,10 @@ player.prototype.event_callback = function(event, params){
                 this.cur_media_length = stb.GetMediaLen();
                 this.cur_pos_time = stb.GetPosTime();
 
+                if (this.cur_media_item.media_type == 'advert' || this.cur_media_item.media_type == 'vclub_ad'){
+                    stb.advert && stb.advert.disable();
+                }
+
                 if (this.cur_media_item.hasOwnProperty('ad_must_watch') && this.cur_media_item.ad_must_watch != 'all'){
 
                     if (this.cur_media_item.ad_must_watch.indexOf('s') > 0){ // time in seconds
@@ -2512,7 +2516,7 @@ player.prototype.play = function(item){
                     module.tv.handle_advert(result, item);
                 };
 
-                this.create_link('itv', cmd, 0, false, item.disable_ad, false, stb.user['force_ch_link_check']);
+                this.create_link('itv', cmd, 0, false, item.disable_ad || stb.advert && stb.advert.disabled, false, stb.user['force_ch_link_check']);
             }else{
                 if (cmd && cmd.search(/%mac%/ig) !== -1) {
                     cmd = cmd.replace(/%mac%/ig, stb.profile.mac);
@@ -2577,7 +2581,7 @@ player.prototype.play = function(item){
                 cmd += ' position:'+this.cur_media_item.position;
             }
         }
-        this.create_link('vod', cmd, series_number, item.forced_storage || '', item.disable_ad, item.download || false);
+        this.create_link('vod', cmd, series_number, item.forced_storage || '', item.disable_ad || stb.advert && stb.advert.disabled, item.download || false);
     }
 };
 
